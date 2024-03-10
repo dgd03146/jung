@@ -23,15 +23,15 @@ importers:
 
   apps/admin:
     dependencies:
+      '@imgeozi/design-system':
+        specifier: workspace:*
+        version: link:../../packages/design-system
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      styles:
-        specifier: workspace:*
-        version: link:../../packages/styles
     devDependencies:
       '@types/react':
         specifier: ^18.2.56
@@ -151,9 +151,9 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/ui':
+      '@imgeozi/design-system':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/design-system
       next:
         specifier: ^14.1.1
         version: 14.1.1(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
@@ -163,9 +163,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      styles:
-        specifier: workspace:*
-        version: link:../../packages/styles
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.1.1
@@ -200,15 +197,15 @@ importers:
 
   apps/workshop:
     dependencies:
+      '@imgeozi/design-system':
+        specifier: workspace:*
+        version: link:../../packages/design-system
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      styles:
-        specifier: workspace:*
-        version: link:../../packages/styles
     devDependencies:
       '@storybook/addon-essentials':
         specifier: ^7.6.17
@@ -274,31 +271,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.5(@types/node@20.11.24)
 
-  packages/eslint-config:
-    devDependencies:
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^7.1.0
-        version: 7.1.0(@typescript-eslint/parser@7.1.0)(eslint@8.57.0)(typescript@5.3.3)
-      '@typescript-eslint/parser':
-        specifier: ^7.1.0
-        version: 7.1.0(eslint@8.57.0)(typescript@5.3.3)
-      '@vercel/style-guide':
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@8.57.0)(prettier@3.2.5)(typescript@5.3.3)
-      eslint-config-prettier:
-        specifier: ^9.1.0
-        version: 9.1.0(eslint@8.57.0)
-      eslint-config-turbo:
-        specifier: ^1.12.4
-        version: 1.12.4(eslint@8.57.0)
-      eslint-plugin-only-warn:
-        specifier: ^1.1.0
-        version: 1.1.0
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-
-  packages/styles:
+  packages/design-system:
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -334,40 +307,31 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/typescript-config: {}
-
-  packages/ui:
+  packages/eslint-config:
     devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@turbo/gen':
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.1.0
+        version: 7.1.0(@typescript-eslint/parser@7.1.0)(eslint@8.57.0)(typescript@5.3.3)
+      '@typescript-eslint/parser':
+        specifier: ^7.1.0
+        version: 7.1.0(eslint@8.57.0)(typescript@5.3.3)
+      '@vercel/style-guide':
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@8.57.0)(prettier@3.2.5)(typescript@5.3.3)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
+      eslint-config-turbo:
         specifier: ^1.12.4
-        version: 1.12.4(@types/node@20.11.24)(typescript@5.3.3)
-      '@types/eslint':
-        specifier: ^8.56.5
-        version: 8.56.5
-      '@types/node':
-        specifier: ^20.11.24
-        version: 20.11.24
-      '@types/react':
-        specifier: ^18.2.61
-        version: 18.2.61
-      '@types/react-dom':
-        specifier: ^18.2.19
-        version: 18.2.19
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
+        version: 1.12.4(eslint@8.57.0)
+      eslint-plugin-only-warn:
+        specifier: ^1.1.0
+        version: 1.1.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+
+  packages/typescript-config: {}
 
 packages:
 
@@ -4845,6 +4809,7 @@ packages:
 
   /@turbo/workspaces@1.12.4:
     resolution: {integrity: sha512-a1hF8Nr6MOeCpvlLR569dGTlzgRLj2Rxo6dTb4jtL+jhHwCb94A9kDPgcRnYGFr45mgulICarVaNZxDjw4/riQ==}
+    hasBin: true
     dependencies:
       chalk: 2.4.2
       commander: 10.0.1
@@ -12646,7 +12611,7 @@ packages:
     hasBin: true
     dependencies:
       '@jridgewell/source-map': 0.3.5
-      acorn: 8.10.0
+      acorn: 8.11.3
       commander: 2.20.3
       source-map-support: 0.5.21
     dev: true
