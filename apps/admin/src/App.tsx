@@ -1,4 +1,4 @@
-import 'styles/globals.css';
+import '@imgeozi/design-system/globals.css';
 
 import reactLogo from './assets/react.svg';
 import { useState } from 'react';

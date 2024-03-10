@@ -1,6 +1,6 @@
 import './button.css';
 
-import { button } from 'styles/button.css';
+import { button } from '@imgeozi/design-system/styles/button.css';
 
 interface ButtonProps {
   /**
