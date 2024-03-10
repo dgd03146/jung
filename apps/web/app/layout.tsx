@@ -1,4 +1,4 @@
-import 'styles/globals.css';
+import '@imgeozi/design-system/styles/globals.css';
 
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
