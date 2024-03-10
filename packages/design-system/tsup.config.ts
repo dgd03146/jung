@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   treeshake: true,
-  entry: ['./**/*.tsx'],
+  entry: ['./**/*.tsx', './**/*.css.ts'],
   format: ['esm'],
   splitting: true,
   dts: true,
