@@ -10,6 +10,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@testing-library/react": "^14.2.1",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
