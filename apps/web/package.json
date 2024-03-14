@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings 0",
     "test": "jest",
+    "format": "pnpm biome format --write .",
+    "lint": "pnpm biome lint . --apply",
     "test:e2e": "playwright test",
     "test:watch": "jest --watch"
   },
@@ -18,17 +19,15 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.1.1",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
     "playwright-config": "workspace:*",
     "jest-config": "workspace:*",
-    "@types/eslint": "^8.56.5",
+    "biome-config": "workspace:*",
+    "@next/eslint-plugin-next": "^14.1.1",
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "@vanilla-extract/next-plugin": "^2.3.7",
-    "eslint": "^8.57.0",
     "typescript": "^5.3.3"
   }
 }
