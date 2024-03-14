@@ -1,0 +1,9 @@
+{
+  "name": "biome-config",
+  "private": true,
+  "version": "0.0.0",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.6.1"
+  }
+}
