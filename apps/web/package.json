@@ -14,20 +14,22 @@
   },
   "dependencies": {
     "@imgeozi/design-system": "workspace:*",
+    "@tanstack/react-query": "^5.28.4",
+    "@tanstack/react-query-devtools": "^5.28.4",
     "next": "^14.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "playwright-config": "workspace:*",
-    "jest-config": "workspace:*",
-    "biome-config": "workspace:*",
     "@next/eslint-plugin-next": "^14.1.1",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "@vanilla-extract/next-plugin": "^2.3.7",
+    "biome-config": "workspace:*",
+    "jest-config": "workspace:*",
+    "playwright-config": "workspace:*",
     "typescript": "^5.3.3"
   }
 }
