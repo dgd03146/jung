@@ -7,7 +7,7 @@
   "[javascript][typescript][tsx][jsx]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
-      "quickfix.biome": true,
+      "quickfix.biome": "explicit",
       "source.organizeImports.biome": "explicit"
     },
     "editor.formatOnSave": true
