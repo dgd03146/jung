@@ -13,7 +13,7 @@
 		"test:watch": "jest --watch"
 	},
 	"dependencies": {
-		"@imgeozi/design-system": "workspace:*",
+		"@jung/design-system": "workspace:*",
 		"@tanstack/react-query": "^5.28.4",
 		"@tanstack/react-query-devtools": "^5.28.4",
 		"framer-motion": "^11.0.14",

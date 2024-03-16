@@ -53,7 +53,7 @@ importers:
 
   apps/admin:
     dependencies:
-      '@imgeozi/design-system':
+      '@jung/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
       '@tanstack/react-query':
@@ -175,7 +175,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@imgeozi/design-system':
+      '@jung/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
       '@tanstack/react-query':
@@ -236,7 +236,7 @@ importers:
 
   apps/workshop:
     dependencies:
-      '@imgeozi/design-system':
+      '@jung/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
       react:

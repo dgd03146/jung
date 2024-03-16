@@ -18,7 +18,7 @@
 		"react-dom": "^18.2.0",
 		"@tanstack/react-query": "^5.28.4",
 		"@tanstack/react-query-devtools": "^5.28.4",
-		"@imgeozi/design-system": "workspace:*",
+		"@jung/design-system": "workspace:*",
 		"zustand": "^4.5.2"
 	},
 	"devDependencies": {
