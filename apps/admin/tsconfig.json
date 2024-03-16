@@ -1,20 +1,20 @@
 {
-  "extends": "@repo/typescript-config/react-library.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {},
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "src/components/Increase.jsx",
-    "src/App.jsx",
-    "vite.config.mts"
-  ],
-  "exclude": ["node_modules"]
+	"extends": "@jung/typescript-config/react-library.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"src/components/Increase.jsx",
+		"src/App.jsx",
+		"vite.config.mts"
+	],
+	"exclude": ["node_modules"]
 }

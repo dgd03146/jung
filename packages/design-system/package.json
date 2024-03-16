@@ -11,7 +11,7 @@
 	},
 	"devDependencies": {
 		"@jung/configs": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
+		"@jung/typescript-config": "workspace:*",
 		"@turbo/gen": "^1.12.4",
 		"@types/node": "^20.11.24",
 		"@types/react": "^18.2.61",
