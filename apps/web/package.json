@@ -27,13 +27,12 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@jung/configs": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "@vanilla-extract/next-plugin": "^2.3.7",
-    "biome-config": "workspace:*",
-    "jest-config": "workspace:*",
     "playwright-config": "workspace:*",
     "typescript": "^5.3.3"
   }
