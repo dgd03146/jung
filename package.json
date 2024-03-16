@@ -1,5 +1,5 @@
 {
-	"name": "imgeozi",
+	"name": "jung",
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
