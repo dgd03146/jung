@@ -14,12 +14,12 @@ importers:
       '@jung/configs':
         specifier: workspace:*
         version: link:packages/configs
+      '@jung/typescript-config':
+        specifier: workspace:*
+        version: link:packages/typescript-config
       '@playwright/test':
         specifier: ^1.42.1
         version: 1.42.1
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:packages/typescript-config
       '@testing-library/jest-dom':
         specifier: ^6.4.2
         version: 6.4.2(@types/jest@29.5.12)(jest@29.7.0)
@@ -215,7 +215,7 @@ importers:
       '@jung/configs':
         specifier: workspace:*
         version: link:../../packages/configs
-      '@repo/typescript-config':
+      '@jung/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/node':
@@ -315,7 +315,7 @@ importers:
       '@jung/configs':
         specifier: workspace:*
         version: link:../configs
-      '@repo/typescript-config':
+      '@jung/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@turbo/gen':
