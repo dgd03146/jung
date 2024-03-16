@@ -9,7 +9,11 @@
 		"test": "turbo test",
 		"test:e2e": "turbo test:e2e",
 		"test:watch": "turbo test:watch",
-		"prepare": "husky"
+		"prepare": "husky",
+		"web": "pnpm --filter web",
+		"admin": "pnpm --filter admin",
+		"api": "pnpm --filter api",
+		"workshop": "pnpm --filter workshop"
 	},
 	"lint-staged": {
 		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
