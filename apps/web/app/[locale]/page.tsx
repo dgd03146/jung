@@ -1,7 +1,7 @@
 import ExampleClientComponent from "@/components/ExampleClientComponent";
 import LanguageChanger from "@/components/LanguageChanger";
 import TranslationProvider from "@/components/TranslationsProvider";
-import Button from "@jung/design-system/components/Button/Button";
+import { Button } from "@jung/design-system";
 import Link from "next/link";
 import initTranslations from "../i18n";
 

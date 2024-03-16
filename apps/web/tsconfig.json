@@ -4,7 +4,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./*"],
-			"@/components/*": ["components/*"]
+			"@/components/*": ["components/*"],
+			"@jung/design-system/*": ["../../packages/design-system/*"]
 		},
 		"plugins": [
 			{
