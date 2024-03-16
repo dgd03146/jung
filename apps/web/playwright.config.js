@@ -1,1 +1,1 @@
-module.exports = require('playwright-config/playwright-config');
+module.exports = require("@jung/configs/playwright-config");
