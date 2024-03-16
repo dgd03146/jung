@@ -1,24 +1,24 @@
 {
-  "name": "@imgeozi/design-system",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "format": "pnpm biome format --write .",
-    "lint": "pnpm biome lint . --apply",
-    "generate:component": "turbo gen react-component",
-    "build": "tsup",
-    "dev": "tsup --watch"
-  },
-  "devDependencies": {
-    "biome-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@turbo/gen": "^1.12.4",
-    "@types/node": "^20.11.24",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "@vanilla-extract/css": "^1.14.1",
-    "react": "^18.2.0",
-    "tsup": "^8.0.2",
-    "typescript": "^5.3.3"
-  }
+	"name": "@imgeozi/design-system",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"format": "pnpm biome format --write .",
+		"lint": "pnpm biome lint . --apply",
+		"generate:component": "turbo gen react-component",
+		"build": "tsup",
+		"dev": "tsup --watch"
+	},
+	"devDependencies": {
+		"@jung/configs": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
+		"@turbo/gen": "^1.12.4",
+		"@types/node": "^20.11.24",
+		"@types/react": "^18.2.61",
+		"@types/react-dom": "^18.2.19",
+		"@vanilla-extract/css": "^1.14.1",
+		"react": "^18.2.0",
+		"tsup": "^8.0.2",
+		"typescript": "^5.3.3"
+	}
 }

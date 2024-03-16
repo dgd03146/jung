@@ -1,0 +1,11 @@
+{
+	"name": "@jung/configs",
+	"version": "0.0.0",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "1.6.1",
+		"@testing-library/jest-dom": "^6.4.2",
+		"jest-environment-jsdom": "^29.7.0",
+		"ts-jest": "^29.1.0"
+	}
+}
