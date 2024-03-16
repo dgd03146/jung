@@ -1,40 +1,43 @@
 {
-  "name": "imgeozi",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "turbo format",
-    "test": "turbo test",
-    "test:e2e": "turbo test:e2e",
-    "test:watch": "turbo test:watch",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome lint --apply --no-errors-on-unmatched"
-    ]
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.6.1",
-    "@playwright/test": "^1.42.1",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^14.2.1",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.5.2",
-    "@types/node": "^20.11.27",
-    "biome-config": "workspace:*",
-    "husky": "^9.0.11",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.2.2",
-    "prettier": "^3.2.5",
-    "turbo": "latest"
-  },
-  "packageManager": "pnpm@8.9.0",
-  "engines": {
-    "node": ">=18"
-  }
+	"name": "imgeozi",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"lint": "turbo lint",
+		"format": "turbo format",
+		"test": "turbo test",
+		"test:e2e": "turbo test:e2e",
+		"test:watch": "turbo test:watch",
+		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+			"biome check --apply --no-errors-on-unmatched",
+			"biome check --apply --organize-imports-enabled=false --no-errors-on-unmatched",
+			"biome check --apply-unsafe --no-errors-on-unmatched",
+			"biome format --write --no-errors-on-unmatched",
+			"biome lint --apply --no-errors-on-unmatched"
+		]
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.6.1",
+		"@playwright/test": "^1.42.1",
+		"@repo/typescript-config": "workspace:*",
+		"@testing-library/jest-dom": "^6.4.2",
+		"@testing-library/react": "^14.2.1",
+		"@testing-library/user-event": "^14.5.2",
+		"@types/jest": "^29.5.2",
+		"@types/node": "^20.11.27",
+		"@jung/configs": "workspace:*",
+		"husky": "^9.0.11",
+		"jest": "^29.7.0",
+		"lint-staged": "^15.2.2",
+		"prettier": "^3.2.5",
+		"turbo": "latest"
+	},
+	"packageManager": "pnpm@8.9.0",
+	"engines": {
+		"node": ">=18"
+	}
 }

@@ -1,38 +1,38 @@
 {
-  "name": "workshop",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "format": "pnpm biome format --write ./src",
-    "lint": "pnpm biome lint ./src --apply",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@imgeozi/design-system": "workspace:*"
-  },
-  "devDependencies": {
-    "biome-config": "workspace:*",
-    "@vitejs/plugin-react-swc": "latest",
-    "@vanilla-extract/vite-plugin": "latest",
-    "@storybook/addon-essentials": "^7.6.17",
-    "@storybook/addon-interactions": "^7.6.17",
-    "@storybook/addon-links": "^7.6.17",
-    "@storybook/addon-onboarding": "1.0.11",
-    "@storybook/blocks": "^7.6.17",
-    "@storybook/react": "^7.6.17",
-    "@storybook/react-vite": "^7.6.17",
-    "@storybook/test": "^7.6.17",
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
-    "storybook": "^7.6.17",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.4"
-  }
+	"name": "workshop",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"format": "pnpm biome format --write ./src",
+		"lint": "pnpm biome lint ./src --apply",
+		"preview": "vite preview",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build"
+	},
+	"dependencies": {
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"@imgeozi/design-system": "workspace:*"
+	},
+	"devDependencies": {
+		"@jung/configs": "workspace:*",
+		"@vitejs/plugin-react-swc": "latest",
+		"@vanilla-extract/vite-plugin": "latest",
+		"@storybook/addon-essentials": "^7.6.17",
+		"@storybook/addon-interactions": "^7.6.17",
+		"@storybook/addon-links": "^7.6.17",
+		"@storybook/addon-onboarding": "1.0.11",
+		"@storybook/blocks": "^7.6.17",
+		"@storybook/react": "^7.6.17",
+		"@storybook/react-vite": "^7.6.17",
+		"@storybook/test": "^7.6.17",
+		"@types/react": "^18.2.56",
+		"@types/react-dom": "^18.2.19",
+		"storybook": "^7.6.17",
+		"typescript": "^5.2.2",
+		"vite": "^5.1.4"
+	}
 }
