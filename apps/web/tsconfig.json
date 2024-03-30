@@ -1,6 +1,7 @@
 {
 	"extends": "@jung/typescript-config/nextjs.json",
 	"compilerOptions": {
+		"jsx": "react-jsx",
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./*"],

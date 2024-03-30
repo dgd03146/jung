@@ -343,6 +343,12 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/shared:
+    dependencies:
+      '@jung/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+
   packages/typescript-config: {}
 
 packages:
