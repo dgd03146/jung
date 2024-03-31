@@ -13,25 +13,24 @@
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
+		"@jung/design-system": "workspace:*",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"@jung/design-system": "workspace:*"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@jung/configs": "workspace:*",
-		"@vitejs/plugin-react-swc": "latest",
-		"@vanilla-extract/vite-plugin": "latest",
-		"@storybook/addon-essentials": "^7.6.17",
-		"@storybook/addon-interactions": "^7.6.17",
-		"@storybook/addon-links": "^7.6.17",
-		"@storybook/addon-onboarding": "1.0.11",
-		"@storybook/blocks": "^7.6.17",
-		"@storybook/react": "^7.6.17",
-		"@storybook/react-vite": "^7.6.17",
-		"@storybook/test": "^7.6.17",
+		"@storybook/addon-essentials": "^8.0.5",
+		"@storybook/addon-interactions": "^8.0.5",
+		"@storybook/addon-links": "^8.0.5",
+		"@storybook/blocks": "^8.0.5",
+		"@storybook/react": "^8.0.5",
+		"@storybook/react-vite": "^8.0.5",
+		"@storybook/test": "^8.0.5",
 		"@types/react": "^18.2.56",
 		"@types/react-dom": "^18.2.19",
-		"storybook": "^7.6.17",
+		"@vanilla-extract/vite-plugin": "latest",
+		"@vitejs/plugin-react-swc": "latest",
+		"storybook": "^8.0.5",
 		"typescript": "^5.2.2",
 		"vite": "^5.1.4"
 	}

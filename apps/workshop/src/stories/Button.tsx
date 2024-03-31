@@ -1,7 +1,5 @@
 import "./button.css";
 
-import { button } from "@jung/design-system/styles/button.css";
-
 interface ButtonProps {
 	/**
 	 * Is this the principal call to action on the page?
@@ -38,9 +36,15 @@ export const Button = ({
 	const mode = primary
 		? "storybook-button--primary"
 		: "storybook-button--secondary";
-
 	return (
-		<button type="submit" className={button}>
+		<button
+			type="button"
+			className={["storybook-button", `storybook-button--${size}`, mode].join(
+				" ",
+			)}
+			style={{ backgroundColor }}
+			{...props}
+		>
 			{label}
 		</button>
 	);
