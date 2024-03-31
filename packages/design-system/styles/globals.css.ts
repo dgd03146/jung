@@ -1,24 +1,27 @@
-import { globalStyle } from '@vanilla-extract/css';
+import { globalStyle } from "@vanilla-extract/css";
 
-globalStyle('body', {
-	fontFamily: `'Clear Sans', 'Helvetica Neue', Arial, sans-serif`,
+globalStyle("body", {
 	padding: 0,
 	margin: 0,
-	boxSizing: 'border-box',
-	background: 'purple',
+	boxSizing: "border-box",
 });
 
-globalStyle('a', {
-	textDecoration: 'none',
-	color: 'black',
+globalStyle("a", {
+	textDecoration: "none",
 });
 
-globalStyle('list', {
-	padding: '0',
-	listStyle: 'none',
+globalStyle("list", {
+	padding: "0",
+	listStyle: "none",
 });
 
-globalStyle('input', {
-	border: 'none',
-	outline: 'none',
+globalStyle("input", {
+	border: "none",
+	outline: "none",
+});
+
+globalStyle("button", {
+	border: "none",
+	outline: "none",
+	cursor: "pointer",
 });
