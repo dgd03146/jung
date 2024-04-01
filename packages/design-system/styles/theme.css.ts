@@ -1,10 +1,30 @@
-import { createGlobalTheme } from '@vanilla-extract/css';
+import {
+	borderRadius,
+	borderWidths,
+	extendedSpace,
+	fontFamily,
+	fontSizes,
+	fontWeights,
+	opacity,
+	palette,
+	space,
+} from "../tokens";
 
-export const vars = createGlobalTheme(':root', {
-	color: {
-		background: '#8b8',
-		headerBackground: '#222',
-		headerText: '#fff',
-		accent: '#080',
+import { createGlobalTheme } from "@vanilla-extract/css";
+
+export const vars = createGlobalTheme(":root", {
+	space,
+	contentWidth: {
+		...extendedSpace,
+		...space,
+	},
+	opacity,
+	fontFamily,
+	fontSizes,
+	fontWeights,
+	palette,
+	border: {
+		width: borderWidths,
+		radius: borderRadius,
 	},
 });
