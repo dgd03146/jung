@@ -1,18 +1,39 @@
-import { style } from '@vanilla-extract/css';
-import { vars } from '../../styles/theme.css';
+import { recipe } from "@vanilla-extract/recipes";
+import { sprinkles } from "styles/sprinkles.css";
 
-export const button = style({
-	borderRadius: '0.375rem',
-	backgroundColor: vars.color.accent,
-	paddingRight: '0.875rem',
-	paddingLeft: '0.875rem',
-	paddingTop: '0.625rem',
-	paddingBottom: '0.625rem',
-	lineHeight: '1.25rem',
-	fontSize: '0.875rem',
-	fontWeight: '700',
-	color: '#eee',
-	marginTop: '16px',
-	marginBottom: '16px',
-	textTransform: 'uppercase',
+export const button = recipe({
+	base: sprinkles({
+		// paddingY: {
+		//   mobile: 'medium',
+		//   tablet: 'large',
+		// },
+		// paddingX: {
+		//   mobile: 'large',
+		//   tablet: 'xlarge',
+		// },
+		// borderRadius: 'large',
+	}),
+	variants: {
+		variant: {
+			basic: sprinkles({
+				backgroundColor: "transparent",
+				paddingY: "0",
+				paddingX: "0",
+				margin: "0",
+			}),
+			solid: sprinkles({
+				backgroundColor: "primary",
+				color: "white",
+			}),
+			// transparent: sprinkles({
+			// 	color: "gray-100",
+			// 	backgroundColor: "blue",
+			// }),
+			// "black solid": sprinkles({
+			// 	background: "black",
+			// 	color: "white",
+			// 	padding: "small",
+			// }),
+		},
+	},
 });

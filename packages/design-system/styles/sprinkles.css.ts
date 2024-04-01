@@ -3,10 +3,6 @@ import { createSprinkles, defineProperties } from "@vanilla-extract/sprinkles";
 import { breakpoints } from "../tokens";
 import { vars } from "./theme.css";
 
-export const makeMediaQuery = (breakPoint: string) => {
-	return { "@media": `screen and (min-width: ${breakPoint})` };
-};
-
 export const responsiveProperties = defineProperties({
 	conditions: {
 		sm: { "@media": `screen and (min-width: ${breakpoints.sm})` },
@@ -102,7 +98,7 @@ export const responsiveProperties = defineProperties({
 
 export const textProperties = defineProperties({
 	properties: {
-		fontWeights: vars.fontWeights,
+		fontWeight: vars.fontWeights,
 		fontFamily: vars.fontFamily,
 	},
 });
