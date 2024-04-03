@@ -36,7 +36,7 @@ export default async function Home({ params: { locale } }: Params) {
 			<Button variant="primary">Primary Button</Button>
 			<Button variant="secondary">Secondary Button</Button>
 			<Button variant="outline">Outline Button</Button>
-			<Button variant="rounded">Rounded Button</Button>
+			<Button rounded>Rounded Button</Button>
 			<Button variant="ghost">Ghost Button</Button>
 			<Button prefix={<SearchIcon />}>Button with Icon</Button>
 			<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href="hihi">

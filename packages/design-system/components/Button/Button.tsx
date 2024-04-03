@@ -1,4 +1,4 @@
-import * as styles from "./Button.css";
+import { button } from "./Button.css";
 
 import {
 	type ButtonHTMLAttributes,
@@ -12,7 +12,9 @@ import { Box, type BoxProps } from "..";
 interface Props
 	extends PropsWithChildren,
 		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix"> {
-	variant?: "primary" | "secondary" | "outline" | "ghost" | "rounded";
+	variant?: "primary" | "secondary" | "outline" | "ghost";
+	size?: "sm" | "md" | "lg";
+	rounded?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;
 }
@@ -21,8 +23,11 @@ type ButtonProps = BoxProps<"button", Props>;
 type ButtonComponent = (props: ButtonProps) => React.ReactNode;
 
 export const Button: ButtonComponent = forwardRef(
-	({ variant = "primary", prefix, suffix, children, ...restProps }, ref?) => {
-		const buttonClass = styles.button({ variant });
+	(
+		{ variant, size, rounded, prefix, suffix, children, ...restProps },
+		ref?,
+	) => {
+		const buttonClass = button({ variant, size, rounded });
 
 		return (
 			<Box

@@ -4,8 +4,6 @@ import { sprinkles } from "../../styles/sprinkles.css";
 export const button = recipe({
 	base: [
 		sprinkles({
-			paddingX: "2.5",
-			paddingY: "1.5",
 			borderColor: "primary",
 			borderWidth: "1px",
 			borderStyle: "solid",
@@ -43,16 +41,6 @@ export const button = recipe({
 					hover: "white",
 				},
 			}),
-			rounded: sprinkles({
-				borderRadius: "2xl",
-				background: {
-					base: "white",
-					hover: "primary200",
-				},
-				color: {
-					hover: "white",
-				},
-			}),
 			ghost: sprinkles({
 				border: "none",
 				fontWeight: "bold",
@@ -65,5 +53,29 @@ export const button = recipe({
 				},
 			}),
 		},
+		size: {
+			sm: sprinkles({
+				paddingX: "2.5",
+				paddingY: "1.5",
+			}),
+			md: sprinkles({
+				paddingX: "3",
+				paddingY: "2",
+			}),
+			lg: sprinkles({
+				paddingX: "3.5",
+				paddingY: "2.5",
+			}),
+		},
+		rounded: {
+			true: sprinkles({
+				borderRadius: "2xl",
+			}),
+		},
+	},
+	defaultVariants: {
+		variant: "primary",
+		size: "sm",
+		rounded: false,
 	},
 });
