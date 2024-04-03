@@ -15,7 +15,6 @@ interface Props
 	variant?: "primary" | "secondary" | "outline" | "ghost" | "rounded";
 	prefix?: ReactNode;
 	suffix?: ReactNode;
-	right?: ReactNode;
 }
 
 type ButtonProps = BoxProps<"button", Props>;

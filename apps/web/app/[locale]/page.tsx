@@ -1,4 +1,4 @@
-import { Box, Button } from "@jung/design-system";
+import { Badge, Box, Button } from "@jung/design-system";
 
 import ExampleClientComponent from "@/components/ExampleClientComponent";
 import LanguageChanger from "@/components/LanguageChanger";
@@ -54,6 +54,7 @@ export default async function Home({ params: { locale } }: Params) {
 			<Link href="hihi">
 				<Button>Link</Button>
 			</Link>
+			<Badge rounded>Badge</Badge>
 		</div>
 	);
 }

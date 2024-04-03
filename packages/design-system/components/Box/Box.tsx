@@ -26,6 +26,7 @@ export interface PropstoOmit
 			| "cursor"
 			| "prefix"
 			| "suffix"
+			| "size"
 		>,
 		Sprinkles {
 	component?: ElementType;
