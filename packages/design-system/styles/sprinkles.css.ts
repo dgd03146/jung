@@ -122,6 +122,8 @@ export const unresponsiveProperties = defineProperties({
 		flexBasis: {
 			...vars.contentWidth,
 		},
+		boxSizing: ["border-box", "content-box"],
+		borderStyle: ["solid", "dotted", "dashed", "none", "hidden"],
 		border: ["none"],
 		isolation: ["isolate"],
 		pointerEvents: ["none"],
@@ -203,14 +205,37 @@ const selectorProperties = defineProperties({
 	},
 	defaultCondition: "base",
 	properties: {
-		backgroundColor: vars.palette,
+		background: vars.palette,
 		borderColor: vars.palette,
 		color: vars.palette,
 		outlineColor: vars.palette,
 	},
 });
 
-export const sprinkles = createSprinkles(
+type ResponsivePropertiesType = typeof responsiveProperties;
+type TextPropertiesType = typeof textProperties;
+type UnresponsivePropertiesType = typeof unresponsiveProperties;
+type MotionSafePropertiesType = typeof motionSafeProperties;
+type SelectorPropertiesType = typeof selectorProperties;
+
+type SprinklesProperties = [
+	ResponsivePropertiesType,
+	TextPropertiesType,
+	UnresponsivePropertiesType,
+	MotionSafePropertiesType,
+	SelectorPropertiesType,
+];
+
+type SprinklesFnType = ReturnType<typeof createSprinkles<SprinklesProperties>>;
+
+// // Define the combined interface for sprinkles properties
+// type TSprinkles = ResponsivePropertiesType &
+// 	TextPropertiesType &
+// 	UnresponsivePropertiesType &
+// 	MotionSafePropertiesType &
+// 	SelectorPropertiesType;
+
+export const sprinkles: SprinklesFnType = createSprinkles(
 	textProperties,
 	responsiveProperties,
 	unresponsiveProperties,

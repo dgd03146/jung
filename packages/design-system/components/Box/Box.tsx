@@ -7,12 +7,12 @@ import {
 	forwardRef,
 } from "react";
 
+import clsx from "clsx";
+import * as resetStyles from "../../styles/reset.css";
 import type {
 	PolymorphicComponentPropWithRef,
 	PolymorphicRef,
-} from "@/types/polymorhpic";
-import clsx from "clsx";
-import * as resetStyles from "../../styles/reset.css";
+} from "../../types/polymorhpic";
 
 export interface PropstoOmit
 	extends Omit<
@@ -24,6 +24,8 @@ export interface PropstoOmit
 			| "color"
 			| "width"
 			| "cursor"
+			| "prefix"
+			| "suffix"
 		>,
 		Sprinkles {
 	component?: ElementType;
@@ -69,14 +71,17 @@ export const Box: BoxComponent = forwardRef(
 			flexWrap,
 			flexGrow,
 			flexShrink,
+			boxSizing,
+			borderStyle,
 			borderRadius,
+			borderWidth,
 			position,
 			top,
 			bottom,
 			left,
 			right,
 			inset,
-			backgroundColor,
+			background,
 			color,
 			width,
 			zIndex,
@@ -101,10 +106,9 @@ export const Box: BoxComponent = forwardRef(
 		}: BoxProps<C, Props>,
 		ref?: PolymorphicRef<C>,
 	) => {
-		const component = as || "div";
-
+		const component: ElementType = as || "div";
 		const atomClasses = clsx(
-			resetStyles.base,
+			// resetStyles.base,
 			resetStyles.element[component as keyof typeof resetStyles.element],
 			sprinkles({
 				height,
@@ -129,14 +133,17 @@ export const Box: BoxComponent = forwardRef(
 				flexWrap,
 				flexGrow,
 				flexShrink,
+				boxSizing,
+				borderStyle,
 				borderRadius,
+				borderWidth,
 				position,
 				top,
 				bottom,
 				left,
 				right,
 				inset,
-				backgroundColor,
+				background,
 				color,
 				width,
 				zIndex,

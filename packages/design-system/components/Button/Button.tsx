@@ -1,69 +1,49 @@
-// import * as styles from './Button.css';
+import * as styles from "./Button.css";
 
-// import {
-//   type ButtonHTMLAttributes,
-//   type PropsWithChildren,
-//   type ReactNode,
-//   forwardRef,
-// } from 'react';
+import {
+	type ButtonHTMLAttributes,
+	type PropsWithChildren,
+	type ReactElement,
+	type ReactNode,
+	forwardRef,
+} from "react";
 
-// import { Box, type BoxProps } from '..';
-// import Link from 'next/link';
-// import type { PolymorphicRef } from '@/types/polymorhpic';
+import type Link from "next/link";
+import type { LinkProps } from "next/link";
+import { Box, type BoxProps } from "..";
 
-import { type } from "../index";
+interface Props
+	extends PropsWithChildren,
+		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix"> {
+	variant?: "primary" | "secondary" | "outline" | "ghost" | "rounded";
+	prefix?: ReactNode;
+	suffix?: ReactNode;
+	right?: ReactNode;
+}
 
-// interface Props
-//   extends PropsWithChildren,
-//     ButtonHTMLAttributes<HTMLButtonElement> {
-//   variant?: 'solid';
-//   text?: string;
-//   icon?: ReactNode;
-//   href?: string;
-// }
+type Linktype = typeof Link;
 
-// type ButtonProps = BoxProps<'button', Props>;
-// type ButtonComponent = (props: ButtonProps) => React.ReactNode | null;
+type ButtonProps = BoxProps<"button", Props>;
+type ButtonComponent = (props: ButtonProps) => React.ReactNode;
 
-// export const Button: ButtonComponent = forwardRef(
-//   (
-//     {
-//       href,
-//       variant = 'basic',
-//       icon,
-//       text,
-//       children,
-//       ref,
-//       ...restProps
-//     }: ButtonProps,
-//     // ref?: PolymorphicRef<'button'>,
-//   ) => {
-//     const buttonClass = styles.buttonStyle({ variant });
+export const Button: ButtonComponent = forwardRef(
+	({ variant = "primary", prefix, suffix, children, ...restProps }, ref?) => {
+		const buttonClass = styles.button({ variant });
 
-//     const content = (
-//       <>
-//         {children}
-//         {text}
-//         {icon && (
-//           <Box display="inline" paddingLeft="xsmall">
-//             {icon}
-//           </Box>
-//         )}
-//       </>
-//     );
-
-//     return href ? (
-//       <Link href={href} className={buttonClass}>
-//         {content}
-//       </Link>
-//     ) : (
-//       <Box as="button" className={buttonClass} ref={ref} {...restProps}>
-//         {content}
-//       </Box>
-//     );
-//   },
-// );
-
-export const Button = () => {
-	return <button type="button">hihi</button>;
-};
+		return (
+			<Box
+				as="button"
+				display="flex"
+				alignItems="center"
+				columnGap="1"
+				className={buttonClass}
+				ref={ref}
+				{...restProps}
+			>
+				{prefix}
+				{children}
+				{suffix}
+			</Box>
+		);
+	},
+);

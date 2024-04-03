@@ -1,39 +1,70 @@
 import { recipe } from "@vanilla-extract/recipes";
-import { sprinkles } from "styles/sprinkles.css";
+import { base } from "../../styles/reset.css";
+import { sprinkles } from "../../styles/sprinkles.css";
 
 export const button = recipe({
-	base: sprinkles({
-		// paddingY: {
-		//   mobile: 'medium',
-		//   tablet: 'large',
-		// },
-		// paddingX: {
-		//   mobile: 'large',
-		//   tablet: 'xlarge',
-		// },
-		// borderRadius: 'large',
-	}),
+	base: [
+		sprinkles({
+			paddingX: "2.5",
+			paddingY: "1.5",
+			borderColor: "primary",
+			borderWidth: "1px",
+			borderStyle: "solid",
+			color: "primary",
+		}),
+	],
 	variants: {
 		variant: {
-			basic: sprinkles({
-				backgroundColor: "transparent",
-				paddingY: "0",
-				paddingX: "0",
-				margin: "0",
+			primary: sprinkles({
+				background: {
+					base: "white",
+					hover: "primary200",
+				},
+				color: {
+					hover: "white",
+				},
 			}),
-			solid: sprinkles({
-				backgroundColor: "primary",
-				color: "white",
+			secondary: sprinkles({
+				background: {
+					base: "primary",
+					hover: "primary200",
+				},
+				color: {
+					base: "white",
+					hover: "white",
+				},
 			}),
-			// transparent: sprinkles({
-			// 	color: "gray-100",
-			// 	backgroundColor: "blue",
-			// }),
-			// "black solid": sprinkles({
-			// 	background: "black",
-			// 	color: "white",
-			// 	padding: "small",
-			// }),
+			outline: sprinkles({
+				borderColor: "gray-100",
+				background: {
+					base: "white",
+					hover: "primary200",
+				},
+				color: {
+					hover: "white",
+				},
+			}),
+			rounded: sprinkles({
+				borderRadius: "2xl",
+				background: {
+					base: "white",
+					hover: "primary200",
+				},
+				color: {
+					hover: "white",
+				},
+			}),
+			ghost: sprinkles({
+				border: "none",
+				fontWeight: "bold",
+				background: {
+					base: "transparent",
+					hover: "primary200",
+				},
+				color: {
+					hover: "white",
+				},
+			}),
 		},
 	},
 });

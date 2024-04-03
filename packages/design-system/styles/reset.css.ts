@@ -6,6 +6,10 @@ globalStyle("body", {
 	boxSizing: "border-box",
 });
 
+globalStyle("a", {
+	textDecoration: "none",
+});
+
 export const base = style({
 	margin: 0,
 	padding: 0,
@@ -27,9 +31,9 @@ const list = style({
 });
 
 const button = style({
-	background: "none",
 	cursor: "pointer",
-	border: "none",
+	outline: "none",
+	boxSizing: "border-box",
 });
 
 const quote = style({
