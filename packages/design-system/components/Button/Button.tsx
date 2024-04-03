@@ -3,13 +3,10 @@ import * as styles from "./Button.css";
 import {
 	type ButtonHTMLAttributes,
 	type PropsWithChildren,
-	type ReactElement,
 	type ReactNode,
 	forwardRef,
 } from "react";
 
-import type Link from "next/link";
-import type { LinkProps } from "next/link";
 import { Box, type BoxProps } from "..";
 
 interface Props
@@ -20,8 +17,6 @@ interface Props
 	suffix?: ReactNode;
 	right?: ReactNode;
 }
-
-type Linktype = typeof Link;
 
 type ButtonProps = BoxProps<"button", Props>;
 type ButtonComponent = (props: ButtonProps) => React.ReactNode;
