@@ -9,8 +9,9 @@ import {
 import { Box, type BoxProps } from "..";
 
 interface Props
-	extends PropsWithChildren,
-		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
+	extends PropsWithChildren<
+		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size">
+	> {
 	variant?: "primary" | "secondary" | "outline" | "ghost";
 	size?: "sm" | "md" | "lg";
 	rounded?: boolean;

@@ -10,8 +10,9 @@ import {
 import { Box, type BoxProps } from "..";
 
 interface Props
-	extends PropsWithChildren,
-		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix"> {
+	extends PropsWithChildren<
+		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix">
+	> {
 	variant?: "primary" | "secondary" | "outline" | "ghost";
 	size?: "sm" | "md" | "lg";
 	rounded?: boolean;
@@ -20,7 +21,7 @@ interface Props
 }
 
 type ButtonProps = BoxProps<"button", Props>;
-type ButtonComponent = (props: ButtonProps) => React.ReactNode;
+type ButtonComponent = (props: ButtonProps) => ReactNode;
 
 export const Button: ButtonComponent = forwardRef(
 	(

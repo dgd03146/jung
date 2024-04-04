@@ -43,7 +43,7 @@ type BoxComponent = <
 	Props = Record<string, unknown>,
 >(
 	props: BoxProps<C, Props>,
-) => React.ReactNode | null;
+) => React.ReactNode;
 
 export const Box: BoxComponent = forwardRef(
 	<C extends React.ElementType = "div", Props = Record<string, unknown>>(

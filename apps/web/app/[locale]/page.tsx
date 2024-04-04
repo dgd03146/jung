@@ -1,7 +1,8 @@
-import { Badge, Box, Button } from "@jung/design-system";
+import { Badge, Box, Button, List, ListItem } from "@jung/design-system";
 
 import ExampleClientComponent from "@/components/ExampleClientComponent";
 import LanguageChanger from "@/components/LanguageChanger";
+import PopularList from "@/components/PopularList";
 import TranslationProvider from "@/components/TranslationsProvider";
 import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
@@ -33,7 +34,6 @@ export default async function Home({ params: { locale } }: Params) {
 			<Box width="10" background="primary">
 				hihi
 			</Box>
-			<Button variant="primary">Primary Button</Button>
 			<Button variant="secondary">Secondary Button</Button>
 			<Button variant="outline">Outline Button</Button>
 			<Button rounded>Rounded Button</Button>
@@ -55,6 +55,7 @@ export default async function Home({ params: { locale } }: Params) {
 				<Button>Link</Button>
 			</Link>
 			<Badge rounded>Badge</Badge>
+			<PopularList />
 		</div>
 	);
 }
