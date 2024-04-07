@@ -21,7 +21,7 @@ interface Props
 }
 
 type ButtonProps = BoxProps<"button", Props>;
-type ButtonComponent = (props: ButtonProps) => ReactNode;
+export type ButtonComponent = (props: ButtonProps) => ReactNode;
 
 export const Button: ButtonComponent = forwardRef(
 	(
