@@ -73,6 +73,7 @@ export const Box: BoxComponent = forwardRef(
 			flexGrow,
 			flexShrink,
 			boxSizing,
+			borderColor,
 			borderStyle,
 			borderRadius,
 			borderWidth,
@@ -110,6 +111,7 @@ export const Box: BoxComponent = forwardRef(
 		const component: ElementType = as || "div";
 		const atomClasses = clsx(
 			// resetStyles.base,
+
 			resetStyles.element[component as keyof typeof resetStyles.element],
 			sprinkles({
 				height,
@@ -135,6 +137,7 @@ export const Box: BoxComponent = forwardRef(
 				flexGrow,
 				flexShrink,
 				boxSizing,
+				borderColor,
 				borderStyle,
 				borderRadius,
 				borderWidth,

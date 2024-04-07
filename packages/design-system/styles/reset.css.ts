@@ -25,13 +25,17 @@ const block = style({
 	display: "block",
 });
 
-const list = style({
+const ul = style({
 	padding: "0",
+	margin: "0",
+});
+
+const list = style({
 	listStyle: "none",
 });
 
 const button = style({
-	cursor: "pointer",
+	// cursor: "pointer",
 	outline: "none",
 	boxSizing: "border-box",
 });
@@ -85,7 +89,7 @@ export const element = {
 	section: block,
 	textarea: block,
 	li: list,
-	ul: list,
+	ul,
 	ol: list,
 	blockquote: quote,
 	q: quote,

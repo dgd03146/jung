@@ -1,5 +1,5 @@
 import {
-	type HTMLAttributes,
+	type LiHTMLAttributes,
 	type PropsWithChildren,
 	type ReactNode,
 	forwardRef,
@@ -7,13 +7,14 @@ import {
 
 import { Box, type BoxProps } from "..";
 
-interface Props<T> extends PropsWithChildren<HTMLAttributes<HTMLUListElement>> {
+interface Props<T>
+	extends PropsWithChildren<LiHTMLAttributes<HTMLUListElement>> {
 	items: Array<T>;
 	renderItem: (item: T) => ReactNode;
 }
 
 type ListProps<T> = BoxProps<"ul", Props<T>>;
-type ListComponent = <T>(props: ListProps<T>) => ReactNode;
+export type ListComponent = <T>(props: ListProps<T>) => ReactNode;
 
 export const List: ListComponent = forwardRef(
 	({ items, renderItem, ...restProps }, ref?) => {

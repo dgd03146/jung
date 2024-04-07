@@ -14,7 +14,7 @@ interface Props
 }
 
 type ListItemProps = BoxProps<"li", Props>;
-type ListItemComponent = (props: ListItemProps) => ReactNode;
+export type ListItemComponent = (props: ListItemProps) => ReactNode;
 
 export const ListItem: ListItemComponent = forwardRef(
 	({ prefix, suffix, children, ...restProps }, ref?) => {
