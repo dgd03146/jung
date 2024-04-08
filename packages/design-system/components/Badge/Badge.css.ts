@@ -1,7 +1,7 @@
 import { recipe } from "@vanilla-extract/recipes";
 import { sprinkles } from "../../styles/sprinkles.css";
 
-export const button = recipe({
+export const badge = recipe({
 	base: [
 		sprinkles({
 			borderColor: "primary",
@@ -41,6 +41,7 @@ export const button = recipe({
 					hover: "white",
 				},
 			}),
+
 			ghost: sprinkles({
 				border: "none",
 				fontWeight: "bold",
@@ -55,16 +56,13 @@ export const button = recipe({
 		},
 		size: {
 			sm: sprinkles({
-				paddingX: "2.5",
-				paddingY: "1.5",
+				padding: "1",
 			}),
 			md: sprinkles({
-				paddingX: "3",
-				paddingY: "2",
+				padding: "2",
 			}),
 			lg: sprinkles({
-				paddingX: "3.5",
-				paddingY: "2.5",
+				padding: "3",
 			}),
 		},
 		rounded: {

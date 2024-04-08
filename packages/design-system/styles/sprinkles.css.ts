@@ -3,10 +3,6 @@ import { createSprinkles, defineProperties } from "@vanilla-extract/sprinkles";
 import { breakpoints } from "../tokens";
 import { vars } from "./theme.css";
 
-export const makeMediaQuery = (breakPoint: string) => {
-	return { "@media": `screen and (min-width: ${breakPoint})` };
-};
-
 export const responsiveProperties = defineProperties({
 	conditions: {
 		sm: { "@media": `screen and (min-width: ${breakpoints.sm})` },
@@ -102,7 +98,7 @@ export const responsiveProperties = defineProperties({
 
 export const textProperties = defineProperties({
 	properties: {
-		fontWeights: vars.fontWeights,
+		fontWeight: vars.fontWeights,
 		fontFamily: vars.fontFamily,
 	},
 });
@@ -126,6 +122,8 @@ export const unresponsiveProperties = defineProperties({
 		flexBasis: {
 			...vars.contentWidth,
 		},
+		boxSizing: ["border-box", "content-box"],
+		borderStyle: ["solid", "dotted", "dashed", "none", "hidden"],
 		border: ["none"],
 		isolation: ["isolate"],
 		pointerEvents: ["none"],
@@ -151,6 +149,7 @@ export const unresponsiveProperties = defineProperties({
 			inOut: "cubic-bezier(0.42, 0, 0.58, 1)",
 		},
 		visibility: ["hidden", "visible"],
+		caretColor: ["transparent"],
 		whiteSpace: [
 			"normal",
 			"nowrap",
@@ -207,14 +206,30 @@ const selectorProperties = defineProperties({
 	},
 	defaultCondition: "base",
 	properties: {
-		backgroundColor: vars.palette,
+		background: vars.palette,
 		borderColor: vars.palette,
 		color: vars.palette,
 		outlineColor: vars.palette,
 	},
 });
 
-export const sprinkles = createSprinkles(
+type ResponsivePropertiesType = typeof responsiveProperties;
+type TextPropertiesType = typeof textProperties;
+type UnresponsivePropertiesType = typeof unresponsiveProperties;
+type MotionSafePropertiesType = typeof motionSafeProperties;
+type SelectorPropertiesType = typeof selectorProperties;
+
+type SprinklesProperties = [
+	ResponsivePropertiesType,
+	TextPropertiesType,
+	UnresponsivePropertiesType,
+	MotionSafePropertiesType,
+	SelectorPropertiesType,
+];
+
+type SprinklesFnType = ReturnType<typeof createSprinkles<SprinklesProperties>>;
+
+export const sprinkles: SprinklesFnType = createSprinkles(
 	textProperties,
 	responsiveProperties,
 	unresponsiveProperties,
