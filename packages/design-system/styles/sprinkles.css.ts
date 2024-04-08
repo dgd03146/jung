@@ -142,7 +142,6 @@ export const unresponsiveProperties = defineProperties({
 			shadow: "box-shadow",
 			transform: "transform",
 		},
-
 		transitionTimingFunction: {
 			linear: "linear",
 			in: "cubic-bezier(0.4, 0, 1, 1)",
