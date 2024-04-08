@@ -142,6 +142,7 @@ export const unresponsiveProperties = defineProperties({
 			shadow: "box-shadow",
 			transform: "transform",
 		},
+
 		transitionTimingFunction: {
 			linear: "linear",
 			in: "cubic-bezier(0.4, 0, 1, 1)",
@@ -149,6 +150,7 @@ export const unresponsiveProperties = defineProperties({
 			inOut: "cubic-bezier(0.42, 0, 0.58, 1)",
 		},
 		visibility: ["hidden", "visible"],
+		caretColor: ["transparent"],
 		whiteSpace: [
 			"normal",
 			"nowrap",
@@ -227,13 +229,6 @@ type SprinklesProperties = [
 ];
 
 type SprinklesFnType = ReturnType<typeof createSprinkles<SprinklesProperties>>;
-
-// // Define the combined interface for sprinkles properties
-// type TSprinkles = ResponsivePropertiesType &
-// 	TextPropertiesType &
-// 	UnresponsivePropertiesType &
-// 	MotionSafePropertiesType &
-// 	SelectorPropertiesType;
 
 export const sprinkles: SprinklesFnType = createSprinkles(
 	textProperties,
