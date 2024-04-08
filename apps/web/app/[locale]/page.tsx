@@ -1,8 +1,9 @@
-import { Badge, Box, Button, List, ListItem } from "@jung/design-system";
+import { Badge, Button } from "@jung/design-system";
 
 import ExampleClientComponent from "@/components/ExampleClientComponent";
 import LanguageChanger from "@/components/LanguageChanger";
 import PopularList from "@/components/PopularList";
+import SelectComponent from "@/components/SelectComponent";
 import TranslationProvider from "@/components/TranslationsProvider";
 import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
@@ -30,10 +31,7 @@ export default async function Home({ params: { locale } }: Params) {
 		<div>
 			<h1>Home</h1>
 			<Link href="/about">About</Link>
-			<Button>div??</Button>
-			<Box width="10" background="primary">
-				hihi
-			</Box>
+			<h1>Button들 모음</h1>
 			<Button variant="secondary">Secondary Button</Button>
 			<Button variant="outline">Outline Button</Button>
 			<Button rounded>Rounded Button</Button>
@@ -42,7 +40,12 @@ export default async function Home({ params: { locale } }: Params) {
 			<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href="hihi">
 				Button with Icon
 			</Button>
-			<h1>{t("header")}</h1>
+			<h2>Link with Button</h2>
+			<Link href="hihi">
+				<Button>Link</Button>
+			</Link>
+			<h1>i18n 적용</h1>
+			<h3>{t("header")}</h3>
 			<TranslationProvider
 				locale={locale}
 				resources={resources}
@@ -51,11 +54,12 @@ export default async function Home({ params: { locale } }: Params) {
 				<ExampleClientComponent />
 				<LanguageChanger />
 			</TranslationProvider>
-			<Link href="hihi">
-				<Button>Link</Button>
-			</Link>
+			<h1>Badge 컴포넌트</h1>
 			<Badge rounded>Badge</Badge>
+			<h1>List 컴포넌트</h1>
 			<PopularList />
+			<h1>Select 컴포넌트</h1>
+			<SelectComponent />
 		</div>
 	);
 }

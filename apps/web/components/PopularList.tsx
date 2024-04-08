@@ -22,16 +22,7 @@ const PopularList = () => {
 	return (
 		<List
 			items={ListExample}
-			renderItem={(item) => (
-				// <ListItem
-				//   key={item.id}
-				//   suffix={<Button variant="primary">Primary Button</Button>}
-				// >
-				//   <div>{item.firstName}</div>
-				//   <li>{item.lastName}</li>
-				// </ListItem>
-				<Item key={item.id} item={item} />
-			)}
+			renderItem={(item) => <Item key={item.id} item={item} />}
 		/>
 	);
 };
