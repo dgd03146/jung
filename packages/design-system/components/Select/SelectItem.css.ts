@@ -2,13 +2,14 @@ import { createVar, style } from "@vanilla-extract/css";
 
 import { sprinkles } from "../../styles/sprinkles.css";
 
-export const selectedColor = createVar();
+// export const selectedColor = createVar();
 
 export const li = style([
 	sprinkles({
 		background: {
-			hover: "primary200",
-			// focus: "primary",
+			base: "primary100",
+			hover: "primary",
+			focus: "primary",
 		},
 
 		outlineColor: {
@@ -16,7 +17,7 @@ export const li = style([
 		},
 	}),
 	{
-		background: selectedColor,
+		// background: selectedColor,
 
 		outlineStyle: "1px",
 	},
