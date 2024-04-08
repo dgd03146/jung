@@ -104,6 +104,8 @@ export const Box: BoxComponent = forwardRef(
 			fontFamily,
 			columnGap,
 			rowGap,
+			caretColor,
+			outlineColor,
 			...restProps
 		}: BoxProps<C, Props>,
 		ref?: PolymorphicRef<C>,
@@ -166,6 +168,8 @@ export const Box: BoxComponent = forwardRef(
 				fontFamily,
 				columnGap,
 				rowGap,
+				caretColor,
+				outlineColor,
 			}),
 		);
 

@@ -1,8 +1,11 @@
 import {
 	type HTMLAttributes,
+	type KeyboardEvent,
 	type PropsWithChildren,
 	type ReactNode,
 	forwardRef,
+	useEffect,
+	useRef,
 } from "react";
 import { Box, List } from "..";
 
@@ -20,9 +23,8 @@ export type ListComponent = (props: ListProps) => ReactNode;
 export const SelectMenu: ListComponent = forwardRef(
 	({ children, ...restProps }, ref?) => {
 		// value가 있으면 value 없으면 placeholder
-		const { open } = useSelectContext();
-
-		const focusedOption = "option2";
+		const { open, onValueChange, setSelectedOption, selectedOption, setOpen } =
+			useSelectContext();
 
 		return (
 			<Box
@@ -32,11 +34,11 @@ export const SelectMenu: ListComponent = forwardRef(
 				aria-labelledby="label"
 				hidden={!open}
 				// FIXME: 나주엥 aria-activedescendant 바꿔야함
-				aria-activedescendant={focusedOption}
+				aria-activedescendant={selectedOption?.label}
 				background="gray-100"
 				width="fit"
 				// minWidth="40"
-				tabIndex={0}
+
 				ref={ref}
 				{...restProps}
 			>

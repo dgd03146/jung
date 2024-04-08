@@ -5,7 +5,6 @@ import {
 	type ReactNode,
 	type SelectHTMLAttributes,
 	forwardRef,
-	useState,
 } from "react";
 import { Box, type BoxProps } from "..";
 import { SelectItem } from "./SelectItem";
@@ -14,11 +13,10 @@ import { SelectMenu } from "./SelectMenu";
 import SelectProvider from "./SelectProvider";
 import { SelectTrigger } from "./SelectTrigger";
 
-// FIXME: Provider랑 같이 중복으로 사용됨
-// TODO: options 제네릭으로 해야 여러가지 데이터 받을 수 있음?
 // FIXME: Provider 굳이 div태그로 안 감싸도 괜찮은듯?
 
 type Props = {
+	placeHolder?: string;
 	onValueChange?: (value: string) => void;
 	defaultValue?: string;
 };
@@ -32,16 +30,9 @@ type SelectComponent = (props: SelectPropsWithBox) => ReactNode;
 
 const Select: SelectComponent = forwardRef(
 	({ children, defaultValue, onValueChange, ...restProps }, ref?) => {
-		// TODO: value
-		const [value, setValue] = useState("");
-		const [open, setOpen] = useState(false);
 		const valueProps = {
-			onValueChange,
-			open,
-			setOpen,
 			defaultValue,
-			value,
-			setValue,
+			onValueChange,
 		};
 
 		return (
