@@ -1,3 +1,5 @@
+export { Badge } from "./Badge/Badge";
+
 export { Select } from "./Select/Select";
 
 export { ListItem } from "./List/ListItem";
@@ -11,4 +13,3 @@ export { Box } from "./Box/Box";
 
 export { button } from "./Button/Button.css";
 export { Button } from "./Button/Button";
-export { Badge } from "./Badge/Badge";

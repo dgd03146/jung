@@ -46,27 +46,22 @@ export const SelectItem: ListComponent = forwardRef(
 			isDisabled: !!disabled,
 		};
 
-		// const selectedOptionValue = {
-		//   value: selectedOption.value,
-		// };
-
-		// defaultValue로 준 값이랑 value가 같으면 선택된 아이템임
+		// defaultValue로 준 값이랑 value가 같으면 default로 선택된 아이템
 		const selectedOptionItem = defaultValue === value;
-		console.log("🚀 ~ value:", value);
-		console.log("🚀 ~ defaultValue:", defaultValue);
 
 		// options 배열에 선택된 optionValue를 넣어준다.
 
+		// TODO: defaultValue 있을때 값 지정
 		// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 		useEffect(() => {
 			setOptions((prev) => [...prev, optionValue]);
 			if (selectedOptionItem) {
-				console.log("실행됨??", value);
 				// 초기에 지정한 옵션이 있으면 그 아이템에 포커스를 준다!.
 				optionRef.current?.focus();
 
 				// 초기 지정한 default 옵션이 있으면 그 옵션을 선택된 옵션으로 지정
 
+				// setSelectedOption(optionValue);
 				// if (onValueChange) {
 				//   onValueChange(defaultValue);
 				// }
@@ -81,60 +76,60 @@ export const SelectItem: ListComponent = forwardRef(
 			}
 		}, [open]);
 
-		const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
-			switch (e.key) {
-				case "ArrowUp":
-					// ArrowUp 키에 대한 처리
-					console.log("arrow up");
-					break;
-				case "ArrowDown":
-					// ArrowDown 키에 대한 처리
-					console.log("arrow DOWN");
-					break;
-				case "Enter":
-					console.log("enter");
-					if (onValueChange) {
-						setSelectedOption(optionValue);
-						onValueChange(optionValue.value);
-					}
-					setOpen(false);
+		// const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+		// 	switch (e.key) {
+		// 		case "ArrowUp":
+		// 			// ArrowUp 키에 대한 처리
+		// 			console.log("arrow up");
+		// 			break;
+		// 		case "ArrowDown":
+		// 			// ArrowDown 키에 대한 처리
+		// 			console.log("arrow DOWN");
+		// 			break;
+		// 		case "Enter":
+		// 			console.log("enter");
+		// 			if (onValueChange) {
+		// 				setSelectedOption(optionValue);
+		// 				onValueChange(optionValue.value);
+		// 			}
+		// 			setOpen(false);
 
-					break;
-				case "Escape":
-					setOpen(false);
-					break;
-				default:
-					// 다른 키에 대한 처리
-					break;
-			}
-		};
+		// 			break;
+		// 		case "Escape":
+		// 			setOpen(false);
+		// 			break;
+		// 		default:
+		// 			// 다른 키에 대한 처리
+		// 			break;
+		// 	}
+		// };
 
 		return (
 			<Box
 				as="li"
 				role="option"
-				display="flex"
-				justifyContent="space-between"
-				columnGap="1"
 				aria-selected={value === selectedOption?.value}
 				data-disabled={disabled}
 				tabIndex={0}
+				display="flex"
+				justifyContent="space-between"
+				// columnGap="1"
 				color="white"
 				paddingX="2.5"
 				paddingY="1.5"
 				fontSize="sm"
 				minWidth="40"
+				boxSizing="border-box"
 				caretColor="transparent"
 				cursor="pointer"
 				id={id}
 				ref={optionRef}
 				className={styles.li}
-				style={assignInlineVars({
-					[styles.selectedColor]:
-						value === selectedOption?.value
-							? palette.primary
-							: palette.primary100,
-				})}
+				background={value === selectedOption?.value && "primary"}
+				// style={assignInlineVars({
+				//   [styles.selectedColor]:
+				//     value === selectedOption?.value && palette.primary,
+				// })}
 				{...restProps}
 				// onKeyDown={(e) => {
 				//   e.preventDefault();
@@ -163,7 +158,6 @@ export const SelectItem: ListComponent = forwardRef(
 						});
 						setOpen(false);
 
-						console.log("선택하는 value", value);
 						onValueChange(value);
 					}
 				}}

@@ -21,6 +21,8 @@ export const SelectTrigger: ButtonComponent = forwardRef(
 		//   });
 		// }, []);
 
+		console.log("🚀 ~ selectedOption.label:", selectedOption.label);
+
 		return (
 			<Button
 				role="button"
@@ -28,14 +30,17 @@ export const SelectTrigger: ButtonComponent = forwardRef(
 				aria-expanded={open}
 				aria-haspopup="listbox"
 				aria-labelledby="label"
-				display="flex"
 				disabled={disabled}
 				color={disabled ? "primary100" : "primary"}
 				cursor={disabled ? "default" : "pointer"}
+				display="flex"
 				justifyContent="space-between"
-				columnGap="8"
+				// columnGap="8"
+				size="sm"
 				fontSize="sm"
+				minWidth="40"
 				whiteSpace="nowrap"
+				caretColor="transparent"
 				ref={ref}
 				{...restProps}
 				suffix={<SelectorIcon />}
@@ -47,6 +52,7 @@ export const SelectTrigger: ButtonComponent = forwardRef(
 				}}
 			>
 				{/* defaultValue가 만약에 있으면???... defaultValue의 label을 보여줘야하잖아?? */}
+
 				<label>{selectedOption.label || placeholder}</label>
 				{children}
 			</Button>
