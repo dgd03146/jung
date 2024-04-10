@@ -8,9 +8,11 @@ globalStyle("body", {
 
 globalStyle("a", {
 	textDecoration: "none",
+	outline: "none",
+	color: "none",
 });
 
-export const base = style({
+globalStyle("*, *::before, *::after", {
 	margin: 0,
 	padding: 0,
 	border: 0,
@@ -35,7 +37,7 @@ const list = style({
 });
 
 const button = style({
-	// cursor: "pointer",
+	cursor: "pointer",
 	outline: "none",
 	boxSizing: "border-box",
 });

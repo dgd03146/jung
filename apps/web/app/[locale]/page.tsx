@@ -5,8 +5,8 @@ import LanguageChanger from "@/components/LanguageChanger";
 import PopularList from "@/components/PopularList";
 import SelectComponent from "@/components/SelectComponent";
 import TranslationProvider from "@/components/TranslationsProvider";
+import { SearchIcon } from "@jung/design-system/icons";
 import Link from "next/link";
-import { CiSearch } from "react-icons/ci";
 import initTranslations from "../i18n";
 
 type Params = {
@@ -17,20 +17,12 @@ type Params = {
 
 const i18nNamespaces = ["home"];
 
-const SearchIcon = () => {
-	return (
-		<div>
-			<CiSearch />
-		</div>
-	);
-};
-
 export default async function Home({ params: { locale } }: Params) {
 	const { t, resources } = await initTranslations(locale, i18nNamespaces);
 	return (
 		<div>
 			<h1>Home</h1>
-			<Link href="/about">About</Link>
+
 			<h1>Button들 모음</h1>
 			<Button variant="secondary">Secondary Button</Button>
 			<Button variant="outline">Outline Button</Button>
@@ -40,8 +32,8 @@ export default async function Home({ params: { locale } }: Params) {
 			<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href="hihi">
 				Button with Icon
 			</Button>
-			<h2>Link with Button</h2>
-			<Link href="hihi">
+			<h1>Link with Button</h1>
+			<Link href="about">
 				<Button>Link</Button>
 			</Link>
 			<h1>i18n 적용</h1>

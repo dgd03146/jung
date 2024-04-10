@@ -1,7 +1,7 @@
 import type { ButtonComponent } from "components/Button/Button";
 import { forwardRef, useEffect } from "react";
 import { type BoxProps, Button } from "..";
-import { SelectorIcon } from "../Icons/SelectorIcon";
+import { SelectorIcon } from "../../icons";
 import { useSelectContext } from "./SelectProvider";
 
 export const SelectTrigger: ButtonComponent = forwardRef(
