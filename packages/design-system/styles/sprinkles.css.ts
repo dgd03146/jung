@@ -128,6 +128,7 @@ export const unresponsiveProperties = defineProperties({
 		isolation: ["isolate"],
 		pointerEvents: ["none"],
 		objectFit: ["contain", "cover"],
+		outlineWidth: vars.border.width,
 		borderRadius: vars.border.radius,
 		borderWidth: vars.border.width,
 		cursor: ["default", "pointer", "not-allowed"],
@@ -203,6 +204,7 @@ const selectorProperties = defineProperties({
 		active: { selector: "&:active" },
 		focus: { selector: "&:focus" },
 		hover: { selector: "&:hover" },
+		placeholder: { selector: "&::placeholder" },
 	},
 	defaultCondition: "base",
 	properties: {

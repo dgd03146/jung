@@ -1,4 +1,4 @@
-import { Badge, Button } from "@jung/design-system";
+import { Badge, Button, Input, Textarea } from "@jung/design-system";
 
 import ExampleClientComponent from "@/components/ExampleClientComponent";
 import LanguageChanger from "@/components/LanguageChanger";
@@ -52,6 +52,12 @@ export default async function Home({ params: { locale } }: Params) {
 			<PopularList />
 			<h1>Select 컴포넌트</h1>
 			<SelectComponent />
+			<h1>Input 컴포넌트</h1>
+			<Input placeholder="primary" variant="primary" rounded />
+			<Input placeholder="outline" variant="outline" />
+			<Input placeholder="ghost" variant="ghost" />
+			<h1>Textarea 컴포넌트</h1>
+			<Textarea />
 		</div>
 	);
 }
