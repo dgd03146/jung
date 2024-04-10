@@ -11,10 +11,10 @@ import {
 	useRef,
 } from "react";
 import { CheckIcon } from "../../icons";
-import { palette } from "../../tokens/palette";
+
 import * as styles from "./SelectItem.css";
 import { useSelectContext } from "./SelectProvider";
-import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
+
 import { useSelect } from "./hooks/useSelect";
 
 interface Props extends PropsWithChildren<LiHTMLAttributes<HTMLLIElement>> {
@@ -52,7 +52,7 @@ export const SelectItem: ListComponent = forwardRef(
 		// options 배열에 선택된 optionValue를 넣어준다.
 
 		// TODO: defaultValue 있을때 값 지정
-		// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+
 		useEffect(() => {
 			setOptions((prev) => [...prev, optionValue]);
 			if (selectedOptionItem) {
@@ -68,7 +68,6 @@ export const SelectItem: ListComponent = forwardRef(
 			}
 		}, []);
 
-		// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 		useEffect(() => {
 			if (selectedOption.value === value) {
 				optionRef.current?.focus();

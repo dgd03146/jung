@@ -1,0 +1,17 @@
+{
+	"overrides": [
+		{
+			"include": ["./packages/design-system/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noArrayIndexKey": "off"
+					},
+					"correctness": {
+						"useExhaustiveDependencies": "off"
+					}
+				}
+			}
+		}
+	]
+}
