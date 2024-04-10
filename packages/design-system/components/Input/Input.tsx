@@ -12,17 +12,9 @@ type InputProps = BoxProps<"input", Props>;
 type InputComponent = (props: InputProps) => ReactNode;
 
 export const Input: InputComponent = forwardRef(
-	({ className, variant, size, rounded, type, ...restProps }, ref?) => {
+	({ className, variant, size, rounded, ...restProps }, ref?) => {
 		const inputStyle = styles.input({ variant, size, rounded });
 
-		return (
-			<Box
-				as="input"
-				className={inputStyle}
-				type={type}
-				ref={ref}
-				{...restProps}
-			/>
-		);
+		return <Box as="input" className={inputStyle} ref={ref} {...restProps} />;
 	},
 );
