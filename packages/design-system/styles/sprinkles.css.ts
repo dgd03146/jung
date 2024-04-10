@@ -1,4 +1,8 @@
-import { createSprinkles, defineProperties } from "@vanilla-extract/sprinkles";
+import {
+	createMapValueFn,
+	createSprinkles,
+	defineProperties,
+} from "@vanilla-extract/sprinkles";
 
 import { breakpoints } from "../tokens";
 import { vars } from "./theme.css";
@@ -214,6 +218,8 @@ const selectorProperties = defineProperties({
 		outlineColor: vars.palette,
 	},
 });
+
+export const mapResponsiveValue = createMapValueFn(responsiveProperties);
 
 type ResponsivePropertiesType = typeof responsiveProperties;
 type TextPropertiesType = typeof textProperties;
