@@ -1,15 +1,12 @@
-import {
-	mapResponsiveValue,
-	responsiveProperties,
-} from "@/styles/sprinkles.css";
-import type { space } from "@/tokens/space";
-import { Children, type ReactNode, forwardRef } from "react";
-import { Box, type BoxProps } from "..";
+import { mapResponsiveValue } from '@/styles/sprinkles.css';
+import type { space } from '@/tokens/space';
+import { Children, type ReactNode, forwardRef } from 'react';
+import { Box, type BoxProps } from '..';
 
 const alignToFlexAlign = {
-	left: "flex-start",
-	center: "center",
-	right: "flex-end",
+	left: 'flex-start',
+	center: 'center',
+	right: 'flex-end',
 } as const;
 
 type Props = {
@@ -18,7 +15,7 @@ type Props = {
 	align: keyof typeof alignToFlexAlign;
 };
 
-type StackProps = BoxProps<"div", Props>;
+type StackProps = BoxProps<'div', Props>;
 
 type StackComponent = (props: StackProps) => React.ReactNode;
 
@@ -31,8 +28,8 @@ export const Stack: StackComponent = forwardRef(
 
 		return (
 			<Box
-				display="flex"
-				flexDirection="column"
+				display='flex'
+				flexDirection='column'
 				alignItems={alignItems}
 				paddingBottom={space}
 				ref={ref}

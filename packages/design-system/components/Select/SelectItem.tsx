@@ -1,21 +1,19 @@
-import { assignInlineVars } from "@vanilla-extract/dynamic";
-import { Box, type BoxProps, ListItem, type ListItemComponent } from "..";
+import { Box, type BoxProps } from '..';
 
 import {
-	type KeyboardEvent,
 	type LiHTMLAttributes,
 	type PropsWithChildren,
 	type ReactNode,
 	forwardRef,
 	useEffect,
 	useRef,
-} from "react";
-import { CheckIcon } from "../../icons";
+} from 'react';
+import { CheckIcon } from '../../icons';
 
-import * as styles from "./SelectItem.css";
-import { useSelectContext } from "./SelectProvider";
+import * as styles from './SelectItem.css';
+import { useSelectContext } from './SelectProvider';
 
-import { useSelect } from "./hooks/useSelect";
+import { useSelect } from './hooks/useSelect';
 
 interface Props extends PropsWithChildren<LiHTMLAttributes<HTMLLIElement>> {
 	value: string;
@@ -23,7 +21,7 @@ interface Props extends PropsWithChildren<LiHTMLAttributes<HTMLLIElement>> {
 
 // FIXME: 어떻게 List 컴포넌트를 활용할 수 있을까?
 
-type ListProps = BoxProps<"li", Props>;
+type ListProps = BoxProps<'li', Props>;
 export type ListComponent = (props: ListProps) => ReactNode;
 
 export const SelectItem: ListComponent = forwardRef(
@@ -105,26 +103,26 @@ export const SelectItem: ListComponent = forwardRef(
 
 		return (
 			<Box
-				as="li"
-				role="option"
+				as='li'
+				role='option'
 				aria-selected={value === selectedOption?.value}
 				data-disabled={disabled}
 				tabIndex={0}
-				display="flex"
-				justifyContent="space-between"
+				display='flex'
+				justifyContent='space-between'
 				// columnGap="1"
-				color="white"
-				paddingX="2.5"
-				paddingY="1.5"
-				fontSize="sm"
-				minWidth="40"
-				boxSizing="border-box"
-				caretColor="transparent"
-				cursor="pointer"
+				color='white'
+				paddingX='2.5'
+				paddingY='1.5'
+				fontSize='sm'
+				minWidth='40'
+				boxSizing='border-box'
+				caretColor='transparent'
+				cursor='pointer'
 				id={id}
 				ref={optionRef}
 				className={styles.li}
-				background={value === selectedOption?.value && "primary"}
+				background={value === selectedOption?.value && 'primary'}
 				// style={assignInlineVars({
 				//   [styles.selectedColor]:
 				//     value === selectedOption?.value && palette.primary,
@@ -137,12 +135,12 @@ export const SelectItem: ListComponent = forwardRef(
 				// }}
 				onFocus={() => {
 					if (optionRef.current) {
-						optionRef.current.dataset.focus = "focus";
+						optionRef.current.dataset.focus = 'focus';
 					}
 				}}
 				onBlur={() => {
 					if (optionRef.current) {
-						optionRef.current.dataset.focus = "";
+						optionRef.current.dataset.focus = '';
 					}
 				}}
 				onMouseEnter={() => {
