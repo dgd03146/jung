@@ -10,8 +10,8 @@ import {
 	useEffect,
 	useRef,
 } from "react";
+import { CheckIcon } from "../../icons";
 import { palette } from "../../tokens/palette";
-import { CheckIcon } from "../Icons/CheckIcon";
 import * as styles from "./SelectItem.css";
 import { useSelectContext } from "./SelectProvider";
 import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";

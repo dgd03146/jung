@@ -49,8 +49,8 @@ export const Box: BoxComponent = forwardRef(
 	<C extends React.ElementType = "div", Props = Record<string, unknown>>(
 		{
 			as,
-			height,
 			className,
+			height,
 			padding,
 			paddingX,
 			paddingY,
@@ -112,9 +112,8 @@ export const Box: BoxComponent = forwardRef(
 	) => {
 		const component: ElementType = as || "div";
 		const atomClasses = clsx(
-			// resetStyles.base,
-
 			resetStyles.element[component as keyof typeof resetStyles.element],
+			className,
 			sprinkles({
 				height,
 				padding,
@@ -174,9 +173,11 @@ export const Box: BoxComponent = forwardRef(
 		);
 
 		return createElement(component, {
-			className: clsx(atomClasses, className),
+			className: atomClasses,
 			ref,
 			...restProps,
 		});
 	},
 );
+
+//  resetStyles.element[component as keyof typeof resetStyles.element],
