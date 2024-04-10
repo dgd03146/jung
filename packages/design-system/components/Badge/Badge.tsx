@@ -1,17 +1,10 @@
 import { badge } from "./Badge.css";
 
-import {
-	type ButtonHTMLAttributes,
-	type PropsWithChildren,
-	forwardRef,
-} from "react";
+import { type HTMLAttributes, type PropsWithChildren, forwardRef } from "react";
 
 import { Box, type BoxProps } from "..";
 
-interface Props
-	extends PropsWithChildren<
-		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size">
-	> {
+interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
 	variant?: "primary" | "secondary" | "outline" | "ghost";
 	size?: "sm" | "md" | "lg";
 	rounded?: boolean;
