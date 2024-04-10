@@ -1,3 +1,5 @@
+export { Input } from "./Input/Input";
+
 export { Badge } from "./Badge/Badge";
 
 export { Select } from "./Select/Select";
