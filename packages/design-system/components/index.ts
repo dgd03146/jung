@@ -18,3 +18,4 @@ export { Box } from "./Box/Box";
 export { button } from "./Button/Button.css";
 
 export { Button } from "./Button/Button";
+export { Flex } from "./Flex/Flex";

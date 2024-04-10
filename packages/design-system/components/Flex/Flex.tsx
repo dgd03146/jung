@@ -18,7 +18,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 type FlexProps = BoxProps<"div", Props>;
 type FlexComponent = (props: FlexProps) => React.ReactNode;
 
-export const Badge: FlexComponent = forwardRef(
+export const Flex: FlexComponent = forwardRef(
 	({ align, justify, direction, grow, wrap, shrink, ...restProps }, ref?) => {
 		return (
 			<Box
