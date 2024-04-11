@@ -1,32 +1,32 @@
-import { type Sprinkles, sprinkles } from "../../styles/sprinkles.css";
+import { type Sprinkles, sprinkles } from '../../styles/sprinkles.css';
 
 import {
 	type AllHTMLAttributes,
 	type ElementType,
 	createElement,
 	forwardRef,
-} from "react";
+} from 'react';
 
-import clsx from "clsx";
-import * as resetStyles from "../../styles/reset.css";
+import clsx from 'clsx';
+import * as resetStyles from '../../styles/reset.css';
 import type {
 	PolymorphicComponentPropWithRef,
 	PolymorphicRef,
-} from "../../types/polymorhpic";
+} from '../../types/polymorhpic';
 
 export interface PropstoOmit
 	extends Omit<
 			AllHTMLAttributes<HTMLElement>,
-			| "className"
-			| "content"
-			| "height"
-			| "translate"
-			| "color"
-			| "width"
-			| "cursor"
-			| "prefix"
-			| "suffix"
-			| "size"
+			| 'className'
+			| 'content'
+			| 'height'
+			| 'translate'
+			| 'color'
+			| 'width'
+			| 'cursor'
+			| 'prefix'
+			| 'suffix'
+			| 'size'
 		>,
 		Sprinkles {
 	component?: ElementType;
@@ -39,14 +39,14 @@ export type BoxProps<
 > = PolymorphicComponentPropWithRef<C, PropstoOmit & Props>;
 
 type BoxComponent = <
-	C extends React.ElementType = "div",
+	C extends React.ElementType = 'div',
 	Props = Record<string, unknown>,
 >(
 	props: BoxProps<C, Props>,
 ) => React.ReactNode;
 
 export const Box: BoxComponent = forwardRef(
-	<C extends React.ElementType = "div", Props = Record<string, unknown>>(
+	<C extends React.ElementType = 'div', Props = Record<string, unknown>>(
 		{
 			as,
 			className,
@@ -97,13 +97,28 @@ export const Box: BoxComponent = forwardRef(
 			maxHeight,
 			transition,
 			overflow,
+			// grid
 			gridTemplateColumns,
 			gridColumnGap,
+			girdRow,
+			gridColumn,
+			gridRowGap,
+			gridAutoColumns,
+			gridAutoRows,
+			gridTemplateRows,
+			gap,
+			columnGap,
+			rowGap,
+			gridColumnStart,
+			gridColumnEnd,
+			gridRowStart,
+			gridRowEnd,
+
+			// font
 			fontSize,
 			fontWeight,
 			fontFamily,
-			columnGap,
-			rowGap,
+
 			caretColor,
 			outlineColor,
 			outlineWidth,
@@ -111,7 +126,7 @@ export const Box: BoxComponent = forwardRef(
 		}: BoxProps<C, Props>,
 		ref?: PolymorphicRef<C>,
 	) => {
-		const component: ElementType = as || "div";
+		const component: ElementType = as || 'div';
 		const atomClasses = clsx(
 			resetStyles.element[component as keyof typeof resetStyles.element],
 			className,
@@ -161,8 +176,20 @@ export const Box: BoxComponent = forwardRef(
 				minWidth,
 				transition,
 				overflow,
+				// grid
 				gridTemplateColumns,
 				gridColumnGap,
+				girdRow,
+				gridColumn,
+				gridRowGap,
+				gridAutoColumns,
+				gridAutoRows,
+				gridTemplateRows,
+				gridColumnStart,
+				gridColumnEnd,
+				gridRowStart,
+				gridRowEnd,
+				// font
 				fontSize,
 				fontWeight,
 				fontFamily,
@@ -181,5 +208,3 @@ export const Box: BoxComponent = forwardRef(
 		});
 	},
 );
-
-//  resetStyles.element[component as keyof typeof resetStyles.element],
