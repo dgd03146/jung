@@ -1,7 +1,7 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import type { responsiveProperties } from '@/styles/sprinkles.css';
 import { Box, type BoxProps } from '..';
+import type { responsiveProperties } from '../../styles/sprinkles.css';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
 	rowGap?: keyof typeof responsiveProperties.styles.gridRowGap.values;

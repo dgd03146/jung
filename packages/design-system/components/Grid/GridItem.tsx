@@ -1,6 +1,6 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import type { grid } from '@/tokens/index';
+import type { grid } from '@/tokens';
 import { Box, type BoxProps } from '..';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {

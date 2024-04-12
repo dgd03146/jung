@@ -12,7 +12,7 @@ export { button } from './Button/Button.css';
 export { Button } from './Button/Button';
 export { Flex } from './Flex/Flex';
 export { Stack } from './Stack/Stack';
-
+export { Card } from './Card/Card';
 export type { ListItemComponent } from './List/ListItem';
 export type { ListComponent } from './List/List';
 export type { BoxProps } from './Box/Box';
