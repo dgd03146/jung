@@ -4,7 +4,7 @@ import {
 	defineProperties,
 } from '@vanilla-extract/sprinkles';
 
-import { breakpoints, grid } from '@/tokens/index';
+import { breakpoints, grid } from '../tokens';
 import { vars } from './theme.css';
 
 export const responsiveProperties = defineProperties({

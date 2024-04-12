@@ -4,7 +4,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": ["./styles/*"],
+      "@/tokens": ["./tokens/index.ts"],
       "@/tokens/*": ["./tokens/*"]
     }
   },

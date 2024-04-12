@@ -1,7 +1,7 @@
-import { mapResponsiveValue } from '@/styles/sprinkles.css';
 import type { space } from '@/tokens/space';
 import { Children, type ReactNode, forwardRef } from 'react';
 import { Box, type BoxProps } from '..';
+import { mapResponsiveValue } from '../../styles/sprinkles.css';
 
 const alignToFlexAlign = {
 	left: 'flex-start',

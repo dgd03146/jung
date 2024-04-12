@@ -1,8 +1,8 @@
-import type { ButtonComponent } from "components/Button/Button";
-import { forwardRef, useEffect } from "react";
-import { type BoxProps, Button } from "..";
-import { SelectorIcon } from "../../icons";
-import { useSelectContext } from "./SelectProvider";
+import type { ButtonComponent } from 'components/Button/Button';
+import { forwardRef } from 'react';
+import { Button } from '..';
+import { SelectorIcon } from '../../icons';
+import { useSelectContext } from './SelectProvider';
 
 export const SelectTrigger: ButtonComponent = forwardRef(
 	({ children, disabled, placeholder, ...restProps }, ref?) => {
@@ -21,26 +21,26 @@ export const SelectTrigger: ButtonComponent = forwardRef(
 		//   });
 		// }, []);
 
-		console.log("🚀 ~ selectedOption.label:", selectedOption.label);
+		console.log('🚀 ~ selectedOption.label:', selectedOption.label);
 
 		return (
 			<Button
-				role="button"
-				aria-controls="listbox"
+				role='button'
+				aria-controls='listbox'
 				aria-expanded={open}
-				aria-haspopup="listbox"
-				aria-labelledby="label"
+				aria-haspopup='listbox'
+				aria-labelledby='label'
 				disabled={disabled}
-				color={disabled ? "primary100" : "primary"}
-				cursor={disabled ? "default" : "pointer"}
-				display="flex"
-				justifyContent="space-between"
+				color={disabled ? 'primary100' : 'primary'}
+				cursor={disabled ? 'default' : 'pointer'}
+				display='flex'
+				justifyContent='space-between'
 				// columnGap="8"
-				size="sm"
-				fontSize="sm"
-				minWidth="40"
-				whiteSpace="nowrap"
-				caretColor="transparent"
+				size='sm'
+				fontSize='sm'
+				minWidth='40'
+				whiteSpace='nowrap'
+				caretColor='transparent'
 				ref={ref}
 				{...restProps}
 				suffix={<SelectorIcon />}
