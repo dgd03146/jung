@@ -1,32 +1,32 @@
 {
-	"name": "@jung/design-system",
-	"version": "0.0.0",
-	"private": true,
-	"exports": {
-		".": "./components/index.ts"
-	},
-	"scripts": {
-		"format": "pnpm biome format --write .",
-		"lint": "pnpm biome lint . --apply",
-		"generate:component": "turbo gen react-component",
-		"build": "tsup",
-		"dev": "tsup --watch"
-	},
-	"devDependencies": {
-		"@jung/configs": "workspace:*",
-		"@jung/typescript-config": "workspace:*",
-		"@turbo/gen": "^1.12.4",
-		"@types/node": "^20.11.24",
-		"@types/react": "^18.2.61",
-		"@types/react-dom": "^18.2.19",
-		"@vanilla-extract/css": "^1.14.1",
-		"@vanilla-extract/css-utils": "^0.1.3",
-		"@vanilla-extract/dynamic": "^2.1.0",
-		"@vanilla-extract/recipes": "^0.5.2",
-		"@vanilla-extract/sprinkles": "^1.6.1",
-		"clsx": "^2.1.0",
-		"react": "^18.2.0",
-		"tsup": "^8.0.2",
-		"typescript": "^5.3.3"
-	}
+  "name": "@jung/design-system",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./components/index.ts"
+  },
+  "scripts": {
+    "format": "pnpm biome format --write .",
+    "lint": "pnpm biome lint . --apply",
+    "generate:component": "turbo gen react-component",
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@jung/configs": "workspace:*",
+    "@jung/typescript-config": "workspace:*",
+    "@turbo/gen": "^1.12.4",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@vanilla-extract/css": "^1.14.1",
+    "@vanilla-extract/css-utils": "^0.1.3",
+    "@vanilla-extract/dynamic": "^2.1.0",
+    "@vanilla-extract/recipes": "^0.5.2",
+    "@vanilla-extract/sprinkles": "^1.6.1",
+    "clsx": "^2.1.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  }
 }

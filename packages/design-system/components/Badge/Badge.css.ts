@@ -5,7 +5,7 @@ export const badge = recipe({
 	base: [
 		sprinkles({
 			borderColor: 'primary',
-			borderWidth: '1px',
+			borderWidth: 'hairline',
 			borderStyle: 'solid',
 			color: 'primary',
 		}),
@@ -32,7 +32,7 @@ export const badge = recipe({
 				},
 			}),
 			outline: sprinkles({
-				borderColor: 'gray-100',
+				borderColor: 'gray100',
 				background: {
 					base: 'white',
 					hover: 'primary200',

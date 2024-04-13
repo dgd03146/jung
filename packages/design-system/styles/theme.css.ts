@@ -8,11 +8,11 @@ import {
 	opacity,
 	palette,
 	space,
-} from "../tokens";
+} from '../tokens';
 
-import { createGlobalTheme } from "@vanilla-extract/css";
+import { createGlobalTheme } from '@vanilla-extract/css';
 
-export const vars = createGlobalTheme(":root", {
+export const vars = createGlobalTheme(':root', {
 	space,
 	contentWidth: {
 		...extendedSpace,

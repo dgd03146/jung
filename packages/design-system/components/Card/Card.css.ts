@@ -1,4 +1,3 @@
-import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
@@ -12,10 +11,8 @@ export const card = recipe({
 	variants: {
 		variant: {
 			primary: [
-				sprinkles({}),
-				style({
-					// box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-					boxShadow: 'rgba(1, 66, 192, 0.2) 1.95px 1.95px 2.6px',
+				sprinkles({
+					boxShadow: 'primary',
 				}),
 			],
 			secondary: sprinkles({
@@ -24,7 +21,7 @@ export const card = recipe({
 			}),
 			outline: sprinkles({
 				borderColor: 'primary',
-				borderWidth: '1px',
+				borderWidth: 'hairline',
 				borderStyle: 'solid',
 			}),
 			ghost: sprinkles({

@@ -1,7 +1,9 @@
 export const breakpoints = {
-	sm: "360px",
-	md: "768px",
-	lg: "1080px",
-	xl: "1200px",
-	"2xl": "1920px",
+	mobile: '360px',
+	miniTablet: '480px', // 아이패드 미니와 같은 디바이스
+	tablet: '768px',
+	laptop: '1024px',
+	desktop: '1280px',
+	largeDesktop: '1440px',
+	tv: '1920px',
 };

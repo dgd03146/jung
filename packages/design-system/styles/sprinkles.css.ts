@@ -4,19 +4,30 @@ import {
 	defineProperties,
 } from '@vanilla-extract/sprinkles';
 
-import { breakpoints, grid } from '../tokens';
+import { grid, lineHeights, shadows } from '../tokens';
+import { getMediaQuery } from '../utils/getMediaQuery';
 import { vars } from './theme.css';
 
 export const responsiveProperties = defineProperties({
 	conditions: {
-		sm: { '@media': `screen and (min-width: ${breakpoints.sm})` },
-		md: { '@media': `screen and (min-width: ${breakpoints.sm})` },
-		lg: { '@media': `screen and (min-width: ${breakpoints.sm})` },
-		xl: { '@media': `screen and (min-width: ${breakpoints.sm})` },
-		'2xl': { '@media': `screen and (min-width: ${breakpoints.sm})` },
+		mobile: { '@media': getMediaQuery('mobile') },
+		miniTablet: { '@media': getMediaQuery('miniTablet') },
+		tablet: { '@media': getMediaQuery('tablet') },
+		laptop: { '@media': getMediaQuery('laptop') },
+		desktop: { '@media': getMediaQuery('desktop') },
+		largeDesktop: { '@media': getMediaQuery('largeDesktop') },
+		tv: { '@media': getMediaQuery('tv') },
 	},
-	defaultCondition: 'sm',
-	responsiveArray: ['sm', 'md', 'lg', 'xl', '2xl'],
+	defaultCondition: 'mobile',
+	responsiveArray: [
+		'mobile',
+		'miniTablet',
+		'tablet',
+		'laptop',
+		'desktop',
+		'largeDesktop',
+		'tv',
+	],
 	properties: {
 		position: ['absolute', 'relative', 'fixed', 'sticky'],
 		display: ['none', 'block', 'inline', 'inline-block', 'flex', 'grid'],
@@ -124,11 +135,13 @@ export const unresponsiveProperties = defineProperties({
 		flexBasis: {
 			...vars.contentWidth,
 		},
+		boxShadow: shadows,
 		boxSizing: ['border-box', 'content-box'],
 		borderStyle: ['solid', 'dotted', 'dashed', 'none', 'hidden'],
 		border: ['none'],
 		isolation: ['isolate'],
 		pointerEvents: ['none'],
+		lineHeight: lineHeights,
 		objectFit: ['contain', 'cover'],
 		outlineWidth: vars.border.width,
 		borderRadius: vars.border.radius,

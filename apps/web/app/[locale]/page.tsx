@@ -54,7 +54,7 @@ export default async function Home({ params: { locale } }: Params) {
 			<h1>Select 컴포넌트</h1>
 			<SelectComponent />
 			<h1>Input 컴포넌트</h1>
-			<Input placeholder='primary' variant='primary' rounded />
+			<Input placeholder='primary' variant='primary' rounded padding='2' />
 			<Input placeholder='outline' variant='outline' />
 			<Input placeholder='ghost' variant='ghost' />
 			<h1>Textarea 컴포넌트</h1>
