@@ -119,6 +119,7 @@ export const Box: BoxComponent = forwardRef(
 			fontSize,
 			fontWeight,
 			fontFamily,
+			lineHeight,
 
 			caretColor,
 			outlineColor,
@@ -192,12 +193,18 @@ export const Box: BoxComponent = forwardRef(
 				gridColumnEnd,
 				gridRowStart,
 				gridRowEnd,
+
+				// gap
+				columnGap,
+				rowGap,
+
 				// font
+
 				fontSize,
 				fontWeight,
 				fontFamily,
-				columnGap,
-				rowGap,
+				lineHeight,
+
 				caretColor,
 				outlineColor,
 				outlineWidth,

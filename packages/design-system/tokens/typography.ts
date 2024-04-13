@@ -19,14 +19,14 @@ export const fontSizes = {
 	lg: '1.125rem', // 18px
 	xl: '1.25rem', // 20px
 	'2xl': '1.5rem', // 24px
-	'3xl': '1.875rem', // 30px
+	'3xl': '2rem', // 32px
 	'4xl': '2.25rem', // 36px
 	'5xl': '3rem', // 48px
 	'6xl': '3.75rem', // 60px
 	'7xl': '4.5rem', // 72px
 	'8xl': '6rem', // 96px
 	'9xl': '8rem', // 128px
-	'10xl': '11rem', // 176px
+	'10xl': '11rem', // 176px, hero font
 };
 
 export const fontWeights = {
@@ -51,12 +51,14 @@ export const letterSpacings = {
 };
 
 export const lineHeights = {
-	none: '1', // 기본 line-height
-	tight: '1.25', // 조밀한 line-height
-	snug: '1.375', // 약간 조밀한 line-height
-	normal: '1.5', // 일반적인 line-height
-	relaxed: '1.625', // 약간 넓은 line-height
-	loose: '2', // 넓은 line-height
+	none: '1',
+	tight: '1.25',
+	snug: '1.375',
+	normal: '1.5',
+	relaxed: '1.625',
+	loose: '2',
+	big: '11.5rem', // hero font
+
 	'3': '0.75rem', // 12px
 	'4': '1rem', // 16px
 	'5': '1.25rem', // 20px
