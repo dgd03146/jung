@@ -1,13 +1,10 @@
-import * as styles from './Heading.css';
-
-import { forwardRef } from 'react';
+import { type HTMLAttributes, forwardRef } from 'react';
 import { Box, type BoxProps } from '..';
 
 type Heading = 'h1' | 'h2' | 'h3' | 'h4';
 
-interface HeadingProps {
+interface HeadingProps extends HTMLAttributes<HTMLHeadElement> {
 	text?: string;
-
 	as?: Heading;
 }
 
@@ -17,10 +14,8 @@ type HeadingComponent = (props: HeadingPropsWithBox) => React.ReactNode;
 
 export const Heading: HeadingComponent = forwardRef(
 	({ as, text, children, ...restProps }, ref?) => {
-		const headingStyle = styles.heading({ as });
-
 		return (
-			<Box as={as || 'h1'} className={headingStyle} ref={ref} {...restProps}>
+			<Box as={as || 'h1'} ref={ref} {...restProps}>
 				{text}
 				{children}
 			</Box>

@@ -1,5 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
+import { sprinkles } from './sprinkles.css';
+
 globalStyle('body', {
 	padding: 0,
 	margin: 0,
@@ -75,9 +77,33 @@ const a = style({
 	textDecoration: 'none',
 });
 
-const p = style({
+const text = style({
 	fontSize: '16px',
 	lineHeight: '24px',
+});
+
+const h1 = sprinkles({
+	fontSize: '5xl',
+	lineHeight: '14',
+	fontWeight: 'bold',
+});
+
+const h2 = sprinkles({
+	fontSize: '3xl',
+	lineHeight: '10',
+	fontWeight: 'bold',
+});
+
+const h3 = sprinkles({
+	fontSize: '2xl',
+	lineHeight: '8',
+	fontWeight: 'bold',
+});
+
+const h4 = sprinkles({
+	fontSize: 'xl',
+	lineHeight: '7',
+	fontWeight: 'semibold',
 });
 
 export const element = {
@@ -101,8 +127,12 @@ export const element = {
 	blockquote: quote,
 	q: quote,
 	table,
-	p,
-	span: p,
+	p: text,
+	span: text,
 	mark,
 	select,
+	h1,
+	h2,
+	h3,
+	h4,
 };
