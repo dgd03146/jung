@@ -1,3 +1,4 @@
+export { Text } from './Typography/Text';
 export { Heading } from './Typography/Heading';
 export { Container } from './Container/Container';
 export { GridItem } from './Grid/GridItem';

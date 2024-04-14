@@ -1,22 +1,22 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import { type BoxProps, Text } from '..';
 
-import { Box, type BoxProps } from '..';
+import { type HTMLAttributes, forwardRef } from 'react';
 import { useCardContext } from './CardProvider';
 
-export interface CardDescriptionProps extends HTMLAttributes<HTMLHeadElement> {}
+export interface CardDescriptionProps
+	extends HTMLAttributes<HTMLParagraphElement> {}
 
-type CardDescriptionWithBoxProps = BoxProps<'h2', CardDescriptionProps>;
-type CardDescription = (props: CardDescriptionWithBoxProps) => React.ReactNode;
+type CardDescriptionWithBoxProps = BoxProps<'p', CardDescriptionProps>;
+type CardDescriptionComponent = (
+	props: CardDescriptionWithBoxProps,
+) => React.ReactNode;
 
-export const CardDescription: CardDescription = forwardRef(
+export const CardDescription: CardDescriptionComponent = forwardRef(
 	({ ...restProps }, ref?) => {
 		const { description } = useCardContext();
 
 		return (
-			// FIXME: Need to change typography component
-			<Box as='h2' ref={ref} {...restProps}>
-				{description}
-			</Box>
+			<Text text={description} fontWeight='medium' ref={ref} {...restProps} />
 		);
 	},
 );

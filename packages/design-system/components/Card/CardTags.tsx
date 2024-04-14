@@ -20,7 +20,7 @@ export const CardTags: CardTagsComponent = forwardRef(
 				ref={ref}
 				{...restProps}
 			>
-				{/* FIXME: Change to badge */}
+				{/* FIXME: Change to Tag  컴포넌트 */}
 				{tags.map((it, index) => (
 					<p key={index}>{it}</p>
 				))}

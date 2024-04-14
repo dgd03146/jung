@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
@@ -5,6 +6,9 @@ export const card = recipe({
 	base: [
 		sprinkles({
 			background: 'transparent',
+		}),
+		style({
+			maxWidth: '282px',
 		}),
 	],
 

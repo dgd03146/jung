@@ -1,4 +1,11 @@
-import { Badge, Button, Heading, Input, Textarea } from '@jung/design-system';
+import {
+	Badge,
+	Button,
+	Heading,
+	Input,
+	Text,
+	Textarea,
+} from '@jung/design-system';
 
 import CardExampleComponent from '@/components/CardExampleComponent';
 import ExampleClientComponent from '@/components/ExampleClientComponent';
@@ -64,6 +71,7 @@ export default async function Home({ params: { locale } }: Params) {
 			<Heading as='h2' text='h2' />
 			<Heading as='h3' text='h3' />
 			<Heading as='h4' text='h4' />
+			<Text text='이건 p태그' />
 		</div>
 	);
 }
