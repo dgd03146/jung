@@ -1,6 +1,6 @@
 import { type HTMLAttributes, forwardRef } from 'react';
-
-import { Box, type BoxProps } from '..';
+import { Text } from '..';
+import type { BoxProps } from '..';
 import { useCardContext } from './CardProvider';
 
 export interface CardDateProps extends HTMLAttributes<HTMLDivElement> {}
@@ -15,9 +15,7 @@ export const CardDate: CardDateComponent = forwardRef(
 
 		return (
 			// FIXME: Tag로 바꿔야함
-			<Box as='p' ref={ref} {...restProps}>
-				{'1996-1220'}
-			</Box>
+			<Text text={'1996-1220 날짜 예시'} />
 		);
 	},
 );

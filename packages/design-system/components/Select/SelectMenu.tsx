@@ -32,7 +32,7 @@ export const SelectMenu: ListComponent = forwardRef(
 				hidden={!open}
 				// FIXME: 나주엥 aria-activedescendant 바꿔야함
 				aria-activedescendant={selectedOption?.label}
-				background='gray-100'
+				background='gray100'
 				width='fit'
 				// minWidth="40"
 

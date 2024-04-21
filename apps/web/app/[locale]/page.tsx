@@ -1,6 +1,14 @@
-import { Badge, Button, Input, Textarea } from '@jung/design-system';
+import {
+	Badge,
+	Button,
+	Heading,
+	Input,
+	Text,
+	Textarea,
+} from '@jung/design-system';
 
 import CardExampleComponent from '@/components/CardExampleComponent';
+import CheckBoxTest from '@/components/CheckBoxTest';
 import ExampleClientComponent from '@/components/ExampleClientComponent';
 import LanguageChanger from '@/components/LanguageChanger';
 import PopularList from '@/components/PopularList';
@@ -20,11 +28,10 @@ const i18nNamespaces = ['home'];
 
 export default async function Home({ params: { locale } }: Params) {
 	const { t, resources } = await initTranslations(locale, i18nNamespaces);
+
 	return (
 		<div>
-			<h1>Home</h1>
-
-			<h1>Button들 모음</h1>
+			<Heading text='Button' />
 			<Button variant='secondary'>Secondary Button</Button>
 			<Button variant='outline'>Outline Button</Button>
 			<Button rounded>Rounded Button</Button>
@@ -33,12 +40,12 @@ export default async function Home({ params: { locale } }: Params) {
 			<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href='hihi'>
 				Button with Icon
 			</Button>
-			<h1>Link with Button</h1>
+			<Heading as='h2' text='Button with Link' />
 			<Link href='about'>
 				<Button>Link</Button>
 			</Link>
-			<h1>i18n 적용</h1>
-			<h3>{t('header')}</h3>
+			<Heading text='home' />
+			<Heading as='h3' text={t('header')} />
 			<TranslationProvider
 				locale={locale}
 				resources={resources}
@@ -47,20 +54,28 @@ export default async function Home({ params: { locale } }: Params) {
 				<ExampleClientComponent />
 				<LanguageChanger />
 			</TranslationProvider>
-			<h1>Badge 컴포넌트</h1>
+			<Heading text='Badge 컴포넌트' />
 			<Badge rounded>Badge</Badge>
-			<h1>List 컴포넌트</h1>
+			<Heading text='List 컴포넌트' />
 			<PopularList />
-			<h1>Select 컴포넌트</h1>
+			<Heading text='Select 컴포넌트' />
 			<SelectComponent />
-			<h1>Input 컴포넌트</h1>
-			<Input placeholder='primary' variant='primary' rounded />
+			<Heading text='Input 컴포넌트' />
+			<Input placeholder='primary' variant='primary' rounded padding='2' />
 			<Input placeholder='outline' variant='outline' />
 			<Input placeholder='ghost' variant='ghost' />
-			<h1>Textarea 컴포넌트</h1>
+			<Heading text='TextArea 컴포넌트' />
 			<Textarea />
-			<h1>Card 컴포넌트</h1>
+			<Heading text='Card 컴포넌트' />
 			<CardExampleComponent />
+			<Heading text='big' fontSize='10xl' lineHeight='big' />
+			<Heading text='h1' />
+			<Heading as='h2' text='h2' />
+			<Heading as='h3' text='h3' />
+			<Heading as='h4' text='h4' />
+			<Text text='이건 p태그' />
+			<Heading text='CheckBox 컴포넌트' />
+			<CheckBoxTest />
 		</div>
 	);
 }

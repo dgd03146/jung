@@ -1,78 +1,109 @@
-import { globalStyle, style } from "@vanilla-extract/css";
+import { globalStyle, style } from '@vanilla-extract/css';
 
-globalStyle("body", {
+import { sprinkles } from './sprinkles.css';
+
+globalStyle('body', {
 	padding: 0,
 	margin: 0,
-	boxSizing: "border-box",
+	boxSizing: 'border-box',
 });
 
-globalStyle("a", {
-	textDecoration: "none",
-	outline: "none",
-	color: "none",
+globalStyle('a', {
+	textDecoration: 'none',
+	outline: 'none',
+	color: 'none',
 });
 
-globalStyle("*, *::before, *::after", {
+globalStyle('*, *::before, *::after', {
 	margin: 0,
 	padding: 0,
 	border: 0,
 	minWidth: 0,
-	boxSizing: "border-box",
-	fontSize: "100%",
-	font: "inherit",
-	verticalAlign: "baseline",
+	boxSizing: 'border-box',
+	fontSize: '100%',
+	font: 'inherit',
+	verticalAlign: 'baseline',
 });
 
 const block = style({
-	display: "block",
+	display: 'block',
 });
 
 const ul = style({
-	padding: "0",
-	margin: "0",
+	padding: '0',
+	margin: '0',
 });
 
 const list = style({
-	listStyle: "none",
+	listStyle: 'none',
 });
 
 const button = style({
-	cursor: "pointer",
-	outline: "none",
-	boxSizing: "border-box",
+	cursor: 'pointer',
+	outline: 'none',
+	boxSizing: 'border-box',
 });
 
 const quote = style({
-	quotes: "none",
+	quotes: 'none',
 	selectors: {
-		"&:before, &:after": {
+		'&:before, &:after': {
 			content: "''",
 		},
 	},
 });
 
 const table = style({
-	borderCollapse: "collapse",
+	borderCollapse: 'collapse',
 	borderSpacing: 0,
 });
 
 // Custom reset rules
 const mark = style({
-	backgroundColor: "transparent",
-	color: "inherit",
+	backgroundColor: 'transparent',
+	color: 'inherit',
 });
 
 const select = style({
-	appearance: "none",
+	appearance: 'none',
 	selectors: {
-		"&::-ms-expand": {
-			display: "none",
+		'&::-ms-expand': {
+			display: 'none',
 		},
 	},
 });
 
 const a = style({
-	textDecoration: "none",
+	textDecoration: 'none',
+});
+
+const text = style({
+	fontSize: '16px',
+	lineHeight: '24px',
+});
+
+const h1 = sprinkles({
+	fontSize: '5xl',
+	lineHeight: '14',
+	fontWeight: 'bold',
+});
+
+const h2 = sprinkles({
+	fontSize: '3xl',
+	lineHeight: '10',
+	fontWeight: 'bold',
+});
+
+const h3 = sprinkles({
+	fontSize: '2xl',
+	lineHeight: '8',
+	fontWeight: 'bold',
+});
+
+const h4 = sprinkles({
+	fontSize: 'xl',
+	lineHeight: '7',
+	fontWeight: 'semibold',
 });
 
 export const element = {
@@ -96,6 +127,12 @@ export const element = {
 	blockquote: quote,
 	q: quote,
 	table,
+	p: text,
+	span: text,
 	mark,
 	select,
+	h1,
+	h2,
+	h3,
+	h4,
 };

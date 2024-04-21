@@ -29,13 +29,7 @@ const Card: CardComponent = forwardRef(
 
 		return (
 			<CardProvider item={item}>
-				<Box
-					as='div'
-					width='fit'
-					className={cardStyle}
-					ref={ref}
-					{...restProps}
-				>
+				<Box as='div' className={cardStyle} ref={ref} {...restProps}>
 					{children}
 				</Box>
 			</CardProvider>

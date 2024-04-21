@@ -1,11 +1,11 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { type BoxProps, Text } from '..';
 import { useCardContext } from './CardProvider';
 
-export interface CardTitleProps extends HTMLAttributes<HTMLHeadElement> {}
+export interface CardTitleProps extends HTMLAttributes<HTMLParagraphElement> {}
 
-type CardTitleWithBoxProps = BoxProps<'h1', CardTitleProps>;
+type CardTitleWithBoxProps = BoxProps<'p', CardTitleProps>;
 type CardTitleComponent = (props: CardTitleWithBoxProps) => React.ReactNode;
 
 export const CardTitle: CardTitleComponent = forwardRef(
@@ -13,10 +13,13 @@ export const CardTitle: CardTitleComponent = forwardRef(
 		const { title } = useCardContext();
 
 		return (
-			// FIXME: Need to change typography component
-			<Box as='h1' ref={ref} {...restProps}>
-				{title}
-			</Box>
+			<Text
+				text={title}
+				fontSize='lg'
+				fontWeight='semibold'
+				ref={ref}
+				{...restProps}
+			/>
 		);
 	},
 );

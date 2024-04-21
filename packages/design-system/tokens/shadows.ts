@@ -1,8 +1,10 @@
 export const shadows = {
-	none: "none",
-	"-px": "inset 0 0 0 1px",
-	"0": "0 0 0 0",
-	"0.5": "0 0 0 0.0625rem",
-	"1": "0 0 0 0.125rem",
-	"2": "0 0 0 0.5rem",
+	primary: 'rgba(1, 66, 192, 0.2) 1.95px 1.95px 2.6px',
+	secondary: 'rgba(1, 66, 192, 0.2) 0px 4px 8px',
+	none: 'none',
+	outline: 'inset 0 0 0 1px',
+	small: '0 0 0 0.25rem',
+	medium: '0 0 0.5rem 0.5rem',
+	large: '0 0 1rem 1rem',
+	extraLarge: '0 0 2rem 2rem',
 };

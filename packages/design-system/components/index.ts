@@ -1,3 +1,5 @@
+export { Text } from './Typography/Text';
+export { Heading } from './Typography/Heading';
 export { Container } from './Container/Container';
 export { GridItem } from './Grid/GridItem';
 export { Grid } from './Grid/Grid';
@@ -16,3 +18,4 @@ export { Card } from './Card/Card';
 export type { ListItemComponent } from './List/ListItem';
 export type { ListComponent } from './List/List';
 export type { BoxProps } from './Box/Box';
+export { Checkbox } from './Checkbox/Checkbox';

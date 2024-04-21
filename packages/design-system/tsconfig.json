@@ -4,8 +4,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/tokens": ["./tokens/index.ts"],
-      "@/tokens/*": ["./tokens/*"]
+      "@/*": ["./*"]
     }
   },
 

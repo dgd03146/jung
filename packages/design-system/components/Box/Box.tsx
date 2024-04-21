@@ -73,6 +73,7 @@ export const Box: BoxComponent = forwardRef(
 			flexGrow,
 			flexShrink,
 			boxSizing,
+			boxShadow,
 			borderColor,
 			borderStyle,
 			borderRadius,
@@ -118,10 +119,12 @@ export const Box: BoxComponent = forwardRef(
 			fontSize,
 			fontWeight,
 			fontFamily,
+			lineHeight,
 
 			caretColor,
 			outlineColor,
 			outlineWidth,
+
 			...restProps
 		}: BoxProps<C, Props>,
 		ref?: PolymorphicRef<C>,
@@ -154,6 +157,7 @@ export const Box: BoxComponent = forwardRef(
 				flexGrow,
 				flexShrink,
 				boxSizing,
+				boxShadow,
 				borderColor,
 				borderStyle,
 				borderRadius,
@@ -189,12 +193,18 @@ export const Box: BoxComponent = forwardRef(
 				gridColumnEnd,
 				gridRowStart,
 				gridRowEnd,
+
+				// gap
+				columnGap,
+				rowGap,
+
 				// font
+
 				fontSize,
 				fontWeight,
 				fontFamily,
-				columnGap,
-				rowGap,
+				lineHeight,
+
 				caretColor,
 				outlineColor,
 				outlineWidth,
