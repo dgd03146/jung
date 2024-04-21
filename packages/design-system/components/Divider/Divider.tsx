@@ -15,6 +15,7 @@ export const Divider: DividerComponent = forwardRef(
 				borderWidth='hairline'
 				borderColor='primary'
 				borderStyle='solid'
+				borderTopWidth='hairline'
 				ref={ref}
 				{...restProps}
 			/>

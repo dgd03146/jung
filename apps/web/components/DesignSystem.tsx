@@ -3,6 +3,7 @@
 import {
 	Badge,
 	Button,
+	Divider,
 	Flex,
 	Heading,
 	Input,
@@ -62,6 +63,7 @@ const DesignSystem = () => {
 				<Heading as='h4' text='h4' />
 				<Text text='이건 p태그' />
 			</Flex>
+			<Divider />
 			<Heading as='h3' text='CheckBox 컴포넌트' />
 			<CheckBoxTest />
 		</>
