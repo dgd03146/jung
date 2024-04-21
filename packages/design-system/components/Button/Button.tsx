@@ -1,41 +1,42 @@
-import { button } from "./Button.css";
+import { button } from './Button.css';
 
 import {
 	type ButtonHTMLAttributes,
 	type PropsWithChildren,
 	type ReactNode,
 	forwardRef,
-} from "react";
+} from 'react';
 
-import { Box, type BoxProps } from "..";
+import { Box, type BoxProps } from '..';
 
 interface Props
 	extends PropsWithChildren<
-		Omit<ButtonHTMLAttributes<HTMLButtonElement>, "prefix">
+		Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'>
 	> {
-	variant?: "primary" | "secondary" | "outline" | "ghost";
-	size?: "sm" | "md" | "lg";
+	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;
+	loading?: boolean;
 }
 
-type ButtonProps = BoxProps<"button", Props>;
+type ButtonProps = BoxProps<'button', Props>;
 export type ButtonComponent = (props: ButtonProps) => ReactNode;
 
 export const Button: ButtonComponent = forwardRef(
 	(
-		{ variant, size, rounded, prefix, suffix, children, ...restProps },
+		{ variant, size, rounded, prefix, suffix, loading, children, ...restProps },
 		ref?,
 	) => {
 		const buttonClass = button({ variant, size, rounded });
 
 		return (
 			<Box
-				as="button"
-				display="flex"
-				alignItems="center"
-				columnGap="1"
+				as='button'
+				display='flex'
+				alignItems='center'
+				columnGap='1'
 				className={buttonClass}
 				ref={ref}
 				{...restProps}
