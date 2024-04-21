@@ -1,4 +1,3 @@
-import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
@@ -74,15 +73,20 @@ export const button = recipe({
 				borderRadius: '2xl',
 			}),
 		},
-		loading: {},
+		loading: {
+			true: sprinkles({
+				background: 'primary100',
+				color: 'white',
+				cursor: 'default',
+			}),
+		},
 		disabled: {
-			true: style([
-				sprinkles({
-					cursor: 'not-allowed',
-					background: 'primary100',
-					color: 'white',
-				}),
-			]),
+			true: sprinkles({
+				cursor: 'not-allowed',
+				background: 'primary100',
+				color: 'white',
+			}),
+
 			false: sprinkles({
 				cursor: 'pointer',
 			}),

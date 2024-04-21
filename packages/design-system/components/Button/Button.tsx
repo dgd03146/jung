@@ -7,7 +7,7 @@ import {
 	forwardRef,
 } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box, type BoxProps, Spinner } from '..';
 
 interface Props
 	extends PropsWithChildren<
@@ -39,7 +39,7 @@ export const Button: ButtonComponent = forwardRef(
 		},
 		ref?,
 	) => {
-		const buttonClass = button({ variant, size, rounded, disabled });
+		const buttonClass = button({ variant, size, rounded, disabled, loading });
 
 		return (
 			<Box
@@ -51,6 +51,7 @@ export const Button: ButtonComponent = forwardRef(
 				ref={ref}
 				{...restProps}
 			>
+				{loading && <Spinner />}
 				{prefix}
 				{children}
 				{suffix}
