@@ -10,7 +10,7 @@ const CheckBoxTest = () => {
 	};
 
 	return (
-		<Checkbox checked={checked} disabled onChange={handleChecked}>
+		<Checkbox checked={checked} onChange={handleChecked}>
 			체크 박스 테스트
 		</Checkbox>
 	);
