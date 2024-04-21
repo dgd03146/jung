@@ -8,6 +8,7 @@ import {
 } from '@jung/design-system';
 
 import CardExampleComponent from '@/components/CardExampleComponent';
+import CheckBoxTest from '@/components/CheckBoxTest';
 import ExampleClientComponent from '@/components/ExampleClientComponent';
 import LanguageChanger from '@/components/LanguageChanger';
 import PopularList from '@/components/PopularList';
@@ -27,6 +28,7 @@ const i18nNamespaces = ['home'];
 
 export default async function Home({ params: { locale } }: Params) {
 	const { t, resources } = await initTranslations(locale, i18nNamespaces);
+
 	return (
 		<div>
 			<Heading text='Button' />
@@ -72,6 +74,8 @@ export default async function Home({ params: { locale } }: Params) {
 			<Heading as='h3' text='h3' />
 			<Heading as='h4' text='h4' />
 			<Text text='이건 p태그' />
+			<Heading text='CheckBox 컴포넌트' />
+			<CheckBoxTest />
 		</div>
 	);
 }
