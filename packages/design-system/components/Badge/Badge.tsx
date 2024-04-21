@@ -5,7 +5,7 @@ import { type HTMLAttributes, type PropsWithChildren, forwardRef } from 'react';
 import { Box, type BoxProps } from '..';
 
 interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
-	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }

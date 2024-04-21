@@ -219,6 +219,7 @@ const selectorProperties = defineProperties({
 		active: { selector: '&:active' },
 		focus: { selector: '&:focus' },
 		hover: { selector: '&:hover' },
+
 		placeholder: { selector: '&::placeholder' },
 	},
 	defaultCondition: 'base',

@@ -15,42 +15,42 @@ export const badge = recipe({
 			primary: sprinkles({
 				background: {
 					base: 'white',
-					hover: 'primary200',
+					// hover: 'primary200',
 				},
 				color: {
-					hover: 'white',
+					// hover: 'white',
 				},
 			}),
 			secondary: sprinkles({
 				background: {
 					base: 'primary',
-					hover: 'primary200',
+					// hover: 'primary200',
 				},
 				color: {
 					base: 'white',
-					hover: 'white',
+					// hover: 'white',
 				},
 			}),
-			outline: sprinkles({
-				borderColor: 'gray100',
-				background: {
-					base: 'white',
-					hover: 'primary200',
-				},
-				color: {
-					hover: 'white',
-				},
-			}),
+			// outline: sprinkles({
+			// 	borderColor: 'gray100',
+			// 	background: {
+			// 		base: 'white',
+			// 		hover: 'primary200',
+			// 	},
+			// 	color: {
+			// 		hover: 'white',
+			// 	},
+			// }),
 
 			ghost: sprinkles({
 				border: 'none',
 				fontWeight: 'bold',
 				background: {
 					base: 'transparent',
-					hover: 'primary200',
+					// hover: 'primary200',
 				},
 				color: {
-					hover: 'white',
+					// hover: 'white',
 				},
 			}),
 		},

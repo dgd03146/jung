@@ -10,7 +10,7 @@ const rotateAnimation = keyframes({
 });
 
 export const circle = style({
-	animation: `${rotateAnimation} 1s linear 1ms infinite`,
+	animation: `${rotateAnimation} 2s linear 1ms infinite`,
 	strokeDasharray: '100,76',
 	strokeDashoffset: 44,
 	strokeLinecap: 'round',

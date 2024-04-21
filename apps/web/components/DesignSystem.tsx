@@ -24,11 +24,12 @@ const DesignSystem = () => {
 		<>
 			<Heading as='h3' text='Button' />
 			<Flex>
+				<Button disabled>Disabled Button</Button>
 				<Button variant='primary'>Primary Button</Button>
 				<Button variant='secondary'>Secondary Button</Button>
-				<Button variant='outline'>Outline Button</Button>
 				<Button rounded>Rounded Button</Button>
 				<Button variant='ghost'>Ghost Button</Button>
+				<Button loading>Loading Button</Button>
 				<Button prefix={<SearchIcon />}>Button with Icon</Button>
 				<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href='hihi'>
 					Button with Icon

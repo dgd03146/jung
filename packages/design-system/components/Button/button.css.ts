@@ -2,22 +2,19 @@ import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
 export const button = recipe({
-	base: [
-		sprinkles({
-			borderColor: 'primary',
-			borderWidth: 'hairline',
-			borderStyle: 'solid',
-			color: 'primary',
-		}),
-	],
+	base: [sprinkles({})],
 	variants: {
 		variant: {
 			primary: sprinkles({
+				borderColor: 'primary',
+				borderWidth: 'hairline',
+				borderStyle: 'solid',
 				background: {
-					base: 'white',
-					hover: 'primary200',
+					base: 'transparent',
+					hover: 'primary',
 				},
 				color: {
+					base: 'primary',
 					hover: 'white',
 				},
 			}),
@@ -30,25 +27,29 @@ export const button = recipe({
 					base: 'white',
 					hover: 'white',
 				},
+				border: 'none',
 			}),
-			outline: sprinkles({
-				borderColor: 'gray100',
-				background: {
-					base: 'white',
-					hover: 'primary200',
-				},
-				color: {
-					hover: 'white',
-				},
-			}),
+			// outline: sprinkles({
+			// 	borderWidth: 'hairline',
+			// 	borderStyle: 'solid',
+			// 	borderColor: 'gray200',
+
+			// 	background: {
+			// 		base: 'white',
+			// 		hover: 'black',
+			// 	},
+			// 	color: {
+			// 		hover: 'white',
+			// 	},
+			// }),
 			ghost: sprinkles({
 				border: 'none',
-				fontWeight: 'bold',
 				background: {
 					base: 'transparent',
-					hover: 'primary200',
+					hover: 'primary',
 				},
 				color: {
+					base: 'primary',
 					hover: 'white',
 				},
 			}),
@@ -72,11 +73,28 @@ export const button = recipe({
 				borderRadius: '2xl',
 			}),
 		},
-		loading: {},
+		loading: {
+			true: sprinkles({
+				background: 'primary100',
+				color: 'white',
+				cursor: 'default',
+			}),
+		},
+		disabled: {
+			true: sprinkles({
+				cursor: 'not-allowed',
+				background: 'primary100',
+				color: 'white',
+			}),
+
+			false: sprinkles({
+				cursor: 'pointer',
+			}),
+		},
 	},
 	defaultVariants: {
-		variant: 'primary',
 		size: 'sm',
 		rounded: false,
+		disabled: false,
 	},
 });
