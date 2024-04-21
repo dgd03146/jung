@@ -13,7 +13,7 @@ interface Props
 	extends PropsWithChildren<
 		Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'>
 	> {
-	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 	prefix?: ReactNode;
@@ -26,10 +26,20 @@ export type ButtonComponent = (props: ButtonProps) => ReactNode;
 
 export const Button: ButtonComponent = forwardRef(
 	(
-		{ variant, size, rounded, prefix, suffix, loading, children, ...restProps },
+		{
+			variant,
+			size,
+			rounded,
+			disabled,
+			prefix,
+			suffix,
+			loading,
+			children,
+			...restProps
+		},
 		ref?,
 	) => {
-		const buttonClass = button({ variant, size, rounded });
+		const buttonClass = button({ variant, size, rounded, disabled });
 
 		return (
 			<Box

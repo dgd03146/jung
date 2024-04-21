@@ -39,9 +39,9 @@ const list = style({
 });
 
 const button = style({
-	cursor: 'pointer',
 	outline: 'none',
 	boxSizing: 'border-box',
+	whiteSpace: 'nowrap',
 });
 
 const quote = style({
