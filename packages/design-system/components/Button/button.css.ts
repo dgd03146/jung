@@ -72,6 +72,7 @@ export const button = recipe({
 				borderRadius: '2xl',
 			}),
 		},
+		loading: {},
 	},
 	defaultVariants: {
 		variant: 'primary',
