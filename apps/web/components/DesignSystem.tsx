@@ -50,8 +50,8 @@ const DesignSystem = () => {
 			<Heading as='h3' text='Input 컴포넌트' />
 			<Flex>
 				<Input placeholder='primary' variant='primary' rounded padding='2' />
-				<Input placeholder='outline' variant='outline' />
 				<Input placeholder='ghost' variant='ghost' />
+				<Input disabled placeholder='disabled' variant='primary' />
 			</Flex>
 			<Heading as='h3' text='TextArea 컴포넌트' />
 			<Textarea />

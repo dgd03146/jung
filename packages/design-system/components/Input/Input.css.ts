@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
@@ -23,23 +24,22 @@ export const input = recipe({
 				borderStyle: 'solid',
 			}),
 
-			outline: sprinkles({
-				borderColor: 'black',
-				outlineColor: 'black',
-				outlineWidth: 'hairline',
-				color: {
-					base: 'black',
-					placeholder: 'gray200',
-				},
-			}),
+			// outline: sprinkles({
+			// 	borderColor: 'black',
+			// 	outlineColor: 'black',
+			// 	outlineWidth: 'hairline',
+			// 	color: {
+			// 		base: 'black',
+			// 		placeholder: 'gray200',
+			// 	},
+			// }),
 			ghost: sprinkles({
 				border: 'none',
-				outlineColor: 'transparent',
 			}),
 		},
 		size: {
 			sm: sprinkles({
-				paddingX: '2',
+				paddingX: '2.5',
 				paddingY: '1',
 			}),
 			md: sprinkles({
@@ -55,6 +55,16 @@ export const input = recipe({
 			true: sprinkles({
 				borderRadius: '2xl',
 			}),
+		},
+		disabled: {
+			true: style([
+				sprinkles({
+					cursor: 'not-allowed',
+				}),
+				{
+					outline: 'none',
+				},
+			]),
 		},
 	},
 	defaultVariants: {

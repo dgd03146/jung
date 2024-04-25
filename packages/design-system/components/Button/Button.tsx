@@ -48,6 +48,7 @@ export const Button: ButtonComponent = forwardRef(
 				alignItems='center'
 				columnGap='1'
 				className={buttonClass}
+				disabled={disabled}
 				ref={ref}
 				{...restProps}
 			>
