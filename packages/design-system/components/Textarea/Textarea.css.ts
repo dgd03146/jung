@@ -58,6 +58,16 @@ export const textarea = recipe({
 				borderRadius: '2xl',
 			}),
 		},
+		disabled: {
+			true: style([
+				sprinkles({
+					cursor: 'not-allowed',
+				}),
+				{
+					outline: 'none',
+				},
+			]),
+		},
 	},
 	defaultVariants: {
 		variant: 'primary',
