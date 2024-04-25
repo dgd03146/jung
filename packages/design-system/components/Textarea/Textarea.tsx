@@ -1,27 +1,28 @@
-import { type ReactNode, type TextareaHTMLAttributes, forwardRef } from "react";
-import { Box, type BoxProps } from "..";
-import * as styles from "./Textarea.css";
+import { type ReactNode, type TextareaHTMLAttributes, forwardRef } from 'react';
+import { Box, type BoxProps } from '..';
+import * as styles from './Textarea.css';
 
 interface Props
-	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
-	variant?: "primary" | "outline" | "ghost";
-	size?: "sm" | "md" | "lg";
+	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
+	variant?: 'primary' | 'outline' | 'ghost';
+	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-type TextareaProps = BoxProps<"input", Props>;
+type TextareaProps = BoxProps<'input', Props>;
 type TextareaComponent = (props: TextareaProps) => ReactNode;
 
 export const Textarea: TextareaComponent = forwardRef(
-	({ className, variant, size, rows, cols, rounded, ...restProps }, ref?) => {
-		const textAreaStyle = styles.textarea({ variant, size, rounded });
+	({ disabled, variant, size, rows, cols, rounded, ...restProps }, ref?) => {
+		const textAreaStyle = styles.textarea({ variant, size, rounded, disabled });
 
 		return (
 			<Box
-				as="textarea"
+				as='textarea'
 				className={textAreaStyle}
 				cols={cols || 30}
 				rows={rows || 5}
+				disabled={disabled}
 				ref={ref}
 				{...restProps}
 			/>
