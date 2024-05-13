@@ -1,220 +1,35 @@
-import { type Sprinkles, sprinkles } from '../../styles/sprinkles.css';
-
+import type { PolymorphicComponentPropWithRef } from '@/types/polymorhpic';
 import {
-	type AllHTMLAttributes,
 	type ElementType,
-	createElement,
+	type HTMLAttributes,
+	type ReactNode,
 	forwardRef,
 } from 'react';
+import { type Atoms, atoms, extractAtoms } from '../../utils/atoms';
 
-import clsx from 'clsx';
-import * as resetStyles from '../../styles/reset.css';
-import type {
-	PolymorphicComponentPropWithRef,
-	PolymorphicRef,
-} from '../../types/polymorhpic';
+type HTMLProperties = Omit<
+	HTMLAttributes<HTMLElement>,
+	'className' | 'color' | 'height' | 'width' | 'size'
+>;
 
-export interface PropstoOmit
-	extends Omit<
-			AllHTMLAttributes<HTMLElement>,
-			| 'className'
-			| 'content'
-			| 'height'
-			| 'translate'
-			| 'color'
-			| 'width'
-			| 'cursor'
-			| 'prefix'
-			| 'suffix'
-			| 'size'
-		>,
-		Sprinkles {
-	component?: ElementType;
-	className?: Parameters<typeof clsx>[0];
-}
+export type BoxProps<C extends ElementType = 'div'> =
+	PolymorphicComponentPropWithRef<C, HTMLProperties & Atoms>;
 
-export type BoxProps<
-	C extends React.ElementType,
-	Props = Record<string, unknown>,
-> = PolymorphicComponentPropWithRef<C, PropstoOmit & Props>;
+type BoxComponent = <C extends ElementType = 'div'>(
+	props: PolymorphicComponentPropWithRef<C, HTMLProperties & Atoms>,
+) => ReactNode | null;
 
-type BoxComponent = <
-	C extends React.ElementType = 'div',
-	Props = Record<string, unknown>,
->(
-	props: BoxProps<C, Props>,
-) => React.ReactNode;
-
-export const Box: BoxComponent = forwardRef(
-	<C extends React.ElementType = 'div', Props = Record<string, unknown>>(
-		{
-			as,
-			className,
-			height,
-			padding,
-			paddingX,
-			paddingY,
-			paddingTop,
-			paddingBottom,
-			paddingLeft,
-			paddingRight,
-			margin,
-			marginX,
-			marginY,
-			marginTop,
-			marginBottom,
-			marginLeft,
-			marginRight,
-			display,
-			alignItems,
-			justifyContent,
-			flexDirection,
-			flexWrap,
-			flexGrow,
-			flexShrink,
-			boxSizing,
-			boxShadow,
-			borderColor,
-			borderStyle,
-			borderRadius,
-			borderWidth,
-			position,
-			top,
-			bottom,
-			left,
-			right,
-			inset,
-			background,
-			color,
-			width,
-			zIndex,
-			opacity,
-			pointerEvents,
-			cursor,
-			textAlign,
-			maxWidth,
-			minWidth,
-			minHeight,
-			maxHeight,
-			transition,
-			overflow,
-			// grid
-			gridTemplateColumns,
-			gridColumnGap,
-			girdRow,
-			gridColumn,
-			gridRowGap,
-			gridAutoColumns,
-			gridAutoRows,
-			gridTemplateRows,
-			gap,
-			columnGap,
-			rowGap,
-			gridColumnStart,
-			gridColumnEnd,
-			gridRowStart,
-			gridRowEnd,
-
-			// font
-			fontSize,
-			fontWeight,
-			fontFamily,
-			lineHeight,
-
-			caretColor,
-			outlineColor,
-			outlineWidth,
-
-			...restProps
-		}: BoxProps<C, Props>,
-		ref?: PolymorphicRef<C>,
-	) => {
-		const component: ElementType = as || 'div';
-		const atomClasses = clsx(
-			resetStyles.element[component as keyof typeof resetStyles.element],
-			className,
-			sprinkles({
-				height,
-				padding,
-				paddingX,
-				paddingY,
-				paddingTop,
-				paddingBottom,
-				paddingLeft,
-				paddingRight,
-				margin,
-				marginX,
-				marginY,
-				marginTop,
-				marginBottom,
-				marginLeft,
-				marginRight,
-				display,
-				alignItems,
-				justifyContent,
-				flexDirection,
-				flexWrap,
-				flexGrow,
-				flexShrink,
-				boxSizing,
-				boxShadow,
-				borderColor,
-				borderStyle,
-				borderRadius,
-				borderWidth,
-				position,
-				top,
-				bottom,
-				left,
-				right,
-				inset,
-				background,
-				color,
-				width,
-				zIndex,
-				opacity,
-				pointerEvents,
-				cursor,
-				textAlign,
-				maxWidth,
-				minWidth,
-				transition,
-				overflow,
-				// grid
-				gridTemplateColumns,
-				gridColumnGap,
-				girdRow,
-				gridColumn,
-				gridRowGap,
-				gridAutoColumns,
-				gridAutoRows,
-				gridTemplateRows,
-				gridColumnStart,
-				gridColumnEnd,
-				gridRowStart,
-				gridRowEnd,
-
-				// gap
-				columnGap,
-				rowGap,
-
-				// font
-
-				fontSize,
-				fontWeight,
-				fontFamily,
-				lineHeight,
-
-				caretColor,
-				outlineColor,
-				outlineWidth,
-			}),
-		);
-
-		return createElement(component, {
-			className: atomClasses,
-			ref,
-			...restProps,
+export const Box: BoxComponent = forwardRef<HTMLElement, BoxProps<ElementType>>(
+	(props, ref) => {
+		const { as, ...restProps } = props;
+		const [atomsProps, propsToForward] = extractAtoms(restProps);
+		const Component: ElementType = as || 'div';
+		const className = atoms({
+			className: propsToForward?.className,
+			reset: typeof Component === 'string' ? Component : 'div',
+			...atomsProps,
 		});
+
+		return <Component {...propsToForward} className={className} ref={ref} />;
 	},
 );

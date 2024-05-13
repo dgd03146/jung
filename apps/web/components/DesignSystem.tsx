@@ -31,7 +31,7 @@ const DesignSystem = () => {
 				<Button variant='ghost'>Ghost Button</Button>
 				<Button loading>Loading Button</Button>
 				<Button prefix={<SearchIcon />}>Button with Icon</Button>
-				<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href='hihi'>
+				<Button prefix={<SearchIcon />} suffix={<SearchIcon />}>
 					Button with Icon
 				</Button>
 				<Link href='about'>

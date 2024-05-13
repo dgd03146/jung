@@ -1,7 +1,5 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
-import { sprinkles } from './sprinkles.css';
-
 globalStyle('body', {
 	padding: 0,
 	margin: 0,
@@ -40,8 +38,6 @@ const list = style({
 
 const button = style({
 	outline: 'none',
-	boxSizing: 'border-box',
-	whiteSpace: 'nowrap',
 });
 
 const quote = style({
@@ -77,36 +73,9 @@ const a = style({
 	textDecoration: 'none',
 });
 
-const text = style({
-	fontSize: '16px',
-	lineHeight: '24px',
-});
+type Resets = Partial<Record<keyof JSX.IntrinsicElements, string>>;
 
-const h1 = sprinkles({
-	fontSize: '5xl',
-	lineHeight: '14',
-	fontWeight: 'bold',
-});
-
-const h2 = sprinkles({
-	fontSize: '3xl',
-	lineHeight: '10',
-	fontWeight: 'bold',
-});
-
-const h3 = sprinkles({
-	fontSize: '2xl',
-	lineHeight: '8',
-	fontWeight: 'bold',
-});
-
-const h4 = sprinkles({
-	fontSize: 'xl',
-	lineHeight: '7',
-	fontWeight: 'semibold',
-});
-
-export const element = {
+export const elementResets: Resets = {
 	article: block,
 	aside: block,
 	button,
@@ -127,12 +96,7 @@ export const element = {
 	blockquote: quote,
 	q: quote,
 	table,
-	p: text,
-	span: text,
+
 	mark,
 	select,
-	h1,
-	h2,
-	h3,
-	h4,
 };
