@@ -1,12 +1,15 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
 import type {
 	responsiveProperties,
 	unresponsiveProperties,
 } from '../../styles/sprinkles.css';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	align?: keyof typeof responsiveProperties.styles.alignItems.values;
 	justify?: keyof typeof responsiveProperties.styles.justifyContent.values;
 	direction?: keyof typeof responsiveProperties.styles.flexDirection.values;
@@ -15,10 +18,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 	shrink?: keyof typeof unresponsiveProperties.styles.flexShrink.values;
 }
 
-type FlexProps = BoxProps<'div', Props>;
-type FlexComponent = (props: FlexProps) => React.ReactNode;
-
-export const Flex: FlexComponent = forwardRef(
+export const Flex = forwardRef<HTMLDivElement, Props>(
 	({ align, justify, direction, grow, wrap, shrink, ...restProps }, ref?) => {
 		return (
 			<Box

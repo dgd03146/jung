@@ -1,16 +1,16 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	centerContent?: boolean;
 }
 
-type ContainerProps = BoxProps<'div', Props>;
-type ContainerComponent = (props: ContainerProps) => React.ReactNode;
-
-export const Container: ContainerComponent = forwardRef(
-	({ centerContent, ...restProps }, ref?) => {
+export const Container = forwardRef<HTMLDivElement, Props>(
+	({ centerContent, ...restProps }, ref) => {
 		const display = centerContent ? 'flex' : 'block';
 		const alignItems = centerContent ? 'center' : 'stretch';
 		const flexDirection = centerContent ? 'column' : 'row';

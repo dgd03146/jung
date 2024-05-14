@@ -1,20 +1,18 @@
-import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
+import * as S from './CardImage.css';
 
-import { Box, type BoxProps } from '..';
-import * as styles from './CardImage.css';
+import { forwardRef } from 'react';
+import { Box } from '..';
+import type { CardProps } from './types/card';
 
-export interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {}
+export interface Props extends CardProps {}
 
-type CardMediaWithBoxProps = BoxProps<'div', CardMediaProps>;
-type CardMediaComponent = (props: CardMediaWithBoxProps) => ReactNode;
-
-export const CardMedia: CardMediaComponent = forwardRef(
+export const CardMedia = forwardRef<HTMLDivElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
 			<Box
 				as='div'
-				poistion='relative'
-				className={styles.wrapper}
+				position='relative'
+				className={S.wrapper}
 				ref={ref}
 				{...restProps}
 			>

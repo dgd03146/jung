@@ -1,14 +1,11 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { Text } from '..';
-import type { BoxProps } from '..';
 import { useCardContext } from './CardProvider';
+import type { CardProps } from './types/card';
 
-export interface CardDateProps extends HTMLAttributes<HTMLDivElement> {}
+export interface Props extends CardProps {}
 
-type CardDateWithBoxProps = BoxProps<'p', CardDateProps>;
-type CardDateComponent = (props: CardDateWithBoxProps) => React.ReactNode;
-
-export const CardDate: CardDateComponent = forwardRef(
+export const CardDate = forwardRef<HTMLDivElement, Props>(
 	({ ...restProps }, ref?) => {
 		// FIXME: Date 함수 만들어야함
 		const { date } = useCardContext();

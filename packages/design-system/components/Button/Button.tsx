@@ -1,13 +1,12 @@
+import { Spinner } from '@nextui-org/spinner';
+import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 import { button } from './Button.css';
 
-import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
-
-import { Box, Spinner } from '..';
-import type { OmitAtomProps } from '../../types/atoms';
-
-interface ButtonProps
+interface Props
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
-		OmitAtomProps {
+		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
@@ -16,7 +15,7 @@ interface ButtonProps
 	loading?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, Props>(
 	(
 		{
 			variant,
@@ -31,15 +30,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 		},
 		ref,
 	) => {
-		const buttonClass = button({ variant, size, rounded, disabled, loading });
-
 		return (
 			<Box
 				as='button'
 				display='flex'
 				alignItems='center'
 				columnGap='1'
-				className={buttonClass}
+				className={button({ variant, size, rounded, disabled, loading })}
 				disabled={disabled}
 				ref={ref}
 				{...restProps}

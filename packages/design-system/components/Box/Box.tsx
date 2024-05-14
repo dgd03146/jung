@@ -1,11 +1,12 @@
-import type { PolymorphicComponentPropWithRef } from '@/types/polymorhpic';
 import {
 	type ElementType,
 	type HTMLAttributes,
 	type ReactNode,
 	forwardRef,
 } from 'react';
-import { type Atoms, atoms, extractAtoms } from '../../utils/atoms';
+import type { Atoms } from '../../types/atoms';
+import type { PolymorphicComponentPropWithRef } from '../../types/polymorhpic';
+import { atoms, extractAtoms } from '../../utils/atoms';
 
 type HTMLProperties = Omit<
 	HTMLAttributes<HTMLElement>,
@@ -16,12 +17,11 @@ export type BoxProps<C extends ElementType = 'div'> =
 	PolymorphicComponentPropWithRef<C, HTMLProperties & Atoms>;
 
 type BoxComponent = <C extends ElementType = 'div'>(
-	props: PolymorphicComponentPropWithRef<C, HTMLProperties & Atoms>,
-) => ReactNode | null;
+	props: BoxProps<C>,
+) => ReactNode;
 
 export const Box: BoxComponent = forwardRef<HTMLElement, BoxProps<ElementType>>(
-	(props, ref) => {
-		const { as, ...restProps } = props;
+	({ as, ...restProps }, ref) => {
 		const [atomsProps, propsToForward] = extractAtoms(restProps);
 		const Component: ElementType = as || 'div';
 		const className = atoms({

@@ -32,6 +32,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@nextui-org/spinner": "^2.0.28",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
   }

@@ -1,17 +1,14 @@
-import { type BoxProps, Text } from '..';
-
 import { type HTMLAttributes, forwardRef } from 'react';
+
+import { Text } from '..';
+import type { AtomProps } from '../../types/atoms';
 import { useCardContext } from './CardProvider';
 
-export interface CardDescriptionProps
-	extends HTMLAttributes<HTMLParagraphElement> {}
+export interface Props
+	extends Omit<HTMLAttributes<HTMLParagraphElement>, 'color'>,
+		AtomProps {}
 
-type CardDescriptionWithBoxProps = BoxProps<'p', CardDescriptionProps>;
-type CardDescriptionComponent = (
-	props: CardDescriptionWithBoxProps,
-) => React.ReactNode;
-
-export const CardDescription: CardDescriptionComponent = forwardRef(
+export const CardDescription = forwardRef<HTMLParagraphElement, Props>(
 	({ ...restProps }, ref?) => {
 		const { description } = useCardContext();
 

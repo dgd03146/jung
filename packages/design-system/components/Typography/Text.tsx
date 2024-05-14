@@ -1,20 +1,19 @@
 import { type HTMLAttributes, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
+
+import type { AtomProps } from '../../types/atoms';
 
 type Text = 'span' | 'p';
 
-interface TextProps
-	extends HTMLAttributes<HTMLParagraphElement | HTMLSpanElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLParagraphElement | HTMLSpanElement>, 'color'>,
+		AtomProps {
 	text?: string;
 	as?: Text;
 }
 
-type TextPropsWithBox = BoxProps<Text, TextProps>;
-
-type TextComponent = (props: TextPropsWithBox) => React.ReactNode;
-
-export const Text: TextComponent = forwardRef(
-	({ as, text, children, ...restProps }, ref?) => {
+export const Text = forwardRef<HTMLParagraphElement, Props>(
+	({ as, text, children, ...restProps }, ref) => {
 		return (
 			<Box as={as || 'p'} ref={ref} {...restProps}>
 				{text}

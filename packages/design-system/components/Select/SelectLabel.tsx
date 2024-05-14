@@ -1,22 +1,16 @@
-import {
-	type LabelHTMLAttributes,
-	type PropsWithChildren,
-	type ReactNode,
-	forwardRef,
-} from "react";
+import { type LabelHTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from "..";
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props
-	extends PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement>> {}
+export interface Props
+	extends Omit<LabelHTMLAttributes<HTMLLabelElement>, 'color'>,
+		AtomProps {}
 
-type LabelProps = BoxProps<"label", Props>;
-export type LableComponent = (props: LabelProps) => ReactNode;
-
-export const SelectLabel: LableComponent = forwardRef(
+export const SelectLabel = forwardRef<HTMLLabelElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
-			<Box as="label" id="label" ref={ref} {...restProps}>
+			<Box as='label' id='label' ref={ref} {...restProps}>
 				{children}
 			</Box>
 		);

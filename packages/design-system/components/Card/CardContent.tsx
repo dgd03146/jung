@@ -1,13 +1,10 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import { forwardRef } from 'react';
+import { Box } from '..';
+import type { CardProps } from './types/card';
 
-import { Box, type BoxProps } from '..';
+export interface Props extends CardProps {}
 
-export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}
-
-type CardContentWithBoxProps = BoxProps<'div', CardContentProps>;
-type CardContentComponent = (props: CardContentWithBoxProps) => React.ReactNode;
-
-export const CardContent: CardContentComponent = forwardRef(
+export const CardContent = forwardRef<HTMLDivElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
 			<Box

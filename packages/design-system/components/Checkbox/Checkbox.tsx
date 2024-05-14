@@ -1,40 +1,33 @@
 import {
 	type ChangeEvent,
 	type HTMLAttributes,
-	type ReactNode,
 	forwardRef,
 	useId,
 } from 'react';
 
-import { Box, type BoxProps, Text } from '..';
+import { Box, Text } from '..';
 import { CheckIcon } from '../../icons';
-import * as styles from './Checkbox.css';
+import type { AtomProps } from '../../types/atoms';
+import * as S from './Checkbox.css';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	disabled?: boolean;
+	checked?: boolean;
 }
 
-type CheckboxProps = BoxProps<'div', Props>;
-type CheckboxComponent = (props: CheckboxProps) => ReactNode;
-
-export const Checkbox: CheckboxComponent = forwardRef(
-	({ children, disabled, checked, onChange, ...restProps }, ref?) => {
+export const Checkbox = forwardRef<HTMLDivElement, Props>(
+	({ children, disabled, checked, onChange, ...restProps }, ref) => {
 		const checkBoxId = useId();
 
-		const iconWrapperStyle = styles.iconWrapper({ checked });
-		const labelStyle = styles.label({ disabled });
 		return (
-			<Box as='div' display='inline-block'>
-				<Box
-					as='label'
-					className={labelStyle}
-					ref={ref}
-					{...restProps}
-					htmlFor={checkBoxId}
-				>
+			<Box as='div' display='inline-block' ref={ref} {...restProps}>
+				<Box as='label' className={S.label({ disabled })} htmlFor={checkBoxId}>
 					<Box
 						as='input'
-						className={styles.input}
+						className={S.input}
 						type='checkbox'
 						id={checkBoxId}
 						data-testid='checkbox'
@@ -42,7 +35,9 @@ export const Checkbox: CheckboxComponent = forwardRef(
 						checked={checked}
 						onChange={onChange}
 					/>
-					<Box className={iconWrapperStyle}>{checked && <CheckIcon />}</Box>
+					<Box as='div' className={S.iconWrapper({ checked })}>
+						{checked && <CheckIcon />}
+					</Box>
 					<Text as='span' color={disabled ? 'gray400' : 'black'}>
 						{children}
 					</Text>

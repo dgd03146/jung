@@ -1,21 +1,21 @@
-import * as styles from './Badge.css';
+import * as S from './Badge.css';
 
-import { type HTMLAttributes, type PropsWithChildren, forwardRef } from 'react';
+import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props extends PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-type BadgeProps = BoxProps<'div', Props>;
-type BadgeComponent = (props: BadgeProps) => React.ReactNode;
-
-export const Badge: BadgeComponent = forwardRef(
-	({ variant, size, rounded, children, ...restProps }, ref?) => {
-		const badgeStyle = styles.badge({ variant, size, rounded });
+export const Badge = forwardRef<HTMLDivElement, Props>(
+	({ variant, size, rounded, children, ...restProps }, ref) => {
+		const badgeStyle = S.badge({ variant, size, rounded });
 
 		return (
 			<Box

@@ -16,4 +16,4 @@ export type PolymorphicComponentProp<
 export type PolymorphicComponentPropWithRef<
 	C extends React.ElementType,
 	Props = Record<string, unknown>,
-> = PolymorphicComponentProp<C, Props> & { ref: PolymorphicRef<C> };
+> = PolymorphicComponentProp<C, Props> & { ref?: PolymorphicRef<C> };

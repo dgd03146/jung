@@ -1,6 +1,6 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
 import * as styles from './Card.css';
 import { CardBody } from './CardBody';
 import { CardContent } from './CardContent';
@@ -11,20 +11,17 @@ import { CardMedia } from './CardMedia';
 import { CardProvider } from './CardProvider';
 import { CardTags } from './CardTags';
 import { CardTitle } from './CardTitle';
-import type { Item } from './types/card';
+import type { CardProps, Item } from './types/card';
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+interface Props extends CardProps {
 	item: Item;
 	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
 	size?: 'base' | 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-type CardWithBoxProps = BoxProps<'div', CardProps>;
-type CardComponent = (props: CardWithBoxProps) => React.ReactNode;
-
-const Card: CardComponent = forwardRef(
-	({ item, children, variant, size, rounded, ...restProps }, ref?) => {
+const Card = forwardRef<HTMLDivElement, Props>(
+	({ item, children, variant, size, rounded, ...restProps }, ref) => {
 		const cardStyle = styles.card({ variant, size, rounded });
 
 		return (

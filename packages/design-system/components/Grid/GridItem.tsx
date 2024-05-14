@@ -1,19 +1,19 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import type { grid } from '@/tokens';
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
+import type { grid } from '../../tokens';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	colStart?: keyof typeof grid.gridStartEnd;
 	colEnd?: keyof typeof grid.gridStartEnd;
 	rowStart?: keyof typeof grid.gridStartEnd;
 	rowEnd?: keyof typeof grid.gridStartEnd;
 }
 
-type GridItemProps = BoxProps<'div', Props>;
-type GridItemComponent = (props: GridItemProps) => React.ReactNode;
-
-export const GridItem: GridItemComponent = forwardRef(
+export const GridItem = forwardRef<HTMLDivElement, Props>(
 	({ colStart, colEnd, rowStart, rowEnd, ...restProps }, ref?) => {
 		return (
 			<Box

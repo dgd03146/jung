@@ -1,7 +1,13 @@
-import type { space } from '@/tokens/space';
-import { Children, type ReactNode, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
+import {
+	Children,
+	type HTMLAttributes,
+	type ReactNode,
+	forwardRef,
+} from 'react';
+import { Box } from '..';
 import { mapResponsiveValue } from '../../styles/sprinkles.css';
+import type { space } from '../../tokens/space';
+import type { AtomProps } from '../../types/atoms';
 
 const alignToFlexAlign = {
 	left: 'flex-start',
@@ -9,17 +15,15 @@ const alignToFlexAlign = {
 	right: 'flex-end',
 } as const;
 
-type Props = {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	children?: ReactNode;
 	space: keyof typeof space;
 	align: keyof typeof alignToFlexAlign;
-};
+}
 
-type StackProps = BoxProps<'div', Props>;
-
-type StackComponent = (props: StackProps) => React.ReactNode;
-
-export const Stack: StackComponent = forwardRef(
+export const Stack = forwardRef<HTMLDivElement, Props>(
 	({ children, space, align, ...restProps }, ref?) => {
 		const stackItems = Children.toArray(children);
 		const alignItems = align

@@ -1,9 +1,12 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
 import type { responsiveProperties } from '../../styles/sprinkles.css';
+import type { AtomProps } from '../../types/atoms';
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {
 	rowGap?: keyof typeof responsiveProperties.styles.gridRowGap.values;
 	columnGap?: keyof typeof responsiveProperties.styles.gridColumnGap.values;
 	column?: keyof typeof responsiveProperties.styles.gridColumn.values;
@@ -14,10 +17,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 	templateColumns?: keyof typeof responsiveProperties.styles.gridTemplateColumns.values;
 }
 
-type GridProps = BoxProps<'div', Props>;
-type GridComponent = (props: GridProps) => React.ReactNode;
-
-export const Grid: GridComponent = forwardRef(
+export const Grid = forwardRef<HTMLDivElement, Props>(
 	(
 		{
 			rowGap,

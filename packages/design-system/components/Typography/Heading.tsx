@@ -1,19 +1,19 @@
 import { type HTMLAttributes, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
+
+import type { AtomProps } from '../../types/atoms';
 
 type Heading = 'h1' | 'h2' | 'h3' | 'h4';
 
-interface HeadingProps extends HTMLAttributes<HTMLHeadElement> {
+interface Props
+	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
+		AtomProps {
 	text?: string;
 	as?: Heading;
 }
 
-type HeadingPropsWithBox = BoxProps<Heading, HeadingProps>;
-
-type HeadingComponent = (props: HeadingPropsWithBox) => React.ReactNode;
-
-export const Heading: HeadingComponent = forwardRef(
-	({ as, text, children, ...restProps }, ref?) => {
+export const Heading = forwardRef<HTMLHeadingElement, Props>(
+	({ as, text, children, ...restProps }, ref) => {
 		return (
 			<Box as={as || 'h1'} ref={ref} {...restProps}>
 				{text}

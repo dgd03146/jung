@@ -1,25 +1,19 @@
-import {
-	type LiHTMLAttributes,
-	type PropsWithChildren,
-	type ReactNode,
-	forwardRef,
-} from "react";
+import { type LiHTMLAttributes, type ReactNode, forwardRef } from 'react';
 
-import { Box, type BoxProps } from "..";
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
 interface Props
-	extends PropsWithChildren<Omit<LiHTMLAttributes<HTMLLIElement>, "prefix">> {
+	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'prefix' | 'color'>,
+		AtomProps {
 	prefix?: ReactNode;
 	suffix?: ReactNode;
 }
 
-type ListItemProps = BoxProps<"li", Props>;
-export type ListItemComponent = (props: ListItemProps) => ReactNode;
-
-export const ListItem: ListItemComponent = forwardRef(
-	({ prefix, suffix, children, ...restProps }, ref?) => {
+export const ListItem = forwardRef<HTMLLIElement, Props>(
+	({ prefix, suffix, children, ...restProps }, ref) => {
 		return (
-			<Box as="li" display="flex" columnGap="1" ref={ref} {...restProps}>
+			<Box as='li' display='flex' columnGap='1' ref={ref} {...restProps}>
 				{prefix}
 				{children}
 				{suffix}

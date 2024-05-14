@@ -7,7 +7,6 @@ import {
 	Flex,
 	Heading,
 	Input,
-	Spinner,
 	Text,
 	Textarea,
 } from '@jung/design-system';
@@ -66,7 +65,7 @@ const DesignSystem = () => {
 				<Text text='이건 p태그' />
 			</Flex>
 			<Divider />
-			<Spinner />
+
 			<Heading as='h3' text='CheckBox 컴포넌트' />
 			<CheckBoxTest />
 		</>
