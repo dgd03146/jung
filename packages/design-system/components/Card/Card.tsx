@@ -1,47 +1,25 @@
+import * as S from './Card.css';
+
 import { forwardRef } from 'react';
-
 import { Box } from '..';
-import * as styles from './Card.css';
-import { CardBody } from './CardBody';
-import { CardContent } from './CardContent';
-import { CardDate } from './CardDate';
-import { CardDescription } from './CardDescription';
-import { CardFooter } from './CardFooter';
-import { CardMedia } from './CardMedia';
-import { CardProvider } from './CardProvider';
-import { CardTags } from './CardTags';
-import { CardTitle } from './CardTitle';
-import type { CardProps, Item } from './types/card';
+import type { CardProps } from './types/card';
 
-interface Props extends CardProps {
-	item: Item;
+export interface Props extends CardProps {
 	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-	size?: 'base' | 'sm' | 'md' | 'lg';
-	rounded?: boolean;
+	layout?: 'vertical' | 'horizontal';
 }
 
-const Card = forwardRef<HTMLDivElement, Props>(
-	({ item, children, variant, size, rounded, ...restProps }, ref) => {
-		const cardStyle = styles.card({ variant, size, rounded });
-
+export const Card = forwardRef<HTMLDivElement, Props>(
+	({ children, layout, variant, ...restProps }, ref) => {
 		return (
-			<CardProvider item={item}>
-				<Box as='div' className={cardStyle} ref={ref} {...restProps}>
-					{children}
-				</Box>
-			</CardProvider>
+			<Box
+				as='div'
+				className={S.card({ variant, layout })}
+				ref={ref}
+				{...restProps}
+			>
+				{children}
+			</Box>
 		);
 	},
 );
-
-const CardCompound = Object.assign(Card, {
-	Content: CardContent,
-	Body: CardBody,
-	Footer: CardFooter,
-	Media: CardMedia,
-	Title: CardTitle,
-	Description: CardDescription,
-	Date: CardDate,
-	Tags: CardTags,
-});
-export { CardCompound as Card };

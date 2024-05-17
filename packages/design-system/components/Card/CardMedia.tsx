@@ -1,4 +1,4 @@
-import * as S from './CardImage.css';
+import * as S from './Card.css';
 
 import { forwardRef } from 'react';
 import { Box } from '..';
@@ -12,7 +12,7 @@ export const CardMedia = forwardRef<HTMLDivElement, Props>(
 			<Box
 				as='div'
 				position='relative'
-				className={S.wrapper}
+				className={S.imageWrapper}
 				ref={ref}
 				{...restProps}
 			>

@@ -1,3 +1,4 @@
+export { Card } from './Card';
 export { Divider } from './Divider/Divider';
 export { Text } from './Typography/Text';
 export { Heading } from './Typography/Heading';
@@ -15,7 +16,6 @@ export { button } from './Button/Button.css';
 export { Button } from './Button/Button';
 export { Flex } from './Flex/Flex';
 export { Stack } from './Stack/Stack';
-export { Card } from './Card/Card';
 
 export type { BoxProps } from './Box/Box';
 export { Checkbox } from './Checkbox/Checkbox';

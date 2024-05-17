@@ -1,12 +1,10 @@
 import { forwardRef } from 'react';
-
 import { Box } from '..';
-
 import type { CardProps } from './types/card';
 
 export interface Props extends CardProps {}
 
-export const CardFooter = forwardRef<HTMLDivElement, Props>(
+export const CardActions = forwardRef<HTMLDivElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
 			<Box
