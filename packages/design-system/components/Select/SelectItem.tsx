@@ -1,31 +1,23 @@
-import { Box, type BoxProps } from '..';
+import { Box } from '..';
 
-import {
-	type LiHTMLAttributes,
-	type PropsWithChildren,
-	type ReactNode,
-	forwardRef,
-	useEffect,
-	useRef,
-} from 'react';
+import { type LiHTMLAttributes, forwardRef, useEffect, useRef } from 'react';
 import { CheckIcon } from '../../icons';
 
 import * as styles from './SelectItem.css';
 import { useSelectContext } from './SelectProvider';
 
+import type { AtomProps } from '../../types/atoms';
 import { useSelect } from './hooks/useSelect';
 
-interface Props extends PropsWithChildren<LiHTMLAttributes<HTMLLIElement>> {
+export interface Props
+	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'color'>,
+		AtomProps {
 	value: string;
+	disabled?: boolean;
 }
 
-// FIXME: 어떻게 List 컴포넌트를 활용할 수 있을까?
-
-type ListProps = BoxProps<'li', Props>;
-export type ListComponent = (props: ListProps) => ReactNode;
-
-export const SelectItem: ListComponent = forwardRef(
-	({ children, id, value, disabled, ...restProps }: ListProps, ref?) => {
+export const SelectItem = forwardRef<HTMLLIElement, Props>(
+	({ children, id, value, disabled, ...restProps }, ref) => {
 		const {
 			selectedOption,
 			setOpen,
@@ -120,9 +112,9 @@ export const SelectItem: ListComponent = forwardRef(
 				caretColor='transparent'
 				cursor='pointer'
 				id={id}
-				ref={optionRef}
+				ref={optionRef || ref}
 				className={styles.li}
-				background={value === selectedOption?.value && 'primary'}
+				background={value === selectedOption?.value ? 'primary' : 'transparent'}
 				// style={assignInlineVars({
 				//   [styles.selectedColor]:
 				//     value === selectedOption?.value && palette.primary,

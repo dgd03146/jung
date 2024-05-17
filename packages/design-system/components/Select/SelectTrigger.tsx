@@ -1,10 +1,17 @@
-import type { ButtonComponent } from 'components/Button/Button';
-import { forwardRef } from 'react';
+import { type ButtonHTMLAttributes, forwardRef } from 'react';
+
 import { Button } from '..';
 import { SelectorIcon } from '../../icons';
+import type { AtomProps } from '../../types/atoms';
 import { useSelectContext } from './SelectProvider';
 
-export const SelectTrigger: ButtonComponent = forwardRef(
+export interface Props
+	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
+		AtomProps {
+	placeholder?: string;
+}
+
+export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 	({ children, disabled, placeholder, ...restProps }, ref?) => {
 		const { open, setOpen, selectedOption, setSelectedOption, defaultValue } =
 			useSelectContext();

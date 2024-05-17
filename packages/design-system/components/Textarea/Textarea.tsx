@@ -1,25 +1,22 @@
-import { type ReactNode, type TextareaHTMLAttributes, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
-import * as styles from './Textarea.css';
+import { type TextareaHTMLAttributes, forwardRef } from 'react';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
+import * as S from './Textarea.css';
 
 interface Props
-	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
+	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size' | 'color'>,
+		AtomProps {
 	variant?: 'primary' | 'outline' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-type TextareaProps = BoxProps<'input', Props>;
-type TextareaComponent = (props: TextareaProps) => ReactNode;
-
-export const Textarea: TextareaComponent = forwardRef(
+export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
 	({ disabled, variant, size, rows, cols, rounded, ...restProps }, ref?) => {
-		const textAreaStyle = styles.textarea({ variant, size, rounded, disabled });
-
 		return (
 			<Box
 				as='textarea'
-				className={textAreaStyle}
+				className={S.textarea({ variant, size, rounded, disabled })}
 				cols={cols || 30}
 				rows={rows || 5}
 				disabled={disabled}

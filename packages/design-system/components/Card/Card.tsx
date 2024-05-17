@@ -1,50 +1,25 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import * as S from './Card.css';
 
-import { Box, type BoxProps } from '..';
-import * as styles from './Card.css';
-import { CardBody } from './CardBody';
-import { CardContent } from './CardContent';
-import { CardDate } from './CardDate';
-import { CardDescription } from './CardDescription';
-import { CardFooter } from './CardFooter';
-import { CardMedia } from './CardMedia';
-import { CardProvider } from './CardProvider';
-import { CardTags } from './CardTags';
-import { CardTitle } from './CardTitle';
-import type { Item } from './types/card';
+import { forwardRef } from 'react';
+import { Box } from '..';
+import type { CardProps } from './types/card';
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-	item: Item;
+export interface Props extends CardProps {
 	variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-	size?: 'base' | 'sm' | 'md' | 'lg';
-	rounded?: boolean;
+	layout?: 'vertical' | 'horizontal';
 }
 
-type CardWithBoxProps = BoxProps<'div', CardProps>;
-type CardComponent = (props: CardWithBoxProps) => React.ReactNode;
-
-const Card: CardComponent = forwardRef(
-	({ item, children, variant, size, rounded, ...restProps }, ref?) => {
-		const cardStyle = styles.card({ variant, size, rounded });
-
+export const Card = forwardRef<HTMLDivElement, Props>(
+	({ children, layout, variant, ...restProps }, ref) => {
 		return (
-			<CardProvider item={item}>
-				<Box as='div' className={cardStyle} ref={ref} {...restProps}>
-					{children}
-				</Box>
-			</CardProvider>
+			<Box
+				as='div'
+				className={S.card({ variant, layout })}
+				ref={ref}
+				{...restProps}
+			>
+				{children}
+			</Box>
 		);
 	},
 );
-
-const CardCompound = Object.assign(Card, {
-	Content: CardContent,
-	Body: CardBody,
-	Footer: CardFooter,
-	Media: CardMedia,
-	Title: CardTitle,
-	Description: CardDescription,
-	Date: CardDate,
-	Tags: CardTags,
-});
-export { CardCompound as Card };

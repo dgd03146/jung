@@ -1,25 +1,20 @@
-import {
-	type LiHTMLAttributes,
-	type PropsWithChildren,
-	type ReactNode,
-	forwardRef,
-} from "react";
+import { type LiHTMLAttributes, type ReactNode, forwardRef } from 'react';
 
-import { Box, type BoxProps } from "..";
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
 interface Props<T>
-	extends PropsWithChildren<LiHTMLAttributes<HTMLUListElement>> {
+	extends Omit<LiHTMLAttributes<HTMLUListElement>, 'color'>,
+		AtomProps {
 	items: Array<T>;
 	renderItem: (item: T) => ReactNode;
 }
 
-type ListProps<T> = BoxProps<"ul", Props<T>>;
-export type ListComponent = <T>(props: ListProps<T>) => ReactNode;
-
-export const List: ListComponent = forwardRef(
-	({ items, renderItem, ...restProps }, ref?) => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const List = forwardRef<HTMLUListElement, Props<any>>(
+	({ items, renderItem, ...restProps }, ref) => {
 		return (
-			<Box as="ul" ref={ref} {...restProps}>
+			<Box as='ul' ref={ref} {...restProps}>
 				{items.map(renderItem)}
 			</Box>
 		);

@@ -1,22 +1,30 @@
-import { type HTMLAttributes, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
+import { type ElementType, type HTMLAttributes, forwardRef } from 'react';
+import { Box } from '..';
+import * as S from './Typography.css';
 
-type Heading = 'h1' | 'h2' | 'h3' | 'h4';
+import type { AtomProps } from '../../types/atoms';
 
-interface HeadingProps extends HTMLAttributes<HTMLHeadElement> {
-	text?: string;
-	as?: Heading;
+/**
+ * Typography Heading
+ * @param {number} level - Heading level value
+ * - level `1`: Display 1
+ * - level `2`: Heading 1, Heading 2
+ * - level `3`: SubHeading 1, SubHeading 2
+ * - level `4`: Title 1
+ */
+
+export interface HeadingProps
+	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
+		AtomProps {
+	level?: 1 | 2 | 3 | 4;
 }
 
-type HeadingPropsWithBox = BoxProps<Heading, HeadingProps>;
+export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
+	({ level = 1, children, ...restProps }, ref) => {
+		const as = `h${level}` as ElementType;
 
-type HeadingComponent = (props: HeadingPropsWithBox) => React.ReactNode;
-
-export const Heading: HeadingComponent = forwardRef(
-	({ as, text, children, ...restProps }, ref?) => {
 		return (
-			<Box as={as || 'h1'} ref={ref} {...restProps}>
-				{text}
+			<Box as={as} ref={ref} className={S.heading({ level })} {...restProps}>
 				{children}
 			</Box>
 		);

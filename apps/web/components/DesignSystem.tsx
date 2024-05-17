@@ -7,7 +7,6 @@ import {
 	Flex,
 	Heading,
 	Input,
-	Spinner,
 	Text,
 	Textarea,
 } from '@jung/design-system';
@@ -31,7 +30,7 @@ const DesignSystem = () => {
 				<Button variant='ghost'>Ghost Button</Button>
 				<Button loading>Loading Button</Button>
 				<Button prefix={<SearchIcon />}>Button with Icon</Button>
-				<Button prefix={<SearchIcon />} suffix={<SearchIcon />} href='hihi'>
+				<Button prefix={<SearchIcon />} suffix={<SearchIcon />}>
 					Button with Icon
 				</Button>
 				<Link href='about'>
@@ -66,7 +65,7 @@ const DesignSystem = () => {
 				<Text text='이건 p태그' />
 			</Flex>
 			<Divider />
-			<Spinner />
+
 			<Heading as='h3' text='CheckBox 컴포넌트' />
 			<CheckBoxTest />
 		</>

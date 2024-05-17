@@ -1,25 +1,18 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { type BoxProps, Text } from '..';
-import { useCardContext } from './CardProvider';
+import type { AtomProps } from '../../types/atoms';
+import { Typography } from '../Typography/index';
 
-export interface CardTitleProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface Props
+	extends Omit<HTMLAttributes<HTMLParagraphElement>, 'color'>,
+		AtomProps {}
 
-type CardTitleWithBoxProps = BoxProps<'p', CardTitleProps>;
-type CardTitleComponent = (props: CardTitleWithBoxProps) => React.ReactNode;
-
-export const CardTitle: CardTitleComponent = forwardRef(
-	({ ...restProps }, ref?) => {
-		const { title } = useCardContext();
-
+export const CardTitle = forwardRef<HTMLParagraphElement, Props>(
+	({ children, ...restProps }, ref) => {
 		return (
-			<Text
-				text={title}
-				fontSize='lg'
-				fontWeight='semibold'
-				ref={ref}
-				{...restProps}
-			/>
+			<Typography.Heading level={3} ref={ref} {...restProps}>
+				{children}
+			</Typography.Heading>
 		);
 	},
 );

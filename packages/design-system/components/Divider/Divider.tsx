@@ -1,13 +1,12 @@
 import { type HTMLAttributes, forwardRef } from 'react';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
-import { Box, type BoxProps } from '..';
+interface Props
+	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+		AtomProps {}
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
-
-type DividerProps = BoxProps<'div', Props>;
-type DividerComponent = (props: DividerProps) => React.ReactNode;
-
-export const Divider: DividerComponent = forwardRef(
+export const Divider = forwardRef<HTMLDivElement, Props>(
 	({ ...restProps }, ref?) => {
 		return (
 			<Box

@@ -1,24 +1,25 @@
-import { type InputHTMLAttributes, type ReactNode, forwardRef } from 'react';
-import { Box, type BoxProps } from '..';
-import * as styles from './Input.css';
+import { type InputHTMLAttributes, forwardRef } from 'react';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
+import * as S from './Input.css';
 
-interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface Props
+	extends Omit<
+			InputHTMLAttributes<HTMLInputElement>,
+			'size' | 'width' | 'height' | 'color'
+		>,
+		AtomProps {
 	variant?: 'primary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-type InputProps = BoxProps<'input', Props>;
-type InputComponent = (props: InputProps) => ReactNode;
-
-export const Input: InputComponent = forwardRef(
+export const Input = forwardRef<HTMLInputElement, Props>(
 	({ variant, disabled, size, rounded, ...restProps }, ref?) => {
-		const inputStyle = styles.input({ variant, size, rounded, disabled });
-
 		return (
 			<Box
 				as='input'
-				className={inputStyle}
+				className={S.input({ variant, size, rounded, disabled })}
 				ref={ref}
 				disabled={disabled}
 				{...restProps}

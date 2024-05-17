@@ -4,15 +4,14 @@ import type { CardProps } from './types/card';
 
 export interface Props extends CardProps {}
 
-export const CardContent = forwardRef<HTMLDivElement, Props>(
+export const CardActions = forwardRef<HTMLDivElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
 			<Box
 				as='div'
 				display='flex'
-				flexDirection='column'
-				rowGap='1'
-				padding='2.5'
+				columnGap='1'
+				alignItems='center'
 				ref={ref}
 				{...restProps}
 			>
