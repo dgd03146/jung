@@ -24,7 +24,7 @@ export const Checkbox = forwardRef<HTMLDivElement, Props>(
 
 		return (
 			<Box as='div' display='inline-block' ref={ref} {...restProps}>
-				<Box as='label' className={S.label({ disabled })} htmlFor={checkBoxId}>
+				<Box as='label' htmlFor={checkBoxId} className={S.label({ disabled })}>
 					<Box
 						as='input'
 						className={S.input}
@@ -33,6 +33,9 @@ export const Checkbox = forwardRef<HTMLDivElement, Props>(
 						data-testid='checkbox'
 						disabled={disabled}
 						checked={checked}
+						aria-checked={checked}
+						aria-disabled={disabled}
+						aria-labelledby={checkBoxId}
 						onChange={onChange}
 					/>
 					<Box as='div' className={S.iconWrapper({ checked })}>
