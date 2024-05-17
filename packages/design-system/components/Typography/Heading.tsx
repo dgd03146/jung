@@ -1,22 +1,30 @@
-import { type HTMLAttributes, forwardRef } from 'react';
+import { type ElementType, type HTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
+import * as S from './Typography.css';
 
 import type { AtomProps } from '../../types/atoms';
 
-type Heading = 'h1' | 'h2' | 'h3' | 'h4';
+/**
+ * Typography Heading
+ * @param {number} level - Heading level value
+ * - level `1`: Display 1
+ * - level `2`: Heading 1, Heading 2
+ * - level `3`: SubHeading 1, SubHeading 2
+ * - level `4`: Title 1
+ */
 
-interface Props
+export interface HeadingProps
 	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
 		AtomProps {
-	text?: string;
-	as?: Heading;
+	level?: 1 | 2 | 3 | 4;
 }
 
-export const Heading = forwardRef<HTMLHeadingElement, Props>(
-	({ as, text, children, ...restProps }, ref) => {
+export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
+	({ level = 1, children, ...restProps }, ref) => {
+		const as = `h${level}` as ElementType;
+
 		return (
-			<Box as={as || 'h1'} ref={ref} {...restProps}>
-				{text}
+			<Box as={as} ref={ref} className={S.heading({ level })} {...restProps}>
 				{children}
 			</Box>
 		);

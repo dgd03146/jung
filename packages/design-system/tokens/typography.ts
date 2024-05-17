@@ -1,4 +1,3 @@
-// TODO: Font poppins 설정해야함
 export const fontFamily = {
 	notoSans: 'var(--font-noto-sans-kor)',
 	pretendard: 'var(--font-pretendard)',
@@ -6,6 +5,7 @@ export const fontFamily = {
 	inter: 'var(--font-inter)',
 	rubik: 'var(--font-rubik)',
 	dm: 'var(--font-dm-sans)',
+	poppins: 'var(--font-poppins)',
 	body: '-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
 	code: 'ml, "Roboto Mono", Menlo, monospace',
 	playfair: 'var(--font-playfair)',
@@ -63,6 +63,7 @@ export const lineHeights = {
 	'4': '1rem', // 16px
 	'5': '1.25rem', // 20px
 	'6': '1.5rem', // 24px
+	'6.5': '1.625rem', // 26px
 	'7': '1.75rem', // 28px
 	'8': '2rem', // 32px
 	'9': '2.25rem', // 36px
