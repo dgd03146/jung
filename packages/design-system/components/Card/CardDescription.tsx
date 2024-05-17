@@ -1,6 +1,6 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Text } from '..';
+import { Typography } from '..';
 import type { AtomProps } from '../../types/atoms';
 
 export interface Props
@@ -10,9 +10,9 @@ export interface Props
 export const CardDescription = forwardRef<HTMLParagraphElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		return (
-			<Text level={2} ref={ref} {...restProps}>
+			<Typography.Text level={2} ref={ref} {...restProps}>
 				{children}
-			</Text>
+			</Typography.Text>
 		);
 	},
 );

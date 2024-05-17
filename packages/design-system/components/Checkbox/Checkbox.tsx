@@ -5,7 +5,7 @@ import {
 	useId,
 } from 'react';
 
-import { Box, Text } from '..';
+import { Box, Typography } from '..';
 import { CheckIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
 import * as S from './Checkbox.css';
@@ -38,9 +38,9 @@ export const Checkbox = forwardRef<HTMLDivElement, Props>(
 					<Box as='div' className={S.iconWrapper({ checked })}>
 						{checked && <CheckIcon />}
 					</Box>
-					<Text as='span' color={disabled ? 'gray400' : 'black'}>
+					<Typography.FootNote color={disabled ? 'gray400' : 'black'}>
 						{children}
-					</Text>
+					</Typography.FootNote>
 				</Box>
 			</Box>
 		);
