@@ -37,11 +37,12 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
 				alignItems='center'
 				columnGap='1'
 				className={button({ variant, size, rounded, disabled, loading })}
-				disabled={disabled}
+				disabled={disabled || loading}
+				aria-busy={loading}
 				ref={ref}
 				{...restProps}
 			>
-				{loading && <Spinner />}
+				{loading && <Spinner aria-hidden='true' />}
 				{prefix}
 				{children}
 				{suffix}
