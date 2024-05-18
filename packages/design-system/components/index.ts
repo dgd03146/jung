@@ -1,5 +1,5 @@
+export { Tag } from './Tag/Tag';
 export { Typography } from './Typography';
-
 export { Card } from './Card';
 export { Divider } from './Divider/Divider';
 export { Text } from './Typography/Text';

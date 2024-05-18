@@ -1,27 +1,18 @@
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
-export const badge = recipe({
-	base: [
-		sprinkles({
-			borderColor: 'primary',
-			borderWidth: 'hairline',
-			borderStyle: 'solid',
-			color: 'primary',
-		}),
-	],
+export const tag = recipe({
+	base: [sprinkles({})],
 	variants: {
 		variant: {
 			primary: sprinkles({
-				background: {
-					base: 'white',
-				},
-				color: {},
+				borderColor: 'primary',
+				borderWidth: 'hairline',
+				borderStyle: 'solid',
+				color: 'primary',
 			}),
 			secondary: sprinkles({
-				background: {
-					base: 'primary',
-				},
+				background: 'primary',
 				color: {
 					base: 'white',
 				},
@@ -56,6 +47,6 @@ export const badge = recipe({
 	defaultVariants: {
 		variant: 'primary',
 		size: 'sm',
-		rounded: true,
+		rounded: false,
 	},
 });
