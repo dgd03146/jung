@@ -1,4 +1,4 @@
-export { Tag } from './Tag/Tag';
+export { Tag, type TagProps } from './Tag/Tag';
 export { Typography } from './Typography';
 export { Card } from './Card';
 export { Divider } from './Divider/Divider';

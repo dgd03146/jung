@@ -5,7 +5,7 @@ import { type HTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 
-interface TagProps
+export interface TagProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
