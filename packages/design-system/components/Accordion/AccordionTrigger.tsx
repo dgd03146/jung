@@ -1,10 +1,11 @@
-import * as S from './AccordionTrigger.css';
+import * as styles from './AccordionTrigger.css';
 
-import { KeyboardArrowDown, KeyboardArrowUp } from '@/icons';
 import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
+import { KeyboardArrowDown, KeyboardArrowUp } from '../../icons';
 
-import { Box, Stack, Typography } from '@/components';
-import type { AtomProps } from '@/types';
+import { Box, Stack, Typography } from '..';
+import type { AtomProps } from '../../types';
+
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';
 
@@ -25,7 +26,7 @@ export const AccordionTrigger = forwardRef<
 	return (
 		<Box
 			ref={ref}
-			className={S.trigger}
+			className={styles.trigger}
 			onClick={() => handleToggleIndex(index!)}
 			role='button'
 			id={id}
@@ -37,7 +38,7 @@ export const AccordionTrigger = forwardRef<
 				{top && top}
 				<Typography.Text>{children}</Typography.Text>
 			</Stack>
-			<Box className={S.arrow}>
+			<Box className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
 				{isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
 			</Box>
 		</Box>

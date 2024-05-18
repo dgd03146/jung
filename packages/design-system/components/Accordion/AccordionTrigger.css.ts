@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { sprinkles } from '../../styles';
+import { sprinkles } from '../../styles/sprinkles.css';
 
 export const trigger = sprinkles({
 	display: 'flex',
@@ -10,10 +10,13 @@ export const trigger = sprinkles({
 export const arrow = style([
 	sprinkles({
 		height: 'fit',
-		color: 'gray400',
+		color: 'primary',
 	}),
 	{
-		transition: 'cubic-bezier(0.65, 0, 0.35, 1) 100ms',
-		transitionDelay: '100ms',
+		transition: 'transform 300ms cubic-bezier(0.65, 0, 0.35, 1)',
 	},
 ]);
+
+export const arrowOpen = style({
+	transform: 'rotate(180deg)',
+});

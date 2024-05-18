@@ -21,3 +21,5 @@ export { Stack } from './Stack/Stack';
 
 export type { BoxProps } from './Box/Box';
 export { Checkbox } from './Checkbox/Checkbox';
+export { Accordion } from './Accordion';
+export type { AccordionProps } from './Accordion/Accordion';

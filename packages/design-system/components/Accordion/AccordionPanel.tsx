@@ -1,7 +1,8 @@
 import { type HTMLAttributes, forwardRef, useRef } from 'react';
 
-import { Box, Typography } from '@/components';
-import type { AtomProps } from '@/types';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
+import { Typography } from '../Typography';
 import { useAccordionItemContext } from './context/AccordionItemContext';
 
 export interface AccordionPanelProps

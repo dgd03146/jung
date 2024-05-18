@@ -7,8 +7,8 @@ import {
 	isValidElement,
 } from 'react';
 
-import { Box } from '@/components';
-import type { AtomProps } from '@/types';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 import { AccordionContext } from './context/AccordionContext';
 import { useAccordion } from './hooks/useAccordion';
 

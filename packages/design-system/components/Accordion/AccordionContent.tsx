@@ -4,9 +4,9 @@ import { Children, type HTMLAttributes, forwardRef, useRef } from 'react';
 
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 
-import { Box } from '@/components';
-import type { AtomProps } from '@/types';
 import { useBeforeMatch, useCollapsibleHeight } from '@jung/shared/hooks';
+import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';
 
