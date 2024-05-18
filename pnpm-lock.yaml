@@ -318,13 +318,13 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
     devDependencies:
       '@jung/configs':
         specifier: workspace:*
         version: link:../configs
+      '@jung/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@jung/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -334,9 +334,6 @@ importers:
       '@types/lodash':
         specifier: ^4.17.1
         version: 4.17.1
-      '@types/lodash-es':
-        specifier: ^4.17.12
-        version: 4.17.12
       '@types/node':
         specifier: ^20.11.24
         version: 20.11.24
@@ -379,6 +376,9 @@ importers:
       '@jung/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
 
   packages/typescript-config: {}
 
@@ -4134,12 +4134,6 @@ packages:
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
-    dev: true
-
-  /@types/lodash-es@4.17.12:
-    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
-    dependencies:
-      '@types/lodash': 4.17.1
     dev: true
 
   /@types/lodash@4.14.202:
@@ -8551,10 +8545,6 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
-
-  /lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}

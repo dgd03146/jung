@@ -13,11 +13,11 @@
     "dev": "tsup --watch"
   },
   "devDependencies": {
+    "@jung/shared": "workspace:*",
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
     "@turbo/gen": "^1.12.4",
     "@types/lodash": "^4.17.1",
-    "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@nextui-org/spinner": "^2.0.28",
-    "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21"
+    "lodash": "^4.17.21"
   }
 }

@@ -2,10 +2,10 @@
   "extends": "@jung/typescript-config/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
-    "baseUrl": "."
-    // "paths": {
-    //   "@/*": ["./*"]
-    // }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
 
   "include": ["."],
