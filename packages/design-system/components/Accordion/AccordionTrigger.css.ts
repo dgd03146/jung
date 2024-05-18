@@ -18,5 +18,5 @@ export const arrow = style([
 ]);
 
 export const arrowOpen = style({
-	transform: 'rotate(180deg)',
+	transform: 'rotate(-180deg)',
 });

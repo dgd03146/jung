@@ -7,7 +7,7 @@ import { sprinkles } from '../../styles';
 export const heading = recipe({
 	base: [
 		sprinkles({
-			fontWeight: 'bold',
+			fontWeight: 'semibold',
 		}),
 	],
 	variants: {
@@ -33,10 +33,10 @@ export const heading = recipe({
 	compoundVariants: [
 		{
 			variants: {
-				level: 4,
+				level: 1,
 			},
 			style: sprinkles({
-				fontWeight: 'semibold',
+				fontWeight: 'bold',
 			}),
 		},
 	],

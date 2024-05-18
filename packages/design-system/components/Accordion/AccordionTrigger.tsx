@@ -1,7 +1,7 @@
 import * as styles from './AccordionTrigger.css';
 
 import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
-import { KeyboardArrowDown, KeyboardArrowUp } from '../../icons';
+import { KeyboardArrowUp } from '../../icons';
 
 import { Box, Stack, Typography } from '..';
 import type { AtomProps } from '../../types';
@@ -39,7 +39,7 @@ export const AccordionTrigger = forwardRef<
 				<Typography.Text>{children}</Typography.Text>
 			</Stack>
 			<Box className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
-				{isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+				<KeyboardArrowUp />
 			</Box>
 		</Box>
 	);

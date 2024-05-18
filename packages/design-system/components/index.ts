@@ -1,3 +1,4 @@
+export { Tabs } from './Tabs';
 export { Tag, type TagProps } from './Tag/Tag';
 export { Typography } from './Typography';
 export { Card } from './Card';
