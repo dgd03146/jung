@@ -59,6 +59,7 @@ export const input = recipe({
 		disabled: {
 			true: style([
 				sprinkles({
+					borderColor: 'primary100',
 					cursor: 'not-allowed',
 				}),
 				{

@@ -12,7 +12,7 @@ export { Container } from './Container/Container';
 export { GridItem } from './Grid/GridItem';
 export { Grid } from './Grid/Grid';
 export { Textarea } from './Textarea/Textarea';
-export { Input } from './Input/Input';
+export { Input, type InputProps } from './Input/Input';
 export { Badge, type BadgeProps } from './Badge/Badge';
 
 export { ListItem } from './List/ListItem';
