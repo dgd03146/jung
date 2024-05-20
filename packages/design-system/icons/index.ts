@@ -5,3 +5,4 @@ export { KeyboardArrowUpIcon as KeyboardArrowUp } from './KeyboardArrowUpIcon';
 export { KeyboardArrowDownIcon as KeyboardArrowDown } from './KeyboardArrowDownIcon';
 export { ArrowDrouUpIcon } from './ArrowDropUpIcon';
 export { ArrowDropDownIcon } from './ArrowDropDownIcon';
+export { CloseIcon } from './CloseIcon';

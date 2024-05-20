@@ -1,10 +1,10 @@
-import { Spinner } from '@nextui-org/spinner';
 import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
+import ClipLoader from 'react-spinners/ClipLoader';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 import { button } from './Button.css';
 
-interface Props
+export interface ButtonProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
@@ -15,7 +15,7 @@ interface Props
 	loading?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, Props>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			variant,
@@ -42,7 +42,9 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
 				ref={ref}
 				{...restProps}
 			>
-				{loading && <Spinner aria-hidden='true' />}
+				{loading && (
+					<ClipLoader color={'#0142C0'} size={14} aria-hidden='true' />
+				)}
 				{prefix}
 				{children}
 				{suffix}

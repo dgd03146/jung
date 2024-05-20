@@ -16,7 +16,7 @@ export { ListItem } from './List/ListItem';
 export { List } from './List/List';
 export { Box } from './Box/Box';
 export { button } from './Button/Button.css';
-export { Button } from './Button/Button';
+export { Button, type ButtonProps } from './Button/Button';
 export { Flex } from './Flex/Flex';
 export { Stack } from './Stack/Stack';
 

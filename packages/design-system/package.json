@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    ".": "./components/index.ts"
+    ".": "./components/index.ts",
+    "./icons": "./icons/index.ts"
   },
   "scripts": {
     "format": "pnpm biome format --write .",
@@ -13,8 +14,8 @@
     "dev": "tsup --watch"
   },
   "devDependencies": {
-    "@jung/shared": "workspace:*",
     "@jung/configs": "workspace:*",
+    "@jung/shared": "workspace:*",
     "@jung/typescript-config": "workspace:*",
     "@turbo/gen": "^1.12.4",
     "@types/lodash": "^4.17.1",
@@ -32,7 +33,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@nextui-org/spinner": "^2.0.28",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-spinners": "^0.13.8"
   }
 }

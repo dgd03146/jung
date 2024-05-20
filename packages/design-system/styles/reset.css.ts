@@ -38,6 +38,7 @@ const list = style({
 
 const button = style({
 	outline: 'none',
+	cursor: 'pointer',
 });
 
 const quote = style({
