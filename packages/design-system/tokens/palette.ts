@@ -7,9 +7,9 @@ export const palette = {
 	primary400: '#002349',
 
 	// Secondary colors
-	secondary: '#FFC107', // 노란색
-	secondaryLight: '#FFE57F', // 연한 노란색
-	secondaryDark: '#FF9800', // 짙은 노란색
+	secondary: '#E57373', // 빨간색
+	secondary100: '#FFCDD2', // 연한 빨간색
+	secondary200: '#C62828', // 짙은 빨간색
 
 	// Neutral colors
 	black: '#000000',

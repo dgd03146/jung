@@ -25,3 +25,4 @@ export { Checkbox } from './Checkbox/Checkbox';
 export { Accordion } from './Accordion';
 export type { AccordionProps } from './Accordion/Accordion';
 export { Tooltip, type TooltipProps } from './Tooltip/Tooltip';
+export { Progress, type ProgressProps } from './Progress/Progress';
