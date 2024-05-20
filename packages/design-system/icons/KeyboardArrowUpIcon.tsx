@@ -1,5 +1,5 @@
 import { MdKeyboardArrowUp } from 'react-icons/md';
 
-export const KeyboardArrowUp = () => {
+export const KeyboardArrowUpIcon = () => {
 	return <MdKeyboardArrowUp aria-hidden />;
 };
