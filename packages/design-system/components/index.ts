@@ -10,7 +10,7 @@ export { GridItem } from './Grid/GridItem';
 export { Grid } from './Grid/Grid';
 export { Textarea } from './Textarea/Textarea';
 export { Input } from './Input/Input';
-export { Badge } from './Badge/Badge';
+export { Badge, type BadgeProps } from './Badge/Badge';
 export { Select } from './Select/Select';
 export { ListItem } from './List/ListItem';
 export { List } from './List/List';
