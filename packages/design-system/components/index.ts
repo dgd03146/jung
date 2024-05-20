@@ -1,3 +1,6 @@
+export { Select } from './Select';
+export { type SelectProps } from './Select/Select';
+
 export { Tabs } from './Tabs';
 export { Tag, type TagProps } from './Tag/Tag';
 export { Typography } from './Typography';
@@ -11,7 +14,7 @@ export { Grid } from './Grid/Grid';
 export { Textarea } from './Textarea/Textarea';
 export { Input } from './Input/Input';
 export { Badge, type BadgeProps } from './Badge/Badge';
-export { Select } from './Select/Select';
+
 export { ListItem } from './List/ListItem';
 export { List } from './List/List';
 export { Box } from './Box/Box';

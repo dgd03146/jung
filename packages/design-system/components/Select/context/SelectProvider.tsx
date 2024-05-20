@@ -7,7 +7,7 @@ import {
 	useContext,
 	useRef,
 	useState,
-} from "react";
+} from 'react';
 
 // key는 밖에서 넣어주는게 맞고.
 // value랑 name? 근데 그 name도 밖에서 넣어주는게 맞는듯. label이 보여주는거.
@@ -36,13 +36,13 @@ const defaultValues: ReturnContext = {
 	open: false,
 	setOpen: () => {},
 	selectedOption: {
-		value: "",
-		label: "",
+		value: '',
+		label: '',
 		isDisabled: false,
 	},
 	setSelectedOption: () => {},
 	onValueChange: () => {},
-	defaultValue: "",
+	defaultValue: '',
 	// placeholder: '',
 	selectRef: null,
 	options: [],
@@ -54,7 +54,7 @@ const SelectContext = createContext<ReturnContext>(defaultValues);
 export const useSelectContext = () => {
 	const context = useContext(SelectContext);
 	if (!context) {
-		throw Error("It should be rendered in Select component");
+		throw Error('It should be rendered in Select component');
 	}
 	return context;
 };
@@ -69,8 +69,8 @@ const SelectProvider = ({
 
 	const [open, setOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState<Option>({
-		value: "",
-		label: "",
+		value: '',
+		label: '',
 		isDisabled: false,
 	});
 	const [options, setOptions] = useState<Option[]>([]);

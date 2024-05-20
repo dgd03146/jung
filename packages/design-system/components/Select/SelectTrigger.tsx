@@ -3,7 +3,7 @@ import { type ButtonHTMLAttributes, forwardRef } from 'react';
 import { Button } from '..';
 import { SelectorIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
-import { useSelectContext } from './SelectProvider';
+import { useSelectContext } from './context/SelectProvider';
 
 export interface Props
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
@@ -42,6 +42,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 				cursor={disabled ? 'default' : 'pointer'}
 				display='flex'
 				justifyContent='space-between'
+				background='transparent'
+				borderColor='primary'
+				borderWidth='hairline'
+				borderStyle='solid'
 				// columnGap="8"
 				size='sm'
 				fontSize='sm'
