@@ -8,9 +8,9 @@ import {
 import { Box, Typography } from '..';
 import { CheckIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
-import * as S from './Checkbox.css';
+import * as styles from './Checkbox.css';
 
-interface Props
+export interface CheckboxProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -18,16 +18,20 @@ interface Props
 	checked?: boolean;
 }
 
-export const Checkbox = forwardRef<HTMLDivElement, Props>(
+export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(
 	({ children, disabled, checked, onChange, ...restProps }, ref) => {
 		const checkBoxId = useId();
 
 		return (
 			<Box as='div' display='inline-block' ref={ref} {...restProps}>
-				<Box as='label' htmlFor={checkBoxId} className={S.label({ disabled })}>
+				<Box
+					as='label'
+					htmlFor={checkBoxId}
+					className={styles.label({ disabled })}
+				>
 					<Box
 						as='input'
-						className={S.input}
+						className={styles.input}
 						type='checkbox'
 						id={checkBoxId}
 						data-testid='checkbox'
@@ -38,10 +42,10 @@ export const Checkbox = forwardRef<HTMLDivElement, Props>(
 						aria-labelledby={checkBoxId}
 						onChange={onChange}
 					/>
-					<Box as='div' className={S.iconWrapper({ checked })}>
+					<Box as='div' className={styles.iconWrapper({ checked })}>
 						{checked && <CheckIcon />}
 					</Box>
-					<Typography.FootNote color={disabled ? 'gray400' : 'black'}>
+					<Typography.FootNote color={disabled ? 'primary100' : 'primary'}>
 						{children}
 					</Typography.FootNote>
 				</Box>

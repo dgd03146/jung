@@ -1,6 +1,6 @@
 import { type HTMLAttributes, forwardRef } from 'react';
-import type { AtomProps } from 'types/atoms';
 import { Box } from '..';
+import type { AtomProps } from '../../types/atoms';
 
 export interface TypographyProps
 	extends Omit<HTMLAttributes<HTMLElement>, 'color'>,

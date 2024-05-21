@@ -56,6 +56,6 @@ export const badge = recipe({
 	defaultVariants: {
 		variant: 'primary',
 		size: 'sm',
-		rounded: false,
+		rounded: true,
 	},
 });

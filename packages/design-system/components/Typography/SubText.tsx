@@ -14,7 +14,7 @@ import * as S from './Typography.css';
 export interface SubTextProps
 	extends Omit<ParamHTMLAttributes<HTMLParagraphElement>, 'color'>,
 		AtomProps {
-	level?: 1 | 2 | 3;
+	level?: 1 | 2 | 3 | 4;
 	inline?: boolean;
 }
 

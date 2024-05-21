@@ -7,17 +7,19 @@ export const palette = {
 	primary400: '#002349',
 
 	// Secondary colors
-	secondary: '#FFC107', // 노란색
-	secondaryLight: '#FFE57F', // 연한 노란색
-	secondaryDark: '#FF9800', // 짙은 노란색
+	secondary: '#a70000', // 빨간색
+	secondary100: '#FFCDD2', // 연한 빨간색
+	secondary200: '#ff7b7b', // 짙은 빨간색
+	secondary300: '#ff5252',
+	secondary400: '#ff0000',
 
 	// Neutral colors
 	black: '#000000',
 	white: '#FFFFFF',
-	offWhite: '#F5F5F5',
-	gray100: '#F2F2F2',
-	grayLight: '#E6E6E6',
-	gray200: '#B8B8B8',
+	white100: '#F5F5F5',
+	white200: '#F2F2F2',
+	gray: '#E6E6E6',
+	gray100: '#B8B8B8',
 	gray300: '#999999',
 	gray400: '#808080',
 
@@ -34,5 +36,4 @@ export const palette = {
 	green: '#00B87C',
 	yellow: '#FFD700',
 	orange: '#FF8C00',
-	red: '#FF0000',
 };

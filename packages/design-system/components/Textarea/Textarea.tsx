@@ -3,15 +3,15 @@ import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 import * as S from './Textarea.css';
 
-interface Props
+export interface TextareaProps
 	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size' | 'color'>,
 		AtomProps {
-	variant?: 'primary' | 'outline' | 'ghost';
+	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
 	rounded?: boolean;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 	({ disabled, variant, size, rows, cols, rounded, ...restProps }, ref?) => {
 		return (
 			<Box

@@ -12,7 +12,8 @@ export const fontFamily = {
 };
 
 export const fontSizes = {
-	xxs: '0.5rem', // 8px
+	xxxs: '0.5rem', // 8px
+	xxs: '0.625rem', // 10px
 	xs: '0.75rem', // 12px
 	sm: '0.875rem', // 14px
 	base: '1rem', // 16px
@@ -27,6 +28,29 @@ export const fontSizes = {
 	'8xl': '6rem', // 96px
 	'9xl': '8rem', // 128px
 	'10xl': '11rem', // 176px, hero font
+};
+
+export const lineHeights = {
+	none: '1',
+	tight: '1.25',
+	snug: '1.375',
+	normal: '1.5',
+	relaxed: '1.625',
+	loose: '2',
+	big: '11.5rem', // hero font
+
+	'3': '0.75rem', // 12px
+	'4': '1rem', // 16px
+	'5': '1.25rem', // 20px
+	'5.5': '1.375rem', // 22px
+	'6': '1.5rem', // 24px
+	'6.5': '1.625rem', // 26px
+	'7': '1.75rem', // 28px
+	'8': '2rem', // 32px
+	'9': '2.25rem', // 36px
+	'10': '2.5rem', // 40px
+	'12': '3rem', // 48px
+	'14': '3.5rem', // 56px
 };
 
 export const fontWeights = {
@@ -48,26 +72,4 @@ export const letterSpacings = {
 	wide: '0.025em',
 	wider: '0.05em',
 	widest: '0.1em',
-};
-
-export const lineHeights = {
-	none: '1',
-	tight: '1.25',
-	snug: '1.375',
-	normal: '1.5',
-	relaxed: '1.625',
-	loose: '2',
-	big: '11.5rem', // hero font
-
-	'3': '0.75rem', // 12px
-	'4': '1rem', // 16px
-	'5': '1.25rem', // 20px
-	'6': '1.5rem', // 24px
-	'6.5': '1.625rem', // 26px
-	'7': '1.75rem', // 28px
-	'8': '2rem', // 32px
-	'9': '2.25rem', // 36px
-	'10': '2.5rem', // 40px
-	'12': '3rem', // 48px
-	'14': '3.5rem', // 56px
 };

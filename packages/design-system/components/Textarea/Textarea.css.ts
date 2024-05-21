@@ -14,7 +14,6 @@ export const textarea = recipe({
 				placeholder: 'primary100',
 			},
 
-			background: 'transparent',
 			borderWidth: 'hairline',
 			borderStyle: 'solid',
 		}),
@@ -27,11 +26,12 @@ export const textarea = recipe({
 				borderStyle: 'solid',
 			}),
 
-			outline: sprinkles({
-				borderColor: 'black',
+			secondary: sprinkles({
+				background: 'primary100',
+				border: 'none',
 				color: {
-					base: 'black',
-					placeholder: 'gray200',
+					base: 'primary',
+					placeholder: 'primary200',
 				},
 			}),
 			ghost: sprinkles({

@@ -1,11 +1,11 @@
-import * as S from './Badge.css';
+import * as styles from './Badge.css';
 
 import { type HTMLAttributes, forwardRef } from 'react';
 
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 
-interface Props
+export interface BadgeProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
@@ -13,15 +13,13 @@ interface Props
 	rounded?: boolean;
 }
 
-export const Badge = forwardRef<HTMLDivElement, Props>(
+export const Badge = forwardRef<HTMLDivElement, BadgeProps>(
 	({ variant, size, rounded, children, ...restProps }, ref) => {
-		const badgeStyle = S.badge({ variant, size, rounded });
-
 		return (
 			<Box
 				as='div'
 				display='inline-block'
-				className={badgeStyle}
+				className={styles.badge({ variant, size, rounded })}
 				ref={ref}
 				{...restProps}
 			>

@@ -3,13 +3,9 @@
 import { type HTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
-import { SelectItem } from './SelectItem';
-import { SelectLabel } from './SelectLabel';
-import { SelectMenu } from './SelectMenu';
-import SelectProvider from './SelectProvider';
-import { SelectTrigger } from './SelectTrigger';
+import SelectProvider from './context/SelectProvider';
 
-interface Props
+export interface SelectProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	placeHolder?: string;
@@ -17,7 +13,7 @@ interface Props
 	defaultValue?: string;
 }
 
-const Select = forwardRef<HTMLDivElement, Props>(
+export const Select = forwardRef<HTMLDivElement, SelectProps>(
 	({ children, defaultValue, onValueChange, ...restProps }, ref?) => {
 		const valueProps = {
 			defaultValue,
@@ -33,11 +29,3 @@ const Select = forwardRef<HTMLDivElement, Props>(
 		);
 	},
 );
-
-const SelectCompound = Object.assign(Select, {
-	Trigger: SelectTrigger,
-	Menu: SelectMenu,
-	Item: SelectItem,
-	Label: SelectLabel,
-});
-export { SelectCompound as Select };

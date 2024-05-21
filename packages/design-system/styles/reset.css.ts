@@ -38,6 +38,7 @@ const list = style({
 
 const button = style({
 	outline: 'none',
+	cursor: 'pointer',
 });
 
 const quote = style({
@@ -47,6 +48,22 @@ const quote = style({
 			content: "''",
 		},
 	},
+});
+
+const h1 = style({
+	margin: '0',
+});
+
+const h2 = style({
+	margin: '0',
+});
+
+const h3 = style({
+	margin: '0',
+});
+
+const h4 = style({
+	margin: '0',
 });
 
 const table = style({
@@ -96,7 +113,10 @@ export const elementResets: Resets = {
 	blockquote: quote,
 	q: quote,
 	table,
-
+	h1,
+	h2,
+	h3,
+	h4,
 	mark,
 	select,
 };

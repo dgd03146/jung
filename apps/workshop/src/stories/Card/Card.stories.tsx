@@ -1,4 +1,4 @@
-import { Badge, Card } from '@jung/design-system';
+import { Badge, Card, Tag } from '@jung/design-system';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Card> = {
@@ -44,9 +44,9 @@ export const Default: Story = {
 	),
 };
 
-export const Layout: Story = {
+export const Horizontal: Story = {
 	render: (args) => (
-		<Card layout='horizontal' style={{ maxWidth: '500px' }} {...args}>
+		<Card layout='horizontal' {...args}>
 			<Card.Media style={{ maxWidth: '300px' }}>
 				<img
 					src='https://images.unsplash.com/photo-1517394834181-95ed159986c7?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -57,7 +57,9 @@ export const Layout: Story = {
 				<Card.Title>This is title</Card.Title>
 				<Card.Description>This is description</Card.Description>
 				<Card.Actions>
-					<Badge>hihi</Badge>
+					<Tag rounded>2024.12.07</Tag>
+					<Tag>Tag</Tag>
+					<Tag>Tag</Tag>
 				</Card.Actions>
 			</Card.Content>
 		</Card>

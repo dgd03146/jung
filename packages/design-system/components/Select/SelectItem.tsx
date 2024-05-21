@@ -4,7 +4,7 @@ import { type LiHTMLAttributes, forwardRef, useEffect, useRef } from 'react';
 import { CheckIcon } from '../../icons';
 
 import * as styles from './SelectItem.css';
-import { useSelectContext } from './SelectProvider';
+import { useSelectContext } from './context/SelectProvider';
 
 import type { AtomProps } from '../../types/atoms';
 import { useSelect } from './hooks/useSelect';

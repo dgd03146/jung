@@ -2,7 +2,7 @@ import { type LiHTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 
 import type { AtomProps } from '../../types/atoms';
-import { useSelectContext } from './SelectProvider';
+import { useSelectContext } from './context/SelectProvider';
 
 export interface Props
 	extends Omit<LiHTMLAttributes<HTMLUListElement>, 'color'>,
@@ -23,7 +23,7 @@ export const SelectMenu = forwardRef<HTMLUListElement, Props>(
 				hidden={!open}
 				// FIXME: 나주엥 aria-activedescendant 바꿔야함
 				aria-activedescendant={selectedOption?.label}
-				background='gray100'
+				background='primary200'
 				width='fit'
 				// minWidth="40"
 

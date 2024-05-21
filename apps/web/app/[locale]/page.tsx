@@ -1,8 +1,6 @@
-import DesignSystem from '@/components/DesignSystem';
 import ExampleClientComponent from '@/components/ExampleClientComponent';
 import LanguageChanger from '@/components/LanguageChanger';
 import TranslationProvider from '@/components/TranslationsProvider';
-import { Heading } from '@jung/design-system';
 import initTranslations from '../i18n';
 
 type Params = {
@@ -26,8 +24,6 @@ export default async function Home({ params: { locale } }: Params) {
 				<ExampleClientComponent />
 				<LanguageChanger />
 			</TranslationProvider>
-			<Heading as='h3' text={t('header')} />
-			<DesignSystem />
 		</div>
 	);
 }
