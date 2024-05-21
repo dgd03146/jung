@@ -2,12 +2,12 @@ import { Stack, Typography } from '@jung/design-system';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-	title: 'COMPONENTS/Typography',
+	title: 'FOUNDATIONS/Typography',
 	component: Typography,
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
+
 	argTypes: {},
 } satisfies Meta<typeof Typography>;
 
