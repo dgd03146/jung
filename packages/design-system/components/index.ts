@@ -7,7 +7,7 @@ export { Typography } from './Typography';
 export { Card } from './Card';
 export { Divider } from './Divider/Divider';
 export { Text } from './Typography/Text';
-export { Heading } from './Typography/Heading';
+export { Heading, type HeadingProps } from './Typography/Heading';
 export { Container } from './Container/Container';
 export { GridItem } from './Grid/GridItem';
 export { Grid } from './Grid/Grid';

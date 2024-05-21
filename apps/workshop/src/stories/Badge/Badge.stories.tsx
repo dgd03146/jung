@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Stack, Tag, type TagProps } from '@jung/design-system';
+import { Badge, type BadgeProps, Stack } from '@jung/design-system';
 import { variantOptions } from './options';
 
 const meta = {
-	title: 'COMPONENTS/Tag',
-	component: Tag,
+	title: 'COMPONENTS/Badge',
+	component: Badge,
 	parameters: {
 		layout: 'centered',
 	},
@@ -25,12 +25,12 @@ const meta = {
 			control: { type: 'select' },
 		},
 	},
-} satisfies Meta<typeof Tag>;
+} satisfies Meta<typeof Badge>;
 
 export default meta;
-type Story = StoryObj<typeof Tag>;
+type Story = StoryObj<typeof Badge>;
 
-const Template = (args: TagProps) => <Tag {...args}>Tag</Tag>;
+const Template = (args: BadgeProps) => <Badge {...args}>Badge</Badge>;
 
 export const Variants: Story = {
 	render: (args) => (

@@ -13,20 +13,20 @@ export const heading = recipe({
 	variants: {
 		level: {
 			1: sprinkles({
-				fontSize: '2xl', // 24px
-				lineHeight: '8', // 32px
+				fontSize: '5xl',
+				lineHeight: '14',
 			}),
 			2: sprinkles({
-				fontSize: 'xl', // 20px
-				lineHeight: '7', //  28px
+				fontSize: '4xl',
+				lineHeight: '10',
 			}),
 			3: sprinkles({
-				fontSize: 'lg', // 18px
-				lineHeight: '6.5', // 24px
+				fontSize: '3xl',
+				lineHeight: '8',
 			}),
 			4: sprinkles({
-				fontSize: 'base', // 16px
-				lineHeight: '6', // 24px
+				fontSize: '2xl',
+				lineHeight: '7',
 			}),
 		},
 	},
@@ -46,22 +46,23 @@ export const heading = recipe({
  * Typography Text
  */
 export const text = recipe({
-	base: sprinkles({
-		fontSize: 'base',
-	}),
+	base: sprinkles({}),
 	variants: {
 		level: {
 			1: sprinkles({
+				fontSize: 'xl',
 				fontWeight: 'semibold',
-				lineHeight: '6.5',
+				lineHeight: '7',
 			}),
 			2: sprinkles({
+				fontSize: 'lg',
 				fontWeight: 'medium',
 				lineHeight: '6.5',
 			}),
 			3: sprinkles({
+				fontSize: 'base',
 				fontWeight: 'medium',
-				lineHeight: '7',
+				lineHeight: '6',
 			}),
 		},
 		inline: {
@@ -70,30 +71,38 @@ export const text = recipe({
 			}),
 		},
 	},
+	defaultVariants: {
+		level: 3,
+	},
 });
 
 /**
  * Typography SubText
  */
 export const subText = recipe({
-	base: sprinkles({
-		fontSize: 'sm',
-		lineHeight: '5',
-	}),
+	base: sprinkles({}),
 
 	variants: {
 		level: {
 			1: sprinkles({
+				fontSize: 'sm',
 				fontWeight: 'bold',
+				lineHeight: '5.5',
 			}),
 			2: sprinkles({
+				fontSize: 'sm',
 				fontWeight: 'semibold',
+				lineHeight: '5.5',
 			}),
 			3: sprinkles({
-				fontWeight: 'medium',
+				fontSize: 'xs',
+				fontWeight: 'semibold',
+				lineHeight: '5',
 			}),
 			4: sprinkles({
-				fontWeight: 'normal',
+				fontSize: 'xs',
+				fontWeight: 'medium',
+				lineHeight: '5',
 			}),
 		},
 		inline: {
@@ -109,20 +118,21 @@ export const subText = recipe({
  */
 export const footNote = recipe({
 	base: sprinkles({
-		fontSize: 'xs',
 		lineHeight: '5',
 	}),
 
 	variants: {
 		level: {
 			1: sprinkles({
+				fontSize: 'xxs',
 				fontWeight: 'semibold',
 			}),
 			2: sprinkles({
+				fontSize: 'xxs',
 				fontWeight: 'medium',
 			}),
 			3: sprinkles({
-				fontSize: 'xxs',
+				fontSize: 'xxxs',
 				fontWeight: 'medium',
 				lineHeight: '3',
 			}),
