@@ -9,12 +9,13 @@ const fadeIn = keyframes({
 
 export const toast = style([
 	sprinkles({
-		background: 'black',
+		background: 'primary300',
+
+		paddingX: '4',
+		paddingY: '3',
+		borderRadius: '2xl',
 	}),
 	{
-		padding: '13px 24px 13px 24px',
-		borderRadius: '100px',
-
 		animationDelay: '100ms',
 		animation: `${fadeIn} 200ms cubic-bezier(0.37, 0, 0.63, 1) forwards`,
 	},
