@@ -11,7 +11,7 @@ export { Heading } from './Typography/Heading';
 export { Container } from './Container/Container';
 export { GridItem } from './Grid/GridItem';
 export { Grid } from './Grid/Grid';
-export { Textarea } from './Textarea/Textarea';
+export { Textarea, type TextareaProps } from './Textarea/Textarea';
 export { Input, type InputProps } from './Input/Input';
 export { Badge, type BadgeProps } from './Badge/Badge';
 
