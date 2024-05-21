@@ -4,7 +4,8 @@
   "private": true,
   "exports": {
     ".": "./components/index.ts",
-    "./icons": "./icons/index.ts"
+    "./icons": "./icons/index.ts",
+    "./tokens": "./tokens/index.ts"
   },
   "scripts": {
     "format": "pnpm biome format --write .",
