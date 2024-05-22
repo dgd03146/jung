@@ -13,7 +13,9 @@
     "web": "pnpm --filter web",
     "admin": "pnpm --filter admin",
     "api": "pnpm --filter api",
-    "workshop": "pnpm --filter workshop"
+    "workshop": "pnpm --filter workshop",
+    "build-storybook": "turbo run build-storybook --filter=workshop",
+    "chromatic": "turbo run chromatic --filter=workshop"
   },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
