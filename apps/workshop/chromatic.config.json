@@ -1,0 +1,7 @@
+{
+  "autoAcceptChanges": "develop",
+  "exitOnceUploaded": true,
+  "onlyChanged": true,
+  "externals": ["public/**"],
+  "skip": "dependabot/**"
+}

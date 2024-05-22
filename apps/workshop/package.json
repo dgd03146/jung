@@ -1,37 +1,39 @@
 {
-	"name": "workshop",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"format": "pnpm biome format --write ./src",
-		"lint": "pnpm biome lint ./src --apply",
-		"preview": "vite preview",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
-	},
-	"dependencies": {
-		"@jung/design-system": "workspace:*",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
-	},
-	"devDependencies": {
-		"@jung/configs": "workspace:*",
-		"@storybook/addon-essentials": "^8.0.5",
-		"@storybook/addon-interactions": "^8.0.5",
-		"@storybook/addon-links": "^8.0.5",
-		"@storybook/blocks": "^8.0.5",
-		"@storybook/react": "^8.0.5",
-		"@storybook/react-vite": "^8.0.5",
-		"@storybook/test": "^8.0.5",
-		"@types/react": "^18.2.56",
-		"@types/react-dom": "^18.2.19",
-		"@vanilla-extract/vite-plugin": "latest",
-		"@vitejs/plugin-react-swc": "latest",
-		"storybook": "^8.0.5",
-		"typescript": "^5.2.2",
-		"vite": "^5.1.4"
-	}
+  "name": "workshop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "format": "pnpm biome format --write ./src",
+    "lint": "pnpm biome lint ./src --apply",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "chromatic": "pnpm dlx chromatic"
+  },
+  "dependencies": {
+    "@jung/design-system": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@jung/configs": "workspace:*",
+    "@storybook/addon-essentials": "^8.0.5",
+    "@storybook/addon-interactions": "^8.0.5",
+    "@storybook/addon-links": "^8.0.5",
+    "@storybook/blocks": "^8.0.5",
+    "@storybook/react": "^8.0.5",
+    "@storybook/react-vite": "^8.0.5",
+    "@storybook/test": "^8.0.5",
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "@vanilla-extract/vite-plugin": "latest",
+    "@vitejs/plugin-react-swc": "latest",
+    "chromatic": "^11.4.0",
+    "storybook": "^8.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4"
+  }
 }
