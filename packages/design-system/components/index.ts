@@ -11,8 +11,8 @@ export { ListItem } from './List/ListItem';
 export { List } from './List/List';
 
 // Components
-export { Select } from './Select';
-export { type SelectProps } from './Select/Select';
+export { Select, type SelectProps } from './Select';
+
 export { Tabs } from './Tabs';
 export { Tag, type TagProps } from './Tag/Tag';
 export { Typography } from './Typography';
