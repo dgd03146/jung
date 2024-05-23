@@ -2,7 +2,7 @@ import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
-import { button } from './Button.css';
+import * as styles from './Button.css';
 
 export interface ButtonProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				display='flex'
 				alignItems='center'
 				columnGap='1'
-				className={button({ variant, size, rounded, disabled, loading })}
+				className={styles.button({ variant, size, rounded, disabled, loading })}
 				disabled={disabled || loading}
 				aria-busy={loading}
 				ref={ref}
