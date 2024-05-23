@@ -13,7 +13,7 @@ export interface SelectProps
 	defaultValue?: string;
 }
 
-export const Select = forwardRef<HTMLDivElement, SelectProps>(
+export const SelectRoot = forwardRef<HTMLDivElement, SelectProps>(
 	({ children, defaultValue, onValueChange, ...restProps }, ref?) => {
 		const valueProps = {
 			defaultValue,
