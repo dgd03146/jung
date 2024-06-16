@@ -12,7 +12,8 @@
     "lint": "pnpm biome lint . --apply",
     "generate:component": "turbo gen react-component",
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "vitest"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",
