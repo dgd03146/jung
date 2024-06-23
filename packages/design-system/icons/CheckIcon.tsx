@@ -1,5 +1,5 @@
 import { BiCheck } from 'react-icons/bi';
 
 export const CheckIcon = () => {
-	return <BiCheck aria-hidden />;
+	return <BiCheck aria-label='checkIcon' />;
 };
