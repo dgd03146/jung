@@ -1,36 +1,33 @@
 {
-	"name": "admin",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"format": "pnpm biome format --write ./src",
-		"lint": "pnpm biome lint ./src --apply",
-		"preview": "vite preview",
-		"test:e2e": "playwright test",
-		"test": "vitest",
-		"test:ui": "vitest --ui"
-	},
-	"dependencies": {
-		"@jung/design-system": "workspace:*",
-		"@tanstack/react-query": "^5.40.0",
-		"@tanstack/react-query-devtools": "^5.40.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"zustand": "^4.5.2"
-	},
-	"devDependencies": {
-		"@jung/configs": "workspace:*",
-		"@types/react": "^18.3.3",
-		"@types/react-dom": "^18.3.0",
-		"@vanilla-extract/vite-plugin": "^4.0.10",
-		"@vitejs/plugin-react-swc": "^3.7.0",
-		"@vitest/coverage-v8": "^1.6.0",
-		"@vitest/ui": "^1.6.0",
-		"typescript": "^5.4.5",
-		"vite": "^5.2.12",
-		"vitest": "^1.6.0"
-	}
+  "name": "admin",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "format": "pnpm biome format --write ./src",
+    "lint": "pnpm biome lint ./src --apply",
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@jung/design-system": "workspace:*",
+    "@tanstack/react-query": "^5.40.0",
+    "@tanstack/react-query-devtools": "^5.40.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@jung/configs": "workspace:*",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/ui": "^1.6.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.12"
+  }
 }

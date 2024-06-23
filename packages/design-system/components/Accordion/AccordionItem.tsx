@@ -1,4 +1,4 @@
-import * as styles from './AccordionItem.css';
+import * as styles from './Accordion.css';
 
 import { type HTMLAttributes, forwardRef, useId } from 'react';
 

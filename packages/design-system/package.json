@@ -12,7 +12,8 @@
     "lint": "pnpm biome lint . --apply",
     "generate:component": "turbo gen react-component",
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "vitest"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",
@@ -36,6 +37,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "react-icons": "^5.2.1",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "react-dom": "^18.3.1"
   }
 }

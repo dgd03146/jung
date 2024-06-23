@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-type AccordionContextState = {
+export type AccordionContextState = {
 	type?: 'single' | 'multiple';
 	openIndexes: Set<number>;
 	handleToggleIndex: (index: number) => void;

@@ -42,12 +42,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...restProps}
 			>
-				{loading && (
-					<ClipLoader color={'#0142C0'} size={14} aria-hidden='true' />
-				)}
-				{prefix}
+				{loading && <ClipLoader color={'#0142C0'} size={14} role='status' />}
+				{prefix && prefix}
 				{children}
-				{suffix}
+				{suffix && suffix}
 			</Box>
 		);
 	},

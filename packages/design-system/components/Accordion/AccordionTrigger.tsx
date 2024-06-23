@@ -1,4 +1,4 @@
-import * as styles from './AccordionTrigger.css';
+import * as styles from './Accordion.css';
 
 import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
 import { KeyboardArrowUp } from '../../icons';
@@ -30,7 +30,7 @@ export const AccordionTrigger = forwardRef<
 			onClick={() => handleToggleIndex(index!)}
 			role='button'
 			id={id}
-			aria-expanded={isOpen}
+			aria-expanded={isOpen ? 'true' : 'false'}
 			aria-controls={id}
 			{...restProps}
 		>

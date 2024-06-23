@@ -1,4 +1,4 @@
-import * as S from './AccordionContent.css';
+import * as styles from './Accordion.css';
 
 import { Children, type HTMLAttributes, forwardRef, useRef } from 'react';
 
@@ -34,21 +34,22 @@ export const AccordionContent = forwardRef<
 	return (
 		<Box
 			style={assignInlineVars({
-				[S.contentHeightVar]: `${contentHeight}px`,
+				[styles.contentHeightVar]: `${contentHeight}px`,
 			})}
-			className={S.content({ isOpen })}
+			className={styles.content({ isOpen })}
 			ref={contentRef || ref}
 			HIDDEN={isOpen ? undefined : 'until-found'}
 			role='region'
 			aria-labelledby={id}
 			tabIndex={isOpen ? 0 : -1}
 			id={`${id}-content`}
+			data-testid={`accordion-content-${index}`}
 			{...restProps}
 		>
 			{Children.map(children, (child, index) => (
-				<div key={index} className={S.contentChild}>
+				<Box key={index} className={styles.contentChild}>
 					{child}
-				</div>
+				</Box>
 			))}
 		</Box>
 	);
