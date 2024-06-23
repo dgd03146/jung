@@ -53,3 +53,35 @@ globalStyle(`${contentChild}:not(:last-child)`, {
 	paddingBottom: '16px',
 	borderBottom: '0.5px solid #EFEFEF',
 });
+
+export const trigger = sprinkles({
+	display: 'flex',
+	justifyContent: 'space-between',
+	cursor: 'pointer',
+});
+
+export const arrow = style([
+	sprinkles({
+		height: 'fit',
+		color: 'primary',
+	}),
+	{
+		transition: 'transform 300ms cubic-bezier(0.65, 0, 0.35, 1)',
+	},
+]);
+
+export const arrowOpen = style({
+	transform: 'rotate(-180deg)',
+});
+
+export const item = style([
+	sprinkles({
+		display: 'flex',
+		flexDirection: 'column',
+		paddingY: '6',
+		paddingX: '4',
+	}),
+	{
+		borderBottom: '1px solid #EFEFEF',
+	},
+]);

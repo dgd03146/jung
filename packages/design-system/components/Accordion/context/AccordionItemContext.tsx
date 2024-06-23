@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-type AccordionItemContextState = {
+export type AccordionItemContextState = {
 	index?: number;
 	id?: string;
 };
