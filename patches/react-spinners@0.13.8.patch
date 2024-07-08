@@ -1,0 +1,19 @@
+diff --git a/tests/AllLoaders.test.tsx b/tests/AllLoaders.test.tsx
+index 4c21f83d94d6160358fc84c9bb6af0abd3644e07..3fcf66037072a39e68bdde18165a523cf67a5df5 100644
+--- a/tests/AllLoaders.test.tsx
++++ b/tests/AllLoaders.test.tsx
+@@ -1,9 +1,10 @@
+-import * as React from "react";
+-import { render, screen } from "@testing-library/react";
+ import "@testing-library/jest-dom";
+ 
+-import * as Loaders from "../src";
+-import { LoaderHeightWidthRadiusProps, LoaderSizeMarginProps } from "../src/helpers/props";
++import * as Loaders from "./AllLoaders.test";
++import * as React from "react";
++
++import { LoaderHeightWidthRadiusProps, LoaderSizeMarginProps } from "../helpers/props";
++import { render, screen } from "@testing-library/react";
+ 
+ Object.entries(Loaders).forEach((loader) => {
+   const name = loader[0];
