@@ -1,5 +1,3 @@
-'use client';
-
 import { type HTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
