@@ -1,9 +1,9 @@
 import { elementResets, sprinkles } from '../styles';
 
-import type { Atoms } from '@/types/atoms';
 import clsx from 'clsx';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
+import type { Atoms } from '../types/atoms';
 
 /**
 

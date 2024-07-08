@@ -2,7 +2,7 @@
   "name": "jung",
   "private": true,
   "scripts": {
-    "build": "turbo build && rm -rf vite.config.*.timestamp-*",
+    "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "turbo format",
