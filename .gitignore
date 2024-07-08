@@ -40,3 +40,7 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+
+# Vite
+**/vite.config.*.timestamp-*
