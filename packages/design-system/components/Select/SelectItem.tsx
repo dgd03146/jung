@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '..';
 
 import { type LiHTMLAttributes, forwardRef, useEffect, useRef } from 'react';

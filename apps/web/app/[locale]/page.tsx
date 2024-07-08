@@ -1,6 +1,7 @@
 import ExampleClientComponent from '@/components/ExampleClientComponent';
 import LanguageChanger from '@/components/LanguageChanger';
 import TranslationProvider from '@/components/TranslationsProvider';
+import { Button } from '@jung/design-system/components';
 import initTranslations from '../i18n';
 
 type Params = {
@@ -16,6 +17,7 @@ export default async function Home({ params: { locale } }: Params) {
 
 	return (
 		<div>
+			<Button>hihi</Button>
 			<TranslationProvider
 				locale={locale}
 				resources={resources}
