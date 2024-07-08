@@ -11,8 +11,7 @@ export interface Props
 export const SelectMenu = forwardRef<HTMLUListElement, Props>(
 	({ children, ...restProps }, ref?) => {
 		// value가 있으면 value 없으면 placeholder
-		const { open, onValueChange, setSelectedOption, selectedOption, setOpen } =
-			useSelectContext();
+		const { open, selectedOption } = useSelectContext();
 
 		return (
 			<Box

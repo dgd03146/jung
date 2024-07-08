@@ -69,7 +69,7 @@ export const responsiveProperties = defineProperties({
 		gridTemplateColumns: grid.gridTemplate,
 		gridTemplateRows: grid.gridTemplate,
 		gridColumn: grid.gridColumnRow,
-		girdRow: grid.gridColumnRow,
+		gridRow: grid.gridColumnRow,
 		gridColumnStart: grid.gridStartEnd,
 		gridColumnEnd: grid.gridStartEnd,
 		gridRowStart: grid.gridStartEnd,

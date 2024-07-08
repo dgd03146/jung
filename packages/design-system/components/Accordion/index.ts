@@ -1,3 +1,5 @@
+'use client';
+
 import { Accordion } from './Accordion';
 import { AccordionContent } from './AccordionContent';
 import { AccordionItem } from './AccordionItem';

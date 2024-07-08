@@ -1,3 +1,5 @@
+'use client';
+
 import * as styles from './Accordion.css';
 
 import { Children, type HTMLAttributes, forwardRef, useRef } from 'react';

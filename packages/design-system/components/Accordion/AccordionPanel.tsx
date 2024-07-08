@@ -1,3 +1,5 @@
+'use client';
+
 import { type HTMLAttributes, forwardRef, useRef } from 'react';
 
 import { Box } from '..';

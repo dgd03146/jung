@@ -13,8 +13,7 @@ export interface Props
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 	({ children, disabled, placeholder, ...restProps }, ref?) => {
-		const { open, setOpen, selectedOption, setSelectedOption, defaultValue } =
-			useSelectContext();
+		const { open, setOpen, selectedOption } = useSelectContext();
 		//   value가 있으면 value 없으면 defaultValue
 
 		// TODO: disabled일 때 버튼 hover 안되게 스타일 변경

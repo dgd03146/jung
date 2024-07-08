@@ -1,3 +1,5 @@
+'use client';
+
 import { type RefObject, useEffect } from 'react';
 
 export const useBeforeMatch = <T extends HTMLElement>(

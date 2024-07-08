@@ -18,8 +18,8 @@ export interface ButtonProps
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
-			variant,
-			size,
+			variant = 'primary',
+			size = 'sm',
 			rounded,
 			disabled,
 			prefix,

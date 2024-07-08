@@ -1,3 +1,5 @@
+'use client';
+
 import { Tabs } from './Tabs';
 import { TabsContent } from './TabsContent';
 import { TabsList } from './TabsList';

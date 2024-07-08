@@ -10,7 +10,7 @@ interface Props
 	rowGap?: keyof typeof responsiveProperties.styles.gridRowGap.values;
 	columnGap?: keyof typeof responsiveProperties.styles.gridColumnGap.values;
 	column?: keyof typeof responsiveProperties.styles.gridColumn.values;
-	row?: keyof typeof responsiveProperties.styles.girdRow.values;
+	row?: keyof typeof responsiveProperties.styles.gridRow.values;
 	autoRows?: keyof typeof responsiveProperties.styles.gridAutoRows.values;
 	autoColumns?: keyof typeof responsiveProperties.styles.gridAutoColumns.values;
 	templateRows?: keyof typeof responsiveProperties.styles.gridTemplateRows.values;
@@ -37,7 +37,7 @@ export const Grid = forwardRef<HTMLDivElement, Props>(
 				as='div'
 				display='grid'
 				gridColumn={column}
-				girdRow={row}
+				gridRow={row}
 				gridColumnGap={columnGap}
 				gridRowGap={rowGap}
 				gridAutoColumns={autoColumns}
