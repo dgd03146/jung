@@ -17,6 +17,10 @@
     "@jung/design-system": "workspace:*",
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-query-devtools": "^5.40.0",
+    "@vanilla-extract/css": "^1.15.2",
+    "@vanilla-extract/css-utils": "^0.1.4",
+    "@vanilla-extract/dynamic": "^2.1.1",
+    "@vanilla-extract/recipes": "^0.5.3",
     "framer-motion": "^11.2.10",
     "negotiator": "^0.6.3",
     "next": "^14.2.3",
@@ -27,9 +31,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@types/negotiator": "^0.6.3",
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
+    "@types/negotiator": "^0.6.3",
     "@types/node": "^20.14.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
