@@ -1,4 +1,4 @@
-import { HomePage } from '@/src/views';
+import { HomePage } from '@/fsd/views';
 
 const page = () => {
 	return <HomePage />;
