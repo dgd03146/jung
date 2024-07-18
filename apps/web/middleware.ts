@@ -1,12 +1,25 @@
-import i18nConfig from "@/i18nConfig";
-import { i18nRouter } from "next-i18n-router";
-import type { NextRequest } from "next/server";
+import {
+	defaultLocale,
+	handleLocaleRedirection,
+	locales,
+} from '@/fsd/shared/config';
+import { type NextRequest, NextResponse } from 'next/server';
+
+const localeCodes = locales.map((locale) => locale.code);
 
 export function middleware(request: NextRequest) {
-	return i18nRouter(request, i18nConfig);
+	const redirectResponse = handleLocaleRedirection(
+		request,
+		localeCodes,
+		defaultLocale,
+	);
+
+	if (redirectResponse) {
+		return redirectResponse;
+	}
+	return NextResponse.next();
 }
 
-// applies this middleware only to files in the app directory
 export const config = {
-	matcher: "/((?!api|static|.*\\..*|_next).*)",
+	matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

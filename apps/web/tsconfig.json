@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
+      "@/fsd/*": ["./src/*"],
       "@/components/*": ["components/*"],
       "@jung/design-system/*": ["../../packages/design-system/*"],
       "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
@@ -13,7 +14,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -24,7 +26,8 @@
     "jest.config.js",
     "playwright.config.js",
     "i18nConfig.js",
-    "app/i18n.js"
+    "app/i18n.js",
+    "middleware.js"
   ],
   "exclude": ["node_modules"]
 }
