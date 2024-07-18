@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({
+	weight: ['400', '500', '600', '700'],
+	subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
-	title: 'i18n + Next.js 14 + FSD',
-	description:
-		'Implementation of i18n functionality in Next.js 14 using sub-path routing.',
+	title: 'I am GeoJung',
+	description: 'All about Jung',
 };
 
 export default function RootLayout({
@@ -16,7 +18,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>{children}</body>
+			<body className={poppins.className}>{children}</body>
 		</html>
 	);
 }
