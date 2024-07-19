@@ -34,11 +34,11 @@ export const button = recipe({
 				border: 'none',
 				background: {
 					base: 'transparent',
-					hover: 'primary',
+					// hover: 'primary',
 				},
 				color: {
 					base: 'primary',
-					hover: 'white',
+					hover: 'primary100',
 				},
 			}),
 		},

@@ -1,1 +1,1 @@
-export { DictionaryProvider } from './DictionaryProvider';
+export { DictionaryProvider } from './i18n/DictionaryProvider';

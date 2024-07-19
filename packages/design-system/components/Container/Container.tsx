@@ -10,7 +10,7 @@ interface Props
 }
 
 export const Container = forwardRef<HTMLDivElement, Props>(
-	({ centerContent, ...restProps }, ref) => {
+	({ centerContent, width, maxWidth, ...restProps }, ref) => {
 		const display = centerContent ? 'flex' : 'block';
 		const alignItems = centerContent ? 'center' : 'stretch';
 		const flexDirection = centerContent ? 'column' : 'row';
@@ -18,6 +18,8 @@ export const Container = forwardRef<HTMLDivElement, Props>(
 		return (
 			<Box
 				as='div'
+				width={width || 'full'}
+				maxWidth={maxWidth || 'full'}
 				display={display}
 				alignItems={alignItems}
 				flexDirection={flexDirection}

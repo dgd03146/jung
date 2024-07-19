@@ -1,21 +1,36 @@
 import { sprinkles } from '@jung/design-system/styles';
-import { globalStyle } from '@vanilla-extract/css';
+
 import { style } from '@vanilla-extract/css';
 
-globalStyle('a', {
-	textDecoration: 'none',
-	color: 'black',
+import { globalStyle } from '@vanilla-extract/css';
+
+globalStyle('html', {
+	margin: 0,
+	padding: 0,
 });
 
 globalStyle('body', {
 	margin: 0,
-
+	padding: 0,
 	boxSizing: 'border-box',
+});
+
+globalStyle('button', {
+	cursor: 'pointer',
+	background: 'none',
+});
+
+globalStyle('a', {
+	outline: 'none',
+	textDecoration: 'none',
+	color: 'black',
 });
 
 export const container = style({
 	display: 'flex',
+
 	flexDirection: 'column',
+
 	minHeight: '100dvh',
 });
 

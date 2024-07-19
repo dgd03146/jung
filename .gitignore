@@ -44,7 +44,7 @@ yarn-error.log*
 
 # Vite
 **/vite.config.*.timestamp-*
-
+vite.config.*.timestamp-*
 
 # Compiled output
 **/*.js
