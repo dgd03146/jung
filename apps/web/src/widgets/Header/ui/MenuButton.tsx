@@ -12,7 +12,10 @@ const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 		aria-expanded={isMenuOpen}
 		aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
 	>
-		<Typography.Text level={1} color={isMenuOpen ? 'white' : 'primary'}>
+		<Typography.Text
+			level={1}
+			color={{ base: isMenuOpen ? 'white' : 'primary', hover: 'primary200' }}
+		>
 			{isMenuOpen ? 'close.' : 'menu.'}
 		</Typography.Text>
 	</Button>

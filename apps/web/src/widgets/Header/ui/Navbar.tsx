@@ -12,8 +12,6 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 		<Box
 			as='header'
 			position='sticky'
-			minHeight='24'
-			height='24'
 			paddingY='4'
 			width='full'
 			maxWidth='11/12'
@@ -22,12 +20,24 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			left={0}
 			zIndex={isMenuOpen ? '20' : '10'}
 		>
-			<Flex justifyContent='space-between' alignItems='center'>
-				<Link href='/'>
-					<Typography.Text level={1} color={isMenuOpen ? 'white' : 'primary'}>
-						jung.
-					</Typography.Text>
-				</Link>
+			<Flex
+				justifyContent={isMenuOpen ? 'flex-end' : 'space-between'}
+				alignItems='center'
+			>
+				{!isMenuOpen && (
+					<Link href='/'>
+						<Typography.Text
+							level={1}
+							color={{
+								base: isMenuOpen ? 'white' : 'primary',
+								hover: 'primary200',
+							}}
+						>
+							jung.
+						</Typography.Text>
+					</Link>
+				)}
+
 				<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 			</Flex>
 		</Box>
