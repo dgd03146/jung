@@ -1,4 +1,4 @@
-import { Layout } from '@/src/widgets';
+import { Layout } from '@/fsd/widgets';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 

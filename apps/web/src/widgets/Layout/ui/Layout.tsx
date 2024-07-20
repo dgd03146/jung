@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<Container className={styles.container}>
 			<Header />
-			<Container centerContent flexGrow={1}>
+			<Container centerContent className={styles.content}>
 				<Grid className={styles.main}>
 					<Grid className={styles.section}>{children}</Grid>
 				</Grid>

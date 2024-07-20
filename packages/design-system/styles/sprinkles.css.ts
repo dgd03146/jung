@@ -82,6 +82,8 @@ export const responsiveProperties = defineProperties({
 		columnGap: vars.space,
 		rowGap: vars.space,
 
+		lineHeight: lineHeights,
+
 		width: vars.contentWidth,
 		height: vars.space,
 		minWidth: vars.contentWidth,
@@ -141,7 +143,7 @@ export const unresponsiveProperties = defineProperties({
 		border: ['none'],
 		isolation: ['isolate'],
 		pointerEvents: ['none'],
-		lineHeight: lineHeights,
+
 		objectFit: ['contain', 'cover'],
 		outlineWidth: vars.border.width,
 		borderRadius: vars.border.radius,

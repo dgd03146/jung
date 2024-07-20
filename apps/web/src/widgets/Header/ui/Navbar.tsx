@@ -13,6 +13,7 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			as='header'
 			position='sticky'
 			paddingY='4'
+			height='18'
 			width='full'
 			maxWidth='11/12'
 			marginX='auto'
@@ -37,7 +38,6 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 						</Typography.Text>
 					</Link>
 				)}
-
 				<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 			</Flex>
 		</Box>

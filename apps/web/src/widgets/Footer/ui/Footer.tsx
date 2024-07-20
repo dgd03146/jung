@@ -11,8 +11,11 @@ const Footer = () => {
 			as='footer'
 			paddingY='4'
 			width='full'
+			height='18'
 			maxWidth='11/12'
 			marginX='auto'
+			position='sticky'
+			bottom={0}
 			zIndex='10'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>

@@ -1,7 +1,4 @@
 import { HomePage } from '@/fsd/views';
-
-const page = () => {
+export default function Page() {
 	return <HomePage />;
-};
-
-export default page;
+}
