@@ -1,6 +1,12 @@
 'use client';
 
-import { AnimatedLine, textOpacity, useInViewAnimation } from '@/fsd/shared';
+import {
+	AnimatedLine,
+	mountAnim,
+	rotateX,
+	textOpacity,
+	useInViewAnimation,
+} from '@/fsd/shared';
 import { Stack, Typography } from '@jung/design-system';
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
@@ -11,7 +17,7 @@ const HomePage = () => {
 
 	const { controls } = useInViewAnimation({
 		once: false,
-		repeatDelay: 1000,
+		repeatDelay: 10000,
 		ref: spanRef,
 	});
 
@@ -39,9 +45,11 @@ const HomePage = () => {
 					))}
 				</motion.span>
 			</Typography.Heading>
-			<Typography.Text {...styles.subtitle}>
-				All I can do is do our best to relish this remarkable ride.
-			</Typography.Text>
+			<motion.div variants={rotateX} {...mountAnim}>
+				<Typography.Text {...styles.subtitle}>
+					all I can do is do our best to relish this remarkable ride.
+				</Typography.Text>
+			</motion.div>
 		</Stack>
 	);
 };

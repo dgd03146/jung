@@ -22,18 +22,13 @@ export const AnimatedLine = ({ line, animation }: AnimatedLineProps) => {
 							style={{ display: 'inline-block' }}
 							variants={animation}
 							whileHover={{
-								transform: [
-									'scale3D(1,1,1)',
-									'scale3D(1.4,.55,1)',
-									'scale3D(.75,1.25,1)',
-									'scale3D(1.25,.85,1)',
-									'scale3D(.9,1.05,1)',
-									'scale3D(1,1,1)',
-								],
+								scale: [1, 1.2, 0.9, 1.1, 1],
+								rotate: [0, 10, -10, 5, 0],
 								color: '#A8C2F5',
 								transition: {
-									times: [0, 0.4, 0.6, 0.7, 0.8, 0.9],
-									duration: 0.9,
+									duration: 1,
+									ease: 'easeInOut',
+									times: [0, 0.2, 0.4, 0.6, 0.8],
 								},
 							}}
 						>
