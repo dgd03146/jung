@@ -51,6 +51,13 @@ export const lineHeights = {
 	'10': '2.5rem', // 40px
 	'12': '3rem', // 48px
 	'14': '3.5rem', // 56px
+	'15': '4rem',
+	'16': '5rem',
+	'17': '6rem',
+	'18': '7rem',
+	'19': '8rem',
+	'20': '9rem',
+	hero: '11.5rem',
 };
 
 export const fontWeights = {

@@ -13,7 +13,8 @@
     "generate:component": "turbo gen react-component",
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest"
+    "test": "vitest",
+      "clean": "find . -type f -name 'vite.config.*.timestamp-*' -ls -delete 2>/dev/null"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",

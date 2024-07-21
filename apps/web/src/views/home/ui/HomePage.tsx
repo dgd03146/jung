@@ -1,19 +1,57 @@
 'use client';
 
-import { useDictionary } from '@/fsd/shared';
+import {
+  AnimatedLine,
+  mountAnim,
+  rotateX,
+  textOpacity,
+  useInViewAnimation,
+} from '@/fsd/shared';
+import { Stack, Typography } from '@jung/design-system';
+import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import * as styles from './HomePage.css';
 
 const HomePage = () => {
-	const { dictionary } = useDictionary();
+  const spanRef = useRef<HTMLSpanElement>(null);
 
-	return (
-		<div className='h-[30rem] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center'>
-			<div className='text-center p-8 bg-white bg-opacity-80 rounded-lg shadow-md'>
-				<h1 className='font-bold text-4xl mb-4 text-gray-900'>
-					{dictionary.home.hello}
-				</h1>
-			</div>
-		</div>
-	);
+  const { controls } = useInViewAnimation({
+    once: false,
+    repeatDelay: 10000,
+    ref: spanRef,
+  });
+
+  const textArray = ['hello!', `i'm geojung.`];
+
+  return (
+    <Stack space="0" align="left" justifyContent="center">
+      <Typography.Heading {...styles.heading}>
+        <motion.span
+          ref={spanRef}
+          initial="hidden"
+          animate={controls}
+          variants={{
+            visible: { transition: { staggerChildren: 0.1 } },
+            hidden: {},
+          }}
+          aria-hidden
+        >
+          {textArray.map((line, lineIndex) => (
+            <AnimatedLine
+              key={`${line}-${lineIndex}`}
+              line={line}
+              animation={textOpacity}
+            />
+          ))}
+        </motion.span>
+      </Typography.Heading>
+      <motion.div variants={rotateX} {...mountAnim}>
+        <Typography.Text {...styles.subtitle}>
+          all I can do is do our best to relish this remarkable ride.
+        </Typography.Text>
+      </motion.div>
+    </Stack>
+  );
 };
 
 export default HomePage;

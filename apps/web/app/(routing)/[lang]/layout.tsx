@@ -1,5 +1,5 @@
+import '@/fsd/app/styles/global.css';
 import { getDictionary } from '@/fsd/shared/config';
-import { NavigationLinks } from '@/fsd/shared/ui';
 import { DictionaryProvider } from '@/src/app/providers';
 
 interface DictionaryLayoutProps {
@@ -18,7 +18,7 @@ export default async function DictionaryLayout({
 		>
 			{children}
 			{/* Just for convenient switching between different routes */}
-			<NavigationLinks />
+			{/* <NavigationLinks /> */}
 		</DictionaryProvider>
 	);
 }

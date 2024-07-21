@@ -8,5 +8,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.1.4",
     "@vanilla-extract/vite-plugin": "^4.0.11"
+  },
+  "scripts":{
+      "clean": "find . -type f -name 'vite.config.*.timestamp-*' -ls -delete 2>/dev/null"
   }
 }

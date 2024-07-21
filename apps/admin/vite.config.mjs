@@ -1,14 +1,14 @@
 /// <reference types="vitest" />
-/// <reference types="vite/client" />
-
+import { defineConfig } from 'vite'
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
 import baseConfig from "@jung/configs/vitest.config.mjs"
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),...baseConfig.plugins],
+  plugins: [react(), vanillaExtractPlugin()],
   test: {
-    ...baseConfig.test
-  }
-});
+    ...baseConfig.test,
+    // 추가적인 Vitest 설정
+  },
+  // 기타 Vite 설정
+})
