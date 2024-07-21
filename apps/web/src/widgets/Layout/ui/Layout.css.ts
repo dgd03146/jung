@@ -12,7 +12,7 @@ export const container = style({
 });
 
 export const content = style({
-	flex: 1,
+	// flex: 1,
 	height: calc.subtract('100dvh', '9rem'),
 });
 
