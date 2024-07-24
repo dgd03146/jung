@@ -29,13 +29,16 @@ export const tag = recipe({
 		},
 		size: {
 			sm: sprinkles({
-				padding: '1',
+				paddingX: '3',
+				paddingY: '1',
 			}),
 			md: sprinkles({
-				padding: '2',
+				padding: '3.5',
+				paddingY: '1.5',
 			}),
 			lg: sprinkles({
-				padding: '3',
+				paddingX: '4',
+				paddingY: '2',
 			}),
 		},
 		rounded: {

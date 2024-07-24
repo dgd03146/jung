@@ -1,5 +1,7 @@
 export const gridTemplate = {
+	'1': '1fr',
 	'1/2': 'repeat(2, 1fr)',
+	'1/3': 'repeat(3, 1fr)',
 	'1/4': 'repeat(4, 1fr)',
 	'1/6': 'repeat(6, 1fr)',
 	'1/8': 'repeat(8, 1fr)',

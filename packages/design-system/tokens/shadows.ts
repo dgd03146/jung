@@ -1,5 +1,6 @@
 export const shadows = {
-	primary: 'rgba(1, 66, 192, 0.2) 1.95px 1.95px 2.6px',
+	// primary: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+	primary: 'rgba(1, 66, 192, 0.2) 0px 1px 4px 0px',
 	secondary: 'rgba(1, 66, 192, 0.2) 0px 4px 8px',
 	none: 'none',
 	outline: 'inset 0 0 0 1px',

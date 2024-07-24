@@ -5,12 +5,14 @@ import type { AtomProps } from '../../types/atoms';
 
 export interface Props
 	extends Omit<HTMLAttributes<HTMLParagraphElement>, 'color'>,
-		AtomProps {}
+		AtomProps {
+	level?: 1 | 2 | 3;
+}
 
 export const CardDescription = forwardRef<HTMLParagraphElement, Props>(
-	({ children, ...restProps }, ref?) => {
+	({ children, level, ...restProps }, ref?) => {
 		return (
-			<Typography.Text level={2} ref={ref} {...restProps}>
+			<Typography.Text level={level || 3} ref={ref} {...restProps}>
 				{children}
 			</Typography.Text>
 		);

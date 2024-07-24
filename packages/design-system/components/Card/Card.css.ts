@@ -1,6 +1,7 @@
-import { globalStyle } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+
+// box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 export const card = recipe({
 	base: [
@@ -44,20 +45,4 @@ export const card = recipe({
 		variant: 'primary',
 		layout: 'vertical',
 	},
-});
-
-/**
- * ImageMedia
- */
-
-export const imageWrapper = sprinkles({
-	borderRadius: '2xl',
-});
-globalStyle(`${imageWrapper} img`, {
-	maxInlineSize: '100%',
-
-	blockSize: 'auto',
-	objectFit: 'cover',
-	borderRadius: '16px',
-	display: 'block', // Ensure the image is displayed as a block-level element
 });

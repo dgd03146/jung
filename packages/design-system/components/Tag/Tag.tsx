@@ -2,7 +2,7 @@ import * as S from './Tag.css';
 
 import { type HTMLAttributes, forwardRef } from 'react';
 
-import { Box } from '..';
+import { Box, Typography } from '..';
 import type { AtomProps } from '../../types/atoms';
 
 export interface TagProps
@@ -23,7 +23,7 @@ export const Tag = forwardRef<HTMLDivElement, TagProps>(
 				ref={ref}
 				{...restProps}
 			>
-				{children}
+				<Typography.SubText level={2}>{children}</Typography.SubText>
 			</Box>
 		);
 	},

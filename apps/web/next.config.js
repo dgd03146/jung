@@ -6,7 +6,7 @@ const withVanillaExtract = createVanillaExtractPlugin(
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	transpilePackages: ['@jung/design-system'],
-
+	compress: true,
 
 	images: {
 		remotePatterns: [
