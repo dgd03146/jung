@@ -1,11 +1,13 @@
 import {
-	Button,
 	Card,
 	Container,
 	Flex,
 	Tag,
+	Typography,
 } from '@jung/design-system/components';
 import Image from 'next/image';
+import Link from 'next/link';
+import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './FeaturedPost.css';
 
 const Featured = () => {
@@ -33,7 +35,13 @@ const Featured = () => {
 						list to music
 					</Card.Description>
 					<Card.Actions alignItems='center'>
-						<Button>read more</Button>
+						<Link href={'/blog/a'} className={styles.link}>
+							<Typography.Text level={3} color='primary'>
+								read more
+							</Typography.Text>
+							<FaChevronRight size='12' color='#0142C0' />
+						</Link>
+						{/* <Button>read more</Button> */}
 					</Card.Actions>
 				</Card.Content>
 			</Card>

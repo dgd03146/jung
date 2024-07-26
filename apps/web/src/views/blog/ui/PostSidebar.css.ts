@@ -1,14 +1,8 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const imgContainer = style({
-	height: '250px',
-	borderRadius: '2xl',
-});
-
-export const link = style({
-	display: 'flex',
-	alignItems: 'center',
-	columnGap: '4px',
+	flex: '1',
+	height: '100px',
 });
 
 globalStyle(`${imgContainer} img`, {
@@ -22,9 +16,16 @@ globalStyle(`${imgContainer} img`, {
 export const textContainer = style({});
 
 globalStyle(`${textContainer} p`, {
+	maxWidth: '100%',
 	display: '-webkit-box',
-	WebkitLineClamp: 2,
+	WebkitLineClamp: 1,
 	WebkitBoxOrient: 'vertical',
 	overflow: 'hidden',
 	textOverflow: 'ellipsis',
+});
+
+export const link = style({
+	display: 'flex',
+	alignItems: 'center',
+	columnGap: '4px',
 });

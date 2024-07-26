@@ -1,6 +1,13 @@
-import { Button, Card, Flex, Stack, Tag } from '@jung/design-system/components';
+import {
+	Card,
+	Flex,
+	Stack,
+	Tag,
+	Typography,
+} from '@jung/design-system/components';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './Post.css';
 
 // FIXME: types로 빼기
@@ -42,8 +49,12 @@ const Post = ({
 					<Card.Description>{description}</Card.Description>
 				</Stack>
 				<Card.Actions>
-					<Link href={link}>
-						<Button>read more</Button>
+					<Link href={link} className={styles.link}>
+						<Typography.Text level={3} color='primary'>
+							read more
+						</Typography.Text>
+						<FaChevronRight size='12' color='#0142C0' />
+						{/* <Button>read more</Button> */}
 					</Link>
 				</Card.Actions>
 			</Card.Content>
