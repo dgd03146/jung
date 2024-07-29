@@ -61,7 +61,7 @@ export const text = recipe({
 			}),
 			3: sprinkles({
 				fontSize: 'base',
-				fontWeight: 'medium',
+				fontWeight: 'normal',
 				lineHeight: '6',
 			}),
 		},
@@ -91,7 +91,7 @@ export const subText = recipe({
 			}),
 			2: sprinkles({
 				fontSize: 'sm',
-				fontWeight: 'semibold',
+				fontWeight: 'medium',
 				lineHeight: '5.5',
 			}),
 			3: sprinkles({

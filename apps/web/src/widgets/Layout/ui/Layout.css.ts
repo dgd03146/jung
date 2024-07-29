@@ -1,7 +1,6 @@
 import { sprinkles } from '@jung/design-system/styles';
 
 import { style } from '@vanilla-extract/css';
-import { calc } from '@vanilla-extract/css-utils';
 
 export const container = style({
 	display: 'flex',
@@ -12,8 +11,8 @@ export const container = style({
 });
 
 export const content = style({
-	// flex: 1,
-	height: calc.subtract('100dvh', '9rem'),
+	flex: 1,
+	// height: calc.subtract('100dvh', '9rem'),
 });
 
 export const main = style([
@@ -36,7 +35,6 @@ export const main = style([
 			mobile: 'tablet',
 			tablet: 'tablet',
 			laptop: 'laptop',
-			desktop: 'desktop',
 		},
 	}),
 ]);
