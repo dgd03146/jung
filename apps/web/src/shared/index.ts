@@ -15,3 +15,5 @@ export {
 
 export { AnimatedLine } from './animation/ui';
 export { useInViewAnimation } from './animation/lib';
+
+export { trpc } from './trpc/lib';

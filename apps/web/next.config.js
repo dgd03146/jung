@@ -5,7 +5,10 @@ const withVanillaExtract = createVanillaExtractPlugin(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	transpilePackages: ['@jung/design-system'],
+
+	  /** Enables hot reloading for local packages without a build step */
+	transpilePackages: ['@jung/design-system', '@jung/server'],
+	
 	compress: true,
 
 	images: {
