@@ -11,7 +11,3 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
-
-// 추가 확인을 위해 환경 변수를 출력해봅니다.
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key:', supabaseKey);
