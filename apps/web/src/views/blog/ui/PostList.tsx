@@ -1,6 +1,7 @@
 'use client';
 
-import { trpc } from '@/fsd/shared';
+// TODO: 경로 수정
+import { usePostsQuery } from '@/src/features/blog/api/usePostQueies';
 import { Container, Grid } from '@jung/design-system/components';
 import Post from './Post';
 
@@ -38,7 +39,8 @@ import Post from './Post';
 // ];
 
 const PostList = () => {
-	const { data: posts } = trpc.post.getAllPosts.useQuery();
+	// trpc로 client에서 data fetching하기 react query처럼 사용
+	const { data: posts } = usePostsQuery();
 
 	console.log(posts, 'posts');
 
