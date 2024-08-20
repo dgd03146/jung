@@ -26,6 +26,7 @@ const Post = ({
 	imagesrc,
 	date,
 	tags,
+	id,
 	title,
 	description,
 	// link,
@@ -50,7 +51,7 @@ const Post = ({
 					<Card.Description>{description}</Card.Description>
 				</Stack>
 				<Card.Actions>
-					<Link href={`/blog/${title}` || '/not-found'} className={styles.link}>
+					<Link href={`/blog/${id}` || '/not-found'} className={styles.link}>
 						<Typography.Text level={3} color='primary'>
 							read more
 						</Typography.Text>

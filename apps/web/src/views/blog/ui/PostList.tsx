@@ -1,7 +1,7 @@
 'use client';
 
 // TODO: 경로 수정
-import { usePostsQuery } from '@/src/features/blog/api/usePostQueies';
+import { usePostsQuery } from '@/src/features/blog/api/usePostQueries';
 import { Container, Grid } from '@jung/design-system/components';
 import Post from './Post';
 
@@ -41,8 +41,6 @@ import Post from './Post';
 const PostList = () => {
 	// trpc로 client에서 data fetching하기 react query처럼 사용
 	const { data: posts } = usePostsQuery();
-
-	console.log(posts, 'posts');
 
 	return (
 		<Container marginY='12'>

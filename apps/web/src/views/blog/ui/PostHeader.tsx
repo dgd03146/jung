@@ -1,13 +1,17 @@
 import { Flex, Stack, Typography } from '@jung/design-system/components';
 import Image from 'next/image';
 
-const PostHeader = () => {
+interface Props {
+	imagesrc: string;
+	date: string;
+	title: string;
+}
+
+const PostHeader = ({ title, date, imagesrc }: Props) => {
 	return (
 		<Flex alignItems='center' columnGap='20'>
 			<Image
-				src={
-					'https://images.unsplash.com/photo-1721197709662-615338eda4be?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-				}
+				src={imagesrc}
 				alt='Featured Image'
 				width={288}
 				height={288}
@@ -16,9 +20,9 @@ const PostHeader = () => {
 			/>
 			<Stack space={'2'} align={'left'}>
 				<Typography.Text level={3} color='primary'>
-					Sunday, March 10, 2024
+					{date}
 				</Typography.Text>
-				<Typography.Heading>This is title title tiltitlte</Typography.Heading>
+				<Typography.Heading>{title}</Typography.Heading>
 			</Stack>
 		</Flex>
 	);

@@ -3,15 +3,17 @@ import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa';
 import * as styles from './PostSidebar.css';
 
-const PostSidebar = () => {
+const PostSidebar = ({ tags }: { tags: string[] }) => {
 	return (
 		<Stack space='12' align='left' flexBasis='72' position='sticky' top={0}>
 			<Stack space='2' align='left'>
 				<Tag>tags</Tag>
 				<Flex columnGap='1'>
-					<Tag rounded>travle</Tag>
-					<Tag rounded>life</Tag>
-					<Tag rounded>style</Tag>
+					{tags.map((tag) => (
+						<Tag key={tag} rounded>
+							{tag}
+						</Tag>
+					))}
 				</Flex>
 			</Stack>
 			<Stack space='2' align='left'>

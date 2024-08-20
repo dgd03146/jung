@@ -8,7 +8,7 @@ export const postRouter = router({
 		return postService.findMany();
 	}),
 
-	getPostById: publicProcedure.input(z.string().uuid()).query(({ input }) => {
+	getPostById: publicProcedure.input(z.string()).query(({ input }) => {
 		return postService.findById(input);
 	}),
 
