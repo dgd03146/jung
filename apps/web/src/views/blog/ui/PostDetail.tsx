@@ -7,10 +7,9 @@ import PostHeader from './PostHeader';
 import PostSidebar from './PostSidebar';
 
 const PostDetail = ({ postId }: { postId: string }) => {
-	const { data: post, isLoading } = usePostQuery(postId);
+	const results = usePostQuery(postId);
+	const post = results[0];
 
-	// FIXME: Suspense랑 활용
-	if (isLoading) return <div>Loading...</div>;
 	if (!post) return <div>Post not found</div>;
 
 	const { title, imagesrc, date, tags } = post;

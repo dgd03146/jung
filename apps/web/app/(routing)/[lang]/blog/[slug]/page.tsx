@@ -15,11 +15,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
 	});
 
 	await helpers.post.getPostById.prefetch(postId);
-	const prefetchedData = queryClient.getQueryData([
-		['post', 'getPostById'],
-		{ input: postId, type: 'query' },
-	]);
-	console.log('🚀 ~ Page ~ prefetchedData:', prefetchedData);
+	// const prefetchedData = queryClient.getQueryData([
+	// 	['post', 'getPostById'],
+	// 	{ input: postId, type: 'query' },
+	// ]);
+	// console.log('🚀 ~ Page ~ prefetchedData:', prefetchedData);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
