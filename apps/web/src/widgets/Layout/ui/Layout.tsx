@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Grid } from '@jung/design-system/components';
+import { Box, Container } from '@jung/design-system/components';
 import { usePathname } from 'next/navigation';
 import * as styles from './Layout.css';
 
@@ -13,14 +13,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<Container className={styles.container}>
 			<Header />
-			<Container centerContent className={styles.content}>
-				<Grid
-					className={styles.main}
-					width={isHome ? { desktop: 'desktop' } : { desktop: 'laptop' }}
-				>
-					<Grid className={styles.section}>{children}</Grid>
-				</Grid>
-			</Container>
+			<Box
+				as='main'
+				className={styles.main}
+				width={isHome ? { desktop: 'desktop' } : { desktop: 'laptop' }}
+			>
+				<Box className={styles.section}>{children}</Box>
+			</Box>
+
 			<Footer />
 		</Container>
 	);
