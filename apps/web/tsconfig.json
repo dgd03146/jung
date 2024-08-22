@@ -7,6 +7,7 @@
       "@/*": ["./*"],
       "@/fsd/*": ["./src/*"],
       "@/components/*": ["components/*"],
+      "@jung/server/*": ["../../packages/server/*"],
       "@jung/design-system/*": ["../../packages/design-system/*"],
       "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
     },
@@ -15,7 +16,13 @@
         "name": "next"
       }
     ],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "strictNullChecks": true,
+
     "allowImportingTsExtensions": true
   },
 

@@ -1,0 +1,27 @@
+{
+  "name": "@jung/server",
+  "version": "0.0.1",
+  "private": true,
+  ".": "./index.ts",
+  "scripts": {
+    "dev": "tsx watch index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "pnpm biome lint .",
+    "format": "pnpm biome format --write ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.44.4",
+    "@trpc/server": "11.0.0-rc.467",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@jung/configs": "workspace:*",
+    "@jung/typescript-config": "workspace:*",
+    "@types/node": "^20.14.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.16.2",
+    "typescript": "^5.4.5"
+  }
+}

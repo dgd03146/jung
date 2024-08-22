@@ -15,3 +15,8 @@ export {
 
 export { AnimatedLine } from './animation/ui';
 export { useInViewAnimation } from './animation/lib';
+
+export { trpc } from './trpc/lib';
+export { getQueryClient } from './react-query/lib';
+
+export { queryKeys } from './react-query/consts';

@@ -1,7 +1,10 @@
 import { Container, Typography } from '@jung/design-system/components';
+import { Suspense } from 'react';
 import CategoryList from './CategoryList';
-import Featured from './FeaturedPost';
+import FeaturedPost from './FeaturedPost';
+import FeaturedSkeleton from './FeaturedSkeleton';
 import PostList from './PostList';
+import PostListSkeleton from './PostListSkeleton';
 
 const BlogPage = () => {
 	return (
@@ -11,8 +14,12 @@ const BlogPage = () => {
 				blog.
 			</Typography.Heading>
 			<CategoryList />
-			<Featured />
-			<PostList />
+			<Suspense fallback={<FeaturedSkeleton />}>
+				<FeaturedPost />
+			</Suspense>
+			<Suspense fallback={<PostListSkeleton count={6} />}>
+				<PostList />
+			</Suspense>
 		</Container>
 	);
 };

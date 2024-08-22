@@ -12,7 +12,8 @@ import * as styles from './Post.css';
 
 // FIXME: types로 빼기
 interface PostProps {
-	imageSrc: string;
+	id: string;
+	imagesrc: string;
 	date: string;
 	tags: string[];
 	title: string;
@@ -22,18 +23,19 @@ interface PostProps {
 }
 
 const Post = ({
-	imageSrc,
+	imagesrc,
 	date,
 	tags,
+	id,
 	title,
 	description,
-	link,
+	// link,
 	index,
 }: PostProps) => {
 	return (
 		<Card variant='outline'>
 			<Card.Media className={styles.imgContainer}>
-				<Image src={imageSrc} alt='Featured Image' fill priority={index <= 3} />
+				<Image src={imagesrc} alt='Featured Image' fill priority={index <= 3} />
 			</Card.Media>
 			<Card.Content rowGap='3'>
 				<Flex columnGap='1'>
@@ -49,7 +51,7 @@ const Post = ({
 					<Card.Description>{description}</Card.Description>
 				</Stack>
 				<Card.Actions>
-					<Link href={link} className={styles.link}>
+					<Link href={`/blog/${id}` || '/not-found'} className={styles.link}>
 						<Typography.Text level={3} color='primary'>
 							read more
 						</Typography.Text>
