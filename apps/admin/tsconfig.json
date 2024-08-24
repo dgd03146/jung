@@ -2,7 +2,12 @@
   "extends": "@jung/typescript-config/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@/fsd/*": ["./src/*"],
+      "@jung/server/*": ["../../packages/server/*"],
+      "@jung/design-system/*": ["../../packages/design-system/*"],
+      "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
+    },
     "plugins": [
       {
         "name": "next"
