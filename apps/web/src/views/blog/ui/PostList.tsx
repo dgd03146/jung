@@ -1,7 +1,7 @@
 'use client';
 
 // TODO: 경로 수정
-import { usePostsQuery } from '@/src/features/blog/api/usePostQueries';
+import { usePostsQuery } from '@/fsd/features/blog/api/usePostQueries';
 import { Container, Grid } from '@jung/design-system/components';
 import Post from './Post';
 
