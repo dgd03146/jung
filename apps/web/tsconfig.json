@@ -21,7 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-
     "allowImportingTsExtensions": true
   },
 

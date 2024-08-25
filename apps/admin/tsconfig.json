@@ -1,5 +1,5 @@
 {
-  "extends": "@jung/typescript-config/react-library.json",
+  "extends": "@jung/typescript-config/react.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
