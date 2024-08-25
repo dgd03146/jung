@@ -14,12 +14,6 @@
       }
     ]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "src/components/Increase.jsx",
-    "src/App.jsx",
-    "vite.config.mjs"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "src/App.jsx", "vite.config.mjs"],
   "exclude": ["node_modules"]
 }

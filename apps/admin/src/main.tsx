@@ -1,12 +1,18 @@
-// import './app/styles/global.css';
 import '@/fsd/app/styles/global.css';
 
+import { ReactQueryProvider, TrpcProvider, createRouter } from '@/fsd/app';
+import { RouterProvider } from '@tanstack/react-router';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
+
+const router = createRouter();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<App />
+		<TrpcProvider>
+			<ReactQueryProvider>
+				<RouterProvider router={router} />
+			</ReactQueryProvider>
+		</TrpcProvider>
 	</React.StrictMode>,
 );

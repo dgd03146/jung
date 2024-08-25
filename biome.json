@@ -63,6 +63,16 @@
 					}
 				}
 			}
+		},
+		{
+			"include": ["./apps/admin/src/routeTree.gen.ts"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noExplicitAny": "off"
+					}
+				}
+			}
 		}
 	]
 }
