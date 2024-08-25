@@ -4,7 +4,6 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
       "@/fsd/*": ["./src/*"],
       "@/components/*": ["components/*"],
       "@jung/server/*": ["../../packages/server/*"],
@@ -22,7 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "strictNullChecks": true,
-
     "allowImportingTsExtensions": true
   },
 

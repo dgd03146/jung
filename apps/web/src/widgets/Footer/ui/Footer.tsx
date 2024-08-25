@@ -1,4 +1,4 @@
-import { SOCIAL_NAVIGATION } from '@/src/app';
+import { SOCIAL_NAVIGATION } from '@/fsd/app';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { FaLinkedin } from 'react-icons/fa';

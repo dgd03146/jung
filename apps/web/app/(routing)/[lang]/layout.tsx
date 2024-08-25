@@ -1,7 +1,7 @@
+import { DictionaryProvider } from '@/fsd/app/providers';
+import { TrpcProvider } from '@/fsd/app/providers/trpc/TrpcProvider';
 import '@/fsd/app/styles/global.css';
 import { getDictionary } from '@/fsd/shared/config';
-import { DictionaryProvider } from '@/src/app/providers';
-import { TrpcProvider } from '@/src/app/providers/trpc/TrpcProvider';
 
 interface Props {
 	params: { lang: string };

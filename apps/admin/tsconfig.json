@@ -1,20 +1,19 @@
 {
-  "extends": "@jung/typescript-config/react-library.json",
+  "extends": "@jung/typescript-config/react.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@/fsd/*": ["./src/*"],
+      "@jung/server/*": ["../../packages/server/*"],
+      "@jung/design-system/*": ["../../packages/design-system/*"],
+      "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "src/components/Increase.jsx",
-    "src/App.jsx",
-    "vite.config.mjs"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "src/App.jsx", "vite.config.mjs"],
   "exclude": ["node_modules"]
 }
