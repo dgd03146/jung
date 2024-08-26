@@ -1,13 +1,11 @@
 import { Box, Container } from '@jung/design-system/components';
 
+import { Header } from '@/fsd/widgets/Header/ui';
 import { Sidebar } from '@/fsd/widgets/Sidebar/ui';
-import Header from '../../Header/ui/Header';
-import * as styles from './Layout.css';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<Container className={styles.container}>
-			{/* <Box as="main" display="flex"> */}
+		<Container display='flex' minHeight='screenDvh'>
 			<Sidebar />
 			<Box
 				as='section'
