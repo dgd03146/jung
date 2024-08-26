@@ -1,15 +1,8 @@
 // /src/routes/index.tsx
 
+import { Dashboard } from '@/fsd/views';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
-	component: Home,
+	component: Dashboard,
 });
-
-function Home() {
-	return (
-		<div>
-			<h3>Welcome Home!</h3>
-		</div>
-	);
-}
