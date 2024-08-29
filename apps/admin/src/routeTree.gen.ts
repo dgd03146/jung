@@ -13,12 +13,30 @@
 import { Route as rootRoute } from './routes/__root';
 import { Route as BlogSlugImport } from './routes/blog/$slug';
 import { Route as BlogIndexImport } from './routes/blog/index';
+import { Route as CommunityIndexImport } from './routes/community/index';
+import { Route as GalleryIndexImport } from './routes/gallery/index';
 import { Route as IndexImport } from './routes/index';
+import { Route as SpotsIndexImport } from './routes/spots/index';
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
 	path: '/',
+	getParentRoute: () => rootRoute,
+} as any);
+
+const SpotsIndexRoute = SpotsIndexImport.update({
+	path: '/spots/',
+	getParentRoute: () => rootRoute,
+} as any);
+
+const GalleryIndexRoute = GalleryIndexImport.update({
+	path: '/gallery/',
+	getParentRoute: () => rootRoute,
+} as any);
+
+const CommunityIndexRoute = CommunityIndexImport.update({
+	path: '/community/',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -57,6 +75,27 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogIndexImport;
 			parentRoute: typeof rootRoute;
 		};
+		'/community/': {
+			id: '/community/';
+			path: '/community';
+			fullPath: '/community';
+			preLoaderRoute: typeof CommunityIndexImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/gallery/': {
+			id: '/gallery/';
+			path: '/gallery';
+			fullPath: '/gallery';
+			preLoaderRoute: typeof GalleryIndexImport;
+			parentRoute: typeof rootRoute;
+		};
+		'/spots/': {
+			id: '/spots/';
+			path: '/spots';
+			fullPath: '/spots';
+			preLoaderRoute: typeof SpotsIndexImport;
+			parentRoute: typeof rootRoute;
+		};
 	}
 }
 
@@ -66,6 +105,9 @@ export const routeTree = rootRoute.addChildren({
 	IndexRoute,
 	BlogSlugRoute,
 	BlogIndexRoute,
+	CommunityIndexRoute,
+	GalleryIndexRoute,
+	SpotsIndexRoute,
 });
 
 /* prettier-ignore-end */
@@ -78,7 +120,10 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/blog/$slug",
-        "/blog/"
+        "/blog/",
+        "/community/",
+        "/gallery/",
+        "/spots/"
       ]
     },
     "/": {
@@ -89,6 +134,15 @@ export const routeTree = rootRoute.addChildren({
     },
     "/blog/": {
       "filePath": "blog/index.tsx"
+    },
+    "/community/": {
+      "filePath": "community/index.tsx"
+    },
+    "/gallery/": {
+      "filePath": "gallery/index.tsx"
+    },
+    "/spots/": {
+      "filePath": "spots/index.tsx"
     }
   }
 }

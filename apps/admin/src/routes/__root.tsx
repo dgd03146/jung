@@ -1,3 +1,4 @@
+import { Layout } from '@/fsd/widgets';
 import type { QueryClient } from '@tanstack/react-query';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
@@ -10,9 +11,9 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
 	return (
-		<>
+		<Layout>
 			<Outlet />
-			<TanStackRouterDevtools position='top-right' />
-		</>
+			<TanStackRouterDevtools position='bottom-left' />
+		</Layout>
 	);
 }

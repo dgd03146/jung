@@ -43,7 +43,7 @@ export const iconWrapper = recipe({
 		checked: {
 			true: sprinkles({
 				background: 'primary',
-				border: 'none',
+				// border: 'none',
 				color: 'white',
 			}),
 			false: sprinkles({

@@ -6,6 +6,8 @@ export const palette = {
 	primary300: '#002766',
 	primary400: '#002349',
 
+	primary50: '#F5FBFF',
+
 	// Secondary colors
 	secondary: '#a70000', // 빨간색
 	secondary100: '#FFCDD2', // 연한 빨간색
