@@ -1,7 +1,7 @@
-import { adminPostService } from '@/services/admin/post';
 import { z } from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
 import { PostSchema } from '../schemas/post';
+import { adminPostService } from '../services/admin/post';
 import { postService } from '../services/web/post';
 
 export const postRouter = router({
