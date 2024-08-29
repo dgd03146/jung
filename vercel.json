@@ -11,10 +11,5 @@
       "src": "/api/trpc/(.*)",
       "dest": "apps/server/index.ts"
     }
-  ],
-  "functions": {
-    "apps/server/index.ts": {
-      "runtime": "nodejs18.17"
-    }
-  }
+  ]
 }
