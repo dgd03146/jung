@@ -3,3 +3,4 @@
 export { ReactQueryProvider } from './providers';
 export { TrpcProvider } from './providers';
 export { createRouter } from './providers';
+export { trpc } from './providers/trpc/TrpcProvider';

@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "builds": [{ "src": "index.ts", "use": "@vercel/node" }],
+  "routes": [{ "src": "/trpc/(.*)", "dest": "/index.ts" }]
+}

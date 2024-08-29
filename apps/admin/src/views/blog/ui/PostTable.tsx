@@ -1,3 +1,4 @@
+import { usePostsQuery } from '@/fsd/features/blog/usePostsQuery';
 import {
 	Box,
 	Button,
@@ -34,6 +35,9 @@ interface BlogPost {
 const fallbackData: BlogPost[] = [];
 
 const PostTable = () => {
+	const results = usePostsQuery();
+	const data = results[0] ?? fallbackData;
+
 	const columns = useMemo<ColumnDef<BlogPost>[]>(
 		() => [
 			{ header: 'Title', accessorKey: 'title' },
@@ -48,57 +52,57 @@ const PostTable = () => {
 		[],
 	);
 
-	const [data] = useState(
-		() =>
-			[
-				{
-					id: '1',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '2',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				// Additional blog post data...
-			] ?? fallbackData,
-	);
+	// const [data] = useState(
+	// 	() =>
+	// 		[
+	// 			{
+	// 				id: '1',
+	// 				date: '2024-01-15',
+	// 				tags: ['React', 'JavaScript'],
+	// 				title: 'React 18의 새로운 기능',
+	// 				description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
+	// 				link: 'https://example.com/react-18-features',
+	// 				index: 1,
+	// 			},
+	// 			{
+	// 				id: '2',
+	// 				date: '2024-01-15',
+	// 				tags: ['React', 'JavaScript'],
+	// 				title: 'React 18의 새로운 기능',
+	// 				description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
+	// 				link: 'https://example.com/react-18-features',
+	// 				index: 1,
+	// 			},
+	// 			{
+	// 				id: '3',
+	// 				date: '2024-01-15',
+	// 				tags: ['React', 'JavaScript'],
+	// 				title: 'React 18의 새로운 기능',
+	// 				description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
+	// 				link: 'https://example.com/react-18-features',
+	// 				index: 1,
+	// 			},
+	// 			{
+	// 				id: '3',
+	// 				date: '2024-01-15',
+	// 				tags: ['React', 'JavaScript'],
+	// 				title: 'React 18의 새로운 기능',
+	// 				description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
+	// 				link: 'https://example.com/react-18-features',
+	// 				index: 1,
+	// 			},
+	// 			{
+	// 				id: '3',
+	// 				date: '2024-01-15',
+	// 				tags: ['React', 'JavaScript'],
+	// 				title: 'React 18의 새로운 기능',
+	// 				description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
+	// 				link: 'https://example.com/react-18-features',
+	// 				index: 1,
+	// 			},
+	// 			// Additional blog post data...
+	// 		] ?? fallbackData,
+	// );
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState('');

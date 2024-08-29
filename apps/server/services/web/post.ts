@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
-import { supabase } from '../lib/supabse';
-import type { Post } from '../schemas/post';
+import { supabase } from '../../lib/supabse';
+import type { Post } from '../../schemas/post';
 
 export const postService = {
 	async findMany(): Promise<Post[]> {
