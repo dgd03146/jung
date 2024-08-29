@@ -42,9 +42,11 @@ export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(
 						aria-labelledby={checkBoxId}
 						onChange={onChange}
 					/>
-					<Box as='div' className={styles.iconWrapper({ checked })}>
-						{checked && <CheckIcon />}
-					</Box>
+					{
+						<Box as='div' className={styles.iconWrapper({ checked })}>
+							{checked && <CheckIcon />}
+						</Box>
+					}
 					<Typography.FootNote color={disabled ? 'primary100' : 'primary'}>
 						{children}
 					</Typography.FootNote>

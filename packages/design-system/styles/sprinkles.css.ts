@@ -30,7 +30,15 @@ export const responsiveProperties = defineProperties({
 	],
 	properties: {
 		position: ['absolute', 'relative', 'fixed', 'sticky'],
-		display: ['none', 'block', 'inline', 'inline-block', 'flex', 'grid'],
+		display: [
+			'none',
+			'block',
+			'inline',
+			'inline-block',
+			'inline-flex',
+			'flex',
+			'grid',
+		],
 		alignItems: ['stretch', 'flex-start', 'center', 'flex-end'],
 		borderWidth: vars.border.width,
 		borderBottomWidth: vars.border.width,
@@ -61,7 +69,7 @@ export const responsiveProperties = defineProperties({
 		marginLeft: vars.space,
 		marginRight: vars.space,
 		pointerEvents: ['none', 'auto'],
-		overflow: ['hidden'],
+		overflow: ['hidden', 'auto'],
 		opacity: vars.opacity,
 		textAlign: ['left', 'center', 'right'],
 

@@ -71,8 +71,12 @@ export const button = recipe({
 		disabled: {
 			true: sprinkles({
 				cursor: 'not-allowed',
-				background: 'primary100',
-				color: 'primary',
+				background: {
+					base: 'primary100',
+				},
+				color: {
+					base: 'primary',
+				},
 			}),
 		},
 	},
