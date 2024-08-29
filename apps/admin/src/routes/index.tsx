@@ -1,8 +1,7 @@
-// /src/routes/index.tsx
-
-import { Dashboard } from '@/fsd/views';
 import { createFileRoute } from '@tanstack/react-router';
+// /src/routes/index.tsx
+import { DashboardPage } from '../views';
 
 export const Route = createFileRoute('/')({
-	component: Dashboard,
+	component: DashboardPage,
 });

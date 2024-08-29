@@ -5,11 +5,13 @@ export const link = recipe({
 	base: sprinkles({
 		display: 'flex',
 		alignItems: 'center',
+		justifyContent: { mobile: 'center', laptop: 'flex-start' },
+
 		columnGap: '2',
 		color: 'primary',
 		width: 'full',
-		paddingX: { mobile: '4', laptop: '2' },
-		paddingY: '4',
+		paddingX: { mobile: '3', laptop: '4' },
+		paddingY: { mobile: '3', laptop: '6' },
 		borderRadius: 'lg',
 	}),
 	variants: {
