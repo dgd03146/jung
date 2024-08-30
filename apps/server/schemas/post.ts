@@ -11,3 +11,4 @@ export const PostSchema = z.object({
 });
 
 export type Post = z.infer<typeof PostSchema>;
+// FIXME: Shared workspace로 공용 타입

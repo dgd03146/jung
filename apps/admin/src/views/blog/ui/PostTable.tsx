@@ -1,3 +1,4 @@
+import { usePostsQuery } from '@/fsd/features';
 import {
 	Box,
 	Button,
@@ -28,12 +29,13 @@ interface BlogPost {
 	title: string;
 	description: string;
 	link: string;
-	index: number;
 }
 
 const fallbackData: BlogPost[] = [];
 
 const PostTable = () => {
+	const { data: posts } = usePostsQuery();
+
 	const columns = useMemo<ColumnDef<BlogPost>[]>(
 		() => [
 			{ header: 'Title', accessorKey: 'title' },
@@ -48,64 +50,12 @@ const PostTable = () => {
 		[],
 	);
 
-	const [data] = useState(
-		() =>
-			[
-				{
-					id: '1',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '2',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				{
-					id: '3',
-					date: '2024-01-15',
-					tags: ['React', 'JavaScript'],
-					title: 'React 18의 새로운 기능',
-					description: 'React 18에서 추가된 주요 기능들에 대한 개요와 사용법',
-					link: 'https://example.com/react-18-features',
-					index: 1,
-				},
-				// Additional blog post data...
-			] ?? fallbackData,
-	);
-
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [globalFilter, setGlobalFilter] = useState('');
 
 	const table = useReactTable({
 		columns,
-		data,
+		data: posts ?? fallbackData,
 		state: { sorting, globalFilter },
 		onSortingChange: setSorting,
 		onGlobalFilterChange: setGlobalFilter,

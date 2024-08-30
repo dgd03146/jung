@@ -67,6 +67,9 @@ importers:
       '@jung/server':
         specifier: workspace:*
         version: link:../server
+      '@supabase/supabase-js':
+        specifier: ^2.44.4
+        version: 2.44.4
       '@tanstack/react-query':
         specifier: ^5.40.0
         version: 5.40.0(react@18.3.1)
@@ -79,15 +82,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.20.5(react-dom@18.3.1)(react@18.3.1)
-      '@trpc/client':
-        specifier: 11.0.0-rc.467
-        version: 11.0.0-rc.467(@trpc/server@11.0.0-rc.485)
-      '@trpc/react-query':
-        specifier: 11.0.0-rc.467
-        version: 11.0.0-rc.467(@tanstack/react-query@5.40.0)(@trpc/client@11.0.0-rc.467)(@trpc/server@11.0.0-rc.485)(react-dom@18.3.1)(react@18.3.1)
-      '@trpc/server':
-        specifier: 11.0.0-rc.485
-        version: 11.0.0-rc.485
       '@vanilla-extract/css':
         specifier: ^1.15.2
         version: 1.15.3
@@ -106,6 +100,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-error-boundary:
+        specifier: ^4.0.13
+        version: 4.0.13(react@18.3.1)
       react-icons:
         specifier: ^5.2.1
         version: 5.2.1(react@18.3.1)
@@ -5026,14 +5023,6 @@ packages:
       '@trpc/server': 11.0.0-rc.467
     dev: false
 
-  /@trpc/client@11.0.0-rc.467(@trpc/server@11.0.0-rc.485):
-    resolution: {integrity: sha512-ovZaGdAUl+EEmtJJc5uuo95B0gw8+q3jwNjUQQmmSMU5Isq4sYdjIWNkhbrFtR8CovllFyrRrjAgCWdaOTEY4g==}
-    peerDependencies:
-      '@trpc/server': 11.0.0-rc.467+8f72171d6
-    dependencies:
-      '@trpc/server': 11.0.0-rc.485
-    dev: false
-
   /@trpc/next@11.0.0-rc.467(@tanstack/react-query@5.51.15)(@trpc/client@11.0.0-rc.467)(@trpc/react-query@11.0.0-rc.467)(@trpc/server@11.0.0-rc.467)(next@14.2.3)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-AJUi5eATaJ7RAy9INkSUrF7n/0cJYP+2FNZtgJWxpm5t/WDmb3PxvxCy1qU1Sstc/zoDqaOZZ1y66xTnuCFDSA==}
     peerDependencies:
@@ -5059,22 +5048,6 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /@trpc/react-query@11.0.0-rc.467(@tanstack/react-query@5.40.0)(@trpc/client@11.0.0-rc.467)(@trpc/server@11.0.0-rc.485)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-PNpHgISXJ60s0fJc6JUomKe3iu1wj6pZNFHJgQecAEK0gs1y6VM8Oh8CHgZg8+J/KDP/UtUmBcbpFP9l8Nq48w==}
-    peerDependencies:
-      '@tanstack/react-query': ^5.49.2
-      '@trpc/client': 11.0.0-rc.467+8f72171d6
-      '@trpc/server': 11.0.0-rc.467+8f72171d6
-      react: '>=18.2.0'
-      react-dom: '>=18.2.0'
-    dependencies:
-      '@tanstack/react-query': 5.40.0(react@18.3.1)
-      '@trpc/client': 11.0.0-rc.467(@trpc/server@11.0.0-rc.485)
-      '@trpc/server': 11.0.0-rc.485
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    dev: false
-
   /@trpc/react-query@11.0.0-rc.467(@tanstack/react-query@5.51.15)(@trpc/client@11.0.0-rc.467)(@trpc/server@11.0.0-rc.467)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-PNpHgISXJ60s0fJc6JUomKe3iu1wj6pZNFHJgQecAEK0gs1y6VM8Oh8CHgZg8+J/KDP/UtUmBcbpFP9l8Nq48w==}
     peerDependencies:
@@ -5093,10 +5066,6 @@ packages:
 
   /@trpc/server@11.0.0-rc.467:
     resolution: {integrity: sha512-94Gv26ALuBfxgFlSGV3x2uF2ixUEViuK0m3IPKOvCTMreisZkBqyTa3NkBcuPZW/AMUieM5P4Q2NrbHTIA0fKQ==}
-    dev: false
-
-  /@trpc/server@11.0.0-rc.485:
-    resolution: {integrity: sha512-U9SK9jbqCjR8S9wGSe4UBu2e0fqxhQWriZiDb5BLzdxXzls4Jv+XhAkI65yBzlcTbt6VqXegZDAXB3IARPhUCg==}
     dev: false
 
   /@tsconfig/node10@1.0.11:
@@ -10754,6 +10723,15 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       react-is: 18.1.0
     dev: true
+
+  /react-error-boundary@4.0.13(react@18.3.1):
+    resolution: {integrity: sha512-b6PwbdSv8XeOSYvjt8LpgpKrZ0yGdtZokYwkwV2wlcZbxgopHX/hgPl5VgpnoVOWd868n1hktM8Qm4b+02MiLQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.24.6
+      react: 18.3.1
+    dev: false
 
   /react-icons@5.2.1(react@18.3.1):
     resolution: {integrity: sha512-zdbW5GstTzXaVKvGSyTaBalt7HSfuK5ovrzlpyiWHAFXndXTdd/1hdDHI4xBM1Mn7YriT6aqESucFl9kEXzrdw==}
