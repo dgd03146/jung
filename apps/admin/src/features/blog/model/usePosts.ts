@@ -1,10 +1,11 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../api/postApi';
 
 export function usePostsQuery() {
-	return useSuspenseQuery({
-		// FIXME: query key 관리하기
+	return useQuery({
+		// FIXME: 쿼리키 관리
 		queryKey: ['posts'],
 		queryFn: fetchPosts,
+		placeholderData: keepPreviousData,
 	});
 }

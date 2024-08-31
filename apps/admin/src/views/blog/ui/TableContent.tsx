@@ -1,8 +1,10 @@
 import { Box } from '@jung/design-system/components';
 import { usePostTable } from '../model/usePostTable';
+import ErrorFallback from './ErrorFallback';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';
 import { TablePagination } from './TablePagination';
+import TableSkeleton from './TableSkeleton';
 
 type TableContentProps = {
 	globalFilter: string;
@@ -13,7 +15,14 @@ export const TableContent = ({
 	globalFilter,
 	setGlobalFilter,
 }: TableContentProps) => {
-	const { table } = usePostTable({ globalFilter, setGlobalFilter });
+	const { table, isLoading, error, refetch } = usePostTable({
+		globalFilter,
+		setGlobalFilter,
+	});
+
+	if (isLoading) return <TableSkeleton />;
+	if (error)
+		return <ErrorFallback error={error} resetErrorBoundary={refetch} />;
 
 	return (
 		<>

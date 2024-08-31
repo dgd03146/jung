@@ -1,10 +1,9 @@
 import { Button, Container, Flex, Input } from '@jung/design-system/components';
-import { Suspense, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import ErrorFallback from './ErrorFallback';
 import { TableContent } from './TableContent';
-import TableSkeleton from './TableSkeleton';
+
+// TODO: 나중에 추가적으로 서버사이드 페이지네이션과 Prefetch 구현 생각해볼것.
 
 const PostTable = () => {
 	const [globalFilter, setGlobalFilter] = useState('');
@@ -24,14 +23,11 @@ const PostTable = () => {
 					<FaPlus /> new
 				</Button>
 			</Flex>
-			<ErrorBoundary FallbackComponent={ErrorFallback}>
-				<Suspense fallback={<TableSkeleton />}>
-					<TableContent
-						globalFilter={globalFilter}
-						setGlobalFilter={setGlobalFilter}
-					/>
-				</Suspense>
-			</ErrorBoundary>
+
+			<TableContent
+				globalFilter={globalFilter}
+				setGlobalFilter={setGlobalFilter}
+			/>
 		</Container>
 	);
 };

@@ -18,6 +18,7 @@ export const fetchPosts = async () => {
 		.from('posts')
 		.select('*')
 		.order('date', { ascending: false })
+
 		.returns<AdminPost[]>();
 
 	if (error) {

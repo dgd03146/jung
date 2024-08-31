@@ -42,15 +42,21 @@ export const usePostTable = ({
 	globalFilter,
 	setGlobalFilter,
 }: UsePostTableProps) => {
-	const { data: posts } = usePostsQuery();
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10,
+	});
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	const { data: posts, isLoading, error, refetch } = usePostsQuery();
 
 	const columns = useMemo<ColumnDef<BlogPost>[]>(() => postColumns, []);
 
 	const table = useReactTable({
 		columns,
 		data: posts ?? [],
-		state: { sorting, globalFilter },
+		state: { sorting, globalFilter, pagination },
+		onPaginationChange: setPagination,
 		onSortingChange: setSorting,
 		onGlobalFilterChange: setGlobalFilter,
 		getCoreRowModel: getCoreRowModel(),
@@ -59,5 +65,5 @@ export const usePostTable = ({
 		getSortedRowModel: getSortedRowModel(),
 	});
 
-	return { table };
+	return { table, isLoading, error, refetch };
 };
