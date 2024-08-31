@@ -23,7 +23,7 @@ const LoadingComponent = () => (
 		flexDirection='column'
 		alignItems='center'
 		justifyContent='center'
-		height='screenDvh'
+		height='full'
 	>
 		<Typography.Heading level={2} color='primary'>
 			Loading page...
