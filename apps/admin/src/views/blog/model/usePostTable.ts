@@ -1,15 +1,15 @@
-import { usePostsQuery } from '@/fsd/features';
+import { fetchPosts, usePostsQuery } from '@/fsd/features';
+import { useQueryClient } from '@tanstack/react-query';
 import {
 	type ColumnDef,
 	type Getter,
 	type SortingState,
 	getCoreRowModel,
 	getFilteredRowModel,
-	getPaginationRowModel,
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // FIXME: 타입 공용으로 빼기
 interface BlogPost {
@@ -48,22 +48,41 @@ export const usePostTable = ({
 	});
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const { data: posts, isLoading, error, refetch } = usePostsQuery();
+	const queryClient = useQueryClient();
+
+	const { data, isLoading, error, refetch } = usePostsQuery(
+		pagination.pageIndex,
+		pagination.pageSize,
+	);
+
+	useEffect(() => {
+		if (data?.hasMore) {
+			const nextPage = pagination.pageIndex + 1;
+			queryClient.prefetchQuery({
+				queryKey: ['posts', nextPage],
+				queryFn: () => fetchPosts(nextPage, pagination.pageSize),
+			});
+		}
+	}, [pagination.pageIndex, pagination.pageSize, data?.hasMore, queryClient]);
 
 	const columns = useMemo<ColumnDef<BlogPost>[]>(() => postColumns, []);
 
 	const table = useReactTable({
 		columns,
-		data: posts ?? [],
+		data: data?.posts ?? [],
 		state: { sorting, globalFilter, pagination },
 		onPaginationChange: setPagination,
 		onSortingChange: setSorting,
 		onGlobalFilterChange: setGlobalFilter,
 		getCoreRowModel: getCoreRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
+
 		getSortedRowModel: getSortedRowModel(),
+		manualPagination: true,
+		pageCount: data?.totalPages ?? -1,
 	});
 
 	return { table, isLoading, error, refetch };
 };
+
+// FIXME: 추가
