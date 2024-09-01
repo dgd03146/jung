@@ -6,19 +6,8 @@ import { TableHeader } from './TableHeader';
 import { TablePagination } from './TablePagination';
 import TableSkeleton from './TableSkeleton';
 
-type TableContentProps = {
-	globalFilter: string;
-	setGlobalFilter: (filter: string) => void;
-};
-
-export const TableContent = ({
-	globalFilter,
-	setGlobalFilter,
-}: TableContentProps) => {
-	const { table, isLoading, error, refetch } = usePostTable({
-		globalFilter,
-		setGlobalFilter,
-	});
+export const TableContent = () => {
+	const { table, isLoading, error, refetch } = usePostTable();
 
 	if (isLoading) return <TableSkeleton />;
 	if (error)

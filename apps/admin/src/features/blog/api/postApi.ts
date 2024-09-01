@@ -1,6 +1,7 @@
 import { supabase } from '@/fsd/shared';
 
-// FIXME: Shared workspace로 공용 타입
+import type { PostFilters } from '../model/postKeys';
+
 type Post = {
 	id: string;
 	imagesrc: string;
@@ -13,33 +14,50 @@ type Post = {
 
 type AdminPost = Omit<Post, 'imagesrc'>;
 
-export const fetchPosts = async (page: number, pageSize: number) => {
+export const fetchPosts = async ({
+	page,
+	pageSize,
+	sortField,
+	sortOrder,
+	filter,
+}: PostFilters): Promise<{
+	posts: AdminPost[];
+	totalCount: number;
+	totalPages: number;
+	hasMore: boolean;
+}> => {
 	const from = page * pageSize;
 	const to = from + pageSize - 1;
 
-	const { data, error, count } = await supabase
-		.from('posts')
-		.select('*', { count: 'exact' })
-		.order('date', { ascending: false })
-		.range(from, to)
-		.returns<AdminPost[]>();
+	let query = supabase.from('posts').select('*', { count: 'exact' });
 
-	if (error) {
-		throw new Error('Failed to fetch posts. Please try again later.');
+	if (sortField) {
+		query = query.order(sortField, { ascending: sortOrder === 'asc' });
 	}
-	if (!data || data.length === 0) {
-		throw new Error('No posts found. Please try searching again.');
+
+	if (filter) {
+		query = query.or(`title.ilike.%${filter}%,description.ilike.%${filter}%`);
 	}
+
+	query = query.range(from, to);
+
+	const { data, error, count } = await query;
 
 	const totalCount = count ?? 0;
 	const totalPages = Math.ceil(totalCount / pageSize);
 	const hasMore = page < totalPages - 1;
 
+	if (error) {
+		throw new Error(`Failed to fetch posts: ${error.message}`);
+	}
+	if (!data || data.length === 0) {
+		throw new Error('No posts found. Please try searching again.');
+	}
+
 	return {
 		posts: data,
-		totalCount: count ?? 0,
-		currentPage: page,
-		pageSize,
+		totalCount,
+
 		totalPages,
 		hasMore,
 	};

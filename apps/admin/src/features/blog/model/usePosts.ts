@@ -1,11 +1,11 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchPosts } from '../api/postApi';
+import { type PostFilters, postKeys } from './postKeys';
 
-export function usePostsQuery(page: number, pageSize: number) {
+export function usePostsQuery(filters: PostFilters) {
 	return useQuery({
-		// FIXME: 쿼리키 관리
-		queryKey: ['posts', page],
-		queryFn: () => fetchPosts(page, pageSize),
+		queryKey: postKeys.list(filters),
+		queryFn: () => fetchPosts(filters),
 		placeholderData: keepPreviousData,
 	});
 }

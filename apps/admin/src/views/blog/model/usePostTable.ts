@@ -1,17 +1,20 @@
 import { fetchPosts, usePostsQuery } from '@/fsd/features';
+import { type PostFilters, postKeys } from '@/fsd/features/blog/model/postKeys';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
-	type Getter,
+	type PaginationState,
 	type SortingState,
+	type Updater,
 	getCoreRowModel,
 	getFilteredRowModel,
+	getPaginationRowModel,
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
-// FIXME: 타입 공용으로 빼기
 interface BlogPost {
 	id: string;
 	date: string;
@@ -21,68 +24,108 @@ interface BlogPost {
 	link: string;
 }
 
-interface UsePostTableProps {
-	globalFilter: string;
-	setGlobalFilter: (filter: string) => void;
-}
-
-export const postColumns = [
+export const postColumns: ColumnDef<BlogPost>[] = [
 	{ header: 'Title', accessorKey: 'title' },
 	{ header: 'Date', accessorKey: 'date' },
 	{
 		header: 'Tags',
 		accessorKey: 'tags',
-		cell: ({ getValue }: { getValue: Getter<unknown> }) =>
-			(getValue() as string[]).join(', '),
+		cell: ({ getValue }) => (getValue() as string[]).join(', '),
 	},
 	{ header: 'Description', accessorKey: 'description' },
 ];
 
-export const usePostTable = ({
-	globalFilter,
-	setGlobalFilter,
-}: UsePostTableProps) => {
-	const [pagination, setPagination] = useState({
-		pageIndex: 0,
-		pageSize: 10,
-	});
-	const [sorting, setSorting] = useState<SortingState>([]);
+const PAGE_SIZE = 10;
 
+export const usePostTable = () => {
+	const navigate = useNavigate();
+	const searchParams = useSearch({ from: '/blog/' }) as PostFilters;
 	const queryClient = useQueryClient();
 
-	const { data, isLoading, error, refetch } = usePostsQuery(
-		pagination.pageIndex,
-		pagination.pageSize,
+	const filters: PostFilters = useMemo(
+		() => ({
+			page: Number(searchParams.page) || 0,
+			pageSize: Number(searchParams.pageSize) || PAGE_SIZE,
+			sortField: searchParams.sortField,
+			sortOrder: searchParams.sortOrder,
+			filter: searchParams.filter,
+		}),
+		[searchParams],
 	);
+
+	const { data, isLoading, error, refetch } = usePostsQuery(filters);
+
+	const columns = useMemo(() => postColumns, []);
 
 	useEffect(() => {
 		if (data?.hasMore) {
-			const nextPage = pagination.pageIndex + 1;
+			const nextPage = filters.page + 1;
 			queryClient.prefetchQuery({
-				queryKey: ['posts', nextPage],
-				queryFn: () => fetchPosts(nextPage, pagination.pageSize),
+				queryKey: postKeys.list({ ...filters, page: nextPage }),
+				queryFn: () => fetchPosts({ ...filters, page: nextPage }),
 			});
 		}
-	}, [pagination.pageIndex, pagination.pageSize, data?.hasMore, queryClient]);
+	}, [data?.hasMore, filters, queryClient]);
 
-	const columns = useMemo<ColumnDef<BlogPost>[]>(() => postColumns, []);
+	const updateSearchParams = useCallback(
+		(newParams: Partial<PostFilters>) => {
+			navigate({ search: (prev) => ({ ...prev, ...newParams }) });
+		},
+		[navigate],
+	);
 
 	const table = useReactTable({
 		columns,
 		data: data?.posts ?? [],
-		state: { sorting, globalFilter, pagination },
-		onPaginationChange: setPagination,
-		onSortingChange: setSorting,
-		onGlobalFilterChange: setGlobalFilter,
+		state: {
+			sorting: filters.sortField
+				? [{ id: filters.sortField, desc: filters.sortOrder === 'desc' }]
+				: [],
+			globalFilter: filters.filter,
+			pagination: { pageIndex: filters.page, pageSize: filters.pageSize },
+		},
+		onPaginationChange: (updater: Updater<PaginationState>) => {
+			const newPagination =
+				typeof updater === 'function'
+					? updater({ pageIndex: filters.page, pageSize: filters.pageSize })
+					: updater;
+			updateSearchParams({
+				page: newPagination.pageIndex,
+				pageSize: newPagination.pageSize,
+			});
+		},
+		onSortingChange: (updater: Updater<SortingState>) => {
+			const newSorting =
+				typeof updater === 'function'
+					? updater(
+							filters.sortField
+								? [
+										{
+											id: filters.sortField,
+											desc: filters.sortOrder === 'desc',
+										},
+								  ]
+								: [],
+					  )
+					: updater;
+			const sort = newSorting[0];
+			updateSearchParams({
+				sortField: sort?.id,
+				sortOrder: sort?.desc ? 'desc' : 'asc',
+			});
+		},
+		onGlobalFilterChange: (filter: string) => {
+			updateSearchParams({ filter });
+		},
 		getCoreRowModel: getCoreRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-
 		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
 		manualPagination: true,
+		manualSorting: true,
+		manualFiltering: true,
 		pageCount: data?.totalPages ?? -1,
 	});
 
 	return { table, isLoading, error, refetch };
 };
-
-// FIXME: 추가
