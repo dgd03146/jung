@@ -1,4 +1,4 @@
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Box, Typography } from '@jung/design-system/components';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { GiClick } from 'react-icons/gi';
@@ -10,6 +10,7 @@ interface TableHeaderProps<T> {
 }
 
 export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
+	// TODO: 나중에 Design system으로 만들기
 	<Box as='thead'>
 		{table.getHeaderGroups().map((headerGroup) => (
 			<Box as='tr' key={headerGroup.id}>
@@ -29,12 +30,13 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 								columnGap='0.5'
 							>
 								{header.isPlaceholder ? null : (
-									<Flex alignItems='center'>
+									<>
 										{flexRender(
 											header.column.columnDef.header,
 											header.getContext(),
 										)}
 										<Box
+											as='span'
 											marginLeft='0.5'
 											display='inline-flex'
 											alignItems='center'
@@ -46,7 +48,7 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 												<RxCaretSort size={16} opacity={0.7} />
 											)}
 										</Box>
-									</Flex>
+									</>
 								)}
 							</Typography.Text>
 						</Box>

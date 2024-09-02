@@ -12,3 +12,5 @@ export function makeQueryClient() {
 		},
 	});
 }
+
+// TODO: Error handling 추가
