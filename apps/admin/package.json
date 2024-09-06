@@ -13,6 +13,9 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@blocknote/core": "^0.15.6",
+    "@blocknote/mantine": "^0.15.6",
+    "@blocknote/react": "^0.15.6",
     "@jung/design-system": "workspace:*",
     "@jung/server": "workspace:*",
     "@supabase/supabase-js": "^2.44.4",

@@ -8,7 +8,7 @@ export interface ButtonProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
-	size?: 'sm' | 'md' | 'lg';
+	size?: 'sm' | 'md' | 'lg' | 'zero';
 	rounded?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;

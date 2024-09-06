@@ -10,7 +10,7 @@ export interface InputProps
 		>,
 		AtomProps {
 	variant?: 'primary' | 'ghost';
-	size?: 'sm' | 'md' | 'lg';
+	size?: 'sm' | 'md' | 'lg' | 'zero';
 	rounded?: boolean;
 }
 

@@ -9,7 +9,7 @@ const fadeIn = keyframes({
 
 export const toast = style([
 	sprinkles({
-		background: 'primary300',
+		background: 'primary200',
 
 		paddingX: '4',
 		paddingY: '3',

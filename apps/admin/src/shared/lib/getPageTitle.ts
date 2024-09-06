@@ -3,7 +3,7 @@ function getPageTitle(pathname: string): string {
 		return 'dashboard.';
 	}
 
-	return `${pathname.replace(/^\//, '')}.`;
+	return `${pathname.replace(/^\//, '').split('/', 1)}.`;
 }
 
 export default getPageTitle;

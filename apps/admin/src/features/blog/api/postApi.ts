@@ -1,6 +1,5 @@
 import { supabase } from '@/fsd/shared';
-
-import type { PostFilters } from '../model/postKeys';
+import type { PostFilters } from '../types/postFilters';
 
 type Post = {
 	id: string;
