@@ -27,8 +27,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 		//   });
 		// }, []);
 
-		console.log('🚀 ~ selectedOption.label:', selectedOption.label);
-
 		return (
 			<Button
 				role='button'

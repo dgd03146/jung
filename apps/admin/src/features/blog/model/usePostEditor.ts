@@ -1,41 +1,28 @@
-import { useCreateBlockNote } from '@blocknote/react';
+import { storage, useThrottle } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
 import { useCallback, useState } from 'react';
-
-import { storage, useThrottle } from '@/fsd/shared';
-import { initialPostData } from '../config/initialPost';
-import { isNonEmptyBlock, isPostEmpty } from '../lib/isEmpty';
-import type { PostData } from '../types/post';
+import { STORAGE_KEY } from '../config/storageKey';
+import { isPostEmpty } from '../lib/isEmpty';
+import { useCreatePost } from './useCreatePost';
+import { useFileUpload } from './useFileUpload';
 import { useKeyboardShortcut } from './useKeyboardShortcut';
-
-const STORAGE_KEY = 'draftPost';
+import { usePostContent } from './usePostContent';
+import { usePostState } from './usePostState';
 
 export const usePostEditor = () => {
-	const [postData, setPostData] = useState<PostData>(() => {
-		const savedPost = storage.get(STORAGE_KEY) as PostData | null;
-		if (savedPost) {
-			const confirmMessage = savedPost.lastSaved
-				? `There is a saved draft from ${savedPost.lastSaved}. Would you like to load it?`
-				: 'There is a saved draft. Would you like to load it?';
-			if (window.confirm(confirmMessage)) {
-				return savedPost;
-			}
-			storage.remove(STORAGE_KEY);
-		}
-		return initialPostData;
-	});
-
+	const { postData, errors, updatePostData, resetForm } = usePostState();
 	const showToast = useToast();
-
-	const editor = useCreateBlockNote({
-		initialContent: postData.content,
-	});
+	const createPostMutation = useCreatePost();
+	const { uploadFile } = useFileUpload();
+	const { editor, getContent } = usePostContent(postData.content, uploadFile);
+	const [isUploading, setIsUploading] = useState(false);
+	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const handleSave = useCallback(() => {
-		const contentToSave = editor.document.filter(isNonEmptyBlock);
+		const content = getContent();
 		const postToSave = {
 			...postData,
-			content: contentToSave,
+			content,
 			lastSaved: new Date().toLocaleString(),
 		};
 
@@ -45,7 +32,7 @@ export const usePostEditor = () => {
 			storage.set(STORAGE_KEY, postToSave);
 			showToast('Post saved successfully!');
 		}
-	}, [postData, editor.document, showToast]);
+	}, [getContent, postData, showToast]);
 
 	const throttledSave = useThrottle(handleSave, 3000);
 	useKeyboardShortcut('s', throttledSave);
@@ -53,35 +40,72 @@ export const usePostEditor = () => {
 	const handleDiscard = useCallback(() => {
 		if (window.confirm('Are you sure you want to discard this draft?')) {
 			storage.remove(STORAGE_KEY);
-			setPostData(initialPostData);
-			editor.replaceBlocks(editor.document, initialPostData.content);
+			resetForm();
+			editor.replaceBlocks(editor.document, postData.content);
 			showToast('Draft discarded');
 		}
-	}, [editor, showToast]);
+	}, [editor, resetForm, postData.content, showToast]);
 
-	const handleTitleChange = useCallback(
-		(e: React.ChangeEvent<HTMLInputElement>) => {
-			setPostData((prev) => ({ ...prev, title: e.target.value }));
+	const handleImageUpload = useCallback(
+		async (file: File | null) => {
+			if (!file) {
+				updatePostData('imagesrc', '');
+				return;
+			}
+
+			setIsUploading(true);
+
+			// Upload image to supabase
+			const { shortId } = await uploadFile(file);
+			// Save short imageId to supabse
+			updatePostData('imagesrc', shortId);
+
+			return shortId;
 		},
-		[],
+		[uploadFile, updatePostData],
 	);
 
-	const handleTagsChange = useCallback((newTags: string[]) => {
-		setPostData((prev) => ({ ...prev, tags: newTags }));
-	}, []);
+	const handleCreate = useCallback(async () => {
+		const errorMessages = Object.values(errors).filter(Boolean);
+		if (errorMessages.length !== 0) {
+			showToast('Please fill all required fields');
+			return;
+		}
 
-	const handleImageUpload = useCallback((file: File) => {
-		setPostData((prev) => ({ ...prev, imagesrc: file.name }));
-	}, []);
+		let updatedPostData = { ...postData };
 
-	return {
+		if (imageFile) {
+			const imageId = await handleImageUpload(imageFile);
+			updatedPostData = {
+				...updatedPostData,
+				imagesrc: imageId || '',
+			};
+		}
+
+		createPostMutation.mutate(updatedPostData);
+		storage.remove(STORAGE_KEY);
+	}, [
+		errors,
+		createPostMutation,
 		postData,
+		showToast,
+		handleImageUpload,
+		imageFile,
+	]);
+
+	// TODO: 렌더링 최적화 할 수 있으면 해보기!
+	return {
+		post: postData,
 		editor,
+		errors,
 		handleSave,
 		handleDiscard,
-		handleTitleChange,
-		handleTagsChange,
+		handleFieldChange: updatePostData,
 		handleImageUpload,
 		throttledSave,
+		handleCreate,
+		isCreating: createPostMutation.isPending,
+		isUploading,
+		setImageFile,
 	};
 };

@@ -1,4 +1,5 @@
 import type { PartialBlock } from '@blocknote/core';
+// FIXME: Post로 변경
 
 export interface PostData {
 	title: string;
@@ -6,4 +7,6 @@ export interface PostData {
 	lastSaved?: string;
 	imagesrc: string;
 	tags: string[];
+	category: string;
+	description: string;
 }

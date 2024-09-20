@@ -1,8 +1,6 @@
-import type { Post } from '@/fsd/entities';
+import type { AdminPost } from '@/fsd/entities/post/model/post';
 import type { PostFilters } from '@/fsd/features';
 import { supabase } from '@/fsd/shared';
-
-type AdminPost = Omit<Post, 'imagesrc'>;
 
 export const fetchPosts = async ({
 	page,

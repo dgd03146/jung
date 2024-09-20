@@ -1,3 +1,4 @@
+import type { AdminPost } from '@/fsd/entities/post/model/post';
 import { type PostFilters, fetchPosts, usePostsQuery } from '@/fsd/features';
 import { postKeys } from '@/fsd/shared';
 import { useQueryClient } from '@tanstack/react-query';
@@ -15,18 +16,10 @@ import {
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
 
-interface BlogPost {
-	id: string;
-	date: string;
-	tags: string[];
-	title: string;
-	description: string;
-	link: string;
-}
-
-export const postColumns: ColumnDef<BlogPost>[] = [
+export const postColumns: ColumnDef<AdminPost>[] = [
 	{ header: 'Title', accessorKey: 'title' },
 	{ header: 'Date', accessorKey: 'date' },
+	{ header: 'Category', accessorKey: 'category' },
 	{
 		header: 'Tags',
 		accessorKey: 'tags',
@@ -46,8 +39,9 @@ export const usePostTable = () => {
 		() => ({
 			page: Number(searchParams.page) || 0,
 			pageSize: Number(searchParams.pageSize) || PAGE_SIZE,
-			sortField: searchParams.sortField,
-			sortOrder: searchParams.sortOrder,
+			sortField: searchParams.sortField || 'date',
+			sortOrder: searchParams.sortOrder || 'desc',
+
 			filter: searchParams.filter,
 		}),
 		[searchParams],

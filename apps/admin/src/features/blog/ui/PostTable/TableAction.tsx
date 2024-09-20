@@ -19,7 +19,7 @@ const TableAction = () => {
 			/>
 			<Link to={`${Routes.blog.path}/new`}>
 				<Button boxShadow='primary' border='none' rounded>
-					<FaPlus /> new
+					<FaPlus /> New
 				</Button>
 			</Link>
 		</Flex>

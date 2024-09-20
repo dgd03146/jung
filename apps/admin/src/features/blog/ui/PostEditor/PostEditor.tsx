@@ -1,50 +1,49 @@
-import '@blocknote/core/fonts/inter.css';
-import { BlockNoteView } from '@blocknote/mantine';
-import '@blocknote/mantine/style.css';
-import { FormattingToolbarController } from '@blocknote/react';
-import { Box, Container, Flex } from '@jung/design-system/components';
+import { Container, Flex } from '@jung/design-system/components';
 
 import { usePostEditor } from '../../model/usePostEditor';
+import BlockNote from './BlockNote';
 import EditorHeader from './EditorHeader';
-import { FormattingToolbarComponent } from './FormattingToolbar';
+import { ImageUpload } from './ImageUpload';
 import TitleSection from './TitleSection';
 
 const PostEditor = () => {
 	const {
-		postData,
+		post,
 		editor,
-		handleTitleChange,
+		errors,
 		handleSave,
 		handleDiscard,
-		handleTagsChange,
-		handleImageUpload,
+		handleFieldChange,
+		// handleImageUpload,
+		handleCreate,
+		isCreating,
+		isUploading,
+		setImageFile,
 	} = usePostEditor();
 
 	return (
 		<Container maxWidth='laptop' marginX='auto' height='full'>
-			<Flex direction='column' gap='4'>
-				<EditorHeader onSave={handleSave} onDiscard={handleDiscard} />
-				<TitleSection
-					title={postData.title}
-					onTitleChange={handleTitleChange}
-					onAddImage={handleImageUpload}
-					onAddTags={handleTagsChange}
-					tags={postData.tags}
+			<Flex direction='column' gap='2'>
+				<EditorHeader
+					onSave={handleSave}
+					onDiscard={handleDiscard}
+					onCreate={handleCreate}
+					isCreating={isCreating}
 				/>
-				<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
-					<BlockNoteView
-						editor={editor}
-						theme='light'
-						linkToolbar={true}
-						sideMenu={true}
-						slashMenu={true}
-						emojiPicker={true}
-					>
-						<FormattingToolbarController
-							formattingToolbar={FormattingToolbarComponent}
-						/>
-					</BlockNoteView>
-				</Box>
+				<ImageUpload
+					isUploading={isUploading}
+					imagesrc={post.imagesrc}
+					onSetImageFile={setImageFile}
+					// onUploadImage={handleImageUpload}
+					onFieldChange={handleFieldChange}
+					errors={errors}
+				/>
+				<TitleSection
+					post={post}
+					onFieldChange={handleFieldChange}
+					errors={errors}
+				/>
+				<BlockNote editor={editor} />
 			</Flex>
 		</Container>
 	);

@@ -1,5 +1,3 @@
-import '@/fsd/app/styles/editorStyle.css';
-
 import {
 	BasicTextStyleButton,
 	BlockTypeSelect,

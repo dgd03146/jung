@@ -1,11 +1,10 @@
 import { style } from '@vanilla-extract/css';
 
-const titleSection = style({
+export const titleSection = style({
 	position: 'relative',
-	marginTop: '3rem',
 });
 
-const titleInput = style({
+export const titleInput = style({
 	fontSize: '2.5rem',
 	fontWeight: 700,
 	width: '100%',
@@ -17,24 +16,38 @@ const titleInput = style({
 	},
 });
 
-const optionsContainer = style({
-	display: 'flex',
-	gap: '0.5rem',
-	position: 'absolute',
-	top: '-2.5rem',
-	left: 0,
-	right: 0,
-	opacity: 0,
-	transition: 'opacity 0.2s ease-in-out',
-	zIndex: 1,
-	selectors: {
-		[`${titleSection}:hover &`]: {
-			opacity: 1,
-		},
+export const descriptionInput = style({
+	fontSize: '1rem',
+	resize: 'none',
+	width: '100%',
+	border: 'none',
+	outline: 'none',
+	background: 'transparent',
+	minHeight: '20px',
+	margin: '1rem 0',
+	'::placeholder': {
+		color: 'rgba(55, 53, 47, 0.3)',
 	},
 });
 
-const optionButton = style({
+export const categorySelect = style({
+	width: '100%',
+	marginTop: '1rem',
+	padding: '0.5rem',
+	borderRadius: '0.25rem',
+	border: '1px solid rgba(55, 53, 47, 0.2)',
+	background: 'transparent',
+	outline: 'none',
+});
+
+export const optionsContainer = style({
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '0.5rem',
+	marginTop: '1rem',
+});
+
+export const optionButton = style({
 	display: 'flex',
 	alignItems: 'center',
 	padding: '0.25rem 0.5rem',
@@ -49,22 +62,21 @@ const optionButton = style({
 	},
 });
 
-const imagePreviewContainer = style({
+export const imagePreviewContainer = style({
 	position: 'relative',
 	width: '100%',
-	height: '200px',
-	marginBottom: '1rem',
+	height: '280px',
 	borderRadius: '8px',
 	overflow: 'hidden',
 });
 
-const imagePreview = style({
+export const imagePreview = style({
 	width: '100%',
 	height: '100%',
 	objectFit: 'cover',
 });
 
-const removeImageButton = style({
+export const removeImageButton = style({
 	position: 'absolute',
 	top: '10px',
 	right: '10px',
@@ -78,12 +90,29 @@ const removeImageButton = style({
 	},
 });
 
-export {
-	titleSection,
-	titleInput,
-	optionsContainer,
-	optionButton,
-	imagePreviewContainer,
-	imagePreview,
-	removeImageButton,
-};
+export const imageUploadContainer = style({
+	width: '100%',
+	height: '280px',
+
+	borderRadius: '8px',
+	border: '2px dashed rgba(55, 53, 47, 0.2)',
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+});
+
+export const imageUploadButton = style({
+	display: 'flex',
+	alignItems: 'center',
+	gap: '0.5rem',
+	padding: '0.5rem 1rem',
+	fontSize: '1rem',
+	color: 'rgba(55, 53, 47, 0.65)',
+	backgroundColor: 'rgba(55, 53, 47, 0.08)',
+	borderRadius: '0.25rem',
+	cursor: 'pointer',
+	transition: 'background-color 0.2s ease-in-out',
+	':hover': {
+		backgroundColor: 'rgba(55, 53, 47, 0.12)',
+	},
+});

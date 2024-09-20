@@ -5,3 +5,4 @@ export { supabase } from './api/supabase';
 export { postKeys } from '../features';
 export { useThrottle } from './lib/hooks/useThrottle';
 export { default as storage } from './lib/utils/localStorage';
+export { useErrorHandler } from './lib/hooks/useErrorHandler';

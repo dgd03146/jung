@@ -6,14 +6,16 @@ import { FaArrowLeft } from 'react-icons/fa';
 type Props = {
 	onSave: () => void;
 	onDiscard: () => void;
+	onCreate: () => void;
+	isCreating: boolean;
 };
 
-const EditorHeader = ({ onSave, onDiscard }: Props) => {
+const EditorHeader = ({ onSave, onDiscard, onCreate, isCreating }: Props) => {
 	return (
 		<Flex justifyContent='space-between' alignItems='center'>
 			<Link to={Routes.blog.path}>
 				<Button variant='ghost' size='zero' prefix={<FaArrowLeft />}>
-					back
+					Back
 				</Button>
 			</Link>
 			<Flex gap='2' alignItems='center'>
@@ -23,7 +25,7 @@ const EditorHeader = ({ onSave, onDiscard }: Props) => {
 					borderRadius='lg'
 					onClick={onSave}
 				>
-					save
+					Save
 				</Button>
 				<Button
 					boxShadow='primary'
@@ -31,11 +33,18 @@ const EditorHeader = ({ onSave, onDiscard }: Props) => {
 					borderRadius='lg'
 					onClick={onDiscard}
 				>
-					discard
+					Discard
 				</Button>
 			</Flex>
-			<Button variant='secondary' borderRadius='lg'>
-				publish
+			<Button
+				textAlign='center'
+				variant='secondary'
+				borderRadius='lg'
+				onClick={onCreate}
+				loading={isCreating}
+				disabled={isCreating}
+			>
+				Create
 			</Button>
 		</Flex>
 	);

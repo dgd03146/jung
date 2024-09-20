@@ -1,5 +1,5 @@
 import type { Block } from '@blocknote/core';
-import type { PostData } from '../types/post';
+import type { PostData } from '../types/postData';
 
 export const isNonEmptyBlock = (block: Block) =>
 	block.type !== 'paragraph' ||
