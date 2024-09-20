@@ -38,6 +38,10 @@ export const input = recipe({
 			}),
 		},
 		size: {
+			zero: sprinkles({
+				padding: '0',
+			}),
+
 			sm: sprinkles({
 				paddingX: '2.5',
 				paddingY: '1',

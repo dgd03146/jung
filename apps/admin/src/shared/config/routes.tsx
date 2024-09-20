@@ -6,10 +6,16 @@ import {
 	MdRestaurantMenu,
 } from 'react-icons/md';
 
-export const Routes = [
-	{ path: '/', icon: <MdDashboard />, label: 'dashboard' },
-	{ path: '/blog', icon: <MdArticle />, label: 'blog' },
-	{ path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
-	{ path: '/spots', icon: <MdRestaurantMenu />, label: 'spots' },
-	{ path: '/community', icon: <MdForum />, label: 'community' },
-];
+export const Routes = {
+	home: { path: '/', icon: <MdDashboard />, label: 'dashboard' },
+	blog: { path: '/blog', icon: <MdArticle />, label: 'blog' },
+
+	gallery: { path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
+	spots: { path: '/spots', icon: <MdRestaurantMenu />, label: 'spots' },
+	community: { path: '/community', icon: <MdForum />, label: 'community' },
+};
+
+export const RoutesArray = Object.entries(Routes).map(([key, value]) => ({
+	key,
+	...value,
+}));

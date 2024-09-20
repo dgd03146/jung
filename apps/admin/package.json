@@ -13,6 +13,9 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@blocknote/core": "^0.15.6",
+    "@blocknote/mantine": "^0.15.6",
+    "@blocknote/react": "^0.15.6",
     "@jung/design-system": "workspace:*",
     "@jung/server": "workspace:*",
     "@supabase/supabase-js": "^2.44.4",
@@ -29,6 +32,7 @@
     "react-error-boundary": "^4.0.13",
     "react-icons": "^5.2.1",
     "use-debounce": "^10.0.3",
+    "uuid": "^10.0.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -37,6 +41,7 @@
     "@tanstack/router-plugin": "^1.49.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/uuid": "^10.0.0",
     "@vanilla-extract/vite-plugin": "^4.0.13",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "@vitest/coverage-v8": "^1.6.0",

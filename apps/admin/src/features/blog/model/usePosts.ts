@@ -1,6 +1,8 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchPosts } from '../api/postApi';
-import { type PostFilters, postKeys } from './postKeys';
+
+import { fetchPosts } from '@/fsd/features';
+import { postKeys } from '@/fsd/shared';
+import type { PostFilters } from '../types/postFilters';
 
 export function usePostsQuery(filters: PostFilters) {
 	return useQuery({

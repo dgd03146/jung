@@ -1,6 +1,5 @@
 import me from '@/fsd/assets/me.png';
-import { usePathname } from '@/fsd/shared';
-import { Routes } from '@/fsd/shared';
+import { RoutesArray, usePathname } from '@/fsd/shared';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import * as styles from './Sidebar.css';
@@ -41,7 +40,7 @@ const Sidebar = () => {
 				</Typography.Text>
 			</Flex>
 			<Flex display='flex' flexDirection='column' rowGap='0.5' marginTop='1'>
-				{Routes.map(({ path, icon, label }) => (
+				{RoutesArray.map(({ path, icon, label }) => (
 					<Link
 						key={label}
 						to={path}

@@ -1,1 +1,1 @@
-export { default as getPageTitle } from './getPageTitle';
+export { default as getPageTitle } from './utils/getPageTitle';

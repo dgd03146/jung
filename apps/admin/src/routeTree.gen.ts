@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root';
 import { Route as BlogSlugImport } from './routes/blog/$slug';
 import { Route as BlogIndexImport } from './routes/blog/index';
+import { Route as BlogNewIndexImport } from './routes/blog/new/index';
 import { Route as CommunityIndexImport } from './routes/community/index';
 import { Route as GalleryIndexImport } from './routes/gallery/index';
 import { Route as IndexImport } from './routes/index';
@@ -47,6 +48,11 @@ const BlogIndexRoute = BlogIndexImport.update({
 
 const BlogSlugRoute = BlogSlugImport.update({
 	path: '/blog/$slug',
+	getParentRoute: () => rootRoute,
+} as any);
+
+const BlogNewIndexRoute = BlogNewIndexImport.update({
+	path: '/blog/new/',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -96,6 +102,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof SpotsIndexImport;
 			parentRoute: typeof rootRoute;
 		};
+		'/blog/new/': {
+			id: '/blog/new/';
+			path: '/blog/new';
+			fullPath: '/blog/new';
+			preLoaderRoute: typeof BlogNewIndexImport;
+			parentRoute: typeof rootRoute;
+		};
 	}
 }
 
@@ -108,6 +121,7 @@ export const routeTree = rootRoute.addChildren({
 	CommunityIndexRoute,
 	GalleryIndexRoute,
 	SpotsIndexRoute,
+	BlogNewIndexRoute,
 });
 
 /* prettier-ignore-end */
@@ -123,7 +137,8 @@ export const routeTree = rootRoute.addChildren({
         "/blog/",
         "/community/",
         "/gallery/",
-        "/spots/"
+        "/spots/",
+        "/blog/new/"
       ]
     },
     "/": {
@@ -143,6 +158,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/spots/": {
       "filePath": "spots/index.tsx"
+    },
+    "/blog/new/": {
+      "filePath": "blog/new/index.tsx"
     }
   }
 }
