@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { useToastContext } from '../context/ToastContext';
 
 export const useToast = () => {
+	// FIXME: 성공 실패 CASE들 만들어서 스타일 적용하기
+
 	const { setToastList } = useToastContext();
 	const showToast = useCallback(
 		(message: string, duration = 1300) => {
