@@ -1,6 +1,6 @@
 import { Box } from '@jung/design-system/components';
 import { usePostTable } from '../../model/usePostTable';
-import ErrorFallback from './ErrorFallback';
+import ErrorFallback from '../ErrorFallback';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';
 import { TablePagination } from './TablePagination';

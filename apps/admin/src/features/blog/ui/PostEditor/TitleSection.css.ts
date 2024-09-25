@@ -24,7 +24,7 @@ export const descriptionInput = style({
 	outline: 'none',
 	background: 'transparent',
 	minHeight: '20px',
-	margin: '1rem 0',
+	margin: '0.5rem 0',
 	'::placeholder': {
 		color: 'rgba(55, 53, 47, 0.3)',
 	},
@@ -65,7 +65,7 @@ export const optionButton = style({
 export const imagePreviewContainer = style({
 	position: 'relative',
 	width: '100%',
-	height: '280px',
+	height: '240px',
 	borderRadius: '8px',
 	overflow: 'hidden',
 });
@@ -92,7 +92,7 @@ export const removeImageButton = style({
 
 export const imageUploadContainer = style({
 	width: '100%',
-	height: '280px',
+	height: '240px',
 
 	borderRadius: '8px',
 	border: '2px dashed rgba(55, 53, 47, 0.2)',

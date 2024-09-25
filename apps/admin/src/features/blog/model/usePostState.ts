@@ -1,42 +1,69 @@
+import type {
+	DraftPost,
+	PostWithBlockContent,
+} from '@/fsd/entities/post/model/post';
 import { storage } from '@/fsd/shared';
-import { useCallback, useState } from 'react';
-import { defaultBlock, initialPostData } from '../config/initialPost';
+import { useMatch } from '@tanstack/react-router';
+import { useCallback, useEffect, useState } from 'react';
+import { useGetPost } from '../api/useGetPost';
+import { EmptyContent, EmptyPost } from '../config/initialPost';
 import { STORAGE_KEY } from '../config/storageKey';
 import { confirmLoadDraft } from '../lib/confirmLoadDraft';
 import { validatePostData } from '../lib/validatePostData';
 import type { Errors } from '../types/errors';
-import type { PostData } from '../types/postData';
 
 export const usePostState = () => {
-	const [postData, setPostData] = useState<PostData>(() => {
-		const savedPost = storage.get(STORAGE_KEY) as PostData | null;
-		if (savedPost && confirmLoadDraft(savedPost.lastSaved)) {
-			const content =
-				savedPost.content.length > 0 ? savedPost.content : [defaultBlock];
-
-			return {
-				...savedPost,
-				content,
-			};
-		}
-		storage.remove(STORAGE_KEY);
-		return initialPostData;
+	const editMatch = useMatch({
+		from: '/blog/edit/$postId',
+		shouldThrow: false,
 	});
 
-	const [errors, setErrors] = useState<Errors>(() =>
-		validatePostData(postData),
-	);
+	const isEditPage = !!editMatch;
+	const postId = isEditPage ? editMatch.params.postId : undefined;
 
-	const validateAndUpdateErrors = useCallback((data: PostData) => {
+	const {
+		data: fetchedPost,
+		isLoading,
+		error: fetchError,
+		refetch,
+	} = useGetPost(postId);
+
+	const [localPost, setLocalPost] = useState<PostWithBlockContent>(() => {
+		const savedPost: DraftPost | null = storage.get(STORAGE_KEY);
+		if (savedPost && confirmLoadDraft(savedPost.lastSaved)) {
+			const content =
+				savedPost.content.length > 0 ? savedPost.content : [EmptyContent];
+			return { ...savedPost, content };
+		}
+		storage.remove(STORAGE_KEY);
+		return EmptyPost;
+	});
+
+	useEffect(() => {
+		if (fetchedPost) setLocalPost(fetchedPost);
+	}, [fetchedPost]);
+
+	const [validateErrors, setValidateErrors] = useState<Errors>(() => {
+		if (isEditPage) {
+			return { imagesrc: '', category: '', title: '', description: '' };
+		}
+		return validatePostData(localPost);
+	});
+
+	const validateAndUpdateErrors = useCallback((data: PostWithBlockContent) => {
 		const newErrors = validatePostData(data);
-		setErrors(newErrors);
+		setValidateErrors(newErrors);
 		return newErrors;
 	}, []);
 
 	const updatePostData = useCallback(
-		<K extends keyof PostData>(field: K, value: PostData[K]) => {
-			setPostData((prev) => {
+		<K extends keyof PostWithBlockContent>(
+			field: K,
+			value: PostWithBlockContent[K],
+		) => {
+			setLocalPost((prev) => {
 				const newPostData = { ...prev, [field]: value };
+
 				validateAndUpdateErrors(newPostData);
 				return newPostData;
 			});
@@ -45,15 +72,21 @@ export const usePostState = () => {
 	);
 
 	const resetForm = useCallback(() => {
-		setPostData(initialPostData);
-		setErrors(validatePostData(initialPostData));
+		EmptyPost;
+		setValidateErrors(validatePostData(EmptyPost));
+		storage.remove(STORAGE_KEY);
 	}, []);
 
 	return {
-		postData,
-		errors,
-		setPostData,
+		localPost,
+		fetchedPost,
+		validateErrors,
+		setLocalPost,
 		updatePostData,
 		resetForm,
+		isLoading,
+		fetchError,
+		validateAndUpdateErrors,
+		refetch,
 	};
 };

@@ -1,47 +1,54 @@
 import { Container, Flex } from '@jung/design-system/components';
-
 import { usePostEditor } from '../../model/usePostEditor';
+import ErrorFallback from '../ErrorFallback';
 import BlockNote from './BlockNote';
 import EditorHeader from './EditorHeader';
-import { ImageUpload } from './ImageUpload';
+import { ImagePreview } from './ImagePreview';
+import PostEditorSkeleton from './PostEditorSkeleton';
 import TitleSection from './TitleSection';
 
 const PostEditor = () => {
 	const {
-		post,
+		localPost,
 		editor,
-		errors,
+		validateErrors,
 		handleSave,
 		handleDiscard,
 		handleFieldChange,
-		// handleImageUpload,
-		handleCreate,
-		isCreating,
-		isUploading,
+		handleSubmit,
+		isSubmitting,
+
 		setImageFile,
+		isLoading,
+		fetchError,
+		fetchedPost,
+		refetch,
 	} = usePostEditor();
 
+	if (isLoading) return <PostEditorSkeleton />;
+	if (fetchError)
+		return <ErrorFallback error={fetchError} resetErrorBoundary={refetch} />;
+
 	return (
-		<Container maxWidth='laptop' marginX='auto' height='full'>
+		<Container maxWidth='tablet' marginX='auto' height='full'>
 			<Flex direction='column' gap='2'>
 				<EditorHeader
 					onSave={handleSave}
 					onDiscard={handleDiscard}
-					onCreate={handleCreate}
-					isCreating={isCreating}
+					onSubmit={handleSubmit}
+					isSubmitting={isSubmitting}
+					isEditMode={!!fetchedPost}
 				/>
-				<ImageUpload
-					isUploading={isUploading}
-					imagesrc={post.imagesrc}
+				<ImagePreview
+					imagesrc={localPost.imagesrc}
 					onSetImageFile={setImageFile}
-					// onUploadImage={handleImageUpload}
 					onFieldChange={handleFieldChange}
-					errors={errors}
+					validateErrors={validateErrors}
 				/>
 				<TitleSection
-					post={post}
+					post={localPost}
 					onFieldChange={handleFieldChange}
-					errors={errors}
+					errors={validateErrors}
 				/>
 				<BlockNote editor={editor} />
 			</Flex>

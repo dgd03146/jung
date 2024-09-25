@@ -6,11 +6,25 @@ import { FaArrowLeft } from 'react-icons/fa';
 type Props = {
 	onSave: () => void;
 	onDiscard: () => void;
-	onCreate: () => void;
-	isCreating: boolean;
+	onSubmit: () => void;
+	isSubmitting: boolean;
+	isEditMode: boolean;
 };
 
-const EditorHeader = ({ onSave, onDiscard, onCreate, isCreating }: Props) => {
+const EditorHeader = ({
+	onSave,
+	onDiscard,
+	onSubmit,
+	isSubmitting,
+	isEditMode,
+}: Props) => {
+	const getButtonText = () => {
+		if (isEditMode) {
+			return isSubmitting ? 'Updating' : 'Update';
+		}
+		return isSubmitting ? 'Creating' : 'Create';
+	};
+
 	return (
 		<Flex justifyContent='space-between' alignItems='center'>
 			<Link to={Routes.blog.path}>
@@ -40,11 +54,11 @@ const EditorHeader = ({ onSave, onDiscard, onCreate, isCreating }: Props) => {
 				textAlign='center'
 				variant='secondary'
 				borderRadius='lg'
-				onClick={onCreate}
-				loading={isCreating}
-				disabled={isCreating}
+				onClick={onSubmit}
+				loading={isSubmitting}
+				disabled={isSubmitting}
 			>
-				Create
+				{getButtonText()}
 			</Button>
 		</Flex>
 	);

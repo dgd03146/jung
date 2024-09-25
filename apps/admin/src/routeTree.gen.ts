@@ -11,7 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root';
-import { Route as BlogSlugImport } from './routes/blog/$slug';
+import { Route as BlogEditPostIdImport } from './routes/blog/edit/$postId';
 import { Route as BlogIndexImport } from './routes/blog/index';
 import { Route as BlogNewIndexImport } from './routes/blog/new/index';
 import { Route as CommunityIndexImport } from './routes/community/index';
@@ -46,13 +46,13 @@ const BlogIndexRoute = BlogIndexImport.update({
 	getParentRoute: () => rootRoute,
 } as any);
 
-const BlogSlugRoute = BlogSlugImport.update({
-	path: '/blog/$slug',
+const BlogNewIndexRoute = BlogNewIndexImport.update({
+	path: '/blog/new/',
 	getParentRoute: () => rootRoute,
 } as any);
 
-const BlogNewIndexRoute = BlogNewIndexImport.update({
-	path: '/blog/new/',
+const BlogEditPostIdRoute = BlogEditPostIdImport.update({
+	path: '/blog/edit/$postId',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -65,13 +65,6 @@ declare module '@tanstack/react-router' {
 			path: '/';
 			fullPath: '/';
 			preLoaderRoute: typeof IndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		'/blog/$slug': {
-			id: '/blog/$slug';
-			path: '/blog/$slug';
-			fullPath: '/blog/$slug';
-			preLoaderRoute: typeof BlogSlugImport;
 			parentRoute: typeof rootRoute;
 		};
 		'/blog/': {
@@ -102,6 +95,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof SpotsIndexImport;
 			parentRoute: typeof rootRoute;
 		};
+		'/blog/edit/$postId': {
+			id: '/blog/edit/$postId';
+			path: '/blog/edit/$postId';
+			fullPath: '/blog/edit/$postId';
+			preLoaderRoute: typeof BlogEditPostIdImport;
+			parentRoute: typeof rootRoute;
+		};
 		'/blog/new/': {
 			id: '/blog/new/';
 			path: '/blog/new';
@@ -116,11 +116,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
 	IndexRoute,
-	BlogSlugRoute,
 	BlogIndexRoute,
 	CommunityIndexRoute,
 	GalleryIndexRoute,
 	SpotsIndexRoute,
+	BlogEditPostIdRoute,
 	BlogNewIndexRoute,
 });
 
@@ -133,19 +133,16 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/blog/$slug",
         "/blog/",
         "/community/",
         "/gallery/",
         "/spots/",
+        "/blog/edit/$postId",
         "/blog/new/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/blog/$slug": {
-      "filePath": "blog/$slug.tsx"
     },
     "/blog/": {
       "filePath": "blog/index.tsx"
@@ -158,6 +155,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/spots/": {
       "filePath": "spots/index.tsx"
+    },
+    "/blog/edit/$postId": {
+      "filePath": "blog/edit/$postId.tsx"
     },
     "/blog/new/": {
       "filePath": "blog/new/index.tsx"

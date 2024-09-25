@@ -1,24 +1,19 @@
-import {
-	Container,
-	Input,
-	Select,
-	Textarea,
-} from '@jung/design-system/components';
+import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
+import { Container, Input, Select } from '@jung/design-system/components';
 import { CATEGORIES } from '../../config/category';
-import type { PostData } from '../../types/postData';
 import ErrorMessage from './ErrorMessage';
 import { TagsInput } from './TagsInput';
 import * as styles from './TitleSection.css';
 
 export interface TitleSectionProps {
-	post: PostData;
-	onFieldChange: <K extends keyof PostData>(
+	post: PostWithBlockContent;
+	onFieldChange: <K extends keyof PostWithBlockContent>(
 		field: K,
-		value: PostData[K],
+		value: PostWithBlockContent[K],
 	) => void;
 
 	maxTags?: number;
-	errors: Partial<PostData>;
+	errors: Partial<PostWithBlockContent>;
 }
 
 const TitleSection = ({
@@ -57,13 +52,12 @@ const TitleSection = ({
 			</Select>
 			{errors.category && <ErrorMessage message={errors.category} />}
 			{/* Description */}
-			<Textarea
+			<Input
 				className={styles.descriptionInput}
 				value={description}
 				variant='ghost'
 				onChange={(e) => onFieldChange('description', e.target.value)}
 				placeholder='Add a description...'
-				rows={1}
 			/>
 			{errors.description && <ErrorMessage message={errors.description} />}
 			{/* Tags */}

@@ -1,111 +1,164 @@
 import { storage, useThrottle } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { uploadImage } from '../api/uploadImage';
+import { useCreatePost } from '../api/useCreatePost';
+import { useUpdatePost } from '../api/useUpdatePost';
+import { EmptyPost } from '../config/initialPost';
 import { STORAGE_KEY } from '../config/storageKey';
 import { isPostEmpty } from '../lib/isEmpty';
-import { useCreatePost } from './useCreatePost';
-import { useFileUpload } from './useFileUpload';
+import { serializeContent } from '../lib/serializeContent';
 import { useKeyboardShortcut } from './useKeyboardShortcut';
 import { usePostContent } from './usePostContent';
 import { usePostState } from './usePostState';
 
 export const usePostEditor = () => {
-	const { postData, errors, updatePostData, resetForm } = usePostState();
+	const {
+		localPost,
+		fetchedPost,
+		isLoading,
+		fetchError,
+		validateErrors,
+		updatePostData,
+		resetForm,
+		refetch,
+	} = usePostState();
+
+	const { editor, getContent } = usePostContent(localPost.content);
+
+	const [imageFile, setImageFile] = useState<File | null>(null);
 	const showToast = useToast();
 	const createPostMutation = useCreatePost();
-	const { uploadFile } = useFileUpload();
-	const { editor, getContent } = usePostContent(postData.content, uploadFile);
-	const [isUploading, setIsUploading] = useState(false);
-	const [imageFile, setImageFile] = useState<File | null>(null);
+	const updatePostMutation = useUpdatePost();
+
+	const isCreating = createPostMutation.isPending;
+	const isUpdating = updatePostMutation.isPending;
+
+	useEffect(() => {
+		if (fetchedPost) editor.replaceBlocks(editor.document, fetchedPost.content);
+	}, [fetchedPost, editor]);
+
+	const handleImageUpload = useCallback(
+		async (file: File | null) => {
+			if (!file) return;
+
+			try {
+				const publicUrl = await uploadImage(file);
+				return publicUrl;
+			} catch (error: unknown) {
+				showToast('Failed to upload Image');
+			}
+		},
+		[showToast],
+	);
 
 	const handleSave = useCallback(() => {
 		const content = getContent();
 		const postToSave = {
-			...postData,
+			...localPost,
 			content,
 			lastSaved: new Date().toLocaleString(),
 		};
 
-		if (isPostEmpty(postToSave)) {
-			showToast('Nothing to save. The post is empty.');
-		} else {
+		if (!isPostEmpty(postToSave)) {
 			storage.set(STORAGE_KEY, postToSave);
 			showToast('Post saved successfully!');
+		} else {
+			showToast('Cannot save an empty post.');
 		}
-	}, [getContent, postData, showToast]);
+	}, [getContent, localPost, showToast]);
 
 	const throttledSave = useThrottle(handleSave, 3000);
 	useKeyboardShortcut('s', throttledSave);
 
-	const handleDiscard = useCallback(() => {
-		if (window.confirm('Are you sure you want to discard this draft?')) {
-			storage.remove(STORAGE_KEY);
-			resetForm();
-			editor.replaceBlocks(editor.document, postData.content);
-			showToast('Draft discarded');
-		}
-	}, [editor, resetForm, postData.content, showToast]);
-
-	const handleImageUpload = useCallback(
-		async (file: File | null) => {
-			if (!file) {
-				updatePostData('imagesrc', '');
-				return;
+	const preparePostData = useCallback(
+		async (imageFile: File | null) => {
+			const errorMessages = Object.values(validateErrors).filter(Boolean);
+			if (errorMessages.length !== 0) {
+				showToast('Please fill all required fields');
+				return null;
 			}
 
-			setIsUploading(true);
+			let imagesrc = localPost.imagesrc;
+			if (imageFile) {
+				imagesrc = (await handleImageUpload(imageFile)) || '';
+			}
 
-			// Upload image to supabase
-			const { shortId } = await uploadFile(file);
-			// Save short imageId to supabse
-			updatePostData('imagesrc', shortId);
+			const content = getContent();
+			const serializedContent = serializeContent(content);
 
-			return shortId;
+			const { id, ...post } = localPost;
+
+			return {
+				...post,
+				content: serializedContent,
+				imagesrc,
+			};
 		},
-		[uploadFile, updatePostData],
+		[validateErrors, showToast, handleImageUpload, getContent, localPost],
 	);
 
-	const handleCreate = useCallback(async () => {
-		const errorMessages = Object.values(errors).filter(Boolean);
-		if (errorMessages.length !== 0) {
-			showToast('Please fill all required fields');
-			return;
-		}
+	const handleCreate = useCallback(
+		async (imageFile: File | null) => {
+			const postData = await preparePostData(imageFile);
+			if (!postData) return;
 
-		let updatedPostData = { ...postData };
-
-		if (imageFile) {
-			const imageId = await handleImageUpload(imageFile);
-			updatedPostData = {
-				...updatedPostData,
-				imagesrc: imageId || '',
+			const updatedPostData = {
+				...postData,
+				date: new Date().toISOString(),
 			};
+
+			createPostMutation.mutate(updatedPostData);
+		},
+		[preparePostData, createPostMutation],
+	);
+
+	const handleUpdate = useCallback(
+		async (imageFile: File | null) => {
+			const postData = await preparePostData(imageFile);
+			if (!postData) return;
+
+			const updatedPostData = {
+				...postData,
+				updated_at: new Date().toISOString(),
+			};
+
+			updatePostMutation.mutate({ id: localPost.id, post: updatedPostData });
+			storage.remove(STORAGE_KEY);
+		},
+		[preparePostData, updatePostMutation, localPost.id],
+	);
+
+	const handleDiscard = useCallback(() => {
+		if (window.confirm('Are you sure you want to discard this draft?')) {
+			resetForm();
+			editor.replaceBlocks(editor.document, EmptyPost.content);
+			showToast('Draft discarded');
 		}
+	}, [editor, resetForm, showToast]);
 
-		createPostMutation.mutate(updatedPostData);
-		storage.remove(STORAGE_KEY);
-	}, [
-		errors,
-		createPostMutation,
-		postData,
-		showToast,
-		handleImageUpload,
-		imageFile,
-	]);
+	const handleSubmit = useCallback(() => {
+		if (fetchedPost) {
+			handleUpdate(imageFile);
+		} else {
+			handleCreate(imageFile);
+		}
+	}, [fetchedPost, handleUpdate, handleCreate, imageFile]);
 
-	// TODO: 렌더링 최적화 할 수 있으면 해보기!
 	return {
-		post: postData,
+		localPost,
 		editor,
-		errors,
+		isLoading,
+		validateErrors,
+		fetchError,
 		handleSave,
 		handleDiscard,
 		handleFieldChange: updatePostData,
-		handleImageUpload,
-		throttledSave,
-		handleCreate,
-		isCreating: createPostMutation.isPending,
-		isUploading,
+		handleSubmit,
+		isSubmitting: isCreating || isUpdating,
+
 		setImageFile,
+		refetch,
+		fetchedPost,
 	};
 };

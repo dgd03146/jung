@@ -1,10 +1,10 @@
+import type { Post } from '@/fsd/entities';
 import { Routes, postKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { createPost } from '../api/createPost';
-import type { PostData } from '../types/postData';
+import { createPost } from './createPost';
 
 export const useCreatePost = () => {
 	const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const useCreatePost = () => {
 	const navigate = useNavigate();
 
 	return useMutation({
-		mutationFn: (postData: PostData) => createPost(postData),
+		mutationFn: (post: Omit<Post, 'id'>) => createPost(post),
 		onSuccess: (newPost) => {
 			queryClient.invalidateQueries({ queryKey: postKeys.lists() });
 			queryClient.setQueryData(postKeys.detail(newPost.id), newPost);

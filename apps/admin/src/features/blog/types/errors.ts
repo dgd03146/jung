@@ -1,6 +1,6 @@
-import type { PostData } from './postData';
+import type { Post } from '@/fsd/entities';
 
 export type Errors = Record<
-	keyof Pick<PostData, 'imagesrc' | 'title' | 'description' | 'category'>,
+	keyof Pick<Post, 'imagesrc' | 'title' | 'description' | 'category'>,
 	string
 >;

@@ -1,13 +1,16 @@
 import type { Post } from '@/fsd/entities';
 import { supabase } from '@/fsd/shared';
-
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
-export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
+export const updatePost = async (
+	postId: string,
+	post: Partial<Post>,
+): Promise<Post> => {
 	try {
 		const { data, error } = await supabase
 			.from('posts')
-			.insert([post])
+			.update(post)
+			.eq('id', postId)
 			.select()
 			.single();
 
@@ -16,7 +19,7 @@ export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
 		}
 		if (!data) {
 			throw new ApiError(
-				'An error occurred while creating the post.',
+				'An error occurred while updating the post.',
 				'NO_DATA',
 			);
 		}
@@ -26,6 +29,9 @@ export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
 		if (error instanceof ApiError) {
 			throw error;
 		}
-		throw new ApiError('An unexpected error occurred.', 'UNKNOWN_ERROR');
+		throw new ApiError(
+			'An unexpected error occurred while updating the post.',
+			'UNKNOWN_ERROR',
+		);
 	}
 };

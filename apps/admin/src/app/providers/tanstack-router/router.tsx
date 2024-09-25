@@ -2,7 +2,6 @@ import type { QueryClient } from '@tanstack/react-query';
 import { createRouter as createTanStackRouter } from '@tanstack/react-router';
 
 import { routeTree } from '@/fsd/routeTree.gen';
-import { Flex, Typography } from '@jung/design-system/components';
 import { queryClient } from '../react-query/ReactQueryProvider';
 // import { trpcQueryUtils } from '../trpc/TrpcProvider';
 
@@ -18,18 +17,19 @@ type ExtendedContext = {
 	// trpcQueryUtils: typeof trpcQueryUtils;
 };
 
-const LoadingComponent = () => (
-	<Flex
-		flexDirection='column'
-		alignItems='center'
-		justifyContent='center'
-		height='full'
-	>
-		<Typography.Heading level={2} color='primary'>
-			Loading page...
-		</Typography.Heading>
-	</Flex>
-);
+// FIXME: 로딩 스피너 수정
+// const LoadingComponent = () => (
+//   <Flex
+//     flexDirection="column"
+//     alignItems="center"
+//     justifyContent="center"
+//     height="full"
+//   >
+//     <Typography.Heading level={2} color="primary">
+//       Loading page...
+//     </Typography.Heading>
+//   </Flex>
+// );
 
 export function createRouter() {
 	const router = createTanStackRouter({
@@ -40,7 +40,7 @@ export function createRouter() {
 			// trpcQueryUtils,
 		} as ExtendedContext,
 		// FIXME: 나중에 변경
-		defaultPendingComponent: LoadingComponent,
+		// defaultPendingComponent: LoadingComponent,
 	});
 
 	return router;

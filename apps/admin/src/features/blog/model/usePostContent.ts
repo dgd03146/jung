@@ -1,21 +1,19 @@
 import type { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { useCallback } from 'react';
-import { isNonEmptyBlock } from '../lib/isEmpty';
-import type { UploadResult } from './useFileUpload';
 
-export const usePostContent = (
-	initialContent: PartialBlock[],
-	uploadFile: (file: File) => Promise<UploadResult>,
-) => {
+import { uploadImage } from '../api/uploadImage';
+import { isNonEmptyBlock } from '../lib/isEmpty';
+
+export const usePostContent = (initialContent: PartialBlock[]) => {
 	const editor = useCreateBlockNote({
 		initialContent,
-		uploadFile,
+		uploadFile: uploadImage,
 	});
 
 	const getContent = useCallback(() => {
 		return editor.document.filter(isNonEmptyBlock);
-	}, [editor]);
+	}, [editor.document]);
 
 	return { editor, getContent };
 };

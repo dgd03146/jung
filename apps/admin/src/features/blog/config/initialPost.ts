@@ -1,8 +1,8 @@
+import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
 import type { Block } from '@blocknote/core';
-import type { PostData } from '../types/postData';
 
-// BlockNote가 기대하는 기본 블록 구조
-export const defaultBlock: Block = {
+// BlockNote 기본 블록 구조
+export const EmptyContent: Block = {
 	id: '1',
 	type: 'paragraph',
 	props: {
@@ -20,9 +20,11 @@ export const defaultBlock: Block = {
 	children: [],
 };
 
-export const initialPostData: PostData = {
+export const EmptyPost: PostWithBlockContent = {
+	id: '',
+	date: '',
 	title: '',
-	content: [defaultBlock],
+	content: [EmptyContent],
 	imagesrc: '',
 	tags: [],
 	category: '',

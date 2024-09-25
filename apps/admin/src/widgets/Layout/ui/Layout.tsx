@@ -7,8 +7,7 @@ import { Sidebar } from '@/fsd/widgets/Sidebar/ui';
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { pathname } = usePathname();
 
-	const isPostEditPage =
-		pathname.startsWith('/blog') && pathname.split('/')[2] === 'new';
+	const isPostEditPage = /^\/blog\/(new|edit\/\d+)$/.test(pathname);
 
 	return (
 		<Container display='flex' minHeight='screenDvh'>

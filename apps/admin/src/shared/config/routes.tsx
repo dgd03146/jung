@@ -6,6 +6,8 @@ import {
 	MdRestaurantMenu,
 } from 'react-icons/md';
 
+// FIXME: 굳이 필요한가?..
+
 export const Routes = {
 	home: { path: '/', icon: <MdDashboard />, label: 'dashboard' },
 	blog: { path: '/blog', icon: <MdArticle />, label: 'blog' },
