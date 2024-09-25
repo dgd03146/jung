@@ -2,7 +2,7 @@ import { postKeys } from '@/fsd/shared';
 import { useQuery } from '@tanstack/react-query';
 import { EmptyContent } from '../config/initialPost';
 import { deserializeContent } from '../lib/serializeContent';
-import { fetchPostById } from './getPostById';
+import { fetchPostById } from './getPost';
 
 export function useGetPost(postId?: string) {
 	return useQuery({

@@ -1,5 +1,6 @@
+import { Routes } from '@/fsd/shared';
 import { Box, Button, Container, Flex } from '@jung/design-system/components';
-import { useMatch } from '@tanstack/react-router';
+import { Link, useMatch } from '@tanstack/react-router';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const PostEditorSkeleton = () => {
@@ -14,9 +15,11 @@ const PostEditorSkeleton = () => {
 		<Container maxWidth='tablet' marginX='auto' height='full'>
 			<Flex direction='column' gap='2'>
 				<Flex justifyContent='space-between' alignItems='center'>
-					<Button variant='ghost' size='zero' disabled prefix={<FaArrowLeft />}>
-						Back
-					</Button>
+					<Link to={Routes.blog.path}>
+						<Button variant='ghost' size='zero' prefix={<FaArrowLeft />}>
+							Back
+						</Button>
+					</Link>
 					<Flex gap='2' alignItems='center'>
 						<Button
 							boxShadow='primary'

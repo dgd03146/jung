@@ -25,7 +25,6 @@ export const usePostEditor = () => {
 	} = usePostState();
 
 	const { editor, getContent } = usePostContent(localPost.content);
-
 	const [imageFile, setImageFile] = useState<File | null>(null);
 	const showToast = useToast();
 	const createPostMutation = useCreatePost();
@@ -33,10 +32,6 @@ export const usePostEditor = () => {
 
 	const isCreating = createPostMutation.isPending;
 	const isUpdating = updatePostMutation.isPending;
-
-	useEffect(() => {
-		if (fetchedPost) editor.replaceBlocks(editor.document, fetchedPost.content);
-	}, [fetchedPost, editor]);
 
 	const handleImageUpload = useCallback(
 		async (file: File | null) => {
@@ -109,6 +104,7 @@ export const usePostEditor = () => {
 			};
 
 			createPostMutation.mutate(updatedPostData);
+			storage.remove(STORAGE_KEY);
 		},
 		[preparePostData, createPostMutation],
 	);
@@ -145,6 +141,10 @@ export const usePostEditor = () => {
 		}
 	}, [fetchedPost, handleUpdate, handleCreate, imageFile]);
 
+	useEffect(() => {
+		if (fetchedPost) editor.replaceBlocks(editor.document, fetchedPost.content);
+	}, [fetchedPost, editor]);
+
 	return {
 		localPost,
 		editor,
@@ -155,8 +155,8 @@ export const usePostEditor = () => {
 		handleDiscard,
 		handleFieldChange: updatePostData,
 		handleSubmit,
-		isSubmitting: isCreating || isUpdating,
 
+		isSubmitting: isCreating || isUpdating,
 		setImageFile,
 		refetch,
 		fetchedPost,
