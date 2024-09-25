@@ -4,7 +4,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import { type ChangeEvent, useCallback, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-export const usePostFilter = () => {
+export const usePostTableFilter = () => {
 	const searchParams: PostFilters = useSearch({ from: '/blog/' });
 	const navigate = useNavigate();
 

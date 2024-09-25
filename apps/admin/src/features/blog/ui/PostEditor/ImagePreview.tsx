@@ -1,40 +1,40 @@
+import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { Box, Button, Input, useToast } from '@jung/design-system/components';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FaImage, FaTimes } from 'react-icons/fa';
-import type { PostData } from '../../types/postData';
 import ErrorMessage from './ErrorMessage';
 import type { TitleSectionProps } from './TitleSection';
 import * as styles from './TitleSection.css';
 
-interface ImageUploadProps {
-	onFieldChange: <K extends keyof PostData>(
+interface ImagePreviewProps {
+	onFieldChange: <K extends keyof PostWithBlockContent>(
 		field: K,
-		value: PostData[K],
+		value: PostWithBlockContent[K],
 	) => void;
 
 	imagesrc: string;
-	errors: TitleSectionProps['errors'];
-	isUploading: boolean;
+	validateErrors: TitleSectionProps['errors'];
 	onSetImageFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
-// FIXME: 컴포넌트 이름 적절하게 변경
-export const ImageUpload = ({
-	isUploading,
+export const ImagePreview = ({
 	imagesrc,
 	onSetImageFile,
 	onFieldChange,
-	errors,
-}: ImageUploadProps) => {
+	validateErrors,
+}: ImagePreviewProps) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const showToast = useToast();
 
 	const [imagePreview, setImagePreview] = useState<string | null>(imagesrc);
 
+	useEffect(() => {
+		setImagePreview(imagesrc);
+	}, [imagesrc]);
+
 	const handlePrviewImage = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
-			console.log('preview!!');
 			const file = e.target.files?.[0];
 
 			if (file) {
@@ -60,8 +60,6 @@ export const ImageUpload = ({
 	const handleRemoveImage = useCallback(() => {
 		onFieldChange('imagesrc', '');
 		setImagePreview(null);
-
-		// TODO: SUPABASE에서도 지워야 할 듯?
 	}, [onFieldChange]);
 
 	return (
@@ -85,7 +83,6 @@ export const ImageUpload = ({
 			) : (
 				<Box className={styles.imageUploadContainer}>
 					<Button
-						loading={isUploading}
 						className={styles.imageUploadButton}
 						onClick={() => fileInputRef.current?.click()}
 					>
@@ -93,7 +90,9 @@ export const ImageUpload = ({
 					</Button>
 				</Box>
 			)}
-			{errors.imagesrc && <ErrorMessage message={errors.imagesrc} />}
+			{validateErrors.imagesrc && (
+				<ErrorMessage message={validateErrors.imagesrc} />
+			)}
 			<Input
 				ref={fileInputRef}
 				type='file'

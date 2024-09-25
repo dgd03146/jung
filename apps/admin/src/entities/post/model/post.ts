@@ -1,5 +1,7 @@
 // FIXME: 나중에 수정..
 
+import type { Block } from '@blocknote/core';
+
 // export type Post = {
 // 	id: string;
 // 	title: string;
@@ -32,6 +34,15 @@ export type Post = {
 	category: string;
 	description: string;
 	content: string;
+	updated_at?: string;
+};
+
+export type PostWithBlockContent = Omit<Post, 'content'> & {
+	content: Block[];
+};
+
+export type DraftPost = PostWithBlockContent & {
+	lastSaved?: string;
 };
 
 export type AdminPost = Omit<Post, 'imagesrc'>;

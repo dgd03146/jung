@@ -14,11 +14,11 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
 			<Flex alignItems='center' marginBottom='4' color='secondary'>
 				<FiAlertTriangle size={24} color='error' />
 				<Typography.Heading level={4} marginLeft='2'>
-					Failed to load table
+					{error.message}
 				</Typography.Heading>
 			</Flex>
 			<Typography.Text color='gray400' marginBottom='4'>
-				{error.message}
+				{error.code}
 			</Typography.Text>
 			<Button onClick={resetErrorBoundary} rounded size='lg'>
 				Try again

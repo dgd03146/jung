@@ -2,10 +2,10 @@ import { Routes } from '@/fsd/shared';
 import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { FaPlus } from 'react-icons/fa';
-import { usePostFilter } from '../../model/usePostFilter';
+import { usePostTableFilter } from '../../model/usePostTableFilter';
 
 const TableAction = () => {
-	const { filter, handleFilterChange } = usePostFilter();
+	const { filter, handleFilterChange } = usePostTableFilter();
 
 	return (
 		<Flex justifyContent='space-between' marginBottom='6'>

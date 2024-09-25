@@ -1,7 +1,7 @@
 import PostEditor from '../../../features/blog/ui/PostEditor/PostEditor';
 
-const PostCreatePage = () => {
+const PostFormPage = () => {
 	return <PostEditor />;
 };
 
-export default PostCreatePage;
+export default PostFormPage;
