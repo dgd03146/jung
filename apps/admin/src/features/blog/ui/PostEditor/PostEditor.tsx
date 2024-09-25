@@ -17,7 +17,6 @@ const PostEditor = () => {
 		handleFieldChange,
 		handleSubmit,
 		isSubmitting,
-
 		setImageFile,
 		isLoading,
 		fetchError,
