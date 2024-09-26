@@ -12,6 +12,7 @@ export default defineConfig({
     ...baseConfig.test,
     // 추가적인 Vitest 설정
   },
+ 
   resolve: {
     alias: {
       '@/fsd': path.resolve(__dirname, './src'),
