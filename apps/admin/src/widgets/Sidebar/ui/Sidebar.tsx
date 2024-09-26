@@ -7,13 +7,15 @@ import * as styles from './Sidebar.css';
 const Sidebar = () => {
 	const { pathname: currentPage } = usePathname();
 
-	// TODO: pathname에 따라 style주기
 	return (
 		<Box
 			as='section'
 			width={{ mobile: 'auto', laptop: '72' }}
 			paddingX={{ laptop: '4' }}
-			paddingY='10'
+			paddingY='6'
+			position='sticky'
+			top={0}
+			height='screenDvh'
 		>
 			<Flex
 				alignItems='center'
@@ -23,7 +25,6 @@ const Sidebar = () => {
 				justifyContent={{ mobile: 'center', laptop: 'flex-start' }}
 				paddingX={{ mobile: '0', laptop: '4' }}
 				paddingY={{ mobile: '3', laptop: '4' }}
-				height={{ laptop: '16' }}
 			>
 				<Box
 					as='img'
