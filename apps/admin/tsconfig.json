@@ -1,6 +1,7 @@
 {
   "extends": "@jung/typescript-config/react.json",
   "compilerOptions": {
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
       "@/fsd/*": ["./src/*"],
@@ -14,6 +15,12 @@
       }
     ]
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/App.jsx", "vite.config.mjs"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/App.jsx",
+    "vite.config.mjs",
+    "vite-env.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

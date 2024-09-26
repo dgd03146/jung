@@ -4,10 +4,16 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["SUPABASE_URL", "SUPABASE_KEY"],
-      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "SUPABASE_URL",
+        "SUPABASE_KEY",
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_KEY"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "inputs": [
         "$TURBO_DEFAULT$",
+        "vite.config.mjs",
         ".env.production.local",
         ".env.local",
         ".env.production",
