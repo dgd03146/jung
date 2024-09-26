@@ -1,7 +1,7 @@
-import me from '@/fsd/assets/me.png';
 import { RoutesArray, usePathname } from '@/fsd/shared';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
+import me from '../../../assets/me.png';
 import * as styles from './Sidebar.css';
 
 const Sidebar = () => {
