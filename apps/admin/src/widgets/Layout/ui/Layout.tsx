@@ -16,11 +16,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				as='section'
 				flex='1'
 				background={isPostEditPage ? 'white' : 'white200'}
-				paddingX={{ mobile: '4', laptop: '20' }}
-				paddingY={isPostEditPage ? '4' : '10'}
 			>
 				{!isPostEditPage && <Header />}
-				{children}
+				<Box paddingX={{ mobile: '4', laptop: '8' }}>{children}</Box>
 			</Box>
 		</Container>
 	);
