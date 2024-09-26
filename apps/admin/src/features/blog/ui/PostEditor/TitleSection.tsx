@@ -1,6 +1,6 @@
 import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
+import { CATEGORIES } from '@/fsd/features/blog/config';
 import { Container, Input, Select } from '@jung/design-system/components';
-import { CATEGORIES } from '../../config/category';
 import ErrorMessage from './ErrorMessage';
 import { TagsInput } from './TagsInput';
 import * as styles from './TitleSection.css';

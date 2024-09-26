@@ -1,8 +1,8 @@
 import { Box, Container } from '@jung/design-system/components';
 
 import { usePathname } from '@/fsd/shared';
-import { Header } from '@/fsd/widgets/Header/ui';
-import { Sidebar } from '@/fsd/widgets/Sidebar/ui';
+import { Header } from '../../Header';
+import { Sidebar } from '../../Sidebar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { pathname } = usePathname();

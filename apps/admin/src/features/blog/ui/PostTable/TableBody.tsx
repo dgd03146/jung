@@ -1,8 +1,8 @@
+import { useDeletePost } from '@/fsd/features/blog/api';
 import { Box, Button, Flex } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { useDeletePost } from '../../api/useDeletePost';
 import * as styles from './PostTable.css';
 
 // FIXME: 굳이 제네릭?..

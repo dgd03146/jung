@@ -2,8 +2,8 @@ import type { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { useCallback } from 'react';
 
-import { uploadImage } from '../api/uploadImage';
-import { isNonEmptyBlock } from '../lib/isEmpty';
+import { uploadImage } from '@/fsd/features/blog/api';
+import { isNonEmptyBlock } from '@/fsd/features/blog/lib';
 
 export const usePostContent = (initialContent: PartialBlock[]) => {
 	const editor = useCreateBlockNote({

@@ -2,7 +2,7 @@ import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
 import type { Block } from '@blocknote/core';
 
 // BlockNote 기본 블록 구조
-export const EmptyContent: Block = {
+export const EMPTY_CONTENT: Block = {
 	id: '1',
 	type: 'paragraph',
 	props: {
@@ -20,11 +20,11 @@ export const EmptyContent: Block = {
 	children: [],
 };
 
-export const EmptyPost: PostWithBlockContent = {
+export const EMPTY_POST: PostWithBlockContent = {
 	id: '',
 	date: '',
 	title: '',
-	content: [EmptyContent],
+	content: [EMPTY_CONTENT],
 	imagesrc: '',
 	tags: [],
 	category: '',

@@ -1,5 +1,4 @@
-// FIXME: 절대 경로
-import PostTable from '../../../features/blog/ui/PostTable/PostTable';
+import { PostTable } from '@/fsd/features/blog/ui';
 
 const BlogPage = () => {
 	return <PostTable />;
