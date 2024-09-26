@@ -1,5 +1,5 @@
 import { Button, Flex, Typography } from '@jung/design-system/components';
-// TablePagination.tsx
+
 import type { Table } from '@tanstack/react-table';
 import {
 	BiChevronLeft,

@@ -1,4 +1,4 @@
-import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
+import type { PostWithBlockContent } from '@/fsd/entities';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { Box, Button, Input, useToast } from '@jung/design-system/components';
 import { useCallback, useEffect, useRef, useState } from 'react';

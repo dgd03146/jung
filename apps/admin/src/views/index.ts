@@ -1,1 +1,2 @@
-export { default as DashboardPage } from './dashboard/ui/DashboardPage';
+export * from './blog';
+export * from './dashboard';

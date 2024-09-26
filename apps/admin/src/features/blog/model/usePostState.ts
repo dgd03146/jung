@@ -2,14 +2,17 @@ import type {
 	DraftPost,
 	PostWithBlockContent,
 } from '@/fsd/entities/post/model/post';
+import { useGetPost } from '@/fsd/features/blog/api';
+import {
+	EMPTY_CONTENT,
+	EMPTY_POST,
+	STORAGE_KEY,
+} from '@/fsd/features/blog/config';
+import { confirmLoadDraft, validatePostData } from '@/fsd/features/blog/lib';
 import { storage } from '@/fsd/shared';
 import { useMatch } from '@tanstack/react-router';
 import { useCallback, useEffect, useState } from 'react';
-import { useGetPost } from '../api/useGetPost';
-import { EmptyContent, EmptyPost } from '../config/initialPost';
-import { STORAGE_KEY } from '../config/storageKey';
-import { confirmLoadDraft } from '../lib/confirmLoadDraft';
-import { validatePostData } from '../lib/validatePostData';
+
 import type { Errors } from '../types/errors';
 
 export const usePostState = () => {
@@ -32,11 +35,11 @@ export const usePostState = () => {
 		const savedPost: DraftPost | null = storage.get(STORAGE_KEY);
 		if (savedPost && confirmLoadDraft(savedPost.lastSaved)) {
 			const content =
-				savedPost.content.length > 0 ? savedPost.content : [EmptyContent];
+				savedPost.content.length > 0 ? savedPost.content : [EMPTY_CONTENT];
 			return { ...savedPost, content };
 		}
 		storage.remove(STORAGE_KEY);
-		return EmptyPost;
+		return EMPTY_POST;
 	});
 
 	useEffect(() => {
@@ -72,8 +75,8 @@ export const usePostState = () => {
 	);
 
 	const resetForm = useCallback(() => {
-		EmptyPost;
-		setValidateErrors(validatePostData(EmptyPost));
+		EMPTY_POST;
+		setValidateErrors(validatePostData(EMPTY_POST));
 		storage.remove(STORAGE_KEY);
 	}, []);
 

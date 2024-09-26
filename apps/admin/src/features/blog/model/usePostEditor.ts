@@ -1,16 +1,18 @@
 import { storage, useThrottle } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
-import { uploadImage } from '../api/uploadImage';
-import { useCreatePost } from '../api/useCreatePost';
-import { useUpdatePost } from '../api/useUpdatePost';
-import { EmptyPost } from '../config/initialPost';
-import { STORAGE_KEY } from '../config/storageKey';
-import { isPostEmpty } from '../lib/isEmpty';
-import { serializeContent } from '../lib/serializeContent';
-import { useKeyboardShortcut } from './useKeyboardShortcut';
-import { usePostContent } from './usePostContent';
-import { usePostState } from './usePostState';
+
+import {
+	uploadImage,
+	useCreatePost,
+	useKeyboardShortcut,
+	usePostContent,
+	usePostState,
+	useUpdatePost,
+} from '@/fsd/features/blog/api';
+
+import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
+import { isPostEmpty, serializeContent } from '@/fsd/features/blog/lib';
 
 export const usePostEditor = () => {
 	const {
@@ -128,7 +130,7 @@ export const usePostEditor = () => {
 	const handleDiscard = useCallback(() => {
 		if (window.confirm('Are you sure you want to discard this draft?')) {
 			resetForm();
-			editor.replaceBlocks(editor.document, EmptyPost.content);
+			editor.replaceBlocks(editor.document, EMPTY_POST.content);
 			showToast('Draft discarded');
 		}
 	}, [editor, resetForm, showToast]);

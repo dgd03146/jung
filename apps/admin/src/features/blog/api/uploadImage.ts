@@ -1,6 +1,6 @@
+import { IMAGE_BUCKET } from '@/fsd/features/blog/config';
+import { generateShortId } from '@/fsd/features/blog/lib';
 import { supabase } from '@/fsd/shared';
-import { IMAGE_BUCKET } from '../config/imageBucket';
-import { generateShortId } from '../lib/generateShortId';
 
 export const getPublicUrl = (filePath: string): string => {
 	const { data: publicUrlData } = supabase.storage

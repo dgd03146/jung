@@ -1,4 +1,4 @@
-import PostEditor from '../../../features/blog/ui/PostEditor/PostEditor';
+import { PostEditor } from '@/fsd/features/blog/ui';
 
 const PostFormPage = () => {
 	return <PostEditor />;

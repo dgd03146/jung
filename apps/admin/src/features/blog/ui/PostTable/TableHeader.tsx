@@ -10,7 +10,7 @@ interface TableHeaderProps<T> {
 }
 
 export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
-	// TODO: 나중에 Design system으로 만들기
+	// TODO: 나중에 테이블 디자인 시스템으로 만들기
 	<Box as='thead'>
 		{table.getHeaderGroups().map((headerGroup) => (
 			<Box as='tr' key={headerGroup.id}>

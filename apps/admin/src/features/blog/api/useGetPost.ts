@@ -1,7 +1,7 @@
+import { deserializeContent } from '@/fsd/features/blog/lib';
 import { postKeys } from '@/fsd/shared';
 import { useQuery } from '@tanstack/react-query';
-import { EmptyContent } from '../config/initialPost';
-import { deserializeContent } from '../lib/serializeContent';
+import { EMPTY_CONTENT } from '../config/initialPost';
 import { fetchPostById } from './getPost';
 
 export function useGetPost(postId?: string) {
@@ -13,7 +13,7 @@ export function useGetPost(postId?: string) {
 			...data,
 			content:
 				data.content === '[]'
-					? [EmptyContent]
+					? [EMPTY_CONTENT]
 					: deserializeContent(data.content),
 		}),
 		enabled: !!postId,
