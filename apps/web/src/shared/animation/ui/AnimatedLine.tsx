@@ -35,9 +35,9 @@ export const AnimatedLine = ({ line, animation }: AnimatedLineProps) => {
 							{char}
 						</motion.span>
 					))}
-					<Box as='span' display='inline-block'>
+					{/* <Box as='span' display='inline-block'>
 						&nbsp;
-					</Box>
+					</Box> */}
 				</Box>
 			))}
 		</Box>
