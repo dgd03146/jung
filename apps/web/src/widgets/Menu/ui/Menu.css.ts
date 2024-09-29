@@ -8,12 +8,12 @@ export const stairs = style([
 		left: 0,
 		position: 'fixed',
 		zIndex: '20',
+
 		height: 'screenDvh',
 		display: 'flex',
 	}),
 	{
 		transition: 'all 1s',
-		// pointerEvents: 'none',
 	},
 ]);
 
