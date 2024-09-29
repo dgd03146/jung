@@ -34,7 +34,9 @@ const FeaturedPost = () => {
 					<Flex columnGap='1'>
 						<Tag rounded>{featuredPost?.date}</Tag>
 						{featuredPost?.tags.map((tag) => (
-							<Tag rounded>{tag}</Tag>
+							<Tag key={tag} rounded>
+								{tag}
+							</Tag>
 						))}
 					</Flex>
 					<Card.Title fontSize='2xl'>{featuredPost?.title}</Card.Title>

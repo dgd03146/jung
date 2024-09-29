@@ -9,7 +9,7 @@ import PostListSkeleton from './PostListSkeleton';
 const BlogPage = () => {
 	return (
 		<Container>
-			{/* FIXME: 나중에 TYPGORAPHY LAYOUT으로 빼기 */}
+			{/* FIXME: 나중에 TYPGORAPHY 공용 LAYOUT으로 빼기 */}
 			<Typography.Heading level={1} color='primary' marginBottom='8'>
 				blog.
 			</Typography.Heading>

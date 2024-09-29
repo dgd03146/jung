@@ -28,6 +28,7 @@ export const fontSizes = {
 	'8xl': '6rem', // 96px
 	'9xl': '8rem', // 128px
 	'10xl': '11rem', // 176px, hero font
+	'11xl': '12rem',
 };
 
 export const lineHeights = {

@@ -7,9 +7,9 @@ export const container = style({
 
 export const heading = {
 	fontSize: {
-		mobile: '5xl',
-		tablet: '8xl',
-		desktop: '10xl',
+		mobile: '7xl',
+		tablet: '9xl',
+		desktop: '11xl',
 	},
 	lineHeight: {
 		mobile: '14',
@@ -18,6 +18,7 @@ export const heading = {
 	},
 	fontWeight: 'bold',
 	color: 'primary',
+	marginBottom: '6',
 } as const;
 
 export const subtitle = {
@@ -26,5 +27,5 @@ export const subtitle = {
 		tablet: '3xl',
 	},
 	color: 'primary',
-	marginTop: { mobile: '8', tablet: '12', desktop: '20' },
+	// marginTop: { mobile: '8', tablet: '12', desktop: '20' },
 } as const;

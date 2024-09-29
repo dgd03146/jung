@@ -19,12 +19,12 @@ export const PRIMARY_NAVIGATION: RouteMap = {
 		path: '/gallery',
 	},
 	FOOD: {
-		label: 'food.',
-		path: '/food',
+		label: 'spots.',
+		path: '/spots',
 	},
-	MUSIC: {
-		label: 'music.',
-		path: '/music',
+	VISITORS: {
+		label: 'visitors.',
+		path: '/visitors',
 	},
 };
 
@@ -33,10 +33,10 @@ export const SECONDARY_NAVIGATION: RouteMap = {
 		label: 'search.',
 		path: '/search',
 	},
-	VISITORS: {
-		label: 'visitors.',
-		path: '/visitors',
-	},
+	// VISITORS: {
+	// 	label: 'visitors.',
+	// 	path: '/visitors',
+	// },
 	QUIZ: {
 		label: 'quiz.',
 		path: '/quiz',
