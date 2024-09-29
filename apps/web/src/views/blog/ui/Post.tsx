@@ -1,3 +1,4 @@
+import BlurImage from '@/fsd/shared/ui/BlurImage';
 import {
 	Card,
 	Flex,
@@ -5,7 +6,6 @@ import {
 	Tag,
 	Typography,
 } from '@jung/design-system/components';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './Post.css';
@@ -35,7 +35,13 @@ const Post = ({
 	return (
 		<Card variant='outline'>
 			<Card.Media className={styles.imgContainer}>
-				<Image src={imagesrc} alt='Featured Image' fill priority={index <= 3} />
+				<BlurImage
+					src={imagesrc}
+					alt='Featured Image'
+					fill
+					priority={index <= 3}
+				/>
+				{/* <Image src={imagesrc} alt="Featured Image" fill priority={index <= 3} /> */}
 			</Card.Media>
 			<Card.Content rowGap='3'>
 				<Flex columnGap='1'>

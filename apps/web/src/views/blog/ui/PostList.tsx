@@ -21,7 +21,7 @@ const PostList = () => {
 					laptop: '1/3',
 				}}
 			>
-				{posts?.slice(1)?.map((post, index) => (
+				{posts.slice(1)?.map((post, index) => (
 					<Post key={post.id} index={index} {...post} />
 				))}
 			</Grid>

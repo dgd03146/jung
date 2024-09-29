@@ -1,6 +1,7 @@
 'use client';
 
 import { usePostsQuery } from '@/fsd/features';
+import BlurImage from '@/fsd/shared/ui/BlurImage';
 import {
 	Card,
 	Container,
@@ -8,22 +9,20 @@ import {
 	Tag,
 	Typography,
 } from '@jung/design-system/components';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './FeaturedPost.css';
 
 const FeaturedPost = () => {
-	const result = usePostsQuery();
-	const posts = result[0];
+	const [data] = usePostsQuery();
 
-	const featuredPost = posts?.[0];
+	const featuredPost = data[0];
 
 	return (
 		<Container>
 			<Card layout='horizontal' variant='outline' alignItems='center' gap='10'>
 				<Card.Media className={styles.imgContainer}>
-					<Image
+					<BlurImage
 						src={featuredPost?.imagesrc || ''}
 						alt='Featured Image'
 						priority
