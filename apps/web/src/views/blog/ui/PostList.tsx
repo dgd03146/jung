@@ -6,12 +6,11 @@ import { Container, Grid } from '@jung/design-system/components';
 import Post from './Post';
 
 const PostList = () => {
-	// trpc로 client에서 data fetching하기 react query처럼 사용
-	const result = usePostsQuery();
-	const posts = result[0];
+	const [data] = usePostsQuery();
+	const posts = data;
 
 	return (
-		<Container marginY='12'>
+		<Container>
 			<Grid
 				columnGap='4'
 				rowGap='8'
@@ -21,7 +20,7 @@ const PostList = () => {
 					laptop: '1/3',
 				}}
 			>
-				{posts.slice(1)?.map((post, index) => (
+				{posts.map((post, index) => (
 					<Post key={post.id} index={index} {...post} />
 				))}
 			</Grid>

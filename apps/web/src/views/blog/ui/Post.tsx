@@ -7,6 +7,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './Post.css';
 
@@ -32,16 +33,22 @@ const Post = ({
 	// link,
 	index,
 }: PostProps) => {
+	const router = useRouter();
+
 	return (
-		<Card variant='outline'>
-			<Card.Media className={styles.imgContainer}>
+		<Card
+			variant='outline'
+			onClick={() =>
+				router.push(`/blog/${id}` || '/not-found', { scroll: true })
+			}
+		>
+			<Card.Media className={styles.imgContainer} cursor='pointer'>
 				<BlurImage
 					src={imagesrc}
 					alt='Featured Image'
 					fill
 					priority={index <= 3}
 				/>
-				{/* <Image src={imagesrc} alt="Featured Image" fill priority={index <= 3} /> */}
 			</Card.Media>
 			<Card.Content rowGap='3'>
 				<Flex columnGap='1'>
@@ -58,11 +65,10 @@ const Post = ({
 				</Stack>
 				<Card.Actions>
 					<Link href={`/blog/${id}` || '/not-found'} className={styles.link}>
-						<Typography.Text level={3} color='primary'>
+						<Typography.Text level={3} className={styles.linkText}>
 							read more
 						</Typography.Text>
-						<FaChevronRight size='12' color='#0142C0' />
-						{/* <Button>read more</Button> */}
+						<FaChevronRight size='12' className={styles.linkIcon} />
 					</Link>
 				</Card.Actions>
 			</Card.Content>

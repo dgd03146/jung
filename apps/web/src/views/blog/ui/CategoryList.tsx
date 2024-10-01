@@ -1,25 +1,31 @@
 import { Container, Flex, Tag } from '@jung/design-system/components';
 import Link from 'next/link';
 
+const categories = [
+	{ name: 'all', href: '/blog?cat=all' },
+	{ name: 'life', href: '/blog?cat=life' },
+	{ name: 'travel', href: '/blog?cat=travel' },
+	{ name: 'food', href: '/blog?cat=food' },
+	{ name: 'fashion', href: '/blog?cat=fashion' },
+	{ name: 'culture', href: '/blog?cat=culture' },
+];
+
 const CategoryList = () => {
 	return (
 		<Container marginBottom='4'>
-			<Flex columnGap='1'>
-				<Link href='/blog?cat=life'>
-					<Tag rounded>life</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>travel</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>food</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>fashion</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>culture</Tag>
-				</Link>
+			<Flex flexWrap={{ mobile: 'wrap', miniTablet: 'nowrap' }} gap='1'>
+				{categories.map((category) => (
+					<Link key={category.name} href={category.href}>
+						<Tag
+							rounded
+							transitionDuration='500'
+							background={{ hover: 'primary' }}
+							color={{ hover: 'white' }}
+						>
+							{category.name}
+						</Tag>
+					</Link>
+				))}
 			</Flex>
 		</Container>
 	);

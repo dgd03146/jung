@@ -8,7 +8,7 @@ const BlurImage = (props: ImageProps) => {
 	return (
 		<Image
 			{...props}
-			onLoadingComplete={() => setImageLoading(false)}
+			onLoad={() => setImageLoading(false)}
 			className={isImageLoading ? styles.blurredImage : styles.loadedImage}
 		/>
 	);
