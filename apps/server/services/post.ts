@@ -2,12 +2,55 @@ import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabse';
 import type { Post } from '../schemas/post';
 
+type QueryParams = {
+	limit: number;
+	cursor?: number;
+	cat?: string;
+	sort: 'latest' | 'oldest' | 'popular';
+	q?: string;
+};
+
+type QueryResult = {
+	items: Post[];
+	nextCursor: number | null;
+	// total?: number;	`
+};
+
 export const postService = {
-	async findMany(): Promise<Post[]> {
-		const { data, error } = await supabase
-			.from('posts')
-			.select('*')
-			.order('date', { ascending: false });
+	async findMany({
+		limit,
+		cursor,
+		cat,
+		sort,
+		q,
+	}: QueryParams): Promise<QueryResult> {
+		let query = supabase.from('posts').select('*', { count: 'exact' });
+
+		if (cat && cat !== 'all') {
+			query = query.eq('category', cat);
+		}
+
+		if (q) {
+			query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%`);
+		}
+
+		switch (sort) {
+			case 'oldest':
+				query = query.order('date', { ascending: true });
+				break;
+			case 'popular':
+				query = query.order('views', { ascending: false });
+				break;
+			default:
+				query = query.order('date', { ascending: false });
+		}
+
+		if (cursor) {
+			query = query.gt('id', cursor);
+		}
+		query = query.limit(limit);
+
+		const { data, error } = await query.returns<Post[]>();
 
 		if (error) {
 			throw new TRPCError({
@@ -17,12 +60,20 @@ export const postService = {
 			});
 		}
 		if (!data || data.length === 0) {
-			throw new TRPCError({
-				code: 'NOT_FOUND',
-				message: 'No posts found. Please try searching again.',
-			});
+			return {
+				items: [],
+				nextCursor: null,
+				// total: count || 0,
+			};
 		}
-		return data as Post[];
+
+		const nextCursor = Number(data[data.length - 1]?.id) ?? null;
+
+		return {
+			items: data,
+			nextCursor,
+			// total: count || 0,
+		};
 	},
 
 	async findById(id: string): Promise<Post | null> {

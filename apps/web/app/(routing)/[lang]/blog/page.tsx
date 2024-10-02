@@ -1,8 +1,18 @@
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { BlogPage } from '@/fsd/views';
 
-export default async function Page() {
-	void trpc.post.getAllPosts.prefetch();
+type Sort = 'latest' | 'oldest' | 'popular';
+
+type PageProps = {
+	searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export default async function Page({ searchParams }: PageProps) {
+	const cat = (searchParams.cat as string) || 'all';
+	const sort = (searchParams.sort as Sort) || 'latest';
+	const q = (searchParams.q as string) || '';
+
+	void trpc.post.getAllPosts.prefetchInfinite({ limit: 9, cat, sort, q });
 
 	return (
 		// FIXME: 전체를 HydrationBoundary로 감싸야하나?..

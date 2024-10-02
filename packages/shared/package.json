@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./hooks": "./hooks/index.ts"
+    "./hooks": "./hooks/index.ts",
+    "./constants": "./constants/index.ts",
+    "./utils": "./utils/index.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",

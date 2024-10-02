@@ -15,6 +15,7 @@ import * as styles from './Post.css';
 interface PostProps {
 	id: string;
 	imagesrc: string;
+	category: string;
 	date: string;
 	tags: string[];
 	title: string;
@@ -29,6 +30,7 @@ const Post = ({
 	tags,
 	id,
 	title,
+	category,
 	description,
 	// link,
 	index,
@@ -47,17 +49,16 @@ const Post = ({
 					src={imagesrc}
 					alt='Featured Image'
 					fill
-					priority={index <= 3}
+					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+					priority={index <= 9}
 				/>
 			</Card.Media>
 			<Card.Content rowGap='3'>
 				<Flex columnGap='1'>
 					<Tag rounded>{date}</Tag>
-					{tags.map((tag, index) => (
-						<Tag key={index} rounded>
-							{tag}
-						</Tag>
-					))}
+					<Tag key={index} rounded>
+						{category}
+					</Tag>
 				</Flex>
 				<Stack space='2' align={'left'} className={styles.textContainer}>
 					<Card.Title>{title}</Card.Title>

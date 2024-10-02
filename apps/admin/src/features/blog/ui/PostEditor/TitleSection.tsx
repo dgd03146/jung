@@ -1,6 +1,6 @@
 import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
-import { CATEGORIES } from '@/fsd/features/blog/config';
 import { Container, Input, Select } from '@jung/design-system/components';
+import { CATEGORIES } from '@jung/shared/constants';
 import ErrorMessage from './ErrorMessage';
 import { TagsInput } from './TagsInput';
 import * as styles from './TitleSection.css';
@@ -44,8 +44,8 @@ const TitleSection = ({
 				<Select.Trigger placeholder='Select a category' borderRadius='lg' />
 				<Select.Menu borderRadius='lg'>
 					{CATEGORIES.map((cat) => (
-						<Select.Item key={cat} value={cat} borderRadius='lg'>
-							{cat}
+						<Select.Item key={cat.id} value={cat.name} borderRadius='lg'>
+							{cat.name}
 						</Select.Item>
 					))}
 				</Select.Menu>
