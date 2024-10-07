@@ -50,7 +50,7 @@ const Post = ({
 					alt='Featured Image'
 					fill
 					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-					priority={index <= 9}
+					priority={index <= 3}
 				/>
 			</Card.Media>
 			<Card.Content rowGap='3'>

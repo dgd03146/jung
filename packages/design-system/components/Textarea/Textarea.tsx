@@ -7,7 +7,7 @@ export interface TextareaProps
 	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size' | 'color'>,
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
-	size?: 'sm' | 'md' | 'lg';
+	size?: 'sm' | 'md' | 'lg' | 'base';
 	rounded?: boolean;
 }
 

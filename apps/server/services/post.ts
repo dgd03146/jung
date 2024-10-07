@@ -69,6 +69,7 @@ export const postService = {
 
 		const nextCursor = Number(data[data.length - 1]?.id) ?? null;
 
+		// FIXME: 모든 데이터 다 내려줄 필요 없음
 		return {
 			items: data,
 			nextCursor,
@@ -81,7 +82,7 @@ export const postService = {
 			.from('posts')
 			.select('*')
 			.eq('id', id)
-			.single();
+			.single<Post>();
 
 		if (error) {
 			throw new TRPCError({
@@ -96,7 +97,11 @@ export const postService = {
 				message: 'Post not found. Please try searching again.',
 			});
 		}
-		return data as Post;
+
+		return {
+			...data,
+			content: JSON.parse(data.content),
+		};
 	},
 
 	async create(post: Omit<Post, 'id'>): Promise<Post> {

@@ -10,7 +10,7 @@ export const textarea = recipe({
 		}),
 		sprinkles({
 			color: {
-				base: 'primary',
+				// base: 'primary',
 				placeholder: 'primary100',
 			},
 
@@ -30,7 +30,7 @@ export const textarea = recipe({
 				background: 'primary100',
 				border: 'none',
 				color: {
-					base: 'primary',
+					// base: 'primary',
 					placeholder: 'primary200',
 				},
 			}),
@@ -40,6 +40,10 @@ export const textarea = recipe({
 			}),
 		},
 		size: {
+			base: sprinkles({
+				paddingX: '0',
+				paddingY: '0',
+			}),
 			sm: sprinkles({
 				paddingX: '2',
 				paddingY: '2',

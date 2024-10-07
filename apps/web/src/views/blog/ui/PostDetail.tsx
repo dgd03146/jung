@@ -12,14 +12,12 @@ const PostDetail = ({ postId }: { postId: string }) => {
 
 	if (!post) return <div>Post not found</div>;
 
-	const { title, imagesrc, date, tags } = post;
-
 	return (
-		<Container>
-			<PostHeader title={title} imagesrc={imagesrc} date={date} />
-			<Flex paddingY='10' columnGap='20'>
-				<PostSidebar tags={tags} />
-				<PostContent />
+		<Container marginX='auto'>
+			<PostHeader post={post} />
+			<Flex paddingY='10' columnGap='10'>
+				<PostSidebar tags={post.tags} />
+				<PostContent post={post} />
 			</Flex>
 		</Container>
 	);

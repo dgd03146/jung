@@ -167,6 +167,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@jung/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@supabase/supabase-js':
         specifier: ^2.44.4
         version: 2.44.4
@@ -201,6 +204,15 @@ importers:
 
   apps/web:
     dependencies:
+      '@blocknote/core':
+        specifier: ^0.15.6
+        version: 0.15.6
+      '@blocknote/mantine':
+        specifier: ^0.15.6
+        version: 0.15.6(@tiptap/pm@2.6.6)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+      '@blocknote/react':
+        specifier: ^0.15.6
+        version: 0.15.6(@tiptap/pm@2.6.6)(react-dom@18.3.1)(react@18.3.1)
       '@formatjs/intl-localematcher':
         specifier: ^0.5.4
         version: 0.5.4
@@ -450,9 +462,6 @@ importers:
 
   packages/shared:
     dependencies:
-      '@jung/design-system':
-        specifier: workspace:*
-        version: link:../design-system
       '@jung/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

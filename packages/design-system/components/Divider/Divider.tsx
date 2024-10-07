@@ -11,8 +11,6 @@ export const Divider = forwardRef<HTMLDivElement, Props>(
 		return (
 			<Box
 				as='div'
-				borderWidth='hairline'
-				borderColor='primary'
 				borderStyle='solid'
 				borderTopWidth='hairline'
 				ref={ref}

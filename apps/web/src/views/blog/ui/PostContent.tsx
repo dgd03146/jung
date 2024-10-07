@@ -1,12 +1,22 @@
+import { useCreateBlockNote } from '@blocknote/react';
+import { Container } from '@jung/design-system/components';
+import type { Post } from '@jung/server/schemas/post';
+import BlockNote from './BlockNote';
 import Comments from './Comments';
 
-const PostContent = () => {
+type Props = {
+	post: Post;
+};
+
+const PostContent = ({ post }: Props) => {
+	const editor = useCreateBlockNote({ initialContent: post.content });
+
 	return (
-		<div>
-			<div>Content</div>
+		<Container>
+			<BlockNote editor={editor} />
 			{/* TODO: Comments Suspense로 */}
 			<Comments />
-		</div>
+		</Container>
 	);
 };
 

@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@jung/typescript-config": "workspace:*",
-    "@jung/design-system": "workspace:*",
     "react": "^18.3.1"
   },
   "devDependencies": {
