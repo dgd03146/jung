@@ -1,6 +1,6 @@
 import { Flex, Stack, Tag, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
-import { FaChevronLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaTag } from 'react-icons/fa';
 import * as styles from './PostSidebar.css';
 
 const PostSidebar = ({ tags }: { tags: string[] }) => {
@@ -36,7 +36,8 @@ const PostSidebar = ({ tags }: { tags: string[] }) => {
 							borderRadius='md'
 							boxShadow='primary'
 						>
-							#{tag}
+							<FaTag style={{ marginRight: '6px', fontSize: '0.75em' }} />
+							{tag}
 						</Tag>
 					))}
 				</Flex>
