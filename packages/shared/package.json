@@ -5,7 +5,8 @@
   "exports": {
     "./hooks": "./hooks/index.ts",
     "./constants": "./constants/index.ts",
-    "./utils": "./utils/index.ts"
+    "./utils": "./utils/index.ts",
+    "./types": "./types/index.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",
@@ -15,7 +16,8 @@
   },
   "dependencies": {
     "@jung/typescript-config": "workspace:*",
-    "react": "^18.3.1"
+    "react": "^18.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

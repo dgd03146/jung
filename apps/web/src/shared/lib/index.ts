@@ -6,3 +6,4 @@ export {
 	formatDetailedDate,
 	formatDate,
 } from './utils/formatDate';
+export { useSupabaseAuth } from './hooks/useSupabaseAuth';

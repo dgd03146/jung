@@ -8,7 +8,6 @@ const veryLightBlueColor = 'rgba(59, 130, 246, 0.03)'; // 매우 연한 파란�
 const primaryColor = '#3B82F6'; // 더 밝은 파란색
 
 const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
-const primaryMediumColor = 'rgba(59, 130, 246, 0.2)';
 const borderColor = '#E2E8F0';
 const textColor = '#2D3748';
 // const lightTextColor = '#718096';
@@ -25,6 +24,27 @@ export const commentContainer = style({
 	},
 });
 
+export const nestedCommentContainer = style({
+	padding: '12px',
+	marginBottom: '12px',
+	backgroundColor: 'transparent',
+	border: 'none',
+	':hover': {
+		boxShadow: 'none',
+	},
+});
+
+export const nestedCommentItem = style({
+	marginBottom: '16px',
+	paddingBottom: '16px',
+	borderBottom: `1px solid ${borderColor}`,
+	':last-child': {
+		marginBottom: 0,
+		paddingBottom: 0,
+		borderBottom: 'none',
+	},
+});
+
 export const commentHeader = style({
 	display: 'flex',
 	alignItems: 'center',
@@ -36,7 +56,6 @@ export const userAvatar = style({
 	width: '40px',
 	height: '40px',
 	borderRadius: '50%',
-
 	objectFit: 'cover',
 	border: `2px solid ${primaryLightColor}`,
 });
@@ -86,7 +105,7 @@ export const actionButton = style({
 	background: 'none',
 	border: 'none',
 	cursor: 'pointer',
-	color: darkBlueColor,
+	color: primaryColor,
 	fontSize: '12px',
 	padding: '6px 10px',
 	borderRadius: '6px',
@@ -119,8 +138,7 @@ export const replyContainer = style({
 	marginLeft: '24px',
 	marginTop: '12px',
 	padding: '12px',
-	borderLeft: `2px solid ${primaryMediumColor}`,
-
+	borderLeft: `2px solid ${primaryLightColor}`,
 	backgroundColor: veryLightBlueColor,
 	borderRadius: '0 12px 12px 0',
 });
@@ -225,5 +243,17 @@ export const skeletonReplyContainer = style([
 	replyContainer,
 	{
 		marginTop: '12px',
+	},
+]);
+
+export const replyItem = style([
+	commentContainer,
+	{
+		border: 'none',
+		padding: '12px',
+		marginBottom: '8px',
+		':hover': {
+			boxShadow: 'none',
+		},
 	},
 ]);

@@ -14,4 +14,4 @@ export const PostSchema = z.object({
 
 export type Post = z.infer<typeof PostSchema>;
 // FIXME: Shared workspace로 공용 타입
-// FIXME: content 타입 수정
+// FIXME: content any 타입 수정

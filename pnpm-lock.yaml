@@ -167,6 +167,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@jung/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@supabase/auth-js':
         specifier: ^2.65.0
         version: 2.65.0
@@ -477,6 +480,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/react':
         specifier: ^18.3.3

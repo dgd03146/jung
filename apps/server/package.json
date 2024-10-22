@@ -11,6 +11,7 @@
     "format": "pnpm biome format --write ."
   },
   "dependencies": {
+    "@jung/shared": "workspace:*",
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",
     "@trpc/server": "11.0.0-rc.467",

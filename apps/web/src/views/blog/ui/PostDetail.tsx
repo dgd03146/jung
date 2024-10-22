@@ -1,8 +1,13 @@
 'use client';
 
 import { usePostQuery } from '@/fsd/features';
+import Comments from '@/fsd/features/comments/ui/Comments';
+import CommentsSkeleton from '@/fsd/features/comments/ui/CommentsSkeleton';
+import { useCreateBlockNote } from '@blocknote/react';
 import { Container, Flex } from '@jung/design-system/components';
-import PostContent from './PostContent';
+import { Suspense } from 'react';
+import BlockNote from './BlockNote';
+// import PostContent from './PostContent';
 import PostHeader from './PostHeader';
 import PostSidebar from './PostSidebar';
 
@@ -12,12 +17,20 @@ const PostDetail = ({ postId }: { postId: string }) => {
 
 	if (!post) return <div>Post not found</div>;
 
+	const editor = useCreateBlockNote({ initialContent: post.content });
+
 	return (
 		<Container marginX='auto'>
 			<PostHeader post={post} />
 			<Flex paddingY='10' columnGap='10'>
 				<PostSidebar tags={post.tags} />
-				<PostContent post={post} />
+				<Container>
+					<BlockNote editor={editor} />
+
+					<Suspense fallback={<CommentsSkeleton />}>
+						<Comments postId={postId} />
+					</Suspense>
+				</Container>
 			</Flex>
 		</Container>
 	);
