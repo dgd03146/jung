@@ -28,7 +28,7 @@ const PostDetail = ({ postId }: { postId: string }) => {
 					<BlockNote editor={editor} />
 
 					<Suspense fallback={<CommentsSkeleton />}>
-						<Comments postId={postId} />
+						<Comments postId={postId} postLikeCount={post.likes} />
 					</Suspense>
 				</Container>
 			</Flex>

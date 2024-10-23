@@ -1,4 +1,4 @@
-import { DictionaryProvider } from '@/fsd/app/providers';
+import { ClientToastProvider, DictionaryProvider } from '@/fsd/app/providers';
 import { TrpcProvider } from '@/fsd/app/providers/trpc/TrpcProvider';
 import '@/fsd/app/styles/global.css';
 import { getDictionary } from '@/fsd/shared/config';
@@ -15,7 +15,7 @@ export default async function RootLayout({ params, children }: Props) {
 				lang={params.lang}
 				initialDictionary={await getDictionary(params.lang)}
 			>
-				{children}
+				<ClientToastProvider>{children}</ClientToastProvider>
 				{/* Just for convenient switching between different routes */}
 				{/* <NavigationLinks /> */}
 			</DictionaryProvider>

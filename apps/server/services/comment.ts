@@ -1,4 +1,9 @@
-import type { Comment, CommentUser } from '@jung/shared/types';
+import type {
+	Comment,
+	CommentQueryParams,
+	CommentQueryResult,
+	CommentUser,
+} from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabse';
 
@@ -8,42 +13,33 @@ interface ExtendedPageParams extends PageParams {
 	filter?: string;
 }
 
-type QueryParams = {
-	postId: string;
-	parentId?: string;
-	limit: number;
-	cursor?: string;
-};
-
-type QueryResult = {
-	items: Comment[];
-	nextCursor: string | null;
-};
-
 export const CommentService = {
 	async findManyByPostId({
 		postId,
 		limit,
 		cursor,
-	}: QueryParams): Promise<QueryResult> {
-		// 1. 댓글 정보 가져오기
+	}: CommentQueryParams): Promise<CommentQueryResult> {
+		// 댓글 정보 가져오기
 		const comments = await this.fetchComments(postId, limit, cursor);
 
-		// 2. 사용자 ID 목록 추출 (댓글 작성자 + 답글 작성자)
+		// 사용자 ID 목록 추출 (댓글 작성자 + 답글 작성자)
 		const userIds = this.extractUserIds(comments);
 
-		// 3. Auth API를 사용하여 사용자 정보 가져오기
+		// Auth API를 사용하여 사용자 정보 가져오기
 		const users = await this.fetchUserInfo(userIds);
 
-		// 4. 사용자 정보를 객체로 변환
+		//사용자 정보를 객체로 변환
 		const userMap = this.createUserMap(users);
 
-		// 5. 댓글과 사용자 정보 결합
+		// 댓글과 사용자 정보 결합
 		const formattedComments = this.formatComments(comments, userMap);
+
+		const hasNextPage = formattedComments.length > limit;
 
 		return {
 			items: formattedComments,
 			nextCursor: comments[comments.length - 1]?.created_at ?? null,
+			hasNextPage,
 		};
 	},
 
@@ -149,6 +145,29 @@ export const CommentService = {
 
 export const commentService = {
 	...CommentService,
+
+	async create({
+		postId,
+		content,
+		userId,
+	}: { postId: string; content: string; userId: string }): Promise<Comment> {
+		const { data, error } = await supabase
+			.from('post_comments')
+			.insert({ post_id: postId, content, user_id: userId })
+			.select()
+			.single<Comment>();
+
+		if (error) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to create comment. Please try again later.',
+				cause: error,
+			});
+		}
+
+		return data;
+	},
+
 	async update(id: string, { content }: { content: string }): Promise<Comment> {
 		const { data, error } = await supabase
 			.from('post_comments')

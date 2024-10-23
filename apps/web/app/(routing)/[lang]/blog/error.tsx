@@ -18,7 +18,7 @@ export default function Error({
 	}, [error]);
 
 	return (
-		<div className={styles.errorContainer}>
+		<Box className={styles.errorContainer}>
 			<Typography.Heading level={1} className={styles.errorHeading}>
 				Oops! Something went wrong
 			</Typography.Heading>
@@ -40,6 +40,6 @@ export default function Error({
 					)}
 				</Box>
 			)}
-		</div>
+		</Box>
 	);
 }

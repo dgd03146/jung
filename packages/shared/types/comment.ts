@@ -18,5 +18,18 @@ export const CommentSchema = z.object({
 	user: CommentUserSchema,
 });
 
+export type CommentQueryParams = {
+	postId: string;
+	parentId?: string;
+	limit: number;
+	cursor?: string;
+};
+
+export type CommentQueryResult = {
+	items: Comment[];
+	nextCursor: string | null;
+	hasNextPage: boolean;
+};
+
 export type CommentUser = z.infer<typeof CommentUserSchema>;
 export type Comment = z.infer<typeof CommentSchema> & { replies: Comment[] };

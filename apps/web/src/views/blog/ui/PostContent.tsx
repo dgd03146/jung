@@ -18,7 +18,7 @@ const PostContent = ({ post }: Props) => {
 		<Container>
 			<BlockNote editor={editor} />
 			<Suspense fallback={<CommentsSkeleton />}>
-				<Comments postId={post.id} />
+				<Comments postId={post.id} postLikeCount={post.likes} />
 			</Suspense>
 		</Container>
 	);

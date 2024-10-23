@@ -19,12 +19,17 @@ export const commentRouter = router({
 		}),
 
 	// 새 댓글 생성
-
-	// createComment: publicProcedure
-	// 	.input(CommentSchema.omit({ id: true, createdAt: true, likes: true }))
-	// 	.mutation(({ input }) => {
-	// 		return commentService.create(input);
-	// 	}),
+	createComment: publicProcedure
+		.input(
+			z.object({
+				postId: z.string(),
+				content: z.string(),
+				userId: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			return commentService.create(input);
+		}),
 
 	// 댓글 수정
 	updateComment: publicProcedure

@@ -10,6 +10,7 @@ export const PostSchema = z.object({
 	title: z.string(),
 	description: z.string(),
 	link: z.string(),
+	likes: z.number(),
 });
 
 export type Post = z.infer<typeof PostSchema>;

@@ -1,14 +1,14 @@
+import { ToastType } from '@jung/shared/types';
 import { useCallback } from 'react';
 import { useToastContext } from '../context/ToastContext';
 
 export const useToast = () => {
-	// FIXME: 성공 실패 CASE들 만들어서 스타일 적용하기
-
 	const { setToastList } = useToastContext();
+
 	const showToast = useCallback(
-		(message: string, duration = 1300) => {
+		(message: string, type: ToastType = ToastType.SUCCESS, duration = 3000) => {
 			const id = new Date().getTime();
-			const newToast = { id, message, duration };
+			const newToast = { id, message, type, duration };
 			setToastList((prev) => [...prev, newToast]);
 
 			setTimeout(() => {
