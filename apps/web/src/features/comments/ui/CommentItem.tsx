@@ -3,8 +3,15 @@ import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { Comment } from '@jung/shared/types';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
-import { FaEdit, FaRegComment, FaRegHeart, FaTrash } from 'react-icons/fa';
+import {
+	FaEdit,
+	FaHeart,
+	FaRegComment,
+	FaRegHeart,
+	FaTrash,
+} from 'react-icons/fa';
 import { useDeleteComment } from '../model/useDeleteComment';
+import { useToggleLikeComment } from '../model/useToggleLikeComment';
 import CommentForm from './CommentForm';
 import * as styles from './Comments.css';
 
@@ -25,6 +32,11 @@ const CommentItem = ({
 	const [isEditing, setIsEditing] = useState(false);
 	const isCommentOwner = currentUser?.id === comment.user.id;
 	const mutateDeleteComment = useDeleteComment();
+	const mutateToggleLikeComment = useToggleLikeComment();
+	const isLiked = currentUser
+		? comment.liked_by.includes(currentUser.id)
+		: false;
+
 	const handleIsEditing = () => {
 		setIsEditing(!isEditing);
 	};
@@ -33,6 +45,10 @@ const CommentItem = ({
 		if (window.confirm('Are you sure you want to delete this comment?')) {
 			mutateDeleteComment(comment.id, postId);
 		}
+	};
+
+	const handleToggleLike = () => {
+		mutateToggleLikeComment(comment.id, postId);
 	};
 
 	return (
@@ -75,8 +91,13 @@ const CommentItem = ({
 				<Flex>
 					<Button
 						className={`${styles.actionButton} ${styles.actionButtonHover}`}
+						onClick={handleToggleLike}
 					>
-						<FaRegHeart size={12} style={{ marginRight: '4px' }} />
+						{isLiked ? (
+							<FaHeart size={12} style={{ marginRight: '4px', color: 'red' }} />
+						) : (
+							<FaRegHeart size={12} style={{ marginRight: '4px' }} />
+						)}
 						{comment.likes}
 					</Button>
 					{!isNested && currentUser && (

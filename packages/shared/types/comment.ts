@@ -14,6 +14,7 @@ export const CommentSchema = z.object({
 	content: z.string(),
 	created_at: z.string(),
 	likes: z.number(),
+	liked_by: z.array(z.string()).default([]),
 	parent_id: z.string().nullable(),
 	user: CommentUserSchema,
 });

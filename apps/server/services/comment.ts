@@ -8,7 +8,6 @@ import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabse';
 
 import type { PageParams, User } from '@supabase/supabase-js';
-
 interface ExtendedPageParams extends PageParams {
 	filter?: string;
 }
@@ -231,7 +230,7 @@ export const commentService = {
 		if (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to update comment. Please try again later.',
+				message: `Failed to update comment: ${error.message}`,
 				cause: error,
 			});
 		}
@@ -248,25 +247,120 @@ export const commentService = {
 		if (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to delete comment and its replies',
+				message: `Failed to delete comment: ${error.message}`,
 				cause: error,
 			});
 		}
 	},
 
-	async incrementLikes(id: string): Promise<Comment> {
+	async toggleLike({
+		commentId,
+		userId,
+	}: { commentId: string; userId: string }): Promise<Comment> {
+		// 댓글 가져오기
+		const { data: comment, error: selectError } = await supabase
+			.from('post_comments')
+			.select('*')
+			.eq('id', commentId)
+			.single<Comment>();
+
+		if (selectError) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: `Failed to fetch comment: ${selectError.message}`,
+				cause: selectError,
+			});
+		}
+
+		if (!comment) {
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: 'Comment not found',
+			});
+		}
+
+		const hasLiked = comment.liked_by.includes(userId);
+
+		// 좋아요 토글 업데이트
 		const { data, error } = await supabase
-			.rpc('increment_comment_likes', { comment_id: id })
-			.returns<Comment>();
+			.from('post_comments')
+			.update({
+				likes: hasLiked ? comment.likes - 1 : comment.likes + 1,
+				liked_by: hasLiked
+					? comment.liked_by.filter((id) => id !== userId) // 좋아요 제거
+					: [...comment.liked_by, userId], // 좋아요 추가
+			})
+			.eq('id', commentId)
+			.select('*')
+			.single<Comment>();
 
 		if (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to increment likes. Please try again later.',
+				message: `Failed to toggle like: ${error.message}`,
 				cause: error,
+			});
+		}
+
+		if (!data) {
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: 'Comment not found or like could not be toggled',
 			});
 		}
 
 		return data;
 	},
+
+	// async incrementLikes(id: string): Promise<Comment> {
+	// 	const { data, error } = await supabase
+	// 		.from('post_comments')
+	// 		.update({ likes: sql`likes + 1` })
+	// 		.eq('id', id)
+	// 		.select('*')
+	// 		.single<Comment>();
+
+	// 	if (error) {
+	// 		throw new TRPCError({
+	// 			code: 'INTERNAL_SERVER_ERROR',
+	// 			message: `Failed to increment likes: ${error.message}`,
+	// 			cause: error,
+	// 		});
+	// 	}
+
+	// 	if (!data) {
+	// 		throw new TRPCError({
+	// 			code: 'NOT_FOUND',
+	// 			message: 'Comment not found or likes could not be incremented',
+	// 		});
+	// 	}
+
+	// 	return data;
+	// },
+
+	// async decrementLikes(id: string): Promise<Comment> {
+	// 	const { data, error } = await supabase
+	// 		.from('post_comments')
+	// 		.update({ likes: sql`GREATEST(likes - 1, 0)` })
+	// 		.eq('id', id)
+	// 		.select('*')
+	// 		.single<Comment>();
+
+	// 	if (error) {
+	// 		throw new TRPCError({
+	// 			code: 'INTERNAL_SERVER_ERROR',
+	// 			message: `Failed to decrement likes: ${error.message}`,
+	// 			cause: error,
+	// 		});
+	// 	}
+
+	// 	if (!data) {
+	// 		throw new TRPCError({
+	// 			code: 'NOT_FOUND',
+	// 			message: 'Comment not found or likes could not be decremented',
+	// 		});
+	// 	}
+
+	// 	return data;
+	// },
 };

@@ -50,8 +50,10 @@ export const commentRouter = router({
 		return commentService.delete(input);
 	}),
 
-	// 댓글 좋아요
-	likeComment: publicProcedure.input(z.string()).mutation(({ input }) => {
-		return commentService.incrementLikes(input);
-	}),
+	// 댓글 좋아요 토글
+	toggleLike: publicProcedure
+		.input(z.object({ commentId: z.string(), userId: z.string() }))
+		.mutation(({ input }) => {
+			return commentService.toggleLike(input);
+		}),
 });
