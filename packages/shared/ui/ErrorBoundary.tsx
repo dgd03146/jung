@@ -31,7 +31,9 @@ export class ErrorBoundary extends React.Component<
 		if (this.state.hasError) {
 			return typeof this.props.fallback === 'function'
 				? this.props.fallback(this.state.error!)
-				: this.props.fallback;
+				: React.cloneElement(this.props.fallback as React.ReactElement, {
+						error: this.state.error,
+				  });
 		}
 
 		return this.props.children;

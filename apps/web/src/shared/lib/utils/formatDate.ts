@@ -12,9 +12,6 @@ export const formatRelativeTime = (dateString: string): string => {
 	const diffInDays = Math.floor(diffInHours / 24);
 	const diffInWeeks = Math.floor(diffInDays / 7);
 
-	if (diffInSeconds < 60) {
-		return `${diffInSeconds}s`;
-	}
 	if (diffInMinutes < 60) {
 		return `${diffInMinutes}m`;
 	}
@@ -27,7 +24,7 @@ export const formatRelativeTime = (dateString: string): string => {
 	if (diffInWeeks < 20) {
 		return `${diffInWeeks}w`;
 	}
-	// For posts older than 20 weeks, return the date in "Month Day" format
+
 	return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
 };
 

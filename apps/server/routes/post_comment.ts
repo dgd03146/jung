@@ -11,11 +11,12 @@ export const commentRouter = router({
 				postId: z.string(),
 				limit: z.number().min(1).max(100).default(50),
 				cursor: z.string().optional(),
+				order: z.enum(['asc', 'desc']).default('desc'),
 			}),
 		)
 		.query(async ({ input }) => {
-			const { postId, limit, cursor } = input;
-			return commentService.findManyByPostId({ postId, limit, cursor });
+			const { postId, limit, cursor, order } = input;
+			return commentService.findManyByPostId({ postId, limit, cursor, order });
 		}),
 
 	// 새 댓글 생성
@@ -25,6 +26,7 @@ export const commentRouter = router({
 				postId: z.string(),
 				content: z.string(),
 				userId: z.string(),
+				parentId: z.string().optional(),
 			}),
 		)
 		.mutation(async ({ input }) => {

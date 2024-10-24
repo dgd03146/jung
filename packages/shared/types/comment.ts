@@ -23,6 +23,7 @@ export type CommentQueryParams = {
 	parentId?: string;
 	limit: number;
 	cursor?: string;
+	order: 'asc' | 'desc';
 };
 
 export type CommentQueryResult = {

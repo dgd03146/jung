@@ -12,47 +12,68 @@ import * as styles from './Comments.css';
 
 interface CommentFormProps {
 	postId: string;
+	parentId?: string;
+
+	placeholder?: string;
+	isReply?: boolean;
 }
 
-const CommentForm = ({ postId }: CommentFormProps) => {
-	const { session, user, signOut } = useSupabaseAuth();
-	const { newComment, setNewComment, submitComment } = useCommentSubmit(postId);
+const CommentForm = ({
+	postId,
+	parentId,
 
-	const onSubmit = () => {
-		submitComment();
+	placeholder = 'Write a comment...',
+	isReply = false,
+}: CommentFormProps) => {
+	const { session, user, signOut } = useSupabaseAuth();
+	const { newComment, setNewComment, submitComment } = useCommentSubmit(
+		postId,
+		parentId,
+	);
+
+	const handleSubmit = async () => {
+		const success = await submitComment();
 	};
 
 	return (
-		<Box className={styles.commentContainer} marginBottom='4'>
+		<Box
+			className={
+				isReply ? styles.nestedCommentContainer : styles.commentContainer
+			}
+			marginBottom='4'
+		>
 			{session ? (
 				<Flex className={styles.commentInputContainer}>
-					<Box className={styles.userInfoContainer}>
-						<Box
-							as='img'
-							src={user?.user_metadata?.avatar_url || '/default-avatar.png'}
-							alt='User Avatar'
-							className={styles.userAvatar}
-						/>
-						<Typography.SubText level={2}>
-							{user?.user_metadata?.full_name ||
-								user?.email?.split('@')[0] ||
-								'User'}
-						</Typography.SubText>
-					</Box>
+					{!isReply && (
+						<Box className={styles.userInfoContainer}>
+							<Box
+								as='img'
+								src={user?.user_metadata?.avatar_url || '/default-avatar.png'}
+								alt='User Avatar'
+								className={styles.userAvatar}
+							/>
+							<Typography.SubText level={2}>
+								{user?.user_metadata?.full_name ||
+									user?.email?.split('@')[0] ||
+									'User'}
+							</Typography.SubText>
+						</Box>
+					)}
 					<Box className={styles.textareaContainer}>
 						<Textarea
 							className={styles.textarea}
-							placeholder='Write a comment...'
+							placeholder={placeholder}
 							value={newComment}
 							onChange={(e) => setNewComment(e.target.value)}
-							rows={4}
+							rows={isReply ? 2 : 4}
 						/>
 						<Flex className={styles.buttonContainer}>
 							<Button onClick={signOut} className={styles.signOutButton}>
 								Sign Out
 							</Button>
-							<Button onClick={onSubmit} className={styles.submitButton}>
-								Submit Comment
+
+							<Button onClick={handleSubmit} className={styles.submitButton}>
+								{isReply ? 'Reply' : 'Submit'}
 							</Button>
 						</Flex>
 					</Box>

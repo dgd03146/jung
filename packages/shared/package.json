@@ -6,7 +6,8 @@
     "./hooks": "./hooks/index.ts",
     "./constants": "./constants/index.ts",
     "./utils": "./utils/index.ts",
-    "./types": "./types/index.ts"
+    "./types": "./types/index.ts",
+    "./ui": "./ui/index.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",

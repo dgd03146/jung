@@ -18,9 +18,10 @@ export const CommentService = {
 		postId,
 		limit,
 		cursor,
+		order = 'desc',
 	}: CommentQueryParams): Promise<CommentQueryResult> {
 		// 댓글 정보 가져오기
-		const comments = await this.fetchComments(postId, limit, cursor);
+		const comments = await this.fetchComments(postId, limit, cursor, order);
 
 		// 사용자 ID 목록 추출 (댓글 작성자 + 답글 작성자)
 		const userIds = this.extractUserIds(comments);
@@ -34,16 +35,22 @@ export const CommentService = {
 		// 댓글과 사용자 정보 결합
 		const formattedComments = this.formatComments(comments, userMap);
 
-		const hasNextPage = formattedComments.length > limit;
+		const hasNextPage = comments.length > limit;
+		const itemsToReturn = comments.slice(0, limit);
 
 		return {
 			items: formattedComments,
-			nextCursor: comments[comments.length - 1]?.created_at ?? null,
+			nextCursor: itemsToReturn[itemsToReturn.length - 1]?.created_at ?? null,
 			hasNextPage,
 		};
 	},
 
-	async fetchComments(postId: string, limit: number, cursor?: string) {
+	async fetchComments(
+		postId: string,
+		limit: number,
+		cursor?: string,
+		order: 'asc' | 'desc' = 'desc',
+	) {
 		let query = supabase
 			.from('post_comments')
 			.select(`
@@ -52,8 +59,8 @@ export const CommentService = {
       `)
 			.eq('post_id', postId)
 			.is('parent_id', null)
-			.order('created_at', { ascending: false })
-			.limit(limit);
+			.order('created_at', { ascending: order === 'asc' })
+			.limit(limit + 1);
 
 		if (cursor) {
 			query = query.lt('created_at', cursor);
@@ -150,22 +157,57 @@ export const commentService = {
 		postId,
 		content,
 		userId,
-	}: { postId: string; content: string; userId: string }): Promise<Comment> {
-		const { data, error } = await supabase
+		parentId,
+	}: {
+		postId: string;
+		content: string;
+		userId: string;
+		parentId?: string;
+	}): Promise<Comment> {
+		// 댓글 생성
+		const { data: commentData, error: commentError } = await supabase
 			.from('post_comments')
-			.insert({ post_id: postId, content, user_id: userId })
+			.insert({
+				post_id: postId,
+				content,
+				user_id: userId,
+				parent_id: parentId,
+			})
 			.select()
 			.single<Comment>();
 
-		if (error) {
+		if (commentError) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
 				message: 'Failed to create comment. Please try again later.',
-				cause: error,
+				cause: commentError,
 			});
 		}
 
-		return data;
+		// 사용자 정보 가져오기
+		const { data: userData, error: userError } =
+			await supabase.auth.admin.getUserById(userId);
+
+		if (userError) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to fetch user data. Please try again later.',
+				cause: userError,
+			});
+		}
+
+		// 댓글과 사용자 정보 결합
+		const commentWithUser: Comment = {
+			...commentData,
+			user: {
+				id: userData.user.id,
+				email: userData.user.email || '',
+				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				avatar_url: userData.user.user_metadata?.avatar_url || null,
+			},
+		};
+
+		return commentWithUser;
 	},
 
 	async update(id: string, { content }: { content: string }): Promise<Comment> {

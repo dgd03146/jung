@@ -1,5 +1,6 @@
 'use client';
 
+import type { ToastType } from '@jung/shared/types';
 import {
 	type Dispatch,
 	type ReactNode,
@@ -14,6 +15,7 @@ type ToastContent = {
 	message: string;
 	duration: number;
 	id: number;
+	type?: ToastType;
 };
 
 type ToastContextState = {

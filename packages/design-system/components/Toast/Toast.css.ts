@@ -34,18 +34,18 @@ export const toastRecipe = recipe({
 				background: 'primary100',
 				color: 'white',
 			}),
-			error: {
-				background: 'error',
+			error: sprinkles({
+				background: 'secondary200',
 				color: 'white',
-			},
-			info: {
+			}),
+			info: sprinkles({
 				background: 'info',
 				color: 'white',
-			},
-			warning: {
+			}),
+			warning: sprinkles({
 				background: 'warning',
 				color: 'black',
-			},
+			}),
 		},
 	},
 

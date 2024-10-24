@@ -1,8 +1,10 @@
 import LoadingSpinner from '@/fsd/shared/ui/LoadingSpinner';
 import { Box, Container } from '@jung/design-system/components';
+import { ErrorBoundary } from '@jung/shared/ui';
 import { useGetCommentsQuery } from '../api/useGetComments';
 import { calculateCommentCount } from '../lib';
 import { useInfiniteScroll } from '../model/useInfiniteScroll';
+import CommentError from './CommentError';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
 import CommentStats from './CommentStats';
@@ -26,7 +28,9 @@ const Comments = ({ postId, postLikeCount }: Props) => {
 			<CommentStats commentCount={commentCount} likeCount={postLikeCount} />
 			<CommentForm postId={postId} />
 			{comments.map((comment) => (
-				<CommentItem key={comment.id} comment={comment} />
+				<ErrorBoundary key={comment.id} fallback={<CommentError />}>
+					<CommentItem comment={comment} postId={postId} />
+				</ErrorBoundary>
 			))}
 			{hasNextPage && (
 				<Box ref={infiniteScrollRef} minHeight='4'>

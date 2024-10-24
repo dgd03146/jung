@@ -1,13 +1,8 @@
-export enum ToastType {
-	SUCCESS = 'success',
-	ERROR = 'error',
-	INFO = 'info',
-	WARNING = 'warning',
-}
+export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 export interface ToastProps {
 	id: number;
 	message: string;
-	type: ToastType;
+	type?: ToastType;
 	duration: number;
 }

@@ -1,10 +1,12 @@
 'use client';
 
 import { usePostQuery } from '@/fsd/features';
+import CommentError from '@/fsd/features/comments/ui/CommentError';
 import Comments from '@/fsd/features/comments/ui/Comments';
 import CommentsSkeleton from '@/fsd/features/comments/ui/CommentsSkeleton';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Container, Flex } from '@jung/design-system/components';
+import { ErrorBoundary } from '@jung/shared/ui';
 import { Suspense } from 'react';
 import BlockNote from './BlockNote';
 // import PostContent from './PostContent';
@@ -26,10 +28,11 @@ const PostDetail = ({ postId }: { postId: string }) => {
 				<PostSidebar tags={post.tags} />
 				<Container>
 					<BlockNote editor={editor} />
-
-					<Suspense fallback={<CommentsSkeleton />}>
-						<Comments postId={postId} postLikeCount={post.likes} />
-					</Suspense>
+					<ErrorBoundary fallback={<CommentError />}>
+						<Suspense fallback={<CommentsSkeleton />}>
+							<Comments postId={postId} postLikeCount={post.likes} />
+						</Suspense>
+					</ErrorBoundary>
 				</Container>
 			</Flex>
 		</Container>

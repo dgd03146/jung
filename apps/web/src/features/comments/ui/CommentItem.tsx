@@ -1,18 +1,24 @@
 import { formatRelativeTime } from '@/fsd/shared/lib';
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { Comment } from '@jung/shared/types';
+import { useState } from 'react';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa';
+import CommentForm from './CommentForm';
 import * as styles from './Comments.css';
 
 interface CommentItemProps {
 	comment: Comment;
+	postId: string;
 	isNested?: boolean;
 }
 
 const CommentItem = ({
 	comment,
+	postId,
 	isNested = false,
-}: CommentItemProps & { isNested?: boolean }) => {
+}: CommentItemProps) => {
+	const [isReplying, setIsReplying] = useState(false);
+
 	return (
 		<Box
 			className={`${
@@ -50,17 +56,33 @@ const CommentItem = ({
 					{!isNested && (
 						<Button
 							className={`${styles.actionButton} ${styles.actionButtonHover}`}
+							onClick={() => setIsReplying(!isReplying)}
 						>
 							<FaRegComment size={12} style={{ marginRight: '4px' }} />
-							답글
+							Reply
 						</Button>
 					)}
 				</Flex>
 			</Flex>
+			{isReplying && (
+				<Box>
+					<CommentForm
+						postId={postId}
+						parentId={comment.id}
+						placeholder='Write a reply...'
+						isReply={true}
+					/>
+				</Box>
+			)}
 			{comment.replies && comment.replies.length > 0 && (
 				<Box className={styles.replyContainer}>
 					{comment.replies.map((reply) => (
-						<CommentItem key={reply.id} comment={reply} isNested={true} />
+						<CommentItem
+							key={reply.id}
+							comment={reply}
+							postId={postId}
+							isNested={true}
+						/>
 					))}
 				</Box>
 			)}

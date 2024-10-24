@@ -1,7 +1,8 @@
 import React, { type HTMLAttributes } from 'react';
 import * as styles from './Toast.css';
 
-import { ToastType } from '@jung/shared/types';
+import type { ToastType } from '@jung/shared/types';
+
 import {
 	FaCheckCircle,
 	FaExclamationCircle,
@@ -19,18 +20,22 @@ export interface ToastProps
 }
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-	({ message, type = ToastType.SUCCESS, className, ...restProps }, ref) => {
+	({ message, type = 'success', className, ...restProps }, ref) => {
 		const IconComponent =
-			type === ToastType.SUCCESS
+			type === 'success'
 				? FaCheckCircle
-				: type === ToastType.ERROR
+				: type === 'error'
 				  ? FaExclamationCircle
-				  : type === ToastType.WARNING
+				  : type === 'warning'
 					  ? FaExclamationTriangle
 					  : FaInfoCircle;
 
 		return (
-			<Box ref={ref} className={styles.toastRecipe({ type })} {...restProps}>
+			<Box
+				ref={ref}
+				className={`${styles.toastRecipe({ type })} ${className || ''}`}
+				{...restProps}
+			>
 				<IconComponent className={styles.icon} />
 				<Typography.SubText className={styles.message}>
 					{message}

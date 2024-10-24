@@ -1,4 +1,4 @@
-import { ToastType } from '@jung/shared/types';
+import type { ToastType } from '@jung/shared/types';
 import { useCallback } from 'react';
 import { useToastContext } from '../context/ToastContext';
 
@@ -6,13 +6,17 @@ export const useToast = () => {
 	const { setToastList } = useToastContext();
 
 	const showToast = useCallback(
-		(message: string, type: ToastType = ToastType.SUCCESS, duration = 3000) => {
+		(message: string, type?: ToastType, duration = 3000) => {
 			const id = new Date().getTime();
 			const newToast = { id, message, type, duration };
-			setToastList((prev) => [...prev, newToast]);
+			setToastList((prev) => {
+				return [...prev, newToast];
+			});
 
 			setTimeout(() => {
-				setToastList((toasts) => toasts.filter((toast) => toast.id !== id));
+				setToastList((toasts) => {
+					return toasts.filter((toast) => toast.id !== id);
+				});
 			}, duration);
 		},
 		[setToastList],

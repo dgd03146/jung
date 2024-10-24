@@ -78,7 +78,7 @@ export const commentInputContainer = style({
 	display: 'flex',
 	alignItems: 'flex-start',
 	gap: '16px',
-	marginBottom: '16px',
+	// marginBottom: '16px',
 });
 
 export const textareaContainer = style({
