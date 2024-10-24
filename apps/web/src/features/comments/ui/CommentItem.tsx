@@ -4,6 +4,7 @@ import type { Comment } from '@jung/shared/types';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { FaEdit, FaRegComment, FaRegHeart, FaTrash } from 'react-icons/fa';
+import { useDeleteComment } from '../model/useDeleteComment';
 import CommentForm from './CommentForm';
 import * as styles from './Comments.css';
 
@@ -23,14 +24,14 @@ const CommentItem = ({
 	const [isReplying, setIsReplying] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const isCommentOwner = currentUser?.id === comment.user.id;
-
+	const mutateDeleteComment = useDeleteComment();
 	const handleIsEditing = () => {
 		setIsEditing(!isEditing);
 	};
 
 	const handleDelete = () => {
 		if (window.confirm('Are you sure you want to delete this comment?')) {
-			// onDeleteComment(comment.id);
+			mutateDeleteComment(comment.id, postId);
 		}
 	};
 

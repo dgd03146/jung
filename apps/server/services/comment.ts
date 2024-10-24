@@ -239,16 +239,16 @@ export const commentService = {
 		return data;
 	},
 
-	async delete(id: string): Promise<void> {
+	async delete(commentId: string): Promise<void> {
 		const { error } = await supabase
 			.from('post_comments')
 			.delete()
-			.eq('id', id);
+			.or(`id.eq.${commentId},parent_id.eq.${commentId}`);
 
 		if (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to delete comment. Please try again later.',
+				message: 'Failed to delete comment and its replies',
 				cause: error,
 			});
 		}
