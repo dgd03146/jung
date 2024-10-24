@@ -14,7 +14,6 @@ export const ToastContainer = () => {
 		? ReactDOM.createPortal(
 				<Box className={styles.container}>
 					{toastList.map((toast) => {
-						console.log('Rendering toast:', toast);
 						return (
 							<Toast key={toast.id} message={toast.message} type={toast.type} />
 						);

@@ -54,17 +54,18 @@ export const CommentService = {
 		let query = supabase
 			.from('post_comments')
 			.select(`
-        *,
-        replies:post_comments!parent_id(*)
-      `)
+      *,
+      replies:post_comments!parent_id(*)
+    `)
 			.eq('post_id', postId)
 			.is('parent_id', null)
-			.order('created_at', { ascending: order === 'asc' })
-			.limit(limit);
+			.order('created_at', { ascending: order === 'asc' });
 
 		if (cursor) {
 			query = query.lt('created_at', cursor);
 		}
+
+		query = query.limit(limit);
 
 		const { data: comments, error } = await query;
 
@@ -77,7 +78,16 @@ export const CommentService = {
 			});
 		}
 
-		return comments;
+		const sortedComments = comments?.map((comment) => ({
+			...comment,
+			replies: comment.replies?.sort((a: Comment, b: Comment) =>
+				order === 'asc'
+					? new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+					: new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+			),
+		}));
+
+		return sortedComments;
 	},
 
 	extractUserIds(comments: Comment[]) {

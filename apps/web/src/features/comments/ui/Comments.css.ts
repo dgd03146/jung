@@ -135,7 +135,7 @@ export const textarea = style({
 });
 
 export const replyContainer = style({
-	marginLeft: '24px',
+	marginLeft: '12px',
 	marginTop: '12px',
 	padding: '12px',
 	borderLeft: `2px solid ${primaryLightColor}`,

@@ -1,3 +1,4 @@
+import { useSupabaseAuth } from '@/fsd/shared/lib';
 import LoadingSpinner from '@/fsd/shared/ui/LoadingSpinner';
 import { Box, Container } from '@jung/design-system/components';
 import { ErrorBoundary } from '@jung/shared/ui';
@@ -17,8 +18,10 @@ interface Props {
 
 const Comments = ({ postId, postLikeCount }: Props) => {
 	const [data, query] = useGetCommentsQuery(postId);
-
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
+	const { user } = useSupabaseAuth();
+	// const editComment = useEditComment();
+	// const deleteComment = useDeleteComment();
 
 	const commentCount =
 		data?.pages.reduce(
@@ -34,8 +37,15 @@ const Comments = ({ postId, postLikeCount }: Props) => {
 			{data?.pages.map((page, pageIndex) => (
 				<React.Fragment key={pageIndex}>
 					{page.items.map((comment) => (
-						<ErrorBoundary key={comment.id} fallback={<CommentError />}>
-							<CommentItem comment={comment} postId={postId} />
+						<ErrorBoundary
+							key={comment.id}
+							fallback={(error) => <CommentError error={error} />}
+						>
+							<CommentItem
+								comment={comment}
+								postId={postId}
+								currentUser={user}
+							/>
 						</ErrorBoundary>
 					))}
 				</React.Fragment>

@@ -10,13 +10,13 @@ import {
 	updateDataWithOptimisticComment,
 } from '../lib';
 
-export const useCommentSubmit = (postId: string, parentId?: string) => {
+export const useCreateComment = () => {
 	const [newComment, setNewComment] = useState('');
 	const utils = trpc.useUtils();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
-	const submitComment = async () => {
+	const submitComment = async (postId: string, parentId?: string) => {
 		if (!user || !newComment.trim()) return false;
 
 		const optimisticComment = createOptimisticComment(

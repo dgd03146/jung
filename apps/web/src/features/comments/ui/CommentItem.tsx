@@ -1,8 +1,9 @@
 import { formatRelativeTime } from '@/fsd/shared/lib';
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { Comment } from '@jung/shared/types';
+import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
-import { FaRegComment, FaRegHeart } from 'react-icons/fa';
+import { FaEdit, FaRegComment, FaRegHeart, FaTrash } from 'react-icons/fa';
 import CommentForm from './CommentForm';
 import * as styles from './Comments.css';
 
@@ -10,14 +11,28 @@ interface CommentItemProps {
 	comment: Comment;
 	postId: string;
 	isNested?: boolean;
+	currentUser: User | null;
 }
 
 const CommentItem = ({
 	comment,
 	postId,
 	isNested = false,
+	currentUser,
 }: CommentItemProps) => {
 	const [isReplying, setIsReplying] = useState(false);
+	const [isEditing, setIsEditing] = useState(false);
+	const isCommentOwner = currentUser?.id === comment.user.id;
+
+	const handleIsEditing = () => {
+		setIsEditing(!isEditing);
+	};
+
+	const handleDelete = () => {
+		if (window.confirm('Are you sure you want to delete this comment?')) {
+			// onDeleteComment(comment.id);
+		}
+	};
 
 	return (
 		<Box
@@ -42,9 +57,19 @@ const CommentItem = ({
 					</Typography.FootNote>
 				</Flex>
 			</Flex>
-			<Typography.SubText className={styles.commentContent}>
-				{comment.content}
-			</Typography.SubText>
+			{isEditing ? (
+				<CommentForm
+					postId={postId}
+					commentId={comment.id}
+					initialContent={comment.content}
+					isEditing={isEditing}
+					handleIsEditing={handleIsEditing}
+				/>
+			) : (
+				<Typography.SubText className={styles.commentContent}>
+					{comment.content}
+				</Typography.SubText>
+			)}
 			<Flex className={styles.commentFooter}>
 				<Flex>
 					<Button
@@ -53,7 +78,7 @@ const CommentItem = ({
 						<FaRegHeart size={12} style={{ marginRight: '4px' }} />
 						{comment.likes}
 					</Button>
-					{!isNested && (
+					{!isNested && currentUser && (
 						<Button
 							className={`${styles.actionButton} ${styles.actionButtonHover}`}
 							onClick={() => setIsReplying(!isReplying)}
@@ -63,6 +88,24 @@ const CommentItem = ({
 						</Button>
 					)}
 				</Flex>
+				{isCommentOwner && (
+					<Flex>
+						<Button
+							className={`${styles.actionButton} ${styles.actionButtonHover}`}
+							onClick={handleIsEditing}
+						>
+							<FaEdit size={12} style={{ marginRight: '4px' }} />
+							Edit
+						</Button>
+						<Button
+							className={`${styles.actionButton} ${styles.actionButtonHover}`}
+							onClick={handleDelete}
+						>
+							<FaTrash size={12} style={{ marginRight: '4px' }} />
+							Delete
+						</Button>
+					</Flex>
+				)}
 			</Flex>
 			{isReplying && (
 				<Box>
@@ -82,6 +125,7 @@ const CommentItem = ({
 							comment={reply}
 							postId={postId}
 							isNested={true}
+							currentUser={currentUser}
 						/>
 					))}
 				</Box>

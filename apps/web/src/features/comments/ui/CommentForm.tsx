@@ -6,33 +6,55 @@ import {
 	Flex,
 	Textarea,
 	Typography,
+	useToast,
 } from '@jung/design-system/components';
-import { useCommentSubmit } from '../model/useCommentSubmit';
+import { useState } from 'react';
+import { useCreateComment } from '../model/useCreateComment';
+import { useUpdateComment } from '../model/useUpdateComment';
 import * as styles from './Comments.css';
 
 interface CommentFormProps {
 	postId: string;
 	parentId?: string;
-
+	commentId?: string;
+	initialContent?: string;
 	placeholder?: string;
 	isReply?: boolean;
+	isEditing?: boolean;
+	handleIsEditing?: () => void;
 }
 
 const CommentForm = ({
 	postId,
 	parentId,
-
 	placeholder = 'Write a comment...',
+	commentId,
+	initialContent,
 	isReply = false,
+	isEditing = false,
+	handleIsEditing,
 }: CommentFormProps) => {
+	const showToast = useToast();
+
 	const { session, user, signOut } = useSupabaseAuth();
-	const { newComment, setNewComment, submitComment } = useCommentSubmit(
-		postId,
-		parentId,
-	);
+	const { newComment, setNewComment, submitComment } = useCreateComment();
+	const updateComment = useUpdateComment();
+
+	const [updatedComment, setUpdatedComment] = useState(initialContent);
 
 	const handleSubmit = async () => {
-		const success = await submitComment();
+		const commentContent = isEditing ? updatedComment : newComment;
+		if (!commentContent || commentContent.trim() === '') {
+			showToast('Please enter a comment.', 'error');
+			return;
+		}
+
+		if (isEditing && commentId) {
+			updateComment(commentId, commentContent, postId);
+			handleIsEditing?.();
+		} else {
+			submitComment(postId, parentId);
+		}
 	};
 
 	return (
@@ -44,7 +66,7 @@ const CommentForm = ({
 		>
 			{session ? (
 				<Flex className={styles.commentInputContainer}>
-					{!isReply && (
+					{!isReply && !isEditing && (
 						<Box className={styles.userInfoContainer}>
 							<Box
 								as='img'
@@ -63,17 +85,30 @@ const CommentForm = ({
 						<Textarea
 							className={styles.textarea}
 							placeholder={placeholder}
-							value={newComment}
-							onChange={(e) => setNewComment(e.target.value)}
-							rows={isReply ? 2 : 4}
+							value={isEditing ? updatedComment : newComment}
+							onChange={(e) =>
+								isEditing
+									? setUpdatedComment(e.target.value)
+									: setNewComment(e.target.value)
+							}
+							rows={isReply || isEditing ? 2 : 4}
 						/>
 						<Flex className={styles.buttonContainer}>
-							<Button onClick={signOut} className={styles.signOutButton}>
-								Sign Out
-							</Button>
-
+							{!isEditing && (
+								<Button onClick={signOut} className={styles.signOutButton}>
+									Sign Out
+								</Button>
+							)}
+							{isEditing && (
+								<Button
+									onClick={handleIsEditing}
+									className={styles.signOutButton}
+								>
+									Cancel
+								</Button>
+							)}
 							<Button onClick={handleSubmit} className={styles.submitButton}>
-								{isReply ? 'Reply' : 'Submit'}
+								{isEditing ? 'Update' : isReply ? 'Reply' : 'Submit'}
 							</Button>
 						</Flex>
 					</Box>

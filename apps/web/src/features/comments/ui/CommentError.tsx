@@ -1,4 +1,4 @@
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { FiAlertTriangle } from 'react-icons/fi';
 import * as styles from './CommentError.css';
 
@@ -28,9 +28,9 @@ const CommentError = ({ error, onRetry }: CommentErrorProps) => (
 			</Typography.Text>
 			{onRetry && (
 				<Box className={styles.retryButtonContainer}>
-					<Typography.Button onClick={onRetry} className={styles.retryButton}>
+					<Button onClick={onRetry} className={styles.retryButton}>
 						Try Again
-					</Typography.Button>
+					</Button>
 				</Box>
 			)}
 		</Box>
