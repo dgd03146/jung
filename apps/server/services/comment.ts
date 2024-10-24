@@ -60,7 +60,7 @@ export const CommentService = {
 			.eq('post_id', postId)
 			.is('parent_id', null)
 			.order('created_at', { ascending: order === 'asc' })
-			.limit(limit + 1);
+			.limit(limit);
 
 		if (cursor) {
 			query = query.lt('created_at', cursor);

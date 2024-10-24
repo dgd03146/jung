@@ -1,6 +1,7 @@
 import LoadingSpinner from '@/fsd/shared/ui/LoadingSpinner';
 import { Box, Container } from '@jung/design-system/components';
 import { ErrorBoundary } from '@jung/shared/ui';
+import React from 'react';
 import { useGetCommentsQuery } from '../api/useGetComments';
 import { calculateCommentCount } from '../lib';
 import { useInfiniteScroll } from '../model/useInfiniteScroll';
@@ -19,18 +20,25 @@ const Comments = ({ postId, postLikeCount }: Props) => {
 
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
-	const comments = data?.pages.flatMap((page) => page.items) || [];
-	const commentCount = calculateCommentCount(comments);
+	const commentCount =
+		data?.pages.reduce(
+			(acc, page) => acc + calculateCommentCount(page.items),
+			0,
+		) || 0;
 	const infiniteScrollRef = useInfiniteScroll(hasNextPage, fetchNextPage);
 
 	return (
 		<Container marginY='20'>
 			<CommentStats commentCount={commentCount} likeCount={postLikeCount} />
 			<CommentForm postId={postId} />
-			{comments.map((comment) => (
-				<ErrorBoundary key={comment.id} fallback={<CommentError />}>
-					<CommentItem comment={comment} postId={postId} />
-				</ErrorBoundary>
+			{data?.pages.map((page, pageIndex) => (
+				<React.Fragment key={pageIndex}>
+					{page.items.map((comment) => (
+						<ErrorBoundary key={comment.id} fallback={<CommentError />}>
+							<CommentItem comment={comment} postId={postId} />
+						</ErrorBoundary>
+					))}
+				</React.Fragment>
 			))}
 			{hasNextPage && (
 				<Box ref={infiniteScrollRef} minHeight='4'>

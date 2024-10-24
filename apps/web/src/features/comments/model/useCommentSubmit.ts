@@ -1,8 +1,8 @@
 import { trpc } from '@/fsd/shared';
+import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared/lib';
-import { useState } from 'react';
-
 import { useToast } from '@jung/design-system/components';
+import { useState } from 'react';
 import { createComment } from '../actions/createComment';
 import {
 	createOptimisticComment,
@@ -28,7 +28,7 @@ export const useCommentSubmit = (postId: string, parentId?: string) => {
 
 		// Optimistic update
 		utils.comment.getCommentsByPostId.setInfiniteData(
-			{ postId, order: 'desc' },
+			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 			(oldData) =>
 				updateDataWithOptimisticComment(oldData, optimisticComment, parentId),
 		);
@@ -47,7 +47,7 @@ export const useCommentSubmit = (postId: string, parentId?: string) => {
 		} catch (error) {
 			// Rollback logic
 			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: 'desc' },
+				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 				(oldData) => rollbackOptimisticUpdate(oldData, parentId),
 			);
 			showToast('Failed to post comment.', 'error');
