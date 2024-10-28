@@ -1,1 +1,4 @@
-export { usePostQuery, usePostsQuery } from './usePostQueries';
+export {
+	usePostQuery,
+	useGetAllPosts as usePostsQuery,
+} from './useGetAllPosts';

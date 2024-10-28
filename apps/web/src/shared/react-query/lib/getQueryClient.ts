@@ -6,7 +6,7 @@ import {
 	isServer,
 } from '@tanstack/react-query';
 
-function makeQueryClient() {
+export function makeQueryClient() {
 	return new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -20,6 +20,9 @@ function makeQueryClient() {
 				shouldDehydrateQuery: (query) =>
 					defaultShouldDehydrateQuery(query) ||
 					query.state.status === 'pending',
+			},
+			hydrate: {
+				// optional
 			},
 		},
 	});

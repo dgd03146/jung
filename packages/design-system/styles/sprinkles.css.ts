@@ -58,6 +58,7 @@ export const responsiveProperties = defineProperties({
 			'space-around',
 			'space-evenly',
 		],
+		flex: { ...vars.contentWidth },
 		flexWrap: ['wrap', 'nowrap'],
 		flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
 		paddingTop: vars.space,
@@ -140,7 +141,7 @@ export const unresponsiveProperties = defineProperties({
 		bottom: [0],
 		left: [0],
 		right: [0],
-		flex: { ...vars.contentWidth },
+
 		flexShrink: [0, 1],
 		flexGrow: [0, 1],
 		flexBasis: {

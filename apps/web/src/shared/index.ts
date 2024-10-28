@@ -16,7 +16,9 @@ export {
 export { AnimatedLine } from './animation/ui';
 export { useInViewAnimation } from './animation/lib';
 
-export { trpc } from './trpc/lib';
+export { trpc } from './trpc/lib/client';
 export { getQueryClient } from './react-query/lib';
 
 export { queryKeys } from './react-query/consts';
+
+export { COMMENTS_LIMIT, COMMENTS_DEFAULT_ORDER } from './constants/comments';

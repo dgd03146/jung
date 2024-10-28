@@ -11,6 +11,7 @@ export const CardActions = forwardRef<HTMLDivElement, Props>(
 				as='div'
 				display='flex'
 				columnGap='1'
+				marginTop='auto'
 				alignItems='center'
 				ref={ref}
 				{...restProps}

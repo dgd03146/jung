@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Container, Typography } from '@jung/design-system/components';
+import { Box, Button, Typography } from '@jung/design-system/components';
 import { useEffect } from 'react';
 import * as styles from './error.css';
 
@@ -14,20 +14,32 @@ export default function Error({
 }) {
 	useEffect(() => {
 		console.error(error);
+		// TODO: Implement error logging service call (Sentry, LogRocket)
 	}, [error]);
 
 	return (
-		<Container className={styles.errorContainer}>
-			<Typography.Heading color='primary300'>
+		<Box className={styles.errorContainer}>
+			<Typography.Heading level={1} className={styles.errorHeading}>
 				Oops! Something went wrong
 			</Typography.Heading>
-			<Typography.Text color='primary200'>
-				We're sorry, but there was an error loading the blog page. Please try
-				again.
+			<Typography.Text className={styles.errorText}>
+				We're sorry, but there was an error loading the page. Please try again
+				or contact support if the problem persists.
 			</Typography.Text>
-			<Button variant='secondary' onClick={() => reset()}>
-				<Typography.Text>Try Again</Typography.Text>
+			<Button className={styles.tryAgainButton} onClick={() => reset()}>
+				Try Again
 			</Button>
-		</Container>
+			{process.env.NODE_ENV === 'development' && (
+				<Box as='details' className={styles.errorDetails}>
+					<summary className={styles.errorDetailsSummary}>
+						Error details
+					</summary>
+
+					{error.stack && (
+						<pre className={styles.errorStackTrace}>{error.stack}</pre>
+					)}
+				</Box>
+			)}
+		</Box>
 	);
 }

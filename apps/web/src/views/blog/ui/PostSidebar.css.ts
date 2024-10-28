@@ -27,5 +27,17 @@ globalStyle(`${textContainer} p`, {
 export const link = style({
 	display: 'flex',
 	alignItems: 'center',
-	columnGap: '4px',
+	gap: '8px',
+	textDecoration: 'none',
+});
+
+export const adjacentPostTitle = style({
+	display: '-webkit-box',
+	WebkitLineClamp: 2,
+	WebkitBoxOrient: 'vertical',
+	overflow: 'hidden',
+	textOverflow: 'ellipsis',
+	':hover': {
+		textDecoration: 'underline',
+	},
 });

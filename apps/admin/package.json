@@ -13,11 +13,12 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@jung/design-system": "workspace:*",
+    "@jung/shared": "workspace:*",
+    "@jung/server": "workspace:*",
     "@blocknote/core": "^0.15.6",
     "@blocknote/mantine": "^0.15.6",
     "@blocknote/react": "^0.15.6",
-    "@jung/design-system": "workspace:*",
-    "@jung/server": "workspace:*",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-query-devtools": "^5.40.0",

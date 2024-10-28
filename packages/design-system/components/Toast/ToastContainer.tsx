@@ -13,9 +13,11 @@ export const ToastContainer = () => {
 	return portalRoot
 		? ReactDOM.createPortal(
 				<Box className={styles.container}>
-					{toastList.map((toast) => (
-						<Toast key={toast.id} message={toast.message} />
-					))}
+					{toastList.map((toast) => {
+						return (
+							<Toast key={toast.id} message={toast.message} type={toast.type} />
+						);
+					})}
 				</Box>,
 				portalRoot,
 		  )

@@ -1,24 +1,23 @@
-import { getQueryClient } from '@/fsd/shared';
+import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { BlogPage } from '@/fsd/views';
-import { appRouter } from '@jung/server';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createServerSideHelpers } from '@trpc/react-query/server';
 
-export default async function Page() {
-	const queryClient = getQueryClient();
+type Sort = 'latest' | 'oldest' | 'popular';
 
-	const helpers = createServerSideHelpers({
-		router: appRouter,
-		ctx: {}, // 세션 정보, 로깅 등
-		queryClient,
-	});
+type PageProps = {
+	searchParams: { [key: string]: string | string[] | undefined };
+};
 
-	await helpers.post.getAllPosts.prefetch();
+export default async function Page({ searchParams }: PageProps) {
+	const cat = (searchParams.cat as string) || 'all';
+	const sort = (searchParams.sort as Sort) || 'latest';
+	const q = (searchParams.q as string) || '';
+
+	void trpc.post.getAllPosts.prefetchInfinite({ limit: 9, cat, sort, q });
 
 	return (
 		// FIXME: 전체를 HydrationBoundary로 감싸야하나?..
-		<HydrationBoundary state={dehydrate(queryClient)}>
+		<HydrateClient>
 			<BlogPage />
-		</HydrationBoundary>
+		</HydrateClient>
 	);
 }

@@ -12,6 +12,7 @@ export const CardContent = forwardRef<HTMLDivElement, Props>(
 				as='div'
 				display='flex'
 				flexDirection='column'
+				flexGrow={1}
 				rowGap='1'
 				padding='2.5'
 				className={styles.textContainer}

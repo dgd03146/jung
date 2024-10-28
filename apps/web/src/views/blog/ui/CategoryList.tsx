@@ -1,34 +1,60 @@
+'use client';
+
 import { Container, Flex, Tag } from '@jung/design-system/components';
+
+import { CATEGORIES } from '@jung/shared/constants';
+import { getCategoryDisplayName } from '@jung/shared/utils';
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 
 const CategoryList = () => {
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const createQueryString = useCallback(
+		(name: string, value: string) => {
+			const params = new URLSearchParams(searchParams.toString());
+			if (value === 'all') {
+				params.delete('cat');
+			} else {
+				params.set(name, value);
+			}
+			return params.toString();
+		},
+		[searchParams],
+	);
+
+	const currentCategory = searchParams.get('cat') || 'all';
+
 	return (
 		<Container marginBottom='4'>
-			<Flex columnGap='1'>
-				<Link href='/blog?cat=life'>
-					<Tag rounded>life</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>travel</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>food</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>fashion</Tag>
-				</Link>
-				<Link href='/blog?cat=style'>
-					<Tag rounded>culture</Tag>
-				</Link>
+			<Flex flexWrap={{ mobile: 'wrap', miniTablet: 'nowrap' }} gap='1'>
+				{CATEGORIES.map((category) => (
+					<Link
+						key={category.id}
+						href={`${pathname}?${createQueryString('cat', category.name)}`}
+					>
+						<Tag
+							rounded
+							transitionDuration='500'
+							borderColor={{ hover: 'primary200' }}
+							background={
+								currentCategory === category.name
+									? 'primary'
+									: { hover: 'primary200' }
+							}
+							color={
+								currentCategory === category.name ? 'white' : { hover: 'white' }
+							}
+						>
+							{getCategoryDisplayName(category, 'en')}
+						</Tag>
+					</Link>
+				))}
 			</Flex>
 		</Container>
 	);
 };
 
 export default CategoryList;
-
-// Style: 패션 트렌드, 스타일링 팁, 액세서리 등
-// Fashion: 의류 리뷰, 패션 브랜드 소개, 시즌별 패션 가이드 등
-// Food: 레시피, 레스토랑 리뷰, 요리 팁, 식문화 등
-// Travel: 여행지 추천, 여행 팁, 문화 체험 등
-// Culture: 예술, 음악, 영화, 책, 전시회 리뷰 등

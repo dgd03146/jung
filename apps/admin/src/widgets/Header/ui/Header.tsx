@@ -14,6 +14,7 @@ const Header = () => {
 	const pageTitle = getPageTitle(pathname);
 	const [isScrolled, setIsScrolled] = useState(false);
 
+	// FIXME: SHARED WORKSPACE 훅으로 빼도 될듯?
 	const handleScroll = useCallback(() => {
 		if (!isScrolled && window.scrollY > SCROLL_THRESHOLD) {
 			setIsScrolled(true);

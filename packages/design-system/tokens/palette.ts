@@ -32,6 +32,8 @@ export const palette = {
 	// Success and error colors
 	success: '#00B050',
 	error: '#FF4040',
+	info: '#0088FF',
+	warning: '#FFB100',
 
 	// Additional common colors
 	blue: '#0070F3', // 청색
