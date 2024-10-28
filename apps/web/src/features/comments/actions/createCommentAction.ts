@@ -3,7 +3,7 @@
 import { trpc } from '@/fsd/shared/trpc/lib/server';
 import { revalidatePath } from 'next/cache';
 
-export async function createComment(
+export async function createCommentAction(
 	postId: string,
 	content: string,
 	userId: string,

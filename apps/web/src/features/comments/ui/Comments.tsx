@@ -20,8 +20,6 @@ const Comments = ({ postId, postLikeCount }: Props) => {
 	const [data, query] = useGetCommentsQuery(postId);
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 	const { user } = useSupabaseAuth();
-	// const editComment = useEditComment();
-	// const deleteComment = useDeleteComment();
 
 	const commentCount =
 		data?.pages.reduce(

@@ -3,7 +3,7 @@ import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared/lib';
 import { useToast } from '@jung/design-system/components';
 import { useState } from 'react';
-import { createComment } from '../actions/createComment';
+import { createCommentAction } from '../actions/createCommentAction';
 import {
 	createOptimisticComment,
 	rollbackOptimisticUpdate,
@@ -36,7 +36,7 @@ export const useCreateComment = () => {
 		setNewComment('');
 
 		try {
-			const createdComment = await createComment(
+			const createdComment = await createCommentAction(
 				postId,
 				newComment,
 				user.id,

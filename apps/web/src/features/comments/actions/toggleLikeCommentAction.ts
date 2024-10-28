@@ -3,7 +3,7 @@
 import { trpc } from '@/fsd/shared/trpc/lib/server';
 import { revalidatePath } from 'next/cache';
 
-export async function toggleLikeComment(
+export async function toggleLikeCommentAction(
 	commentId: string,
 	postId: string,
 	userId: string,
