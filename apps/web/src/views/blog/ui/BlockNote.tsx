@@ -24,6 +24,9 @@ const BlockNote = ({ editor }: Props) => {
 				sideMenu={true}
 				slashMenu={true}
 				emojiPicker={true}
+				onError={(error) => {
+					throw Error(`BlockNote initialization error: ${error}`);
+				}}
 			>
 				<FormattingToolbarController
 					formattingToolbar={FormattingToolbarComponent}

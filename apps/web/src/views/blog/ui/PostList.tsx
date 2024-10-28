@@ -18,13 +18,13 @@ const PostList = () => {
 	const sort = (searchParams.get('sort') as Sort) || 'latest';
 	const q = searchParams.get('q') || '';
 
-	// FIXME: 페칭하는거 훅으로 빼면 좋을듯 리팩토링시
 	const [data, query] = useGetAllPosts({ cat, sort, q });
 
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
 	const { ref, inView } = useInView();
 
+	// FIXME: 페칭 로직 공용 훅으로 빼기, COMMENT에서도 쓰임
 	useEffect(() => {
 		if (inView && hasNextPage) {
 			fetchNextPage();
@@ -33,7 +33,11 @@ const PostList = () => {
 
 	const allPosts = data?.pages.flatMap((page) => page.items) || [];
 
-	// TODO: POSTS 없는 경우 처리
+	// TODO: POSTS 없는 경우에 UI 처리
+
+	if (allPosts.length === 0) {
+		throw new Error('No posts found');
+	}
 
 	return (
 		<Container>

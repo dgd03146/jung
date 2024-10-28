@@ -11,8 +11,7 @@ export const PostSchema = z.object({
 	description: z.string(),
 	link: z.string(),
 	likes: z.number(),
+	liked_by: z.array(z.string()),
 });
 
 export type Post = z.infer<typeof PostSchema>;
-// FIXME: Shared workspace로 공용 타입
-// FIXME: content any 타입 수정

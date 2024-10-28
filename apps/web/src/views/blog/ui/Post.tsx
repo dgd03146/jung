@@ -6,23 +6,11 @@ import {
 	Tag,
 	Typography,
 } from '@jung/design-system/components';
+import type { Post as PostType } from '@jung/shared/types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaChevronRight } from 'react-icons/fa';
 import * as styles from './Post.css';
-
-// FIXME: types로 빼기
-interface PostProps {
-	id: string;
-	imagesrc: string;
-	category: string;
-	date: string;
-	tags: string[];
-	title: string;
-	description: string;
-	link: string;
-	index: number;
-}
 
 const Post = ({
 	imagesrc,
@@ -32,9 +20,8 @@ const Post = ({
 	title,
 	category,
 	description,
-	// link,
 	index,
-}: PostProps) => {
+}: PostType & { index: number }) => {
 	const router = useRouter();
 
 	return (

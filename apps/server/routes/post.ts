@@ -1,6 +1,6 @@
+import { PostSchema } from '@jung/shared/types';
 import { z } from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
-import { PostSchema } from '../schemas/post';
 import { postService } from '../services/post';
 
 export const postRouter = router({
@@ -30,4 +30,14 @@ export const postRouter = router({
 		.mutation(({ input }) => {
 			return postService.create(input);
 		}),
+
+	toggleLike: publicProcedure
+		.input(z.object({ postId: z.string(), userId: z.string() }))
+		.mutation(({ input }) => {
+			return postService.toggleLike(input);
+		}),
+
+	getAdjacentPosts: publicProcedure.input(z.string()).query(({ input }) => {
+		return postService.getAdjacentPosts(input);
+	}),
 });

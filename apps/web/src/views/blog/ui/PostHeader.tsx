@@ -7,7 +7,7 @@ import {
 	Tag,
 	Typography,
 } from '@jung/design-system/components';
-import type { Post } from '@jung/server/schemas/post';
+import type { Post } from '@jung/shared/types';
 import * as styles from './PostContent.css';
 
 type Props = {

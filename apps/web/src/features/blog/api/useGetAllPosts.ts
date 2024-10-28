@@ -25,6 +25,7 @@ export function useGetAllPosts(params: QueryParams = {}) {
 	);
 }
 
+// FIXME: 포스트 하나 조회 훅으로 빼기
 export function usePostQuery(postId: string) {
 	return trpc.post.getPostById.useSuspenseQuery(postId, {
 		staleTime: 1000 * 60 * 5, // 5분

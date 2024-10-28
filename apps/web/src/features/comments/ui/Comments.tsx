@@ -29,7 +29,7 @@ const Comments = ({ postId, postLikeCount }: Props) => {
 	const infiniteScrollRef = useInfiniteScroll(hasNextPage, fetchNextPage);
 
 	return (
-		<Container marginY='20'>
+		<Container>
 			<CommentStats commentCount={commentCount} likeCount={postLikeCount} />
 			<CommentForm postId={postId} />
 			{data?.pages.map((page, pageIndex) => (
