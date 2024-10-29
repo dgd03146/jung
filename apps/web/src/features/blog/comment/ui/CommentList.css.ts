@@ -88,6 +88,7 @@ export const textareaContainer = style({
 export const commentContent = style({
 	fontSize: '14px',
 	lineHeight: '1.6',
+	fontWeight: '400',
 	color: textColor,
 	marginBottom: '12px',
 });
