@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { type ParamHTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
@@ -19,14 +20,10 @@ export interface SubTextProps
 }
 
 export const SubText = forwardRef<HTMLParagraphElement, SubTextProps>(
-	({ level = 1, inline, children, ...restProps }, ref) => {
+	({ level = 1, inline, children, className, ...restProps }, ref) => {
+		const subTextStyle = clsx(S.subText({ level, inline }), className);
 		return (
-			<Box
-				as='p'
-				className={S.subText({ level, inline })}
-				ref={ref}
-				{...restProps}
-			>
+			<Box as='p' className={subTextStyle} ref={ref} {...restProps}>
 				{children}
 			</Box>
 		);

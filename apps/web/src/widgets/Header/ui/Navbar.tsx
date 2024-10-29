@@ -4,6 +4,7 @@ import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import MenuButton from './MenuButton';
+import * as styles from './Navbar.css';
 
 type Props = {
 	isMenuOpen: boolean;
@@ -15,7 +16,6 @@ const SCROLL_THRESHOLD = 50;
 const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 
-	// FIXME: SHARED WORKSPACE 훅으로 빼도 될듯?
 	const handleScroll = useCallback(() => {
 		if (!isScrolled && window.scrollY > SCROLL_THRESHOLD) {
 			setIsScrolled(true);
@@ -26,44 +26,45 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-		};
+		return () => window.removeEventListener('scroll', handleScroll);
 	}, [handleScroll]);
 
 	return (
 		<Box
 			as='header'
 			position='sticky'
-			paddingY='4'
-			height='18'
 			width='full'
-			background='white'
-			opacity={isScrolled ? 70 : 100}
 			top={0}
 			zIndex={isMenuOpen ? '20' : '10'}
+			className={styles.headerContainer({
+				isScrolled,
+				isMenuOpen,
+			})}
 		>
 			<Flex
 				justifyContent={isMenuOpen ? 'flex-end' : 'space-between'}
 				alignItems='center'
 				marginX='auto'
 				maxWidth='11/12'
+				className={styles.navContent}
 			>
 				{!isMenuOpen && (
-					<Link href='/'>
+					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
 						<Typography.Text
 							level={1}
-							color={{
-								base: isMenuOpen ? 'white' : 'primary',
-								hover: 'primary200',
-							}}
+							color='primary'
+							className={styles.logo({
+								isMenuOpen,
+								isScrolled,
+							})}
 						>
 							jung.
 						</Typography.Text>
 					</Link>
 				)}
-				<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+				<Box className={styles.menuButtonWrapper}>
+					<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+				</Box>
 			</Flex>
 		</Box>
 	);

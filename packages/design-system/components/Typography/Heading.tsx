@@ -2,6 +2,7 @@ import { type ElementType, type HTMLAttributes, forwardRef } from 'react';
 import { Box } from '..';
 import * as S from './Typography.css';
 
+import clsx from 'clsx';
 import type { AtomProps } from '../../types/atoms';
 
 /**
@@ -20,11 +21,13 @@ export interface HeadingProps
 }
 
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-	({ level = 1, children, ...restProps }, ref) => {
+	({ level = 1, children, className, ...restProps }, ref) => {
 		const as = `h${level}` as ElementType;
 
+		const headingStyle = clsx(S.heading({ level }), className);
+
 		return (
-			<Box as={as} ref={ref} className={S.heading({ level })} {...restProps}>
+			<Box as={as} ref={ref} className={headingStyle} {...restProps}>
 				{children}
 			</Box>
 		);

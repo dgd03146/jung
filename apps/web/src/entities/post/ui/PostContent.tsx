@@ -1,3 +1,5 @@
+'use client';
+
 import { CommentListSkeleton } from '@/fsd/entities/comment';
 import { CommentList } from '@/fsd/features/blog/comment';
 import { BlockNote, BlockNoteErrorFallback } from '@/fsd/shared';

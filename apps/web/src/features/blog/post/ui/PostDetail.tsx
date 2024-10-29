@@ -10,6 +10,7 @@ import { Container, Flex } from '@jung/design-system/components';
 import { ErrorBoundary } from '@jung/shared/ui';
 import { Suspense } from 'react';
 
+import PostNavigation from '@/fsd/entities/post/ui/PostNavigation';
 import PostLike from './PostLike';
 
 const PostDetail = ({ postId }: { postId: string }) => {
@@ -35,6 +36,7 @@ const PostDetail = ({ postId }: { postId: string }) => {
 						likeCount={post.likes}
 						isLiked={checkIsLiked(post, user?.id)}
 					/>
+					<PostNavigation postId={postId} />
 					<ErrorBoundary fallback={(error) => <CommentError error={error} />}>
 						<Suspense fallback={<CommentListSkeleton />}>
 							<CommentList postId={postId} postLikeCount={post.likes} />
