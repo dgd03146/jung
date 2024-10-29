@@ -1,3 +1,5 @@
+'use client';
+
 import { SocialLogin } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
 import {

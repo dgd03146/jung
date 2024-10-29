@@ -1,3 +1,5 @@
+'use client';
+
 import Image, { type ImageProps } from 'next/image';
 import { useState } from 'react';
 import * as styles from './BlurImage.css';

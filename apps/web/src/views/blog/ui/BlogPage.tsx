@@ -1,10 +1,10 @@
-import { Container, Typography } from '@jung/design-system/components';
-import { Suspense } from 'react';
+import { PostListSkeleton } from '@/fsd/entities/post';
 // import FeaturedPost from './FeaturedPost';
 // import FeaturedSkeleton from './FeaturedSkeleton';
-import PostList from '../../../features/blog/post/ui/PostList';
-import CategoryList from '../../../shared/ui/CategoryList';
-import PostListSkeleton from './PostListSkeleton';
+import { PostList } from '@/fsd/features/blog/post';
+import { CategoryList } from '@/fsd/shared';
+import { Container, Typography } from '@jung/design-system/components';
+import { Suspense } from 'react';
 
 const BlogPage = () => {
 	return (

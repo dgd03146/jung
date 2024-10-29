@@ -1,3 +1,5 @@
+'use client';
+
 import { formatRelativeTime } from '@/fsd/shared';
 import { Box, Button, Flex, Typography } from '@jung/design-system';
 import type { Comment } from '@jung/shared/types';

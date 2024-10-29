@@ -1,3 +1,5 @@
+'use client';
+
 import { BlurImage } from '@/fsd/shared';
 import { Card, Flex, Stack, Tag, Typography } from '@jung/design-system';
 import type { Post } from '@jung/shared/types';
