@@ -1,4 +1,4 @@
-import { createClientForServer } from '@/fsd/shared/lib/utils/supabase/server';
+import { createClientForServer } from '@/fsd/shared/api/supabase/server';
 import { NextResponse } from 'next/server';
 // The client you created from the Server-Side Auth instructions
 

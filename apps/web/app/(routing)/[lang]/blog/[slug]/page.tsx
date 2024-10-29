@@ -1,5 +1,5 @@
+import PostDetail from '@/fsd/features/blog/post/ui/PostDetail';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
-import PostDetail from '@/fsd/views/blog/ui/PostDetail';
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	const postId = params.slug;

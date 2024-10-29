@@ -1,1 +1,1 @@
-export { HydrateClient, trpc } from './trpc/lib/server';
+export { HydrateClient, trpc } from './api/trpc/server';

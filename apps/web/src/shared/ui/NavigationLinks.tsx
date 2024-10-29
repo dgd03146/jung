@@ -1,7 +1,7 @@
 'use client';
 
+import { useDictionary } from '@/fsd/shared';
 import Link from 'next/link';
-import { useDictionary } from '../lib';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const NavigationLinks = () => {

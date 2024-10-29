@@ -34,7 +34,8 @@
     "playwright.config.js",
     "i18nConfig.js",
     "app/i18n.js",
-    "middleware.js"
+    "middleware.js",
+    "src/shared/ui/BlockNoteErrorFallback.tsㅌ"
   ],
   "exclude": ["node_modules"]
 }

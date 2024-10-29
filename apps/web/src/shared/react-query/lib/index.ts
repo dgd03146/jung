@@ -1,1 +1,0 @@
-export { getQueryClient } from './getQueryClient';

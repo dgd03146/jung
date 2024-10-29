@@ -1,5 +1,5 @@
+import { height, mountAnim } from '@/fsd/shared';
 import { motion } from 'framer-motion';
-import { height, mountAnim } from '../../../shared/animation/lib';
 import * as styles from './Menu.css';
 
 const Stairs = () => {
