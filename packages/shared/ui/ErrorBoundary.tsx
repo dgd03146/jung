@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
 interface ErrorBoundaryProps {
@@ -6,7 +6,10 @@ interface ErrorBoundaryProps {
 	fallback: (error: Error) => ReactNode;
 }
 
-export const ErrorBoundary = ({ children, fallback }: ErrorBoundaryProps) => {
+export const ErrorBoundary: FC<ErrorBoundaryProps> = ({
+	children,
+	fallback,
+}) => {
 	// 에러 발생 시 호출되는 핸들러
 	const handleError = (error: Error) => {
 		// 에러 로깅, 모니터링 서비스에 전송
