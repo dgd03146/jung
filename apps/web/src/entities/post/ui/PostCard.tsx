@@ -1,6 +1,7 @@
 'use client';
 
 import { BlurImage } from '@/fsd/shared';
+import { formatDate } from '@/fsd/shared';
 import { Card, Flex, Stack, Tag, Typography } from '@jung/design-system';
 import type { Post } from '@jung/shared/types';
 import Link from 'next/link';
@@ -38,7 +39,7 @@ const PostCard = ({
 			</Card.Media>
 			<Card.Content rowGap='3'>
 				<Flex columnGap='1'>
-					<Tag rounded>{date}</Tag>
+					<Tag rounded>{formatDate(date)}</Tag>
 					<Tag key={index} rounded>
 						{category}
 					</Tag>
