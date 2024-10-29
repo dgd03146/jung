@@ -1,3 +1,4 @@
 export * from './comment';
 export * from './toast';
-export * from './post';
+export type { Post } from './post';
+export { PostSchema } from './post';

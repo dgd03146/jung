@@ -1,13 +1,8 @@
 import * as styles from './Menu.css';
 
 import { PRIMARY_NAV_LIST, SECONDARY_NAV_LIST } from '@/fsd/app';
-import {
-	background,
-	mountAnim,
-	rotateX,
-	slideLeft,
-} from '@/fsd/shared/animation/lib';
-import { Button, Flex, Typography } from '@jung/design-system/components';
+import { background, mountAnim, rotateX, slideLeft } from '@/fsd/shared';
+import { Button, Flex, Typography } from '@jung/design-system';
 import { motion } from 'framer-motion';
 import { Navbar } from '../../Header/ui';
 import NavLinks from './NavLinks';

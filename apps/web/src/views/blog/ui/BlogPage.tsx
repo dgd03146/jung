@@ -1,9 +1,9 @@
 import { Container, Typography } from '@jung/design-system/components';
 import { Suspense } from 'react';
-import CategoryList from './CategoryList';
 // import FeaturedPost from './FeaturedPost';
 // import FeaturedSkeleton from './FeaturedSkeleton';
-import PostList from './PostList';
+import PostList from '../../../features/blog/post/ui/PostList';
+import CategoryList from '../../../shared/ui/CategoryList';
 import PostListSkeleton from './PostListSkeleton';
 
 const BlogPage = () => {
