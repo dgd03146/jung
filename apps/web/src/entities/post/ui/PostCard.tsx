@@ -12,7 +12,6 @@ import * as styles from './PostCard.css';
 const PostCard = ({
 	imagesrc,
 	date,
-
 	id,
 	title,
 	category,
@@ -38,11 +37,11 @@ const PostCard = ({
 				/>
 			</Card.Media>
 			<Card.Content rowGap='3'>
-				<Flex columnGap='1'>
-					<Tag rounded>{formatDate(date)}</Tag>
-					<Tag key={index} rounded>
-						{category}
-					</Tag>
+				<Flex justify='space-between' align='center'>
+					<Tag rounded>{category}</Tag>
+					<Typography.SubText level={4} color='primary'>
+						{formatDate(date)}
+					</Typography.SubText>
 				</Flex>
 				<Stack space='2' align={'left'} className={styles.textContainer}>
 					<Card.Title>{title}</Card.Title>
