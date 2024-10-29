@@ -1,3 +1,5 @@
+'use client';
+
 import '@/fsd/app/styles/editorStyle.css';
 import type { BlockNoteEditor } from '@blocknote/core';
 import '@blocknote/core/fonts/inter.css';
