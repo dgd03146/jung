@@ -13,7 +13,8 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 			align='left'
 			minWidth='60'
 			position='sticky'
-			top={0}
+			top={100}
+			height='screenDvh'
 			display={{ mobile: 'none', laptop: 'flex' }}
 		>
 			<Stack
