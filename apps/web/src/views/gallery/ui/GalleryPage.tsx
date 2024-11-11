@@ -1,5 +1,5 @@
-import { GalleryGrid } from '@/fsd/features/gallery/post';
-// import { GalleryCardSkeleton } from '@/fsd/entities/gallery/post';
+import { FeedList } from '@/fsd/features/gallery/feed';
+
 import { Container } from '@jung/design-system/components';
 // import { Suspense } from 'react';
 
@@ -7,7 +7,7 @@ const GalleryPage = () => {
 	return (
 		<Container>
 			{/* <Suspense fallback={<GalleryCardSkeleton count={12} />}> */}
-			<GalleryGrid />
+			<FeedList />
 			{/* </Suspense> */}
 		</Container>
 	);

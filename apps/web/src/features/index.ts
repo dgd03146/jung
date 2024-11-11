@@ -3,4 +3,4 @@
 export * from './blog/post';
 export * from './blog/comment';
 export * from './auth';
-export * from './gallery/post';
+export * from './gallery/feed';
