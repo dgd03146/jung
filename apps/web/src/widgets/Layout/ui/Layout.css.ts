@@ -29,9 +29,9 @@ export const main = style([
 			laptop: 'laptop',
 		},
 	}),
-	style({
+	{
 		flex: '1 0 auto',
-	}),
+	},
 ]);
 
 export const section = style([
