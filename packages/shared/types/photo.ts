@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const FeedSchema = z.object({
+export const PhotoSchema = z.object({
 	id: z.number(),
 	imageUrl: z.string().url(),
 	width: z.number().positive(),
@@ -11,19 +11,14 @@ export const FeedSchema = z.object({
 	createdAt: z.string(),
 	likes: z.number().default(0),
 	views: z.number().default(0),
-	author: z.object({
-		id: z.number(),
-		name: z.string(),
-		avatar: z.string().url().optional(),
-	}),
 });
 
-export type Feed = z.infer<typeof FeedSchema>;
+export type Photo = z.infer<typeof PhotoSchema>;
 
-export interface CustomFeed {
+export interface CustomPhoto {
 	src: string;
 	width: number;
 	height: number;
 	alt: string;
-	data: Omit<Feed, 'id' | 'imageUrl' | 'width' | 'height'>;
+	data: Omit<Photo, 'id' | 'imageUrl' | 'width' | 'height'>;
 }

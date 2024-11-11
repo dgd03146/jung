@@ -2,21 +2,21 @@
 
 import { BlurImage } from '@/fsd/shared';
 import { Box, Typography } from '@jung/design-system';
-import type { Feed } from '@jung/shared/types';
+import type { Photo } from '@jung/shared/types';
 import { useState } from 'react';
 import { MasonryPhotoAlbum, type RenderImage } from 'react-photo-album';
 import 'react-photo-album/masonry.css';
-import * as styles from './FeedList.css';
+import * as styles from './PhotoGrid.css';
 
 interface CustomPhoto {
 	src: string;
 	width: number;
 	height: number;
 	alt: string;
-	data: Omit<Feed, 'id' | 'imageUrl'>;
+	data: Omit<Photo, 'id' | 'imageUrl'>;
 }
 
-const MOCK_IMAGES: Feed[] = [
+const MOCK_IMAGES: Photo[] = [
 	{
 		id: 1,
 		imageUrl: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba',
@@ -295,7 +295,6 @@ const photos: CustomPhoto[] = MOCK_IMAGES.map((image) => ({
 		createdAt: image.createdAt,
 		likes: image.likes,
 		views: image.views,
-		author: image.author,
 	},
 }));
 
@@ -321,7 +320,7 @@ const renderNextImage: RenderImage<CustomPhoto> = (props, context) => {
 	);
 };
 
-const FeedList = () => {
+const PhotoGrid = () => {
 	const [selectedPhoto, setSelectedPhoto] = useState<CustomPhoto | null>(null);
 
 	return (
@@ -380,4 +379,4 @@ const FeedList = () => {
 	);
 };
 
-export default FeedList;
+export default PhotoGrid;
