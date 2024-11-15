@@ -1,0 +1,1 @@
+export { useGetPhotos } from './useGetPhotos';

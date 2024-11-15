@@ -7,9 +7,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<Box className={styles.container}>
 			<Header />
+
 			<Box as='main' className={styles.main}>
-				<SectionTitle />
-				<Box className={styles.section}>{children}</Box>
+				<Box className={styles.section}>
+					<SectionTitle />
+					{children}
+				</Box>
 			</Box>
 			<Footer />
 		</Box>

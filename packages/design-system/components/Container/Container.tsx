@@ -17,7 +17,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
 
 		return (
 			<Box
-				as='div'
+				as='section'
 				width={width || 'full'}
 				maxWidth={maxWidth || 'full'}
 				display={display}

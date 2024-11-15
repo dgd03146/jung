@@ -9,7 +9,7 @@ export const trigger = recipe({
 			cursor: 'pointer',
 			color: 'primary',
 			padding: '1',
-			borderColor: 'primary',
+			borderColor: 'primary50',
 		}),
 	]),
 	variants: {
@@ -38,7 +38,7 @@ export const trigger = recipe({
 		},
 		isActive: {
 			true: {
-				borderBottom: '2px solid',
+				borderBottom: '2.5px solid',
 			},
 			false: {
 				borderBottom: '0.5px solid',
@@ -70,7 +70,7 @@ export const tab = recipe({
 				color: 'primary',
 			}),
 			secondary: sprinkles({
-				borderColor: 'primary',
+				borderColor: 'primary50',
 				marginBottom: '1',
 			}),
 		},
@@ -82,7 +82,7 @@ export const tab = recipe({
 			false: sprinkles({
 				color: {
 					base: 'primary',
-					hover: 'primary200',
+					hover: 'primary',
 				},
 			}),
 		},
