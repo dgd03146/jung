@@ -9,7 +9,7 @@ import { useTabHandler } from './hooks/useTabHandle';
 export interface TabsContentProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
-	value: string;
+	value: string | number;
 }
 
 export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(

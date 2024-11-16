@@ -9,12 +9,18 @@ import { useTabHandler } from './hooks/useTabHandle';
 export interface TabsTriggerProps
 	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'color'>,
 		AtomProps {
-	value: string;
+	value: string | number;
+	onClick?: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
 export const TabsTrigger = forwardRef<HTMLLIElement, TabsTriggerProps>(
-	({ children, value, ...restProps }, ref?) => {
+	({ children, value, onClick, ...restProps }, ref?) => {
 		const { isActive, variant, rounded, handleTabClick } = useTabHandler(value);
+
+		const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
+			handleTabClick();
+			onClick?.(e);
+		};
 
 		return (
 			<Box
@@ -24,7 +30,7 @@ export const TabsTrigger = forwardRef<HTMLLIElement, TabsTriggerProps>(
 				className={S.trigger({ isActive, variant, rounded })}
 				{...restProps}
 				ref={ref}
-				onClick={handleTabClick}
+				onClick={handleClick}
 			>
 				<Typography.Text level={3} className={S.tab({ isActive, variant })}>
 					{children}
