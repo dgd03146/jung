@@ -1,3 +1,5 @@
+'use client';
+
 import { PhotoList } from '@/fsd/features/gallery/photos';
 import { LoadingSpinner } from '@/fsd/shared';
 import { Box, Tabs } from '@jung/design-system/components';

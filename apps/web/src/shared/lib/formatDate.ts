@@ -39,7 +39,7 @@ export const getFullDate = (dateString: string): string => {
 
 export const formatDetailedDate = (dateString: string): string => {
 	const date = new Date(dateString);
-	return new Intl.DateTimeFormat('ko-KR', {
+	return new Intl.DateTimeFormat('en-GB', {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',

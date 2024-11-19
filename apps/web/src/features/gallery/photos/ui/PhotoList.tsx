@@ -20,7 +20,7 @@ const renderNextImage = (
 	{ photo, width, height }: RenderImageContext<CustomPhoto>,
 ) => {
 	return (
-		<Link href={`/gallery/${photo.data.id}`}>
+		<Link href={`/gallery/photo/${photo.data.id}`} scroll={false}>
 			<Box
 				width='full'
 				position='relative'
@@ -93,8 +93,11 @@ const PhotoList = () => {
 					if (containerWidth < 1024) return 3;
 					return 4;
 				}}
-				render={{ image: renderNextImage }}
+				render={{
+					image: renderNextImage,
+				}}
 			/>
+
 			<Box ref={ref} minHeight='10'>
 				{isFetchingNextPage && <LoadingSpinner size='small' />}
 			</Box>

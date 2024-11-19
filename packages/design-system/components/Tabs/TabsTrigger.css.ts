@@ -9,7 +9,6 @@ export const trigger = recipe({
 			cursor: 'pointer',
 			color: 'primary',
 			padding: '1',
-			borderColor: 'primary50',
 		}),
 	]),
 	variants: {
@@ -20,10 +19,10 @@ export const trigger = recipe({
 			}),
 			secondary: style([
 				sprinkles({
-					borderRadius: 'none', // Ensuring rounded is false for secondary
+					borderRadius: 'none',
 				}),
 				{
-					borderBottom: '0.5px solid',
+					borderBottom: '0.1px solid',
 				},
 			]),
 		},
@@ -41,7 +40,7 @@ export const trigger = recipe({
 				borderBottom: '2.5px solid',
 			},
 			false: {
-				borderBottom: '0.5px solid',
+				borderBottom: '0.1px solid',
 			},
 		},
 	},

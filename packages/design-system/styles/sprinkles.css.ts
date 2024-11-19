@@ -96,7 +96,7 @@ export const responsiveProperties = defineProperties({
 		letterSpacing: letterSpacings,
 
 		width: vars.contentWidth,
-		height: vars.space,
+		height: vars.contentWidth,
 		minWidth: vars.contentWidth,
 		maxWidth: vars.contentWidth,
 		minHeight: vars.contentWidth,
@@ -233,6 +233,10 @@ const selectorProperties = defineProperties({
 		active: { selector: '&:active' },
 		focus: { selector: '&:focus' },
 		hover: { selector: '&:hover' },
+		after: { selector: '&::after' },
+		before: { selector: '&::before' },
+		hoverAfter: { selector: '&:hover::after' },
+		hoverBefore: { selector: '&:hover::before' },
 
 		placeholder: { selector: '&::placeholder' },
 	},

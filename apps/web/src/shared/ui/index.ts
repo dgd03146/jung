@@ -6,3 +6,4 @@ export { default as BlurImage } from './BlurImage';
 export { default as CategoryList } from './CategoryList';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { AnimatedLine } from './AnimatedLine';
+export { Modal } from './Modal';

@@ -12,7 +12,7 @@ export function SectionTitle() {
 	if (!section) return null;
 
 	return (
-		<Typography.Heading level={4} color='primary' marginBottom='8'>
+		<Typography.Heading level={3} color='primary' marginBottom='10'>
 			{section}.
 		</Typography.Heading>
 	);
