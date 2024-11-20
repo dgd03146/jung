@@ -13,7 +13,6 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
-import { HiOutlineEye } from 'react-icons/hi2';
 import * as styles from './PhotoDetail.css';
 
 interface PhotoDetailProps {
@@ -125,31 +124,40 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 					variants={contentVariants}
 				>
 					<Box className={styles.header}>
-						<Typography.Heading level={4}>{photo.title}</Typography.Heading>
-						<Typography.SubText level={3} color='gray100'>
-							{formatDate(photo.created_at)}
-						</Typography.SubText>
+						<Typography.Text level={1}>{photo.title}</Typography.Text>
 					</Box>
 
 					<Box className={styles.description}>
 						<Typography.Text level={3}>{photo.description}</Typography.Text>
 					</Box>
 
+					<Flex gap='2'>
+						{photo.tags.map((tag) => (
+							<Tag key={tag} rounded>
+								#{tag}
+							</Tag>
+						))}
+					</Flex>
+
 					<Box className={styles.interactionSection}>
-						<Box className={styles.stats}>
-							<Box display='flex' alignItems='center' columnGap='1'>
-								<HiOutlineEye size={18} />
-								<Typography.SubText level={3} color='gray100'>
-									{photo.views.toLocaleString()}
-								</Typography.SubText>
-							</Box>
-							<Flex align='center' gap='1'>
-								<FaHeart size={16} />
-								<Typography.SubText level={3} color='gray100'>
-									{photo.likes.toLocaleString()}
-								</Typography.SubText>
-							</Flex>
-						</Box>
+						{/* <Box className={styles.stats}>
+              <Box display="flex" alignItems="center" columnGap="1">
+                <HiOutlineEye size={18} />
+                <Typography.SubText level={3} color="gray100">
+                  {photo.views.toLocaleString()}
+                </Typography.SubText>
+              </Box>
+              <Flex align="center" gap="1">
+                <FaHeart size={16} />
+                <Typography.SubText level={3} color="gray100">
+                  {photo.likes.toLocaleString()}
+                </Typography.SubText>
+              </Flex>
+            </Box> */}
+
+						<Typography.SubText level={3} color='gray100'>
+							{formatDate(photo.created_at)}
+						</Typography.SubText>
 
 						<Flex gap='2'>
 							<Button
@@ -169,14 +177,6 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 							</Button>
 						</Flex>
 					</Box>
-
-					<Flex gap='2'>
-						{photo.tags.map((tag) => (
-							<Tag key={tag} rounded>
-								#{tag}
-							</Tag>
-						))}
-					</Flex>
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>

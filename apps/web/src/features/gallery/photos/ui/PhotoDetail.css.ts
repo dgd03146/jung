@@ -52,7 +52,7 @@ export const modalImageWrapper = style({
 export const content = style({
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '16px',
+	gap: '40px',
 	padding: '24px 0',
 	flex: 1,
 	'@media': {
@@ -86,7 +86,7 @@ export const interactionSection = style({
 	alignItems: 'center',
 	padding: '16px 0',
 	borderTop: '1px solid #E5E7EB',
-	borderBottom: '1px solid #E5E7EB',
+	// borderBottom: '1px solid #E5E7EB',
 });
 
 export const stats = style({
