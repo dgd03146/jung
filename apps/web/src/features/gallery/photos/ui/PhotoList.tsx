@@ -88,7 +88,6 @@ const PhotoList = () => {
 	return (
 		<Container>
 			<MasonryPhotoAlbum
-				key='masonry-album'
 				photos={formattedPhotos}
 				spacing={24}
 				columns={(containerWidth) => {

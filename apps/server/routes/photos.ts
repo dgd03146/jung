@@ -23,4 +23,9 @@ export const photosRouter = router({
 		const { input } = opts;
 		return photosService.findById(input);
 	}),
+
+	getAdjacentPhotos: publicProcedure.input(z.string()).query(async (opts) => {
+		const { input } = opts;
+		return photosService.findAdjacentPhotos(input);
+	}),
 });

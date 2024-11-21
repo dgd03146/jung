@@ -6,6 +6,7 @@ export default function PhotoPage({ params }: { params: { id: string } }) {
 	const photoId = params.id;
 
 	void trpc.photos.getPhotoById.prefetch(photoId);
+	void trpc.photos.getAdjacentPhotos.prefetch(photoId);
 
 	return (
 		<HydrateClient>

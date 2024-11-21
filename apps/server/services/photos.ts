@@ -137,4 +137,47 @@ export const photosService = {
 			});
 		}
 	},
+
+	async findAdjacentPhotos(id: string): Promise<{
+		previous: Photo | null;
+		next: Photo | null;
+	}> {
+		try {
+			// findById 재사용
+			const currentPhoto = await this.findById(id);
+
+			// 이전 사진 찾기
+			const { data: previousPhoto } = await supabase
+				.from('photos')
+				.select('*')
+				.lt('created_at', currentPhoto.created_at)
+				.order('created_at', { ascending: false })
+				.limit(1)
+				.single();
+
+			// 다음 사진 찾기
+			const { data: nextPhoto } = await supabase
+				.from('photos')
+				.select('*')
+				.gt('created_at', currentPhoto.created_at)
+				.order('created_at', { ascending: true })
+				.limit(1)
+				.single();
+
+			return {
+				previous: previousPhoto || null,
+				next: nextPhoto || null,
+			};
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to fetch adjacent photos',
+				cause: error,
+			});
+		}
+	},
 };
