@@ -19,70 +19,122 @@ export const photosService = {
 	async findMany({
 		limit,
 		cursor,
-		sort,
+		sort = 'latest', // 기본값 설정
 		q,
 	}: QueryParams): Promise<QueryResult> {
-		let query = supabase.from('photos').select('*', { count: 'exact' });
+		try {
+			let query = supabase.from('photos').select('*', { count: 'exact' });
 
-		if (q) {
-			query = query.or(`description.ilike.%${q}%,tags.cs.{${q}}`);
-		}
+			// 검색 조건 적용
+			if (q) {
+				query = query.or(`description.ilike.%${q}%,tags.cs.{${q}}`);
+			}
 
-		switch (sort) {
-			case 'popular':
+			query = query.order('created_at', { ascending: false });
+
+			// cursor 기반 페이지네이션
+			if (cursor) {
+				const { data: cursorPhoto, error: cursorError } = await supabase
+					.from('photos')
+					.select('created_at')
+					.eq('id', cursor)
+					.single();
+
+				if (cursorError) {
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'Invalid cursor provided',
+						cause: cursorError,
+					});
+				}
+
+				if (cursorPhoto) {
+					query = query.lt('created_at', cursorPhoto.created_at);
+				}
+			}
+
+			// 정렬 조건 적용 (popular인 경우 추가 정렬)
+			if (sort === 'popular') {
 				query = query.order('views', { ascending: false });
-				break;
-			default: // latest
+			} else {
 				query = query.order('created_at', { ascending: false });
-		}
+			}
 
-		if (cursor) {
-			query = query.gt('id', cursor);
-		}
-		query = query.limit(limit);
+			// 페이지 크기 제한
+			query = query.limit(limit);
 
-		const { data, error } = await query.returns<Photo[]>();
+			const { data, error } = await query.returns<Photo[]>();
 
-		if (error) {
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch photos. Please try again later.',
+					cause: error,
+				});
+			}
+
+			if (!data || data.length === 0) {
+				return {
+					items: [],
+					nextCursor: null,
+				};
+			}
+
+			// 다음 페이지 cursor 계산
+			const nextCursor =
+				data.length === limit ? Number(data[data.length - 1]?.id) : null;
+
+			return {
+				items: data,
+				nextCursor,
+			};
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to fetch photos. Please try again later.',
+				message: 'An unexpected error occurred',
 				cause: error,
 			});
 		}
-
-		if (!data || data.length === 0) {
-			return {
-				items: [],
-				nextCursor: null,
-			};
-		}
-
-		const nextCursor = Number(data[data.length - 1]?.id) ?? null;
-
-		return {
-			items: data,
-			nextCursor,
-		};
 	},
 
-	async findById(id: number): Promise<Photo | null> {
-		const { data, error } = await supabase
-			.from('photos')
-			.select('*')
-			.eq('id', id)
-			.single();
+	async findById(id: string): Promise<Photo> {
+		try {
+			const { data, error } = await supabase
+				.from('photos')
+				.select('*')
+				.eq('id', id)
+				.single();
 
-		if (error) {
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch photo. Please try again later.',
+					cause: error,
+				});
+			}
+
+			if (!data) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Photo not found',
+				});
+			}
+
+			return data;
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
 			throw new TRPCError({
-				code: 'NOT_FOUND',
-				message: 'Photo not found. Please try searching again.',
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'An unexpected error occurred',
 				cause: error,
 			});
 		}
-
-		if (!data) return null;
-
-		return data;
 	},
 };

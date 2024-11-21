@@ -61,7 +61,9 @@ const PhotoList = () => {
 		});
 
 	const photos = data?.pages.flatMap((page) => page.items) ?? [];
+
 	const formattedPhotos: CustomPhoto[] = photos.map((photo) => ({
+		key: photo.id,
 		src: photo.image_url,
 		width: photo.width,
 		height: photo.height,
@@ -86,6 +88,7 @@ const PhotoList = () => {
 	return (
 		<Container>
 			<MasonryPhotoAlbum
+				key='masonry-album'
 				photos={formattedPhotos}
 				spacing={24}
 				columns={(containerWidth) => {

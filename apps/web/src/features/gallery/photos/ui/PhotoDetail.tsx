@@ -11,8 +11,11 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { usePhotoNavigation } from '../model';
 import * as styles from './PhotoDetail.css';
 
 interface PhotoDetailProps {
@@ -78,9 +81,15 @@ const mockPhoto = {
 };
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
-	const photo = mockPhoto;
+	const { currentPhoto, previousPhoto, nextPhoto } = usePhotoNavigation(id);
 	const [isLiked, setIsLiked] = useState(false);
 
+	console.log(previousPhoto, nextPhoto, 'previousPhoto, nextPhoto');
+
+	// TODO: 사진 없는 경우 처리
+	if (!currentPhoto) {
+		return <div>사진을 찾을 수 없습니다.</div>;
+	}
 	const handleLikeClick = () => {
 		setIsLiked(!isLiked);
 		// TODO: API 호출
@@ -110,13 +119,37 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
           `}
 					variants={imageVariants}
 				>
+					{previousPhoto && (
+						<Link
+							href={`/gallery/photo/${previousPhoto.id}`}
+							className={`${styles.navigationButton} ${styles.prevButton}`}
+							aria-label='이전 사진'
+							scroll={false}
+						>
+							<HiChevronLeft size={24} />
+						</Link>
+					)}
+
 					<BlurImage
-						src={photo.image_url}
-						alt={photo.alt}
+						src={currentPhoto.image_url}
+						alt={currentPhoto.alt}
 						fill
 						priority
 						sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
 					/>
+
+					{nextPhoto && (
+						<Link
+							href={`/gallery/photo/${nextPhoto.id}`}
+							className={`${styles.navigationButton} ${styles.nextButton}`}
+							aria-label='다음 사진'
+							scroll={false}
+						>
+							<HiChevronRight size={24} />
+						</Link>
+					)}
+
+					<div className={styles.navigationOverlay} />
 				</motion.div>
 
 				<motion.div
@@ -124,15 +157,17 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 					variants={contentVariants}
 				>
 					<Box className={styles.header}>
-						<Typography.Text level={1}>{photo.title}</Typography.Text>
+						<Typography.Text level={1}>{currentPhoto.title}</Typography.Text>
 					</Box>
 
 					<Box className={styles.description}>
-						<Typography.Text level={3}>{photo.description}</Typography.Text>
+						<Typography.Text level={3}>
+							{currentPhoto.description}
+						</Typography.Text>
 					</Box>
 
 					<Flex gap='2'>
-						{photo.tags.map((tag) => (
+						{currentPhoto.tags?.map((tag) => (
 							<Tag key={tag} rounded>
 								#{tag}
 							</Tag>
@@ -144,19 +179,19 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
               <Box display="flex" alignItems="center" columnGap="1">
                 <HiOutlineEye size={18} />
                 <Typography.SubText level={3} color="gray100">
-                  {photo.views.toLocaleString()}
+                  {currentPhoto.views.toLocaleString()}
                 </Typography.SubText>
               </Box>
               <Flex align="center" gap="1">
                 <FaHeart size={16} />
                 <Typography.SubText level={3} color="gray100">
-                  {photo.likes.toLocaleString()}
+                  {currentPhoto.likes.toLocaleString()}
                 </Typography.SubText>
               </Flex>
             </Box> */}
 
 						<Typography.SubText level={3} color='gray100'>
-							{formatDate(photo.created_at)}
+							{formatDate(currentPhoto.created_at)}
 						</Typography.SubText>
 
 						<Flex gap='2'>

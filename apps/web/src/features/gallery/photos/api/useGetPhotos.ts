@@ -10,12 +10,19 @@ export function useGetPhotos(params: QueryParams = {}) {
 
 	return trpc.photos.getAllPhotos.useSuspenseInfiniteQuery(
 		{
-			limit: 20,
+			// FIXME: Limit 공통 파라미터로 변경
+			limit: 8,
 			sort,
 			q,
 		},
 		{
-			getNextPageParam: (lastPage) => lastPage.nextCursor,
+			getNextPageParam: (lastPage) => {
+				if (lastPage.nextCursor === null) {
+					return undefined;
+				}
+
+				return lastPage.nextCursor;
+			},
 			staleTime: 1000 * 60 * 60 * 5, // 5시간
 			gcTime: 1000 * 60 * 60 * 24, // 24시간
 		},

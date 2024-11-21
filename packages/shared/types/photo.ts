@@ -38,3 +38,8 @@ export interface CustomPhoto {
 		};
 	};
 }
+
+export interface PhotoQueryResult {
+	items: Photo[];
+	nextCursor: number | null;
+}

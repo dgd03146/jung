@@ -18,4 +18,9 @@ export const photosRouter = router({
 			const { limit, cursor, sort, q } = input;
 			return photosService.findMany({ limit, cursor, sort, q });
 		}),
+
+	getPhotoById: publicProcedure.input(z.string()).query(async (opts) => {
+		const { input } = opts;
+		return photosService.findById(input);
+	}),
 });

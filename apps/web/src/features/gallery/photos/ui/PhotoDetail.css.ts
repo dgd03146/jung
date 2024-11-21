@@ -107,3 +107,54 @@ export const actionButton = style({
 		transform: 'scale(0.95)',
 	},
 });
+
+export const navigationButton = style({
+	position: 'absolute',
+	top: '50%',
+	transform: 'translateY(-50%)',
+	background: 'transparent',
+	border: 'none',
+	padding: '24px 16px',
+	cursor: 'pointer',
+	color: '#fff',
+	opacity: 0,
+	transition: 'opacity 0.2s ease',
+	zIndex: 10,
+
+	':hover': {
+		opacity: 1,
+	},
+
+	'@media': {
+		'(max-width: 768px)': {
+			display: 'none',
+		},
+	},
+});
+
+export const prevButton = style({
+	left: 0,
+});
+
+export const nextButton = style({
+	right: 0,
+});
+
+export const navigationOverlay = style({
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	right: 0,
+	bottom: 0,
+	background:
+		'linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.2) 100%)',
+	opacity: 0,
+	transition: 'opacity 0.3s ease',
+	pointerEvents: 'none',
+
+	selectors: {
+		[`${imageWrapper}:hover &`]: {
+			opacity: 1,
+		},
+	},
+});
