@@ -6,10 +6,11 @@ export const container = style({
 	left: 0,
 	right: 0,
 	bottom: 0,
-	zIndex: 50,
+	zIndex: 99,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	pointerEvents: 'none',
 });
 
 export const overlay = style({
@@ -23,6 +24,7 @@ export const overlay = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	pointerEvents: 'auto',
 });
 
 export const content = style({
@@ -31,8 +33,10 @@ export const content = style({
 	width: '100%',
 	margin: '20px',
 	backgroundColor: 'white',
-	borderRadius: '12px',
+	// borderRadius: '12px',
 	overflow: 'hidden',
+
+	pointerEvents: 'auto',
 
 	'@media': {
 		'(max-width: 768px)': {
@@ -47,7 +51,6 @@ export const closeButton = style({
 	position: 'fixed',
 	top: '20px',
 	right: '20px',
-	zIndex: 60,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -60,6 +63,8 @@ export const closeButton = style({
 	color: 'white',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
+	pointerEvents: 'auto',
+	zIndex: 99,
 
 	':hover': {
 		transform: 'scale(1.1)',

@@ -1,3 +1,4 @@
 export { usePhotoTabs } from './usePhotoTabs';
 
-export { usePhotoNavigation } from './usePhotoNavigation';
+export { useAdjacentPhotos } from './useAdjacentPhotos';
+export { useKeyboardNavigation } from './useKeyboardNavigation';

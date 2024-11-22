@@ -11,11 +11,11 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { usePhotoNavigation } from '../model';
+import { useAdjacentPhotos } from '../model';
+import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './PhotoDetail.css';
 
 interface PhotoDetailProps {
@@ -67,16 +67,19 @@ const contentVariants = {
 };
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
-	const { currentPhoto, previousPhoto, nextPhoto } = usePhotoNavigation(id);
+	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos(id);
 	const [isLiked, setIsLiked] = useState(false);
-
-	console.log(previousPhoto, 'previousPhoto');
-	console.log(nextPhoto, 'nextPhoto');
+	const { handleNavigation } = useKeyboardNavigation({
+		previousPhoto,
+		nextPhoto,
+		isModal,
+	});
 
 	// TODO: 사진 없는 경우 처리
 	if (!currentPhoto) {
 		return <div>사진을 찾을 수 없습니다.</div>;
 	}
+
 	const handleLikeClick = () => {
 		setIsLiked(!isLiked);
 		// TODO: API 호출
@@ -87,126 +90,109 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	};
 
 	return (
-		<AnimatePresence>
-			<div
-				className={
-					isModal ? styles.modalNavigationWrapper : styles.navigationWrapper
-				}
-			>
-				<div
-					className={
-						isModal
-							? styles.modalNavigationButtonsContainer
-							: styles.navigationButtonsContainer
-					}
-				>
-					{previousPhoto && (
-						<Link
-							href={`/gallery/photo/${previousPhoto.id}`}
-							className={
-								isModal ? styles.modalNavigationButton : styles.navigationButton
-							}
-							aria-label='이전 사진'
-							scroll={false}
-						>
-							<HiChevronLeft
-								className={
-									isModal ? styles.modalNavigationIcon : styles.navigationIcon
-								}
-							/>
-						</Link>
-					)}
-					{nextPhoto && (
-						<Link
-							href={`/gallery/photo/${nextPhoto.id}`}
-							className={
-								isModal ? styles.modalNavigationButton : styles.navigationButton
-							}
-							aria-label='다음 사진'
-							scroll={false}
-						>
-							<HiChevronRight
-								className={
-									isModal ? styles.modalNavigationIcon : styles.navigationIcon
-								}
-							/>
-						</Link>
-					)}
-				</div>
-			</div>
-
+		<AnimatePresence mode='wait'>
 			<motion.div
-				variants={containerVariants}
+				key={`container-${id}`}
 				initial='hidden'
 				animate='visible'
 				exit='exit'
-				className={
-					isModal
-						? `${styles.container} ${styles.modalContainer}`
-						: styles.container
-				}
 			>
-				<motion.div
-					className={`
-            ${styles.imageWrapper} 
-            ${isModal ? styles.modalImageWrapper : ''}
-          `}
-					variants={imageVariants}
-				>
-					<BlurImage
-						src={currentPhoto.image_url}
-						alt={currentPhoto.alt}
-						fill
-						priority
-						sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
-					/>
-				</motion.div>
+				{isModal && (
+					<div className={styles.modalNavigationWrapper}>
+						<div className={styles.modalNavigationButtonsContainer}>
+							{previousPhoto && (
+								<button
+									onClick={() => handleNavigation(previousPhoto.id)}
+									className={styles.modalNavigationButton}
+									aria-label='previous photo (arrow left)'
+								>
+									<HiChevronLeft className={styles.modalNavigationIcon} />
+								</button>
+							)}
+							{nextPhoto && (
+								<button
+									onClick={() => handleNavigation(nextPhoto.id)}
+									className={styles.modalNavigationButton}
+									aria-label='next photo (arrow right)'
+								>
+									<HiChevronRight className={styles.modalNavigationIcon} />
+								</button>
+							)}
+						</div>
+					</div>
+				)}
 
 				<motion.div
-					className={`${styles.content} ${isModal ? styles.modalContent : ''}`}
-					variants={contentVariants}
+					className={
+						isModal
+							? `${styles.container} ${styles.modalContainer}`
+							: styles.container
+					}
 				>
-					<Box className={styles.header}>
-						<Typography.Text level={1}>{currentPhoto.title}</Typography.Text>
-					</Box>
+					<motion.div
+						className={`
+              ${styles.imageWrapper} 
+              ${isModal ? styles.modalImageWrapper : ''}
+            `}
+						variants={imageVariants}
+					>
+						<BlurImage
+							src={currentPhoto.image_url}
+							alt={currentPhoto.alt}
+							fill
+							priority
+							sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
+						/>
+					</motion.div>
 
-					<Box className={styles.description}>
-						<Typography.Text level={3}>
-							{currentPhoto.description}
-						</Typography.Text>
-					</Box>
+					<motion.div
+						className={`${styles.content} ${
+							isModal ? styles.modalContent : ''
+						}`}
+						variants={contentVariants}
+					>
+						<Box className={styles.header}>
+							<Typography.Text level={1}>{currentPhoto.title}</Typography.Text>
+						</Box>
 
-					<Flex gap='2'>
-						{currentPhoto.tags?.map((tag) => (
-							<Tag key={tag} rounded>
-								#{tag}
-							</Tag>
-						))}
-					</Flex>
-
-					<Box className={styles.interactionSection}>
-						<Typography.SubText level={3} color='gray100'>
-							{formatDate(currentPhoto.created_at)}
-						</Typography.SubText>
+						<Box className={styles.description}>
+							<Typography.Text level={3}>
+								{currentPhoto.description}
+							</Typography.Text>
+						</Box>
 
 						<Flex gap='2'>
-							<Button
-								variant='ghost'
-								onClick={() => setIsLiked(!isLiked)}
-								aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-								className={styles.actionButton}
-							>
-								{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
-							</Button>
-							<Button
-								variant='ghost'
-								aria-label='Share photo'
-								className={styles.actionButton}
-							>
-								<FaShareAlt size={18} />
-							</Button>
+							{currentPhoto.tags?.map((tag) => (
+								<Tag key={tag} rounded>
+									#{tag}
+								</Tag>
+							))}
 						</Flex>
-					</Box>
+
+						<Box className={styles.interactionSection}>
+							<Typography.SubText level={3} color='gray100'>
+								{formatDate(currentPhoto.created_at)}
+							</Typography.SubText>
+
+							<Flex gap='2'>
+								<Button
+									variant='ghost'
+									onClick={() => setIsLiked(!isLiked)}
+									aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
+									className={styles.actionButton}
+								>
+									{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+								</Button>
+								<Button
+									variant='ghost'
+									aria-label='Share photo'
+									className={styles.actionButton}
+								>
+									<FaShareAlt size={18} />
+								</Button>
+							</Flex>
+						</Box>
+					</motion.div>
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>

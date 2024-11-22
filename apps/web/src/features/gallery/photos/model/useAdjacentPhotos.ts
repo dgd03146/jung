@@ -5,7 +5,7 @@ import { useGetAdjacentPhotos, useGetPhotoById } from '../api';
 
 type PhotoInfiniteData = InfiniteData<PhotoQueryResult, number | null>;
 
-export function usePhotoNavigation(id: string) {
+export function useAdjacentPhotos(id: string) {
 	const queryClient = useQueryClient();
 
 	const [currentPhotoData] = useGetPhotoById(id);

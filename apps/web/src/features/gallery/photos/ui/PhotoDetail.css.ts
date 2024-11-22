@@ -14,9 +14,10 @@ export const container = style({
 });
 
 export const modalContainer = style({
-	borderRadius: '12px',
 	overflow: 'hidden',
-	margin: '0',
+	margin: '0 auto',
+	maxWidth: '1200px',
+	width: '100%',
 	'@media': {
 		'(min-width: 1024px)': {
 			flexDirection: 'row',
@@ -56,11 +57,6 @@ export const content = style({
 	gap: '40px',
 	padding: '24px 0',
 	flex: 1,
-	'@media': {
-		'(min-width: 768px)': {
-			paddingInline: '16px',
-		},
-	},
 });
 
 export const modalContent = style({
@@ -87,13 +83,6 @@ export const interactionSection = style({
 	alignItems: 'center',
 	padding: '16px 0',
 	borderTop: '1px solid #E5E7EB',
-	// borderBottom: '1px solid #E5E7EB',
-});
-
-export const stats = style({
-	display: 'flex',
-	gap: '16px',
-	color: '#6B7280',
 });
 
 export const actionButton = style({
@@ -109,34 +98,19 @@ export const actionButton = style({
 	},
 });
 
-export const prevButton = style({
-	left: 0,
-});
-
-export const nextButton = style({
-	right: 0,
-});
-
-export const navigationOverlay = style({
+export const navigationWrapper = style({
 	position: 'absolute',
 	top: 0,
 	left: 0,
 	right: 0,
 	bottom: 0,
-	background:
-		'linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.2) 100%)',
-	opacity: 0,
-	transition: 'opacity 0.3s ease',
 	pointerEvents: 'none',
-
-	selectors: {
-		[`${imageWrapper}:hover &`]: {
-			opacity: 1,
-		},
-	},
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
 });
 
-export const navigationWrapper = style({
+export const modalNavigationWrapper = style({
 	position: 'fixed',
 	top: 0,
 	left: 0,
@@ -146,18 +120,26 @@ export const navigationWrapper = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	margin: '0 auto',
-	zIndex: 60,
 });
 
 export const navigationButtonsContainer = style({
 	display: 'flex',
 	justifyContent: 'space-between',
 	width: '100%',
-	maxWidth: 'calc(1024px + 400px)',
-	padding: '0 120px',
 	position: 'absolute',
 	pointerEvents: 'none',
+	maxWidth: 'calc(1024px + 400px)',
+	padding: '0 120px',
+});
+
+export const modalNavigationButtonsContainer = style({
+	display: 'flex',
+	justifyContent: 'space-between',
+	width: '100%',
+	position: 'absolute',
+	pointerEvents: 'none',
+	maxWidth: 'calc(1024px + 120px)',
+	padding: '0 40px',
 });
 
 export const navigationButton = style({
@@ -176,7 +158,6 @@ export const navigationButton = style({
 	color: '#0142C0',
 	transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 	position: 'relative',
-	zIndex: 61,
 
 	':hover': {
 		backgroundColor: '#0142C0',
@@ -207,24 +188,14 @@ export const navigationIcon = style({
 	},
 });
 
-export const modalNavigationWrapper = style({
-	position: 'fixed',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	pointerEvents: 'none',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	zIndex: 60,
-});
-
 export const modalNavigationButton = style([
 	navigationButton,
 	{
 		width: '28px',
 		height: '28px',
+		backgroundColor: '#F5FBFF',
+		backdropFilter: 'blur(8px)',
+		pointerEvents: 'auto',
 	},
 ]);
 
@@ -235,13 +206,3 @@ export const modalNavigationIcon = style([
 		height: '16px',
 	},
 ]);
-
-export const modalNavigationButtonsContainer = style({
-	display: 'flex',
-	justifyContent: 'space-between',
-	width: '100%',
-	maxWidth: 'calc(1024px + 80px)',
-	padding: '0 20px',
-	position: 'absolute',
-	pointerEvents: 'none',
-});

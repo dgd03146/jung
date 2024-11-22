@@ -8,7 +8,7 @@ const fadeIn = keyframes({
 
 export const imageContainer = style({
 	overflow: 'hidden',
-	borderRadius: '8px',
+	// borderRadius: '8px',
 	cursor: 'pointer',
 	transition: 'transform 0.3s ease-in-out',
 

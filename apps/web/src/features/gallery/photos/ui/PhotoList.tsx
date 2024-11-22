@@ -63,7 +63,7 @@ const PhotoList = () => {
 	const photos = data?.pages.flatMap((page) => page.items) ?? [];
 
 	const formattedPhotos: CustomPhoto[] = photos.map((photo) => ({
-		key: photo.id,
+		key: `list-${photo.id}`,
 		src: photo.image_url,
 		width: photo.width,
 		height: photo.height,
