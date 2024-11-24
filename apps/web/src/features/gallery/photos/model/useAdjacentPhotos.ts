@@ -8,7 +8,6 @@ type PhotoInfiniteData = InfiniteData<PhotoQueryResult, number | null>;
 export function useAdjacentPhotos(id: string) {
 	const queryClient = useQueryClient();
 
-	const [currentPhotoData] = useGetPhotoById(id);
 	const [adjacentPhotos] = useGetAdjacentPhotos(id);
 
 	const cachedData = queryClient.getQueriesData<PhotoInfiniteData>({
@@ -24,10 +23,11 @@ export function useAdjacentPhotos(id: string) {
 		(photo) => String(photo.id) === String(id),
 	);
 
-	if (allPhotos.length > 0 && currentIndex !== -1) {
-		return {
-			currentPhoto: allPhotos[currentIndex],
+	const currentPhoto = allPhotos[currentIndex];
 
+	if (allPhotos.length > 0 && currentIndex !== -1 && currentPhoto) {
+		return {
+			currentPhoto,
 			previousPhoto:
 				currentIndex < allPhotos.length - 1
 					? allPhotos[currentIndex + 1]
@@ -35,6 +35,8 @@ export function useAdjacentPhotos(id: string) {
 			nextPhoto: currentIndex > 0 ? allPhotos[currentIndex - 1] : null,
 		};
 	}
+
+	const [currentPhotoData] = useGetPhotoById(id);
 
 	return {
 		currentPhoto: currentPhotoData,

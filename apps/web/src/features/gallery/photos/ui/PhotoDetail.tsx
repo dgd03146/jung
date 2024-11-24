@@ -24,26 +24,32 @@ interface PhotoDetailProps {
 }
 
 const imageVariants = {
-	hidden: { opacity: 0, scale: 1.02 },
+	hidden: {
+		opacity: 0,
+		scale: 1.01,
+	},
 	visible: {
 		opacity: 1,
 		scale: 1,
 		transition: {
-			duration: 0.6,
-			ease: [0.22, 1, 0.36, 1],
+			duration: 0.4,
+			ease: [0.16, 1, 0.3, 1],
 		},
 	},
 };
 
 const contentVariants = {
-	hidden: { opacity: 0, x: 10 },
+	hidden: {
+		opacity: 0,
+		y: 5,
+	},
 	visible: {
 		opacity: 1,
-		x: 0,
+		y: 0,
 		transition: {
-			duration: 0.5,
-			ease: [0.22, 1, 0.36, 1],
-			staggerChildren: 0.08,
+			duration: 0.3,
+			ease: [0.16, 1, 0.3, 1],
+			staggerChildren: 0.05,
 		},
 	},
 };
@@ -56,11 +62,6 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 		nextPhoto,
 		isModal,
 	});
-
-	// TODO: 사진 없는 경우 처리
-	if (!currentPhoto) {
-		return <div>사진을 찾을 수 없습니다.</div>;
-	}
 
 	const handleLikeClick = () => {
 		setIsLiked(!isLiked);
