@@ -2,7 +2,7 @@
 
 import { ErrorBoundary } from '@/fsd/shared';
 
-export default function BlogError({
+export default function PhotoError({
 	error,
 	reset,
 }: {
@@ -13,9 +13,9 @@ export default function BlogError({
 		<ErrorBoundary
 			error={error}
 			reset={reset}
-			title='Blog Error'
-			description='Unable to load blog content. Please try again later.'
-			actionLabel='Refresh'
+			title='Photo Not Found'
+			description="The photo you're looking for might have been removed or is temporarily unavailable."
+			actionLabel='Try Again'
 		/>
 	);
 }

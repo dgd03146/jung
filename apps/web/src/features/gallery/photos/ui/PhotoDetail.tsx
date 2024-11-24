@@ -23,24 +23,6 @@ interface PhotoDetailProps {
 	isModal?: boolean;
 }
 
-const containerVariants = {
-	hidden: { opacity: 0 },
-	visible: {
-		opacity: 1,
-		transition: {
-			duration: 0.4,
-			ease: [0.22, 1, 0.36, 1],
-		},
-	},
-	exit: {
-		opacity: 0,
-		transition: {
-			duration: 0.3,
-			ease: [0.22, 1, 0.36, 1],
-		},
-	},
-};
-
 const imageVariants = {
 	hidden: { opacity: 0, scale: 1.02 },
 	visible: {
