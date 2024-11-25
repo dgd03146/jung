@@ -55,7 +55,10 @@ const contentVariants = {
 };
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
-	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos(id);
+	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos({
+		id,
+		isModal,
+	});
 	const [isLiked, setIsLiked] = useState(false);
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhoto,
