@@ -7,7 +7,8 @@ import { getSection } from '../lib/getSection';
 export function SectionTitle() {
 	const pathname = usePathname();
 	const isHome = pathname.length === 3;
-	const section = isHome ? undefined : getSection(pathname);
+	const isLogin = pathname.includes('/login');
+	const section = isHome || isLogin ? undefined : getSection(pathname);
 
 	if (!section) return null;
 

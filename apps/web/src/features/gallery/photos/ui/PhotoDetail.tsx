@@ -1,8 +1,10 @@
 // PhotoDetail.tsx
 'use client';
 
+import { useSupabaseAuth } from '@/fsd/shared';
 import { BlurImage } from '@/fsd/shared';
 import { formatDate } from '@/fsd/shared/lib';
+import { useToast } from '@jung/design-system';
 import {
 	Box,
 	Button,
@@ -11,6 +13,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
@@ -55,6 +58,9 @@ const contentVariants = {
 };
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
+	const router = useRouter();
+	const { user } = useSupabaseAuth();
+	const showToast = useToast();
 	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos({
 		id,
 		isModal,
@@ -67,6 +73,18 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	});
 
 	const handleLikeClick = () => {
+		console.log('handleLikeClick');
+		console.log(user, 'user');
+		if (!user) {
+			showToast('로그인이 필요합니다', 'error');
+			// 현재 URL을 returnUrl로 저장하여 로그인 후 돌아올 수 있도록 함
+			const returnUrl = isModal
+				? `/gallery/photo/${id}` // 모달인 경우 전체 페이지 URL
+				: window.location.pathname;
+			router.push(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+			return;
+		}
+
 		setIsLiked(!isLiked);
 		// TODO: API 호출
 	};
@@ -147,6 +165,10 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 							</Typography.Text>
 						</Box>
 
+						<Typography.SubText level={3} color='primary200'>
+							{currentPhoto.likes} likes
+						</Typography.SubText>
+
 						<Flex gap='2'>
 							{currentPhoto.tags?.map((tag) => (
 								<Tag key={tag} rounded>
@@ -163,12 +185,13 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 							<Flex gap='2'>
 								<Button
 									variant='ghost'
-									onClick={() => setIsLiked(!isLiked)}
+									onClick={handleLikeClick}
 									aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
 									className={styles.actionButton}
 								>
 									{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
 								</Button>
+
 								<Button
 									variant='ghost'
 									aria-label='Share photo'
