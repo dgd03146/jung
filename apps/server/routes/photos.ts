@@ -28,4 +28,16 @@ export const photosRouter = router({
 		const { input } = opts;
 		return photosService.findAdjacentPhotos(input);
 	}),
+
+	toggleLike: publicProcedure
+		.input(
+			z.object({
+				photoId: z.string(),
+				userId: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			const { photoId, userId } = input;
+			return photosService.toggleLike({ photoId, userId });
+		}),
 });

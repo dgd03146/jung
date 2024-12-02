@@ -180,4 +180,75 @@ export const photosService = {
 			});
 		}
 	},
+
+	// 좋아요 토글
+	async toggleLike({
+		photoId,
+		userId,
+	}: {
+		photoId: string;
+		userId: string;
+	}): Promise<Photo> {
+		try {
+			// 1. 사진 데이터 가져오기
+			const { data: photo, error: selectError } = await supabase
+				.from('photos')
+				.select('*')
+				.eq('id', photoId)
+				.single<Photo>();
+
+			if (selectError) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: `Failed to fetch photo: ${selectError.message}`,
+					cause: selectError,
+				});
+			}
+
+			if (!photo) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Photo not found',
+				});
+			}
+
+			// 2. 좋아요 상태 확인 및 업데이트
+			const hasLiked = photo.liked_by?.includes(userId) ?? false;
+			const newLikes = hasLiked ? photo.likes - 1 : photo.likes + 1;
+			const newLikedBy = hasLiked
+				? photo.liked_by?.filter((id) => id !== userId)
+				: [...(photo.liked_by || []), userId];
+
+			// 3. DB 업데이트
+			const { data: updatedPhoto, error: updateError } = await supabase
+				.from('photos')
+				.update({
+					likes: newLikes,
+					liked_by: newLikedBy,
+				})
+				.eq('id', photoId)
+				.select()
+				.single<Photo>();
+
+			if (updateError) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: `Failed to toggle like: ${updateError.message}`,
+					cause: updateError,
+				});
+			}
+
+			return updatedPhoto;
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'An unexpected error occurred while toggling like',
+				cause: error,
+			});
+		}
+	},
 };

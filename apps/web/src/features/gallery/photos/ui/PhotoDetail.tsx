@@ -1,6 +1,5 @@
 'use client';
 
-import { useSupabaseAuth } from '@/fsd/shared';
 import { BlurImage } from '@/fsd/shared';
 import { formatDate } from '@/fsd/shared/lib';
 import {
@@ -12,12 +11,14 @@ import {
 } from '@jung/design-system/components';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
 import { HiArrowLeft, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { useAdjacentPhotos } from '../model';
-import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
+import {
+	useAdjacentPhotos,
+	useKeyboardNavigation,
+	useTogglePhotoLike,
+} from '../model';
+
 import * as styles from './PhotoDetail.css';
 
 interface PhotoDetailProps {
@@ -57,53 +58,21 @@ const contentVariants = {
 };
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
-	const router = useRouter();
-	const pathname = usePathname();
-	const { user } = useSupabaseAuth();
+	const { toggleLike, getIsLiked } = useTogglePhotoLike();
+	const isLiked = getIsLiked(id);
 
 	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos({
 		id,
 		isModal,
 	});
-	const [isLiked, setIsLiked] = useState(false);
+
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhoto,
 		nextPhoto,
 		isModal,
 	});
 
-	const handleLikeClick = () => {
-		if (!user) {
-			// TODO: 다이얼로그 디자인 시스템 구현
-			const confirmed = window.confirm(
-				'로그인이 필요한 기능입니다. 로그인 페이지로 이동하시겠습니까?',
-			);
-
-			if (confirmed) {
-				const currentPath = `/gallery/photo/${id}`;
-				const locale = pathname.split('/')[1];
-
-				router.push(`/${locale}/login?next=${encodeURIComponent(currentPath)}`);
-			}
-			return;
-		}
-
-		setIsLiked(!isLiked);
-		// TODO: API 호출
-	};
-
 	const handleShareClick = () => {
-		if (!user) {
-			const confirmed = window.confirm(
-				'로그인이 필요한 기능입니다. 로그인 페이지로 이동하시겠습니까?',
-			);
-
-			if (confirmed) {
-				const currentPath = `/gallery/photo/${id}`;
-				router.push(`/login?next=${encodeURIComponent(currentPath)}`);
-			}
-			return;
-		}
 		// TODO: 공유 기능 구현
 	};
 
@@ -210,7 +179,7 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 							<Flex gap='2'>
 								<Button
 									variant='ghost'
-									onClick={handleLikeClick}
+									onClick={() => toggleLike(id)}
 									aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
 									className={styles.actionButton}
 								>

@@ -138,6 +138,8 @@ export const postService = {
 		return data as Post;
 	},
 
+	// 좋아요
+
 	async toggleLike({
 		postId,
 		userId,
@@ -145,7 +147,6 @@ export const postService = {
 		postId: string;
 		userId: string;
 	}): Promise<Post> {
-		// 포스트 가져오기
 		const { data: post, error: selectError } = await supabase
 			.from('posts')
 			.select('*')
@@ -173,7 +174,6 @@ export const postService = {
 			? post.liked_by.filter((id) => id !== userId)
 			: [...post.liked_by, userId];
 
-		// 좋아요 상태 업데이트
 		const { data, error } = await supabase
 			.from('posts')
 			.update({
@@ -202,6 +202,7 @@ export const postService = {
 		return data;
 	},
 
+	// 이전, 이후 포스트 가져오기
 	async getAdjacentPosts(currentPostId: string) {
 		const currentPost = await this.findById(currentPostId);
 

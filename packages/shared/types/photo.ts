@@ -15,6 +15,7 @@ export const PhotoSchema = z.object({
 	views: z.number().default(0),
 	type: z.enum(['gallery', 'collection']).optional(),
 	author_name: z.string().optional(),
+	liked_by: z.array(z.string()).optional(),
 });
 
 // Supabase 테이블 타입
