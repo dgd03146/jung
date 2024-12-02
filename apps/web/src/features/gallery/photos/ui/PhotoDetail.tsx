@@ -16,10 +16,12 @@ import { HiArrowLeft, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import {
 	useAdjacentPhotos,
 	useKeyboardNavigation,
+	useSharePhoto,
 	useTogglePhotoLike,
 } from '../model';
 
 import * as styles from './PhotoDetail.css';
+import { ShareModal } from './ShareModal';
 
 interface PhotoDetailProps {
 	id: string;
@@ -61,6 +63,9 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	const { toggleLike, getIsLiked } = useTogglePhotoLike();
 	const isLiked = getIsLiked(id);
 
+	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
+		useSharePhoto();
+
 	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos({
 		id,
 		isModal,
@@ -72,132 +77,141 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 		isModal,
 	});
 
-	const handleShareClick = () => {
-		// TODO: 공유 기능 구현
-	};
-
 	return (
-		<AnimatePresence mode='wait'>
-			<motion.div
-				key={`container-${id}`}
-				initial='hidden'
-				animate='visible'
-				exit='exit'
-			>
-				{isModal ? (
-					<div className={styles.modalNavigationWrapper}>
-						<div className={styles.modalNavigationButtonsContainer}>
-							{previousPhoto && (
-								<button
-									onClick={() => handleNavigation(previousPhoto.id)}
-									className={styles.modalNavigationButton}
-									aria-label='previous photo (arrow left)'
-								>
-									<HiChevronLeft className={styles.modalNavigationIcon} />
-								</button>
-							)}
-							{nextPhoto && (
-								<button
-									onClick={() => handleNavigation(nextPhoto.id)}
-									className={styles.modalNavigationButton}
-									aria-label='next photo (arrow right)'
-								>
-									<HiChevronRight className={styles.modalNavigationIcon} />
-								</button>
-							)}
-						</div>
-					</div>
-				) : (
-					<div className={styles.backLinkWrapper}>
-						<Link
-							href='/gallery'
-							className={styles.backLink}
-							aria-label='Back to gallery'
-						>
-							<HiArrowLeft size={24} />
-							<span>Gallery</span>
-						</Link>
-					</div>
-				)}
-
+		<>
+			<AnimatePresence mode='wait'>
 				<motion.div
-					className={
-						isModal
-							? `${styles.container} ${styles.modalContainer}`
-							: styles.container
-					}
+					key={`container-${id}`}
+					initial='hidden'
+					animate='visible'
+					exit='exit'
 				>
+					{isModal ? (
+						<div className={styles.modalNavigationWrapper}>
+							<div className={styles.modalNavigationButtonsContainer}>
+								{previousPhoto && (
+									<button
+										onClick={() => handleNavigation(previousPhoto.id)}
+										className={styles.modalNavigationButton}
+										aria-label='previous photo (arrow left)'
+									>
+										<HiChevronLeft className={styles.modalNavigationIcon} />
+									</button>
+								)}
+								{nextPhoto && (
+									<button
+										onClick={() => handleNavigation(nextPhoto.id)}
+										className={styles.modalNavigationButton}
+										aria-label='next photo (arrow right)'
+									>
+										<HiChevronRight className={styles.modalNavigationIcon} />
+									</button>
+								)}
+							</div>
+						</div>
+					) : (
+						<div className={styles.backLinkWrapper}>
+							<Link
+								href='/gallery'
+								className={styles.backLink}
+								aria-label='Back to gallery'
+							>
+								<HiArrowLeft size={24} />
+								<span>Gallery</span>
+							</Link>
+						</div>
+					)}
+
 					<motion.div
-						className={`
+						className={
+							isModal
+								? `${styles.container} ${styles.modalContainer}`
+								: styles.container
+						}
+					>
+						<motion.div
+							className={`
               ${styles.imageWrapper} 
               ${isModal ? styles.modalImageWrapper : ''}
             `}
-						variants={imageVariants}
-					>
-						<BlurImage
-							src={currentPhoto.image_url}
-							alt={currentPhoto.alt}
-							fill
-							priority
-							sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
-						/>
-					</motion.div>
+							variants={imageVariants}
+						>
+							<BlurImage
+								src={currentPhoto.image_url}
+								alt={currentPhoto.alt}
+								fill
+								priority
+								sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
+							/>
+						</motion.div>
 
-					<motion.div
-						className={`${styles.content} ${
-							isModal ? styles.modalContent : ''
-						}`}
-						variants={contentVariants}
-					>
-						<Box className={styles.header}>
-							<Typography.Text level={1}>{currentPhoto.title}</Typography.Text>
-						</Box>
+						<motion.div
+							className={`${styles.content} ${
+								isModal ? styles.modalContent : ''
+							}`}
+							variants={contentVariants}
+						>
+							<Box className={styles.header}>
+								<Typography.Text level={1}>
+									{currentPhoto.title}
+								</Typography.Text>
+							</Box>
 
-						<Box className={styles.description}>
-							<Typography.Text level={3}>
-								{currentPhoto.description}
-							</Typography.Text>
-						</Box>
+							<Box className={styles.description}>
+								<Typography.Text level={3}>
+									{currentPhoto.description}
+								</Typography.Text>
+							</Box>
 
-						<Typography.SubText level={3} color='primary200'>
-							{currentPhoto.likes} likes
-						</Typography.SubText>
-
-						<Flex gap='2'>
-							{currentPhoto.tags?.map((tag) => (
-								<Tag key={tag} rounded>
-									#{tag}
-								</Tag>
-							))}
-						</Flex>
-
-						<Box className={styles.interactionSection}>
-							<Typography.SubText level={3} color='gray100'>
-								{formatDate(currentPhoto.created_at)}
+							<Typography.SubText level={3} color='primary200'>
+								{currentPhoto.likes} likes
 							</Typography.SubText>
 
 							<Flex gap='2'>
-								<Button
-									variant='ghost'
-									onClick={() => toggleLike(id)}
-									aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-									className={styles.actionButton}
-								>
-									{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
-								</Button>
-
-								<Button
-									variant='ghost'
-									aria-label='Share photo'
-									className={styles.actionButton}
-								>
-									<FaShareAlt size={18} />
-								</Button>
+								{currentPhoto.tags?.map((tag) => (
+									<Tag key={tag} rounded>
+										#{tag}
+									</Tag>
+								))}
 							</Flex>
-						</Box>
+
+							<Box className={styles.interactionSection}>
+								<Typography.SubText level={3} color='gray100'>
+									{formatDate(currentPhoto.created_at)}
+								</Typography.SubText>
+
+								<Flex gap='2'>
+									<Button
+										variant='ghost'
+										onClick={() => toggleLike(id)}
+										aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
+										className={styles.actionButton}
+									>
+										{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+									</Button>
+
+									<Button
+										variant='ghost'
+										aria-label='Share photo'
+										className={styles.actionButton}
+										onClick={() => handleShare(currentPhoto)}
+									>
+										<FaShareAlt size={18} />
+									</Button>
+								</Flex>
+							</Box>
+						</motion.div>
 					</motion.div>
 				</motion.div>
-			</motion.div>
-		</AnimatePresence>
+			</AnimatePresence>
+			{isShareModalOpen && (
+				<ShareModal
+					isOpen={isShareModalOpen}
+					onClose={() => setIsShareModalOpen(false)}
+					photo={currentPhoto}
+					links={getShareLinks(currentPhoto)}
+				/>
+			)}
+		</>
 	);
 }

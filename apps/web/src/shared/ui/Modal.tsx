@@ -9,19 +9,27 @@ import * as styles from './Modal.css';
 interface ModalProps {
 	children: React.ReactNode;
 	showCloseButton?: boolean;
+	onClose?: () => void;
+	useRouterBack?: boolean;
+	variant?: 'photo' | 'share';
 }
 
 export function Modal({
 	children,
-
 	showCloseButton = true,
+	onClose,
+	useRouterBack = true,
+	variant = 'photo',
 }: ModalProps) {
 	const router = useRouter();
 	const overlayRef = useRef<HTMLDivElement>(null);
 
 	const handleDismiss = useCallback(() => {
-		router.back();
-	}, [router]);
+		if (useRouterBack) {
+			router.back();
+		}
+		onClose?.();
+	}, [router, onClose, useRouterBack]);
 
 	const handleKeyDown = useCallback(
 		(e: KeyboardEvent) => {
@@ -41,17 +49,20 @@ export function Modal({
 
 	useEffect(() => {
 		document.addEventListener('keydown', handleKeyDown);
+		const originalOverflow = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
-			document.body.style.overflow = 'unset';
+			document.body.style.overflow = originalOverflow;
 		};
 	}, [handleKeyDown]);
 
+	const isPhotoModal = variant === 'photo';
+
 	return (
 		<Box role='dialog' aria-modal='true' className={styles.container}>
-			{showCloseButton && (
+			{showCloseButton && isPhotoModal && (
 				<button
 					className={styles.closeButton}
 					onClick={handleDismiss}
@@ -62,10 +73,13 @@ export function Modal({
 			)}
 			<Box
 				ref={overlayRef}
-				className={styles.overlay}
+				className={isPhotoModal ? styles.overlay : styles.shareOverlay}
 				onClick={handleOverlayClick}
 			>
-				<Box className={styles.content} tabIndex={-1}>
+				<Box
+					className={isPhotoModal ? styles.photoContent : styles.shareContent}
+					tabIndex={-1}
+				>
 					{children}
 				</Box>
 			</Box>
