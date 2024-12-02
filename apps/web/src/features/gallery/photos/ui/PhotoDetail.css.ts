@@ -1,4 +1,5 @@
-import { style } from '@vanilla-extract/css';
+import { sprinkles } from '@jung/design-system/styles';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const container = style({
 	position: 'relative',
@@ -206,3 +207,43 @@ export const modalNavigationIcon = style([
 		height: '16px',
 	},
 ]);
+
+export const backLinkWrapper = style([
+	sprinkles({
+		position: 'relative',
+		display: 'flex',
+		alignItems: 'center',
+		marginLeft: '1',
+	}),
+]);
+
+export const backLink = style([
+	sprinkles({
+		display: 'flex',
+		alignItems: 'center',
+		background: 'transparent',
+		color: {
+			base: 'primary200',
+			hover: 'primary',
+		},
+		gap: '2',
+		transition: 'fast',
+	}),
+	{
+		':hover': {
+			transform: 'translateX(-2px)',
+		},
+	},
+]);
+
+globalStyle(`${backLink}:hover svg`, {
+	transform: 'translateX(-2px)',
+});
+
+globalStyle(`${backLink} span`, {
+	'@media': {
+		'(max-width: 768px)': {
+			display: 'none',
+		},
+	},
+});

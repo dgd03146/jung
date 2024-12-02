@@ -1,10 +1,8 @@
-// PhotoDetail.tsx
 'use client';
 
 import { useSupabaseAuth } from '@/fsd/shared';
 import { BlurImage } from '@/fsd/shared';
 import { formatDate } from '@/fsd/shared/lib';
-import { useToast } from '@jung/design-system';
 import {
 	Box,
 	Button,
@@ -13,10 +11,11 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart, FaShareAlt } from 'react-icons/fa';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { HiArrowLeft, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useAdjacentPhotos } from '../model';
 import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './PhotoDetail.css';
@@ -59,8 +58,9 @@ const contentVariants = {
 
 export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	const router = useRouter();
+	const pathname = usePathname();
 	const { user } = useSupabaseAuth();
-	const showToast = useToast();
+
 	const { currentPhoto, previousPhoto, nextPhoto } = useAdjacentPhotos({
 		id,
 		isModal,
@@ -73,15 +73,18 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	});
 
 	const handleLikeClick = () => {
-		console.log('handleLikeClick');
-		console.log(user, 'user');
 		if (!user) {
-			showToast('로그인이 필요합니다', 'error');
-			// 현재 URL을 returnUrl로 저장하여 로그인 후 돌아올 수 있도록 함
-			const returnUrl = isModal
-				? `/gallery/photo/${id}` // 모달인 경우 전체 페이지 URL
-				: window.location.pathname;
-			router.push(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+			// TODO: 다이얼로그 디자인 시스템 구현
+			const confirmed = window.confirm(
+				'로그인이 필요한 기능입니다. 로그인 페이지로 이동하시겠습니까?',
+			);
+
+			if (confirmed) {
+				const currentPath = `/gallery/photo/${id}`;
+				const locale = pathname.split('/')[1];
+
+				router.push(`/${locale}/login?next=${encodeURIComponent(currentPath)}`);
+			}
 			return;
 		}
 
@@ -90,6 +93,17 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 	};
 
 	const handleShareClick = () => {
+		if (!user) {
+			const confirmed = window.confirm(
+				'로그인이 필요한 기능입니다. 로그인 페이지로 이동하시겠습니까?',
+			);
+
+			if (confirmed) {
+				const currentPath = `/gallery/photo/${id}`;
+				router.push(`/login?next=${encodeURIComponent(currentPath)}`);
+			}
+			return;
+		}
 		// TODO: 공유 기능 구현
 	};
 
@@ -101,7 +115,7 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 				animate='visible'
 				exit='exit'
 			>
-				{isModal && (
+				{isModal ? (
 					<div className={styles.modalNavigationWrapper}>
 						<div className={styles.modalNavigationButtonsContainer}>
 							{previousPhoto && (
@@ -123,6 +137,17 @@ export function PhotoDetail({ id, isModal }: PhotoDetailProps) {
 								</button>
 							)}
 						</div>
+					</div>
+				) : (
+					<div className={styles.backLinkWrapper}>
+						<Link
+							href='/gallery'
+							className={styles.backLink}
+							aria-label='Back to gallery'
+						>
+							<HiArrowLeft size={24} />
+							<span>Gallery</span>
+						</Link>
 					</div>
 				)}
 

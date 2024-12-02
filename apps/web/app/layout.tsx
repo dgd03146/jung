@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: 'I am GeoJung',
+	title: 'JUNG',
 	description: 'All about Jung',
 };
 

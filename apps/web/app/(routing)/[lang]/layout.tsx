@@ -5,6 +5,7 @@ import { getDictionary } from '@/fsd/shared/config';
 
 interface Props {
 	params: { lang: string };
+
 	children: React.ReactNode;
 }
 
@@ -16,6 +17,7 @@ export default async function RootLayout({ params, children }: Props) {
 				initialDictionary={await getDictionary(params.lang)}
 			>
 				<ClientToastProvider>{children}</ClientToastProvider>
+
 				{/* Just for convenient switching between different routes */}
 				{/* <NavigationLinks /> */}
 			</DictionaryProvider>

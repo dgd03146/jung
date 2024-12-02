@@ -4,7 +4,6 @@ interface GalleryLayoutProps {
 }
 
 export default function GalleryLayout({ children, modal }: GalleryLayoutProps) {
-	console.log('Layout rendering, modal:', !!modal); // 디버깅용 로그
 	return (
 		<>
 			{children}
