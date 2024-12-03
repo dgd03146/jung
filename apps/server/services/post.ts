@@ -1,6 +1,6 @@
 import type { Post } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
-import { supabase } from '../lib/supabse';
+import { supabase } from '../lib/supabase';
 
 type QueryParams = {
 	limit: number;

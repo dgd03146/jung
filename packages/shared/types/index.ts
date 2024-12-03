@@ -6,3 +6,4 @@ export type { Photo } from './photo';
 export { PhotoSchema } from './photo';
 export type { CustomPhoto } from './photo';
 export type { PhotoQueryResult } from './photo';
+export * from './photo_collection';
