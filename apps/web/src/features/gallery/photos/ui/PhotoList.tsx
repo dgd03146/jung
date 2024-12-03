@@ -62,6 +62,7 @@ const PhotoList = () => {
 
 	const photos = data?.pages.flatMap((page) => page.items) ?? [];
 
+	// FIXME: 백에서 처리하도록 수정
 	const formattedPhotos: CustomPhoto[] = photos.map((photo) => ({
 		key: `list-${photo.id}`,
 		src: photo.image_url,
