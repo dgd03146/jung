@@ -32,9 +32,9 @@ export const TabsTrigger = forwardRef<HTMLLIElement, TabsTriggerProps>(
 				ref={ref}
 				onClick={handleClick}
 			>
-				<Typography.Text level={3} className={S.tab({ isActive, variant })}>
+				<Typography.SubText level={1} className={S.tab({ isActive, variant })}>
 					{children}
-				</Typography.Text>
+				</Typography.SubText>
 			</Box>
 		);
 	},

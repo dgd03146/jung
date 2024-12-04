@@ -1,6 +1,6 @@
 'use client';
 
-import { BlurImage, LoadingSpinner } from '@/fsd/shared';
+import { BlurImage, LoadingSpinner, MotionCard } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
 import type { CustomPhoto } from '@jung/shared/types';
 import Link from 'next/link';
@@ -21,33 +21,39 @@ const renderNextImage = (
 ) => {
 	return (
 		<Link href={`/gallery/photo/${photo.data.id}`} scroll={false}>
-			<Box
-				width='full'
-				position='relative'
-				style={{
-					aspectRatio: `${width} / ${height}`,
-				}}
-				className={styles.imageContainer}
-			>
-				<BlurImage
-					fill
-					src={photo.src}
-					alt={alt}
-					sizes={sizes}
-					className={styles.image}
-				/>
+			<MotionCard>
 				<Box
-					position='absolute'
-					className={styles.overlay}
-					display='flex'
-					alignItems='end'
-					padding='4'
+					width='full'
+					position='relative'
+					style={{
+						aspectRatio: `${width} / ${height}`,
+					}}
+					className={styles.imageContainer}
 				>
-					<Typography.SubText level={3} color='white' className={styles.title}>
-						{photo.data.description}
-					</Typography.SubText>
+					<BlurImage
+						fill
+						src={photo.src}
+						alt={alt}
+						sizes={sizes}
+						className={styles.image}
+					/>
+					<Box
+						position='absolute'
+						className={styles.overlay}
+						display='flex'
+						alignItems='end'
+						padding='4'
+					>
+						<Typography.SubText
+							level={3}
+							color='white'
+							className={styles.title}
+						>
+							{photo.data.description}
+						</Typography.SubText>
+					</Box>
 				</Box>
-			</Box>
+			</MotionCard>
 		</Link>
 	);
 };

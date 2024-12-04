@@ -8,3 +8,4 @@ export { default as LoadingSpinner } from './LoadingSpinner';
 export { AnimatedLine } from './AnimatedLine';
 export { Modal } from './Modal';
 export { ErrorBoundary } from './ErrorBoundary';
+export { MotionCard } from './MotionCard';

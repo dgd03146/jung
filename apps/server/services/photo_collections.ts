@@ -6,7 +6,10 @@ export const collectionsService = {
 	// 모든 컬렉션 조회
 	async findMany({ sort = 'latest' }: { sort: 'latest' | 'popular' }) {
 		try {
-			let query = supabase.from('collections').select('*');
+			let query = supabase
+				.from('collections')
+				.select('*')
+				.returns<Collection[]>();
 
 			if (sort === 'latest') {
 				query = query.order('created_at', { ascending: false });
@@ -44,7 +47,7 @@ export const collectionsService = {
 				.from('collections')
 				.select('*')
 				.eq('id', id)
-				.single();
+				.single<Collection>();
 
 			if (error) {
 				throw new TRPCError({
