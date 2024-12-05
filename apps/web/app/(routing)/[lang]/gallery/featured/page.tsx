@@ -9,8 +9,8 @@ type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default function Page({ searchParams }: PageProps) {
-	const sort = (searchParams.sort as Sort) || 'latest';
+export default function FeaturedPage({ searchParams }: PageProps) {
+	const sort: Sort = 'popular';
 	const q = (searchParams.q as string) || '';
 
 	void trpc.photos.getAllPhotos.prefetchInfinite({

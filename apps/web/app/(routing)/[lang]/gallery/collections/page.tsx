@@ -1,6 +1,7 @@
-import { PhotoList, PhotoNavigation } from '@/fsd/features/gallery/photos';
-import { LoadingSpinner } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+
+import { CollectionGrid } from '@/fsd/features/gallery/photos/ui/CollectionGrid';
+import { LoadingSpinner } from '@/fsd/shared';
 import { Suspense } from 'react';
 
 type Sort = 'latest' | 'popular';
@@ -9,21 +10,17 @@ type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default function Page({ searchParams }: PageProps) {
+export default function CollectionsPage({ searchParams }: PageProps) {
 	const sort = (searchParams.sort as Sort) || 'latest';
-	const q = (searchParams.q as string) || '';
 
-	void trpc.photos.getAllPhotos.prefetchInfinite({
-		limit: 8,
+	void trpc.photoCollections.getAllCollections.prefetch({
 		sort,
-		q,
 	});
 
 	return (
 		<HydrateClient>
-			<PhotoNavigation />
 			<Suspense fallback={<LoadingSpinner />}>
-				<PhotoList />
+				<CollectionGrid />
 			</Suspense>
 		</HydrateClient>
 	);

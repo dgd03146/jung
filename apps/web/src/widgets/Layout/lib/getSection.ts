@@ -1,7 +1,15 @@
-export const getSection = (pathName: string) => {
-	const section = pathName.split('/').pop();
+export const getSection = (pathname: string) => {
+	// gallery 섹션이면 'Gallery' 반환
+	if (pathname.includes('/gallery')) {
+		return 'Gallery';
+	}
 
-	const isDetailPage = pathName.split('/').length > 3;
+	// gallery가 아닌 상세 페이지는 숨기기
+	const isDetailPage = pathname.split('/').length > 3;
+	if (isDetailPage) {
+		return '';
+	}
 
-	return !isDetailPage ? section : '';
+	const section = pathname.split('/').pop() || '';
+	return section.charAt(0).toUpperCase() + section.slice(1);
 };
