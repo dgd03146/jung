@@ -9,7 +9,7 @@ type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default function FeaturedPage({ searchParams }: PageProps) {
+export default function TrendingPage({ searchParams }: PageProps) {
 	const sort: Sort = 'popular';
 	const q = (searchParams.q as string) || '';
 
@@ -23,7 +23,7 @@ export default function FeaturedPage({ searchParams }: PageProps) {
 		<HydrateClient>
 			<PhotoNavigation />
 			<Suspense fallback={<LoadingSpinner />}>
-				<PhotoList />
+				<PhotoList sort={sort} q={q} />
 			</Suspense>
 		</HydrateClient>
 	);

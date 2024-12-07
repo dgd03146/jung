@@ -14,7 +14,7 @@ export const card = style({
 	height: '100%',
 	position: 'relative',
 	transformStyle: 'preserve-3d',
-	// borderRadius: '12px',
+	borderRadius: '0.5rem',
 	overflow: 'hidden',
 	background: 'white',
 	boxShadow: '0 5px 15px rgba(0, 0, 0, 0.15)',

@@ -1,19 +1,19 @@
 'use client';
 
-import { BlurImage, LoadingSpinner, MotionCard } from '@/fsd/shared';
+import { BlurImage, MotionCard } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
 import type { CustomPhoto } from '@jung/shared/types';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import {
 	MasonryPhotoAlbum,
 	type RenderImageContext,
 	type RenderImageProps,
 } from 'react-photo-album';
 import 'react-photo-album/masonry.css';
-import { useGetPhotos } from '../api';
-import * as styles from './PhotoList.css';
+import { useGetCollectionById } from '../api';
+import * as styles from './CollectionDetail.css';
+
+// FIXME: 컬렉션 상세 페이지, PhotoList 컴포넌트 재사용할 수 있도록 수정
 
 const renderNextImage = (
 	{ alt = '', sizes }: RenderImageProps,
@@ -36,8 +36,7 @@ const renderNextImage = (
 						alt={alt}
 						sizes={sizes}
 						className={styles.image}
-						// FIXME: 동적으로 실제 보이는 이미지 수에 맞게 수정
-						priority={index < 8}
+						priority={index < 4}
 					/>
 					<Box
 						position='absolute'
@@ -60,24 +59,19 @@ const renderNextImage = (
 	);
 };
 
-type PhotoListProps = {
-	sort?: 'latest' | 'popular';
-	q?: string;
-};
+interface CollectionDetailProps {
+	id: string;
+}
 
-const PhotoList = ({ sort = 'latest', q = '' }: PhotoListProps) => {
-	const { ref, inView } = useInView();
-	const [data, { fetchNextPage, hasNextPage, isFetchingNextPage }] =
-		useGetPhotos({
-			sort,
-			q,
-		});
+export function CollectionDetail({ id }: CollectionDetailProps) {
+	console.log(id, 'id');
 
-	const photos = data?.pages.flatMap((page) => page.items) ?? [];
+	const [data] = useGetCollectionById(id);
+	const { collection, photos } = data;
 
-	// FIXME: 백에서 처리하도록 수정
+	// FIXME: 백에서 처리
 	const formattedPhotos: CustomPhoto[] = photos.map((photo) => ({
-		key: `list-${photo.id}`,
+		key: `collection-${photo.id}`,
 		src: photo.image_url,
 		width: photo.width,
 		height: photo.height,
@@ -93,32 +87,42 @@ const PhotoList = ({ sort = 'latest', q = '' }: PhotoListProps) => {
 		},
 	}));
 
-	useEffect(() => {
-		if (inView && hasNextPage) {
-			fetchNextPage();
-		}
-	}, [inView, hasNextPage, fetchNextPage]);
-
 	return (
-		<Container>
-			<MasonryPhotoAlbum
-				photos={formattedPhotos}
-				spacing={24}
-				columns={(containerWidth) => {
-					if (containerWidth < 768) return 2;
-					if (containerWidth < 1024) return 3;
-					return 4;
-				}}
-				render={{
-					image: renderNextImage,
-				}}
-			/>
-
-			<Box ref={ref} minHeight='10'>
-				{isFetchingNextPage && <LoadingSpinner size='small' />}
+		<Box>
+			<Box className={styles.headerSection}>
+				<BlurImage
+					src={collection.cover_image}
+					alt={collection.title}
+					fill
+					priority
+				/>
+				<Box className={styles.gradientOverlay}>
+					<Typography.Heading level={1} color='white' marginBottom='2'>
+						{collection.title}
+					</Typography.Heading>
+					<Typography.Text color='gray'>
+						{collection.description}
+					</Typography.Text>
+					<Typography.Text color='gray' fontSize='sm' marginTop='2'>
+						{photos.length} photos
+					</Typography.Text>
+				</Box>
 			</Box>
-		</Container>
-	);
-};
 
-export default PhotoList;
+			<Container>
+				<MasonryPhotoAlbum
+					photos={formattedPhotos}
+					spacing={24}
+					columns={(containerWidth) => {
+						if (containerWidth < 768) return 2;
+						if (containerWidth < 1024) return 3;
+						return 4;
+					}}
+					render={{
+						image: renderNextImage,
+					}}
+				/>
+			</Container>
+		</Box>
+	);
+}

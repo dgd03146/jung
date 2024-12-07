@@ -1,6 +1,11 @@
 import { Layout } from '@/fsd/widgets';
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Poppins, Unbounded } from 'next/font/google';
+
+const unbounded = Unbounded({
+	weight: ['400', '500', '600', '700'],
+	subsets: ['latin'],
+});
 
 const poppins = Poppins({
 	weight: ['400', '500', '600', '700'],

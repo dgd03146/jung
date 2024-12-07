@@ -10,7 +10,7 @@ export const PhotoNavigation = () => {
 
 	const getCurrentTab = () => {
 		if (pathname.includes('/collections')) return 'collections';
-		if (pathname.includes('/featured')) return 'featured';
+		if (pathname.includes('/trending')) return 'trending';
 		return 'recent';
 	};
 

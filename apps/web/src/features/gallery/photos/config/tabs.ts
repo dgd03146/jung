@@ -10,8 +10,8 @@ export const TABS = [
 		path: '/gallery/collections',
 	},
 	{
-		value: 'featured',
-		label: 'Featured',
-		path: '/gallery/featured',
+		value: 'trending',
+		label: 'Trending',
+		path: '/gallery/trending',
 	},
 ] as const;

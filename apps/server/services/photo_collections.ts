@@ -41,30 +41,59 @@ export const collectionsService = {
 	},
 
 	// 특정 컬렉션 조회
-	async findById(id: string): Promise<Collection> {
+	async findById(id: string) {
 		try {
-			const { data, error } = await supabase
+			// 1. Collection 정보 조회
+			const { data: collection, error: collectionError } = await supabase
 				.from('collections')
 				.select('*')
 				.eq('id', id)
-				.single<Collection>();
+				.single();
 
-			if (error) {
-				throw new TRPCError({
-					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Failed to fetch collection',
-					cause: error,
-				});
-			}
-
-			if (!data) {
+			if (collectionError) {
 				throw new TRPCError({
 					code: 'NOT_FOUND',
 					message: 'Collection not found',
 				});
 			}
 
-			return data;
+			// 2. Collection에 속한 photos 조회
+			const { data: collectionPhotos, error: collectionPhotosError } =
+				await supabase
+					.from('collection_photos')
+					.select('photo_id')
+					.eq('collection_id', id);
+
+			if (collectionPhotosError) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch collection photo IDs',
+				});
+			}
+
+			const photoIds = collectionPhotos.map((item) => item.photo_id);
+			const { data: photos, error: photosError } = await supabase
+				.from('photos')
+				.select('*')
+				.in('id', photoIds);
+
+			if (photosError) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch photos',
+				});
+			}
+
+			return {
+				collection: {
+					id: collection.id,
+					title: collection.title,
+					description: collection.description,
+					cover_image: collection.cover_image,
+					photo_count: collection.photo_count,
+				},
+				photos: photos || [],
+			};
 		} catch (error) {
 			if (error instanceof TRPCError) {
 				throw error;

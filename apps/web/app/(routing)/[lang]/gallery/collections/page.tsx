@@ -1,5 +1,6 @@
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 
+import { PhotoNavigation } from '@/fsd/features';
 import { CollectionGrid } from '@/fsd/features/gallery/photos/ui/CollectionGrid';
 import { LoadingSpinner } from '@/fsd/shared';
 import { Suspense } from 'react';
@@ -18,10 +19,13 @@ export default function CollectionsPage({ searchParams }: PageProps) {
 	});
 
 	return (
-		<HydrateClient>
-			<Suspense fallback={<LoadingSpinner />}>
-				<CollectionGrid />
-			</Suspense>
-		</HydrateClient>
+		<>
+			<PhotoNavigation />
+			<HydrateClient>
+				<Suspense fallback={<LoadingSpinner />}>
+					<CollectionGrid />
+				</Suspense>
+			</HydrateClient>
+		</>
 	);
 }

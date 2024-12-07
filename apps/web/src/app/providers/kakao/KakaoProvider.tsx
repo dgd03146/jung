@@ -13,7 +13,6 @@ export function KakaoProvider() {
 						window.Kakao.init(
 							process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string,
 						);
-						console.log('Kakao SDK initialized');
 					}
 				}
 			}}
