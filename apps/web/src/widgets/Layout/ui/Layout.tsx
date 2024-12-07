@@ -1,27 +1,20 @@
-'use client';
-
-import { Box, Container } from '@jung/design-system/components';
-import { usePathname } from 'next/navigation';
-import * as styles from './Layout.css';
-
 import { Footer, Header } from '@/fsd/widgets';
+import { Box } from '@jung/design-system/components';
+import * as styles from './Layout.css';
+import { SectionTitle } from './SectionTitle';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-	const pathName = usePathname();
-	const isHome = pathName.length === 3;
-
 	return (
-		<Container className={styles.container}>
+		<Box className={styles.container}>
 			<Header />
-			<Box
-				as='main'
-				className={styles.main}
-				width={isHome ? { desktop: 'desktop' } : { desktop: 'laptop' }}
-			>
-				<Box className={styles.section}>{children}</Box>
-			</Box>
 
+			<Box as='main' className={styles.main}>
+				<Box className={styles.section}>
+					<SectionTitle />
+					{children}
+				</Box>
+			</Box>
 			<Footer />
-		</Container>
+		</Box>
 	);
 }

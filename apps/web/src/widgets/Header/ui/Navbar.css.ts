@@ -70,7 +70,7 @@ export const logoWrapper = recipe({
 						left: '50%',
 						width: 0,
 						height: '2px',
-						backgroundColor: 'var(--primary)',
+
 						transition: 'all 0.3s ease',
 						transform: 'translateX(-50%)',
 					},
@@ -82,34 +82,6 @@ export const logoWrapper = recipe({
 		},
 	},
 	defaultVariants: {
-		isScrolled: false,
-	},
-});
-
-export const logo = recipe({
-	base: style({
-		letterSpacing: '-0.02em',
-		transition: 'all 0.3s ease',
-		fontWeight: '600',
-	}),
-	variants: {
-		isMenuOpen: {
-			true: {
-				color: '#FFFFFF',
-			},
-			false: {
-				color: 'var(--primary)',
-			},
-		},
-		isScrolled: {
-			true: {
-				transform: 'scale(0.95)',
-				fontSize: '0.95em',
-			},
-		},
-	},
-	defaultVariants: {
-		isMenuOpen: false,
 		isScrolled: false,
 	},
 });

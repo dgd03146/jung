@@ -86,7 +86,7 @@ export const subText = recipe({
 		level: {
 			1: sprinkles({
 				fontSize: 'sm',
-				fontWeight: 'bold',
+				fontWeight: 'medium',
 				lineHeight: '5.5',
 			}),
 			2: sprinkles({
@@ -96,7 +96,7 @@ export const subText = recipe({
 			}),
 			3: sprinkles({
 				fontSize: 'xs',
-				fontWeight: 'semibold',
+				fontWeight: 'medium',
 				lineHeight: '5',
 			}),
 			4: sprinkles({

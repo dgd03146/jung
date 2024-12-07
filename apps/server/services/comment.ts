@@ -5,7 +5,7 @@ import type {
 	CommentUser,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
-import { supabase } from '../lib/supabse';
+import { supabase } from '../lib/supabase';
 
 import type { PageParams, User } from '@supabase/supabase-js';
 interface ExtendedPageParams extends PageParams {

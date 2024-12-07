@@ -1,0 +1,51 @@
+'use client';
+
+import { Flex, Typography } from '@jung/design-system/components';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { getSection } from '../lib/getSection';
+
+export function SectionTitle() {
+	const pathname = usePathname();
+	const isHome = pathname.length === 3;
+	const isLogin = pathname.includes('/login');
+	const section = isHome || isLogin ? undefined : getSection(pathname);
+
+	if (!section) return null;
+
+	// 슬래시가 있는지 확인
+	const hasSlash = section.includes('/');
+
+	if (hasSlash) {
+		const [mainSection, subSection] = section.split('/');
+		return (
+			<Flex alignItems='center' gap='2' marginY='6'>
+				<Link
+					href={`/${mainSection?.toLowerCase()}`}
+					style={{ display: 'flex', alignItems: 'center' }}
+				>
+					<Typography.FootNote color='primary'>
+						{mainSection}
+					</Typography.FootNote>
+				</Link>
+				<Typography.FootNote color='primary'>/</Typography.FootNote>
+				<Link
+					href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
+					style={{ display: 'flex', alignItems: 'center' }}
+				>
+					<Typography.FootNote color='primary'>
+						{subSection}
+					</Typography.FootNote>
+				</Link>
+			</Flex>
+		);
+	}
+
+	return (
+		<Link href={`/${section?.toLowerCase()}`}>
+			<Typography.Heading level={4} color='primary' marginY='6'>
+				{section}.
+			</Typography.Heading>
+		</Link>
+	);
+}

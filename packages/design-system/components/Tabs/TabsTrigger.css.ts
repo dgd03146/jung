@@ -9,7 +9,6 @@ export const trigger = recipe({
 			cursor: 'pointer',
 			color: 'primary',
 			padding: '1',
-			borderColor: 'primary',
 		}),
 	]),
 	variants: {
@@ -20,11 +19,8 @@ export const trigger = recipe({
 			}),
 			secondary: style([
 				sprinkles({
-					borderRadius: 'none', // Ensuring rounded is false for secondary
+					borderRadius: 'none',
 				}),
-				{
-					borderBottom: '0.5px solid',
-				},
 			]),
 		},
 
@@ -37,12 +33,16 @@ export const trigger = recipe({
 			},
 		},
 		isActive: {
-			true: {
-				borderBottom: '2px solid',
-			},
-			false: {
-				borderBottom: '0.5px solid',
-			},
+			true: sprinkles({
+				borderBottomWidth: 'medium',
+				borderStyle: 'solid',
+				borderColor: 'primary',
+			}),
+			false: sprinkles({
+				borderBottomWidth: 'hairline',
+				borderStyle: 'solid',
+				borderColor: 'primary100',
+			}),
 		},
 	},
 
@@ -70,7 +70,7 @@ export const tab = recipe({
 				color: 'primary',
 			}),
 			secondary: sprinkles({
-				borderColor: 'primary',
+				borderColor: 'primary50',
 				marginBottom: '1',
 			}),
 		},
@@ -82,7 +82,7 @@ export const tab = recipe({
 			false: sprinkles({
 				color: {
 					base: 'primary',
-					hover: 'primary200',
+					hover: 'primary',
 				},
 			}),
 		},
@@ -104,7 +104,7 @@ export const tab = recipe({
 				isActive: false,
 			},
 			style: sprinkles({
-				color: 'primary100',
+				color: 'primary200',
 			}),
 		},
 	],

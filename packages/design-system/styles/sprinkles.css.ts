@@ -4,7 +4,7 @@ import {
 	defineProperties,
 } from '@vanilla-extract/sprinkles';
 
-import { grid, lineHeights, shadows } from '../tokens';
+import { grid, letterSpacings, lineHeights, shadows } from '../tokens';
 import { getMediaQuery } from '../utils/getMediaQuery';
 import { vars } from './theme.css';
 
@@ -39,7 +39,7 @@ export const responsiveProperties = defineProperties({
 			'flex',
 			'grid',
 		],
-		alignItems: ['stretch', 'flex-start', 'center', 'flex-end'],
+		alignItems: ['stretch', 'flex-start', 'center', 'flex-end', 'start', 'end'],
 		borderWidth: vars.border.width,
 		borderBottomWidth: vars.border.width,
 		borderLeftWidth: vars.border.width,
@@ -87,14 +87,16 @@ export const responsiveProperties = defineProperties({
 		gridRowGap: vars.space,
 		gridAutoColumns: grid.gridAuto,
 		gridAutoRows: grid.gridAuto,
+		gridAutoFlow: grid.gridAutoFlow,
 
 		columnGap: vars.space,
 		rowGap: vars.space,
 
 		lineHeight: lineHeights,
+		letterSpacing: letterSpacings,
 
 		width: vars.contentWidth,
-		height: vars.space,
+		height: vars.contentWidth,
 		minWidth: vars.contentWidth,
 		maxWidth: vars.contentWidth,
 		minHeight: vars.contentWidth,
@@ -231,6 +233,10 @@ const selectorProperties = defineProperties({
 		active: { selector: '&:active' },
 		focus: { selector: '&:focus' },
 		hover: { selector: '&:hover' },
+		after: { selector: '&::after' },
+		before: { selector: '&::before' },
+		hoverAfter: { selector: '&:hover::after' },
+		hoverBefore: { selector: '&:hover::before' },
 
 		placeholder: { selector: '&::placeholder' },
 	},

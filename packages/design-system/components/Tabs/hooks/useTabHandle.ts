@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useTabsContext } from '../context/TabsContext';
 
-export const useTabHandler = (value: string) => {
+export const useTabHandler = (value: string | number) => {
 	const { currentTab, setCurrentTab, variant, rounded } = useTabsContext();
 
 	const handleTabClick = useCallback(() => {

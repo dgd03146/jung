@@ -15,6 +15,7 @@ interface Props
 	autoColumns?: keyof typeof responsiveProperties.styles.gridAutoColumns.values;
 	templateRows?: keyof typeof responsiveProperties.styles.gridTemplateRows.values;
 	templateColumns?: keyof typeof responsiveProperties.styles.gridTemplateColumns.values;
+	autoFlow?: keyof typeof responsiveProperties.styles.gridAutoFlow.values;
 }
 
 export const Grid = forwardRef<HTMLDivElement, Props>(
@@ -28,6 +29,7 @@ export const Grid = forwardRef<HTMLDivElement, Props>(
 			autoColumns,
 			templateRows,
 			templateColumns,
+			autoFlow,
 			...restProps
 		},
 		ref?,
@@ -44,6 +46,7 @@ export const Grid = forwardRef<HTMLDivElement, Props>(
 				gridAutoRows={autoRows}
 				gridTemplateRows={templateColumns}
 				gridTemplateColumns={templateColumns}
+				gridAutoFlow={autoFlow}
 				ref={ref}
 				{...restProps}
 			/>

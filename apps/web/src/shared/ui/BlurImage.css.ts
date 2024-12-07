@@ -13,6 +13,9 @@ const blurTransition = keyframes({
 export const image = style({
 	transition: 'filter 0.3s ease-out, opacity 0.3s ease-out',
 	willChange: 'filter, opacity',
+});
+
+export const fillImage = style({
 	objectFit: 'cover',
 	width: '100%',
 	height: '100%',

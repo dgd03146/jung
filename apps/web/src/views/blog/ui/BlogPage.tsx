@@ -3,16 +3,12 @@ import { PostListSkeleton } from '@/fsd/entities/post';
 // import FeaturedSkeleton from './FeaturedSkeleton';
 import { PostList } from '@/fsd/features/blog/post';
 import { CategoryList } from '@/fsd/shared';
-import { Container, Typography } from '@jung/design-system/components';
+import { Container } from '@jung/design-system/components';
 import { Suspense } from 'react';
 
 const BlogPage = () => {
 	return (
 		<Container>
-			{/* FIXME: 나중에 TYPGORAPHY 공용 LAYOUT으로 빼기 */}
-			<Typography.Heading level={3} color='primary' marginBottom='8'>
-				blog.
-			</Typography.Heading>
 			<CategoryList />
 			{/* <Suspense fallback={<FeaturedSkeleton />}>
         <FeaturedPost />

@@ -79,7 +79,7 @@ const HomePage = () => {
 		},
 	};
 
-	const textArray = ['GeoJung'];
+	const textArray = ['GEOJUNG'];
 
 	return (
 		<LazyMotion features={domAnimation}>

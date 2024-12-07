@@ -30,7 +30,7 @@ export const tag = recipe({
 		size: {
 			sm: sprinkles({
 				paddingX: '3',
-				paddingY: '1',
+				paddingY: '0.5',
 			}),
 			md: sprinkles({
 				padding: '3.5',

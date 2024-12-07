@@ -1,12 +1,12 @@
 export const gridTemplate = {
-	'1': '1fr',
-	'1/2': 'repeat(2, 1fr)',
-	'1/3': 'repeat(3, 1fr)',
-	'1/4': 'repeat(4, 1fr)',
-	'1/6': 'repeat(6, 1fr)',
-	'1/8': 'repeat(8, 1fr)',
-	'1/12': 'repeat(12, 1fr)',
-	'1/5': 'repeat(5, 1fr)',
+	'1': 'minmax(0px, 1fr)',
+	'1/2': 'repeat(2, minmax(0px, 1fr))',
+	'1/3': 'repeat(3, minmax(0px, 1fr))',
+	'1/4': 'repeat(4, minmax(0px, 1fr))',
+	'1/6': 'repeat(6, minmax(0px, 1fr))',
+	'1/8': 'repeat(8, minmax(0px, 1fr))',
+	'1/12': 'repeat(12, minmax(0px, 1fr))',
+	'1/5': 'repeat(5, minmax(0px, 1fr))',
 };
 
 export const gridColumnRow = {
@@ -41,4 +41,12 @@ export const gridAuto = {
 	min: 'min-content',
 	max: 'max-content',
 	fr: 'minmax(0,1fr)',
+};
+
+export const gridAutoFlow = {
+	row: 'row',
+	column: 'column',
+	rowDense: 'row dense',
+	columnDense: 'column dense',
+	dense: 'dense',
 };

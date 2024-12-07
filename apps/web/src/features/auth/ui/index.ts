@@ -1,1 +1,2 @@
-export { default as SocialLogin } from './SocialLogin';
+export { SocialLogin } from './SocialLogin';
+export { LoginContent } from './LoginContent';

@@ -6,10 +6,15 @@ export const borderStyles = {
 };
 
 export const borderWidths = {
+	none: '0px',
+	thinnest: '0.5px',
 	hairline: '1px',
-	thin: '2px',
-	medium: '4px',
-	thick: '8px',
+	thin: '1.5px',
+	regular: '2px',
+	medium: '2.5px',
+	thick: '3px',
+	thicker: '4px',
+	thickest: '8px',
 };
 
 export const borderRadius = {
