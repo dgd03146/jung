@@ -35,7 +35,8 @@
     "i18nConfig.js",
     "app/i18n.js",
     "middleware.js",
-    "src/shared/ui/BlockNoteErrorFallback.tsㅌ"
+    "src/shared/ui/BlockNoteErrorFallback.tsx",
+    "./global.d.ts"
   ],
   "exclude": ["node_modules"]
 }

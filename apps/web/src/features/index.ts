@@ -4,3 +4,4 @@ export * from './blog/post';
 export * from './blog/comment';
 export * from './auth';
 export * from './gallery/photos';
+export * from './spots';
