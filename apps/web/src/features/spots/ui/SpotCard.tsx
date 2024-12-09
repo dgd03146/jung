@@ -1,5 +1,5 @@
 import { BlurImage } from '@/fsd/shared';
-import { Card, Flex, Typography } from '@jung/design-system';
+import { Card, Flex } from '@jung/design-system';
 import Link from 'next/link';
 import { IoHeartOutline, IoLocationOutline } from 'react-icons/io5';
 import * as styles from './SpotCard.css';
@@ -45,14 +45,14 @@ export function SpotCard({ spot }: SpotCardProps) {
 						justifyContent='space-between'
 					>
 						<Flex align='center' gap='2'>
-							<StarRating value={spot.rating} size='sm' />
-							<Typography.SubText level={4} color='primary'>
-								{spot.rating.toFixed(1)}
-							</Typography.SubText>
+							<StarRating value={spot.rating} size='md' />
+							{/* <Typography.SubText level={4} color="primary">
+                {spot.rating.toFixed(1)}
+              </Typography.SubText> */}
 						</Flex>
-						<Typography.SubText level={4} color='gray400'>
+						{/* <Typography.SubText level={4} color='gray400'>
 							{spot.reviewCount.toLocaleString()} reviews
-						</Typography.SubText>
+						</Typography.SubText> */}
 					</Card.Actions>
 				</Card.Content>
 			</Card>

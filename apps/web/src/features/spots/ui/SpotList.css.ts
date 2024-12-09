@@ -7,13 +7,10 @@ const slideUpAnimation = keyframes({
 });
 
 export const header = style({
-	position: 'sticky',
-	top: 0,
 	backgroundColor: palette.white,
-	borderBottom: `1px solid ${palette.gray}`,
+	borderBottom: `1px solid ${palette.primary50}`,
 	paddingTop: '8px',
 	paddingBottom: '16px',
-	zIndex: 10,
 });
 
 export const headerContent = style({
@@ -27,11 +24,11 @@ export const viewToggle = style({
 	alignItems: 'center',
 	gap: '6px',
 	padding: '8px 16px',
-	border: `1px solid ${palette.primary100}`, // 기본 테두리를 primary100으로
+	border: `1px solid ${palette.primary100}`,
 	borderRadius: '8px',
 	backgroundColor: palette.white,
 	fontSize: '13px',
-	color: palette.primary200, // 기본 텍스트 색상을 primary200으로
+	color: palette.primary200,
 	fontWeight: 500,
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
@@ -43,12 +40,6 @@ export const viewToggle = style({
 			backgroundColor: palette.primary50,
 		},
 	},
-});
-
-export const categorySection = style({
-	padding: '8px 0',
-	borderBottom: `1px solid ${palette.gray}`,
-	backgroundColor: palette.white,
 });
 
 export const main = style({
@@ -88,8 +79,8 @@ export const listSection = style({
 	padding: '8px',
 	borderRadius: '12px',
 	backgroundColor: palette.white,
-	border: `1px solid ${palette.primary100}`, // primary100으로 변경
-	boxShadow: `0 2px 4px ${palette.primary50}`, // 섀도우 추가
+	border: `1px solid ${palette.primary100}`,
+	boxShadow: `0 2px 4px ${palette.primary50}`,
 
 	selectors: {
 		'&::-webkit-scrollbar': {
@@ -157,6 +148,9 @@ export const slideUpList = style({
 	overflowY: 'auto',
 	zIndex: 2,
 	animation: `${slideUpAnimation} 0.3s ease-out`,
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '20px',
 
 	'@media': {
 		'(min-width: 768px)': {
@@ -192,7 +186,7 @@ export const mapPlaceholder = style({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		// background: `linear-gradient(45deg, ${palette.primary50} 25%, ${palette.gray100} 25%, ${palette.gray100} 50%, ${palette.primary50} 50%, ${palette.primary50} 75%, ${palette.gray100} 75%, ${palette.gray100} 100%)`,
+
 		backgroundSize: '20px 20px',
 		opacity: 0.3,
 	},

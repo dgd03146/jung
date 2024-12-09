@@ -80,8 +80,8 @@ export const imageWrapper = style({
 });
 
 export const likeButton = style({
-	width: '24px', // 28px에서 축소
-	height: '24px', // 28px에서 축소
+	width: '24px',
+	height: '24px',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -146,5 +146,4 @@ export const address = style({
 export const footer = style({
 	marginTop: 'auto',
 	paddingTop: '12px',
-	borderTop: `1px solid ${palette.gray100}`,
 });

@@ -8,7 +8,15 @@ import { SearchBar } from './SearchBar';
 import { SpotCard } from './SpotCard';
 import * as styles from './SpotList.css';
 
-export type SpotCategory = 'nature' | 'urban' | 'cafe' | 'historic' | 'night';
+export type SpotCategory =
+	| 'nature' // 자연/풍경 (산, 공원, 해변 등)
+	| 'landmark' // 랜드마크/대표명소 (타워, 광장, 대표건물 등)
+	| 'historic' // 역사/문화유산 (고궁, 사찰 등)
+	| 'culture' // 문화시설 (박물관, 미술관, 공연장 등)
+	| 'night' // 야경 명소
+	| 'street' // 거리/골목 (핫플레이스, 특색있는 거리)
+	| 'park' // 공원/광장 (도시공원, 테마파크 등)
+	| 'local'; // 로컬/전통 (전통시장, 마을, 특색있는 동네 등)
 
 export interface Spot {
 	id: string;
@@ -37,6 +45,21 @@ export const MOCK_SPOTS: Spot[] = [
 				id: 'p1',
 				url: 'https://images.unsplash.com/photo-1617541086271-4d43983704bd',
 				authorId: 'user1',
+			},
+			{
+				id: 'p2',
+				url: 'https://images.unsplash.com/photo-1578637387939-43c525550085',
+				authorId: 'user2',
+			},
+			{
+				id: 'p3',
+				url: 'https://images.unsplash.com/photo-1576675466969-38eeae4b41f6',
+				authorId: 'user3',
+			},
+			{
+				id: 'p4',
+				url: 'https://images.unsplash.com/photo-1525438160292-a4a860951216',
+				authorId: 'user4',
 			},
 		],
 		rating: 4.5,
@@ -274,9 +297,7 @@ export function SpotList() {
 				</Container>
 			</Box>
 
-			<Box className={styles.categorySection}>
-				<CategoryFilter />
-			</Box>
+			<CategoryFilter />
 
 			<Box as='main' className={styles.main}>
 				{isMapView ? (

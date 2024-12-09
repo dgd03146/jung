@@ -7,10 +7,13 @@ import * as styles from './CategoryFilter.css';
 const CATEGORIES = [
 	{ value: 'all', label: 'All' },
 	{ value: 'nature', label: 'Nature' },
-	{ value: 'urban', label: 'City' },
-	{ value: 'night', label: 'Night' },
-	{ value: 'cafe', label: 'Cafe' },
+	{ value: 'landmark', label: 'Landmark' },
 	{ value: 'historic', label: 'Historic' },
+	{ value: 'culture', label: 'Culture' },
+	{ value: 'night', label: 'Night View' },
+	{ value: 'street', label: 'Street' },
+	{ value: 'park', label: 'Park' },
+	{ value: 'local', label: 'Local' },
 ] as const;
 
 export type CategoryValue = (typeof CATEGORIES)[number]['value'];
@@ -41,7 +44,6 @@ export function CategoryFilter() {
 				<Link
 					key={category.value}
 					href={`${pathname}?${createQueryString(category.value)}`}
-					className={styles.link}
 				>
 					<Tag
 						rounded

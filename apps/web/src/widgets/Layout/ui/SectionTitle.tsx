@@ -13,13 +13,12 @@ export function SectionTitle() {
 
 	if (!section) return null;
 
-	// 슬래시가 있는지 확인
 	const hasSlash = section.includes('/');
 
 	if (hasSlash) {
 		const [mainSection, subSection] = section.split('/');
 		return (
-			<Flex alignItems='center' gap='2' marginY='6'>
+			<Flex alignItems='center' gap='2' marginBottom='6'>
 				<Link
 					href={`/${mainSection?.toLowerCase()}`}
 					style={{ display: 'flex', alignItems: 'center' }}
@@ -43,7 +42,7 @@ export function SectionTitle() {
 
 	return (
 		<Link href={`/${section?.toLowerCase()}`}>
-			<Typography.Heading level={4} color='primary' marginY='6'>
+			<Typography.Heading level={4} color='primary' marginBottom='6'>
 				{section}.
 			</Typography.Heading>
 		</Link>

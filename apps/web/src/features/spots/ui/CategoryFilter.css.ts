@@ -1,48 +1,59 @@
+import { sprinkles } from '@jung/design-system/styles';
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-export const container = style({
-	display: 'flex',
-	margin: 'auto',
-	gap: '8px',
-	padding: '16px 80px',
-	overflowX: 'auto',
-	scrollbarWidth: 'none',
-	backgroundColor: palette.white,
-	borderBottom: `1px solid ${palette.primary50}`,
+export const container = style([
+	sprinkles({
+		padding: {
+			mobile: '3', // 12px
+			tablet: '4', // 16px
+		},
+		gap: {
+			mobile: '2', // 8px
+			tablet: '3', // 12px
+		},
+	}),
+	{
+		width: '100%',
+		position: 'relative',
+		display: 'flex',
+		flexWrap: 'wrap',
+		margin: 'auto',
+		overflowX: 'auto',
+		scrollbarWidth: 'none',
+		backgroundColor: palette.white,
+		borderBottom: `1px solid ${palette.primary50}`,
 
-	'::-webkit-scrollbar': {
-		display: 'none',
-	},
-
-	'@media': {
-		'(max-width: 768px)': {
-			padding: '12px 24px',
-			gap: '6px',
+		'::-webkit-scrollbar': {
+			display: 'none',
 		},
 	},
-});
-
-export const link = style({
-	textDecoration: 'none',
-});
+]);
 
 export const categoryTag = recipe({
 	base: {
-		padding: '4px 8px',
-		fontSize: '14px',
-		fontWeight: 500,
-		cursor: 'pointer',
-		whiteSpace: 'nowrap',
 		transition: 'all 0.3s ease',
 		border: `1px solid ${palette.primary100}`,
 		backgroundColor: palette.white,
-		color: palette.primary200,
+		color: palette.primary,
+		whiteSpace: 'nowrap',
+		cursor: 'pointer',
+
+		'@media': {
+			'(min-width: 768px)': {
+				padding: '4px 8px',
+				fontSize: '14px',
+			},
+			'(max-width: 767px)': {
+				padding: '3px 6px',
+				fontSize: '13px',
+			},
+		},
 
 		selectors: {
 			'&:hover': {
-				backgroundColor: palette.primary200,
+				backgroundColor: palette.primary100,
 				color: palette.white,
 			},
 		},
