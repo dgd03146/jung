@@ -8,18 +8,32 @@ import { StarRating } from './StarRating';
 
 interface SpotCardProps {
 	spot: Spot;
+	variant?: 'default' | 'compact';
 }
 
-export function SpotCard({ spot }: SpotCardProps) {
+export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 	return (
-		<Link href={`/spots/${spot.id}`} className={styles.cardWrapper}>
-			<Card variant='outline'>
-				<Card.Media className={styles.imageWrapper}>
+		<Link
+			href={`/spots/${spot.id}`}
+			className={styles.cardWrapper({ variant })}
+		>
+			<Card
+				variant='outline'
+				display='flex'
+				flexDirection='column'
+				height='full'
+				position='relative'
+			>
+				<Card.Media className={styles.imageWrapper({ variant })}>
 					<BlurImage
 						src={spot.photos[0]?.url ?? ''}
-						alt={spot.name}
+						alt={spot.title}
 						fill
-						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+						sizes={
+							variant === 'compact'
+								? '300px'
+								: '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+						}
 					/>
 					<div className={styles.imageOverlay}>
 						<button className={styles.likeButton} type='button'>
@@ -28,31 +42,28 @@ export function SpotCard({ spot }: SpotCardProps) {
 					</div>
 				</Card.Media>
 
-				<Card.Content rowGap='3'>
-					<Card.Title className={styles.title} level={3}>
-						{spot.name}
+				<Card.Content rowGap={variant === 'compact' ? '1' : '2'}>
+					<Card.Title className={styles.title({ variant })} level={3}>
+						{spot.title}
 					</Card.Title>
 
-					<Flex align='flex-start' gap='1' className={styles.location}>
+					<Flex
+						align='flex-start'
+						gap='1'
+						className={styles.location({ variant })}
+					>
 						<IoLocationOutline size={16} className={styles.locationIcon} />
-						<Card.Description className={styles.address}>
+						<Card.Description className={styles.address({ variant })}>
 							{spot.address}
 						</Card.Description>
 					</Flex>
-
-					<Card.Actions
-						className={styles.footer}
-						justifyContent='space-between'
-					>
-						<Flex align='center' gap='2'>
-							<StarRating value={spot.rating} size='md' />
-							{/* <Typography.SubText level={4} color="primary">
-                {spot.rating.toFixed(1)}
-              </Typography.SubText> */}
-						</Flex>
-						{/* <Typography.SubText level={4} color='gray400'>
-							{spot.reviewCount.toLocaleString()} reviews
-						</Typography.SubText> */}
+					{variant === 'default' && (
+						<Card.Description className={styles.description}>
+							{spot.description}
+						</Card.Description>
+					)}
+					<Card.Actions className={styles.footer}>
+						<StarRating value={spot.rating} size='sm' />
 					</Card.Actions>
 				</Card.Content>
 			</Card>

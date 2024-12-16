@@ -43,7 +43,11 @@ export const viewToggle = style({
 });
 
 export const main = style({
-	padding: '32px 0',
+	flex: 1,
+	display: 'flex',
+	flexDirection: 'column',
+	width: '100%',
+	margin: '16px 0',
 });
 
 export const gridView = style({
@@ -54,19 +58,6 @@ export const gridView = style({
 		'(max-width: 768px)': {
 			gap: '16px',
 			gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-		},
-	},
-});
-
-export const splitView = style({
-	display: 'grid',
-	gridTemplateColumns: '380px 1fr',
-	gap: '24px',
-	height: 'calc(100vh - 140px)',
-	'@media': {
-		'(max-width: 1024px)': {
-			gridTemplateColumns: '1fr',
-			height: 'auto',
 		},
 	},
 });
@@ -102,37 +93,13 @@ export const listSection = style({
 
 export const mapView = style({
 	position: 'relative',
-	height: 'calc(100vh - 120px)',
 	width: '100%',
+	height: '100%',
 });
 
 export const mapSection = style({
-	position: 'absolute',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	backgroundColor: palette.gray100,
-});
-
-export const listToggle = style({
-	position: 'absolute',
-	bottom: '20px',
-	left: '50%',
-	transform: 'translateX(-50%)',
-	padding: '12px 24px',
-	borderRadius: '24px',
-	backgroundColor: palette.white,
-	boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-	border: 'none',
-	cursor: 'pointer',
-	zIndex: 1,
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		transform: 'translateX(-50%) translateY(-2px)',
-		boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-	},
+	width: '100%',
+	height: '100%',
 });
 
 export const slideUpList = style({
@@ -140,7 +107,7 @@ export const slideUpList = style({
 	bottom: 0,
 	left: 0,
 	right: 0,
-	maxHeight: '50vh',
+	height: 'calc(100dvh - 220px)', // 20px 더 작게
 	backgroundColor: palette.white,
 	borderRadius: '20px 20px 0 0',
 	boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
@@ -153,12 +120,32 @@ export const slideUpList = style({
 	gap: '20px',
 
 	'@media': {
-		'(min-width: 768px)': {
+		'screen and (min-width: 1920px)': {
 			left: '20px',
 			maxWidth: '400px',
-			maxHeight: '80vh',
+			height: 'calc(100dvh - 260px)', // 20px 더 작게
 			borderRadius: '20px',
 			margin: '20px',
+		},
+		'screen and (min-width: 1440px) and (max-width: 1919px)': {
+			left: '20px',
+			maxWidth: '400px',
+			height: 'calc(100dvh - 240px)', // 20px 더 작게
+			borderRadius: '20px',
+			margin: '20px',
+		},
+		'screen and (min-width: 768px) and (max-width: 1439px)': {
+			left: '20px',
+			maxWidth: '400px',
+			height: 'calc(100dvh - 220px)', // 20px 더 작게
+			borderRadius: '20px',
+			margin: '20px',
+		},
+		'screen and (max-width: 768px)': {
+			height: 'calc(100dvh - 260px)', // 20px 더 작게
+		},
+		'screen and (max-width: 480px)': {
+			height: 'calc(100dvh - 280px)', // 20px 더 작게
 		},
 	},
 });

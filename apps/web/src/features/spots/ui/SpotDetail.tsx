@@ -11,6 +11,7 @@ import {
 } from 'react-icons/io5';
 import * as styles from './SpotDetail.css';
 import { MOCK_SPOTS } from './SpotList';
+import { SpotMap } from './SpotMap';
 import { StarRating } from './StarRating';
 
 export const MOCK_REVIEW = {
@@ -19,10 +20,10 @@ export const MOCK_REVIEW = {
 	personalRating: 4.5,
 	content:
 		'서울의 상징적인 랜드마크인 남산서울타워를 방문했습니다. 도시의 멋진 전경을 감상할 수 있는 특별한 경험이었습니다. 해질 무렵의 황금빛 도시 풍경은 정말 잊을 수 없는 순간이었죠.',
-	highlights: ['야경', '전망', '데이트 코스'],
+	tags: ['야경', '전망', '데이트 코스'],
 	tips: ['평일 방문 추천', '날씨 맑은 날 방문하기', '석양 시간대 방문 추천'],
 	coordinates: { lat: 37.5511, lng: 126.9882 },
-};
+} as const;
 
 interface SpotDetailProps {
 	spotId: string;
@@ -49,7 +50,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 		visitDate,
 		personalRating,
 		content,
-		highlights,
+		tags: highlights,
 		tips,
 		coordinates,
 	} = MOCK_REVIEW;
@@ -58,16 +59,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 		<div className={styles.container}>
 			<div className={styles.imageSection}>
 				{showMap ? (
-					<div className={styles.mapContainer}>
-						<div className={styles.mapPlaceholder}>
-							<span className={styles.mapCoordinates}>
-								Latitude: {coordinates.lat}
-								<br />
-								Longitude: {coordinates.lng}
-							</span>
-							<p className={styles.mapText}>지도 서비스 준비 중</p>
-						</div>
-					</div>
+					<SpotMap spot={spot} initialCenter={coordinates} />
 				) : (
 					<div
 						className={`${styles.imageGrid} ${getGridClassName(
@@ -83,7 +75,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 							>
 								<BlurImage
 									src={photo.url}
-									alt={`${spot?.name} ${index + 1}`}
+									alt={`${spot?.title} ${index + 1}`}
 									fill
 									priority={index === 0}
 									sizes={index === 0 ? '66vw' : '33vw'}
@@ -103,7 +95,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 			<div className={styles.content}>
 				<div className={styles.contentHeader}>
 					<div className={styles.titleRow}>
-						<h1 className={styles.title}>{spot?.name}</h1>
+						<h1 className={styles.title}>{spot?.title}</h1>
 
 						<div className={styles.headerButtons}>
 							<button
