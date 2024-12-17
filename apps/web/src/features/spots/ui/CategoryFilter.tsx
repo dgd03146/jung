@@ -26,9 +26,9 @@ export function CategoryFilter() {
 		(value: string) => {
 			const params = new URLSearchParams(searchParams.toString());
 			if (value === 'all') {
-				params.delete('category');
+				params.delete('cat');
 			} else {
-				params.set('category', value);
+				params.set('cat', value);
 			}
 
 			return params.toString();
@@ -36,7 +36,7 @@ export function CategoryFilter() {
 		[searchParams],
 	);
 
-	const currentCategory = searchParams.get('category') || 'all';
+	const currentCategory = searchParams.get('cat') || 'all';
 
 	return (
 		<Box className={styles.container}>

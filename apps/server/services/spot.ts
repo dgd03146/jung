@@ -17,7 +17,7 @@ export const spotsService = {
 		try {
 			let query = supabase.from('spots').select('*', { count: 'exact' });
 
-			if (cat) {
+			if (cat && cat !== 'all') {
 				query = query.eq('category', cat);
 			}
 

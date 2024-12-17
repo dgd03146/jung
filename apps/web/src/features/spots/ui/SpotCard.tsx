@@ -3,7 +3,8 @@ import { Card, Flex } from '@jung/design-system';
 import Link from 'next/link';
 import { IoHeartOutline, IoLocationOutline } from 'react-icons/io5';
 import * as styles from './SpotCard.css';
-import type { Spot } from './SpotList';
+
+import type { Spot } from '@jung/shared/types';
 import { StarRating } from './StarRating';
 
 interface SpotCardProps {

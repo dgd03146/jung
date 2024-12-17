@@ -30,14 +30,17 @@ export const SpotSchema = z.object({
 	category: SpotCategorySchema,
 	created_at: z.string().datetime(),
 	updated_at: z.string().datetime(),
+	tags: z.string().array().optional(),
+	tips: z.string().array().optional(),
 });
 
 export const SpotQueryParamsSchema = z.object({
-	limit: z.number(),
+	limit: z.number().min(1).max(100).default(10),
 	cursor: z.string().optional(),
-	cat: SpotCategorySchema.optional(),
+	cat: z.string().optional(),
+	// cat: SpotCategorySchema.optional(),
 	q: z.string().optional(),
-	sort: z.enum(['latest', 'rating']).optional(),
+	sort: z.enum(['latest', 'rating', 'popular', 'oldest']).optional(),
 });
 
 export const SpotQueryResultSchema = z.object({

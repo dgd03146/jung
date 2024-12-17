@@ -10,20 +10,11 @@ import {
 	IoShareOutline,
 } from 'react-icons/io5';
 import * as styles from './SpotDetail.css';
-import { MOCK_SPOTS } from './SpotList';
+
+import { formatDate } from '@/fsd/shared';
+import { useGetSpotById } from '../api';
 import { SpotMap } from './SpotMap';
 import { StarRating } from './StarRating';
-
-export const MOCK_REVIEW = {
-	spot: MOCK_SPOTS[0],
-	visitDate: '2024.03.15',
-	personalRating: 4.5,
-	content:
-		'서울의 상징적인 랜드마크인 남산서울타워를 방문했습니다. 도시의 멋진 전경을 감상할 수 있는 특별한 경험이었습니다. 해질 무렵의 황금빛 도시 풍경은 정말 잊을 수 없는 순간이었죠.',
-	tags: ['야경', '전망', '데이트 코스'],
-	tips: ['평일 방문 추천', '날씨 맑은 날 방문하기', '석양 시간대 방문 추천'],
-	coordinates: { lat: 37.5511, lng: 126.9882 },
-} as const;
 
 interface SpotDetailProps {
 	spotId: string;
@@ -45,21 +36,14 @@ const getGridClassName = (totalPhotos: number) => {
 export function SpotDetail({ spotId }: SpotDetailProps) {
 	const router = useRouter();
 	const [showMap, setShowMap] = useState(false);
-	const {
-		spot,
-		visitDate,
-		personalRating,
-		content,
-		tags: highlights,
-		tips,
-		coordinates,
-	} = MOCK_REVIEW;
+	const results = useGetSpotById(spotId);
+	const spot = results[0];
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.imageSection}>
 				{showMap ? (
-					<SpotMap spot={spot} initialCenter={coordinates} />
+					<SpotMap spot={spot} initialCenter={spot.coordinates} />
 				) : (
 					<div
 						className={`${styles.imageGrid} ${getGridClassName(
@@ -116,8 +100,8 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 					</div>
 					<div className={styles.meta}>
 						<div className={styles.ratingRow}>
-							<StarRating value={personalRating} size='md' />
-							<time className={styles.date}>{visitDate}</time>
+							<StarRating value={spot.rating} size='md' />
+							<time className={styles.date}>{formatDate(spot.created_at)}</time>
 						</div>
 						<div className={styles.locationRow}>
 							<IoLocationOutline size={16} className={styles.locationIcon} />
@@ -125,7 +109,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 						</div>
 					</div>
 					<div className={styles.tags}>
-						{highlights.map((tag) => (
+						{spot.tags?.map((tag) => (
 							<span key={tag} className={styles.tag}>
 								# {tag}
 							</span>
@@ -134,12 +118,12 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 				</div>
 
 				<div className={styles.body}>
-					<p className={styles.description}>{content}</p>
+					<p className={styles.description}>{spot.description}</p>
 
 					<div className={styles.tips}>
 						<h2 className={styles.tipsTitle}>Tips</h2>
 						<ul className={styles.tipsList}>
-							{tips.map((tip) => (
+							{spot.tips?.map((tip) => (
 								<li key={tip} className={styles.tipItem}>
 									{tip}
 								</li>

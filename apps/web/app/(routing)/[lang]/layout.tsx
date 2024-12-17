@@ -1,7 +1,6 @@
 import {
 	ClientToastProvider,
 	DictionaryProvider,
-	GoogleMapsProvider,
 	KakaoProvider,
 	TrpcProvider,
 } from '@/fsd/app/providers';
@@ -24,7 +23,7 @@ export default async function RootLayout({ params, children }: Props) {
 			>
 				<ClientToastProvider>
 					<KakaoProvider />
-					<GoogleMapsProvider>{children}</GoogleMapsProvider>
+					{children}
 				</ClientToastProvider>
 
 				{/* Just for convenient switching between different routes */}

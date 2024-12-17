@@ -1,5 +1,5 @@
 import { SpotDetail } from '@/fsd/features/spots/ui';
-import { HydrateClient } from '@/fsd/shared/index.server';
+import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 
 export default async function SpotDetailPage({
 	params,
@@ -8,8 +8,7 @@ export default async function SpotDetailPage({
 }) {
 	const spotId = params.id;
 
-	// TODO: API 연동 시 활성화
-	// void trpc.spot.getSpotById.prefetch(spotId);
+	void trpc.spot.getSpotById.prefetch(spotId);
 
 	return (
 		<HydrateClient>

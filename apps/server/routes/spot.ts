@@ -1,7 +1,7 @@
-import { spotsService } from '@/services/spot';
 import { SpotQueryParamsSchema } from '@jung/shared/types';
 import { z } from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
+import { spotsService } from '../services/spot';
 
 export const spotRouter = router({
 	getAllSpots: publicProcedure

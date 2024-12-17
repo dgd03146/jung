@@ -107,7 +107,7 @@ export const slideUpList = style({
 	bottom: 0,
 	left: 0,
 	right: 0,
-	height: 'calc(100dvh - 220px)', // 20px 더 작게
+	height: 'calc(100dvh - 220px)',
 	backgroundColor: palette.white,
 	borderRadius: '20px 20px 0 0',
 	boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
@@ -123,29 +123,29 @@ export const slideUpList = style({
 		'screen and (min-width: 1920px)': {
 			left: '20px',
 			maxWidth: '400px',
-			height: 'calc(100dvh - 260px)', // 20px 더 작게
+			height: 'calc(100dvh - 260px)',
 			borderRadius: '20px',
 			margin: '20px',
 		},
 		'screen and (min-width: 1440px) and (max-width: 1919px)': {
 			left: '20px',
 			maxWidth: '400px',
-			height: 'calc(100dvh - 240px)', // 20px 더 작게
+			height: 'calc(100dvh - 240px)',
 			borderRadius: '20px',
 			margin: '20px',
 		},
 		'screen and (min-width: 768px) and (max-width: 1439px)': {
 			left: '20px',
 			maxWidth: '400px',
-			height: 'calc(100dvh - 220px)', // 20px 더 작게
+			height: 'calc(100dvh - 220px)',
 			borderRadius: '20px',
 			margin: '20px',
 		},
 		'screen and (max-width: 768px)': {
-			height: 'calc(100dvh - 260px)', // 20px 더 작게
+			height: 'calc(100dvh - 260px)',
 		},
 		'screen and (max-width: 480px)': {
-			height: 'calc(100dvh - 280px)', // 20px 더 작게
+			height: 'calc(100dvh - 280px)',
 		},
 	},
 });

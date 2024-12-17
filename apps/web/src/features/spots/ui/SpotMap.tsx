@@ -6,9 +6,10 @@ import {
 	Marker,
 	MarkerClusterer,
 	OverlayView,
+	useJsApiLoader,
 } from '@react-google-maps/api';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	MdForest, // park
 	MdLocalCafe, // local
@@ -20,7 +21,9 @@ import {
 	MdTheaterComedy, // culture
 } from 'react-icons/md';
 import { SpotCard } from './SpotCard';
-import type { Spot, SpotCategory } from './SpotList';
+
+import type { Spot } from '@jung/shared/types';
+import type { SpotCategory } from '@jung/shared/types';
 import * as styles from './SpotMap.css';
 
 interface SpotMapProps {
@@ -194,6 +197,13 @@ export function SpotMap({
 	onShowListClick,
 	isListVisible,
 }: SpotMapProps) {
+	const { isLoaded } = useJsApiLoader({
+		id: 'google-map-script',
+		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+	});
+
+	const [map, setMap] = useState<google.maps.Map | null>(null);
+
 	const [selectedMarker, setSelectedMarker] = useState<Spot | null>(null);
 	const [currentCenter, setCurrentCenter] =
 		useState<google.maps.LatLngLiteral | null>(null);
@@ -347,25 +357,30 @@ export function SpotMap({
 		);
 	}
 
-	const mapRef = useRef<google.maps.Map | null>(null);
+	const onLoad = useCallback(
+		function callback(map) {
+			// This is just an example of getting and using the map instance!!! don't just blindly copy!
+			const bounds = new window.google.maps.LatLngBounds(initialMapCenter);
+			map.fitBounds(bounds);
 
-	const onLoad = useCallback((map: google.maps.Map) => {
-		mapRef.current = map;
-	}, []);
+			setMap(map);
+		},
+		[initialMapCenter],
+	);
 
-	const onUnmount = useCallback(() => {
-		mapRef.current = null;
+	const onUnmount = useCallback(function callback(map) {
+		setMap(null);
 	}, []);
 
 	const onMapChange = useCallback(() => {
-		if (!mapRef.current) return;
+		if (!map) return;
 
-		const newCenter = mapRef.current.getCenter()?.toJSON();
-		const newZoom = mapRef.current.getZoom();
+		const newCenter = map.getCenter()?.toJSON();
+		const newZoom = map.getZoom();
 
 		if (newCenter) setCurrentCenter(newCenter);
 		if (newZoom) setCurrentZoom(newZoom);
-	}, []);
+	}, [map]);
 
 	const onMapClick = useCallback(() => {
 		setSelectedMarker(null);
@@ -379,80 +394,82 @@ export function SpotMap({
 
 	return (
 		<div className={styles.mapContainer}>
-			<GoogleMap
-				mapContainerClassName={styles.map}
-				center={currentCenter || initialMapCenter}
-				zoom={currentZoom || initialMapZoom}
-				onLoad={onLoad}
-				onUnmount={onUnmount}
-				onDragEnd={onMapChange}
-				onZoomChanged={onMapChange}
-				options={mapOptions}
-				onClick={onMapClick}
-			>
-				<MarkerClusterer
-					options={{
-						gridSize: 60,
-						minimumClusterSize: 3,
-						maxZoom: 10,
-						averageCenter: true,
-						ignoreHidden: false,
-						// zoomOnClick: true,
-
-						styles: [
-							{
-								textColor: '#FFFFFF',
-								textSize: 16,
-								height: 40,
-								width: 40,
-								className: styles.markerCluster,
-								url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-							},
-							{
-								textColor: '#FFFFFF',
-								textSize: 17,
-								height: 44,
-								width: 44,
-								className: `${styles.markerCluster} ${styles.markerClusterMedium}`,
-								url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-							},
-							{
-								textColor: '#FFFFFF',
-								textSize: 18,
-								height: 48,
-								width: 48,
-								className: `${styles.markerCluster} ${styles.markerClusterLarge}`,
-								url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-							},
-						],
-					}}
+			{isLoaded && (
+				<GoogleMap
+					mapContainerClassName={styles.map}
+					center={currentCenter || initialMapCenter}
+					zoom={currentZoom || initialMapZoom}
+					onLoad={onLoad}
+					onUnmount={onUnmount}
+					onDragEnd={onMapChange}
+					onZoomChanged={onMapChange}
+					options={mapOptions}
+					onClick={onMapClick}
 				>
-					{(clusterer) => (
-						<>
-							{markersData.map((markerSpot) => (
-								<CustomMarker
-									key={markerSpot.id}
-									title={markerSpot.title}
-									position={markerSpot.coordinates}
-									category={markerSpot.category}
-									isSelected={selectedMarker?.id === markerSpot.id}
-									onClick={() => handleMarkerClick(markerSpot)}
-									clusterer={clusterer}
-								/>
-							))}
-						</>
-					)}
-				</MarkerClusterer>
+					<MarkerClusterer
+						options={{
+							gridSize: 60,
+							minimumClusterSize: 3,
+							maxZoom: 10,
+							averageCenter: true,
+							ignoreHidden: false,
+							// zoomOnClick: true,
 
-				{selectedMarker && (
-					<InfoWindow
-						position={selectedMarker.coordinates}
-						onCloseClick={() => setSelectedMarker(null)}
+							styles: [
+								{
+									textColor: '#FFFFFF',
+									textSize: 16,
+									height: 40,
+									width: 40,
+									className: styles.markerCluster,
+									url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+								},
+								{
+									textColor: '#FFFFFF',
+									textSize: 17,
+									height: 44,
+									width: 44,
+									className: `${styles.markerCluster} ${styles.markerClusterMedium}`,
+									url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+								},
+								{
+									textColor: '#FFFFFF',
+									textSize: 18,
+									height: 48,
+									width: 48,
+									className: `${styles.markerCluster} ${styles.markerClusterLarge}`,
+									url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+								},
+							],
+						}}
 					>
-						<SpotCard spot={selectedMarker} variant='compact' />
-					</InfoWindow>
-				)}
-			</GoogleMap>
+						{(clusterer) => (
+							<>
+								{markersData.map((markerSpot) => (
+									<CustomMarker
+										key={markerSpot.id}
+										title={markerSpot.title}
+										position={markerSpot.coordinates}
+										category={markerSpot.category}
+										isSelected={selectedMarker?.id === markerSpot.id}
+										onClick={() => handleMarkerClick(markerSpot)}
+										clusterer={clusterer}
+									/>
+								))}
+							</>
+						)}
+					</MarkerClusterer>
+
+					{selectedMarker && (
+						<InfoWindow
+							position={selectedMarker.coordinates}
+							onCloseClick={() => setSelectedMarker(null)}
+						>
+							<SpotCard spot={selectedMarker} variant='compact' />
+						</InfoWindow>
+					)}
+				</GoogleMap>
+			)}
 
 			<button onClick={onShowListClick} className={styles.showListButton}>
 				{isListVisible ? 'Hide list' : 'Show list'}
