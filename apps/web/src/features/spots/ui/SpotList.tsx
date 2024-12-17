@@ -34,6 +34,8 @@ export interface Spot {
 		lng: number;
 	};
 	category: SpotCategory;
+	created_at?: string;
+	updated_at?: string;
 }
 
 export const MOCK_SPOTS: Spot[] = [
