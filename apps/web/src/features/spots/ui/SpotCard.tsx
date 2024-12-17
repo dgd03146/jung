@@ -1,10 +1,12 @@
 import { BlurImage } from '@/fsd/shared';
 import { Card, Flex } from '@jung/design-system';
 import Link from 'next/link';
-import { IoHeartOutline, IoLocationOutline } from 'react-icons/io5';
+import { IoLocationOutline } from 'react-icons/io5';
 import * as styles from './SpotCard.css';
 
 import type { Spot } from '@jung/shared/types';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useToggleSpotLike } from '../model';
 import { StarRating } from './StarRating';
 
 interface SpotCardProps {
@@ -13,6 +15,16 @@ interface SpotCardProps {
 }
 
 export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
+	const { toggleLike, getIsLiked } = useToggleSpotLike();
+
+	const isLiked = getIsLiked(spot.id);
+
+	const handleLikeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		event.stopPropagation();
+		toggleLike(spot.id);
+	};
+
 	return (
 		<Link
 			href={`/spots/${spot.id}`}
@@ -37,8 +49,12 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 						}
 					/>
 					<div className={styles.imageOverlay}>
-						<button className={styles.likeButton} type='button'>
-							<IoHeartOutline size={16} />
+						<button
+							className={styles.likeButton}
+							type='button'
+							onClick={handleLikeClick}
+						>
+							{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
 						</button>
 					</div>
 				</Card.Media>
