@@ -96,4 +96,66 @@ export const spotsService = {
 
 		return data;
 	},
+
+	async toggleLike({
+		spotId,
+		userId,
+	}: {
+		spotId: string;
+		userId: string;
+	}): Promise<Spot> {
+		const { data: spot, error: selectError } = await supabase
+			.from('spots')
+			.select('*')
+			.eq('id', spotId)
+			.single<Spot>();
+
+		if (selectError) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: `Failed to fetch spot: ${selectError.message}`,
+				cause: selectError,
+			});
+		}
+
+		if (!spot) {
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: 'Spot not found',
+			});
+		}
+
+		const hasLiked = spot.liked_by.includes(userId);
+		const newLikes = hasLiked ? spot.likes - 1 : spot.likes + 1;
+		const newLikedBy = hasLiked
+			? spot.liked_by.filter((id) => id !== userId)
+			: [...spot.liked_by, userId];
+
+		const { data, error } = await supabase
+			.from('spots')
+			.update({
+				likes: newLikes,
+				liked_by: newLikedBy,
+			})
+			.eq('id', spotId)
+			.select()
+			.single<Spot>();
+
+		if (error) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: `Failed to toggle like: ${error.message}`,
+				cause: error,
+			});
+		}
+
+		if (!data) {
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: 'Spot not found or like could not be toggled',
+			});
+		}
+
+		return data;
+	},
 };

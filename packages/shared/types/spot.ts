@@ -32,6 +32,8 @@ export const SpotSchema = z.object({
 	updated_at: z.string().datetime(),
 	tags: z.string().array().optional(),
 	tips: z.string().array().optional(),
+	likes: z.number(),
+	liked_by: z.array(z.string()),
 });
 
 export const SpotQueryParamsSchema = z.object({
