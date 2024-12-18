@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// Supabase 테이블 스키마
 export const PhotoSchema = z.object({
 	id: z.string(),
 	title: z.string(),
@@ -18,7 +17,6 @@ export const PhotoSchema = z.object({
 	liked_by: z.array(z.string()).optional(),
 });
 
-// Supabase 테이블 타입
 export type Photo = z.infer<typeof PhotoSchema>;
 
 export interface CustomPhoto {

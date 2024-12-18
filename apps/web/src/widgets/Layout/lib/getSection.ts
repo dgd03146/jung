@@ -3,7 +3,10 @@ export const getSection = (pathname: string) => {
 	const paths = pathWithoutLocale.split('/').filter(Boolean);
 
 	// blog/[id]와 같은 경우는 숨기기
-	if (paths[0] === 'blog' && paths.length > 1) {
+	if (
+		(paths[0] === 'blog' && paths.length > 1) ||
+		(paths[0] === 'spots' && paths.length > 1)
+	) {
 		return '';
 	}
 
