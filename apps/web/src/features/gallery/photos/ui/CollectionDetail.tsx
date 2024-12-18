@@ -64,8 +64,6 @@ interface CollectionDetailProps {
 }
 
 export function CollectionDetail({ id }: CollectionDetailProps) {
-	console.log(id, 'id');
-
 	const [data] = useGetCollectionById(id);
 	const { collection, photos } = data;
 

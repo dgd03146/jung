@@ -1,7 +1,6 @@
 'use client';
 
 import { BlurImage } from '@/fsd/shared/ui';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
 	IoImageOutline,
@@ -11,8 +10,13 @@ import {
 } from 'react-icons/io5';
 import * as styles from './SpotDetail.css';
 
-import { formatDate } from '@/fsd/shared';
+import { formatDate } from '@/fsd/shared/lib';
+import { Flex } from '@jung/design-system/components';
+import { FaRegHeart } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 import { useGetSpotById } from '../api';
+import { useShareSpot } from '../model/useShareSpot';
+import { useToggleSpotLike } from '../model/useToggleSpotLike';
 import { SpotMap } from './SpotMap';
 import { StarRating } from './StarRating';
 
@@ -34,7 +38,11 @@ const getGridClassName = (totalPhotos: number) => {
 };
 
 export function SpotDetail({ spotId }: SpotDetailProps) {
-	const router = useRouter();
+	const { toggleLike, getIsLiked } = useToggleSpotLike();
+	const { handleShare } = useShareSpot();
+
+	const isLiked = getIsLiked(spotId);
+
 	const [showMap, setShowMap] = useState(false);
 	const results = useGetSpotById(spotId);
 	const spot = results[0];
@@ -84,6 +92,13 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 						<div className={styles.headerButtons}>
 							<button
 								className={styles.iconButton}
+								onClick={() => toggleLike(spotId)}
+							>
+								{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+							</button>
+
+							<button
+								className={styles.iconButton}
 								onClick={() => setShowMap((prev) => !prev)}
 								title={showMap ? '사진 보기' : '지도 보기'}
 							>
@@ -93,20 +108,38 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 									<IoMapOutline size={18} />
 								)}
 							</button>
-							<button className={styles.iconButton}>
+							<button
+								className={styles.iconButton}
+								onClick={() =>
+									handleShare({
+										title: spot.title,
+										description: spot.description,
+										imageUrl: spot.photos[0]?.url,
+										link: {
+											mobileWebUrl: window.location.href,
+											webUrl: window.location.href,
+										},
+									})
+								}
+								aria-label='Share spot'
+							>
 								<IoShareOutline size={18} />
 							</button>
 						</div>
 					</div>
+
 					<div className={styles.meta}>
 						<div className={styles.ratingRow}>
 							<StarRating value={spot.rating} size='md' />
+							<span className={styles.likesCount}>{spot.likes} Likes</span>
+						</div>
+						<Flex justify='space-between'>
+							<Flex gap='1' alignItems='center'>
+								<IoLocationOutline size={16} className={styles.locationIcon} />
+								<span className={styles.location}>{spot?.address}</span>
+							</Flex>
 							<time className={styles.date}>{formatDate(spot.created_at)}</time>
-						</div>
-						<div className={styles.locationRow}>
-							<IoLocationOutline size={16} className={styles.locationIcon} />
-							<span className={styles.location}>{spot?.address}</span>
-						</div>
+						</Flex>
 					</div>
 					<div className={styles.tags}>
 						{spot.tags?.map((tag) => (

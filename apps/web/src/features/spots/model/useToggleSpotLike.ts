@@ -18,6 +18,8 @@ export const useToggleSpotLike = () => {
 	const pathname = usePathname();
 	const router = useRouter();
 
+	const isDetailPage = pathname.includes('/spots/');
+
 	const toggleLike = async (spotId: string) => {
 		if (!user) {
 			const confirmed = window.confirm(
@@ -32,8 +34,14 @@ export const useToggleSpotLike = () => {
 			return false;
 		}
 
-		const allSpots = utils.spot.getAllSpots.getInfiniteData(spotQueryParams);
-		const spotData = utils.spot.getSpotById.getData(spotId);
+		const spotData = isDetailPage
+			? utils.spot.getSpotById.getData(spotId)
+			: null;
+
+		const allSpots = !isDetailPage
+			? utils.spot.getAllSpots.getInfiniteData(spotQueryParams)
+			: null;
+
 		const previousData =
 			spotData ||
 			allSpots?.pages
@@ -47,7 +55,7 @@ export const useToggleSpotLike = () => {
 		const isLiked = previousData?.liked_by?.includes(user.id) || false;
 
 		// 낙관적 업데이트: 상세 페이지에서 좋아요를 누를 때
-		if (spotData) {
+		if (spotData && isDetailPage) {
 			utils.spot.getSpotById.setData(spotId, (old) => {
 				if (!old) return old;
 
@@ -62,7 +70,7 @@ export const useToggleSpotLike = () => {
 		}
 
 		// 낙관적 업데이트: 리스트 페이지에서 좋아요를 누를 때
-		if (allSpots) {
+		if (allSpots && !isDetailPage) {
 			utils.spot.getAllSpots.setInfiniteData(spotQueryParams, (old) => {
 				if (!old) return old;
 
@@ -100,7 +108,7 @@ export const useToggleSpotLike = () => {
 
 	const getIsLiked = (spotId: string) => {
 		const spotData = utils.spot.getSpotById.getData(spotId);
-		if (spotData) {
+		if (spotData && isDetailPage) {
 			return !!spotData.liked_by?.includes(user?.id ?? '');
 		}
 

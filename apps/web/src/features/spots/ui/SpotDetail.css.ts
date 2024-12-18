@@ -70,6 +70,12 @@ export const iconButton = style({
 	},
 });
 
+export const likesCount = style({
+	fontSize: '14px',
+	color: '#0142C0',
+	fontWeight: 500,
+});
+
 export const headerButtons = style({
 	display: 'flex',
 	gap: '8px',
@@ -117,21 +123,13 @@ export const date = style({
 	borderRadius: '8px',
 });
 
-export const locationRow = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '8px',
-	color: '#718096',
-});
-
 export const locationIcon = style({
 	color: '#5B86E5', // primary200
 	flexShrink: 0,
 });
 
 export const location = style({
-	fontSize: '15px',
-	color: '#4a5568',
+	fontSize: '14px',
 });
 
 export const tags = style({
