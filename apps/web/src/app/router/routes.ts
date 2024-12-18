@@ -22,6 +22,10 @@ export const PRIMARY_NAVIGATION: RouteMap = {
 		label: 'spots.',
 		path: '/spots',
 	},
+	ABOUT: {
+		label: 'about.',
+		path: '/about',
+	},
 	VISITORS: {
 		label: 'visitors.',
 		path: '/visitors',
@@ -29,14 +33,11 @@ export const PRIMARY_NAVIGATION: RouteMap = {
 };
 
 export const SECONDARY_NAVIGATION: RouteMap = {
-	SEARCH: {
-		label: 'search.',
-		path: '/search',
+	TAGS: {
+		label: 'tags.',
+		path: '/tags',
 	},
-	// VISITORS: {
-	// 	label: 'visitors.',
-	// 	path: '/visitors',
-	// },
+
 	QUIZ: {
 		label: 'quiz.',
 		path: '/quiz',
