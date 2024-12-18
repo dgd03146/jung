@@ -16,7 +16,14 @@ export interface Message {
 		avatar: string;
 	};
 	createdAt: string;
-	backgroundColor?: string;
+	backgroundColor?:
+		| '#FFFFFF'
+		| '#FFF3E0'
+		| '#E8F5E9'
+		| '#E3F2FD'
+		| '#F3E5F5'
+		| '#FFF8E1'
+		| '#E0F7FA';
 	likes: number;
 	emoji?: string;
 }
@@ -28,9 +35,21 @@ const COLORS = [
 	'#F3E5F5', // 연한 보라
 	'#FFF8E1', // 연한 노랑
 	'#E0F7FA', // 연한 청록
-];
+] as const;
 
-const EMOJIS = ['💖', '✨', '🌟', '🎉', '👋', '🙌', '💫', '💝'];
+const EMOJIS = [
+	'💖',
+	'✨',
+	'👻',
+	'🎉',
+	'👋',
+	'🙌',
+	'💫',
+	'💭',
+	'💀',
+	'👽',
+	'💩',
+];
 
 // 하드코딩된 mock messages
 export const MOCK_MESSAGES: Message[] = [
@@ -124,7 +143,9 @@ const MessageCard = ({
 				delay: index * 0.05,
 				ease: 'easeOut',
 			}}
-			className={styles.messageCard}
+			className={styles.messageCard({
+				backgroundColor: message.backgroundColor,
+			})}
 		>
 			{message.emoji && (
 				<div className={styles.messageEmoji}>{message.emoji}</div>

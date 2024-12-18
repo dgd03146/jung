@@ -6,10 +6,23 @@ import { useState } from 'react';
 import * as styles from './MessageForm.css';
 
 const EMOJIS = ['💖', '✨', '🌟', '🎉', '👋', '🙌', '💫', '💝'];
+const COLORS = [
+	'#FFFFFF',
+	'#FFF3E0', // 연한 주황
+	'#E8F5E9', // 연한 초록
+	'#E3F2FD', // 연한 파랑
+	'#F3E5F5', // 연한 보라
+	'#FFF8E1', // 연한 노랑
+	'#E0F7FA', // 연한 청록
+] as const;
+
+type ColorType = (typeof COLORS)[number];
 
 export const MessageForm = () => {
 	const [message, setMessage] = useState('');
 	const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+	const [selectedColor, setSelectedColor] = useState<ColorType>(COLORS[0]);
+
 	const { user } = useSupabaseAuth();
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +60,9 @@ export const MessageForm = () => {
 				onChange={(e) => setMessage(e.target.value)}
 				placeholder='Write your message here... (max 200 characters)'
 				maxLength={200}
-				className={styles.textarea}
+				className={styles.textarea({
+					backgroundColor: selectedColor,
+				})}
 			/>
 			<div className={styles.formFooter}>
 				<div className={styles.emojiPicker}>
@@ -62,6 +77,20 @@ export const MessageForm = () => {
 						>
 							{emoji}
 						</button>
+					))}
+				</div>
+				<div className={styles.colorPicker}>
+					{COLORS.map((color) => (
+						<button
+							key={color}
+							type='button'
+							className={`${styles.colorButton} ${
+								selectedColor === color ? styles.colorButtonSelected : ''
+							}`}
+							style={{ backgroundColor: color }}
+							onClick={() => setSelectedColor(color)}
+							aria-label={`Select color ${color}`}
+						/>
 					))}
 				</div>
 				<button

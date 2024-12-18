@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 
 const PRIMARY_COLOR = '#0142C0';
 const PRIMARY_LIGHT = '#E5EDFF';
@@ -12,19 +13,34 @@ export const messageWallContainer = style({
 	margin: '0 auto',
 });
 
-export const messageCard = style({
-	borderRadius: '16px',
-	padding: '1.5rem',
-	backgroundColor: '#FFFFFF',
-	boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-	transition: 'all 0.2s ease',
-	border: '1px solid #F0F0F0',
-	position: 'relative',
-	height: '100%',
+export const messageCard = recipe({
+	base: {
+		borderRadius: '16px',
+		padding: '1rem',
+		boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+		transition: 'all 0.2s ease',
+		border: '1px solid #F0F0F0',
+		position: 'relative',
+		height: '100%',
 
-	':hover': {
-		boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
-		borderColor: PRIMARY_LIGHT,
+		':hover': {
+			boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
+			borderColor: PRIMARY_LIGHT,
+		},
+	},
+	variants: {
+		backgroundColor: {
+			'#FFFFFF': { backgroundColor: '#FFFFFF' },
+			'#FFF3E0': { backgroundColor: '#FFF3E0' },
+			'#E8F5E9': { backgroundColor: '#E8F5E9' },
+			'#E3F2FD': { backgroundColor: '#E3F2FD' },
+			'#F3E5F5': { backgroundColor: '#F3E5F5' },
+			'#FFF8E1': { backgroundColor: '#FFF8E1' },
+			'#E0F7FA': { backgroundColor: '#E0F7FA' },
+		},
+	},
+	defaultVariants: {
+		backgroundColor: '#FFFFFF',
 	},
 });
 
