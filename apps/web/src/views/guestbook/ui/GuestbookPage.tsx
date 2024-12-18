@@ -1,10 +1,10 @@
 'use client';
 
-import { MessageForm, MessageWall } from '@/fsd/features/visitors/ui';
+import { MessageForm, MessageWall } from '@/fsd/features/guestbook/ui';
 import { motion } from 'framer-motion';
-import * as styles from './VisitorsPage.css';
+import * as styles from './GuestbookPage.css';
 
-const VisitorsPage = () => {
+const GuestbookPage = () => {
 	const containerAnimation = {
 		hidden: { opacity: 0 },
 		visible: {
@@ -44,9 +44,6 @@ const VisitorsPage = () => {
 					<motion.p variants={itemAnimation} className={styles.subtitle}>
 						Share Your Thoughts ✨
 					</motion.p>
-					<motion.p variants={itemAnimation} className={styles.description}>
-						Leave a message to the owner of this website.
-					</motion.p>
 				</div>
 
 				<motion.div variants={itemAnimation}>
@@ -61,4 +58,4 @@ const VisitorsPage = () => {
 	);
 };
 
-export default VisitorsPage;
+export default GuestbookPage;

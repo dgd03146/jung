@@ -2,7 +2,7 @@ export const getSection = (pathname: string) => {
 	const pathWithoutLocale = pathname.split('/').slice(2).join('/');
 	const paths = pathWithoutLocale.split('/').filter(Boolean);
 
-	if (paths[0] === 'visitors') {
+	if (paths[0] === 'guestbook') {
 		return '';
 	}
 

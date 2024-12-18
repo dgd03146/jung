@@ -5,7 +5,7 @@ const PRIMARY_HOVER = '#0136A3';
 
 export const form = style({
 	maxWidth: '600px',
-	margin: '0 auto 3rem',
+	margin: '0 auto 2rem',
 	padding: '2rem',
 	backgroundColor: 'white',
 	borderRadius: '16px',
@@ -18,8 +18,8 @@ export const form = style({
 
 export const loginContainer = style({
 	maxWidth: '600px',
-	margin: '0 auto 3rem',
-	padding: '3rem 2rem',
+	margin: '0 auto 2rem',
+	padding: '2rem 1rem',
 	backgroundColor: 'white',
 	borderRadius: '16px',
 	boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
@@ -33,13 +33,11 @@ export const loginContent = style({
 	alignItems: 'center',
 });
 
-// globalStyle을 사용하여 h3와 p 스타일 적용
 globalStyle(`${loginContent} h3`, {
 	fontSize: '1.5rem',
 	fontWeight: '600',
 	color: '#1f2937',
 	marginBottom: '0.5rem',
-	fontFamily: "'Playfair Display', serif",
 });
 
 globalStyle(`${loginContent} p`, {
@@ -74,7 +72,7 @@ export const textarea = style({
 	width: '100%',
 	padding: '1rem',
 	borderRadius: '12px',
-	border: '2px solid #e5e7eb',
+	border: '1px solid #e5e7eb',
 	resize: 'none',
 	fontSize: '1rem',
 	lineHeight: '1.6',

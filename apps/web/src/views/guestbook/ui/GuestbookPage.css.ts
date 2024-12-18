@@ -20,7 +20,7 @@ export const content = style({
 
 export const header = style({
 	textAlign: 'center',
-	padding: '0 0 4rem',
+	padding: '0 0 2rem',
 	position: 'relative',
 	':after': {
 		content: '""',
@@ -65,13 +65,4 @@ export const subtitle = style({
 	marginBottom: '1rem',
 	fontFamily: "'Inter', sans-serif",
 	opacity: 0.8,
-});
-
-export const description = style({
-	fontSize: '1rem',
-	color: '#4B5563',
-	maxWidth: '600px',
-	margin: '0 auto',
-	lineHeight: '1.8',
-	fontFamily: "'Inter', sans-serif",
 });
