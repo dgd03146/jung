@@ -2,7 +2,10 @@ export const getSection = (pathname: string) => {
 	const pathWithoutLocale = pathname.split('/').slice(2).join('/');
 	const paths = pathWithoutLocale.split('/').filter(Boolean);
 
-	// "about" 페이지는 숨기기
+	if (paths[0] === 'visitors') {
+		return '';
+	}
+
 	if (paths[0] === 'about') {
 		return '';
 	}

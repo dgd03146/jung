@@ -5,3 +5,4 @@ export * from './blog/comment';
 export * from './auth';
 export * from './gallery/photos';
 export * from './spots';
+export * from './visitors';
