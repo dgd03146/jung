@@ -55,12 +55,14 @@ export const MessageWall = () => {
 	}
 
 	return (
-		<div className={styles.messageWallContainer}>
-			{messages.map((message, index) => (
-				<MessageCard key={message.id} message={message} index={index} />
-			))}
-
+		<>
+			<div className={styles.messageWallContainer}>
+				{messages.map((message, index) => (
+					<MessageCard key={message.id} message={message} index={index} />
+				))}
+			</div>
 			<Box
+				margin='auto'
 				ref={ref}
 				width='full'
 				minHeight='10'
@@ -70,6 +72,6 @@ export const MessageWall = () => {
 			>
 				{isFetchingNextPage && <LoadingSpinner size='small' />}
 			</Box>
-		</div>
+		</>
 	);
 };

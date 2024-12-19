@@ -7,11 +7,12 @@ export const guestbookRouter = router({
 		.input(
 			z.object({
 				limit: z.number().min(1).max(100).default(9),
-				cursor: z.number().optional(),
+				cursor: z.string().uuid().optional(),
 			}),
 		)
 		.query(async ({ input }) => {
 			const { limit, cursor } = input;
+
 			return guestbookService.findMany({ limit, cursor });
 		}),
 

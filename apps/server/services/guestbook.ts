@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabase';
 
 type QueryParams = {
 	limit: number;
-	cursor?: number;
+	cursor?: string;
 };
 
 const MAX_CONTENT_LENGTH = 50;
@@ -19,8 +19,6 @@ export const guestbookService = {
 	}: QueryParams): Promise<GuestbookQueryResult> {
 		try {
 			let query = supabase.from('guestbook').select('*', { count: 'exact' });
-
-			query = query.order('created_at', { ascending: false });
 
 			if (cursor) {
 				const { data: cursorMessage } = await supabase
@@ -34,6 +32,7 @@ export const guestbookService = {
 				}
 			}
 
+			query = query.order('created_at', { ascending: false });
 			query = query.limit(limit);
 
 			const { data, error } = await query.returns<GuestbookMessage[]>();
@@ -53,10 +52,8 @@ export const guestbookService = {
 				};
 			}
 
-			const hasNextPage = data.length === limit;
 			const lastItem = data[data.length - 1];
-
-			const nextCursor = hasNextPage && lastItem ? Number(lastItem.id) : null;
+			const nextCursor = data.length === limit && lastItem ? lastItem.id : null;
 
 			return {
 				items: data,

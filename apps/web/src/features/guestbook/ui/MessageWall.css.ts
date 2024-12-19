@@ -15,7 +15,7 @@ export const messageWallContainer = style({
 	gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
 	gap: '1.25rem',
 	padding: '1rem 0',
-	maxWidth: '1200px',
+
 	margin: '0 auto',
 });
 

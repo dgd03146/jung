@@ -3,7 +3,7 @@ import { trpc } from '@/fsd/shared';
 export function useGetGuestbookMessages() {
 	return trpc.guestbook.getAllMessages.useSuspenseInfiniteQuery(
 		{
-			limit: 9,
+			limit: 6,
 		},
 		{
 			getNextPageParam: (lastPage) => {

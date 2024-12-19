@@ -19,7 +19,7 @@ export const CreateGuestbookMessageSchema = z.object({
 
 export const GuestbookQueryResultSchema = z.object({
 	items: z.array(GuestbookMessageSchema),
-	nextCursor: z.number().nullable(),
+	nextCursor: z.string().uuid().nullable(),
 });
 
 export type GuestbookMessage = z.infer<typeof GuestbookMessageSchema>;
