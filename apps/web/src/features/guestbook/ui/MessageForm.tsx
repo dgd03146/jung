@@ -5,7 +5,7 @@ import { useSupabaseAuth } from '@/fsd/shared';
 import { useState } from 'react';
 import * as styles from './MessageForm.css';
 
-const EMOJIS = ['💖', '✨', '🌟', '🎉', '👋', '🙌', '💫', '💝'];
+const EMOJIS = ['💖', '✨', '👻', '🎉', '👋', '🙌', '💫', '💭', '💀', '👽'];
 const COLORS = [
 	'#FFFFFF',
 	'#FFF3E0', // 연한 주황
