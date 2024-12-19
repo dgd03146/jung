@@ -1,36 +1,41 @@
 'use client';
 
-import { MessageForm, MessageWall } from '@/fsd/features/guestbook/ui';
+import {
+	MessageForm,
+	MessageWall,
+	MessageWallError,
+} from '@/fsd/features/guestbook/ui';
 import { LoadingSpinner } from '@/fsd/shared';
+import { ErrorBoundary } from '@jung/shared/ui';
 import { motion } from 'framer-motion';
 import { Suspense } from 'react';
 import * as styles from './GuestbookPage.css';
 
+const containerAnimation = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			duration: 0.5,
+			staggerChildren: 0.2,
+		},
+	},
+};
+
+const itemAnimation = {
+	hidden: { opacity: 0, y: 20 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			type: 'spring',
+			damping: 20,
+			stiffness: 100,
+		},
+	},
+};
+
 const GuestbookPage = () => {
-	const containerAnimation = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				duration: 0.5,
-				staggerChildren: 0.2,
-			},
-		},
-	};
-
-	const itemAnimation = {
-		hidden: { opacity: 0, y: 20 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				type: 'spring',
-				damping: 20,
-				stiffness: 100,
-			},
-		},
-	};
-
 	return (
 		<div className={styles.container}>
 			<motion.div
@@ -53,9 +58,13 @@ const GuestbookPage = () => {
 				</motion.div>
 
 				<motion.div variants={itemAnimation}>
-					<Suspense fallback={<LoadingSpinner />}>
-						<MessageWall />
-					</Suspense>
+					<ErrorBoundary
+						fallback={(error) => <MessageWallError error={error} />}
+					>
+						<Suspense fallback={<LoadingSpinner />}>
+							<MessageWall />
+						</Suspense>
+					</ErrorBoundary>
 				</motion.div>
 			</motion.div>
 		</div>
