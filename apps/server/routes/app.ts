@@ -1,4 +1,5 @@
 import { router } from '../lib/trpc';
+import { guestbookRouter } from './guestbook';
 import { photoCollectionsRouter } from './photo_collections';
 import { photosRouter } from './photos';
 import { postRouter } from './post';
@@ -11,6 +12,7 @@ export const appRouter = router({
 	photos: photosRouter,
 	photoCollections: photoCollectionsRouter,
 	spot: spotRouter,
+	guestbook: guestbookRouter,
 });
 
 export type AppRouter = typeof appRouter;

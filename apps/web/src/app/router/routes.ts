@@ -26,22 +26,21 @@ export const PRIMARY_NAVIGATION: RouteMap = {
 		label: 'about.',
 		path: '/about',
 	},
-	VISITORS: {
-		label: 'visitors.',
-		path: '/visitors',
+	GUESTBOOK: {
+		label: 'guestbook.',
+		path: '/guestbook',
 	},
 };
 
 export const SECONDARY_NAVIGATION: RouteMap = {
-	TAGS: {
-		label: 'tags.',
-		path: '/tags',
-	},
-
-	QUIZ: {
-		label: 'quiz.',
-		path: '/quiz',
-	},
+	// TAGS: {
+	// 	label: 'tags.',
+	// 	path: '/tags',
+	// },
+	// QUIZ: {
+	// 	label: 'quiz.',
+	// 	path: '/quiz',
+	// },
 };
 
 export const PRIMARY_NAV_LIST: RouteList = Object.entries(

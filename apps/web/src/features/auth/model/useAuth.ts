@@ -9,14 +9,10 @@ export const useAuth = () => {
 		const searchParams = new URLSearchParams(window.location.search);
 		const next = searchParams.get('next');
 
-		console.log('next parameter in useAuth:', next);
-
 		const redirectTo = `${location.origin}${location.pathname
 			.split('/')
 			.slice(0, 2)
 			.join('/')}/auth/callback?next=${encodeURIComponent(next || '/')}`;
-
-		console.log('redirectTo:', redirectTo);
 
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider,
