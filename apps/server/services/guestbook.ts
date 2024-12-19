@@ -17,38 +17,58 @@ export const guestbookService = {
 		limit,
 		cursor,
 	}: QueryParams): Promise<GuestbookQueryResult> {
-		let query = supabase.from('guestbook').select('*', { count: 'exact' });
+		try {
+			let query = supabase.from('guestbook').select('*', { count: 'exact' });
 
-		query = query.order('created_at', { ascending: false });
+			query = query.order('created_at', { ascending: false });
 
-		if (cursor) {
-			query = query.gt('id', cursor);
-		}
-		query = query.limit(limit);
+			if (cursor) {
+				const { data: cursorMessage } = await supabase
+					.from('guestbook')
+					.select('created_at')
+					.eq('id', cursor)
+					.single();
 
-		const { data, error } = await query.returns<GuestbookMessage[]>();
+				if (cursorMessage) {
+					query = query.lt('created_at', cursorMessage.created_at);
+				}
+			}
 
-		if (error) {
+			query = query.limit(limit);
+
+			const { data, error } = await query.returns<GuestbookMessage[]>();
+
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch messages. Please try again later.',
+					cause: error,
+				});
+			}
+
+			if (!data || data.length === 0) {
+				return {
+					items: [],
+					nextCursor: null,
+				};
+			}
+
+			const hasNextPage = data.length === limit;
+			const lastItem = data[data.length - 1];
+
+			const nextCursor = hasNextPage && lastItem ? Number(lastItem.id) : null;
+
+			return {
+				items: data,
+				nextCursor,
+			};
+		} catch (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to fetch messages. Please try again later.',
+				message: 'Failed to fetch messages',
 				cause: error,
 			});
 		}
-
-		if (!data || data.length === 0) {
-			return {
-				items: [],
-				nextCursor: null,
-			};
-		}
-
-		const nextCursor = Number(data[data.length - 1]?.id) ?? null;
-
-		return {
-			items: data,
-			nextCursor,
-		};
 	},
 
 	async fetchUserInfo(userId: string) {

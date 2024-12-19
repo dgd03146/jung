@@ -11,20 +11,16 @@ export const GuestbookMessageSchema = z.object({
 	emoji: z.string().optional(),
 });
 
-export type GuestbookMessage = z.infer<typeof GuestbookMessageSchema>;
-
 export const CreateGuestbookMessageSchema = z.object({
 	content: z.string().min(1).max(50),
 	backgroundColor: GuestbookMessageSchema.shape.background_color,
 	emoji: GuestbookMessageSchema.shape.emoji,
 });
 
-export const GuestbookQuerySchema = z.object({
-	page: z.number().min(1).default(1),
-	limit: z.number().min(1).max(50).default(10),
+export const GuestbookQueryResultSchema = z.object({
+	items: z.array(GuestbookMessageSchema),
+	nextCursor: z.number().nullable(),
 });
 
-export interface GuestbookQueryResult {
-	items: GuestbookMessage[];
-	nextCursor: number | null;
-}
+export type GuestbookMessage = z.infer<typeof GuestbookMessageSchema>;
+export type GuestbookQueryResult = z.infer<typeof GuestbookQueryResultSchema>;

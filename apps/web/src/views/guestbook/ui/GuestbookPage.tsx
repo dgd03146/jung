@@ -1,7 +1,9 @@
 'use client';
 
 import { MessageForm, MessageWall } from '@/fsd/features/guestbook/ui';
+import { LoadingSpinner } from '@/fsd/shared';
 import { motion } from 'framer-motion';
+import { Suspense } from 'react';
 import * as styles from './GuestbookPage.css';
 
 const GuestbookPage = () => {
@@ -51,7 +53,9 @@ const GuestbookPage = () => {
 				</motion.div>
 
 				<motion.div variants={itemAnimation}>
-					<MessageWall />
+					<Suspense fallback={<LoadingSpinner />}>
+						<MessageWall />
+					</Suspense>
 				</motion.div>
 			</motion.div>
 		</div>
