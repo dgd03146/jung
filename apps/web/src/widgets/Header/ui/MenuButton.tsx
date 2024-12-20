@@ -1,4 +1,5 @@
 import { Button, Typography } from '@jung/design-system/components';
+import { logo } from './Navbar.css';
 
 interface Props {
 	isMenuOpen: boolean;
@@ -15,8 +16,9 @@ const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 		<Typography.Text
 			level={1}
 			color={{ base: isMenuOpen ? 'white' : 'primary', hover: 'primary200' }}
+			className={logo}
 		>
-			{isMenuOpen ? 'close.' : 'menu.'}
+			{isMenuOpen ? 'CLOSE' : 'MENU'}
 		</Typography.Text>
 	</Button>
 );

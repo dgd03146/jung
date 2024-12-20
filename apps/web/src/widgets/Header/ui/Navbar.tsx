@@ -50,8 +50,8 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			>
 				{!isMenuOpen && (
 					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
-						<Typography.Text level={1} color='primary'>
-							jung.
+						<Typography.Text level={1} color='primary' className={styles.logo}>
+							JUNG
 						</Typography.Text>
 					</Link>
 				)}

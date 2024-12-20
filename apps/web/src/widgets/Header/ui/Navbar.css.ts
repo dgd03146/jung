@@ -86,6 +86,10 @@ export const logoWrapper = recipe({
 	},
 });
 
+export const logo = style({
+	fontFamily: 'var(--font-bebas)',
+});
+
 export const menuButtonWrapper = style({
 	position: 'relative',
 	transition: 'transform 0.2s ease',

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaLinkedin } from 'react-icons/fa';
 import { FaGithub } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
+import { logo } from '../../Header/ui/Navbar.css';
 
 const Footer = () => {
 	return (
@@ -19,8 +20,8 @@ const Footer = () => {
 			zIndex='10'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>
-				<Typography.SubText level={2} color='primary'>
-					ⓒ 2024. jung. All rights reserved.
+				<Typography.SubText level={2} color='primary' className={logo}>
+					ⓒ 2024. Jung. All rights reserved.
 				</Typography.SubText>
 
 				<Flex columnGap='4'>

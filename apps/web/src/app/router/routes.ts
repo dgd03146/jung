@@ -11,28 +11,35 @@ type RouteList = (RouteItem & { id: string })[];
 
 export const PRIMARY_NAVIGATION: RouteMap = {
 	BLOG: {
-		label: 'blog.',
+		label: 'blog',
 		path: '/blog',
 	},
 	GALLERY: {
-		label: 'gallery.',
+		label: 'gallery',
 		path: '/gallery',
 	},
 	FOOD: {
-		label: 'spots.',
+		label: 'spots',
 		path: '/spots',
 	},
-	ABOUT: {
-		label: 'about.',
-		path: '/about',
-	},
+
 	GUESTBOOK: {
-		label: 'guestbook.',
+		label: 'guestbook',
 		path: '/guestbook',
 	},
 };
 
 export const SECONDARY_NAVIGATION: RouteMap = {
+	ABOUT: {
+		label: 'about',
+		path: '/about',
+	},
+
+	LOGIN: {
+		label: 'login',
+		path: '/login',
+	},
+
 	// TAGS: {
 	// 	label: 'tags.',
 	// 	path: '/tags',

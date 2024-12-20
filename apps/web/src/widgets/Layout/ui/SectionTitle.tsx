@@ -4,7 +4,7 @@ import { Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getSection } from '../lib/getSection';
-
+import * as styles from './SectionTitle.css';
 export function SectionTitle() {
 	const pathname = usePathname();
 	const isHome = pathname.length === 3;
@@ -18,7 +18,12 @@ export function SectionTitle() {
 	if (hasSlash) {
 		const [mainSection, subSection] = section.split('/');
 		return (
-			<Flex alignItems='center' gap='2' marginBottom='6'>
+			<Flex
+				alignItems='center'
+				gap='2'
+				marginBottom='6'
+				className={styles.sectionTitle}
+			>
 				<Link
 					href={`/${mainSection?.toLowerCase()}`}
 					style={{ display: 'flex', alignItems: 'center' }}
@@ -41,8 +46,8 @@ export function SectionTitle() {
 	}
 
 	return (
-		<Link href={`/${section?.toLowerCase()}`}>
-			<Typography.Heading level={4} color='primary' marginBottom='6'>
+		<Link href={`/${section?.toLowerCase()}`} className={styles.sectionTitle}>
+			<Typography.Heading level={1} color='primary' marginBottom='6'>
 				{section}.
 			</Typography.Heading>
 		</Link>
