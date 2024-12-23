@@ -2,7 +2,7 @@ import * as styles from './Menu.css';
 
 import { PRIMARY_NAV_LIST, SECONDARY_NAV_LIST } from '@/fsd/app';
 import { background, mountAnim, rotateX, slideLeft } from '@/fsd/shared';
-import { Button, Flex, Typography } from '@jung/design-system';
+import { Flex } from '@jung/design-system';
 import { motion } from 'framer-motion';
 import { Navbar } from '../../Header/ui';
 import NavLinks from './NavLinks';
@@ -37,21 +37,18 @@ export default function Menu({ isMenuOpen, toggleMenu }: Props) {
 							columnGap='16'
 							alignItems='center'
 							rowGap='8'
-							className={styles.routeContainer}
+							flexDirection={{ mobile: 'column', tablet: 'row' }}
 						>
 							<NavLinks items={PRIMARY_NAV_LIST} isMainNav />
 							<NavLinks items={SECONDARY_NAV_LIST} />
 						</Flex>
 						<Flex columnGap='4' marginTop='20'>
-							<Button variant='ghost' onClick={toggleMenu}>
+							{/* <Button variant='ghost' onClick={toggleMenu}>
 								<Typography.Text color='white'>en</Typography.Text>
 							</Button>
 							<Button variant='ghost' onClick={toggleMenu}>
 								<Typography.Text color='white'>ko</Typography.Text>
-							</Button>
-							<Button variant='ghost' onClick={toggleMenu}>
-								<Typography.Text color='white'>login</Typography.Text>
-							</Button>
+							</Button> */}
 						</Flex>
 					</motion.div>
 				</Flex>

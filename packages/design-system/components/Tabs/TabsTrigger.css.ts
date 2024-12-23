@@ -17,11 +17,7 @@ export const trigger = recipe({
 				borderWidth: 'hairline',
 				borderStyle: 'solid',
 			}),
-			secondary: style([
-				sprinkles({
-					borderRadius: 'none',
-				}),
-			]),
+			secondary: style({}),
 		},
 
 		rounded: {
@@ -61,8 +57,10 @@ export const trigger = recipe({
 });
 
 export const tab = recipe({
-	base: sprinkles({
+	base: style({
 		textAlign: 'center',
+		fontFamily: 'var(--font-bebas)',
+		letterSpacing: '0.04em',
 	}),
 	variants: {
 		variant: {
@@ -104,7 +102,7 @@ export const tab = recipe({
 				isActive: false,
 			},
 			style: sprinkles({
-				color: 'primary200',
+				color: 'primary100',
 			}),
 		},
 	],

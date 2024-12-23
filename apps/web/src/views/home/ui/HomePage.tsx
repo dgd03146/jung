@@ -1,10 +1,8 @@
 'use client';
 
-import { PRIMARY_NAV_LIST } from '@/fsd/app';
 import { AnimatedLine, useInViewAnimation } from '@/fsd/shared';
-import { Flex, Stack, Typography } from '@jung/design-system';
+import { Stack, Typography } from '@jung/design-system';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
-import Link from 'next/link';
 import { useRef } from 'react';
 import * as styles from './HomePage.css';
 
@@ -45,41 +43,7 @@ const HomePage = () => {
 		},
 	};
 
-	const navAnimation = {
-		hidden: {
-			opacity: 0,
-			y: 20,
-		},
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				type: 'spring',
-				damping: 20,
-				stiffness: 100,
-				staggerChildren: 0.1,
-				delayChildren: 0.3,
-			},
-		},
-	};
-
-	const navItemAnimation = {
-		hidden: {
-			opacity: 0,
-			x: -20,
-		},
-		visible: {
-			opacity: 1,
-			x: 0,
-			transition: {
-				type: 'spring',
-				damping: 20,
-				stiffness: 100,
-			},
-		},
-	};
-
-	const textArray = ['GEOJUNG'];
+	const textArray = ['Hey,', "I'm", 'JUNG'];
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -91,7 +55,7 @@ const HomePage = () => {
 					className={styles.container}
 				>
 					<m.div variants={titleAnimation}>
-						<Typography.Heading {...styles.heading}>
+						<Typography.Heading className={styles.heading}>
 							<m.span
 								ref={spanRef}
 								initial='hidden'
@@ -127,39 +91,6 @@ const HomePage = () => {
 								))}
 							</m.span>
 						</Typography.Heading>
-					</m.div>
-
-					<m.div variants={navAnimation}>
-						<Flex columnGap='6' marginTop='10'>
-							{PRIMARY_NAV_LIST.map((it) => (
-								<m.div
-									key={it.id}
-									variants={navItemAnimation}
-									whileHover={{
-										scale: 1.05,
-										y: -2,
-										transition: {
-											type: 'spring',
-											stiffness: 400,
-											damping: 10,
-										},
-									}}
-									whileTap={{ scale: 0.95 }}
-								>
-									<Link href={it.path}>
-										<Typography.Heading
-											level={4}
-											color={{
-												base: 'primary',
-												hover: 'primary200',
-											}}
-										>
-											{it.label}
-										</Typography.Heading>
-									</Link>
-								</m.div>
-							))}
-						</Flex>
 					</m.div>
 				</Stack>
 			</m.div>

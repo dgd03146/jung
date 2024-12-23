@@ -20,8 +20,9 @@ const NavLink = ({
 }) => (
 	<Link href={item.path}>
 		<Typography.Heading
-			level={isMainNav ? 1 : 3}
-			fontSize={isMainNav ? { tablet: '6xl' } : { mobile: 'xl', tablet: '4xl' }}
+			fontSize={
+				isMainNav ? { tablet: '7xl' } : { mobile: '2xl', tablet: '5xl' }
+			}
 			color={{
 				base: isActive ? 'primary400' : 'white',
 				hover: 'primary200',

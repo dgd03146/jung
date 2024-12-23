@@ -37,10 +37,3 @@ export const background = sprinkles({
 export const container = style({
 	height: calc.subtract('100dvh', '144px'),
 });
-
-export const routeContainer = sprinkles({
-	flexDirection: {
-		mobile: 'column',
-		tablet: 'row',
-	},
-});

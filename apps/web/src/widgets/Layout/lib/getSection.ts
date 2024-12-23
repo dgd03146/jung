@@ -6,11 +6,11 @@ export const getSection = (pathname: string) => {
 		return '';
 	}
 
-	if (paths[0] === 'about') {
-		return '';
-	}
+	// if (paths[0] === 'about') {
+	// 	return '';
+	// }
 
-	// blog/[id]와 같은 경우는 숨기기
+	// blog/[id] 숨기기
 	if (
 		(paths[0] === 'blog' && paths.length > 1) ||
 		(paths[0] === 'spots' && paths.length > 1)
@@ -18,7 +18,7 @@ export const getSection = (pathname: string) => {
 		return '';
 	}
 
-	// gallery/collections/[id]와 같은 경우는 GALLERY/COLLECTIONS 표시
+	// gallery/collections/[id] => GALLERY/COLLECTIONS 표시
 	if (paths[0] === 'gallery' && paths.length > 2) {
 		return `${paths[0].toUpperCase()}/${paths[1]?.toUpperCase()}`;
 	}

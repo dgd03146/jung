@@ -1,17 +1,17 @@
 export const TABS = [
 	{
 		value: 'recent',
-		label: 'Recent',
+		label: 'RECENT',
 		path: '/gallery',
 	},
 	{
 		value: 'collections',
-		label: 'Collections',
+		label: 'COLLECTIONS',
 		path: '/gallery/collections',
 	},
 	{
 		value: 'trending',
-		label: 'Trending',
+		label: 'TRENDING',
 		path: '/gallery/trending',
 	},
 ] as const;

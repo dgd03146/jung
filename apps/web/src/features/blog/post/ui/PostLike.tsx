@@ -35,13 +35,9 @@ const PostLike = ({ likeCount, isLiked = false, postId }: PostLikeProps) => {
 					aria-label={isLiked ? 'Unlike post' : 'Like post'}
 					className={styles.likeButton}
 				>
-					{isLiked ? (
-						<FaHeart size={20} color='#0142C0' />
-					) : (
-						<FaRegHeart size={20} color='#0142C0' />
-					)}
+					{isLiked ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
 				</Button>
-				<Typography.Text level={3} color='primary'>
+				<Typography.Text level={3} className={styles.likeCount} color='primary'>
 					{likeCount} {likeCount === 1 ? 'like' : 'likes'}
 				</Typography.Text>
 			</Flex>

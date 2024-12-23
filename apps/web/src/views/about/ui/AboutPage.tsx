@@ -6,14 +6,14 @@ const AboutPage = () => {
 	return (
 		<div className={styles.pageContainer}>
 			<div className={styles.contentWrapper}>
-				<header className={styles.header}>
+				{/* <header className={styles.header}>
 					<Typography.Heading level={1} className={styles.title}>
 						About Me
 					</Typography.Heading>
 					<Typography.Text className={styles.subtitle}>
 						Let's learn about Jung
 					</Typography.Text>
-				</header>
+				</header> */}
 
 				<div className={styles.contentGrid}>
 					<section className={styles.introCard}>
@@ -43,9 +43,9 @@ const AboutPage = () => {
 						</Typography.Heading>
 						<Typography.Text className={styles.highlightContent}>
 							I love exploring new places, learning about different cultures,
-							and meeting new people. I also enjoy sharing a cold beer and good
-							conversations with friends. I have a soft spot for memes, bringing
-							ideas to life, and imagining what the future holds.
+							and meeting new people. I also enjoy sharing a cold beer 🍺 and
+							good conversations with friends. I have a soft spot for memes,
+							bringing ideas to life, and imagining what the future holds.
 						</Typography.Text>
 					</section>
 

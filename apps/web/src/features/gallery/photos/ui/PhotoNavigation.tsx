@@ -16,7 +16,7 @@ export const PhotoNavigation = () => {
 
 	return (
 		<Tabs value={getCurrentTab()} variant='secondary'>
-			<Tabs.List marginBottom='4'>
+			<Tabs.List marginBottom='6'>
 				{TABS.map(({ value, label, path }) => (
 					<Tabs.Trigger key={value} value={value}>
 						<Link href={path} scroll={false} style={{ color: 'inherit' }}>

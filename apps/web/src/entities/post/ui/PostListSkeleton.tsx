@@ -1,38 +1,77 @@
-import { Box, Card, Container, Grid } from '@jung/design-system';
-import * as styles from './PostCard.css';
+import { Box, Container } from '@jung/design-system';
+import * as styles from './PostListSkeleton.css';
 
-const PostSkeleton = () => {
+const PostCardSkeleton = () => {
 	return (
-		<Card variant='outline'>
-			<Card.Media className={styles.imgContainer}>
-				<Box background='gray' height='full' borderRadius='2xl' />
-			</Card.Media>
-			<Card.Content rowGap='3'>
-				<Box width='2/3' background='gray' height='8' />
-				<Box background='gray' width='full' height='8' />
-				<Box background='gray' width='full' height='10' />
-				<Box background='gray' width='1/5' height='6' />
-			</Card.Content>
-		</Card>
+		<article className={styles.postCard}>
+			<div className={styles.imageArea}>
+				<Box background='gray' height='full' borderRadius='xl' />
+			</div>
+
+			<div className={styles.contentArea}>
+				<div className={styles.meta}>
+					<Box width='20' height='6' background='gray' borderRadius='md' />
+					<Box width='24' height='5' background='gray' borderRadius='md' />
+				</div>
+
+				<Box
+					width='4/5'
+					height='8'
+					background='gray'
+					borderRadius='md'
+					className={styles.titleSkeleton}
+				/>
+
+				<Box
+					width='full'
+					height='12'
+					background='gray'
+					borderRadius='md'
+					className={styles.descriptionSkeleton}
+				/>
+
+				<div className={styles.tagList}>
+					{Array.from({ length: 2 }).map((_, index) => (
+						<Box
+							key={index}
+							width='20'
+							height='7'
+							background='gray'
+							borderRadius='md'
+							className={styles.tagSkeleton}
+						/>
+					))}
+				</div>
+			</div>
+		</article>
 	);
 };
 
-const PostListSkeleton = ({ count = 4 }) => {
+const PostListSkeleton = ({ count = 3 }: { count: number }) => {
 	return (
-		<Container marginY='12'>
-			<Grid
-				columnGap='4'
-				rowGap='8'
-				gridTemplateColumns={{
-					mobile: '1',
-					tablet: '1/2',
-					laptop: '1/3',
-				}}
-			>
+		<Container>
+			{/* <div className={styles.searchAreaSkeleton}>
+        <Box
+          width="full"
+          height="8"
+          background="gray"
+          borderRadius="lg"
+          className={styles.searchBarSkeleton}
+        />
+        <Box
+          width="24"
+          height="8"
+          background="gray"
+          borderRadius="lg"
+          className={styles.viewToggleSkeleton}
+        />
+      </div> */}
+
+			<div className={styles.skeletonList}>
 				{Array.from({ length: count }).map((_, index) => (
-					<PostSkeleton key={index} />
+					<PostCardSkeleton key={index} />
 				))}
-			</Grid>
+			</div>
 		</Container>
 	);
 };

@@ -42,9 +42,5 @@ export const section = style([
 			laptop: '1/9',
 			desktop: '1/13',
 		},
-		paddingY: {
-			mobile: '4',
-			tablet: '6',
-		},
 	}),
 ]);

@@ -1,8 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const pageContainer = style({
-	background: 'linear-gradient(to bottom, #FFFFFF, #F8FAFC)',
-	padding: '40px 24px',
+	padding: '0',
 });
 
 export const contentWrapper = style({
@@ -128,17 +127,19 @@ export const visionCard = style([
 ]);
 
 export const cardTitle = style({
-	fontSize: '1.5rem',
-	fontWeight: '600',
+	fontFamily: 'var(--font-bebas)',
+	letterSpacing: '0.04em',
+	fontSize: '1.8rem',
+
 	color: '#0142C0',
-	letterSpacing: '-0.02em',
 });
 
 export const highlightTitle = style({
-	fontSize: '1.5rem',
-	fontWeight: '600',
+	fontFamily: 'var(--font-bebas)',
+	letterSpacing: '0.04em',
+	fontSize: '1.8rem',
+
 	color: 'white',
-	letterSpacing: '-0.02em',
 });
 
 export const cardContent = style({
