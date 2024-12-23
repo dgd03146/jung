@@ -16,14 +16,16 @@ export const searchWrapper = style({
 	borderRadius: '8px',
 	padding: '0 8px',
 	transition: 'all 0.2s ease',
+	boxShadow: '0 0 0 1px rgba(1, 66, 192, 0.1)',
+	// border: `1px solid ${palette.primary100}`,
 
-	':hover': {
-		borderColor: palette.primary100,
-	},
+	// ':hover': {
+	// 	borderColor: palette.primary100,
+	// },
 
 	':focus-within': {
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 3px ${palette.primary50}`,
+		// boxShadow: `0 0 0 3px ${palette.primary50}`,
 	},
 });
 

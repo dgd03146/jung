@@ -9,6 +9,7 @@ interface Props {
 const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 	<Button
 		variant='ghost'
+		size='zero'
 		onClick={toggleMenu}
 		aria-expanded={isMenuOpen}
 		aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

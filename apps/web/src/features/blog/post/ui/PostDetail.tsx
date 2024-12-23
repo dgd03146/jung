@@ -2,6 +2,7 @@
 
 import { CommentError, CommentListSkeleton } from '@/fsd/entities/comment';
 import { PostHeader, PostSidebar } from '@/fsd/entities/post';
+import PostNavigation from '@/fsd/entities/post/ui/PostNavigation';
 import { CommentList } from '@/fsd/features/blog/comment';
 import { checkIsLiked, useGetPostById } from '@/fsd/features/blog/post';
 import { BlockNote, useSupabaseAuth } from '@/fsd/shared';
@@ -9,8 +10,7 @@ import { useCreateBlockNote } from '@blocknote/react';
 import { Container, Flex } from '@jung/design-system/components';
 import { ErrorBoundary } from '@jung/shared/ui';
 import { Suspense } from 'react';
-
-import PostNavigation from '@/fsd/entities/post/ui/PostNavigation';
+import * as styles from './PostDetail.css';
 import PostLike from './PostLike';
 
 const PostDetail = ({ postId }: { postId: string }) => {
@@ -22,14 +22,14 @@ const PostDetail = ({ postId }: { postId: string }) => {
 	}
 
 	const editor = useCreateBlockNote({ initialContent: post.content });
-
 	const { user } = useSupabaseAuth();
+
 	return (
-		<Container marginX='auto'>
+		<Container marginX='auto' className={styles.postDetailContainer}>
 			<PostHeader post={post} />
-			<Flex paddingY='10' columnGap='10'>
+			<Flex columnGap='10' className={styles.flexContainer}>
 				<PostSidebar tags={post.tags} postId={postId} />
-				<Container>
+				<Container className={styles.contentContainer}>
 					<BlockNote editor={editor} />
 					<PostLike
 						postId={postId}

@@ -46,8 +46,13 @@ export function SectionTitle() {
 	}
 
 	return (
-		<Link href={`/${section?.toLowerCase()}`} className={styles.sectionTitle}>
-			<Typography.Heading level={1} color='primary' marginBottom='6'>
+		<Link href={`/${section}`} className={styles.sectionTitle}>
+			<Typography.Heading
+				level={2}
+				color='primary'
+				marginY={{ mobile: '1', desktop: '5' }}
+				width='fit'
+			>
 				{section}.
 			</Typography.Heading>
 		</Link>

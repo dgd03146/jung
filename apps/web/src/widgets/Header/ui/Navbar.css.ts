@@ -43,7 +43,7 @@ export const headerContainer = recipe({
 
 export const navContent = style({
 	height: '100%',
-	padding: '0 1rem',
+	// padding: '0 1rem',
 	transition: 'all 0.3s ease',
 });
 
@@ -51,7 +51,7 @@ export const logoWrapper = recipe({
 	base: style({
 		position: 'relative',
 		display: 'inline-block',
-		padding: '0.5rem',
+		// padding: '0.5rem',
 		transition: 'all 0.3s ease',
 		selectors: {
 			'&:hover': {
