@@ -1,11 +1,11 @@
 'use client';
 
 import { Box } from '@jung/design-system/components';
+import { useDebounce } from '@jung/shared/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoCloseOutline, IoSearchOutline } from 'react-icons/io5';
 import * as styles from './SearchBar.css';
-
 interface SearchBarProps {
 	initialValue?: string;
 }
@@ -18,35 +18,21 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 		initialValue || searchParams.get('q') || '',
 	);
 
-	const [debouncedValue, setDebouncedValue] = useState(value);
-
-	const createQueryString = useCallback(
-		(name: string, value: string) => {
-			const params = new URLSearchParams(searchParams.toString());
-			if (value) {
-				params.set(name, value);
-			} else {
-				params.delete(name);
-			}
-			return params.toString();
-		},
-		[searchParams],
-	);
-
-	// FIXME: Debounce 공용 훅으로 변경경
-	useEffect(() => {
-		const handler = setTimeout(() => {
-			setDebouncedValue(value);
-		}, 300);
-
-		return () => {
-			clearTimeout(handler);
-		};
-	}, [value]);
+	const debouncedValue = useDebounce(value, 200);
 
 	useEffect(() => {
-		router.push(`${pathname}?${createQueryString('q', debouncedValue)}`);
-	}, [debouncedValue, pathname, router, createQueryString]);
+		const params = new URLSearchParams(searchParams.toString());
+		if (debouncedValue) {
+			params.set('q', debouncedValue);
+		} else {
+			params.delete('q');
+		}
+
+		const newUrl = `${pathname}?${params.toString()}`;
+		if (window.location.pathname + window.location.search !== newUrl) {
+			router.push(newUrl);
+		}
+	}, [debouncedValue, pathname, router, searchParams]);
 
 	return (
 		<Box className={styles.container}>
@@ -61,7 +47,7 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setValue(e.target.value)
 					}
-					placeholder='Search places or locations'
+					placeholder='Search...'
 					className={styles.input}
 					aria-label='Search input'
 				/>

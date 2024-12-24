@@ -1,13 +1,13 @@
 'use client';
 
 import { useGetPosts } from '@/fsd/features/blog/post';
-import { SearchBar } from '@/fsd/features/spots/ui/SearchBar';
 import {
 	BlurImage,
 	LoadingSpinner,
 	capitalizeFirstLetter,
 	formatDate,
 } from '@/fsd/shared';
+import { SearchBar } from '@/fsd/shared/ui/SearchBar';
 import { Container, Flex } from '@jung/design-system';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -58,7 +58,7 @@ const PostList = () => {
 	};
 
 	// TODO: SUSPENSE 적용하기
-
+	// TODO: 카테고리 카운트들 계산 로직
 	return (
 		<div>
 			<div className={styles.content}>
