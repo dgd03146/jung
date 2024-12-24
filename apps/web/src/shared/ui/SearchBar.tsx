@@ -3,7 +3,7 @@
 import { Box } from '@jung/design-system/components';
 import { useDebounce } from '@jung/shared/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IoCloseOutline, IoSearchOutline } from 'react-icons/io5';
 import * as styles from './SearchBar.css';
 interface SearchBarProps {
@@ -18,21 +18,26 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 		initialValue || searchParams.get('q') || '',
 	);
 
-	const debouncedValue = useDebounce(value, 200);
+	const debouncedValue = useDebounce(value, 300);
+
+	const handleSearch = useCallback(
+		(searchValue: string) => {
+			const params = new URLSearchParams(searchParams.toString());
+
+			if (searchValue) {
+				params.set('q', searchValue);
+			} else {
+				params.delete('q');
+			}
+
+			router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+		},
+		[pathname, router, searchParams],
+	);
 
 	useEffect(() => {
-		const params = new URLSearchParams(searchParams.toString());
-		if (debouncedValue) {
-			params.set('q', debouncedValue);
-		} else {
-			params.delete('q');
-		}
-
-		const newUrl = `${pathname}?${params.toString()}`;
-		if (window.location.pathname + window.location.search !== newUrl) {
-			router.push(newUrl);
-		}
-	}, [debouncedValue, pathname, router, searchParams]);
+		handleSearch(debouncedValue);
+	}, [debouncedValue, handleSearch]);
 
 	return (
 		<Box className={styles.container}>
@@ -57,8 +62,6 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 						className={styles.clearButton}
 						onClick={() => {
 							setValue('');
-
-							router.push(`${pathname}?${createQueryString('q', '')}`);
 						}}
 						aria-label='Clear search'
 					>

@@ -24,57 +24,75 @@ export const postService = {
 		sort,
 		q,
 	}: QueryParams): Promise<QueryResult> {
-		let query = supabase.from('posts').select('*', { count: 'exact' });
+		try {
+			let query = supabase.from('posts').select('*', { count: 'exact' });
 
-		if (cat && cat !== 'all') {
-			query = query.eq('category', cat);
-		}
+			if (cat && cat !== 'all') {
+				query = query.eq('category', cat);
+			}
 
-		if (q) {
-			query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%`);
-		}
+			if (q) {
+				const searchTerm = `%${q}%`;
 
-		switch (sort) {
-			case 'oldest':
-				query = query.order('date', { ascending: true });
-				break;
-			case 'popular':
+				query = query.or(
+					`title.ilike.${searchTerm},` +
+						`description.ilike.${searchTerm},` +
+						`tags.cs.{${q}}`,
+				);
+			}
+
+			if (cursor) {
+				const { data: cursorPost } = await supabase
+					.from('posts')
+					.select('date')
+					.eq('id', cursor)
+					.single();
+
+				if (cursorPost) {
+					const operator = sort === 'oldest' ? 'gt' : 'lt';
+					query = query[operator]('date', cursorPost.date);
+				}
+			}
+
+			query = query.order('date', { ascending: sort === 'oldest' });
+
+			if (sort === 'popular') {
 				query = query.order('views', { ascending: false });
-				break;
-			default:
-				query = query.order('date', { ascending: false });
-		}
+			}
 
-		if (cursor) {
-			query = query.gt('id', cursor);
-		}
-		query = query.limit(limit);
+			query = query.limit(limit);
 
-		const { data, error } = await query.returns<Post[]>();
+			const { data, error } = await query.returns<Post[]>();
 
-		if (error) {
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to fetch posts. Please try again later.',
+					cause: error,
+				});
+			}
+
+			if (!data || data.length === 0) {
+				return {
+					items: [],
+					nextCursor: null,
+				};
+			}
+
+			const lastItem = data[data.length - 1];
+			const nextCursor = data.length === limit ? Number(lastItem?.id) : null;
+
+			return {
+				items: data,
+				nextCursor,
+			};
+		} catch (error) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to fetch posts. Please try again later.',
+				message: 'Failed to create post. Please try again later.',
 				cause: error,
 			});
 		}
-		if (!data || data.length === 0) {
-			return {
-				items: [],
-				nextCursor: null,
-				// total: count || 0,
-			};
-		}
-
-		const nextCursor = Number(data[data.length - 1]?.id) ?? null;
-
-		// FIXME: 모든 데이터 다 내려줄 필요 없음
-		return {
-			items: data,
-			nextCursor,
-			// total: count || 0,
-		};
 	},
 
 	async findById(id: string): Promise<Post | null> {

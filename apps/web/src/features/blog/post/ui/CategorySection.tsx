@@ -16,7 +16,7 @@ interface CategorySectionProps {
 }
 
 export const CategorySection = ({ title, items }: CategorySectionProps) => {
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const currentCat = searchParams.get('cat') || 'all';
