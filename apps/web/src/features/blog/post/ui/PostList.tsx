@@ -16,6 +16,7 @@ import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
+import { CATEGORY_CONFIG } from '../config/constants';
 import { CategorySection } from './CategorySection';
 import * as styles from './PostList.css';
 
@@ -57,6 +58,7 @@ const PostList = () => {
 		);
 	};
 
+	// FIXME: 컴포넌트 관심사 분리
 	// TODO: SUSPENSE 적용하기
 	// TODO: 카테고리 카운트들 계산 로직
 	return (
@@ -65,27 +67,16 @@ const PostList = () => {
 				<aside className={styles.sidebar}>
 					<CategorySection title='All' />
 					<CategorySection
-						title='Dev'
-						items={[
-							{ name: 'React', count: 23, slug: 'react' },
-							{ name: 'Nextjs', count: 12, slug: 'nextjs' },
-							{ name: 'Typescript', count: 8, slug: 'typescript' },
-							{ name: 'Architecture', count: 15, slug: 'architecture' },
-						]}
+						title={CATEGORY_CONFIG.dev.title}
+						items={CATEGORY_CONFIG.dev.items}
 					/>
 					<CategorySection
-						title='Life'
-						items={[
-							{ name: 'UK', count: 45, slug: 'uk' },
-							{ name: 'KOR', count: 18, slug: 'kor' },
-						]}
+						title={CATEGORY_CONFIG.life.title}
+						items={CATEGORY_CONFIG.life.items}
 					/>
 					<CategorySection
-						title='Travel'
-						items={[
-							{ name: 'Portugal', count: 45, slug: 'portugal' },
-							{ name: 'Spain', count: 18, slug: 'spain' },
-						]}
+						title={CATEGORY_CONFIG.travel.title}
+						items={CATEGORY_CONFIG.travel.items}
 					/>
 				</aside>
 

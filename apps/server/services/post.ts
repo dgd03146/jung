@@ -220,6 +220,30 @@ export const postService = {
 		return data;
 	},
 
+	// 카테고리 카운트
+	async getCategoryCounts() {
+		const { data, error } = await supabase.from('posts').select('category');
+
+		if (error) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to fetch category counts',
+				cause: error,
+			});
+		}
+
+		const counts = data.reduce(
+			(acc, { category }) => {
+				if (category) {
+					acc[category] = (acc[category] || 0) + 1;
+				}
+				return acc;
+			},
+			{} as Record<string, number>,
+		);
+		return counts;
+	},
+
 	// 이전, 이후 포스트 가져오기
 	async getAdjacentPosts(currentPostId: string) {
 		const currentPost = await this.findById(currentPostId);

@@ -2,11 +2,12 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
+import { useGetCategoryCounts } from '../api';
 import * as styles from './CategorySection.css';
 
 interface CategoryItem {
 	name: string;
-	count: number;
+
 	slug: string;
 }
 
@@ -20,6 +21,10 @@ export const CategorySection = ({ title, items }: CategorySectionProps) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const currentCat = searchParams.get('cat') || 'all';
+
+	const { data: categoryCounts } = useGetCategoryCounts();
+
+	const getPostCount = (slug: string) => categoryCounts?.[slug] ?? 0;
 
 	const createQueryString = useCallback(
 		(value: string) => {
@@ -72,7 +77,9 @@ export const CategorySection = ({ title, items }: CategorySectionProps) => {
 									})}
 								>
 									<span className={styles.categoryName}>{item.name}</span>
-									<span className={styles.categoryCount}>{item.count}</span>
+									<span className={styles.categoryCount}>
+										{getPostCount(item.slug)}
+									</span>
 								</Link>
 							))}
 						</div>
