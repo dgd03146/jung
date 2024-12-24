@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
+import { useGetCategoryCounts } from '../api';
 import * as styles from './CategorySection.css';
 
 interface CategoryItem {
 	name: string;
-	count: number;
+
 	slug: string;
 }
 
@@ -16,16 +17,32 @@ interface CategorySectionProps {
 }
 
 export const CategorySection = ({ title, items }: CategorySectionProps) => {
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
+	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const currentCat = searchParams.get('cat');
+	const currentCat = searchParams.get('cat') || 'all';
 
-	const isAll = title === 'All';
-	console.log(currentCat, 'currentCat');
+	const { data: categoryCounts } = useGetCategoryCounts();
+
+	const getPostCount = (slug: string) => categoryCounts?.[slug] ?? 0;
+
+	const createQueryString = useCallback(
+		(value: string) => {
+			const params = new URLSearchParams(searchParams.toString());
+			if (value === 'all') {
+				params.delete('cat');
+			} else {
+				params.set('cat', value);
+			}
+
+			return params.toString();
+		},
+		[searchParams],
+	);
 
 	return (
 		<div className={styles.categorySection}>
-			{isAll ? (
+			{title === 'All' ? (
 				<Link
 					href={'/blog'}
 					className={`${styles.categoryHeader} ${styles.categoryHeaderLink({
@@ -38,9 +55,7 @@ export const CategorySection = ({ title, items }: CategorySectionProps) => {
 				<>
 					<button
 						className={styles.categoryHeader}
-						onClick={() => {
-							setIsOpen(!isOpen);
-						}}
+						onClick={() => setIsOpen(!isOpen)}
 						type='button'
 					>
 						<h3 className={styles.categoryTitle}>{title}</h3>
@@ -56,14 +71,15 @@ export const CategorySection = ({ title, items }: CategorySectionProps) => {
 							{items?.map((item) => (
 								<Link
 									key={item.slug}
-									href={`/blog?cat=${item.slug}`}
+									href={`${pathname}?${createQueryString(item.slug)}`}
 									className={styles.categoryItem({
 										active: currentCat === item.slug,
 									})}
 								>
 									<span className={styles.categoryName}>{item.name}</span>
-
-									<span className={styles.categoryCount}>{item.count}</span>
+									<span className={styles.categoryCount}>
+										{getPostCount(item.slug)}
+									</span>
 								</Link>
 							))}
 						</div>
