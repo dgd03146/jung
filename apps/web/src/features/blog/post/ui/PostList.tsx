@@ -14,6 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
 import { CategorySection } from './CategorySection';
 import * as styles from './PostList.css';
@@ -40,6 +41,22 @@ const PostList = () => {
 
 	const allPosts = data?.pages.flatMap((page) => page.items) || [];
 
+	const renderEmptyState = () => {
+		return (
+			<div className={styles.emptyState}>
+				<IoDocumentTextOutline size={30} className={styles.emptyIcon} />
+
+				<p className={styles.emptyDescription}>
+					{q
+						? `No results found for "${q}"`
+						: cat !== 'all'
+						  ? `No posts in the ${capitalizeFirstLetter(cat)} category yet`
+						  : 'No blog posts available at the moment'}
+				</p>
+			</div>
+		);
+	};
+
 	// TODO: SUSPENSE 적용하기
 
 	return (
@@ -50,24 +67,24 @@ const PostList = () => {
 					<CategorySection
 						title='Dev'
 						items={[
-							{ name: 'React', count: 23, slug: 'React' },
-							{ name: 'Nextjs', count: 12, slug: 'Nextjs' },
-							{ name: 'Typescript', count: 8, slug: 'Typescript' },
-							{ name: 'Architecture', count: 15, slug: 'Architecture' },
+							{ name: 'React', count: 23, slug: 'react' },
+							{ name: 'Nextjs', count: 12, slug: 'nextjs' },
+							{ name: 'Typescript', count: 8, slug: 'typescript' },
+							{ name: 'Architecture', count: 15, slug: 'architecture' },
 						]}
 					/>
 					<CategorySection
 						title='Life'
 						items={[
-							{ name: 'UK', count: 45, slug: 'UK' },
-							{ name: 'KOR', count: 18, slug: 'KOR' },
+							{ name: 'UK', count: 45, slug: 'uk' },
+							{ name: 'KOR', count: 18, slug: 'kor' },
 						]}
 					/>
 					<CategorySection
 						title='Travel'
 						items={[
-							{ name: 'Portugal', count: 45, slug: 'Portugal' },
-							{ name: 'Spain', count: 18, slug: 'Spain' },
+							{ name: 'Portugal', count: 45, slug: 'portugal' },
+							{ name: 'Spain', count: 18, slug: 'spain' },
 						]}
 					/>
 				</aside>
@@ -103,107 +120,116 @@ const PostList = () => {
 							</div>
 						</div>
 
-						<div className={styles.postList({ viewMode })}>
-							{allPosts.map((post, index) => (
-								<article
-									key={post.id}
-									className={styles.postCard({ viewMode })}
-								>
-									<Link href={`/blog/${post.id}`} className={styles.postLink}>
-										{viewMode === 'table' ? (
-											<>
-												<Flex align='center' gap='4'>
-													<div className={styles.tableNumberWrapper}>
-														<span className={styles.tableNumber}>
-															{index + 1}
-														</span>
-														<span className={styles.playButton}>
-															<BsFillPlayFill size={20} />
-														</span>
-													</div>
-													<BlurImage
-														src={post.imagesrc}
-														alt={post.title}
-														width={40}
-														height={40}
-													/>
-												</Flex>
-												<Flex direction='column' gap='1' flex='1'>
-													<p className={styles.tableTitle}>{post.title}</p>
-													<p className={styles.tableDescription}>
-														{post.description}
-													</p>
-												</Flex>
-												<Flex
-													align='center'
-													gap='2'
-													justify='flex-end'
-													flex='1'
-													display={{ mobile: 'none', tablet: 'flex' }}
-												>
-													<span className={styles.category}>
-														{capitalizeFirstLetter(post.category)}
-													</span>
-
-													<time
-														className={styles.tableDate}
-														dateTime={post.date}
-													>
-														{formatDate(post.date)}
-													</time>
-												</Flex>
-											</>
-										) : (
-											<>
-												<div className={styles.imageArea({ viewMode })}>
-													<BlurImage
-														src={post.imagesrc}
-														alt={post.title}
-														fill
-														sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-													/>
-												</div>
-
-												<div className={styles.contentArea({ viewMode })}>
-													<div className={styles.meta}>
-														<span className={styles.category}>
-															{capitalizeFirstLetter(post.category)}
-														</span>
-
-														<span className={styles.date}>
-															{formatDate(post.date)}
-														</span>
-													</div>
-
-													<h2 className={styles.title({ viewMode })}>
-														{post.title}
-													</h2>
-													<p className={styles.description({ viewMode })}>
-														{post.description}
-													</p>
-													<div className={styles.bottomArea}>
-														{/* 태그 영역 */}
-														{post.tags && post.tags.length > 0 && (
-															<div className={styles.tagList}>
-																{post.tags.map((tag) => (
-																	<div key={tag} className={styles.tag}>
-																		{tag}
-																	</div>
-																))}
+						{allPosts.length > 0 ? (
+							<>
+								<div className={styles.postList({ viewMode })}>
+									{allPosts.map((post, index) => (
+										<article
+											key={post.id}
+											className={styles.postCard({ viewMode })}
+										>
+											<Link
+												href={`/blog/${post.id}`}
+												className={styles.postLink}
+											>
+												{viewMode === 'table' ? (
+													<>
+														<Flex align='center' gap='4'>
+															<div className={styles.tableNumberWrapper}>
+																<span className={styles.tableNumber}>
+																	{index + 1}
+																</span>
+																<span className={styles.playButton}>
+																	<BsFillPlayFill size={20} />
+																</span>
 															</div>
-														)}
-													</div>
-												</div>
-											</>
-										)}
-									</Link>
-								</article>
-							))}
-						</div>
+															<BlurImage
+																src={post.imagesrc}
+																alt={post.title}
+																width={40}
+																height={40}
+															/>
+														</Flex>
+														<Flex direction='column' gap='1' flex='1'>
+															<p className={styles.tableTitle}>{post.title}</p>
+															<p className={styles.tableDescription}>
+																{post.description}
+															</p>
+														</Flex>
+														<Flex
+															align='center'
+															gap='2'
+															justify='flex-end'
+															flex='1'
+															display={{ mobile: 'none', tablet: 'flex' }}
+														>
+															<span className={styles.category}>
+																{capitalizeFirstLetter(post.category)}
+															</span>
 
-						<div ref={ref} className={styles.loadingArea}>
-							{isFetchingNextPage && <LoadingSpinner size='small' />}
-						</div>
+															<time
+																className={styles.tableDate}
+																dateTime={post.date}
+															>
+																{formatDate(post.date)}
+															</time>
+														</Flex>
+													</>
+												) : (
+													<>
+														<div className={styles.imageArea({ viewMode })}>
+															<BlurImage
+																src={post.imagesrc}
+																alt={post.title}
+																fill
+																sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+															/>
+														</div>
+
+														<div className={styles.contentArea({ viewMode })}>
+															<div className={styles.meta}>
+																<span className={styles.category}>
+																	{capitalizeFirstLetter(post.category)}
+																</span>
+
+																<span className={styles.date}>
+																	{formatDate(post.date)}
+																</span>
+															</div>
+
+															<h2 className={styles.title({ viewMode })}>
+																{post.title}
+															</h2>
+															<p className={styles.description({ viewMode })}>
+																{post.description}
+															</p>
+															<div className={styles.bottomArea}>
+																{/* 태그 영역 */}
+																{post.tags && post.tags.length > 0 && (
+																	<div className={styles.tagList}>
+																		{post.tags.map((tag) => (
+																			<div key={tag} className={styles.tag}>
+																				{tag}
+																			</div>
+																		))}
+																	</div>
+																)}
+															</div>
+														</div>
+													</>
+												)}
+											</Link>
+										</article>
+									))}
+								</div>
+
+								<div ref={ref} className={styles.loadingArea}>
+									{isFetchingNextPage && <LoadingSpinner size='small' />}
+								</div>
+							</>
+						) : (
+							renderEmptyState()
+						)}
 					</Container>
 				</main>
 			</div>

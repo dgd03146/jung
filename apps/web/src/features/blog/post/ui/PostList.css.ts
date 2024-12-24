@@ -494,3 +494,27 @@ export const content = style({
 		},
 	},
 });
+
+export const emptyState = style({
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'center',
+	justifyContent: 'center',
+	padding: '64px 24px',
+	textAlign: 'center',
+	minHeight: '400px',
+
+	borderRadius: '12px',
+	margin: '24px 0',
+});
+
+export const emptyIcon = style({
+	color: palette.primary,
+	marginBottom: '16px',
+});
+
+export const emptyDescription = style({
+	fontSize: '18px',
+	fontWeight: '500',
+	color: palette.primary,
+});
