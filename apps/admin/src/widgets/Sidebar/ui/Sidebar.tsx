@@ -1,63 +1,114 @@
-import { RoutesArray, usePathname } from '@/fsd/shared';
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { usePathname } from '@/fsd/shared';
+import { useSidebarStore } from '@/fsd/shared';
 import { Link } from '@tanstack/react-router';
-import me from '../../../assets/me.png';
+import { HiChevronDown, HiHome } from 'react-icons/hi';
 import * as styles from './Sidebar.css';
 
-const Sidebar = () => {
+const menuSections = [
+	{
+		title: 'Dashboard',
+		path: '/',
+		label: 'Dashboard',
+		icon: HiHome,
+	},
+	{
+		title: 'Blog',
+		items: [
+			{ path: '/blog', label: ' Posts' },
+			{ path: '/blog/new', label: 'New Post' },
+			{ path: '/blog/categories', label: 'Categories' },
+		],
+	},
+	{
+		title: 'Gallery',
+		items: [
+			{ path: '/gallery', label: 'Photos' },
+			{ path: '/gallery/upload', label: 'Upload' },
+			{ path: '/gallery/albums', label: 'Albums' },
+		],
+	},
+	{
+		title: 'Spots',
+		items: [
+			{ path: '/spots/all', label: ' Spots' },
+			{ path: '/spots/add', label: 'Add Spot' },
+			{ path: '/spots/categories', label: 'Categories' },
+		],
+	},
+	{
+		title: 'GuestBook',
+		items: [
+			{ path: '/guestbook', label: 'Messages' }, // 전체 방명록 목록
+		],
+	},
+	{
+		title: 'Settings',
+		items: [
+			{ path: '/settings/general', label: 'General' },
+			{ path: '/settings/appearance', label: 'Appearance' },
+			{ path: '/settings/users', label: 'Users' },
+		],
+	},
+];
+
+export const Sidebar = () => {
 	const { pathname: currentPage } = usePathname();
+	const { isOpen, openSections, actions } = useSidebarStore();
 
 	return (
-		<Box
-			as='section'
-			width={{ mobile: 'auto', laptop: '72' }}
-			paddingX={{ laptop: '4' }}
-			paddingY='6'
-			position='sticky'
-			top={0}
-			height='screenDvh'
-		>
-			<Flex
-				alignItems='center'
-				columnGap='2'
-				boxShadow='primary'
-				borderRadius='lg'
-				justifyContent={{ mobile: 'center', laptop: 'flex-start' }}
-				paddingX={{ mobile: '0', laptop: '4' }}
-				paddingY={{ mobile: '3', laptop: '4' }}
-			>
-				<Box
-					as='img'
-					src={me}
-					alt='Profile Image'
-					width={{ mobile: '6', laptop: '8' }}
-					height='auto'
-				/>
-				<Typography.Text
-					level={2}
-					display={{ mobile: 'none', laptop: 'block' }}
-				>
-					geojung.
-				</Typography.Text>
-			</Flex>
-			<Flex display='flex' flexDirection='column' rowGap='0.5' marginTop='1'>
-				{RoutesArray.map(({ path, icon, label }) => (
-					<Link
-						key={label}
-						to={path}
-						className={styles.link({ selected: currentPage === path })}
-					>
-						{icon}
-						<Typography.Text
-							level={3}
-							display={{ mobile: 'none', laptop: 'block' }}
-						>
-							{label}
-						</Typography.Text>
-					</Link>
+		<aside className={styles.sidebar({ isOpen })}>
+			<nav className={styles.nav}>
+				{menuSections.map((section) => (
+					<div key={section.title} className={styles.section}>
+						{section.items ? (
+							<>
+								<button
+									onClick={() => actions.toggleSection(section.title)}
+									className={styles.sectionHeader}
+									type='button'
+								>
+									<span className={styles.sectionTitle}>{section.title}</span>
+									<HiChevronDown
+										className={styles.chevronIcon({
+											isOpen: openSections.includes(section.title),
+										})}
+									/>
+								</button>
+								<div
+									className={styles.sectionContent({
+										isOpen: openSections.includes(section.title),
+									})}
+								>
+									{section.items.map((item) => (
+										<Link
+											key={item.path}
+											to={item.path}
+											className={styles.sectionItem({
+												active: currentPage === item.path,
+											})}
+										>
+											<span>{item.label}</span>
+										</Link>
+									))}
+								</div>
+							</>
+						) : (
+							<Link
+								to={section.path}
+								className={styles.dashboardItem({
+									active: currentPage === section.path,
+								})}
+							>
+								{section.icon && (
+									<section.icon className={styles.dashboardIcon} />
+								)}
+								<span>{section.label}</span>
+							</Link>
+						)}
+					</div>
 				))}
-			</Flex>
-		</Box>
+			</nav>
+		</aside>
 	);
 };
 

@@ -16,25 +16,30 @@ export const useCreatePost = () => {
 		onSuccess: (newPost) => {
 			queryClient.invalidateQueries({ queryKey: postKeys.lists() });
 			queryClient.setQueryData(postKeys.detail(newPost.id), newPost);
-			showToast('Post created successfully!');
+			showToast('Post created successfully!', 'success');
 			navigate({ to: Routes.blog.path });
 		},
 		onError: (error: unknown) => {
 			if (error instanceof ApiError) {
 				switch (error.code) {
 					case 'NO_DATA':
-						showToast('Failed to create post: No data returned from server');
+						showToast(
+							'Failed to create post: No data returned from server',
+							'error',
+						);
 						break;
 					case 'UNKNOWN_ERROR':
-						showToast('An unexpected error occurred. Please try again later.');
+						showToast(
+							'An unexpected error occurred. Please try again later.',
+							'error',
+						);
 						break;
 					default:
-						showToast(`Failed to create post: ${error.message}`);
+						showToast(`Failed to create post: ${error.message}`, 'error');
 				}
 			} else {
-				showToast('An unknown error occurred. Please try again.');
+				showToast('An unknown error occurred. Please try again.', 'error');
 			}
-			console.error('Post creation error:', error);
 		},
 	});
 };

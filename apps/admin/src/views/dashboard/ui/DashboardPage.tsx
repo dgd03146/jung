@@ -1,5 +1,20 @@
+import {
+	ActivityChart,
+	DashboardStats,
+	QuickActions,
+	RecentActivities,
+} from '@/fsd/widgets/Dashboard';
+import { Flex } from '@jung/design-system/components';
+
 const DashboardPage = () => {
-	return <div>Dashboard</div>;
+	return (
+		<Flex direction={'column'} gap={'5'}>
+			<QuickActions />
+			<DashboardStats />
+			<ActivityChart />
+			<RecentActivities />
+		</Flex>
+	);
 };
 
 export default DashboardPage;

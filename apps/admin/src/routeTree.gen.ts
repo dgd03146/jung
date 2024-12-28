@@ -11,13 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root';
-import { Route as BlogEditPostIdImport } from './routes/blog/edit/$postId';
-import { Route as BlogIndexImport } from './routes/blog/index';
-import { Route as BlogNewIndexImport } from './routes/blog/new/index';
-import { Route as CommunityIndexImport } from './routes/community/index';
-import { Route as GalleryIndexImport } from './routes/gallery/index';
 import { Route as IndexImport } from './routes/index';
 import { Route as SpotsIndexImport } from './routes/spots/index';
+import { Route as GalleryIndexImport } from './routes/gallery/index';
+import { Route as CommunityIndexImport } from './routes/community/index';
+import { Route as BlogIndexImport } from './routes/blog/index';
+import { Route as BlogNewIndexImport } from './routes/blog/new/index';
+import { Route as BlogEditPostIdImport } from './routes/blog/edit/$postId';
 
 // Create/Update Routes
 

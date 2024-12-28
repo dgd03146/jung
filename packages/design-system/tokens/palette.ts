@@ -18,12 +18,19 @@ export const palette = {
 	// Neutral colors
 	black: '#000000',
 	white: '#FFFFFF',
-	white100: '#F5F5F5',
-	white200: '#F2F2F2',
+	white100: '#F8FAFC',
+	white200: '#F5F5F5',
+	white300: '#F2F2F2',
+	white400: '#E6E6E6',
+
 	gray: '#E6E6E6',
 	gray100: '#B8B8B8',
 	gray300: '#999999',
 	gray400: '#808080',
+	gray500: '#666666',
+	gray600: '#4D4D4D',
+	gray700: '#333333',
+	gray800: '#1A1A1A',
 
 	// Utility colors
 	transparent: 'transparent',

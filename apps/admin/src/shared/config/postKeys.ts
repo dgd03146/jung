@@ -7,4 +7,5 @@ export const postKeys = {
 	lists: () => [...postKeys.all, 'list'] as const,
 	list: (filters: PostFilters) => [...postKeys.lists(), filters] as const,
 	detail: (id?: string) => [...postKeys.all, id] as const,
+	categories: () => [...postKeys.all, 'categories'] as const,
 };

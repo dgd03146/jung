@@ -1,11 +1,10 @@
 import type { PostWithBlockContent } from '@/fsd/entities';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import { Box, Button, Input, useToast } from '@jung/design-system/components';
+import { Input, useToast } from '@jung/design-system/components';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FaImage, FaTimes } from 'react-icons/fa';
-import ErrorMessage from './ErrorMessage';
-import type { TitleSectionProps } from './TitleSection';
-import * as styles from './TitleSection.css';
+import { HiExclamationCircle } from 'react-icons/hi';
+import { HiPhoto, HiTrash } from 'react-icons/hi2';
+import * as styles from './ImagePreview.css';
 
 interface ImagePreviewProps {
 	onFieldChange: <K extends keyof PostWithBlockContent>(
@@ -14,7 +13,7 @@ interface ImagePreviewProps {
 	) => void;
 
 	imagesrc: string;
-	validateErrors: TitleSectionProps['errors'];
+	validateErrors: Record<string, string>;
 	onSetImageFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
@@ -33,7 +32,7 @@ export const ImagePreview = ({
 		setImagePreview(imagesrc);
 	}, [imagesrc]);
 
-	const handlePrviewImage = useCallback(
+	const handlePreviewImage = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const file = e.target.files?.[0];
 
@@ -50,7 +49,7 @@ export const ImagePreview = ({
 					reader.readAsDataURL(file);
 				} catch (error) {
 					if (error instanceof ApiError)
-						showToast(`Error uploading image:${error.message}`);
+						showToast(`Error uploading image: ${error.message}`);
 				}
 			}
 		},
@@ -62,42 +61,76 @@ export const ImagePreview = ({
 		setImagePreview(null);
 	}, [onFieldChange]);
 
+	const handleDragOver = useCallback((e: React.DragEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+	}, []);
+
+	const handleDrop = useCallback(
+		(e: React.DragEvent) => {
+			e.preventDefault();
+			e.stopPropagation();
+
+			const file = e.dataTransfer.files?.[0];
+			if (file?.type?.startsWith('image/')) {
+				try {
+					onSetImageFile(file);
+					const reader = new FileReader();
+					reader.onloadend = () => {
+						onFieldChange('imagesrc', reader.result as string);
+						setImagePreview(reader.result as string);
+					};
+					reader.readAsDataURL(file);
+				} catch (error) {
+					if (error instanceof ApiError)
+						showToast(`Error uploading image: ${error.message}`);
+				}
+			}
+		},
+		[onSetImageFile, onFieldChange, showToast],
+	);
+
 	return (
 		<>
 			{imagePreview ? (
-				<Box className={styles.imagePreviewContainer}>
-					<Box
-						as='img'
-						src={imagePreview}
-						alt='Cover'
-						className={styles.imagePreview}
-					/>
-					<Button
+				<div className={styles.imagePreviewContainer}>
+					<img src={imagePreview} alt='Cover' className={styles.imagePreview} />
+					<button
 						className={styles.removeImageButton}
 						onClick={handleRemoveImage}
 						aria-label='Remove image'
 					>
-						<FaTimes />
-					</Button>
-				</Box>
+						<HiTrash size={16} />
+					</button>
+				</div>
 			) : (
-				<Box className={styles.imageUploadContainer}>
-					<Button
+				<div
+					className={styles.imageUploadContainer}
+					data-error={!!validateErrors.imagesrc}
+					onDragOver={handleDragOver}
+					onDrop={handleDrop}
+				>
+					<button
 						className={styles.imageUploadButton}
 						onClick={() => fileInputRef.current?.click()}
 					>
-						<FaImage /> Add Cover Image
-					</Button>
-				</Box>
-			)}
-			{validateErrors.imagesrc && (
-				<ErrorMessage message={validateErrors.imagesrc} />
+						<HiPhoto size={16} />
+						Upload an image
+					</button>
+					<div className={styles.dropText}>or drop an image here</div>
+					{validateErrors.imagesrc && (
+						<div className={styles.errorContainer}>
+							<HiExclamationCircle size={16} />
+							{validateErrors.imagesrc}
+						</div>
+					)}
+				</div>
 			)}
 			<Input
 				ref={fileInputRef}
 				type='file'
 				accept='image/*'
-				onChange={handlePrviewImage}
+				onChange={handlePreviewImage}
 				display='none'
 			/>
 		</>
