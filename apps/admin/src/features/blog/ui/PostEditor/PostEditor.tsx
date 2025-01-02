@@ -11,7 +11,7 @@ const PostEditor = () => {
 	const {
 		localPost,
 		editor,
-		validateErrors,
+		formErrors,
 		handleSave,
 		handleDiscard,
 		handleFieldChange,
@@ -30,7 +30,7 @@ const PostEditor = () => {
 
 	return (
 		<Container maxWidth='tablet' marginX='auto' height='full'>
-			<Flex direction='column' gap='2'>
+			<Flex direction='column' marginBottom='20'>
 				<EditorHeader
 					onSave={handleSave}
 					onDiscard={handleDiscard}
@@ -38,17 +38,19 @@ const PostEditor = () => {
 					isSubmitting={isSubmitting}
 					isEditMode={!!fetchedPost}
 				/>
+
 				<ImagePreview
 					imagesrc={localPost.imagesrc}
 					onSetImageFile={setImageFile}
 					onFieldChange={handleFieldChange}
-					validateErrors={validateErrors}
+					validateErrors={formErrors || {}}
 				/>
 				<TitleSection
 					post={localPost}
 					onFieldChange={handleFieldChange}
-					errors={validateErrors}
+					errors={formErrors || {}}
 				/>
+
 				<BlockNote editor={editor} />
 			</Flex>
 		</Container>

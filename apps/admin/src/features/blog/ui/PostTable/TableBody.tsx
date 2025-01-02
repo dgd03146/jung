@@ -1,11 +1,9 @@
 import { useDeletePost } from '@/fsd/features/blog/api';
-import { Box, Button, Flex } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import * as styles from './PostTable.css';
 
-// FIXME: 굳이 제네릭?..
 interface TableBodyProps<T> {
 	table: Table<T>;
 }
@@ -16,41 +14,39 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 	const handleDelete = (id: string) => {
 		if (window.confirm('Are you sure you want to delete this post?')) {
 			deletePostMutation.mutate(id);
-		} else return;
+		}
 	};
 
 	return (
-		<Box as='tbody'>
+		<tbody>
 			{table.getRowModel().rows.map((row) => {
 				const postId = row.getValue('id') as string;
 
 				return (
-					<Box as='tr' key={row.id}>
+					<tr key={row.id} className={styles.row}>
 						{row.getVisibleCells().map((cell) => (
-							<Box as='td' key={cell.id} className={styles.td}>
+							<td key={cell.id} className={styles.td}>
 								{flexRender(cell.column.columnDef.cell, cell.getContext())}
-							</Box>
+							</td>
 						))}
-
-						<Box as='td' className={styles.td}>
-							<Flex>
+						<td className={styles.td}>
+							<div style={{ display: 'flex', gap: '8px' }}>
 								<Link to={'/blog/edit/$postId'} params={{ postId }}>
-									<Button variant='ghost' color='primary'>
-										<FaEdit />
-									</Button>
+									<button className={styles.actionButton}>
+										<FaEdit size={16} />
+									</button>
 								</Link>
-								<Button
-									variant='ghost'
-									color='primary'
+								<button
+									className={styles.actionButton}
 									onClick={() => handleDelete(postId)}
 								>
-									<FaTrash />
-								</Button>
-							</Flex>
-						</Box>
-					</Box>
+									<FaTrash size={16} />
+								</button>
+							</div>
+						</td>
+					</tr>
 				);
 			})}
-		</Box>
+		</tbody>
 	);
 };

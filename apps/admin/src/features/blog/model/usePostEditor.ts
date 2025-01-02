@@ -1,6 +1,6 @@
 import { storage, useThrottle } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
 	uploadImage,
@@ -11,23 +11,26 @@ import {
 	useUpdatePost,
 } from '@/fsd/features/blog/api';
 
+import type { PostWithBlockContent } from '@/fsd/entities';
 import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
 import { isPostEmpty, serializeContent } from '@/fsd/features/blog/lib';
+import type { Errors } from '../types/errors';
 
 export const usePostEditor = () => {
 	const {
 		localPost,
 		fetchedPost,
-		isLoading,
-		fetchError,
-		validateErrors,
 		updatePostData,
 		resetForm,
+		isLoading,
+		fetchError,
 		refetch,
 	} = usePostState();
 
-	const { editor, getContent } = usePostContent(localPost.content);
+	const [formErrors, setFormErrors] = useState<Errors | null>(null);
 	const [imageFile, setImageFile] = useState<File | null>(null);
+
+	const { editor, getContent } = usePostContent(localPost.content);
 	const showToast = useToast();
 	const createPostMutation = useCreatePost();
 	const updatePostMutation = useUpdatePost();
@@ -38,7 +41,6 @@ export const usePostEditor = () => {
 	const handleImageUpload = useCallback(
 		async (file: File | null) => {
 			if (!file) return;
-
 			try {
 				const publicUrl = await uploadImage(file);
 				return publicUrl;
@@ -60,6 +62,7 @@ export const usePostEditor = () => {
 		if (!isPostEmpty(postToSave)) {
 			storage.set(STORAGE_KEY, postToSave);
 			showToast('Post saved successfully!');
+			setFormErrors(null);
 		} else {
 			showToast('Cannot save an empty post.');
 		}
@@ -68,11 +71,24 @@ export const usePostEditor = () => {
 	const throttledSave = useThrottle(handleSave, 3000);
 	useKeyboardShortcut('s', throttledSave);
 
+	const validateForm = (data: PostWithBlockContent): Errors | null => {
+		const errors: Errors = {
+			title: !data.title.trim() ? 'Enter a title' : '',
+			description: !data.description.trim() ? 'Enter a description' : '',
+			category: !data.category ? 'Select a category' : '',
+			imagesrc: !data.imagesrc ? 'Upload a featured image' : '',
+			date: !data.date ? 'Select a date' : '',
+		};
+
+		return Object.values(errors).some(Boolean) ? errors : null;
+	};
+
 	const preparePostData = useCallback(
 		async (imageFile: File | null) => {
-			const errorMessages = Object.values(validateErrors).filter(Boolean);
-			if (errorMessages.length !== 0) {
-				showToast('Please fill all required fields');
+			const errors = validateForm(localPost);
+			if (errors) {
+				setFormErrors(errors);
+				showToast('Please fill in all required fields', 'error');
 				return null;
 			}
 
@@ -84,7 +100,7 @@ export const usePostEditor = () => {
 			const content = getContent();
 			const serializedContent = serializeContent(content);
 
-			const { id, ...post } = localPost;
+			const { id, lastSaved, ...post } = localPost;
 
 			return {
 				...post,
@@ -92,7 +108,7 @@ export const usePostEditor = () => {
 				imagesrc,
 			};
 		},
-		[validateErrors, showToast, handleImageUpload, getContent, localPost],
+		[localPost, handleImageUpload, getContent, showToast, validateForm],
 	);
 
 	const handleCreate = useCallback(
@@ -100,13 +116,10 @@ export const usePostEditor = () => {
 			const postData = await preparePostData(imageFile);
 			if (!postData) return;
 
-			const updatedPostData = {
-				...postData,
-				date: new Date().toISOString(),
-			};
+			createPostMutation.mutate(postData);
 
-			createPostMutation.mutate(updatedPostData);
 			storage.remove(STORAGE_KEY);
+			setFormErrors(null);
 		},
 		[preparePostData, createPostMutation],
 	);
@@ -116,21 +129,24 @@ export const usePostEditor = () => {
 			const postData = await preparePostData(imageFile);
 			if (!postData) return;
 
-			const updatedPostData = {
-				...postData,
-				updated_at: new Date().toISOString(),
-			};
-
-			updatePostMutation.mutate({ id: localPost.id, post: updatedPostData });
+			updatePostMutation.mutate({
+				id: localPost.id,
+				post: {
+					...postData,
+					updated_at: localPost.date || new Date().toISOString(),
+				},
+			});
 			storage.remove(STORAGE_KEY);
+			setFormErrors(null);
 		},
-		[preparePostData, updatePostMutation, localPost.id],
+		[preparePostData, updatePostMutation, localPost.id, localPost.date],
 	);
 
 	const handleDiscard = useCallback(() => {
 		if (window.confirm('Are you sure you want to discard this draft?')) {
 			resetForm();
 			editor.replaceBlocks(editor.document, EMPTY_POST.content);
+			setFormErrors(null);
 			showToast('Draft discarded');
 		}
 	}, [editor, resetForm, showToast]);
@@ -143,21 +159,16 @@ export const usePostEditor = () => {
 		}
 	}, [fetchedPost, handleUpdate, handleCreate, imageFile]);
 
-	useEffect(() => {
-		if (fetchedPost) editor.replaceBlocks(editor.document, fetchedPost.content);
-	}, [fetchedPost, editor]);
-
 	return {
 		localPost,
 		editor,
+		formErrors,
 		isLoading,
-		validateErrors,
 		fetchError,
 		handleSave,
 		handleDiscard,
 		handleFieldChange: updatePostData,
 		handleSubmit,
-
 		isSubmitting: isCreating || isUpdating,
 		setImageFile,
 		refetch,

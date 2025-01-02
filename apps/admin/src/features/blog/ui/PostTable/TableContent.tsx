@@ -15,7 +15,7 @@ export const TableContent = () => {
 
 	return (
 		<>
-			<Box overflow='auto' width='full' boxShadow='primary' borderRadius='2xl'>
+			<Box overflow='auto' width='full' boxShadow='primary' borderRadius='lg'>
 				<Box
 					as='table'
 					fontSize={{ mobile: 'sm', laptop: 'base' }}

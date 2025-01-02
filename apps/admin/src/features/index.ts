@@ -1,4 +1,4 @@
-export { postKeys } from '../shared/config/postKeys';
+export { postKeys } from '../shared/config/queryKey';
 
 export { fetchPosts } from './blog/api/getPosts';
 
