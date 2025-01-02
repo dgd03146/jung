@@ -12,8 +12,7 @@ export const PhotoSchema = z.object({
 	created_at: z.string(),
 	likes: z.number().default(0),
 	views: z.number().default(0),
-	type: z.enum(['gallery', 'collection']).optional(),
-	author_name: z.string().optional(),
+
 	liked_by: z.array(z.string()).optional(),
 });
 

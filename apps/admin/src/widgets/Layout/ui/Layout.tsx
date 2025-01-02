@@ -3,7 +3,7 @@ import { useSidebarStore } from '@/fsd/shared';
 import { Box } from '@jung/design-system/components';
 import { Header } from '../../Header';
 import { Sidebar } from '../../Sidebar';
-
+import * as styles from './Layout.css';
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { pathname } = usePathname();
 	const { isOpen } = useSidebarStore();
@@ -30,9 +30,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						tablet: '6',
 						laptop: '8',
 					}}
-					paddingY={{ mobile: '4', tablet: '5', laptop: '5' }}
+					paddingY={{ mobile: '4', tablet: '8' }}
 					maxWidth={isPostEditPage ? 'tablet' : 'full'}
 					marginX='auto'
+					className={styles.section}
 				>
 					{children}
 				</Box>

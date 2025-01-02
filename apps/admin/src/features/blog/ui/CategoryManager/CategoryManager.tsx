@@ -251,7 +251,6 @@ export const CategoryManager = () => {
 
 	return (
 		<div className={styles.pageWrapper}>
-			{/* Stats Overview */}
 			<div className={styles.statsSection}>
 				<div className={styles.statCard}>
 					<span className={styles.statValue}>{categories.length}</span>
@@ -265,7 +264,6 @@ export const CategoryManager = () => {
 				</div>
 			</div>
 
-			{/* Main Section */}
 			<div className={styles.mainSection}>
 				<div className={styles.header}>
 					<h2 className={styles.title}>Category Management</h2>

@@ -4,7 +4,6 @@ export const pageWrapper = style({
 	display: 'flex',
 	flexDirection: 'column',
 	gap: '1.5rem',
-	padding: '1.5rem 0',
 });
 
 export const mainSection = style({

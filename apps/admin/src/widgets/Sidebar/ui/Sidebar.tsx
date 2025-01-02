@@ -22,32 +22,23 @@ const menuSections = [
 	{
 		title: 'Gallery',
 		items: [
-			{ path: '/gallery', label: 'Photos' },
-			{ path: '/gallery/upload', label: 'Upload' },
-			{ path: '/gallery/albums', label: 'Albums' },
+			{ path: '/gallery/photos', label: 'Photos' },
+			{ path: '/gallery/collections', label: 'Collections' },
+			{ path: '/gallery/photos/new', label: 'New Photos' },
 		],
 	},
+
 	{
 		title: 'Spots',
 		items: [
-			{ path: '/spots/all', label: ' Spots' },
-			{ path: '/spots/add', label: 'Add Spot' },
+			{ path: '/spots', label: ' Spots' },
+			{ path: '/spots/new', label: 'New Spot' },
 			{ path: '/spots/categories', label: 'Categories' },
 		],
 	},
 	{
 		title: 'GuestBook',
-		items: [
-			{ path: '/guestbook', label: 'Messages' }, // 전체 방명록 목록
-		],
-	},
-	{
-		title: 'Settings',
-		items: [
-			{ path: '/settings/general', label: 'General' },
-			{ path: '/settings/appearance', label: 'Appearance' },
-			{ path: '/settings/users', label: 'Users' },
-		],
+		items: [{ path: '/guestbook', label: 'Messages' }],
 	},
 ];
 

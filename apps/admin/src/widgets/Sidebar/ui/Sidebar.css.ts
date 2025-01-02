@@ -7,7 +7,7 @@ export const sidebar = recipe({
 		width: '240px',
 		backgroundColor: 'white',
 		borderRight: '1px solid #E2E8F0',
-		height: '100vh',
+		height: '100dvh',
 		transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 		position: 'fixed',
 		top: '0',
@@ -40,7 +40,6 @@ export const section = style({
 	flexDirection: 'column',
 	gap: '2px',
 	position: 'relative',
-	marginBottom: '8px',
 });
 
 export const sectionHeader = style({

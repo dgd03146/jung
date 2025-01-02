@@ -32,10 +32,21 @@ const formatPageTitle = (path: string) => {
 
 	const defaultSubSections: Record<string, string> = {
 		blog: 'Posts',
-		gallery: 'Photos',
+		gallery: 'Collections',
 		spots: 'Spots',
 		dashboard: 'Overview',
+		guestbook: 'Messages',
 	};
+
+	if (segments.includes('collections')) {
+		return (
+			<div className={styles.titleWrapper}>
+				<span className={styles.mainPath}>Gallery</span>
+				<HiChevronRight className={styles.titleSeparator} />
+				<span className={styles.subPath}>Collections</span>
+			</div>
+		);
+	}
 
 	if (segments.length > 1) {
 		const subSection = segments[segments.length - 1]
