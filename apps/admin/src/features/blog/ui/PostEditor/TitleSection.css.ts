@@ -238,3 +238,15 @@ export const select = style({
 		color: '#94A3B8',
 	},
 });
+
+export const optionsContainer = style({
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '8px',
+});
+
+export const optionButton = style({
+	display: 'flex',
+	alignItems: 'center',
+	gap: '8px',
+});

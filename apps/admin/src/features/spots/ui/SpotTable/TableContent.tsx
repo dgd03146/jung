@@ -5,11 +5,10 @@ import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';
 
 export const TableContent = () => {
-	const { table, isLoading, error, refetch } = useSpotTable();
+	const { table, isLoading, error } = useSpotTable();
 
-	// if (isLoading) return <TableSkeleton />;
-	// if (error)
-	//   return <ErrorFallback error={error} resetErrorBoundary={refetch} />;
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error</div>;
 
 	return (
 		<>

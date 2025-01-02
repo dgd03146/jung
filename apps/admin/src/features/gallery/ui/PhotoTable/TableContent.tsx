@@ -5,11 +5,10 @@ import { Box } from '@jung/design-system/components';
 import { TableBody } from './TableBody';
 
 export const TableContent = () => {
-	const { table, isLoading, error, refetch } = usePhotoTable();
+	const { table, isLoading, error } = usePhotoTable();
 
-	// if (isLoading) return <TableSkeleton />;
-	// if (error)
-	//   return <ErrorFallback error={error} resetErrorBoundary={refetch} />;
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error</div>;
 
 	return (
 		<>

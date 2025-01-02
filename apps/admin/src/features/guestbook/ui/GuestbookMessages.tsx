@@ -100,6 +100,18 @@ export const GuestbookMessages = () => {
 		},
 	]);
 
+	const handleApprove = (id: string) => {
+		setMessages((prev) => prev.filter((m) => m.id !== id));
+	};
+
+	const handleReject = (id: string) => {
+		setMessages((prev) => prev.filter((m) => m.id !== id));
+	};
+
+	const handleDelete = (id: string) => {
+		setMessages((prev) => prev.filter((m) => m.id !== id));
+	};
+
 	return (
 		<div className={styles.pageWrapper}>
 			<div className={styles.statsSection}>
@@ -166,6 +178,7 @@ export const GuestbookMessages = () => {
 											className={styles.actionButton}
 											data-variant='approve'
 											title='Approve message'
+											onClick={() => handleApprove(message.id)}
 										>
 											<HiCheck className={styles.actionIcon} />
 										</button>
@@ -173,6 +186,7 @@ export const GuestbookMessages = () => {
 											className={styles.actionButton}
 											data-variant='reject'
 											title='Reject message'
+											onClick={() => handleReject(message.id)}
 										>
 											<HiXMark className={styles.actionIcon} />
 										</button>
@@ -180,6 +194,7 @@ export const GuestbookMessages = () => {
 											className={styles.actionButton}
 											data-variant='delete'
 											title='Delete message'
+											onClick={() => handleDelete(message.id)}
 										>
 											<HiTrash className={styles.actionIcon} />
 										</button>

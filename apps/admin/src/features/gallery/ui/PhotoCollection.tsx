@@ -141,7 +141,31 @@ export const PhotoCollection = () => {
 	};
 
 	const handleSave = () => {
-		// TODO: Implement save functionality
+		// FIXME: API 호출로 변경
+		if (editingId === 'new') {
+			const newCollection: Collection = {
+				id: String(Date.now()),
+				title: formData.title,
+				description: formData.description,
+				cover_image: formData.cover_image,
+				photo_count: 0,
+				created_at: new Date().toISOString(),
+			};
+			setCollections((prev) => [newCollection, ...prev]);
+		} else {
+			setCollections((prev) =>
+				prev.map((collection) =>
+					collection.id === editingId
+						? {
+								...collection,
+								title: formData.title,
+								description: formData.description,
+								cover_image: formData.cover_image,
+						  }
+						: collection,
+				),
+			);
+		}
 		handleCloseModal();
 	};
 
