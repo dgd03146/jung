@@ -9,3 +9,4 @@ export type { PhotoQueryResult } from './photo';
 export * from './photo_collection';
 export * from './spot';
 export * from './guestbook';
+export * from './category';

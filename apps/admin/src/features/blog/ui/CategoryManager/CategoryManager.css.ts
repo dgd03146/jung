@@ -707,3 +707,27 @@ export const colorInput = style({
 		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.1)',
 	},
 });
+
+export const expandButton = style({
+	background: 'transparent',
+	border: 'none',
+	padding: '4px 8px',
+	cursor: 'pointer',
+	color: '#64748b',
+	transition: 'color 0.2s ease',
+
+	':hover': {
+		color: '#0142C0',
+	},
+});
+
+export const parentBadge = style({
+	display: 'inline-block',
+	padding: '2px 6px',
+	fontSize: '11px',
+	fontWeight: '500',
+	color: '#64748b',
+	background: '#f1f5f9',
+	borderRadius: '4px',
+	marginLeft: '8px',
+});
