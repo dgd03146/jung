@@ -70,6 +70,7 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 
 	return {
 		mainCategories: processedCategories.filter((cat) => !cat.parent_id),
+		subCategories: processedCategories.filter((cat) => cat.parent_id),
 		allCategories: processedCategories,
 	};
 };

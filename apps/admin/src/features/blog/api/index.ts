@@ -7,3 +7,4 @@ export { usePostContent } from '../model/usePostContent';
 export { usePostState } from '../model/usePostState';
 export { uploadImage } from './uploadImage';
 export { useGetCategories } from './useGetCategories';
+export { useCreateCategory } from './useCreateCategory';

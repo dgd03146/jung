@@ -14,82 +14,11 @@ export const mainSection = style({
 	overflow: 'hidden',
 });
 
-export const header = style({
-	padding: '20px 24px',
-	borderBottom: '1px solid #f1f5f9',
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-});
-
-export const title = style({
-	fontSize: '16px',
-	fontWeight: '600',
-	color: '#0142C0',
-	letterSpacing: '-0.01em',
-});
-
-export const addButton = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '8px',
-	padding: '0 20px',
-	height: '40px',
-	background: '#0142C0',
-	color: 'white',
-	border: 'none',
-	borderRadius: '10px',
-	fontSize: '14px',
-	fontWeight: '600',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-	boxShadow: '0 2px 4px rgba(124, 58, 237, 0.1)',
-
-	':hover': {
-		background: '#0031A0',
-		transform: 'translateY(-1px)',
-		boxShadow: '0 4px 6px rgba(124, 58, 237, 0.2)',
-	},
-});
-
 export const categoryGrid = style({
 	display: 'grid',
 	gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
 	gap: '20px',
 	padding: '24px',
-});
-
-export const categoryCard = style({
-	background: 'white',
-	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
-	borderTop: '4px solid',
-	overflow: 'hidden',
-	transition: 'all 0.2s ease',
-	position: 'relative',
-
-	':hover': {
-		transform: 'translateY(-2px)',
-		boxShadow: '0 8px 16px rgba(0, 0, 0, 0.06)',
-	},
-});
-
-export const cardHeader = style({
-	padding: '16px 8px',
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-});
-
-export const categoryName = style({
-	fontSize: '14px',
-	fontWeight: '600',
-	color: '#1E293B',
-	flex: 1,
-});
-
-export const cardContent = style({
-	padding: '16px',
 });
 
 export const categoryMeta = style({
@@ -104,29 +33,6 @@ export const categorySlug = style({
 	color: '#64748B',
 	display: 'block',
 	marginBottom: '4px',
-});
-
-export const postCount = style({
-	display: 'inline-flex',
-	alignItems: 'center',
-	height: '24px',
-	padding: '0 8px',
-	fontSize: '12px',
-	fontWeight: '500',
-	color: '#64748B',
-	background: '#F1F5F9',
-	borderRadius: '4px',
-});
-
-export const description = style({
-	fontSize: '13px',
-	lineHeight: '1.5',
-	color: '#475569',
-	marginBottom: '12px',
-	display: '-webkit-box',
-	WebkitLineClamp: 2,
-	WebkitBoxOrient: 'vertical',
-	overflow: 'hidden',
 });
 
 export const postsList = style({
@@ -173,30 +79,6 @@ export const morePostsLink = style({
 	cursor: 'pointer',
 
 	':hover': {
-		color: '#0142C0',
-	},
-});
-
-export const actions = style({
-	display: 'flex',
-	gap: '4px',
-});
-
-export const actionButton = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	width: '28px',
-	height: '28px',
-	border: 'none',
-	borderRadius: '6px',
-	color: '#94a3b8',
-	background: 'transparent',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		background: '#f1f5f9',
 		color: '#0142C0',
 	},
 });
@@ -436,19 +318,6 @@ export const emptyStateText = style({
 	marginBottom: '16px',
 });
 
-export const dragHandle = style({
-	cursor: 'grab',
-	color: '#94a3b8',
-	padding: '0 8px',
-	fontSize: '18px',
-	display: 'flex',
-	alignItems: 'center',
-
-	':active': {
-		cursor: 'grabbing',
-	},
-});
-
 export const categoryBadge = style({
 	display: 'inline-flex',
 	alignItems: 'center',
@@ -566,127 +435,6 @@ export const filters = style({
 	gap: '12px',
 });
 
-export const viewToggle = style({
-	display: 'flex',
-	gap: '4px',
-	padding: '2px',
-	background: '#f1f5f9',
-	borderRadius: '8px',
-});
-
-export const viewToggleButton = style({
-	padding: '6px 12px',
-	border: 'none',
-	borderRadius: '6px',
-	fontSize: '13px',
-	fontWeight: '500',
-	color: '#64748b',
-	background: 'transparent',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		color: '#475569',
-	},
-
-	selectors: {
-		'&[data-active="true"]': {
-			background: 'white',
-			color: '#0142C0',
-			boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-		},
-	},
-});
-
-export const statCard = style({
-	background: 'white',
-	borderRadius: '16px',
-	padding: '24px',
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '8px',
-	border: '1px solid #f1f5f9',
-	boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.02)',
-	transition: 'transform 0.2s ease',
-
-	':hover': {
-		transform: 'translateY(-2px)',
-	},
-});
-
-export const statValue = style({
-	fontSize: '28px',
-	fontWeight: '600',
-	color: '#0142C0',
-	letterSpacing: '-0.02em',
-});
-
-export const statLabel = style({
-	fontSize: '14px',
-	color: '#64748b',
-	fontWeight: '500',
-});
-
-export const statsSection = style({
-	display: 'grid',
-	gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-	gap: '1rem',
-});
-
-export const cardFooter = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
-	padding: '12px 16px',
-	borderTop: '1px solid #E5E7EB',
-	background: '#F9FAFB',
-});
-
-export const gridView = style({
-	display: 'grid',
-	gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-	gap: '20px',
-	padding: '24px',
-});
-
-export const listView = style({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '12px',
-	padding: '24px',
-});
-
-export const listViewItem = style({
-	display: 'flex',
-	alignItems: 'center',
-	padding: '16px',
-	background: 'white',
-	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		transform: 'translateX(4px)',
-		boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
-	},
-});
-
-export const listViewContent = style({
-	flex: 1,
-	display: 'flex',
-	alignItems: 'center',
-	gap: '16px',
-});
-
-export const listViewMeta = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '16px',
-	marginLeft: 'auto',
-	color: '#64748B',
-	fontSize: '14px',
-});
-
 export const colorInput = style({
 	width: '100%',
 	height: '40px',
@@ -708,26 +456,9 @@ export const colorInput = style({
 	},
 });
 
-export const expandButton = style({
-	background: 'transparent',
-	border: 'none',
-	padding: '4px 8px',
-	cursor: 'pointer',
-	color: '#64748b',
-	transition: 'color 0.2s ease',
-
-	':hover': {
-		color: '#0142C0',
+export const inputError = style({
+	borderColor: 'red',
+	':focus': {
+		borderColor: 'red',
 	},
-});
-
-export const parentBadge = style({
-	display: 'inline-block',
-	padding: '2px 6px',
-	fontSize: '11px',
-	fontWeight: '500',
-	color: '#64748b',
-	background: '#f1f5f9',
-	borderRadius: '4px',
-	marginLeft: '8px',
 });

@@ -17,4 +17,5 @@ export interface CategoryWithCount extends Category {
 export interface CategoriesResponse {
 	mainCategories: CategoryWithCount[];
 	allCategories: CategoryWithCount[];
+	subCategories: CategoryWithCount[];
 }
