@@ -8,3 +8,4 @@ export { usePostState } from '../model/usePostState';
 export { uploadImage } from './uploadImage';
 export { useGetCategories } from './useGetCategories';
 export { useCreateCategory } from './useCreateCategory';
+export { useUpdateCategory } from './useUpdateCategory';

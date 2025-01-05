@@ -1,3 +1,4 @@
+import { useGetCategories } from '@/fsd/features/blog/api';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import {
@@ -5,7 +6,6 @@ import {
 	type DropResult,
 	Droppable,
 } from 'react-beautiful-dnd';
-import { useGetCategories } from '../../api/useGetCategories';
 import { CategoryForm } from './CategoryForm';
 import { CategoryHeader } from './CategoryHeader';
 import * as styles from './CategoryManager.css';
@@ -18,7 +18,12 @@ export const CategoryManager = () => {
 
 	const [view, setView] = useState<'grid' | 'list'>('grid');
 	const [editingId, setEditingId] = useState<string | null>(null);
+	const editingCategory =
+		editingId && editingId !== 'new'
+			? allCategories.find((category) => category.id === editingId)
+			: undefined;
 
+	// FIXME: Drag and drop is not working
 	const handleDragEnd = (result: DropResult) => {
 		if (!result.destination) return;
 
@@ -26,8 +31,6 @@ export const CategoryManager = () => {
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
 	};
-
-	if (!data) return null;
 
 	return (
 		<div className={styles.pageWrapper}>
@@ -70,6 +73,7 @@ export const CategoryManager = () => {
 						editingId={editingId}
 						onClose={() => setEditingId(null)}
 						mainCategories={mainCategories}
+						editingCategory={editingCategory}
 					/>
 				)}
 			</AnimatePresence>

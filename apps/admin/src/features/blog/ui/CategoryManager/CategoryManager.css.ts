@@ -83,56 +83,6 @@ export const morePostsLink = style({
 	},
 });
 
-export const modal = style({
-	position: 'fixed',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	background: 'rgba(0, 0, 0, 0.5)',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	zIndex: 1000,
-});
-
-export const modalContent = style({
-	background: 'rgba(255, 255, 255, 0.98)',
-	backdropFilter: 'blur(16px)',
-	borderRadius: '20px',
-	padding: '32px',
-	width: '100%',
-	maxWidth: '560px',
-	boxShadow: `
-		0 0 0 1px rgba(0, 0, 0, 0.03),
-		0 4px 6px rgba(0, 0, 0, 0.05),
-		0 12px 24px rgba(0, 0, 0, 0.08)
-	`,
-	margin: '24px',
-	maxHeight: 'calc(100dvh - 48px)',
-	overflowY: 'auto',
-});
-
-export const modalTitle = style({
-	fontSize: '22px',
-	fontWeight: '700',
-	color: '#1E293B',
-	marginBottom: '28px',
-	letterSpacing: '-0.02em',
-});
-
-export const formGroup = style({
-	marginBottom: '28px',
-	transition: 'all 0.2s ease',
-});
-
-export const colorGrid = style({
-	display: 'grid',
-	gridTemplateColumns: 'repeat(8, 1fr)',
-	gap: '10px',
-	marginTop: '12px',
-});
-
 export const colorOption = style({
 	width: '36px',
 	height: '36px',
@@ -146,148 +96,6 @@ export const colorOption = style({
 
 	':hover': {
 		transform: 'scale(1.15)',
-	},
-});
-
-export const input = style({
-	width: '100%',
-	height: '44px',
-	padding: '0 16px',
-	fontSize: '15px',
-	border: '1px solid rgba(0, 0, 0, 0.08)',
-	borderRadius: '12px',
-	background: 'rgba(255, 255, 255, 0.9)',
-	backdropFilter: 'blur(4px)',
-	transition: 'all 0.2s ease',
-
-	':focus': {
-		outline: 'none',
-		borderColor: '#0142C0',
-		background: 'white',
-		transform: 'translateY(-1px)',
-		boxShadow: '0 3px 6px rgba(1, 66, 192, 0.08)',
-	},
-});
-
-export const textarea = style({
-	width: '100%',
-	padding: '16px',
-	fontSize: '15px',
-	border: '1px solid rgba(0, 0, 0, 0.08)',
-	borderRadius: '12px',
-	background: 'rgba(255, 255, 255, 0.9)',
-	backdropFilter: 'blur(4px)',
-	height: '140px',
-	resize: 'none',
-	lineHeight: '1.5',
-	transition: 'all 0.2s ease',
-
-	':focus': {
-		outline: 'none',
-		borderColor: '#0142C0',
-		background: 'white',
-		boxShadow: '0 3px 6px rgba(1, 66, 192, 0.08)',
-	},
-});
-
-export const modalActions = style({
-	display: 'flex',
-	justifyContent: 'flex-end',
-	gap: '16px',
-	marginTop: '32px',
-	paddingTop: '24px',
-	borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-});
-
-export const saveButton = style({
-	padding: '0 28px',
-	height: '44px',
-	background: '#0142C0',
-	color: 'white',
-	border: 'none',
-	borderRadius: '12px',
-	fontSize: '15px',
-	fontWeight: '600',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		background: '#0031A0',
-		transform: 'translateY(-1px)',
-		boxShadow: '0 4px 8px rgba(1, 66, 192, 0.2)',
-	},
-});
-
-export const cancelButton = style({
-	padding: '0 28px',
-	height: '44px',
-	background: '#f1f5f9',
-	color: '#475569',
-	border: 'none',
-	borderRadius: '12px',
-	fontSize: '15px',
-	fontWeight: '600',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		background: '#e2e8f0',
-		color: '#1E293B',
-	},
-});
-
-export const formLabel = style({
-	display: 'block',
-	fontSize: '14px',
-	fontWeight: '600',
-	color: '#475569',
-	marginBottom: '10px',
-	letterSpacing: '0.01em',
-});
-
-export const selectedColor = style({
-	border: '2px solid white',
-	boxShadow: '0 0 0 2px #0142C0',
-});
-
-export const colorPickerWrapper = style({
-	marginTop: '8px',
-});
-
-export const modalOverlay = style({
-	position: 'fixed',
-	top: 0,
-	left: 0,
-	right: 0,
-	bottom: 0,
-	height: '100dvh',
-	background: 'rgba(0, 0, 0, 0.5)',
-	backdropFilter: 'blur(4px)',
-	zIndex: 1000,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-});
-
-export const modalHeader = style({
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-	marginBottom: '24px',
-});
-
-export const closeButton = style({
-	background: 'transparent',
-	border: 'none',
-	color: '#64748b',
-	cursor: 'pointer',
-	padding: '4px',
-	borderRadius: '6px',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		color: '#475569',
-		background: '#f1f5f9',
 	},
 });
 
@@ -327,12 +135,6 @@ export const categoryBadge = style({
 	fontWeight: '500',
 	background: '#f0f2ff',
 	color: '#0142C0',
-});
-
-export const errorMessage = style({
-	color: '#dc2626',
-	fontSize: '13px',
-	marginTop: '4px',
 });
 
 export const successMessage = style({
@@ -433,32 +235,4 @@ export const filters = style({
 	display: 'flex',
 	alignItems: 'center',
 	gap: '12px',
-});
-
-export const colorInput = style({
-	width: '100%',
-	height: '40px',
-	padding: '4px',
-	border: '1px solid #e2e8f0',
-	borderRadius: '8px',
-	cursor: 'pointer',
-	background: 'white',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		borderColor: '#cbd5e1',
-	},
-
-	':focus': {
-		outline: 'none',
-		borderColor: '#0142C0',
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.1)',
-	},
-});
-
-export const inputError = style({
-	borderColor: 'red',
-	':focus': {
-		borderColor: 'red',
-	},
 });

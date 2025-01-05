@@ -1,17 +1,28 @@
-import { style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
+
+export const levelIndent = createVar();
+export const borderColor = createVar();
 
 export const categoryCard = style({
 	background: 'white',
 	borderRadius: '12px',
 	border: '1px solid #f1f5f9',
-	borderTop: '4px solid',
+	borderTopWidth: '4px',
+	borderTopStyle: 'solid',
+	borderTopColor: borderColor,
 	overflow: 'hidden',
 	transition: 'all 0.2s ease',
 	position: 'relative',
+	marginLeft: levelIndent,
 
 	':hover': {
 		transform: 'translateY(-2px)',
 		boxShadow: '0 8px 16px rgba(0, 0, 0, 0.06)',
+	},
+
+	vars: {
+		[levelIndent]: '0px',
+		[borderColor]: '#0142C0',
 	},
 });
 

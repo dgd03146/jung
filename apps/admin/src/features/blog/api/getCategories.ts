@@ -6,8 +6,13 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 	const { data: categories, error: categoriesError } = await supabase
 		.from('categories')
 		.select(`
-			*,
-			posts(count)
+			id,
+			name,
+			description,
+			color,
+			parent_id,
+			type,
+			created_at
 		`)
 		.eq('type', 'blog')
 		.order('created_at');
@@ -20,42 +25,42 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 		throw new ApiError('No categories found', 'NOT_FOUND');
 	}
 
+	console.log('Raw categories:', categories);
+
+	const { data: postCounts, error: postCountsError } = await supabase
+		.from('posts')
+		.select('category_id')
+		.in(
+			'category_id',
+			categories.map((cat) => cat.id),
+		);
+
+	if (postCountsError) {
+		throw ApiError.fromPostgrestError(postCountsError);
+	}
+
+	const postCountMap = (postCounts || []).reduce(
+		(acc, post) => {
+			acc[post.category_id] = (acc[post.category_id] || 0) + 1;
+			return acc;
+		},
+		{} as Record<string, number>,
+	);
+
 	const subCategoryMap = categories.reduce(
 		(acc, category) => {
 			if (category.parent_id) {
-				if (!acc[category.parent_id]) {
-					acc[category.parent_id] = {
-						count: 0,
-						totalPosts: 0,
-					};
-				}
-				acc[category.parent_id].count += 1;
-				acc[category.parent_id].totalPosts += (category.posts ?? []).length;
+				acc[category.parent_id] = (acc[category.parent_id] || 0) + 1;
 			}
 			return acc;
 		},
-		{} as Record<string, { count: number; totalPosts: number }>,
+		{} as Record<string, number>,
 	);
 
 	const processedCategories: CategoryWithCount[] = categories.map(
 		(category) => {
-			const directPostCount = (category.posts ?? []).length;
-
-			if (!category.parent_id) {
-				const subCategoryInfo = subCategoryMap[category.id] || {
-					count: 0,
-					totalPosts: 0,
-				};
-
-				return {
-					...category,
-					description: category.description ?? '',
-					color: category.color ?? '#0142C0',
-					directPostCount,
-					postCount: directPostCount + subCategoryInfo.totalPosts,
-					subCategoriesCount: subCategoryInfo.count,
-				};
-			}
+			const directPostCount = postCountMap[category.id] || 0;
+			const subCount = subCategoryMap[category.id] || 0;
 
 			return {
 				...category,
@@ -63,14 +68,16 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 				color: category.color ?? '#0142C0',
 				directPostCount,
 				postCount: directPostCount,
-				subCategoriesCount: 0,
+				subCategoriesCount: subCount,
 			};
 		},
 	);
 
-	return {
+	const result = {
 		mainCategories: processedCategories.filter((cat) => !cat.parent_id),
 		subCategories: processedCategories.filter((cat) => cat.parent_id),
 		allCategories: processedCategories,
 	};
+
+	return result;
 };

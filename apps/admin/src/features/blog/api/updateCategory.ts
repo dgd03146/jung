@@ -7,7 +7,7 @@ export const updateCategory = async (
 	updates: Partial<Category>,
 ): Promise<Category> => {
 	try {
-		const { data, error } = await supabase
+		const { data: category, error } = await supabase
 			.from('categories')
 			.update(updates)
 			.eq('id', categoryId)
@@ -18,7 +18,7 @@ export const updateCategory = async (
 			throw ApiError.fromPostgrestError(error);
 		}
 
-		return data;
+		return category;
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

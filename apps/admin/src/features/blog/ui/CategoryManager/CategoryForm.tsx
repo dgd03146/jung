@@ -1,29 +1,54 @@
-import type { Category } from '@jung/shared/types';
+import type { Category, CategoryWithCount } from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import { memo, useCallback, useState } from 'react';
 import { useCreateCategory } from '../../api/useCreateCategory';
-import * as styles from './CategoryManager.css';
+import { useUpdateCategory } from '../../api/useUpdateCategory';
+import * as styles from './CategoryForm.css';
 
 interface CategoryFormProps {
 	editingId: string | null;
 	onClose: () => void;
 	mainCategories: Category[];
+	editingCategory?: Category;
 }
 
 type FormData = Omit<Category, 'id'>;
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
 export const CategoryForm = memo(
-	({ editingId, onClose, mainCategories }: CategoryFormProps) => {
+	({
+		editingId,
+		onClose,
+		mainCategories,
+		editingCategory,
+	}: CategoryFormProps) => {
 		const createCategory = useCreateCategory();
-		const [formData, setFormData] = useState<FormData>({
-			name: '',
-			description: '',
-			color: '#0142C0',
-			parent_id: null,
-			type: 'blog',
-			created_at: new Date().toISOString(),
+		const updateCategory = useUpdateCategory();
+
+		console.log(editingCategory, 'editingCategory');
+
+		const [formData, setFormData] = useState<FormData>(() => {
+			if (editingCategory) {
+				return {
+					name: editingCategory.name,
+					description: editingCategory.description,
+					color: editingCategory.color,
+					parent_id: editingCategory.parent_id,
+					type: editingCategory.type,
+					created_at: editingCategory.created_at,
+				};
+			}
+
+			return {
+				name: '',
+				description: '',
+				color: '#0142C0',
+				parent_id: null,
+				type: 'blog',
+				created_at: new Date().toISOString(),
+			};
 		});
+
 		const [errors, setErrors] = useState<FormErrors>({});
 
 		const validateForm = useCallback((): boolean => {
@@ -35,8 +60,12 @@ export const CategoryForm = memo(
 				newErrors.name = 'Category name must be at least 2 characters';
 			}
 
-			if (formData.description && formData.description.length > 500) {
-				newErrors.description = 'Description must be less than 500 characters';
+			if (!formData.description.trim()) {
+				newErrors.description = 'Description is required';
+			} else if (formData.description.length > 100) {
+				newErrors.description = 'Description must be less than 100 characters';
+			} else if (formData.description.length < 10) {
+				newErrors.description = 'Description must be at least 10 characters';
 			}
 
 			setErrors(newErrors);
@@ -54,12 +83,38 @@ export const CategoryForm = memo(
 		const handleSave = useCallback(() => {
 			if (validateForm()) {
 				if (editingId === 'new') {
-					createCategory.mutate(formData, {
+					createCategory.mutate(formData as Omit<CategoryWithCount, 'id'>, {
 						onSuccess: onClose,
 					});
+				} else if (editingId) {
+					updateCategory.mutate(
+						{
+							categoryId: editingId,
+							updates: formData,
+						},
+						{
+							onSuccess: onClose,
+						},
+					);
 				}
 			}
-		}, [createCategory, editingId, formData, onClose, validateForm]);
+		}, [
+			createCategory,
+			updateCategory,
+			editingId,
+			formData,
+			onClose,
+			validateForm,
+		]);
+
+		const isLoading = createCategory.isPending || updateCategory.isPending;
+		const buttonText = isLoading
+			? editingId === 'new'
+				? 'Creating...'
+				: 'Updating...'
+			: editingId === 'new'
+			  ? 'Create Category'
+			  : 'Update Category';
 
 		return (
 			<motion.div
@@ -138,15 +193,19 @@ export const CategoryForm = memo(
 					</div>
 
 					<div className={styles.modalActions}>
-						<button className={styles.cancelButton} onClick={onClose}>
+						<button
+							className={styles.cancelButton}
+							onClick={onClose}
+							disabled={isLoading}
+						>
 							Cancel
 						</button>
 						<button
 							className={styles.saveButton}
 							onClick={handleSave}
-							disabled={createCategory.isPending}
+							disabled={isLoading}
 						>
-							{createCategory.isPending ? 'Creating...' : 'Save Changes'}
+							{buttonText}
 						</button>
 					</div>
 				</motion.div>
@@ -154,5 +213,3 @@ export const CategoryForm = memo(
 		);
 	},
 );
-
-CategoryForm.displayName = 'CategoryForm';

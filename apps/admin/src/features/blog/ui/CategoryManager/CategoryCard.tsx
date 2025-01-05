@@ -1,4 +1,5 @@
 import type { CategoryWithCount } from '@jung/shared/types';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
@@ -22,7 +23,7 @@ export const CategoryCard = ({
 }: CategoryCardProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 
-	const hasChildren = subCategories.length > 0;
+	const hasChildren = category.subCategoriesCount > 0;
 
 	return (
 		<motion.div
@@ -30,10 +31,10 @@ export const CategoryCard = ({
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -20 }}
 			className={styles.categoryCard}
-			style={{
-				marginLeft: `${level * 20}px`,
-				borderTopColor: !category.parent_id ? '#0142C0' : category.color,
-			}}
+			style={assignInlineVars({
+				[styles.levelIndent]: level ? `${level * 20}px` : null,
+				[styles.borderColor]: category.color || null,
+			})}
 		>
 			<div className={styles.cardHeader}>
 				<div className={styles.dragHandle} {...dragHandleProps}>
@@ -52,7 +53,7 @@ export const CategoryCard = ({
 					{category.parent_id ? (
 						<span className={styles.parentBadge}>Sub</span>
 					) : (
-						subCategories.length > 0 && (
+						category.subCategoriesCount > 0 && (
 							<span className={styles.parentBadge}>
 								{subCategories.length} sub
 							</span>
@@ -84,16 +85,20 @@ export const CategoryCard = ({
 
 			{isExpanded && (
 				<AnimatePresence>
-					{subCategories.map((childCategory) => (
-						<CategoryCard
-							key={childCategory.id}
-							category={childCategory}
-							level={level + 1}
-							dragHandleProps={dragHandleProps}
-							subCategories={[]}
-							setEditingId={() => {}}
-						/>
-					))}
+					{subCategories
+						.filter((child) => child.parent_id === category.id)
+						.map((childCategory) => (
+							<CategoryCard
+								key={childCategory.id}
+								category={childCategory}
+								level={level + 1}
+								dragHandleProps={dragHandleProps}
+								subCategories={subCategories.filter(
+									(sub) => sub.parent_id === childCategory.id,
+								)}
+								setEditingId={setEditingId}
+							/>
+						))}
 				</AnimatePresence>
 			)}
 		</motion.div>

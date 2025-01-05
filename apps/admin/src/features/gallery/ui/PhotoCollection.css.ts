@@ -379,9 +379,10 @@ export const textarea = style({
 	borderRadius: '8px',
 	fontSize: '14px',
 	color: '#1e293b',
-	resize: 'vertical',
+
 	minHeight: '100px',
 	transition: 'all 0.2s ease',
+	resize: 'none',
 
 	':focus': {
 		outline: 'none',
@@ -409,8 +410,8 @@ export const modalContent = style({
 	borderRadius: '16px',
 	padding: '24px',
 	width: '100%',
-	maxWidth: '600px',
-	maxHeight: 'calc(100vh - 48px)',
+	maxWidth: '500px',
+	maxHeight: 'calc(100dvh - 48px)',
 	overflow: 'auto',
 	position: 'relative',
 });
