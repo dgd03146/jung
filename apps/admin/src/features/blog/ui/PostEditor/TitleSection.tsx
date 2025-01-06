@@ -25,7 +25,8 @@ export interface TitleSectionProps {
 const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 	const { title, tags, description } = post;
 	const tagInputRef = useRef<HTMLInputElement>(null);
-	const { data: categories } = useGetCategories();
+	const { data } = useGetCategories();
+	const { mainCategories, subCategories } = data;
 
 	const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		const input = e.currentTarget;
@@ -104,18 +105,42 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						<div className={styles.selectWrapper}>
 							<select
 								className={styles.select}
-								value={post.category}
+								value={post.category || ''}
 								onChange={(e) => onFieldChange('category', e.target.value)}
 								data-error={!!errors?.category}
 							>
 								<option value='' disabled>
 									Select category
 								</option>
-								{categories?.map((category) => (
-									<option key={category} value={category}>
-										{category}
-									</option>
-								))}
+								<optgroup label='Main Categories'>
+									{mainCategories?.map((category) => (
+										<option key={category.id} value={category.id}>
+											{category.name}
+										</option>
+									))}
+								</optgroup>
+
+								{mainCategories?.map((mainCategory) => {
+									const subCats = subCategories?.filter(
+										(sub) => sub.parent_id === mainCategory.id,
+									);
+
+									if (subCats && subCats.length > 0) {
+										return (
+											<optgroup
+												key={mainCategory.id}
+												label={`${mainCategory.name} - Sub`}
+											>
+												{subCats.map((subCategory) => (
+													<option key={subCategory.id} value={subCategory.id}>
+														{subCategory.name}
+													</option>
+												))}
+											</optgroup>
+										);
+									}
+									return null;
+								})}
 							</select>
 						</div>
 					</div>
