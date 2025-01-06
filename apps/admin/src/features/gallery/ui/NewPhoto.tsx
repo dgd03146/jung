@@ -1,27 +1,66 @@
+import { useToast } from '@jung/design-system/components';
+import { useNavigate } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { HiTag } from 'react-icons/hi';
 import { HiPhoto } from 'react-icons/hi2';
 import { MdCollections } from 'react-icons/md';
+import { useCreatePhoto } from '../api/useCreatePhoto';
+import { useGetCollections } from '../api/useGetCollections';
 import * as styles from './NewPhoto.css';
-import { MOCK_COLLECTIONS } from './PhotoCollection';
 
-interface FormData {
+interface PhotoFormData {
 	title: string;
 	description: string;
-	image: string | null;
+	image: File | null;
+	alt: string;
 	tags: string[];
-	collection_id?: string;
+	collection_id: string;
 }
 
+const INITIAL_FORM_DATA: PhotoFormData = {
+	title: '',
+	description: '',
+	image: null,
+	alt: '',
+	tags: [],
+	collection_id: '',
+};
+
 export const NewPhoto = () => {
-	const [formData, setFormData] = useState<FormData>({
-		title: '',
-		description: '',
-		image: null,
-		tags: [],
-		collection_id: '',
-	});
+	const navigate = useNavigate();
+	const showToast = useToast();
+	const createPhotoMutation = useCreatePhoto();
+	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
+	const [errors, setErrors] = useState<
+		Partial<Record<keyof PhotoFormData, string>>
+	>({});
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [showErrors, setShowErrors] = useState(false);
+	const { data: collections, isLoading: isLoadingCollections } =
+		useGetCollections();
+
+	const validateForm = (): boolean => {
+		const newErrors: Partial<Record<keyof PhotoFormData, string>> = {};
+
+		if (!formData.title.trim()) {
+			newErrors.title = 'Title is required';
+		}
+		if (!formData.description.trim()) {
+			newErrors.description = 'Description is required';
+		}
+		if (!formData.image) {
+			newErrors.image = 'Image is required';
+		}
+		if (!formData.alt.trim()) {
+			newErrors.alt = 'Alt text is required';
+		}
+		if (!formData.collection_id) {
+			newErrors.collection_id = 'Collection is required';
+		}
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -36,11 +75,22 @@ export const NewPhoto = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
-			const imageUrl = URL.createObjectURL(file);
+			if (file.size > 5 * 1024 * 1024) {
+				showToast('File size should be less than 5MB', 'error');
+				return;
+			}
+
+			if (!file.type.startsWith('image/')) {
+				showToast('Please upload an image file', 'error');
+				return;
+			}
+
 			setFormData((prev) => ({
 				...prev,
-				image: imageUrl,
+				image: file,
+				alt: prev.alt || file.name,
 			}));
+			setErrors((prev) => ({ ...prev, image: '' }));
 		}
 	};
 
@@ -57,25 +107,47 @@ export const NewPhoto = () => {
 	};
 
 	const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const tags = e.target.value.split(',').map((tag) => tag.trim());
+		const tags = e.target.value
+			.split(',')
+			.map((tag) => tag.trim())
+			.filter(Boolean);
+
 		setFormData((prev) => ({
 			...prev,
 			tags,
 		}));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// TODO: Implement save functionality
-		console.log('Form submitted:', formData);
+		setShowErrors(true);
+
+		if (!validateForm()) {
+			showToast('Please fill in all required fields', 'error');
+			return;
+		}
+
+		createPhotoMutation.mutate({
+			file: formData.image!,
+			title: formData.title.trim(),
+			description: formData.description.trim(),
+			alt: formData.alt.trim(),
+			tags: formData.tags,
+			collection_id: formData.collection_id,
+		});
+
+		showToast('Photo uploaded successfully!', 'success');
+		setFormData(INITIAL_FORM_DATA);
+		setShowErrors(false);
+		navigate({ to: '/gallery/photos' });
 	};
+
+	const previewUrl = formData.image
+		? URL.createObjectURL(formData.image)
+		: null;
 
 	return (
 		<div className={styles.pageWrapper}>
-			{/* <div className={styles.header}>
-        <h1 className={styles.title}>Add New Photo</h1>
-      </div> */}
-
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.formLayout}>
 					<div className={styles.imageSection}>
@@ -84,9 +156,9 @@ export const NewPhoto = () => {
 							Image Upload
 						</div>
 						<div className={styles.uploadArea} onClick={handleUploadClick}>
-							{formData.image ? (
+							{previewUrl ? (
 								<img
-									src={formData.image}
+									src={previewUrl}
 									alt='Preview'
 									className={styles.previewImage}
 								/>
@@ -119,47 +191,69 @@ export const NewPhoto = () => {
 
 						<div className={styles.formCard}>
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>Collection</label>
-								<div className={styles.selectWrapper}>
-									<select
-										name='collection_id'
-										value={formData.collection_id}
-										onChange={handleCollectionChange}
-										className={styles.select}
-									>
-										<option value=''>Select a collection</option>
-										{MOCK_COLLECTIONS.map((collection) => (
-											<option key={collection.id} value={collection.id}>
-												{collection.title}
-											</option>
-										))}
-									</select>
-								</div>
-							</div>
-
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Title</label>
+								<label className={styles.label}>
+									Title <span className={styles.required}>*</span>
+								</label>
 								<input
 									type='text'
 									name='title'
 									value={formData.title}
 									onChange={handleInputChange}
 									placeholder='Enter photo title'
-									className={styles.input}
-									required
+									className={`${styles.input} ${
+										showErrors && errors.title ? styles.inputError : ''
+									}`}
 								/>
+								{showErrors && errors.title && (
+									<span className={styles.errorMessage}>{errors.title}</span>
+								)}
 							</div>
 
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>Description</label>
+								<label className={styles.label}>
+									Description <span className={styles.required}>*</span>
+								</label>
 								<textarea
 									name='description'
 									value={formData.description}
 									onChange={handleInputChange}
 									placeholder='Enter photo description'
-									className={styles.textarea}
-									rows={4}
+									className={`${styles.textarea} ${
+										showErrors && errors.description ? styles.inputError : ''
+									}`}
 								/>
+								{showErrors && errors.description && (
+									<span className={styles.errorMessage}>
+										{errors.description}
+									</span>
+								)}
+							</div>
+
+							<div className={styles.inputGroup}>
+								<label className={styles.label}>
+									Collection <span className={styles.required}>*</span>
+								</label>
+								<select
+									name='collection_id'
+									value={formData.collection_id}
+									onChange={handleInputChange}
+									className={`${styles.select} ${
+										showErrors && errors.collection_id ? styles.inputError : ''
+									}`}
+									disabled={isLoadingCollections}
+								>
+									<option value=''>Select a collection</option>
+									{collections?.map((collection) => (
+										<option key={collection.id} value={collection.id}>
+											{collection.title}
+										</option>
+									))}
+								</select>
+								{showErrors && errors.collection_id && (
+									<span className={styles.errorMessage}>
+										{errors.collection_id}
+									</span>
+								)}
 							</div>
 
 							<div className={styles.inputGroup}>
@@ -176,6 +270,19 @@ export const NewPhoto = () => {
 									className={styles.input}
 								/>
 							</div>
+
+							<div className={styles.inputGroup}>
+								<label className={styles.label}>Alt Text</label>
+								<input
+									type='text'
+									name='alt'
+									value={formData.alt}
+									onChange={handleInputChange}
+									placeholder='Enter image alt text'
+									className={styles.input}
+									required
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -184,9 +291,9 @@ export const NewPhoto = () => {
 					<button
 						type='submit'
 						className={styles.submitButton}
-						disabled={!formData.title || !formData.image}
+						disabled={createPhotoMutation.isPending}
 					>
-						Upload Photo
+						{createPhotoMutation.isPending ? 'Uploading...' : 'Upload Photo'}
 					</button>
 				</div>
 			</form>

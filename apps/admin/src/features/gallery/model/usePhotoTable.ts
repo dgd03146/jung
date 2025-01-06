@@ -14,8 +14,8 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
-import { fetchPhotos } from '../api/getPhotos';
 import { useGetPhotos } from '../api/useGetPhotos';
+import { fetchPhotos } from '../services/getPhotos';
 
 interface PhotoFilters {
 	page: number;

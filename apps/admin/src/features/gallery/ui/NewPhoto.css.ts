@@ -47,26 +47,26 @@ export const form = style({
 
 export const formLayout = style({
 	display: 'flex',
+
 	gap: '32px',
 	flex: 1,
 	overflow: 'hidden',
 
 	'@media': {
-		'screen and (max-width: 768px)': {
+		'screen and (max-width: 1200px)': {
 			flexDirection: 'column',
 		},
 	},
 });
 
 export const imageSection = style({
-	flex: '0 0 840px',
+	flexBasis: '50%',
 	display: 'flex',
 	flexDirection: 'column',
 });
 
 export const detailsSection = style({
 	flex: 1,
-	minWidth: '320px',
 	overflow: 'auto',
 	paddingRight: '16px',
 
@@ -88,6 +88,7 @@ export const uploadArea = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	position: 'relative',
 
 	':hover': {
 		borderColor: '#0142C0',
@@ -118,8 +119,7 @@ export const uploadPrompt = style({
 export const previewImage = style({
 	width: '100%',
 	height: '100%',
-	objectFit: 'contain',
-	padding: '12px',
+	objectFit: 'cover',
 });
 
 export const hiddenFileInput = style({

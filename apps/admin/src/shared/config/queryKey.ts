@@ -1,6 +1,6 @@
 import type { PostFilters } from '../../features/blog/types/postFilters';
 
-// FIXME: 쿼리키 팩토리?
+// FIXME: 쿼리키 팩토리, PostFilters 수정?
 
 export const postKeys = {
 	all: ['posts'] as const,
@@ -25,4 +25,11 @@ export const spotKeys = {
 	lists: () => [...spotKeys.all, 'list'] as const,
 	list: (filters: PostFilters) => [...spotKeys.lists(), filters] as const,
 	detail: (id?: string) => [...spotKeys.all, id] as const,
+};
+
+export const collectionKeys = {
+	all: ['collections'] as const,
+	lists: () => [...collectionKeys.all, 'list'] as const,
+	list: (filters: PostFilters) => [...collectionKeys.lists(), filters] as const,
+	detail: (id?: string) => [...collectionKeys.all, id] as const,
 };

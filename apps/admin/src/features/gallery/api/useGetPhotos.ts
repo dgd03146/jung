@@ -1,7 +1,7 @@
 import { photoKeys } from '@/fsd/shared';
 import type { Photo } from '@jung/shared/types';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchPhotos } from './getPhotos';
+import { fetchPhotos } from '../services/getPhotos';
 
 interface PhotoFilters {
 	page: number;
