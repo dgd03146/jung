@@ -25,8 +25,6 @@ export const CategoryForm = memo(
 		const createCategory = useCreateCategory();
 		const updateCategory = useUpdateCategory();
 
-		console.log(editingCategory, 'editingCategory');
-
 		const [formData, setFormData] = useState<FormData>(() => {
 			if (editingCategory) {
 				return {

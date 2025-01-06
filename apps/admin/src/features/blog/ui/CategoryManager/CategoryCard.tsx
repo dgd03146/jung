@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { HiPencil, HiTrash } from 'react-icons/hi';
-import * as styles from './CategoryCard.css.ts';
+import { useDeleteCategory } from '../../api/useDeleteCategory';
+import * as styles from './CategoryCard.css';
 
 interface CategoryCardProps {
 	category: CategoryWithCount;
@@ -22,8 +23,19 @@ export const CategoryCard = ({
 	setEditingId,
 }: CategoryCardProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
-
+	const deleteCategory = useDeleteCategory();
 	const hasChildren = category.subCategoriesCount > 0;
+
+	const handleDelete = () => {
+		if (hasChildren) {
+			alert('Please delete all subcategories first');
+			return;
+		}
+
+		if (window.confirm('Are you sure you want to delete this category?')) {
+			deleteCategory.mutate(category.id);
+		}
+	};
 
 	return (
 		<motion.div
@@ -67,7 +79,11 @@ export const CategoryCard = ({
 					>
 						<HiPencil />
 					</button>
-					<button className={styles.actionButton}>
+					<button
+						className={styles.actionButton}
+						onClick={handleDelete}
+						disabled={deleteCategory.isPending}
+					>
 						<HiTrash />
 					</button>
 				</div>
