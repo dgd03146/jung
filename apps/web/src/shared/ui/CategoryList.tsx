@@ -3,7 +3,6 @@
 import { Container, Flex, Tag } from '@jung/design-system/components';
 import type { Category } from '@jung/shared/types';
 
-import { getCategoryDisplayName } from '@jung/shared/utils';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
@@ -55,7 +54,7 @@ export const mockCategories: Category[] = [
 		created_at: '2024-01-05T00:00:00Z',
 		color: '#007ACC',
 	},
-];
+] as const;
 
 const CategoryList = () => {
 	const pathname = usePathname();
@@ -97,7 +96,7 @@ const CategoryList = () => {
 								currentCategory === category.name ? 'white' : { hover: 'white' }
 							}
 						>
-							{getCategoryDisplayName(category, 'en')}
+							{category.name}
 						</Tag>
 					</Link>
 				))}
