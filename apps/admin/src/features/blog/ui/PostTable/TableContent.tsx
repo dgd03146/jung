@@ -1,10 +1,10 @@
 import { usePostTable } from '@/fsd/features/blog/model';
+import { TableSkeleton } from '@/fsd/shared/ui';
 import { Box } from '@jung/design-system/components';
 import ErrorFallback from '../ErrorFallback';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';
 import { TablePagination } from './TablePagination';
-import TableSkeleton from './TableSkeleton';
 
 export const TableContent = () => {
 	const { table, isLoading, error, refetch } = usePostTable();

@@ -1,5 +1,5 @@
 import { palette } from '@jung/design-system/tokens';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const container = style({
 	backgroundColor: 'white',
@@ -90,51 +90,39 @@ export const newButton = style({
 });
 
 export const th = style({
-	padding: '16px 24px',
+	displayy: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	padding: '8px 16px',
 	backgroundColor: 'white',
 	borderBottom: '1px solid #F1F5F9',
-	textAlign: 'center',
+
 	whiteSpace: 'nowrap',
 	fontSize: '13px',
 	fontWeight: '600',
 	color: '#64748B',
 	transition: 'all 0.2s ease',
-	height: '56px',
-	display: 'table-cell',
-	verticalAlign: 'middle',
 
 	'@media': {
 		'(max-width: 768px)': {
 			padding: '12px 16px',
 			fontSize: '12px',
-			height: '48px',
 		},
 	},
 });
 
-globalStyle(`${th} > *`, {
-	margin: '0 auto',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	height: '100%',
-});
-
 export const td = style({
-	padding: '16px',
-	textAlign: 'center',
-	verticalAlign: 'middle',
-	borderBottom: '1px solid #E2E8F0',
+	padding: '16px 24px',
+	borderBottom: '1px solid #F1F5F9',
 	fontSize: '14px',
-	color: '#1E293B',
-	whiteSpace: 'nowrap',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	maxWidth: '200px',
+	color: '#334155',
+	transition: 'all 0.2s ease',
+	verticalAlign: 'middle',
+	textAlign: 'center',
 
 	'@media': {
 		'(max-width: 768px)': {
-			padding: '12px 8px',
+			padding: '12px 16px',
 			fontSize: '13px',
 		},
 	},

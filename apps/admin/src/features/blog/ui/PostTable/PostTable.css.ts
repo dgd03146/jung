@@ -114,6 +114,7 @@ export const td = style({
 	fontSize: '14px',
 	color: '#334155',
 	transition: 'all 0.2s ease',
+	verticalAlign: 'middle',
 
 	'@media': {
 		'(max-width: 768px)': {

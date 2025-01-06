@@ -6,3 +6,4 @@ export { postKeys, photoKeys, spotKeys, categoryKeys } from './config/queryKey';
 
 export * from './model';
 export * from './config';
+export * from './ui';
