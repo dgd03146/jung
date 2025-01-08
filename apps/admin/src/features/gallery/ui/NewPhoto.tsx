@@ -1,11 +1,12 @@
 import { useToast } from '@jung/design-system/components';
-import { useNavigate } from '@tanstack/react-router';
-import { useRef, useState } from 'react';
+import { useNavigate, useParams } from '@tanstack/react-router';
+import { useEffect, useRef, useState } from 'react';
 import { HiTag } from 'react-icons/hi';
 import { HiPhoto } from 'react-icons/hi2';
 import { MdCollections } from 'react-icons/md';
 import { useCreatePhoto } from '../api/useCreatePhoto';
 import { useGetCollections } from '../api/useGetCollections';
+import { useGetPhotoById } from '../api/useGetPhotoById';
 import * as styles from './NewPhoto.css';
 
 interface PhotoFormData {
@@ -30,7 +31,19 @@ export const NewPhoto = () => {
 	const navigate = useNavigate();
 	const showToast = useToast();
 	const createPhotoMutation = useCreatePhoto();
+
+	const { photoId } = useParams({
+		from: '/gallery/photos/$photoId/edit',
+	});
+
+	const isEditMode = !!photoId;
+
+	const { data: photo, isLoading } = useGetPhotoById(photoId!);
+
 	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
+	const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
 	const [errors, setErrors] = useState<
 		Partial<Record<keyof PhotoFormData, string>>
 	>({});
@@ -38,6 +51,28 @@ export const NewPhoto = () => {
 	const [showErrors, setShowErrors] = useState(false);
 	const { data: collections, isLoading: isLoadingCollections } =
 		useGetCollections();
+
+	useEffect(() => {
+		if (isEditMode && photo) {
+			setFormData({
+				title: photo.title,
+				description: photo.description ?? '',
+				alt: photo.alt ?? '',
+				tags: photo.tags ?? [],
+				image: null,
+				collection_id: photo.collection_id ?? '',
+			});
+			setExistingImageUrl(photo.image_url);
+		}
+	}, [isEditMode, photo]);
+
+	useEffect(() => {
+		if (formData.image) {
+			const url = URL.createObjectURL(formData.image);
+			setPreviewUrl(url);
+			return () => URL.revokeObjectURL(url);
+		}
+	}, [formData.image]);
 
 	const validateForm = (): boolean => {
 		const newErrors: Partial<Record<keyof PhotoFormData, string>> = {};
@@ -127,24 +162,45 @@ export const NewPhoto = () => {
 			return;
 		}
 
-		createPhotoMutation.mutate({
-			file: formData.image!,
-			title: formData.title.trim(),
-			description: formData.description.trim(),
-			alt: formData.alt.trim(),
-			tags: formData.tags,
-			collection_id: formData.collection_id,
-		});
+		const formDataToSubmit = new FormData();
 
-		showToast('Photo uploaded successfully!', 'success');
-		setFormData(INITIAL_FORM_DATA);
-		setShowErrors(false);
-		navigate({ to: '/gallery/photos' });
+		formDataToSubmit.append('title', formData.title.trim());
+		formDataToSubmit.append('description', formData.description.trim());
+		formDataToSubmit.append('alt', formData.alt.trim());
+		formDataToSubmit.append('collection_id', formData.collection_id);
+
+		if (formData.tags.length > 0) {
+			formDataToSubmit.append('tags', JSON.stringify(formData.tags));
+		}
+
+		if (formData.image) {
+			formDataToSubmit.append('image', formData.image);
+		}
+
+		try {
+			await createPhotoMutation.mutateAsync({
+				file: formData.image,
+				title: formData.title.trim(),
+				description: formData.description.trim(),
+				alt: formData.alt.trim(),
+				tags: formData.tags,
+				collection_id: formData.collection_id,
+			});
+
+			showToast('Photo uploaded successfully!', 'success');
+			setFormData(INITIAL_FORM_DATA);
+			setShowErrors(false);
+			navigate({ to: '/gallery/photos' });
+		} catch (error) {
+			showToast('Failed to upload photo', 'error');
+		}
 	};
 
-	const previewUrl = formData.image
-		? URL.createObjectURL(formData.image)
-		: null;
+	const imagePreview = previewUrl || existingImageUrl;
+
+	if (isEditMode && isLoading) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<div className={styles.pageWrapper}>
@@ -156,9 +212,9 @@ export const NewPhoto = () => {
 							Image Upload
 						</div>
 						<div className={styles.uploadArea} onClick={handleUploadClick}>
-							{previewUrl ? (
+							{imagePreview ? (
 								<img
-									src={previewUrl}
+									src={imagePreview}
 									alt='Preview'
 									className={styles.previewImage}
 								/>
@@ -179,6 +235,7 @@ export const NewPhoto = () => {
 								onChange={handleFileChange}
 								accept='image/*'
 								className={styles.hiddenFileInput}
+								required
 							/>
 						</div>
 					</div>
@@ -236,7 +293,7 @@ export const NewPhoto = () => {
 								<select
 									name='collection_id'
 									value={formData.collection_id}
-									onChange={handleInputChange}
+									onChange={handleCollectionChange}
 									className={`${styles.select} ${
 										showErrors && errors.collection_id ? styles.inputError : ''
 									}`}
@@ -293,7 +350,7 @@ export const NewPhoto = () => {
 						className={styles.submitButton}
 						disabled={createPhotoMutation.isPending}
 					>
-						{createPhotoMutation.isPending ? 'Uploading...' : 'Upload Photo'}
+						{isEditMode ? 'Update Photo' : 'Create Photo'}
 					</button>
 				</div>
 			</form>

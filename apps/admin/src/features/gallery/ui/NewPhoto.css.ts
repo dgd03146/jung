@@ -291,3 +291,17 @@ export const select = style({
 		borderColor: '#cbd5e1',
 	},
 });
+
+export const required = style({
+	color: 'red',
+});
+
+export const errorMessage = style({
+	color: 'red',
+	fontSize: '12px',
+	marginTop: '4px',
+});
+
+export const inputError = style({
+	borderColor: 'red',
+});

@@ -18,7 +18,7 @@ import { Route as BlogNewIndexImport } from './routes/blog/new/index';
 import { Route as CommunityIndexImport } from './routes/community/index';
 import { Route as GalleryCollectionsCollectionIdImport } from './routes/gallery/collections/$collectionId';
 import { Route as GalleryCollectionsIndexImport } from './routes/gallery/collections/index';
-import { Route as GalleryPhotosEditPhotoIdImport } from './routes/gallery/photos/edit/$photoId';
+import { Route as GalleryPhotosPhotoIdEditImport } from './routes/gallery/photos/$photoId/edit';
 import { Route as GalleryPhotosIndexImport } from './routes/gallery/photos/index';
 import { Route as GalleryPhotosNewIndexImport } from './routes/gallery/photos/new/index';
 import { Route as GuestbookIndexImport } from './routes/guestbook/index';
@@ -106,8 +106,8 @@ const GalleryPhotosNewIndexRoute = GalleryPhotosNewIndexImport.update({
 	getParentRoute: () => rootRoute,
 } as any);
 
-const GalleryPhotosEditPhotoIdRoute = GalleryPhotosEditPhotoIdImport.update({
-	path: '/gallery/photos/edit/$photoId',
+const GalleryPhotosPhotoIdEditRoute = GalleryPhotosPhotoIdEditImport.update({
+	path: '/gallery/photos/$photoId/edit',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -213,11 +213,11 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof SpotsNewIndexImport;
 			parentRoute: typeof rootRoute;
 		};
-		'/gallery/photos/edit/$photoId': {
-			id: '/gallery/photos/edit/$photoId';
-			path: '/gallery/photos/edit/$photoId';
-			fullPath: '/gallery/photos/edit/$photoId';
-			preLoaderRoute: typeof GalleryPhotosEditPhotoIdImport;
+		'/gallery/photos/$photoId/edit': {
+			id: '/gallery/photos/$photoId/edit';
+			path: '/gallery/photos/$photoId/edit';
+			fullPath: '/gallery/photos/$photoId/edit';
+			preLoaderRoute: typeof GalleryPhotosPhotoIdEditImport;
 			parentRoute: typeof rootRoute;
 		};
 		'/gallery/photos/new/': {
@@ -247,7 +247,7 @@ export const routeTree = rootRoute.addChildren({
 	GalleryPhotosIndexRoute,
 	SpotsCategoriesIndexRoute,
 	SpotsNewIndexRoute,
-	GalleryPhotosEditPhotoIdRoute,
+	GalleryPhotosPhotoIdEditRoute,
 	GalleryPhotosNewIndexRoute,
 });
 
@@ -273,7 +273,7 @@ export const routeTree = rootRoute.addChildren({
         "/gallery/photos/",
         "/spots/categories/",
         "/spots/new/",
-        "/gallery/photos/edit/$photoId",
+        "/gallery/photos/$photoId/edit",
         "/gallery/photos/new/"
       ]
     },
@@ -319,8 +319,8 @@ export const routeTree = rootRoute.addChildren({
     "/spots/new/": {
       "filePath": "spots/new/index.tsx"
     },
-    "/gallery/photos/edit/$photoId": {
-      "filePath": "gallery/photos/edit/$photoId.tsx"
+    "/gallery/photos/$photoId/edit": {
+      "filePath": "gallery/photos/$photoId/edit.tsx"
     },
     "/gallery/photos/new/": {
       "filePath": "gallery/photos/new/index.tsx"

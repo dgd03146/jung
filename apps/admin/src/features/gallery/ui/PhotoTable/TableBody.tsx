@@ -44,13 +44,13 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 						<td className={styles.td}>
 							<div style={{ display: 'flex', gap: '8px' }}>
 								<Link
-									to={'/gallery/photos/edit/$photoId'}
+									to='/gallery/photos/$photoId/edit'
 									params={{ photoId: photo.id }}
+									className={styles.actionButton}
 								>
-									<button className={styles.actionButton}>
-										<FaEdit size={16} />
-									</button>
+									<FaEdit size={16} />
 								</Link>
+
 								<button
 									className={styles.actionButton}
 									onClick={() => handleDelete(photo.id)}
