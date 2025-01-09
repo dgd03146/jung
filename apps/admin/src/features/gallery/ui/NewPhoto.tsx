@@ -7,6 +7,7 @@ import { MdCollections } from 'react-icons/md';
 import { useCreatePhoto } from '../api/useCreatePhoto';
 import { useGetCollections } from '../api/useGetCollections';
 import { useGetPhotoById } from '../api/useGetPhotoById';
+import { useUpdatePhoto } from '../api/useUpdatePhoto';
 import * as styles from './NewPhoto.css';
 
 interface PhotoFormData {
@@ -31,6 +32,7 @@ export const NewPhoto = () => {
 	const navigate = useNavigate();
 	const showToast = useToast();
 	const createPhotoMutation = useCreatePhoto();
+	const updatePhotoMutation = useUpdatePhoto();
 
 	const { photoId } = useParams({
 		from: '/gallery/photos/$photoId/edit',
@@ -83,7 +85,7 @@ export const NewPhoto = () => {
 		if (!formData.description.trim()) {
 			newErrors.description = 'Description is required';
 		}
-		if (!formData.image) {
+		if (!formData.image && !isEditMode) {
 			newErrors.image = 'Image is required';
 		}
 		if (!formData.alt.trim()) {
@@ -162,38 +164,30 @@ export const NewPhoto = () => {
 			return;
 		}
 
-		const formDataToSubmit = new FormData();
+		const photoData = {
+			title: formData.title.trim(),
+			description: formData.description.trim(),
+			alt: formData.alt.trim(),
+			tags: formData.tags,
+			collection_id: formData.collection_id,
+		};
 
-		formDataToSubmit.append('title', formData.title.trim());
-		formDataToSubmit.append('description', formData.description.trim());
-		formDataToSubmit.append('alt', formData.alt.trim());
-		formDataToSubmit.append('collection_id', formData.collection_id);
-
-		if (formData.tags.length > 0) {
-			formDataToSubmit.append('tags', JSON.stringify(formData.tags));
-		}
-
-		if (formData.image) {
-			formDataToSubmit.append('image', formData.image);
-		}
-
-		try {
-			await createPhotoMutation.mutateAsync({
-				file: formData.image,
-				title: formData.title.trim(),
-				description: formData.description.trim(),
-				alt: formData.alt.trim(),
-				tags: formData.tags,
-				collection_id: formData.collection_id,
+		if (isEditMode) {
+			updatePhotoMutation.mutate({
+				id: photoId!,
+				...photoData,
+				file: formData.image || undefined,
 			});
-
-			showToast('Photo uploaded successfully!', 'success');
-			setFormData(INITIAL_FORM_DATA);
-			setShowErrors(false);
-			navigate({ to: '/gallery/photos' });
-		} catch (error) {
-			showToast('Failed to upload photo', 'error');
+		} else {
+			createPhotoMutation.mutate({
+				...photoData,
+				file: formData.image!,
+			});
 		}
+
+		setFormData(INITIAL_FORM_DATA);
+		setShowErrors(false);
+		navigate({ to: '/gallery/photos' });
 	};
 
 	const imagePreview = previewUrl || existingImageUrl;
@@ -235,7 +229,8 @@ export const NewPhoto = () => {
 								onChange={handleFileChange}
 								accept='image/*'
 								className={styles.hiddenFileInput}
-								required
+								required={!isEditMode}
+								disabled={isLoading}
 							/>
 						</div>
 					</div>

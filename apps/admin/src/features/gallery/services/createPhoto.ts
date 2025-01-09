@@ -3,7 +3,7 @@ import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { Photo } from '@jung/shared/types';
 import { uploadGalleryImage } from '../lib/uploadImage';
 
-interface CreatePhotoInput {
+export interface CreatePhotoInput {
 	file: File;
 	title: string;
 	description: string;
