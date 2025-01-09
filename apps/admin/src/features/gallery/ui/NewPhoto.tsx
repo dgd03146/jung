@@ -1,7 +1,6 @@
 import { useToast } from '@jung/design-system/components';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { HiTag } from 'react-icons/hi';
 import { HiPhoto } from 'react-icons/hi2';
 import { MdCollections } from 'react-icons/md';
 import { useCreatePhoto } from '../api/useCreatePhoto';
@@ -29,7 +28,6 @@ const INITIAL_FORM_DATA: PhotoFormData = {
 };
 
 export const NewPhoto = () => {
-	const navigate = useNavigate();
 	const showToast = useToast();
 	const createPhotoMutation = useCreatePhoto();
 	const updatePhotoMutation = useUpdatePhoto();
@@ -181,10 +179,6 @@ export const NewPhoto = () => {
 				file: formData.image!,
 			});
 		}
-
-		setFormData(INITIAL_FORM_DATA);
-		setShowErrors(false);
-		navigate({ to: '/gallery/photos' });
 	};
 
 	const imagePreview = previewUrl || existingImageUrl;
@@ -306,10 +300,7 @@ export const NewPhoto = () => {
 							</div>
 
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>
-									<HiTag className={styles.labelIcon} />
-									Tags
-								</label>
+								<label className={styles.label}>Tags</label>
 								<input
 									type='text'
 									name='tags'
@@ -321,7 +312,7 @@ export const NewPhoto = () => {
 							</div>
 
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>Alt Text</label>
+								<label className={styles.label}>File Name</label>
 								<input
 									type='text'
 									name='alt'
@@ -329,7 +320,6 @@ export const NewPhoto = () => {
 									onChange={handleInputChange}
 									placeholder='Enter image alt text'
 									className={styles.input}
-									required
 								/>
 							</div>
 						</div>

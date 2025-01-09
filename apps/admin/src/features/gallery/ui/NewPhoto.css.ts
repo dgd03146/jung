@@ -78,7 +78,8 @@ export const detailsSection = style({
 });
 
 export const uploadArea = style({
-	flex: 1,
+	width: '100%',
+	aspectRatio: '16/9',
 	border: '2px dashed #e2e8f0',
 	borderRadius: '12px',
 	cursor: 'pointer',
@@ -89,6 +90,7 @@ export const uploadArea = style({
 	alignItems: 'center',
 	justifyContent: 'center',
 	position: 'relative',
+	height: '100%',
 
 	':hover': {
 		borderColor: '#0142C0',
@@ -107,7 +109,7 @@ export const uploadPromptSubtext = style({
 });
 
 export const uploadPrompt = style({
-	height: '100%',
+	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
@@ -162,8 +164,8 @@ export const textarea = style({
 	borderRadius: '8px',
 	fontSize: '14px',
 	color: '#1e293b',
-	resize: 'vertical',
-	minHeight: '100px',
+	resize: 'none',
+
 	transition: 'all 0.2s ease',
 
 	':focus': {
@@ -259,13 +261,6 @@ export const selectWrapper = style({
 		transform: 'translateY(-50%) rotate(45deg)',
 		pointerEvents: 'none',
 	},
-});
-
-export const labelIcon = style({
-	display: 'inline-block',
-	marginRight: '4px',
-	verticalAlign: 'middle',
-	color: '#64748b',
 });
 
 export const select = style({
