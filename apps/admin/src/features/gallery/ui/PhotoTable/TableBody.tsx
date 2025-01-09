@@ -54,6 +54,7 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 								<button
 									className={styles.actionButton}
 									onClick={() => handleDelete(photo.id)}
+									disabled={deletePhotoMutation.isPending}
 								>
 									<FaTrash size={16} />
 								</button>

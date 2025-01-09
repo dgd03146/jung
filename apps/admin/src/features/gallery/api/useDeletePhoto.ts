@@ -1,49 +1,42 @@
 import { photoKeys } from '@/fsd/shared';
-import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-// Mock delete function
-const mockDeletePhotoById = async (id: string): Promise<void> => {
-	// Simulate API delay
-	await new Promise((resolve) => setTimeout(resolve, 500));
-
-	// Simulate random error (10% chance)
-	if (Math.random() < 0.1) {
-		throw {
-			code: 'NOT_FOUND',
-			message: 'Photo not found',
-		} as ApiError;
-	}
-
-	console.log('Mock: Photo deleted', id);
-	return;
-};
+import { deletePhoto } from '../services/deletePhoto';
 
 export const useDeletePhoto = () => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 
 	return useMutation({
-		mutationFn: (id: string) => mockDeletePhotoById(id),
-		onSuccess: async (_, deletedId) => {
-			await queryClient.invalidateQueries({ queryKey: photoKeys.lists() });
-			queryClient.removeQueries({ queryKey: photoKeys.detail(deletedId) });
+		mutationFn: deletePhoto,
 
-			showToast('Photo deleted successfully!');
+		onSuccess: () => {
+			// FIXME: Image flickering issue - Consider moving invalidation after UI update
+			queryClient.invalidateQueries({
+				queryKey: photoKeys.lists(),
+			});
+			showToast('Photo deleted successfully!', 'success');
 		},
-		onError: (error: ApiError) => {
-			switch (error.code) {
-				case 'NOT_FOUND':
-					showToast('Failed to delete photo: Photo not found');
-					break;
-				case 'UNKNOWN_ERROR':
-					showToast('An unexpected error occurred. Please try again later.');
-					break;
-				default:
-					showToast(`Failed to delete photo: ${error.message}`);
+
+		onError: (error: unknown) => {
+			if (error instanceof ApiError) {
+				switch (error.code) {
+					case 'NOT_FOUND':
+						showToast('Photo not found', 'error');
+						break;
+					case 'STORAGE_ERROR':
+						showToast('Failed to delete image file', 'error');
+						break;
+					case 'FOREIGN_KEY_VIOLATION':
+						showToast('Cannot delete photo: it is being used', 'error');
+						break;
+					default:
+						showToast(`Delete failed: ${error.message}`, 'error');
+				}
+			} else {
+				showToast('An unknown error occurred', 'error');
 			}
-			console.error('Photo deletion error:', error);
 		},
 	});
 };

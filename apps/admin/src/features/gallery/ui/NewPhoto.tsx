@@ -8,6 +8,7 @@ import { useGetCollections } from '../api/useGetCollections';
 import { useGetPhotoById } from '../api/useGetPhotoById';
 import { useUpdatePhoto } from '../api/useUpdatePhoto';
 import * as styles from './NewPhoto.css';
+import { NewPhotoSkeleton } from './NewPhotoSkeleton';
 
 interface PhotoFormData {
 	title: string;
@@ -184,7 +185,7 @@ export const NewPhoto = () => {
 	const imagePreview = previewUrl || existingImageUrl;
 
 	if (isEditMode && isLoading) {
-		return <div>Loading...</div>;
+		return <NewPhotoSkeleton />;
 	}
 
 	return (
