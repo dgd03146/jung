@@ -34,13 +34,10 @@ export const NewPhoto = () => {
 	const createPhotoMutation = useCreatePhoto();
 	const updatePhotoMutation = useUpdatePhoto();
 
-	const { photoId } = useParams({
-		from: '/gallery/photos/$photoId/edit',
-	});
+	const params = useParams({ strict: false });
+	const isEditMode = !!params?.photoId;
 
-	const isEditMode = !!photoId;
-
-	const { data: photo, isLoading } = useGetPhotoById(photoId!);
+	const { data: photo, isLoading } = useGetPhotoById(params.photoId!);
 
 	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
 	const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
@@ -174,7 +171,7 @@ export const NewPhoto = () => {
 
 		if (isEditMode) {
 			updatePhotoMutation.mutate({
-				id: photoId!,
+				id: params.photoId!,
 				...photoData,
 				file: formData.image || undefined,
 			});
