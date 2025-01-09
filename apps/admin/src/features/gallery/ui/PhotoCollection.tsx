@@ -1,9 +1,17 @@
+import { useGetCollections } from '@/fsd/features/gallery/api';
 import type { Collection } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
 import * as styles from './PhotoCollection.css';
+import { PhotoCollectionSkeleton } from './PhotoCollectionSkeleton';
+
+interface FormData {
+	title: string;
+	description: string;
+	cover_image: string;
+}
 
 export const MOCK_COLLECTIONS: Collection[] = [
 	{
@@ -104,15 +112,8 @@ export const MOCK_COLLECTIONS: Collection[] = [
 	},
 ];
 
-interface FormData {
-	title: string;
-	description: string;
-	cover_image: string;
-}
-
 export const PhotoCollection = () => {
-	const [collections, setCollections] =
-		useState<Collection[]>(MOCK_COLLECTIONS);
+	const { data: collections = [], isLoading } = useGetCollections();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
@@ -141,7 +142,9 @@ export const PhotoCollection = () => {
 	};
 
 	const handleSave = () => {
-		// FIXME: API 호출로 변경
+		// FIXME: Implement API integration
+		// - For new collection: createCollectionMutation.mutate(formData)
+		// - For edit: updateCollectionMutation.mutate({ id: editingId, ...formData })
 		if (editingId === 'new') {
 			const newCollection: Collection = {
 				id: String(Date.now()),
@@ -151,20 +154,7 @@ export const PhotoCollection = () => {
 				photo_count: 0,
 				created_at: new Date().toISOString(),
 			};
-			setCollections((prev) => [newCollection, ...prev]);
 		} else {
-			setCollections((prev) =>
-				prev.map((collection) =>
-					collection.id === editingId
-						? {
-								...collection,
-								title: formData.title,
-								description: formData.description,
-								cover_image: formData.cover_image,
-						  }
-						: collection,
-				),
-			);
 		}
 		handleCloseModal();
 	};
@@ -184,6 +174,8 @@ export const PhotoCollection = () => {
 	const handleUploadClick = () => {
 		fileInputRef.current?.click();
 	};
+
+	if (isLoading) return <PhotoCollectionSkeleton />;
 
 	return (
 		<div className={styles.pageWrapper}>

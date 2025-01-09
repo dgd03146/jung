@@ -2,6 +2,7 @@ import type { Photo } from '@jung/shared/types';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
 import { HiCheck, HiPlus, HiTrash } from 'react-icons/hi';
+
 import { MOCK_COLLECTIONS } from './PhotoCollection.tsx';
 import * as styles from './PhotoCollectionDetail.css.ts';
 
