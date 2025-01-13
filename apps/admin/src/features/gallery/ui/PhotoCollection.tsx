@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
 import { useCreateCollection } from '../api/useCreateCollection';
+import { useDeleteCollection } from '../api/useDeleteCollection';
 import { useUpdateCollection } from '../api/useUpdateCollection';
 import * as styles from './PhotoCollection.css';
 import { PhotoCollectionSkeleton } from './PhotoCollectionSkeleton';
@@ -124,6 +125,7 @@ export const PhotoCollection = () => {
 	const { data: collections = [], isLoading } = useGetCollections();
 	const createCollectionMutation = useCreateCollection();
 	const updateCollectionMutation = useUpdateCollection();
+	const deleteCollectionMutation = useDeleteCollection();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
@@ -269,6 +271,20 @@ export const PhotoCollection = () => {
 		setErrors({});
 	};
 
+	const handleEdit = (e: React.MouseEvent, id: string) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setEditingId(id);
+	};
+
+	const handleDelete = (e: React.MouseEvent, id: string) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (window.confirm('컬렉션을 삭제하시겠습니까?')) {
+			deleteCollectionMutation.mutate(id);
+		}
+	};
+
 	if (isLoading) return <PhotoCollectionSkeleton />;
 
 	return (
@@ -305,19 +321,14 @@ export const PhotoCollection = () => {
 									<div className={styles.actions}>
 										<button
 											className={styles.actionButton}
-											onClick={(e) => {
-												e.preventDefault();
-												setEditingId(collection.id);
-											}}
+											onClick={(e) => handleEdit(e, collection.id)}
 										>
 											<HiPencil size={16} />
 										</button>
 										<button
 											className={styles.actionButton}
-											onClick={(e) => {
-												e.preventDefault();
-												// handleDelete(collection.id)
-											}}
+											onClick={(e) => handleDelete(e, collection.id)}
+											disabled={deleteCollectionMutation.isPending}
 										>
 											<HiTrash size={16} />
 										</button>
