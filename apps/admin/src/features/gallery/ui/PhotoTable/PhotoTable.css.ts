@@ -90,7 +90,7 @@ export const newButton = style({
 });
 
 export const th = style({
-	displayy: 'flex',
+	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
 	padding: '8px 16px',

@@ -17,7 +17,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useGetPhotos } from '../api/useGetPhotos';
 import { fetchPhotos } from '../services/getPhotos';
 
-interface PhotoFilters {
+export interface PhotoFilters {
 	page: number;
 	pageSize: number;
 	sortField?: keyof Photo;
