@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
+import { useCreateCollection } from '../api/useCreateCollection';
 import * as styles from './PhotoCollection.css';
 import { PhotoCollectionSkeleton } from './PhotoCollectionSkeleton';
 
@@ -114,12 +115,14 @@ export const MOCK_COLLECTIONS: Collection[] = [
 
 export const PhotoCollection = () => {
 	const { data: collections = [], isLoading } = useGetCollections();
+	const createCollectionMutation = useCreateCollection();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
 		description: '',
 		cover_image: '',
 	});
+	const [previewImage, setPreviewImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleInputChange = (
@@ -139,36 +142,39 @@ export const PhotoCollection = () => {
 			description: '',
 			cover_image: '',
 		});
+		setPreviewImage(null);
+		if (previewImage) {
+			URL.revokeObjectURL(previewImage);
+		}
 	};
 
 	const handleSave = () => {
-		// FIXME: Implement API integration
-		// - For new collection: createCollectionMutation.mutate(formData)
-		// - For edit: updateCollectionMutation.mutate({ id: editingId, ...formData })
-		if (editingId === 'new') {
-			const newCollection: Collection = {
-				id: String(Date.now()),
+		if (!formData.title || !fileInputRef.current?.files?.[0]) return;
+
+		createCollectionMutation.mutate(
+			{
 				title: formData.title,
 				description: formData.description,
-				cover_image: formData.cover_image,
-				photo_count: 0,
-				created_at: new Date().toISOString(),
-			};
-		} else {
-		}
-		handleCloseModal();
+				coverImageFile: fileInputRef.current.files[0],
+			},
+			{
+				onSuccess: () => {
+					handleCloseModal();
+				},
+			},
+		);
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
-		if (file) {
-			// 실제 구현에서는 이미지 업로드 API를 호출하여 URL을 받아야 합니다
-			const imageUrl = URL.createObjectURL(file);
-			setFormData((prev) => ({
-				...prev,
-				cover_image: imageUrl,
-			}));
+		if (!file) return;
+
+		if (previewImage) {
+			URL.revokeObjectURL(previewImage);
 		}
+
+		const imageUrl = URL.createObjectURL(file);
+		setPreviewImage(imageUrl);
 	};
 
 	const handleUploadClick = () => {
@@ -301,14 +307,6 @@ export const PhotoCollection = () => {
 									<label className={styles.inputLabel}>Cover Image</label>
 									<div className={styles.imageUploadContainer}>
 										<input
-											type='text'
-											name='cover_image'
-											value={formData.cover_image}
-											onChange={handleInputChange}
-											placeholder='Enter cover image URL'
-											className={styles.input}
-										/>
-										<input
 											type='file'
 											ref={fileInputRef}
 											onChange={handleFileChange}
@@ -324,30 +322,34 @@ export const PhotoCollection = () => {
 											Upload
 										</button>
 									</div>
-									{formData.cover_image && (
-										<div className={styles.imagePreview}>
+
+									<div className={styles.imagePreview}>
+										{previewImage && (
 											<img
-												src={formData.cover_image}
+												src={previewImage}
 												alt='Cover preview'
 												className={styles.previewImage}
 											/>
-										</div>
-									)}
+										)}
+									</div>
 								</div>
 							</div>
 							<div className={styles.modalActions}>
 								<button
 									className={styles.cancelButton}
 									onClick={handleCloseModal}
+									disabled={createCollectionMutation.isPending}
 								>
 									Cancel
 								</button>
 								<button
 									className={styles.saveButton}
 									onClick={handleSave}
-									disabled={!formData.title}
+									disabled={
+										!formData.title || createCollectionMutation.isPending
+									}
 								>
-									Save
+									{createCollectionMutation.isPending ? 'Creating...' : 'Save'}
 								</button>
 							</div>
 						</motion.div>

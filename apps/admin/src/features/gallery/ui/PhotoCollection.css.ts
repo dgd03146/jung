@@ -97,8 +97,9 @@ export const content = style({
 export const description = style({
 	fontSize: '14px',
 	color: '#64748b',
-	marginTop: '8px',
-	marginBottom: '12px',
+	margin: '8px 0',
+	minHeight: '40px',
+
 	display: '-webkit-box',
 	WebkitLineClamp: 2,
 	WebkitBoxOrient: 'vertical',
@@ -276,6 +277,8 @@ export const imagePreview = style({
 	borderRadius: '8px',
 	overflow: 'hidden',
 	border: '1px solid #e2e8f0',
+
+	height: '240px',
 });
 
 export const formLayout = style({
@@ -343,8 +346,7 @@ export const uploadPromptSubtext = style({
 export const previewImage = style({
 	width: '100%',
 	height: '100%',
-	objectFit: 'contain',
-	padding: '12px',
+	objectFit: 'cover',
 });
 
 export const label = style({
