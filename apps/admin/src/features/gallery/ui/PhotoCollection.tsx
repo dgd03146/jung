@@ -1,108 +1,13 @@
-import type { Collection } from '@jung/shared/types';
+import { useGetCollections } from '@/fsd/features/gallery/api';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
+import { useCreateCollection } from '../api/useCreateCollection';
+import { useDeleteCollection } from '../api/useDeleteCollection';
+import { useUpdateCollection } from '../api/useUpdateCollection';
 import * as styles from './PhotoCollection.css';
-
-export const MOCK_COLLECTIONS: Collection[] = [
-	{
-		id: '1',
-		title: '2024 봄 화보',
-		description: '2024년 봄 시즌 메인 화보 컬렉션',
-		cover_image: 'https://picsum.photos/800/600?random=1',
-		photo_count: 24,
-		created_at: '2024-03-15T09:00:00Z',
-	},
-	{
-		id: '2',
-		title: '제품 상세컷',
-		description: '제품 상세 페이지용 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=2',
-		photo_count: 156,
-		created_at: '2024-03-10T09:00:00Z',
-	},
-	{
-		id: '3',
-		title: '브랜드 아이덴티티',
-		description: '브랜드 로고 및 아이덴티티 디자인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=3',
-		photo_count: 42,
-		created_at: '2024-03-08T09:00:00Z',
-	},
-	{
-		id: '4',
-		title: '이벤트 현장',
-		description: '2024 신년 행사 현장 스케치',
-		cover_image: 'https://picsum.photos/800/600?random=4',
-		photo_count: 89,
-		created_at: '2024-03-05T09:00:00Z',
-	},
-	{
-		id: '5',
-		title: '소셜미디어',
-		description: 'SNS 마케팅용 이미지 컬렉션',
-		cover_image: 'https://picsum.photos/800/600?random=5',
-		photo_count: 234,
-		created_at: '2024-03-01T09:00:00Z',
-	},
-	{
-		id: '6',
-		title: '직원 프로필',
-		description: '임직원 프로필 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=6',
-		photo_count: 67,
-		created_at: '2024-02-28T09:00:00Z',
-	},
-	{
-		id: '7',
-		title: '오피스 전경',
-		description: '회사 사무실 및 작업 공간 사진',
-		cover_image: 'https://picsum.photos/800/600?random=7',
-		photo_count: 45,
-		created_at: '2024-02-25T09:00:00Z',
-	},
-	{
-		id: '8',
-		title: '2024 신제품',
-		description: '신제품 라인업 프로모션 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=8',
-		photo_count: 128,
-		created_at: '2024-02-20T09:00:00Z',
-	},
-	{
-		id: '9',
-		title: '광고 캠페인',
-		description: '2024 봄 시즌 광고 캠페인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=9',
-		photo_count: 93,
-		created_at: '2024-02-15T09:00:00Z',
-	},
-	{
-		id: '10',
-		title: '고객 후기',
-		description: '제품 사용 고객 후기 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=10',
-		photo_count: 167,
-		created_at: '2024-02-10T09:00:00Z',
-	},
-	{
-		id: '11',
-		title: '매장 인테리어',
-		description: '전국 매장 인테리어 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=11',
-		photo_count: 78,
-		created_at: '2024-02-05T09:00:00Z',
-	},
-	{
-		id: '12',
-		title: '패키지 디자인',
-		description: '제품 패키지 디자인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=12',
-		photo_count: 56,
-		created_at: '2024-02-01T09:00:00Z',
-	},
-];
+import { PhotoCollectionSkeleton } from './PhotoCollectionSkeleton';
 
 interface FormData {
 	title: string;
@@ -110,16 +15,45 @@ interface FormData {
 	cover_image: string;
 }
 
+interface FormErrors {
+	title?: string;
+	description?: string;
+	cover_image?: string;
+}
+
 export const PhotoCollection = () => {
-	const [collections, setCollections] =
-		useState<Collection[]>(MOCK_COLLECTIONS);
+	const { data: collections = [], isLoading } = useGetCollections();
+
+	console.log(collections, 'collections');
+
+	const createCollectionMutation = useCreateCollection();
+	const updateCollectionMutation = useUpdateCollection();
+	const deleteCollectionMutation = useDeleteCollection();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
 		description: '',
 		cover_image: '',
 	});
+	const [previewImage, setPreviewImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [errors, setErrors] = useState<FormErrors>({});
+
+	const editingCollection = useMemo(() => {
+		if (!editingId || editingId === 'new') return null;
+		return collections.find((collection) => collection.id === editingId);
+	}, [editingId, collections]);
+
+	useEffect(() => {
+		if (editingCollection) {
+			setFormData({
+				title: editingCollection.title,
+				description: editingCollection.description,
+				cover_image: editingCollection.cover_image,
+			});
+			setPreviewImage(editingCollection.cover_image);
+		}
+	}, [editingCollection]);
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -128,6 +62,10 @@ export const PhotoCollection = () => {
 		setFormData((prev) => ({
 			...prev,
 			[name]: value,
+		}));
+		setErrors((prev) => ({
+			...prev,
+			[name]: '',
 		}));
 	};
 
@@ -138,62 +76,126 @@ export const PhotoCollection = () => {
 			description: '',
 			cover_image: '',
 		});
+		setPreviewImage(null);
+		if (previewImage && !previewImage.startsWith('http')) {
+			URL.revokeObjectURL(previewImage);
+		}
+	};
+
+	// FIXME: React Hook Form & Zod 적용
+	const validateForm = (): FormErrors => {
+		const newErrors: FormErrors = {};
+
+		if (!formData.title.trim()) {
+			newErrors.title = 'Enter a title';
+		} else if (formData.title.length > 20) {
+			newErrors.title = 'Title must be 20 characters or less';
+		}
+
+		if (!formData.description.trim()) {
+			newErrors.description = 'Enter a description';
+		} else if (formData.description.length > 50) {
+			newErrors.description = 'Description must be 50 characters or less';
+		}
+
+		if (!fileInputRef.current?.files?.[0] && !previewImage) {
+			newErrors.cover_image = 'Select a cover image';
+		}
+
+		return newErrors;
 	};
 
 	const handleSave = () => {
-		// FIXME: API 호출로 변경
+		const validationErrors = validateForm();
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+
 		if (editingId === 'new') {
-			const newCollection: Collection = {
-				id: String(Date.now()),
-				title: formData.title,
-				description: formData.description,
-				cover_image: formData.cover_image,
-				photo_count: 0,
-				created_at: new Date().toISOString(),
-			};
-			setCollections((prev) => [newCollection, ...prev]);
+			if (!formData.title || !fileInputRef.current?.files?.[0]) return;
+
+			createCollectionMutation.mutate(
+				{
+					title: formData.title,
+					description: formData.description,
+					coverImageFile: fileInputRef.current.files[0],
+				},
+				{
+					onSuccess: () => {
+						handleCloseModal();
+					},
+				},
+			);
 		} else {
-			setCollections((prev) =>
-				prev.map((collection) =>
-					collection.id === editingId
-						? {
-								...collection,
-								title: formData.title,
-								description: formData.description,
-								cover_image: formData.cover_image,
-						  }
-						: collection,
-				),
+			if (!formData.title) return;
+
+			updateCollectionMutation.mutate(
+				{
+					id: editingId || '',
+					title: formData.title,
+					description: formData.description,
+					coverImageFile: fileInputRef.current?.files?.[0],
+				},
+				{
+					onSuccess: () => {
+						handleCloseModal();
+					},
+				},
 			);
 		}
-		handleCloseModal();
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
-		if (file) {
-			// 실제 구현에서는 이미지 업로드 API를 호출하여 URL을 받아야 합니다
-			const imageUrl = URL.createObjectURL(file);
-			setFormData((prev) => ({
-				...prev,
-				cover_image: imageUrl,
-			}));
+		if (!file) return;
+
+		if (previewImage) {
+			URL.revokeObjectURL(previewImage);
 		}
+
+		const imageUrl = URL.createObjectURL(file);
+		setPreviewImage(imageUrl);
 	};
 
 	const handleUploadClick = () => {
 		fileInputRef.current?.click();
 	};
 
+	const handleOpenModal = () => {
+		setEditingId('new');
+		setFormData({
+			title: '',
+			description: '',
+			cover_image: '',
+		});
+		setPreviewImage(null);
+		setErrors({});
+	};
+
+	const handleEdit = (e: React.MouseEvent, id: string) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setEditingId(id);
+	};
+
+	const handleDelete = (e: React.MouseEvent, id: string) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (window.confirm('컬렉션을 삭제하시겠습니까?')) {
+			deleteCollectionMutation.mutate(id);
+		}
+	};
+
+	if (isLoading) return <PhotoCollectionSkeleton />;
+
 	return (
 		<div className={styles.pageWrapper}>
 			<div className={styles.mainSection}>
 				<div className={styles.header}>
 					<h2 className={styles.title}>Collection Management</h2>
-					<button
-						className={styles.addButton}
-						onClick={() => setEditingId('new')}
-					>
+					<button className={styles.addButton} onClick={handleOpenModal}>
 						<HiPlus />
 						New Collection
 					</button>
@@ -222,19 +224,14 @@ export const PhotoCollection = () => {
 									<div className={styles.actions}>
 										<button
 											className={styles.actionButton}
-											onClick={(e) => {
-												e.preventDefault();
-												setEditingId(collection.id);
-											}}
+											onClick={(e) => handleEdit(e, collection.id)}
 										>
 											<HiPencil size={16} />
 										</button>
 										<button
 											className={styles.actionButton}
-											onClick={(e) => {
-												e.preventDefault();
-												// handleDelete(collection.id)
-											}}
+											onClick={(e) => handleDelete(e, collection.id)}
+											disabled={deleteCollectionMutation.isPending}
 										>
 											<HiTrash size={16} />
 										</button>
@@ -290,10 +287,15 @@ export const PhotoCollection = () => {
 										value={formData.title}
 										onChange={handleInputChange}
 										placeholder='Enter collection title'
-										className={styles.input}
-										required
+										className={`${styles.input} ${
+											errors.title ? styles.inputError : ''
+										}`}
 									/>
+									<span className={styles.errorMessage}>
+										{errors.title || ' '}
+									</span>
 								</div>
+
 								<div className={styles.inputGroup}>
 									<label className={styles.inputLabel}>Description</label>
 									<textarea
@@ -301,21 +303,19 @@ export const PhotoCollection = () => {
 										value={formData.description}
 										onChange={handleInputChange}
 										placeholder='Enter collection description'
-										className={styles.textarea}
+										className={`${styles.textarea} ${
+											errors.description ? styles.inputError : ''
+										}`}
 										rows={4}
 									/>
+									<span className={styles.errorMessage}>
+										{errors.description || ' '}
+									</span>
 								</div>
+
 								<div className={styles.inputGroup}>
 									<label className={styles.inputLabel}>Cover Image</label>
 									<div className={styles.imageUploadContainer}>
-										<input
-											type='text'
-											name='cover_image'
-											value={formData.cover_image}
-											onChange={handleInputChange}
-											placeholder='Enter cover image URL'
-											className={styles.input}
-										/>
 										<input
 											type='file'
 											ref={fileInputRef}
@@ -326,36 +326,55 @@ export const PhotoCollection = () => {
 										<button
 											type='button'
 											onClick={handleUploadClick}
-											className={styles.uploadButton}
+											className={`${styles.uploadButton} ${
+												errors.cover_image ? styles.buttonError : ''
+											}`}
 										>
 											<HiPhoto size={20} />
 											Upload
 										</button>
+										<span className={styles.errorMessage}>
+											{errors.cover_image || ' '}
+										</span>
 									</div>
-									{formData.cover_image && (
-										<div className={styles.imagePreview}>
+
+									<div className={styles.imagePreview}>
+										{previewImage && (
 											<img
-												src={formData.cover_image}
+												src={previewImage}
 												alt='Cover preview'
 												className={styles.previewImage}
 											/>
-										</div>
-									)}
+										)}
+									</div>
 								</div>
 							</div>
 							<div className={styles.modalActions}>
 								<button
 									className={styles.cancelButton}
 									onClick={handleCloseModal}
+									disabled={
+										createCollectionMutation.isPending ||
+										updateCollectionMutation.isPending
+									}
 								>
 									Cancel
 								</button>
 								<button
 									className={styles.saveButton}
 									onClick={handleSave}
-									disabled={!formData.title}
+									disabled={
+										createCollectionMutation.isPending ||
+										updateCollectionMutation.isPending
+									}
 								>
-									Save
+									{editingId === 'new'
+										? createCollectionMutation.isPending
+											? 'Creating...'
+											: 'Create'
+										: updateCollectionMutation.isPending
+										  ? 'Updating...'
+										  : 'Update'}
 								</button>
 							</div>
 						</motion.div>

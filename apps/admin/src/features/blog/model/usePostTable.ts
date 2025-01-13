@@ -17,7 +17,6 @@ import {
 import { useCallback, useEffect, useMemo } from 'react';
 
 export const postColumns: ColumnDef<AdminPost>[] = [
-	{ header: 'Id', accessorKey: 'id' },
 	{ header: 'Title', accessorKey: 'title' },
 	{ header: 'Date', accessorKey: 'date' },
 	{ header: 'Category', accessorKey: 'category' },

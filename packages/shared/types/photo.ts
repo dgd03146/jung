@@ -10,9 +10,9 @@ export const PhotoSchema = z.object({
 	description: z.string().optional(),
 	tags: z.array(z.string()).optional(),
 	created_at: z.string(),
+	updated_at: z.string().optional(),
 	likes: z.number().default(0),
 	views: z.number().default(0),
-
 	liked_by: z.array(z.string()).optional(),
 });
 

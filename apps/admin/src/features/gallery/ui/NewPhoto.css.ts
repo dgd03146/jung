@@ -47,26 +47,26 @@ export const form = style({
 
 export const formLayout = style({
 	display: 'flex',
+
 	gap: '32px',
 	flex: 1,
 	overflow: 'hidden',
 
 	'@media': {
-		'screen and (max-width: 768px)': {
+		'screen and (max-width: 1200px)': {
 			flexDirection: 'column',
 		},
 	},
 });
 
 export const imageSection = style({
-	flex: '0 0 840px',
+	flexBasis: '50%',
 	display: 'flex',
 	flexDirection: 'column',
 });
 
 export const detailsSection = style({
 	flex: 1,
-	minWidth: '320px',
 	overflow: 'auto',
 	paddingRight: '16px',
 
@@ -78,7 +78,8 @@ export const detailsSection = style({
 });
 
 export const uploadArea = style({
-	flex: 1,
+	width: '100%',
+	aspectRatio: '16/9',
 	border: '2px dashed #e2e8f0',
 	borderRadius: '12px',
 	cursor: 'pointer',
@@ -88,6 +89,8 @@ export const uploadArea = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
+	position: 'relative',
+	height: '100%',
 
 	':hover': {
 		borderColor: '#0142C0',
@@ -106,7 +109,7 @@ export const uploadPromptSubtext = style({
 });
 
 export const uploadPrompt = style({
-	height: '100%',
+	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
@@ -118,8 +121,7 @@ export const uploadPrompt = style({
 export const previewImage = style({
 	width: '100%',
 	height: '100%',
-	objectFit: 'contain',
-	padding: '12px',
+	objectFit: 'cover',
 });
 
 export const hiddenFileInput = style({
@@ -162,8 +164,8 @@ export const textarea = style({
 	borderRadius: '8px',
 	fontSize: '14px',
 	color: '#1e293b',
-	resize: 'vertical',
-	minHeight: '100px',
+	resize: 'none',
+
 	transition: 'all 0.2s ease',
 
 	':focus': {
@@ -261,13 +263,6 @@ export const selectWrapper = style({
 	},
 });
 
-export const labelIcon = style({
-	display: 'inline-block',
-	marginRight: '4px',
-	verticalAlign: 'middle',
-	color: '#64748b',
-});
-
 export const select = style({
 	width: '100%',
 	height: '40px',
@@ -290,4 +285,18 @@ export const select = style({
 	':hover': {
 		borderColor: '#cbd5e1',
 	},
+});
+
+export const required = style({
+	color: 'red',
+});
+
+export const errorMessage = style({
+	color: 'red',
+	fontSize: '12px',
+	marginTop: '4px',
+});
+
+export const inputError = style({
+	borderColor: 'red',
 });

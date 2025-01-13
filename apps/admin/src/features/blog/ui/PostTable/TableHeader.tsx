@@ -19,6 +19,7 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 						<Box
 							as='button'
 							width='full'
+							display='flex'
 							color={{ base: 'primary', hover: 'primary200' }}
 							onClick={header.column.getToggleSortingHandler()}
 						>
@@ -28,6 +29,8 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 								display='flex'
 								alignItems='center'
 								columnGap='0.5'
+								width='full'
+								justifyContent='center'
 							>
 								{header.isPlaceholder ? null : (
 									<>
@@ -38,7 +41,7 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 										<Box
 											as='span'
 											marginLeft='0.5'
-											display='inline-flex'
+											display='flex'
 											alignItems='center'
 										>
 											{{

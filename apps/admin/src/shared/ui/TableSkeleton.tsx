@@ -1,5 +1,5 @@
 import { Box } from '@jung/design-system/components';
-import * as styles from './PostTable.css';
+import * as styles from './TableSkeleton.css';
 
 const SKELETON_COLUMNS = 5;
 const SKELETON_ROWS = 10;

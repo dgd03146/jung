@@ -1,14 +1,18 @@
+import ErrorFallback from '@/fsd/features/blog/ui/ErrorFallback';
 import { TableHeader } from '@/fsd/features/blog/ui/PostTable/TableHeader';
 import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { usePhotoTable } from '@/fsd/features/gallery/model';
+import { TableSkeleton } from '@/fsd/shared/ui';
 import { Box } from '@jung/design-system/components';
 import { TableBody } from './TableBody';
 
 export const TableContent = () => {
-	const { table, isLoading, error } = usePhotoTable();
+	const { table, isLoading, error, refetch } = usePhotoTable();
 
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error</div>;
+	if (isLoading) return <TableSkeleton />;
+	if (error)
+		// FIXME: 공용 에러 컴포넌트 사용
+		return <ErrorFallback error={error} resetErrorBoundary={refetch} />;
 
 	return (
 		<>

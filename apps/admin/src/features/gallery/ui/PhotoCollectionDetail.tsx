@@ -1,94 +1,10 @@
-import type { Photo } from '@jung/shared/types';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
 import { HiCheck, HiPlus, HiTrash } from 'react-icons/hi';
-import { MOCK_COLLECTIONS } from './PhotoCollection.tsx';
+import { useDeletePhotosFromCollection } from '../api/useDeletePhotosFromCollection';
+import { useGetPhotosByCollectionId } from '../api/useGetPhotosByCollectionId';
 import * as styles from './PhotoCollectionDetail.css.ts';
-
-const MOCK_COLLECTION_PHOTOS: Record<string, Photo[]> = {
-	'1': [
-		{
-			id: '1',
-			title: 'Spring_Main_01',
-			image_url: 'https://picsum.photos/800/600?random=101',
-			alt: '봄 화보 메인컷 1',
-			description: '2024 봄 시즌 메인 화보 1',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-15T09:00:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['봄', '화보', '메인컷'],
-		},
-		{
-			id: '2',
-			title: 'Spring_Main_02',
-			image_url: 'https://picsum.photos/800/600?random=102',
-			alt: '봄 화보 메인컷 2',
-			description: '2024 봄 시즌 메인 화보 2',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-15T09:01:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['봄', '화보', '메인컷'],
-		},
-		{
-			id: '3',
-			title: 'Spring_Detail_01',
-			image_url: 'https://picsum.photos/800/600?random=103',
-			alt: '봄 화보 상세컷 1',
-			description: '2024 봄 시즌 상세 화보 1',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-15T09:02:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['봄', '화보', '상세컷'],
-		},
-		{
-			id: '4',
-			title: 'Spring_Detail_02',
-			image_url: 'https://picsum.photos/800/600?random=104',
-			alt: '봄 화보 상세컷 2',
-			description: '2024 봄 시즌 상세 화보 2',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-15T09:03:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['봄', '화보', '상세컷'],
-		},
-	],
-	'2': [
-		{
-			id: '5',
-			title: 'Product_Detail_01',
-			image_url: 'https://picsum.photos/800/600?random=201',
-			alt: '제품 상세컷 1',
-			description: '제품 상세 페이지 사진 1',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-10T10:00:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['제품', '상세컷'],
-		},
-		{
-			id: '6',
-			title: 'Product_Detail_02',
-			image_url: 'https://picsum.photos/800/600?random=202',
-			alt: '제품 상세컷 2',
-			description: '제품 상세 페이지 사진 2',
-			width: 800,
-			height: 600,
-			created_at: '2024-03-10T10:01:00Z',
-			likes: 0,
-			views: 0,
-			tags: ['제품', '상세컷'],
-		},
-	],
-};
+import { PhotoCollectionDetailSkeleton } from './PhotoCollectionDetailSkeleton.tsx';
 
 export const PhotoCollectionDetail = () => {
 	const { collectionId } = useParams({
@@ -96,9 +12,18 @@ export const PhotoCollectionDetail = () => {
 	});
 	const navigate = useNavigate();
 
-	const collection = MOCK_COLLECTIONS.find((c) => c.id === collectionId);
+	const { photos, total, collectionTitle, isLoading } =
+		useGetPhotosByCollectionId({
+			collectionId,
+			page: 1,
+			limit: 50,
+		});
+
 	const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
-	const photos = MOCK_COLLECTION_PHOTOS[collectionId] || [];
+
+	const deletePhotosMutation = useDeletePhotosFromCollection({
+		collectionId,
+	});
 
 	const handlePhotoSelect = (photoId: string) => {
 		setSelectedPhotos((prev) =>
@@ -117,16 +42,44 @@ export const PhotoCollectionDetail = () => {
 	const handleAddPhotos = () => {
 		navigate({
 			to: '/gallery/photos/new',
-			search: {
+			params: {
 				collectionId,
 			},
 		});
 	};
 
+	const handleDeleteSelected = async () => {
+		if (selectedPhotos.length === 0) return;
+
+		if (window.confirm(`Delete ${selectedPhotos.length} selected photos?`)) {
+			const selectedPhotoUrls = photos
+				.filter((photo) => selectedPhotos.includes(photo.id))
+				.map((photo) => photo.image_url);
+
+			deletePhotosMutation.mutate(
+				{
+					photoIds: selectedPhotos,
+					photoUrls: selectedPhotoUrls,
+				},
+				{
+					onSuccess: () => {
+						setSelectedPhotos([]);
+					},
+				},
+			);
+		}
+	};
+
+	if (isLoading) {
+		return <PhotoCollectionDetailSkeleton />;
+	}
+
 	return (
 		<div className={styles.pageWrapper}>
 			<div className={styles.header}>
-				<h2 className={styles.title}>{collection?.title}</h2>
+				<h2 className={styles.title}>
+					{collectionTitle} ({total})
+				</h2>
 				<div className={styles.actions}>
 					<button className={styles.actionButton} onClick={handleAddPhotos}>
 						<HiPlus /> New Photos
@@ -139,8 +92,13 @@ export const PhotoCollectionDetail = () => {
 									: 'Select All'}
 							</button>
 							{selectedPhotos.length > 0 && (
-								<button className={styles.actionButton} data-danger='true'>
-									<HiTrash /> {selectedPhotos.length} Selected
+								<button
+									className={styles.actionButton}
+									data-danger='true'
+									onClick={handleDeleteSelected}
+									disabled={deletePhotosMutation.isPending}
+								>
+									<HiTrash /> Delete {selectedPhotos.length} Selected
 								</button>
 							)}
 						</>

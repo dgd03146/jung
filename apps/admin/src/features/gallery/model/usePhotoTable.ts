@@ -1,4 +1,6 @@
+import { photoKeys } from '@/fsd/shared';
 import type { Photo } from '@jung/shared/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -11,107 +13,34 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import { useCallback, useMemo } from 'react';
-// import { fetchPhotos, usePhotos } from '@/fsd/features/gallery/api';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useGetPhotos } from '../api/useGetPhotos';
+import { fetchPhotos } from '../services/getPhotos';
 
 export interface PhotoFilters {
 	page: number;
 	pageSize: number;
-	sortField?: string;
+	sortField?: keyof Photo;
 	sortOrder?: 'asc' | 'desc';
 	filter?: string;
 }
 
 export const photoColumns: ColumnDef<Photo>[] = [
-	{ header: 'Id', accessorKey: 'id' },
-	{ header: '이미지', accessorKey: 'image_url' },
-	{ header: '제목', accessorKey: 'title' },
-	{ header: '설명', accessorKey: 'description' },
-	{ header: '태그', accessorKey: 'tags' },
-	{ header: '조회수', accessorKey: 'views' },
-	{ header: '좋아요', accessorKey: 'likes' },
-	{ header: '생성일', accessorKey: 'created_at' },
+	{ header: 'Title', accessorKey: 'title' },
+	{ header: 'Image', accessorKey: 'image_url' },
+	{ header: 'Description', accessorKey: 'description' },
+	{ header: 'Tags', accessorKey: 'tags' },
+	{ header: 'Views', accessorKey: 'views' },
+	{ header: 'Likes', accessorKey: 'likes' },
+	{ header: 'Created At', accessorKey: 'created_at' },
 ];
 
 const PAGE_SIZE = 10;
 
-const MOCK_PHOTOS: Photo[] = [
-	{
-		id: '1',
-		title: '아름다운 풍경',
-		description: '산과 호수가 어우러진 풍경 사진',
-		image_url: 'https://picsum.photos/800/600?random=1',
-		width: 800,
-		height: 600,
-		alt: '산과 호수 풍경',
-		tags: ['자연', '풍경', '산', '호수'],
-		views: 1200,
-		likes: 340,
-		created_at: '2024-01-15T09:00:00Z',
-		liked_by: ['user1', 'user2', 'user3'],
-	},
-	{
-		id: '2',
-		title: '도시의 밤',
-		description: '야경이 아름다운 도시 전경',
-		image_url: 'https://picsum.photos/800/600?random=2',
-		width: 800,
-		height: 600,
-		alt: '도시 야경',
-		tags: ['도시', '야경', '건축'],
-		views: 850,
-		likes: 220,
-		created_at: '2024-01-14T15:30:00Z',
-		liked_by: ['user4', 'user5'],
-	},
-	{
-		id: '3',
-		title: '해변의 일몰',
-		description: '황홀한 노을이 지는 해변가',
-		image_url: 'https://picsum.photos/800/600?random=3',
-		width: 800,
-		height: 600,
-		alt: '해변 일몰',
-		tags: ['해변', '일몰', '바다'],
-		views: 1500,
-		likes: 450,
-		created_at: '2024-01-13T18:20:00Z',
-		liked_by: ['user1', 'user3'],
-	},
-	{
-		id: '4',
-		title: '봄의 벚꽃',
-		description: '만개한 벚꽃 아래의 산책로',
-		image_url: 'https://picsum.photos/800/600?random=4',
-		width: 800,
-		height: 600,
-		alt: '벚꽃 산책로',
-		tags: ['봄', '벚꽃', '자연'],
-		views: 2000,
-		likes: 680,
-		created_at: '2024-01-12T11:40:00Z',
-		liked_by: ['user2', 'user4'],
-	},
-	{
-		id: '5',
-		title: '카페 인테리어',
-		description: '아늑한 분위기의 카페 내부',
-		image_url: 'https://picsum.photos/800/600?random=5',
-		width: 800,
-		height: 600,
-		alt: '카페 내부',
-		tags: ['카페', '인테리어', '디자인'],
-		views: 750,
-		likes: 180,
-		created_at: '2024-01-11T14:15:00Z',
-		liked_by: ['user1'],
-	},
-];
-
 export const usePhotoTable = () => {
 	const navigate = useNavigate();
 	const searchParams = useSearch({ from: '/gallery/photos/' }) as PhotoFilters;
-	// const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
 	const filters: PhotoFilters = useMemo(
 		() => ({
@@ -124,18 +53,20 @@ export const usePhotoTable = () => {
 		[searchParams],
 	);
 
-	// const { data, isLoading, error, refetch } = usePhotos(filters);
+	const { data, isLoading, error, refetch } = useGetPhotos(filters);
+
 	const columns = useMemo(() => photoColumns, []);
 
-	/* useEffect(() => {
-		if (data?.nextCursor) {
+	// Prefetch next page
+	useEffect(() => {
+		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
 			queryClient.prefetchQuery({
 				queryKey: photoKeys.list({ ...filters, page: nextPage }),
 				queryFn: () => fetchPhotos({ ...filters, page: nextPage }),
 			});
 		}
-	}, [data?.nextCursor, filters, queryClient]); */
+	}, [data?.hasMore, filters, queryClient]);
 
 	const updateSearchParams = useCallback(
 		(newParams: Partial<PhotoFilters>) => {
@@ -146,7 +77,7 @@ export const usePhotoTable = () => {
 
 	const table = useReactTable({
 		columns,
-		data: MOCK_PHOTOS,
+		data: data?.photos ?? [],
 		state: {
 			sorting: filters.sortField
 				? [{ id: filters.sortField, desc: filters.sortOrder === 'desc' }]
@@ -180,7 +111,7 @@ export const usePhotoTable = () => {
 					: updater;
 			const sort = newSorting[0];
 			updateSearchParams({
-				sortField: sort?.id,
+				sortField: sort?.id as keyof Photo,
 				sortOrder: sort?.desc ? 'desc' : 'asc',
 			});
 		},
@@ -194,13 +125,8 @@ export const usePhotoTable = () => {
 		manualPagination: true,
 		manualSorting: true,
 		manualFiltering: true,
-		pageCount: Math.ceil(MOCK_PHOTOS.length / PAGE_SIZE),
+		pageCount: data?.totalPages ?? -1,
 	});
 
-	return {
-		table,
-		isLoading: false,
-		error: null,
-		refetch: () => {},
-	};
+	return { table, isLoading, error, refetch };
 };
