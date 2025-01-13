@@ -2,14 +2,12 @@ import type { Spot } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { MdStar } from 'react-icons/md';
 import { useDeleteSpot } from '../../api/useDeleteSpot';
-import { CATEGORY_LABELS } from '../../model/useSpotTable';
+import { useGetSpotCategories } from '../../api/useGetSpotCategories';
 import * as styles from './SpotTable.css';
-import { CoordinatesCell } from './cells/CoordinatesCell';
+import { CategoryCell } from './cells/CategoryCell';
 import { DateCell } from './cells/DateCell';
 import { ImageCell } from './cells/ImageCell';
-import { TipsCell } from './cells/TipsCell';
 
 interface TableBodyProps<T> {
 	table: Table<T>;
@@ -17,6 +15,7 @@ interface TableBodyProps<T> {
 
 export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 	const deleteSpotMutation = useDeleteSpot();
+	const { data: categoriesData } = useGetSpotCategories();
 
 	const handleDelete = (id: string) => {
 		if (window.confirm('이 장소를 삭제하시겠습니까?')) {
@@ -28,6 +27,10 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
 				const spot = row.original as Spot;
+
+				const category = categoriesData?.allCategories.find(
+					(cat) => cat.id === spot.category_id,
+				);
 
 				return (
 					<tr key={row.id} className={styles.row}>
@@ -46,23 +49,10 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 							>
 								{cell.column.id === 'photos' ? (
 									<ImageCell url={spot.photos[0]?.url} alt={spot.title} />
-								) : cell.column.id === 'coordinates' ? (
-									<CoordinatesCell
-										lat={spot.coordinates.lat}
-										lng={spot.coordinates.lng}
-									/>
 								) : cell.column.id === 'created_at' ? (
 									<DateCell date={spot.created_at} />
-								) : cell.column.id === 'tips' ? (
-									<TipsCell tips={spot.tips || []} />
 								) : cell.column.id === 'category' ? (
-									<span className={styles.categoryBadge}>
-										{CATEGORY_LABELS[spot.category]}
-									</span>
-								) : cell.column.id === 'rating' ? (
-									<span className={styles.rating}>
-										<MdStar /> {spot.rating.toFixed(1)}
-									</span>
+									<CategoryCell category={category} />
 								) : (
 									flexRender(cell.column.columnDef.cell, cell.getContext())
 								)}
@@ -70,7 +60,7 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 						))}
 						<td className={styles.td}>
 							<div style={{ display: 'flex', gap: '8px' }}>
-								<Link to={'/spots/edit/$spotId'} params={{ spotId: spot.id }}>
+								<Link to={'/spots/$spotId/edit'} params={{ spotId: spot.id }}>
 									<button className={styles.actionButton}>
 										<FaEdit size={16} />
 									</button>

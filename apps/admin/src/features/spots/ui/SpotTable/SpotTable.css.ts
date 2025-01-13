@@ -1,3 +1,4 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const tableAction = style({
@@ -5,39 +6,76 @@ export const tableAction = style({
 	justifyContent: 'space-between',
 	alignItems: 'center',
 	marginBottom: '24px',
+	borderBottom: '1px solid #F1F5F9',
+	backgroundColor: '#F8FAFC',
+	flexWrap: 'wrap',
+	gap: '16px',
 });
 
 export const searchInput = style({
+	width: '280px',
 	padding: '8px 16px',
-	border: '1px solid #e2e8f0',
-	borderRadius: '6px',
+	borderRadius: '8px',
+	border: '1px solid #E2E8F0',
+	backgroundColor: 'white',
 	fontSize: '14px',
-	width: '320px',
 	transition: 'all 0.2s ease',
+	boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
 
 	':focus': {
 		outline: 'none',
-		borderColor: '#0142C0',
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.1)',
+		borderColor: palette.primary,
+		boxShadow: '0 0 0 3px rgba(1, 66, 192, 0.1)',
+	},
+
+	'::placeholder': {
+		color: '#94A3B8',
+	},
+
+	'@media': {
+		'(max-width: 1024px)': {
+			width: '200px',
+			fontSize: '13px',
+			padding: '10px 16px',
+		},
+
+		'(max-width: 768px)': {
+			width: '100%',
+			maxWidth: '400px',
+			margin: '0 auto',
+		},
+
+		'(max-width: 640px)': {
+			fontSize: '14px',
+			padding: '12px 16px',
+			maxWidth: 'none',
+		},
+
+		'(max-width: 480px)': {
+			borderRadius: '8px',
+			padding: '10px 14px',
+		},
 	},
 });
-
 export const newButton = style({
-	display: 'inline-flex',
+	display: 'flex',
 	alignItems: 'center',
 	gap: '8px',
 	padding: '8px 16px',
-	background: '#0142C0',
+	borderRadius: '8px',
+	backgroundColor: palette.primary,
 	color: 'white',
 	border: 'none',
-	borderRadius: '6px',
 	fontSize: '14px',
 	fontWeight: '500',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
+	boxShadow: '0 1px 2px rgba(1, 66, 192, 0.1)',
 
 	':hover': {
-		background: '#0031A0',
+		backgroundColor: '#0052CC',
+		transform: 'translateY(-1px)',
+		boxShadow: '0 4px 6px rgba(1, 66, 192, 0.1)',
 	},
 });
 
@@ -54,59 +92,71 @@ export const table = style({
 });
 
 export const th = style({
-	padding: '12px 16px',
-	textAlign: 'center',
-	fontSize: '14px',
-	fontWeight: '500',
-	color: '#64748b',
-	background: '#f8fafc',
-	borderBottom: '1px solid #e2e8f0',
-	position: 'relative',
+	// display: 'flex',
+	// alignItems: 'center',
+	// justifyContent: 'center',
+
+	padding: '8px 16px',
+	backgroundColor: 'white',
+	borderBottom: '1px solid #F1F5F9',
+
+	whiteSpace: 'nowrap',
+	fontSize: '13px',
+	fontWeight: '600',
+	color: '#64748B',
+	transition: 'all 0.2s ease',
+
+	'@media': {
+		'(max-width: 768px)': {
+			padding: '12px 16px',
+			fontSize: '12px',
+		},
+	},
 });
 
 export const row = style({
+	transition: 'all 0.2s ease',
+	backgroundColor: 'white',
+
 	':hover': {
-		background: '#f8fafc',
+		backgroundColor: '#F8FAFC',
 	},
 });
 
 export const td = style({
-	padding: '12px 16px',
+	padding: '16px 24px',
+	borderBottom: '1px solid #F1F5F9',
 	fontSize: '14px',
-	borderBottom: '1px solid #e2e8f0',
-	whiteSpace: 'nowrap',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	maxWidth: '200px',
-	textAlign: 'center',
+	color: '#334155',
+	transition: 'all 0.2s ease',
 	verticalAlign: 'middle',
+	textAlign: 'center',
+
+	'@media': {
+		'(max-width: 768px)': {
+			padding: '12px 16px',
+			fontSize: '13px',
+		},
+	},
 });
 
 export const actionButton = style({
-	display: 'inline-flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	width: '32px',
-	height: '32px',
-	padding: '0',
-	background: 'transparent',
-	border: '1px solid #e2e8f0',
-	borderRadius: '6px',
-	color: '#64748b',
+	padding: '10px',
+	borderRadius: '10px',
+	backgroundColor: '#F8FAFC',
+	border: '1px solid #E2E8F0',
+	color: '#64748B',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
 
-	selectors: {
-		'&:hover': {
-			background: '#f1f5f9',
-			borderColor: '#cbd5e1',
-			color: '#0142C0',
-		},
-		'&:has(svg[data-icon="trash"]):hover': {
-			background: '#fee2e2',
-			borderColor: '#fecaca',
-			color: '#ef4444',
-		},
+	':hover': {
+		backgroundColor: '#F1F5F9',
+		color: '#0142C0',
+		borderColor: '#CBD5E1',
+		transform: 'translateY(-1px)',
 	},
 });
 
@@ -119,31 +169,46 @@ export const footer = style({
 
 export const pagination = style({
 	display: 'flex',
-	gap: '8px',
+	justifyContent: 'space-between',
 	alignItems: 'center',
+	padding: '16px 24px',
+	borderTop: '1px solid #F1F5F9',
+	backgroundColor: '#F8FAFC',
+	flexWrap: 'wrap',
+	gap: '16px',
+
+	'@media': {
+		'(max-width: 768px)': {
+			flexDirection: 'column',
+			alignItems: 'center',
+			padding: '16px',
+		},
+	},
 });
 
 export const pageButton = style({
-	padding: '6px 12px',
-	border: '1px solid #e2e8f0',
-	borderRadius: '6px',
-	background: 'transparent',
-	color: '#64748b',
+	padding: '8px 16px',
+	borderRadius: '10px',
+	border: '1px solid #E2E8F0',
+	backgroundColor: 'white',
+	color: '#64748B',
 	fontSize: '14px',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
+	display: 'flex',
+	alignItems: 'center',
+	gap: '4px',
 
-	':hover': {
-		background: '#f1f5f9',
-		borderColor: '#cbd5e1',
+	'@media': {
+		'(max-width: 768px)': {
+			padding: '6px 12px',
+			fontSize: '13px',
+		},
 	},
 
-	selectors: {
-		'&[data-active="true"]': {
-			background: '#0142C0',
-			borderColor: '#0142C0',
-			color: 'white',
-		},
+	':hover': {
+		backgroundColor: '#F1F5F9',
+		borderColor: '#CBD5E1',
 	},
 });
 

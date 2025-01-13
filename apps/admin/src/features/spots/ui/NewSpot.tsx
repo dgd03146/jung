@@ -3,13 +3,17 @@ import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
-import { CATEGORY_LABELS } from '../model/useSpotTable';
+import { useGetSpotCategories } from '../api/useGetSpotCategories';
+
 import * as styles from './NewSpot.css';
 
 export const NewSpot = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const isEditMode = location.pathname.includes('/spots/edit');
+
+	const { data: categoriesData, isLoading: categoriesLoading } =
+		useGetSpotCategories();
 
 	const [formData, setFormData] = useState<Partial<Spot>>({
 		tips: [''],
@@ -39,6 +43,10 @@ export const NewSpot = () => {
 			);
 		}
 	};
+
+	if (categoriesLoading) {
+		return <div>Loading categories...</div>;
+	}
 
 	return (
 		<div className={styles.pageWrapper}>
@@ -74,19 +82,19 @@ export const NewSpot = () => {
 								<label className={styles.label}>Category</label>
 								<div className={styles.selectWrapper}>
 									<select
-										value={formData.category || ''}
+										value={formData.category_id || ''}
 										onChange={(e) =>
 											setFormData((prev) => ({
 												...prev,
-												category: e.target.value as Spot['category'],
+												category_id: e.target.value,
 											}))
 										}
 										className={styles.select}
 									>
 										<option value=''>Select category</option>
-										{Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-											<option key={value} value={value}>
-												{label}
+										{categoriesData?.allCategories.map((category) => (
+											<option key={category.id} value={category.id}>
+												{category.name}
 											</option>
 										))}
 									</select>

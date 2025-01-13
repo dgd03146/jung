@@ -23,8 +23,8 @@ import { Route as GalleryPhotosIndexImport } from './routes/gallery/photos/index
 import { Route as GalleryPhotosNewIndexImport } from './routes/gallery/photos/new/index';
 import { Route as GuestbookIndexImport } from './routes/guestbook/index';
 import { Route as IndexImport } from './routes/index';
+import { Route as SpotsSpotIdEditImport } from './routes/spots/$spotId/edit';
 import { Route as SpotsCategoriesIndexImport } from './routes/spots/categories/index';
-import { Route as SpotsEditSpotIdImport } from './routes/spots/edit/$spotId';
 import { Route as SpotsIndexImport } from './routes/spots/index';
 import { Route as SpotsNewIndexImport } from './routes/spots/new/index';
 
@@ -85,8 +85,8 @@ const BlogCategoriesIndexRoute = BlogCategoriesIndexImport.update({
 	getParentRoute: () => rootRoute,
 } as any);
 
-const SpotsEditSpotIdRoute = SpotsEditSpotIdImport.update({
-	path: '/spots/edit/$spotId',
+const SpotsSpotIdEditRoute = SpotsSpotIdEditImport.update({
+	path: '/spots/$spotId/edit',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -164,11 +164,11 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof GalleryCollectionsCollectionIdImport;
 			parentRoute: typeof rootRoute;
 		};
-		'/spots/edit/$spotId': {
-			id: '/spots/edit/$spotId';
-			path: '/spots/edit/$spotId';
-			fullPath: '/spots/edit/$spotId';
-			preLoaderRoute: typeof SpotsEditSpotIdImport;
+		'/spots/$spotId/edit': {
+			id: '/spots/$spotId/edit';
+			path: '/spots/$spotId/edit';
+			fullPath: '/spots/$spotId/edit';
+			preLoaderRoute: typeof SpotsSpotIdEditImport;
 			parentRoute: typeof rootRoute;
 		};
 		'/blog/categories/': {
@@ -240,7 +240,7 @@ export const routeTree = rootRoute.addChildren({
 	SpotsIndexRoute,
 	BlogEditPostIdRoute,
 	GalleryCollectionsCollectionIdRoute,
-	SpotsEditSpotIdRoute,
+	SpotsSpotIdEditRoute,
 	BlogCategoriesIndexRoute,
 	BlogNewIndexRoute,
 	GalleryCollectionsIndexRoute,
@@ -266,7 +266,7 @@ export const routeTree = rootRoute.addChildren({
         "/spots/",
         "/blog/edit/$postId",
         "/gallery/collections/$collectionId",
-        "/spots/edit/$spotId",
+        "/spots/$spotId/edit",
         "/blog/categories/",
         "/blog/new/",
         "/gallery/collections/",
@@ -298,8 +298,8 @@ export const routeTree = rootRoute.addChildren({
     "/gallery/collections/$collectionId": {
       "filePath": "gallery/collections/$collectionId.tsx"
     },
-    "/spots/edit/$spotId": {
-      "filePath": "spots/edit/$spotId.tsx"
+    "/spots/$spotId/edit": {
+      "filePath": "spots/$spotId/edit.tsx"
     },
     "/blog/categories/": {
       "filePath": "blog/categories/index.tsx"
