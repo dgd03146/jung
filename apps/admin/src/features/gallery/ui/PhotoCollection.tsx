@@ -1,5 +1,4 @@
 import { useGetCollections } from '@/fsd/features/gallery/api';
-import type { Collection } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -22,107 +21,11 @@ interface FormErrors {
 	cover_image?: string;
 }
 
-export const MOCK_COLLECTIONS: Collection[] = [
-	{
-		id: '1',
-		title: '2024 봄 화보',
-		description: '2024년 봄 시즌 메인 화보 컬렉션',
-		cover_image: 'https://picsum.photos/800/600?random=1',
-		photo_count: 24,
-		created_at: '2024-03-15T09:00:00Z',
-	},
-	{
-		id: '2',
-		title: '제품 상세컷',
-		description: '제품 상세 페이지용 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=2',
-		photo_count: 156,
-		created_at: '2024-03-10T09:00:00Z',
-	},
-	{
-		id: '3',
-		title: '브랜드 아이덴티티',
-		description: '브랜드 로고 및 아이덴티티 디자인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=3',
-		photo_count: 42,
-		created_at: '2024-03-08T09:00:00Z',
-	},
-	{
-		id: '4',
-		title: '이벤트 현장',
-		description: '2024 신년 행사 현장 스케치',
-		cover_image: 'https://picsum.photos/800/600?random=4',
-		photo_count: 89,
-		created_at: '2024-03-05T09:00:00Z',
-	},
-	{
-		id: '5',
-		title: '소셜미디어',
-		description: 'SNS 마케팅용 이미지 컬렉션',
-		cover_image: 'https://picsum.photos/800/600?random=5',
-		photo_count: 234,
-		created_at: '2024-03-01T09:00:00Z',
-	},
-	{
-		id: '6',
-		title: '직원 프로필',
-		description: '임직원 프로필 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=6',
-		photo_count: 67,
-		created_at: '2024-02-28T09:00:00Z',
-	},
-	{
-		id: '7',
-		title: '오피스 전경',
-		description: '회사 사무실 및 작업 공간 사진',
-		cover_image: 'https://picsum.photos/800/600?random=7',
-		photo_count: 45,
-		created_at: '2024-02-25T09:00:00Z',
-	},
-	{
-		id: '8',
-		title: '2024 신제품',
-		description: '신제품 라인업 프로모션 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=8',
-		photo_count: 128,
-		created_at: '2024-02-20T09:00:00Z',
-	},
-	{
-		id: '9',
-		title: '광고 캠페인',
-		description: '2024 봄 시즌 광고 캠페인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=9',
-		photo_count: 93,
-		created_at: '2024-02-15T09:00:00Z',
-	},
-	{
-		id: '10',
-		title: '고객 후기',
-		description: '제품 사용 고객 후기 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=10',
-		photo_count: 167,
-		created_at: '2024-02-10T09:00:00Z',
-	},
-	{
-		id: '11',
-		title: '매장 인테리어',
-		description: '전국 매장 인테리어 사진 모음',
-		cover_image: 'https://picsum.photos/800/600?random=11',
-		photo_count: 78,
-		created_at: '2024-02-05T09:00:00Z',
-	},
-	{
-		id: '12',
-		title: '패키지 디자인',
-		description: '제품 패키지 디자인 이미지',
-		cover_image: 'https://picsum.photos/800/600?random=12',
-		photo_count: 56,
-		created_at: '2024-02-01T09:00:00Z',
-	},
-];
-
 export const PhotoCollection = () => {
 	const { data: collections = [], isLoading } = useGetCollections();
+
+	console.log(collections, 'collections');
+
 	const createCollectionMutation = useCreateCollection();
 	const updateCollectionMutation = useUpdateCollection();
 	const deleteCollectionMutation = useDeleteCollection();

@@ -18,6 +18,8 @@ export const photoKeys = {
 	lists: () => [...photoKeys.all, 'list'] as const,
 	list: (filters: PostFilters) => [...photoKeys.lists(), filters] as const,
 	detail: (id?: string) => [...photoKeys.all, id] as const,
+	byCollection: (collectionId: string, page?: number, limit?: number) =>
+		[...photoKeys.all, 'collection', collectionId, page, limit] as const,
 };
 
 export const spotKeys = {
