@@ -233,7 +233,8 @@ export const formGroup = style({
 export const inputGroup = style({
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '8px',
+	gap: '0.25rem',
+	marginBottom: '0.5rem',
 });
 
 export const inputLabel = style({
@@ -244,6 +245,7 @@ export const inputLabel = style({
 
 export const imageUploadContainer = style({
 	display: 'flex',
+	alignItems: 'center',
 	gap: '8px',
 });
 
@@ -403,7 +405,7 @@ export const modalOverlay = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	padding: '24px',
+	// padding: '24px',
 	zIndex: 1000,
 });
 
@@ -413,7 +415,7 @@ export const modalContent = style({
 	padding: '24px',
 	width: '100%',
 	maxWidth: '500px',
-	maxHeight: 'calc(100dvh - 48px)',
+
 	overflow: 'auto',
 	position: 'relative',
 });
@@ -437,4 +439,32 @@ export const modalActions = style({
 export const form = style({
 	display: 'flex',
 	flexDirection: 'column',
+});
+
+export const inputError = style({
+	borderColor: 'red',
+	':focus': {
+		borderColor: 'red',
+		boxShadow: '0 0 0 1px red',
+	},
+});
+
+export const buttonError = style({
+	borderColor: 'red',
+	color: 'red',
+});
+
+export const errorMessage = style({
+	color: 'red',
+	fontSize: '0.875rem',
+	height: '0.875rem',
+	opacity: 1,
+	transition: 'opacity 0.2s ease',
+	lineHeight: '1',
+});
+
+export const emptyErrorMessage = style({
+	height: '0.875rem',
+	opacity: 0,
+	margin: '0.25rem 0',
 });

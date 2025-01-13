@@ -4,3 +4,4 @@ export { useGetPhotos } from './useGetPhotos';
 export { useGetCollections } from './useGetCollections';
 export { useGetPhotoById } from './useGetPhotoById';
 export { useCreateCollection } from './useCreateCollection';
+export { useUpdateCollection } from './useUpdateCollection';

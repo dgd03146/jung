@@ -4,7 +4,7 @@ import type { Photo } from './photo';
 export const CollectionSchema = z.object({
 	id: z.string(),
 	title: z.string(),
-	description: z.string().nullable(),
+	description: z.string(),
 	cover_image: z.string().url(),
 	photo_count: z.number().default(0),
 	created_at: z.string(),

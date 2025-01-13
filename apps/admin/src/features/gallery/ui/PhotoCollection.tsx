@@ -2,9 +2,10 @@ import { useGetCollections } from '@/fsd/features/gallery/api';
 import type { Collection } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
 import { useCreateCollection } from '../api/useCreateCollection';
+import { useUpdateCollection } from '../api/useUpdateCollection';
 import * as styles from './PhotoCollection.css';
 import { PhotoCollectionSkeleton } from './PhotoCollectionSkeleton';
 
@@ -12,6 +13,12 @@ interface FormData {
 	title: string;
 	description: string;
 	cover_image: string;
+}
+
+interface FormErrors {
+	title?: string;
+	description?: string;
+	cover_image?: string;
 }
 
 export const MOCK_COLLECTIONS: Collection[] = [
@@ -116,6 +123,7 @@ export const MOCK_COLLECTIONS: Collection[] = [
 export const PhotoCollection = () => {
 	const { data: collections = [], isLoading } = useGetCollections();
 	const createCollectionMutation = useCreateCollection();
+	const updateCollectionMutation = useUpdateCollection();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
@@ -124,6 +132,23 @@ export const PhotoCollection = () => {
 	});
 	const [previewImage, setPreviewImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [errors, setErrors] = useState<FormErrors>({});
+
+	const editingCollection = useMemo(() => {
+		if (!editingId || editingId === 'new') return null;
+		return collections.find((collection) => collection.id === editingId);
+	}, [editingId, collections]);
+
+	useEffect(() => {
+		if (editingCollection) {
+			setFormData({
+				title: editingCollection.title,
+				description: editingCollection.description,
+				cover_image: editingCollection.cover_image,
+			});
+			setPreviewImage(editingCollection.cover_image);
+		}
+	}, [editingCollection]);
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -132,6 +157,10 @@ export const PhotoCollection = () => {
 		setFormData((prev) => ({
 			...prev,
 			[name]: value,
+		}));
+		setErrors((prev) => ({
+			...prev,
+			[name]: '',
 		}));
 	};
 
@@ -143,26 +172,74 @@ export const PhotoCollection = () => {
 			cover_image: '',
 		});
 		setPreviewImage(null);
-		if (previewImage) {
+		if (previewImage && !previewImage.startsWith('http')) {
 			URL.revokeObjectURL(previewImage);
 		}
 	};
 
-	const handleSave = () => {
-		if (!formData.title || !fileInputRef.current?.files?.[0]) return;
+	// FIXME: React Hook Form & Zod 적용
+	const validateForm = (): FormErrors => {
+		const newErrors: FormErrors = {};
 
-		createCollectionMutation.mutate(
-			{
-				title: formData.title,
-				description: formData.description,
-				coverImageFile: fileInputRef.current.files[0],
-			},
-			{
-				onSuccess: () => {
-					handleCloseModal();
+		if (!formData.title.trim()) {
+			newErrors.title = 'Enter a title';
+		} else if (formData.title.length > 20) {
+			newErrors.title = 'Title must be 20 characters or less';
+		}
+
+		if (!formData.description.trim()) {
+			newErrors.description = 'Enter a description';
+		} else if (formData.description.length > 50) {
+			newErrors.description = 'Description must be 50 characters or less';
+		}
+
+		if (!fileInputRef.current?.files?.[0] && !previewImage) {
+			newErrors.cover_image = 'Select a cover image';
+		}
+
+		return newErrors;
+	};
+
+	const handleSave = () => {
+		const validationErrors = validateForm();
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+
+		if (editingId === 'new') {
+			if (!formData.title || !fileInputRef.current?.files?.[0]) return;
+
+			createCollectionMutation.mutate(
+				{
+					title: formData.title,
+					description: formData.description,
+					coverImageFile: fileInputRef.current.files[0],
 				},
-			},
-		);
+				{
+					onSuccess: () => {
+						handleCloseModal();
+					},
+				},
+			);
+		} else {
+			if (!formData.title) return;
+
+			updateCollectionMutation.mutate(
+				{
+					id: editingId || '',
+					title: formData.title,
+					description: formData.description,
+					coverImageFile: fileInputRef.current?.files?.[0],
+				},
+				{
+					onSuccess: () => {
+						handleCloseModal();
+					},
+				},
+			);
+		}
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,6 +258,17 @@ export const PhotoCollection = () => {
 		fileInputRef.current?.click();
 	};
 
+	const handleOpenModal = () => {
+		setEditingId('new');
+		setFormData({
+			title: '',
+			description: '',
+			cover_image: '',
+		});
+		setPreviewImage(null);
+		setErrors({});
+	};
+
 	if (isLoading) return <PhotoCollectionSkeleton />;
 
 	return (
@@ -188,10 +276,7 @@ export const PhotoCollection = () => {
 			<div className={styles.mainSection}>
 				<div className={styles.header}>
 					<h2 className={styles.title}>Collection Management</h2>
-					<button
-						className={styles.addButton}
-						onClick={() => setEditingId('new')}
-					>
+					<button className={styles.addButton} onClick={handleOpenModal}>
 						<HiPlus />
 						New Collection
 					</button>
@@ -288,10 +373,15 @@ export const PhotoCollection = () => {
 										value={formData.title}
 										onChange={handleInputChange}
 										placeholder='Enter collection title'
-										className={styles.input}
-										required
+										className={`${styles.input} ${
+											errors.title ? styles.inputError : ''
+										}`}
 									/>
+									<span className={styles.errorMessage}>
+										{errors.title || ' '}
+									</span>
 								</div>
+
 								<div className={styles.inputGroup}>
 									<label className={styles.inputLabel}>Description</label>
 									<textarea
@@ -299,10 +389,16 @@ export const PhotoCollection = () => {
 										value={formData.description}
 										onChange={handleInputChange}
 										placeholder='Enter collection description'
-										className={styles.textarea}
+										className={`${styles.textarea} ${
+											errors.description ? styles.inputError : ''
+										}`}
 										rows={4}
 									/>
+									<span className={styles.errorMessage}>
+										{errors.description || ' '}
+									</span>
 								</div>
+
 								<div className={styles.inputGroup}>
 									<label className={styles.inputLabel}>Cover Image</label>
 									<div className={styles.imageUploadContainer}>
@@ -316,11 +412,16 @@ export const PhotoCollection = () => {
 										<button
 											type='button'
 											onClick={handleUploadClick}
-											className={styles.uploadButton}
+											className={`${styles.uploadButton} ${
+												errors.cover_image ? styles.buttonError : ''
+											}`}
 										>
 											<HiPhoto size={20} />
 											Upload
 										</button>
+										<span className={styles.errorMessage}>
+											{errors.cover_image || ' '}
+										</span>
 									</div>
 
 									<div className={styles.imagePreview}>
@@ -338,7 +439,10 @@ export const PhotoCollection = () => {
 								<button
 									className={styles.cancelButton}
 									onClick={handleCloseModal}
-									disabled={createCollectionMutation.isPending}
+									disabled={
+										createCollectionMutation.isPending ||
+										updateCollectionMutation.isPending
+									}
 								>
 									Cancel
 								</button>
@@ -346,10 +450,17 @@ export const PhotoCollection = () => {
 									className={styles.saveButton}
 									onClick={handleSave}
 									disabled={
-										!formData.title || createCollectionMutation.isPending
+										createCollectionMutation.isPending ||
+										updateCollectionMutation.isPending
 									}
 								>
-									{createCollectionMutation.isPending ? 'Creating...' : 'Save'}
+									{editingId === 'new'
+										? createCollectionMutation.isPending
+											? 'Creating...'
+											: 'Create'
+										: updateCollectionMutation.isPending
+										  ? 'Updating...'
+										  : 'Update'}
 								</button>
 							</div>
 						</motion.div>
