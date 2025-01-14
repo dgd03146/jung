@@ -1,10 +1,10 @@
+import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
 import type { CategoryWithCount } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { HiPencil, HiTrash } from 'react-icons/hi';
-import { useDeleteCategory } from '../../api/useDeleteCategory';
 import * as styles from './CategoryCard.css';
 
 interface CategoryCardProps {
@@ -13,6 +13,7 @@ interface CategoryCardProps {
 	dragHandleProps?: DraggableProvidedDragHandleProps;
 	subCategories: CategoryWithCount[];
 	setEditingId: (id: string) => void;
+	type: 'blog' | 'spots';
 }
 
 export const CategoryCard = ({
@@ -21,18 +22,23 @@ export const CategoryCard = ({
 	dragHandleProps,
 	subCategories,
 	setEditingId,
+	type,
 }: CategoryCardProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
-	const deleteCategory = useDeleteCategory();
+	const deleteCategory = useDeleteCategory(type);
 	const hasChildren = category.subCategoriesCount > 0;
 
 	const handleDelete = () => {
 		if (hasChildren) {
-			alert('Please delete all subcategories first');
+			alert(
+				`Please delete all sub${type === 'blog' ? 'posts' : 'spots'} first`,
+			);
 			return;
 		}
 
-		if (window.confirm('Are you sure you want to delete this category?')) {
+		if (
+			window.confirm(`Are you sure you want to delete this ${type} category?`)
+		) {
 			deleteCategory.mutate(category.id);
 		}
 	};
@@ -96,7 +102,9 @@ export const CategoryCard = ({
 			)}
 
 			<div className={styles.cardFooter}>
-				<span className={styles.postCount}>{category.postCount} posts</span>
+				<span className={styles.postCount}>
+					{category.count} {type === 'blog' ? 'posts' : 'spots'}
+				</span>
 			</div>
 
 			{isExpanded && (
@@ -113,6 +121,7 @@ export const CategoryCard = ({
 									(sub) => sub.parent_id === childCategory.id,
 								)}
 								setEditingId={setEditingId}
+								type={type}
 							/>
 						))}
 				</AnimatePresence>

@@ -1,4 +1,6 @@
-import { useGetCategories } from '@/fsd/features/blog/api';
+import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
+import type { CategoryWithCount } from '@jung/shared/types';
+import { useRouter } from '@tanstack/react-router';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import {
@@ -12,24 +14,33 @@ import * as styles from './CategoryManager.css';
 import { CategoryStats } from './CategoryStats';
 import { CategoryGridView, CategoryListView } from './CategoryViews';
 
-export const CategoryManager = () => {
-	const { data } = useGetCategories();
-	const { mainCategories, allCategories, subCategories } = data;
+interface CategoryManagerProps {
+	onUpdateOrder?: (items: CategoryWithCount[]) => void;
+}
 
+export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {
 	const [view, setView] = useState<'grid' | 'list'>('grid');
 	const [editingId, setEditingId] = useState<string | null>(null);
+
+	const router = useRouter();
+	const pathname = router.state.location.pathname;
+	const type = pathname.split('/')[1] as 'blog' | 'spots';
+
+	const { data } = useGetCategories(type);
+
 	const editingCategory =
 		editingId && editingId !== 'new'
-			? allCategories.find((category) => category.id === editingId)
+			? data.allCategories.find((category) => category.id === editingId)
 			: undefined;
 
-	// FIXME: Drag and drop is not working
 	const handleDragEnd = (result: DropResult) => {
 		if (!result.destination) return;
 
-		const items = Array.from(allCategories);
+		const items = Array.from(data.allCategories);
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
+
+		onUpdateOrder?.(items);
 	};
 
 	return (
@@ -39,8 +50,9 @@ export const CategoryManager = () => {
 					view={view}
 					onViewChange={setView}
 					onAddNew={() => setEditingId('new')}
+					type={type}
 				/>
-				<CategoryStats allCategories={allCategories} />
+				<CategoryStats allCategories={data.allCategories} type={type} />
 
 				<DragDropContext onDragEnd={handleDragEnd}>
 					<Droppable droppableId='categories' direction='vertical'>
@@ -49,14 +61,16 @@ export const CategoryManager = () => {
 								<AnimatePresence>
 									{view === 'grid' ? (
 										<CategoryGridView
-											mainCategories={mainCategories}
-											subCategories={subCategories}
+											mainCategories={data.mainCategories}
+											subCategories={data.subCategories}
 											onEdit={setEditingId}
+											type={type}
 										/>
 									) : (
 										<CategoryListView
-											categories={allCategories}
+											categories={data.allCategories}
 											onEdit={setEditingId}
+											type={type}
 										/>
 									)}
 								</AnimatePresence>
@@ -72,8 +86,9 @@ export const CategoryManager = () => {
 					<CategoryForm
 						editingId={editingId}
 						onClose={() => setEditingId(null)}
-						mainCategories={mainCategories}
+						mainCategories={data.mainCategories}
 						editingCategory={editingCategory}
+						type={type}
 					/>
 				)}
 			</AnimatePresence>

@@ -1,33 +1,37 @@
 import { categoryKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
-import type { CategoriesResponse, CategoryWithCount } from '@jung/shared/types';
+import type {
+	CategoriesResponse,
+	CategoryType,
+	CategoryWithCount,
+} from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCategory } from './createCategory';
+import { createCategory } from '../services/createCategory';
 
-export const useCreateCategory = () => {
+export const useCreateCategory = (type: CategoryType) => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 
 	return useMutation({
 		mutationFn: (category: Omit<CategoryWithCount, 'id'>) =>
-			createCategory(category),
+			createCategory(category, type),
 
 		onMutate: async (newCategory) => {
 			await queryClient.cancelQueries({
-				queryKey: categoryKeys.all('blog'),
+				queryKey: categoryKeys.all(type),
 			});
 
 			const previousCategories = queryClient.getQueryData<CategoriesResponse>(
-				categoryKeys.all('blog'),
+				categoryKeys.all(type),
 			);
 
 			if (previousCategories) {
 				const newTempCategory: CategoryWithCount = {
 					...newCategory,
 					id: `temp-${Date.now()}`,
-					postCount: 0,
-					directPostCount: 0,
+					count: 0,
+					directCount: 0,
 					subCategoriesCount: 0,
 				};
 
@@ -46,7 +50,7 @@ export const useCreateCategory = () => {
 				}
 
 				queryClient.setQueryData<CategoriesResponse>(
-					categoryKeys.all('blog'),
+					categoryKeys.all(type),
 					updatedCategories,
 				);
 			}
@@ -57,7 +61,7 @@ export const useCreateCategory = () => {
 		onError: (error: unknown, _, context) => {
 			if (context?.previousCategories) {
 				queryClient.setQueryData(
-					categoryKeys.all('blog'),
+					categoryKeys.all(type),
 					context.previousCategories,
 				);
 			}
@@ -65,13 +69,19 @@ export const useCreateCategory = () => {
 			if (error instanceof ApiError) {
 				switch (error.code) {
 					case 'NO_DATA':
-						showToast('Failed to create category: No data returned', 'error');
+						showToast(
+							`Failed to create ${type} category: No data returned`,
+							'error',
+						);
 						break;
 					case 'UNKNOWN_ERROR':
 						showToast('An unexpected error occurred', 'error');
 						break;
 					default:
-						showToast(`Failed to create category: ${error.message}`, 'error');
+						showToast(
+							`Failed to create ${type} category: ${error.message}`,
+							'error',
+						);
 				}
 			} else {
 				showToast('An unknown error occurred', 'error');
@@ -80,10 +90,13 @@ export const useCreateCategory = () => {
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: categoryKeys.all('blog'),
+				queryKey: categoryKeys.all(type),
 			});
 
-			showToast('Category created successfully!', 'success');
+			showToast(
+				`${type === 'blog' ? 'Blog' : 'Spot'} category created successfully!`,
+				'success',
+			);
 		},
 	});
 };

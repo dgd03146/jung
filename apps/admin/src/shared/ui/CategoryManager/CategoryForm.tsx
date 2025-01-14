@@ -1,8 +1,12 @@
-import type { Category, CategoryWithCount } from '@jung/shared/types';
+import { useCreateCategory } from '@/fsd/shared/api/useCreateCategory';
+import { useUpdateCategory } from '@/fsd/shared/api/useUpdateCategory';
+import type {
+	Category,
+	CategoryType,
+	CategoryWithCount,
+} from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import { memo, useCallback, useState } from 'react';
-import { useCreateCategory } from '../../api/useCreateCategory';
-import { useUpdateCategory } from '../../api/useUpdateCategory';
 import * as styles from './CategoryForm.css';
 
 interface CategoryFormProps {
@@ -10,6 +14,7 @@ interface CategoryFormProps {
 	onClose: () => void;
 	mainCategories: Category[];
 	editingCategory?: Category;
+	type: CategoryType;
 }
 
 type FormData = Omit<Category, 'id'>;
@@ -21,31 +26,19 @@ export const CategoryForm = memo(
 		onClose,
 		mainCategories,
 		editingCategory,
+		type,
 	}: CategoryFormProps) => {
-		const createCategory = useCreateCategory();
-		const updateCategory = useUpdateCategory();
+		const createCategory = useCreateCategory(type);
+		const updateCategory = useUpdateCategory(type);
 
-		const [formData, setFormData] = useState<FormData>(() => {
-			if (editingCategory) {
-				return {
-					name: editingCategory.name,
-					description: editingCategory.description,
-					color: editingCategory.color,
-					parent_id: editingCategory.parent_id,
-					type: editingCategory.type,
-					created_at: editingCategory.created_at,
-				};
-			}
-
-			return {
-				name: '',
-				description: '',
-				color: '#0142C0',
-				parent_id: null,
-				type: 'blog',
-				created_at: new Date().toISOString(),
-			};
-		});
+		const [formData, setFormData] = useState<FormData>(() => ({
+			name: editingCategory?.name ?? '',
+			description: editingCategory?.description ?? '',
+			color: editingCategory?.color ?? '#0142C0',
+			parent_id: editingCategory?.parent_id ?? null,
+			type,
+			created_at: editingCategory?.created_at ?? new Date().toISOString(),
+		}));
 
 		const [errors, setErrors] = useState<FormErrors>({});
 
@@ -60,10 +53,10 @@ export const CategoryForm = memo(
 
 			if (!formData.description.trim()) {
 				newErrors.description = 'Description is required';
-			} else if (formData.description.length > 100) {
-				newErrors.description = 'Description must be less than 100 characters';
-			} else if (formData.description.length < 10) {
-				newErrors.description = 'Description must be at least 10 characters';
+			} else if (formData.description.length > 50) {
+				newErrors.description = 'Description must be less than 50 characters';
+			} else if (formData.description.length < 5) {
+				newErrors.description = 'Description must be at least 5 characters';
 			}
 
 			setErrors(newErrors);

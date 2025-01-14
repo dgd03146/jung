@@ -1,24 +1,24 @@
 import { categoryKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
-import type { CategoriesResponse } from '@jung/shared/types';
+import type { CategoriesResponse, CategoryType } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCategory } from './deleteCategory';
+import { deleteCategory } from '../services/deleteCategory';
 
-export const useDeleteCategory = () => {
+export const useDeleteCategory = (type: CategoryType) => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 
 	return useMutation({
-		mutationFn: (categoryId: string) => deleteCategory(categoryId),
+		mutationFn: (categoryId: string) => deleteCategory(categoryId, type),
 
 		onMutate: async (categoryId) => {
 			await queryClient.cancelQueries({
-				queryKey: categoryKeys.all('blog'),
+				queryKey: categoryKeys.all(type),
 			});
 
 			const previousCategories = queryClient.getQueryData<CategoriesResponse>(
-				categoryKeys.all('blog'),
+				categoryKeys.all(type),
 			);
 
 			if (!previousCategories) return { previousCategories };
@@ -36,7 +36,7 @@ export const useDeleteCategory = () => {
 			};
 
 			queryClient.setQueryData<CategoriesResponse>(
-				categoryKeys.all('blog'),
+				categoryKeys.all(type),
 				updatedCategories,
 			);
 
@@ -46,7 +46,7 @@ export const useDeleteCategory = () => {
 		onError: (error, _, context) => {
 			if (context?.previousCategories) {
 				queryClient.setQueryData(
-					categoryKeys.all('blog'),
+					categoryKeys.all(type),
 					context.previousCategories,
 				);
 			}
@@ -54,22 +54,34 @@ export const useDeleteCategory = () => {
 			if (error instanceof ApiError) {
 				switch (error.code) {
 					case 'NOT_FOUND':
-						showToast('Category not found', 'error');
+						showToast(
+							`${type === 'blog' ? 'Blog' : 'Spot'} category not found`,
+							'error',
+						);
 						break;
 					default:
-						showToast(`Failed to delete category: ${error.message}`, 'error');
+						showToast(
+							`Failed to delete ${type} category: ${error.message}`,
+							'error',
+						);
 				}
 			} else {
-				showToast('An error occurred while deleting the category', 'error');
+				showToast(
+					`An error occurred while deleting the ${type} category`,
+					'error',
+				);
 			}
 		},
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: categoryKeys.all('blog'),
+				queryKey: categoryKeys.all(type),
 			});
 
-			showToast('Category deleted successfully', 'success');
+			showToast(
+				`${type === 'blog' ? 'Blog' : 'Spot'} category deleted successfully`,
+				'success',
+			);
 		},
 	});
 };

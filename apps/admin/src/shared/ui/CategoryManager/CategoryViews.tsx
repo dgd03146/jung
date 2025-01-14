@@ -8,9 +8,16 @@ import * as styles from './CategoryView.css';
 interface CategoryViewProps {
 	categories: CategoryWithCount[];
 	onEdit: (id: string) => void;
+	type: 'blog' | 'spots';
 }
 
-export const CategoryListView = ({ categories, onEdit }: CategoryViewProps) => {
+export const CategoryListView = ({
+	categories,
+	onEdit,
+	type,
+}: CategoryViewProps) => {
+	const getItemLabel = () => (type === 'blog' ? 'posts' : 'spots');
+
 	return (
 		<div className={styles.listView}>
 			{categories.map((category, index) => (
@@ -41,7 +48,9 @@ export const CategoryListView = ({ categories, onEdit }: CategoryViewProps) => {
 									{category.name}
 								</div>
 								<div className={styles.listViewMeta}>
-									<span>{category.postCount} posts</span>
+									<span>
+										{category.count} {getItemLabel()}
+									</span>
 									<div className={styles.actionsStyle}>
 										<button
 											className={styles.actionButtonStyle}
@@ -67,12 +76,14 @@ interface CategoryGridViewProps {
 	mainCategories: CategoryWithCount[];
 	subCategories: CategoryWithCount[];
 	onEdit: (id: string) => void;
+	type: 'blog' | 'spots';
 }
 
 export const CategoryGridView = ({
 	mainCategories,
 	subCategories,
 	onEdit,
+	type,
 }: CategoryGridViewProps) => {
 	return (
 		<div className={styles.gridView}>
@@ -86,6 +97,7 @@ export const CategoryGridView = ({
 								dragHandleProps={provided.dragHandleProps || undefined}
 								subCategories={subCategories}
 								setEditingId={onEdit}
+								type={type}
 							/>
 						</div>
 					)}

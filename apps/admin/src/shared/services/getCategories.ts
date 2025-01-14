@@ -2,19 +2,42 @@ import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { CategoriesResponse, CategoryWithCount } from '@jung/shared/types';
 
-export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
+type CategoryType = 'blog' | 'spots';
+
+interface CountData {
+	category_id: string;
+}
+
+const getItemCounts = async (type: CategoryType, categoryIds: string[]) => {
+	const tableName = type === 'blog' ? 'posts' : 'spots';
+
+	const { data: counts, error: countsError } = await supabase
+		.from(tableName)
+		.select('category_id')
+		.in('category_id', categoryIds);
+
+	if (countsError) {
+		throw ApiError.fromPostgrestError(countsError);
+	}
+
+	return counts as CountData[];
+};
+
+export const fetchCategories = async (
+	type: CategoryType,
+): Promise<CategoriesResponse> => {
 	const { data: categories, error: categoriesError } = await supabase
 		.from('categories')
 		.select(`
-			id,
-			name,
-			description,
-			color,
-			parent_id,
-			type,
-			created_at
-		`)
-		.eq('type', 'blog')
+      id,
+      name,
+      description,
+      color,
+      parent_id,
+      type,
+      created_at
+    `)
+		.eq('type', type)
 		.order('created_at');
 
 	if (categoriesError) {
@@ -25,23 +48,14 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 		throw new ApiError('No categories found', 'NOT_FOUND');
 	}
 
-	console.log('Raw categories:', categories);
+	const counts = await getItemCounts(
+		type,
+		categories.map((cat) => cat.id),
+	);
 
-	const { data: postCounts, error: postCountsError } = await supabase
-		.from('posts')
-		.select('category_id')
-		.in(
-			'category_id',
-			categories.map((cat) => cat.id),
-		);
-
-	if (postCountsError) {
-		throw ApiError.fromPostgrestError(postCountsError);
-	}
-
-	const postCountMap = (postCounts || []).reduce(
-		(acc, post) => {
-			acc[post.category_id] = (acc[post.category_id] || 0) + 1;
+	const countMap = counts.reduce(
+		(acc, item) => {
+			acc[item.category_id] = (acc[item.category_id] || 0) + 1;
 			return acc;
 		},
 		{} as Record<string, number>,
@@ -59,25 +73,23 @@ export const fetchBlogCategories = async (): Promise<CategoriesResponse> => {
 
 	const processedCategories: CategoryWithCount[] = categories.map(
 		(category) => {
-			const directPostCount = postCountMap[category.id] || 0;
+			const directCount = countMap[category.id] || 0;
 			const subCount = subCategoryMap[category.id] || 0;
 
 			return {
 				...category,
 				description: category.description ?? '',
 				color: category.color ?? '#0142C0',
-				directPostCount,
-				postCount: directPostCount,
+				count: directCount + subCount,
+				directCount,
 				subCategoriesCount: subCount,
 			};
 		},
 	);
 
-	const result = {
+	return {
 		mainCategories: processedCategories.filter((cat) => !cat.parent_id),
 		subCategories: processedCategories.filter((cat) => cat.parent_id),
 		allCategories: processedCategories,
 	};
-
-	return result;
 };
