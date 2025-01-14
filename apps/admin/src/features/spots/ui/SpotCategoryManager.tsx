@@ -265,7 +265,7 @@ export const SpotCategoryManager = () => {
 								)}
 								<div className={styles.spotInfo}>
 									<span className={styles.location}>{spot.location}</span>
-									<span className={styles.rating}>⭐ {spot.rating}</span>
+									{/* <span className={styles.rating}>⭐ {spot.rating}</span> */}
 								</div>
 							</div>
 							<div className={styles.cardFooter}>
@@ -296,15 +296,15 @@ export const SpotCategoryManager = () => {
 					</span>
 					<span className={styles.statLabel}>Total Reviews</span>
 				</div>
-				<div className={styles.statCard}>
-					<span className={styles.statValue}>
-						{(
-							categories.reduce((sum, cat) => sum + cat.rating, 0) /
-							categories.length
-						).toFixed(1)}
-					</span>
-					<span className={styles.statLabel}>Average Rating</span>
-				</div>
+				{/* <div className={styles.statCard}>
+          <span className={styles.statValue}>
+            {(
+              categories.reduce((sum, cat) => sum + cat.rating, 0) /
+              categories.length
+            ).toFixed(1)}
+          </span>
+          <span className={styles.statLabel}>Average Rating</span>
+        </div> */}
 			</div>
 
 			<div className={styles.mainSection}>

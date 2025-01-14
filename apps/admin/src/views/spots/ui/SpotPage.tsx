@@ -14,10 +14,10 @@ export const SpotPage = () => {
 					<span className={styles.statLabel}>Categories</span>
 				</div>
 
-				<div className={styles.statCard}>
+				{/* <div className={styles.statCard}>
 					<span className={styles.statValue}>4.8</span>
 					<span className={styles.statLabel}>Avg Rating</span>
-				</div>
+				</div> */}
 			</div>
 			<SpotTable />
 		</div>

@@ -33,7 +33,7 @@ export const formLayout = style({
 	display: 'flex',
 	gap: '32px',
 	marginBottom: '24px',
-	height: '500px',
+	minHeight: '500px',
 
 	'@media': {
 		'screen and (max-width: 768px)': {

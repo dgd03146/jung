@@ -47,32 +47,32 @@ export const useSpotTable = () => {
 	const columns = useMemo(
 		() => [
 			{
-				header: '썸네일',
+				header: 'Thumbnails',
 				accessorKey: 'photos',
 				size: 100,
 			},
 			{
-				header: '제목',
+				header: 'Title',
 				accessorKey: 'title',
 				size: 200,
 			},
 			{
-				header: '카테고리',
+				header: 'Category',
 				accessorKey: 'category',
 				size: 150,
 			},
 			{
-				header: '주소',
+				header: 'Address',
 				accessorKey: 'address',
 				size: 300,
 			},
 			{
-				header: '좋아요',
+				header: 'Likes',
 				accessorKey: 'likes',
 				size: 100,
 			},
 			{
-				header: '생성일',
+				header: 'Created At',
 				accessorKey: 'created_at',
 				size: 150,
 			},

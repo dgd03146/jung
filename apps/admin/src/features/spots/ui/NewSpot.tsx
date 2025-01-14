@@ -1,47 +1,50 @@
 import type { Spot } from '@jung/shared/types';
-import { useLocation, useNavigate } from '@tanstack/react-router';
+import { useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
 import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
+import { useCreateSpot } from '../api/useCreateSpot';
 import { useGetSpotCategories } from '../api/useGetSpotCategories';
-
 import * as styles from './NewSpot.css';
+import { ImageUploader } from './SpotTable/ImageUploader';
 
 export const NewSpot = () => {
-	const navigate = useNavigate();
 	const location = useLocation();
 	const isEditMode = location.pathname.includes('/spots/edit');
 
 	const { data: categoriesData, isLoading: categoriesLoading } =
 		useGetSpotCategories();
+	const createSpotMutation = useCreateSpot();
 
 	const [formData, setFormData] = useState<Partial<Spot>>({
 		tips: [''],
 		tags: [''],
 		photos: [],
-		rating: 0,
 		coordinates: { lat: 0, lng: 0 },
 	});
 
-	// TODO: Fetch spot data if in edit mode
-	// useEffect(() => {
-	//   if (isEditMode) {
-	//     // Fetch spot data
-	//   }
-	// }, [isEditMode]);
-
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		try {
-			// TODO: Implement API call based on mode
-			console.log(`${isEditMode ? 'Updating' : 'Creating'} spot:`, formData);
-			navigate({ to: '/spots' });
-		} catch (error) {
-			console.error(
-				`Failed to ${isEditMode ? 'update' : 'create'} spot:`,
-				error,
-			);
+
+		if (
+			!formData.title ||
+			!formData.description ||
+			!formData.address ||
+			!formData.category_id
+		) {
+			return; // TODO: Add form validation
 		}
+
+		createSpotMutation.mutate({
+			title: formData.title,
+			description: formData.description,
+			address: formData.address,
+			category_id: formData.category_id,
+			coordinates: formData.coordinates!,
+			photos: formData.photos || [],
+			tags: formData.tags?.filter((tag) => tag.trim() !== '') || [],
+			tips: formData.tips?.filter((tip) => tip.trim() !== '') || [],
+		});
 	};
 
 	if (categoriesLoading) {
@@ -50,12 +53,6 @@ export const NewSpot = () => {
 
 	return (
 		<div className={styles.pageWrapper}>
-			<div className={styles.header}>
-				<h1 className={styles.title}>
-					{isEditMode ? 'Edit Spot' : 'Add New Spot'}
-				</h1>
-			</div>
-
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.formLayout}>
 					<div className={styles.basicSection}>
@@ -75,6 +72,7 @@ export const NewSpot = () => {
 									}
 									placeholder='Enter spot name'
 									className={styles.input}
+									required
 								/>
 							</div>
 
@@ -90,6 +88,7 @@ export const NewSpot = () => {
 											}))
 										}
 										className={styles.select}
+										required
 									>
 										<option value=''>Select category</option>
 										{categoriesData?.allCategories.map((category) => (
@@ -174,6 +173,17 @@ export const NewSpot = () => {
 						</div>
 
 						<div className={styles.formCard}>
+							<div className={styles.inputGroup}>
+								<label className={styles.label}>Images</label>
+								<ImageUploader
+									images={formData.photos || []}
+									onChange={(photos) =>
+										setFormData((prev) => ({ ...prev, photos }))
+									}
+									maxImages={4}
+								/>
+							</div>
+
 							<div className={styles.inputGroup}>
 								<label className={styles.label}>Tips</label>
 								{formData.tips?.map((tip, index) => (
@@ -260,9 +270,14 @@ export const NewSpot = () => {
 						</div>
 					</div>
 				</div>
+
 				<div className={styles.formActions}>
-					<button type='submit' className={styles.submitButton}>
-						Save Spot
+					<button
+						type='submit'
+						className={styles.submitButton}
+						disabled={createSpotMutation.isPending}
+					>
+						{createSpotMutation.isPending ? 'Saving...' : 'Save Spot'}
 					</button>
 				</div>
 			</form>

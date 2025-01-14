@@ -42,7 +42,7 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 									cell.column.id === 'address' ||
 									cell.column.id === 'tips'
 										? styles.textAlignLeft
-										: cell.column.id === 'likes' || cell.column.id === 'rating'
+										: cell.column.id === 'likes'
 										  ? styles.textAlignRight
 										  : ''
 								}`}

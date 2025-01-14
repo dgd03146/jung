@@ -221,12 +221,12 @@ export const categoryBadge = style({
 	color: '#0142C0',
 });
 
-export const rating = style({
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: '4px',
-	color: '#ff9500',
-});
+// export const rating = style({
+// 	display: 'inline-flex',
+// 	alignItems: 'center',
+// 	gap: '4px',
+// 	color: '#ff9500',
+// });
 
 export const thumbnail = style({
 	width: '60px',

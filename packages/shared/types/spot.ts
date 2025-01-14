@@ -11,7 +11,7 @@ export const SpotSchema = z.object({
 			url: z.string().url(),
 		}),
 	),
-	rating: z.number().min(0).max(5),
+	// rating: z.number().min(0).max(5),
 	coordinates: z.object({
 		lat: z.number(),
 		lng: z.number(),
