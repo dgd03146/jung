@@ -7,11 +7,11 @@ export const spotRouter = router({
 	getAllSpots: publicProcedure
 		.input(SpotQueryParamsSchema)
 		.query(async ({ input }) => {
-			const { limit, cat, sort, q, cursor } = input;
+			const { limit, category_id, sort, q, cursor } = input;
 			return spotsService.findMany({
 				limit,
 				cursor,
-				cat,
+				category_id,
 				sort,
 				q,
 			});

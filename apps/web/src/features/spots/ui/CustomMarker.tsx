@@ -1,13 +1,13 @@
 import { useMarkerVisibility } from '@/fsd/features/spots/model';
-import type { SpotCategory } from '@jung/shared/types';
+// import type { SpotCategory } from '@jung/shared/types';
 import { Marker, OverlayView } from '@react-google-maps/api';
 import { useState } from 'react';
-import CategoryIcon from './CategoryIcon';
+// import CategoryIcon from './CategoryIcon';
 import * as styles from './SpotMap.css';
 
 interface CustomMarkerProps {
 	position: google.maps.LatLngLiteral;
-	category: SpotCategory;
+	// category: SpotCategory;
 	isSelected: boolean;
 	title: string;
 	onClick: () => void;
@@ -17,7 +17,7 @@ interface CustomMarkerProps {
 
 const CustomMarker = ({
 	position,
-	category,
+	// category,
 	isSelected,
 	onClick,
 	title,
@@ -57,21 +57,21 @@ const CustomMarker = ({
 						{isHovered && !isSelected && (
 							<div className={styles.markerTooltip}>
 								<div className={styles.tooltipCategory}>
-									<CategoryIcon category={category} />
-									<span>{category}</span>
+									{/* <CategoryIcon category={category} /> */}
+									{/* <span>{category}</span> */}
 								</div>
 								<div className={styles.tooltipTitle}>{title}</div>
 							</div>
 						)}
 						<div
 							className={styles.customMarker({
-								category,
+								// category,
 								selected: isSelected,
 							})}
 							onClick={handleClick}
 						>
 							<div className={styles.markerIcon}>
-								<CategoryIcon category={category} />
+								{/* <CategoryIcon category={category} /> */}
 							</div>
 						</div>
 					</div>

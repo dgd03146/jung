@@ -1,19 +1,19 @@
 import { trpc } from '@/fsd/shared';
 
 type QueryParams = {
-	cat?: string;
-	sort?: 'latest' | 'oldest' | 'popular' | 'rating';
+	category_id?: string;
+	sort?: 'latest' | 'oldest' | 'popular';
 	q?: string;
 };
 
 export function useGetSpots(params: QueryParams) {
-	const { sort = 'latest', cat, q = '' } = params;
+	const { sort = 'latest', category_id, q = '' } = params;
 
 	return trpc.spot.getAllSpots.useSuspenseInfiniteQuery(
 		{
 			limit: 12,
 			sort,
-			cat,
+			category_id,
 			q,
 		},
 		{

@@ -10,15 +10,15 @@ export const spotsService = {
 	async findMany({
 		limit,
 		cursor,
-		cat,
+		category_id,
 		q: search,
 		sort = 'latest',
 	}: SpotQueryParams): Promise<SpotQueryResult> {
 		try {
 			let query = supabase.from('spots').select('*', { count: 'exact' });
 
-			if (cat && cat !== 'all') {
-				query = query.eq('category', cat);
+			if (category_id && category_id !== 'all') {
+				query = query.eq('category_id', category_id);
 			}
 
 			if (search) {
@@ -27,8 +27,8 @@ export const spotsService = {
 				);
 			}
 
-			if (sort === 'rating') {
-				query = query.order('rating', { ascending: false });
+			if (sort === 'popular') {
+				query = query.order('likes', { ascending: false });
 			} else {
 				query = query.order('id', { ascending: false });
 			}

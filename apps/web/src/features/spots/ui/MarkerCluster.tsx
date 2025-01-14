@@ -57,7 +57,7 @@ const MarkerCluster = ({
 							key={markerSpot.id}
 							title={markerSpot.title}
 							position={markerSpot.coordinates}
-							category={markerSpot.category}
+							// category={markerSpot.category}
 							isSelected={selectedMarkerId === markerSpot.id}
 							onClick={() => handleMarkerClick(markerSpot)}
 							clusterer={clusterer}

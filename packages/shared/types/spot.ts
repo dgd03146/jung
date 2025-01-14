@@ -32,7 +32,7 @@ export const SpotQueryParamsSchema = z.object({
 	cursor: z.string().optional(),
 	category_id: z.string().uuid().optional(),
 	q: z.string().optional(),
-	sort: z.enum(['latest', 'rating', 'popular', 'oldest']).optional(),
+	sort: z.enum(['latest', 'popular', 'oldest']).optional(),
 });
 
 export const SpotQueryResultSchema = z.object({
