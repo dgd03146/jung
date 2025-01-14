@@ -18,7 +18,6 @@ import { useGetSpotById } from '../api';
 import { useShareSpot } from '../model/useShareSpot';
 import { useToggleSpotLike } from '../model/useToggleSpotLike';
 import { SpotMap } from './SpotMap';
-import { StarRating } from './StarRating';
 
 interface SpotDetailProps {
 	spotId: string;
@@ -130,7 +129,7 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 
 					<div className={styles.meta}>
 						<div className={styles.ratingRow}>
-							<StarRating value={spot.rating} size='md' />
+							{/* <StarRating value={spot.rating} size='md' /> */}
 							<span className={styles.likesCount}>{spot.likes} Likes</span>
 						</div>
 						<Flex justify='space-between'>

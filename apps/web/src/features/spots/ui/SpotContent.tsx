@@ -19,7 +19,7 @@ type SpotContentProps = {
 	setIsListVisible: Dispatch<SetStateAction<boolean>>;
 };
 
-type Sort = 'latest' | 'rating' | 'popular' | 'oldest';
+type Sort = 'latest' | 'popular' | 'oldest';
 
 export const SpotContent = ({
 	isMapView,
@@ -27,11 +27,11 @@ export const SpotContent = ({
 	setIsListVisible,
 }: SpotContentProps) => {
 	const searchParams = useSearchParams();
-	const cat = searchParams.get('cat') || 'all';
+	const category_id = searchParams.get('category_id') || 'all';
 	const sort = (searchParams.get('sort') as Sort) || 'latest';
 	const q = searchParams.get('q') || '';
 
-	const [data, query] = useGetSpots({ cat, sort, q });
+	const [data, query] = useGetSpots({ category_id, sort, q });
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
 	const { ref, inView } = useInView();

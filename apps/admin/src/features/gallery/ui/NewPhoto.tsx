@@ -331,7 +331,9 @@ export const NewPhoto = () => {
 					<button
 						type='submit'
 						className={styles.submitButton}
-						disabled={createPhotoMutation.isPending}
+						disabled={
+							createPhotoMutation.isPending || updatePhotoMutation.isPending
+						}
 					>
 						{isEditMode ? 'Update Photo' : 'Create Photo'}
 					</button>

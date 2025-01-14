@@ -7,7 +7,6 @@ import * as styles from './SpotCard.css';
 import type { Spot } from '@jung/shared/types';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useToggleSpotLike } from '../model';
-import { StarRating } from './StarRating';
 
 interface SpotCardProps {
 	spot: Spot;
@@ -80,7 +79,7 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 						</Card.Description>
 					)}
 					<Card.Actions className={styles.footer}>
-						<StarRating value={spot.rating} size='sm' />
+						{/* <StarRating value={spot.likes} size="sm" /> */}
 					</Card.Actions>
 				</Card.Content>
 			</Card>

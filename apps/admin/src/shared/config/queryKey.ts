@@ -10,7 +10,7 @@ export const postKeys = {
 };
 
 export const categoryKeys = {
-	all: (type: 'blog' | 'spot') => ['categories', type] as const,
+	all: (type: 'blog' | 'spots') => ['categories', type] as const,
 };
 
 export const photoKeys = {
