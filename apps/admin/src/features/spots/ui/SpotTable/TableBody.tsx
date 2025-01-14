@@ -28,6 +28,8 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 			{table.getRowModel().rows.map((row) => {
 				const spot = row.original as Spot;
 
+				console.log(spot, 'spot');
+
 				const category = categoriesData?.allCategories.find(
 					(cat) => cat.id === spot.category_id,
 				);
@@ -48,7 +50,7 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 								}`}
 							>
 								{cell.column.id === 'photos' ? (
-									<ImageCell url={spot.photos[0]?.url} alt={spot.title} />
+									<ImageCell url={spot.photos[0].url} alt={spot.title} />
 								) : cell.column.id === 'created_at' ? (
 									<DateCell date={spot.created_at} />
 								) : cell.column.id === 'category' ? (

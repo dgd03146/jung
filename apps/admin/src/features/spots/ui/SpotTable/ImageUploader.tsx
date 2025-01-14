@@ -1,11 +1,11 @@
 import { useToast } from '@jung/design-system/components';
-import { useState } from 'react';
+import type { SpotImageUpload } from '@jung/shared/types';
 import { MdDelete, MdPhoto } from 'react-icons/md';
 import * as styles from './ImageUploader.css';
 
 interface ImageUploaderProps {
-	images: { id: string; url: string }[];
-	onChange: (images: { id: string; url: string }[]) => void;
+	images: SpotImageUpload[];
+	onChange: (images: SpotImageUpload[]) => void;
 	maxImages?: number;
 }
 
@@ -15,13 +15,13 @@ export const ImageUploader = ({
 	maxImages = 4,
 }: ImageUploaderProps) => {
 	const showToast = useToast();
-	const [isUploading, setIsUploading] = useState(false);
 
-	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		if (!files) return;
+	const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newFiles = e.target.files;
+		if (!newFiles) return;
 
-		if (images.length + files.length > maxImages) {
+		const activeImages = images.filter((img) => img.status !== 'deleted');
+		if (activeImages.length + newFiles.length > maxImages) {
 			showToast(
 				`최대 ${maxImages}개의 이미지만 업로드할 수 있습니다.`,
 				'error',
@@ -29,64 +29,76 @@ export const ImageUploader = ({
 			return;
 		}
 
-		setIsUploading(true);
-		try {
-			// TODO: Implement actual image upload logic
-			const newImages = Array.from(files).map((file) => ({
-				id: Math.random().toString(),
-				url: URL.createObjectURL(file),
-			}));
+		const newImages: SpotImageUpload[] = Array.from(newFiles).map((file) => ({
+			url: URL.createObjectURL(file),
+			file,
+			status: 'new',
+			preview: URL.createObjectURL(file),
+		}));
 
-			onChange([...images, ...newImages]);
-		} catch (error) {
-			showToast('이미지 업로드에 실패했습니다.', 'error');
-		}
-		setIsUploading(false);
+		onChange([...images, ...newImages]);
 	};
 
-	const handleRemoveImage = (id: string) => {
-		onChange(images.filter((img) => img.id !== id));
+	const handleRemoveImage = (index: number) => {
+		const updatedImages = [...images];
+		const image = updatedImages[index];
+
+		if (image.status === 'existing') {
+			updatedImages[index] = { ...image, status: 'deleted' };
+		} else {
+			if (image.preview) {
+				URL.revokeObjectURL(image.preview);
+			}
+			updatedImages.splice(index, 1);
+		}
+
+		onChange(updatedImages);
 	};
 
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.imageGrid} data-count={images.length}>
-				{images.map((image, index) => (
-					<div
-						key={image.id}
-						className={styles.imageWrapper}
-						data-area={`img${index + 1}`}
-					>
-						<img src={image.url} alt='' className={styles.image} />
-						<button
-							type='button'
-							onClick={() => handleRemoveImage(image.id)}
-							className={styles.deleteButton}
-							aria-label='Delete image'
+			<div className={styles.imageGrid}>
+				{images
+					.filter((img) => img.status !== 'deleted')
+					.map((image, index) => (
+						<div
+							key={image.id || index}
+							className={styles.imageWrapper}
+							data-area={`img${index + 1}`}
 						>
-							<MdDelete size={20} />
-						</button>
-					</div>
-				))}
-				{images.length < maxImages && (
-					<label
-						className={styles.uploadButton}
-						data-area={`img${images.length + 1}`}
-					>
+							<img
+								src={image.preview || image.url}
+								alt={`${index + 1}`}
+								className={styles.image}
+							/>
+							<button
+								type='button'
+								onClick={() => handleRemoveImage(index)}
+								className={styles.deleteButton}
+							>
+								<MdDelete size={20} />
+							</button>
+						</div>
+					))}
+
+				{images.filter((img) => img.status !== 'deleted').length <
+					maxImages && (
+					<label className={styles.uploadButton}>
 						<input
 							type='file'
 							accept='image/*'
 							multiple
 							onChange={handleImageUpload}
-							disabled={isUploading}
 							className={styles.fileInput}
 						/>
 						<MdPhoto className={styles.uploadIcon} />
 						<span className={styles.uploadText}>
-							{images.length === 0 ? 'Add Image' : 'Add More'}
+							{images.length === 0 ? '이미지 추가하기' : '더 추가하기'}
 						</span>
 						<span className={styles.uploadSubtext}>
-							{isUploading ? 'Uploading...' : `${images.length}/${maxImages}`}
+							{`${
+								images.filter((img) => img.status !== 'deleted').length
+							}/${maxImages}`}
 						</span>
 					</label>
 				)}

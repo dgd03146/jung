@@ -1,17 +1,18 @@
 import { z } from 'zod';
 
+export const SpotPhotoSchema = z.object({
+	id: z.string().uuid().optional(),
+	url: z.string().url(),
+	status: z.enum(['existing', 'new', 'deleted']),
+});
+
 export const SpotSchema = z.object({
 	id: z.string().uuid(),
 	title: z.string(),
 	description: z.string(),
 	address: z.string(),
-	photos: z.array(
-		z.object({
-			id: z.string(),
-			url: z.string().url(),
-		}),
-	),
-	// rating: z.number().min(0).max(5),
+	photos: z.array(SpotPhotoSchema),
+
 	coordinates: z.object({
 		lat: z.number(),
 		lng: z.number(),
@@ -39,8 +40,14 @@ export const SpotQueryResultSchema = z.object({
 	nextCursor: z.string().nullable(),
 });
 
+export type SpotPhoto = z.infer<typeof SpotPhotoSchema>;
 export type Spot = z.infer<typeof SpotSchema>;
 export type SpotQueryParams = z.infer<typeof SpotQueryParamsSchema>;
 export type SpotQueryResult = z.infer<typeof SpotQueryResultSchema>;
 
 export type { Category } from './category';
+
+export interface SpotImageUpload extends SpotPhoto {
+	file?: File;
+	preview?: string;
+}

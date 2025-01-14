@@ -2,13 +2,11 @@ import { generateShortId } from '@/fsd/features/blog/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
-// FIXME: 공통 함수로 빼기
-
-const GALLERY_BUCKET = 'gallery_images';
+const SPOTS_BUCKET = 'spots_images';
 
 export const getPublicUrl = (filePath: string): string => {
 	const { data: publicUrlData } = supabase.storage
-		.from(GALLERY_BUCKET)
+		.from(SPOTS_BUCKET)
 		.getPublicUrl(filePath);
 
 	if (!publicUrlData || !publicUrlData.publicUrl) {
@@ -41,7 +39,7 @@ const getImageDimensions = (file: File): Promise<ImageMetadata> => {
 	});
 };
 
-export const uploadGalleryImage = async (
+export const uploadSpotImage = async (
 	file: File,
 ): Promise<{
 	url: string;
@@ -49,6 +47,14 @@ export const uploadGalleryImage = async (
 	height: number;
 }> => {
 	try {
+		if (!file.type.startsWith('image/')) {
+			throw new ApiError('Invalid file type', 'VALIDATION_ERROR');
+		}
+
+		// if (file.size > 5 * 1024 * 1024) {
+		// 	throw new ApiError('File size too large (max 5MB)', 'VALIDATION_ERROR');
+		// }
+
 		const { width, height } = await getImageDimensions(file);
 
 		const fileExt = file.name.split('.').pop();
@@ -57,7 +63,7 @@ export const uploadGalleryImage = async (
 		const filePath = `uploads/${fileName}`;
 
 		const { error: uploadError } = await supabase.storage
-			.from(GALLERY_BUCKET)
+			.from(SPOTS_BUCKET)
 			.upload(filePath, file, { upsert: false });
 
 		if (uploadError) {

@@ -1,15 +1,9 @@
 import { spotKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
-import type { Spot } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { createSpot } from '../services/createSpot';
-
-type CreateSpotInput = Omit<
-	Spot,
-	'id' | 'created_at' | 'updated_at' | 'likes' | 'liked_by'
->;
+import { type CreateSpotInput, createSpot } from '../services/createSpot';
 
 export function useCreateSpot() {
 	const queryClient = useQueryClient();
@@ -28,6 +22,7 @@ export function useCreateSpot() {
 		},
 
 		onError: (error: unknown) => {
+			console.log(error, 'error');
 			if (error instanceof ApiError) {
 				switch (error.code) {
 					case 'FOREIGN_KEY_VIOLATION':

@@ -1,27 +1,71 @@
-import type { Spot } from '@jung/shared/types';
-import { useLocation } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useToast } from '@jung/design-system/components';
+import type { SpotImageUpload } from '@jung/shared/types';
+import { useParams } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
 import { useCreateSpot } from '../api/useCreateSpot';
+import { useGetSpotById } from '../api/useGetSpotById';
 import { useGetSpotCategories } from '../api/useGetSpotCategories';
+import { useUpdateSpot } from '../api/useUpdateSpot';
 import * as styles from './NewSpot.css';
 import { ImageUploader } from './SpotTable/ImageUploader';
 
+interface SpotFormData {
+	title: string;
+	description: string;
+	address: string;
+	files: File[];
+	category_id: string;
+	coordinates: { lat: number; lng: number };
+	tags: string[];
+	tips: string[];
+}
+
+const INITIAL_FORM_DATA: SpotFormData = {
+	title: '',
+	description: '',
+	address: '',
+	files: [],
+	category_id: '',
+	coordinates: { lat: 0, lng: 0 },
+	tags: [''],
+	tips: [''],
+};
+
 export const NewSpot = () => {
-	const location = useLocation();
-	const isEditMode = location.pathname.includes('/spots/edit');
-
-	const { data: categoriesData, isLoading: categoriesLoading } =
-		useGetSpotCategories();
+	const showToast = useToast();
 	const createSpotMutation = useCreateSpot();
+	const updateSpotMutation = useUpdateSpot();
+	const params = useParams({ strict: false });
+	const isEditMode = !!params?.spotId;
 
-	const [formData, setFormData] = useState<Partial<Spot>>({
-		tips: [''],
-		tags: [''],
-		photos: [],
-		coordinates: { lat: 0, lng: 0 },
-	});
+	const { data: spot, isLoading } = useGetSpotById(params.spotId!);
+	const { data: categories } = useGetSpotCategories();
+
+	const [formData, setFormData] = useState<SpotFormData>(INITIAL_FORM_DATA);
+	const [images, setImages] = useState<SpotImageUpload[]>([]);
+
+	useEffect(() => {
+		if (isEditMode && spot) {
+			setFormData({
+				title: spot.title,
+				description: spot.description,
+				address: spot.address,
+				files: [],
+				category_id: spot.category_id,
+				coordinates: spot.coordinates,
+				tags: spot.tags || [''],
+				tips: spot.tips || [''],
+			});
+			const existingImages: SpotImageUpload[] = spot.photos.map((photo) => ({
+				id: photo.id,
+				url: photo.url,
+				status: 'existing',
+			}));
+			setImages(existingImages);
+		}
+	}, [isEditMode, spot]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -32,23 +76,41 @@ export const NewSpot = () => {
 			!formData.address ||
 			!formData.category_id
 		) {
-			return; // TODO: Add form validation
+			showToast('필수 항목을 모두 입력해주세요.', 'error');
+			return;
 		}
 
-		createSpotMutation.mutate({
-			title: formData.title,
-			description: formData.description,
-			address: formData.address,
+		const spotData = {
+			title: formData.title.trim(),
+			description: formData.description.trim(),
+			address: formData.address.trim(),
 			category_id: formData.category_id,
-			coordinates: formData.coordinates!,
-			photos: formData.photos || [],
-			tags: formData.tags?.filter((tag) => tag.trim() !== '') || [],
-			tips: formData.tips?.filter((tip) => tip.trim() !== '') || [],
-		});
+			coordinates: formData.coordinates,
+			tags: formData.tags.filter((tag) => tag.trim() !== ''),
+			tips: formData.tips.filter((tip) => tip.trim() !== ''),
+		};
+
+		if (isEditMode) {
+			updateSpotMutation.mutate({
+				id: params.spotId!,
+				...spotData,
+				images: images.map((image) => ({
+					id: image.id,
+					url: image.url,
+					status: image.status,
+					file: image.file,
+				})),
+			});
+		} else {
+			createSpotMutation.mutate({
+				...spotData,
+				files: images.filter((img) => img.file).map((img) => img.file!),
+			});
+		}
 	};
 
-	if (categoriesLoading) {
-		return <div>Loading categories...</div>;
+	if (isEditMode && isLoading) {
+		return <div>Loading...</div>;
 	}
 
 	return (
@@ -63,56 +125,53 @@ export const NewSpot = () => {
 
 						<div className={styles.formCard}>
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>Name</label>
+								<label className={styles.label}>Title</label>
 								<input
 									type='text'
-									value={formData.title || ''}
+									value={formData.title}
 									onChange={(e) =>
 										setFormData((prev) => ({ ...prev, title: e.target.value }))
 									}
-									placeholder='Enter spot name'
 									className={styles.input}
 									required
 								/>
 							</div>
 
 							<div className={styles.inputGroup}>
-								<label className={styles.label}>Category</label>
-								<div className={styles.selectWrapper}>
-									<select
-										value={formData.category_id || ''}
-										onChange={(e) =>
-											setFormData((prev) => ({
-												...prev,
-												category_id: e.target.value,
-											}))
-										}
-										className={styles.select}
-										required
-									>
-										<option value=''>Select category</option>
-										{categoriesData?.allCategories.map((category) => (
-											<option key={category.id} value={category.id}>
-												{category.name}
-											</option>
-										))}
-									</select>
-								</div>
-							</div>
-
-							<div className={styles.inputGroup}>
 								<label className={styles.label}>Description</label>
 								<textarea
-									value={formData.description || ''}
+									value={formData.description}
 									onChange={(e) =>
 										setFormData((prev) => ({
 											...prev,
 											description: e.target.value,
 										}))
 									}
-									placeholder='Enter spot description'
 									className={styles.textarea}
+									required
 								/>
+							</div>
+
+							<div className={styles.inputGroup}>
+								<label className={styles.label}>Category</label>
+								<select
+									value={formData.category_id}
+									onChange={(e) =>
+										setFormData((prev) => ({
+											...prev,
+											category_id: e.target.value,
+										}))
+									}
+									className={styles.select}
+									required
+								>
+									<option value=''>Select category</option>
+									{categories?.allCategories.map((category) => (
+										<option key={category.id} value={category.id}>
+											{category.name}
+										</option>
+									))}
+								</select>
 							</div>
 
 							<div className={styles.inputGroup}>
@@ -176,10 +235,8 @@ export const NewSpot = () => {
 							<div className={styles.inputGroup}>
 								<label className={styles.label}>Images</label>
 								<ImageUploader
-									images={formData.photos || []}
-									onChange={(photos) =>
-										setFormData((prev) => ({ ...prev, photos }))
-									}
+									images={images}
+									onChange={setImages}
 									maxImages={4}
 								/>
 							</div>
@@ -275,9 +332,11 @@ export const NewSpot = () => {
 					<button
 						type='submit'
 						className={styles.submitButton}
-						disabled={createSpotMutation.isPending}
+						disabled={
+							createSpotMutation.isPending || updateSpotMutation.isPending
+						}
 					>
-						{createSpotMutation.isPending ? 'Saving...' : 'Save Spot'}
+						{isEditMode ? '스팟 수정' : '스팟 생성'}
 					</button>
 				</div>
 			</form>
