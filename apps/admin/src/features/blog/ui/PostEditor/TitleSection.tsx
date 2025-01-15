@@ -7,7 +7,8 @@ import {
 	HiFolderOpen,
 	HiTag,
 } from 'react-icons/hi';
-import { useGetCategories } from '../../api';
+
+import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import { CustomDatePicker } from './CustomDatePicker';
 import * as styles from './TitleSection.css';
 
@@ -25,7 +26,7 @@ export interface TitleSectionProps {
 const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 	const { title, tags, description } = post;
 	const tagInputRef = useRef<HTMLInputElement>(null);
-	const { data } = useGetCategories();
+	const { data } = useGetCategories('blog');
 	const { mainCategories, subCategories } = data;
 
 	const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

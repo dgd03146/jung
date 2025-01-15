@@ -7,16 +7,24 @@ interface CategoryHeaderProps {
 	view: 'grid' | 'list';
 	onViewChange: (view: 'grid' | 'list') => void;
 	onAddNew: () => void;
+	type: 'blog' | 'spots';
 }
 
 export const CategoryHeader = ({
 	view,
 	onViewChange,
 	onAddNew,
+	type,
 }: CategoryHeaderProps) => {
+	const title =
+		type === 'blog' ? 'Blog Category Management' : 'Spot Category Management';
+
+	const buttonText =
+		type === 'blog' ? 'New Blog Category' : 'New Spot Category';
+
 	return (
 		<div className={styles.header}>
-			<h2 className={styles.title}>Category Management</h2>
+			<h2 className={styles.title}>{title}</h2>
 			<Flex gap='4' align='center'>
 				<div className={styles.viewToggle}>
 					<button
@@ -36,7 +44,7 @@ export const CategoryHeader = ({
 				</div>
 				<button className={styles.addButton} onClick={onAddNew}>
 					<HiPlus />
-					New Category
+					{buttonText}
 				</button>
 			</Flex>
 		</div>

@@ -13,8 +13,8 @@ export const CategorySchema = z.object({
 export type Category = z.infer<typeof CategorySchema>;
 
 export interface CategoryWithCount extends Category {
-	postCount: number;
-	directPostCount: number;
+	count: number;
+	directCount: number;
 	subCategoriesCount: number;
 }
 
@@ -23,3 +23,5 @@ export interface CategoriesResponse {
 	allCategories: CategoryWithCount[];
 	subCategories: CategoryWithCount[];
 }
+
+export type CategoryType = 'blog' | 'spots';
