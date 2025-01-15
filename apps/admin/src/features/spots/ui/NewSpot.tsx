@@ -1,3 +1,4 @@
+import { useGetCategories } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
 import type { SpotImageUpload } from '@jung/shared/types';
 import { useParams } from '@tanstack/react-router';
@@ -6,7 +7,6 @@ import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
 import { useCreateSpot } from '../api/useCreateSpot';
 import { useGetSpotById } from '../api/useGetSpotById';
-import { useGetSpotCategories } from '../api/useGetSpotCategories';
 import { useUpdateSpot } from '../api/useUpdateSpot';
 import * as styles from './NewSpot.css';
 import { ImageUploader } from './SpotTable/ImageUploader';
@@ -41,7 +41,7 @@ export const NewSpot = () => {
 	const isEditMode = !!params?.spotId;
 
 	const { data: spot, isLoading } = useGetSpotById(params.spotId!);
-	const { data: categories } = useGetSpotCategories();
+	const { data: categories } = useGetCategories('spots');
 
 	const [formData, setFormData] = useState<SpotFormData>(INITIAL_FORM_DATA);
 	const [images, setImages] = useState<SpotImageUpload[]>([]);

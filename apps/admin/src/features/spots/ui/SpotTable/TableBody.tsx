@@ -3,7 +3,8 @@ import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDeleteSpot } from '../../api/useDeleteSpot';
-import { useGetSpotCategories } from '../../api/useGetSpotCategories';
+
+import { useGetCategories } from '@/fsd/shared';
 import * as styles from './SpotTable.css';
 import { CategoryCell } from './cells/CategoryCell';
 import { DateCell } from './cells/DateCell';
@@ -15,7 +16,7 @@ interface TableBodyProps<T> {
 
 export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 	const deleteSpotMutation = useDeleteSpot();
-	const { data: categoriesData } = useGetSpotCategories();
+	const { data: categoriesData } = useGetCategories('spots');
 
 	const handleDelete = (id: string) => {
 		if (window.confirm('이 장소를 삭제하시겠습니까?')) {
