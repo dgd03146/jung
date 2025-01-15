@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles';
 
@@ -11,6 +12,36 @@ export const heading = recipe({
 		}),
 	],
 	variants: {
+		variant: {
+			hero: style([
+				sprinkles({
+					fontWeight: 'bold',
+					color: 'primary',
+					marginBottom: '6',
+				}),
+				{
+					fontSize: '7rem',
+					lineHeight: '1',
+					fontWeight: 900,
+					letterSpacing: '-0.03em',
+					textTransform: 'uppercase',
+
+					WebkitTextStroke: '2px #0142C0',
+
+					background: 'linear-gradient(180deg, #0142C0 0%, #002766 100%)',
+					WebkitBackgroundClip: 'text',
+					WebkitTextFillColor: 'transparent',
+
+					textShadow: `
+						2px 2px 0 #0142C0,
+						-2px -2px 0 #0142C0,
+						2px -2px 0 #0142C0,
+						-2px 2px 0 #0142C0,
+						4px 4px 0px rgba(1, 66, 192, 0.3)
+					`,
+				},
+			]),
+		},
 		level: {
 			1: sprinkles({
 				fontSize: '5xl',

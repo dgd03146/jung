@@ -55,7 +55,7 @@ const HomePage = () => {
 					className={styles.container}
 				>
 					<m.div variants={titleAnimation}>
-						<Typography.Heading className={styles.heading}>
+						<Typography.Heading variant='hero'>
 							<m.span
 								ref={spanRef}
 								initial='hidden'

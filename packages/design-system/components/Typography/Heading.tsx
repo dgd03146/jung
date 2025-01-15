@@ -18,13 +18,14 @@ export interface HeadingProps
 	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
 		AtomProps {
 	level?: 1 | 2 | 3 | 4;
+	variant?: 'hero';
 }
 
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-	({ level = 1, children, className, ...restProps }, ref) => {
+	({ level = 1, children, className, variant, ...restProps }, ref) => {
 		const as = `h${level}` as ElementType;
 
-		const headingStyle = clsx(S.heading({ level }), className);
+		const headingStyle = clsx(S.heading({ level, variant }), className);
 
 		return (
 			<Box as={as} ref={ref} className={headingStyle} {...restProps}>
