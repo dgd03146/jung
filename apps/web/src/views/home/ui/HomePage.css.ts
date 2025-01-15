@@ -2,12 +2,6 @@ import { sprinkles } from '@jung/design-system/styles';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 
-export const wrapper = style({
-	position: 'relative',
-	overflow: 'hidden',
-	background: '#ffffff',
-});
-
 export const container = style([
 	sprinkles({
 		paddingY: {
@@ -26,16 +20,6 @@ export const container = style([
 
 export const heading = style([
 	sprinkles({
-		// fontSize: {
-		// 	mobile: '7xl',
-		// 	tablet: '9xl',
-		// 	desktop: '11xl',
-		// },
-		// lineHeight: {
-		// 	mobile: '14',
-		// 	tablet: '18',
-		// 	desktop: 'hero',
-		// },
 		fontWeight: 'bold',
 		color: 'primary',
 		marginBottom: '6',
