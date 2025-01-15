@@ -3,7 +3,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
 import { useGetCategoryCounts } from '../api';
-import * as styles from './CategorySection.css';
+import * as styles from './CategoryGroup.css';
 
 interface CategoryItem {
 	name: string;
@@ -11,12 +11,12 @@ interface CategoryItem {
 	slug: string;
 }
 
-interface CategorySectionProps {
+interface CategoryGroupProps {
 	title: string;
 	items?: CategoryItem[];
 }
 
-export const CategorySection = ({ title, items }: CategorySectionProps) => {
+export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const pathname = usePathname();
 	const searchParams = useSearchParams();

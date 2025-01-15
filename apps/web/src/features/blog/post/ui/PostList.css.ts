@@ -455,24 +455,6 @@ export const postLink = style({
 	color: 'inherit',
 });
 
-export const sidebar = style({
-	minWidth: '184px',
-	position: 'sticky',
-	top: '56px',
-	height: 'fit-content',
-	backgroundColor: 'white',
-	zIndex: 10,
-	'@media': {
-		'(max-width: 1024px)': {
-			display: 'flex',
-
-			width: '100%',
-			position: 'static',
-			top: '0',
-		},
-	},
-});
-
 export const count = style({
 	fontSize: '13px',
 	color: '#999',
@@ -490,7 +472,7 @@ export const content = style({
 	'@media': {
 		'(max-width: 1024px)': {
 			flexDirection: 'column',
-			gap: '20px',
+			gap: '0',
 		},
 	},
 });

@@ -16,8 +16,7 @@ import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
-import { CATEGORY_CONFIG } from '../config/constants';
-import { CategorySection } from './CategorySection';
+import { CategoryNav } from './CategoryNav';
 import * as styles from './PostList.css';
 
 type ViewMode = 'list' | 'grid' | 'table';
@@ -64,21 +63,7 @@ const PostList = () => {
 	return (
 		<div>
 			<div className={styles.content}>
-				<aside className={styles.sidebar}>
-					<CategorySection title='All' />
-					<CategorySection
-						title={CATEGORY_CONFIG.dev.title}
-						items={CATEGORY_CONFIG.dev.items}
-					/>
-					<CategorySection
-						title={CATEGORY_CONFIG.life.title}
-						items={CATEGORY_CONFIG.life.items}
-					/>
-					<CategorySection
-						title={CATEGORY_CONFIG.travel.title}
-						items={CATEGORY_CONFIG.travel.items}
-					/>
-				</aside>
+				<CategoryNav />
 
 				<main className={styles.mainContent}>
 					<Container>

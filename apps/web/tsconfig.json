@@ -36,7 +36,8 @@
     "app/i18n.js",
     "middleware.js",
     "src/shared/ui/BlockNoteErrorFallback.tsx",
-    "./global.d.ts"
+    "./global.d.ts",
+    "../../packages/shared/hooks/useMediaQuery.ts"
   ],
   "exclude": ["node_modules"]
 }

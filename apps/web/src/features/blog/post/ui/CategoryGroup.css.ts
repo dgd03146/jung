@@ -5,6 +5,7 @@ import { recipe } from '@vanilla-extract/recipes';
 export const categorySection = style({
 	position: 'relative',
 	width: '100%',
+	marginBottom: '1rem',
 	'@media': {
 		'(max-width: 1024px)': {
 			display: 'flex',
@@ -23,17 +24,14 @@ export const categoryHeader = style({
 	cursor: 'pointer',
 	userSelect: 'none',
 
-	fontWeight: '600',
-	fontSize: '15px',
 	transition: 'all 0.2s ease',
 	gap: '8px',
 	// backgroundColor: 'rgba(1, 66, 192, 0.08)',
 	boxShadow: '0 0 0 1px rgba(1, 66, 192, 0.08)',
-	color: '#111',
-	borderRadius: '8px',
 
 	':hover': {
-		backgroundColor: 'rgba(1, 66, 192, 0.18)',
+		backgroundColor: 'rgba(1, 66, 192, 0.03)',
+		color: '#0142C0',
 	},
 });
 
@@ -49,12 +47,14 @@ export const categoryHeaderLink = recipe({
 });
 
 export const categoryTitle = style({
-	fontSize: '16px',
+	fontSize: '13.5px',
 	fontWeight: '600',
+	color: '#1a1a1a',
+	letterSpacing: '-0.01em',
 
 	'@media': {
 		'(max-width: 768px)': {
-			fontSize: '14px',
+			fontSize: '13px',
 		},
 		'(max-width: 375px)': {
 			fontSize: '12px',
@@ -71,13 +71,16 @@ export const categoryItem = recipe({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: '10px 10px 10px 14px',
-		color: palette.black,
-		fontSize: '14px',
+		padding: '8px 16px',
+		fontSize: '13px',
 		textDecoration: 'none',
 		transition: 'all 0.15s ease',
 		position: 'relative',
-		borderBottom: `1px solid ${palette.primary50}`,
+		borderBottom: '0.5px solid #EFEFEF',
+
+		':last-child': {
+			borderBottom: 'none',
+		},
 
 		':hover': {
 			backgroundColor: 'rgba(1, 66, 192, 0.03)',
