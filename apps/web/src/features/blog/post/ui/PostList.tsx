@@ -16,6 +16,7 @@ import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
+import { Tag } from '../../../../../../../packages/design-system/components/Tag/Tag';
 import { CategoryNav } from './CategoryNav';
 import * as styles from './PostList.css';
 
@@ -183,13 +184,19 @@ const PostList = () => {
 															<div className={styles.bottomArea}>
 																{/* 태그 영역 */}
 																{post.tags && post.tags.length > 0 && (
-																	<div className={styles.tagList}>
+																	<Flex
+																		gap='2'
+																		wrap='wrap'
+																		flex='1'
+																		minWidth='0'
+																		marginTop='4'
+																	>
 																		{post.tags.map((tag) => (
-																			<div key={tag} className={styles.tag}>
-																				{tag}
-																			</div>
+																			<Tag key={tag} variant='secondary'>
+																				# {tag}
+																			</Tag>
 																		))}
-																	</div>
+																	</Flex>
 																)}
 															</div>
 														</div>

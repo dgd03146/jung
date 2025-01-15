@@ -279,36 +279,6 @@ export const bottomArea = style({
 	gap: '16px',
 });
 
-export const tagList = style({
-	display: 'flex',
-	flexWrap: 'wrap',
-	gap: '8px',
-	flex: 1,
-	minWidth: 0,
-	marginTop: '16px',
-});
-export const tag = style({
-	fontSize: '12px',
-	fontWeight: '400',
-	color: palette.primary,
-	textDecoration: 'none',
-	transition: 'all 0.2s ease',
-	padding: '6px 12px',
-	borderRadius: '6px',
-	backgroundColor: 'rgba(1, 66, 192, 0.04)',
-	display: 'inline-flex',
-	alignItems: 'center',
-
-	':hover': {
-		backgroundColor: 'rgba(1, 66, 192, 0.08)',
-	},
-	':before': {
-		content: '#',
-		marginRight: '4px',
-		opacity: 0.6,
-	},
-});
-
 export const imageArea = recipe({
 	base: {
 		position: 'relative',
