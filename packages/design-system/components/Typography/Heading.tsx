@@ -12,12 +12,13 @@ import type { AtomProps } from '../../types/atoms';
  * - level `2`: Heading 1, Heading 2
  * - level `3`: SubHeading 1, SubHeading 2
  * - level `4`: Title 1
+ * - level `5`: Title 2
  */
 
 export interface HeadingProps
 	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
 		AtomProps {
-	level?: 1 | 2 | 3 | 4;
+	level?: 1 | 2 | 3 | 4 | 5;
 	variant?: 'hero';
 }
 

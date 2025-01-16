@@ -4,8 +4,6 @@ import { sprinkles } from '../../styles/sprinkles.css';
 
 export const tag = recipe({
 	base: sprinkles({
-		fontSize: 'xs', // 12px
-		fontWeight: 'normal',
 		borderRadius: 'sm',
 		cursor: 'pointer',
 		display: 'inline-flex',

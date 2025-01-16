@@ -174,12 +174,7 @@ export const postCard = recipe({
 });
 
 export const contentArea = recipe({
-	base: {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '12px',
-		flex: 1,
-	},
+	base: {},
 	variants: {
 		viewMode: {
 			list: {
@@ -192,91 +187,12 @@ export const contentArea = recipe({
 	},
 });
 
-export const meta = style({
-	display: 'flex',
-	gap: '12px',
-	alignItems: 'center',
-	fontSize: '13px',
-	color: '#666',
-	marginTop: '4px',
-});
-
 export const category = style({
-	padding: '2px 8px',
-	backgroundColor: 'rgba(1, 66, 192, 0.06)',
-	color: palette.primary,
-	borderRadius: '4px',
-	fontSize: '16px',
-	fontWeight: '500',
 	fontFamily: 'var(--font-bebas)',
-	letterSpacing: '0.04em',
-});
-
-export const date = style({
-	color: palette.primary,
-	fontWeight: '400',
-	fontSize: '0.75rem',
-});
-
-export const title = recipe({
-	base: {
-		fontSize: '24px',
-		fontWeight: '700',
-		color: '#1a1a1a',
-		lineHeight: '1.4',
-		transition: 'color 0.2s ease',
-	},
-	variants: {
-		viewMode: {
-			list: {
-				'@media': {
-					'(max-width: 768px)': {
-						fontSize: '16px',
-					},
-				},
-			},
-			grid: {
-				fontSize: '18px',
-			},
-			table: {},
-		},
-	},
-});
-
-export const description = recipe({
-	base: {
-		fontSize: '15px',
-		color: palette.primary400,
-		lineHeight: '1.6',
-		marginBottom: '1rem',
-		display: '-webkit-box',
-		WebkitLineClamp: 2,
-		WebkitBoxOrient: 'vertical',
-		overflow: 'hidden',
-	},
-	variants: {
-		viewMode: {
-			list: {
-				'@media': {
-					'(max-width: 768px)': {
-						fontSize: '13px',
-					},
-				},
-			},
-			grid: {
-				fontSize: '14px',
-			},
-			table: {},
-		},
-	},
-});
-
-export const bottomArea = style({
-	marginTop: 'auto',
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'flex-end',
-	gap: '16px',
+	// letterSpacing: '0.04em',
+	backgroundColor: palette.primary50,
+	padding: '2px 8px',
+	borderRadius: '4px',
 });
 
 export const imageArea = recipe({
@@ -325,13 +241,6 @@ export const imageArea = recipe({
 	},
 });
 
-export const loadingArea = style({
-	display: 'flex',
-	justifyContent: 'center',
-	padding: '20px 0',
-	minHeight: '40px',
-});
-
 export const cardWrapper = style({
 	display: 'block',
 	width: '100%',
@@ -343,22 +252,7 @@ export const cardWrapper = style({
 	},
 });
 
-export const tableNumberWrapper = style({
-	position: 'relative',
-	width: '24px',
-	height: '24px',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-});
-
 export const tableNumber = style({
-	fontSize: '14px',
-	color: palette.primary,
-	fontWeight: '500',
-	position: 'absolute',
-	transition: 'all 0.2s ease',
-
 	selectors: {
 		'article:hover &': {
 			opacity: 0,
@@ -368,14 +262,7 @@ export const tableNumber = style({
 });
 
 export const playButton = style({
-	position: 'absolute',
-	opacity: 0,
-	color: palette.primary,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
 	transform: 'scale(0.8)',
-	transition: 'all 0.2s ease',
 
 	selectors: {
 		'article:hover &': {
@@ -384,39 +271,6 @@ export const playButton = style({
 			animation: `${fadeIn} 0.2s ease`,
 		},
 	},
-});
-
-export const tableTitle = style({
-	fontSize: '16px',
-	color: '#333',
-	fontWeight: '400',
-	letterSpacing: '-0.03em',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-
-	selectors: {
-		'article:hover &': {
-			color: '#0142C0',
-		},
-	},
-});
-
-export const tableDescription = style({
-	fontSize: '12px',
-	color: palette.primary400,
-	fontWeight: '400',
-	letterSpacing: '-0.03em',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-});
-
-export const tableDate = style({
-	color: palette.primary,
-	fontWeight: '400',
-	fontSize: '0.75rem',
-	textAlign: 'right',
 });
 
 export const postLink = style({

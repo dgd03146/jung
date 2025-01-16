@@ -8,7 +8,7 @@ import {
 	formatDate,
 } from '@/fsd/shared';
 import { SearchBar } from '@/fsd/shared/ui/SearchBar';
-import { Container, Flex } from '@jung/design-system';
+import { Box, Container, Flex, Tag, Typography } from '@jung/design-system';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,6 @@ import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
-import { Tag } from '../../../../../../../packages/design-system/components/Tag/Tag';
 import { CategoryNav } from './CategoryNav';
 import * as styles from './PostList.css';
 
@@ -99,9 +98,10 @@ const PostList = () => {
 
 						{allPosts.length > 0 ? (
 							<>
-								<div className={styles.postList({ viewMode })}>
+								<Box className={styles.postList({ viewMode })}>
 									{allPosts.map((post, index) => (
-										<article
+										<Box
+											as='article'
 											key={post.id}
 											className={styles.postCard({ viewMode })}
 										>
@@ -112,14 +112,35 @@ const PostList = () => {
 												{viewMode === 'table' ? (
 													<>
 														<Flex align='center' gap='4'>
-															<div className={styles.tableNumberWrapper}>
-																<span className={styles.tableNumber}>
+															<Flex
+																position='relative'
+																width='6'
+																height='6'
+																justify='center'
+																align='center'
+															>
+																<Typography.Text
+																	level={4}
+																	color='primary'
+																	fontWeight='medium'
+																	position='absolute'
+																	truncate='fast'
+																	className={styles.tableNumber}
+																>
 																	{index + 1}
-																</span>
-																<span className={styles.playButton}>
+																</Typography.Text>
+																<Flex
+																	align='center'
+																	justify='center'
+																	color='primary'
+																	position='absolute'
+																	opacity={0}
+																	transition='fast'
+																	className={styles.playButton}
+																>
 																	<BsFillPlayFill size={20} />
-																</span>
-															</div>
+																</Flex>
+															</Flex>
 															<BlurImage
 																src={post.imagesrc}
 																alt={post.title}
@@ -128,33 +149,37 @@ const PostList = () => {
 															/>
 														</Flex>
 														<Flex direction='column' gap='1' flex='1'>
-															<p className={styles.tableTitle}>{post.title}</p>
-															<p className={styles.tableDescription}>
+															<Typography.Text
+																truncate='single'
+																fontWeight='medium'
+																color={{ hover: 'primary' }}
+															>
+																{post.title}
+															</Typography.Text>
+															<Typography.SubText level={3} truncate='single'>
 																{post.description}
-															</p>
+															</Typography.SubText>
 														</Flex>
 														<Flex
 															align='center'
 															gap='2'
 															justify='flex-end'
 															flex='1'
+															color='primary'
 															display={{ mobile: 'none', tablet: 'flex' }}
 														>
-															<span className={styles.category}>
-																{capitalizeFirstLetter(post.category)}
-															</span>
+															<Typography.Text className={styles.category}>
+																{capitalizeFirstLetter('category')}
+															</Typography.Text>
 
-															<time
-																className={styles.tableDate}
-																dateTime={post.date}
-															>
+															<Typography.SubText level={3}>
 																{formatDate(post.date)}
-															</time>
+															</Typography.SubText>
 														</Flex>
 													</>
 												) : (
 													<>
-														<div className={styles.imageArea({ viewMode })}>
+														<Box className={styles.imageArea({ viewMode })}>
 															<BlurImage
 																src={post.imagesrc}
 																alt={post.title}
@@ -162,54 +187,75 @@ const PostList = () => {
 																sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 																priority={index <= 6}
 															/>
-														</div>
+														</Box>
 
-														<div className={styles.contentArea({ viewMode })}>
-															<div className={styles.meta}>
-																<span className={styles.category}>
-																	{capitalizeFirstLetter(post.category)}
-																</span>
+														<Flex
+															flexDirection='column'
+															flex='1'
+															gap='3'
+															className={styles.contentArea({ viewMode })}
+														>
+															<Flex
+																gap='3'
+																align='center'
+																marginTop='1'
+																color='primary'
+															>
+																<Typography.Text className={styles.category}>
+																	{capitalizeFirstLetter('category')}
+																</Typography.Text>
 
-																<span className={styles.date}>
+																<Typography.SubText level={3}>
 																	{formatDate(post.date)}
-																</span>
-															</div>
+																</Typography.SubText>
+															</Flex>
 
-															<h2 className={styles.title({ viewMode })}>
+															<Typography.Heading level={4}>
 																{post.title}
-															</h2>
-															<p className={styles.description({ viewMode })}>
+															</Typography.Heading>
+															<Typography.Text
+																level={3}
+																color='primary400'
+																marginBottom='4'
+																truncate='two'
+															>
 																{post.description}
-															</p>
-															<div className={styles.bottomArea}>
-																{/* 태그 영역 */}
+															</Typography.Text>
+															<Box marginTop='auto'>
 																{post.tags && post.tags.length > 0 && (
 																	<Flex
 																		gap='2'
 																		wrap='wrap'
 																		flex='1'
 																		minWidth='0'
-																		marginTop='4'
 																	>
 																		{post.tags.map((tag) => (
 																			<Tag key={tag} variant='secondary'>
-																				# {tag}
+																				<Typography.FootNote level={1}>
+																					# {tag}
+																				</Typography.FootNote>
 																			</Tag>
 																		))}
 																	</Flex>
 																)}
-															</div>
-														</div>
+															</Box>
+														</Flex>
 													</>
 												)}
 											</Link>
-										</article>
+										</Box>
 									))}
-								</div>
+								</Box>
 
-								<div ref={ref} className={styles.loadingArea}>
+								<Box
+									ref={ref}
+									display='flex'
+									justifyContent='center'
+									paddingY='5'
+									minHeight='10'
+								>
 									{isFetchingNextPage && <LoadingSpinner size='small' />}
-								</div>
+								</Box>
 							</>
 						) : (
 							renderEmptyState()

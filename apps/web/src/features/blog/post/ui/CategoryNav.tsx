@@ -134,6 +134,6 @@ const CategoryNavComponent = () => {
 export const CategoryNav = dynamic(
 	() => Promise.resolve(CategoryNavComponent),
 	{
-		ssr: false,
+		ssr: true,
 	},
 );
