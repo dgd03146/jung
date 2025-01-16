@@ -7,9 +7,9 @@ import * as styles from './Button.css';
 export interface ButtonProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
 		AtomProps {
-	variant?: 'primary' | 'secondary' | 'ghost';
+	variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
 	size?: 'sm' | 'md' | 'lg' | 'zero';
-	rounded?: boolean;
+	selected?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;
 	loading?: boolean;
@@ -20,11 +20,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 		{
 			variant = 'primary',
 			size = 'sm',
-			rounded,
-			disabled,
+			selected = false,
+			disabled = false,
 			prefix,
 			suffix,
-			loading,
+			loading = false,
 			children,
 			...restProps
 		},
@@ -33,11 +33,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 		return (
 			<Box
 				as='button'
-				display='flex'
-				alignItems='center'
-				columnGap='1'
-				className={styles.button({ variant, size, rounded, disabled, loading })}
+				className={styles.button({
+					variant,
+					size,
+					disabled,
+					loading,
+					selected,
+				})}
 				disabled={disabled || loading}
+				aria-pressed={selected}
 				aria-busy={loading}
 				ref={ref}
 				{...restProps}

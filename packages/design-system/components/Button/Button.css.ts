@@ -2,15 +2,40 @@ import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
 export const button = recipe({
-	base: [],
+	base: sprinkles({
+		transition: 'fast',
+		display: 'flex',
+		alignItems: 'center',
+		columnGap: '1',
+	}),
 	variants: {
 		variant: {
 			primary: sprinkles({
-				borderColor: 'primary',
+				background: {
+					base: 'primary',
+					hover: 'primary200',
+				},
+				color: {
+					base: 'white',
+					// hover: 'primary',
+				},
+			}),
+			outline: sprinkles({
+				borderColor: 'primary100',
 				borderWidth: 'hairline',
 				borderStyle: 'solid',
 				background: {
-					base: 'transparent',
+					hover: 'primary50',
+				},
+				color: {
+					base: 'primary200',
+					hover: 'primary',
+					active: 'primary',
+				},
+			}),
+			secondary: sprinkles({
+				background: {
+					base: 'primary100',
 					hover: 'primary',
 				},
 				color: {
@@ -18,27 +43,14 @@ export const button = recipe({
 					hover: 'white',
 				},
 			}),
-			secondary: sprinkles({
-				background: {
-					base: 'primary',
-					hover: 'primary200',
-				},
-				color: {
-					base: 'white',
-					hover: 'white',
-				},
-				border: 'none',
-			}),
-
 			ghost: sprinkles({
-				border: 'none',
 				background: {
 					base: 'transparent',
-					// hover: 'primary',
+					hover: 'primary50',
 				},
 				color: {
 					base: 'primary',
-					hover: 'primary100',
+					hover: 'primary200',
 				},
 			}),
 		},
@@ -47,23 +59,23 @@ export const button = recipe({
 				padding: '0',
 			}),
 			sm: sprinkles({
-				paddingX: '2.5',
-				paddingY: '1.5',
+				paddingX: '2', // 8px
+				paddingY: '1', // 4px
 			}),
 			md: sprinkles({
-				paddingX: '3',
-				paddingY: '2',
+				paddingX: '3', // 12px
+				paddingY: '1.5', // 6px
 			}),
 			lg: sprinkles({
-				paddingX: '3.5',
-				paddingY: '2.5',
+				paddingX: '3.5', // 14px
+				paddingY: '2.5', // 10px
 			}),
 		},
-		rounded: {
-			true: sprinkles({
-				borderRadius: '2xl',
-			}),
+
+		selected: {
+			true: {},
 		},
+
 		loading: {
 			true: sprinkles({
 				background: 'primary100',
@@ -83,13 +95,6 @@ export const button = recipe({
 			}),
 		},
 	},
-	// defaultVariants: {
-	// 	variant: 'primary',
-	// 	size: 'sm',
-	// 	// loading: false,
-	// 	// rounded: false,
-	// 	// disabled: false,
-	// },
 
 	compoundVariants: [
 		{
@@ -116,6 +121,43 @@ export const button = recipe({
 					hover: 'transparent',
 				},
 			}),
+		},
+		{
+			variants: {
+				variant: 'primary',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary200',
+				color: 'white',
+				fontWeight: 'semibold',
+			}),
+		},
+		{
+			variants: {
+				variant: 'secondary',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary100',
+				color: 'primary200',
+				fontWeight: 'semibold',
+			}),
+		},
+		{
+			variants: {
+				variant: 'outline',
+				selected: true,
+			},
+			style: [
+				sprinkles({
+					background: 'primary50',
+					borderColor: 'primary200',
+					boxShadow: 'tertiary',
+					fontWeight: 'semibold',
+					color: 'primary',
+				}),
+			],
 		},
 	],
 });

@@ -13,60 +13,6 @@ const fadeIn = keyframes({
 	},
 });
 
-export const searchArea = style({
-	display: 'flex',
-	gap: '10px',
-	justifyContent: 'space-between',
-	marginBottom: '8px',
-	'@media': {
-		'(max-width: 768px)': {
-			marginBottom: '4px',
-		},
-	},
-	alignItems: 'center',
-	// flexDirection: 'column',
-});
-
-export const viewToggleGroup = style({
-	display: 'flex',
-	gap: '4px',
-
-	borderRadius: '8px',
-});
-
-export const viewToggle = recipe({
-	base: {
-		height: '40px',
-		display: 'flex',
-		alignItems: 'center',
-		gap: '6px',
-		padding: '4px 8px',
-		border: `1px solid ${palette.primary100}`,
-		borderRadius: '8px',
-		backgroundColor: palette.white,
-
-		color: palette.primary200,
-		fontWeight: 500,
-
-		transition: 'all 0.2s ease',
-
-		':hover': {
-			borderColor: palette.primary,
-			backgroundColor: palette.primary50,
-			color: palette.primary,
-		},
-	},
-	variants: {
-		active: {
-			true: {
-				backgroundColor: palette.primary50,
-				color: palette.primary,
-				boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-			},
-		},
-	},
-});
-
 export const postList = recipe({
 	base: {
 		width: '100%',
@@ -277,50 +223,4 @@ export const postLink = style({
 	display: 'contents',
 	textDecoration: 'none',
 	color: 'inherit',
-});
-
-export const count = style({
-	fontSize: '13px',
-	color: '#999',
-});
-
-export const mainContent = style({
-	minWidth: 0,
-	flex: '1',
-});
-
-export const content = style({
-	display: 'flex',
-	gap: '40px',
-
-	'@media': {
-		'(max-width: 1024px)': {
-			flexDirection: 'column',
-			gap: '0',
-		},
-	},
-});
-
-export const emptyState = style({
-	display: 'flex',
-	flexDirection: 'column',
-	alignItems: 'center',
-	justifyContent: 'center',
-	padding: '64px 24px',
-	textAlign: 'center',
-	minHeight: '400px',
-
-	borderRadius: '12px',
-	margin: '24px 0',
-});
-
-export const emptyIcon = style({
-	color: palette.primary,
-	marginBottom: '16px',
-});
-
-export const emptyDescription = style({
-	fontSize: '18px',
-	fontWeight: '500',
-	color: palette.primary,
 });
