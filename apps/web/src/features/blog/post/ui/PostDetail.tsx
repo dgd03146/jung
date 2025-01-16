@@ -2,7 +2,6 @@
 
 import { CommentError, CommentListSkeleton } from '@/fsd/entities/comment';
 import { PostHeader, PostSidebar } from '@/fsd/entities/post';
-import PostNavigation from '@/fsd/entities/post/ui/PostNavigation';
 import { CommentList } from '@/fsd/features/blog/comment';
 import { checkIsLiked, useGetPostById } from '@/fsd/features/blog/post';
 import { BlockNote, useSupabaseAuth } from '@/fsd/shared';
@@ -25,7 +24,7 @@ const PostDetail = ({ postId }: { postId: string }) => {
 	const { user } = useSupabaseAuth();
 
 	return (
-		<Container marginX='auto' className={styles.postDetailContainer}>
+		<Container marginX='auto'>
 			<PostHeader post={post} />
 			<Flex columnGap='10' className={styles.flexContainer}>
 				<PostSidebar tags={post.tags} postId={postId} />
@@ -36,7 +35,7 @@ const PostDetail = ({ postId }: { postId: string }) => {
 						likeCount={post.likes}
 						isLiked={checkIsLiked(post, user?.id)}
 					/>
-					<PostNavigation postId={postId} />
+					{/* <PostNavigation postId={postId} /> */}
 					<ErrorBoundary fallback={(error) => <CommentError error={error} />}>
 						<Suspense fallback={<CommentListSkeleton />}>
 							<CommentList postId={postId} postLikeCount={post.likes} />

@@ -7,15 +7,17 @@ export const errorContainer = style({
 	justifyContent: 'center',
 	alignItems: 'center',
 	padding: '2rem',
-	background: '#F5FBFF', // lighter primary50
+	// width: '90%',
+	// maxWidth: '600px',
+	// background: '#F5FBFF',
 	borderRadius: '0.75rem',
-	color: '#001F52', // darker primary300 for better contrast
+	color: '#001F52',
 	textAlign: 'center',
 	boxShadow: '0 4px 10px rgba(0, 39, 102, 0.1)',
-	width: '90%',
-	maxWidth: '600px',
+
 	margin: '0 auto',
 	minHeight: calc.subtract('100dvh', '144px'),
+	maxHeight: calc.subtract('100dvh', '144px'),
 	overflowY: 'auto',
 	'@media': {
 		'screen and (min-width: 768px)': {
@@ -30,7 +32,7 @@ export const errorContainer = style({
 });
 
 export const errorHeading = style({
-	color: '#001F52', // darker primary300
+	color: '#001F52',
 	marginBottom: '1.5rem',
 	fontSize: '1.75rem',
 	fontWeight: 'bold',
@@ -43,7 +45,7 @@ export const errorHeading = style({
 });
 
 export const errorText = style({
-	color: '#3A67B9', // adjusted primary200 for better readability
+	color: '#3A67B9',
 	fontSize: '1rem',
 	lineHeight: '1.6',
 	marginBottom: '2rem',
@@ -55,7 +57,7 @@ export const errorText = style({
 });
 
 export const tryAgainButton = style({
-	backgroundColor: '#0142C0', // primary
+	backgroundColor: '#0142C0',
 	color: '#FFFFFF',
 	padding: '0.75rem 1.5rem',
 	borderRadius: '0.375rem',
@@ -65,7 +67,7 @@ export const tryAgainButton = style({
 	transition: 'all 0.2s ease',
 	border: 'none',
 	':hover': {
-		backgroundColor: '#0050E0', // slightly lighter for hover effect
+		backgroundColor: '#0050E0',
 		transform: 'translateY(-2px)',
 		boxShadow: '0 4px 6px rgba(0, 66, 192, 0.2)',
 	},
@@ -80,24 +82,24 @@ export const errorDetails = style({
 });
 
 export const errorDetailsSummary = style({
-	color: '#0142C0', // primary
+	color: '#0142C0',
 	cursor: 'pointer',
 	fontWeight: '600',
 
 	fontSize: '0.875rem',
 	transition: 'color 0.2s ease',
 	':hover': {
-		color: '#0050E0', // slightly lighter for hover effect
+		color: '#0050E0',
 	},
 });
 
 export const errorStackTrace = style({
-	color: '#4A4A4A', // darker gray for better readability
-	backgroundColor: '#F8F8F8', // lighter background
+	color: '#4A4A4A',
+	backgroundColor: '#F8F8F8',
 	padding: '1rem',
 	borderRadius: '0.375rem',
 	fontSize: '0.75rem',
 	overflow: 'auto',
 	whiteSpace: 'pre-wrap',
-	maxHeight: '200px', // limit height and add scroll
+	maxHeight: '200px',
 });

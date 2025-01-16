@@ -1,3 +1,4 @@
+import { Box, Button, Flex, Typography } from '@jung/design-system';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -41,7 +42,7 @@ export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
 	);
 
 	return (
-		<div className={styles.categorySection}>
+		<Flex position='relative' marginBottom='4' flex='1' width='full'>
 			{title === 'All' ? (
 				<Link
 					href={'/blog'}
@@ -49,43 +50,45 @@ export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
 						active: currentCat === null,
 					})}`}
 				>
-					<h3 className={styles.categoryTitle}>{title}</h3>
+					<Typography.SubText level={2} fontWeight='medium'>
+						{title}
+					</Typography.SubText>
 				</Link>
 			) : (
 				<>
-					<button
+					<Button
 						className={styles.categoryHeader}
 						onClick={() => setIsOpen(!isOpen)}
 						type='button'
 					>
-						<h3 className={styles.categoryTitle}>{title}</h3>
+						<Typography.SubText level={2} fontWeight='medium'>
+							{title}
+						</Typography.SubText>
 						<IoChevronDown
 							size={16}
 							className={styles.chevronIcon({ isOpen })}
 							aria-hidden='true'
 						/>
-					</button>
+					</Button>
 
-					<div className={styles.categoryContent({ isOpen })}>
-						<div className={styles.categoryList}>
-							{items?.map((item) => (
-								<Link
-									key={item.slug}
-									href={`${pathname}?${createQueryString(item.slug)}`}
-									className={styles.categoryItem({
-										active: currentCat === item.slug,
-									})}
-								>
-									<span className={styles.categoryName}>{item.name}</span>
-									<span className={styles.categoryCount}>
-										{getPostCount(item.slug)}
-									</span>
-								</Link>
-							))}
-						</div>
-					</div>
+					<Box className={styles.categoryContent({ isOpen })}>
+						{items?.map((item) => (
+							<Link
+								key={item.slug}
+								href={`${pathname}?${createQueryString(item.slug)}`}
+								className={styles.categoryItem({
+									active: currentCat === item.slug,
+								})}
+							>
+								<span className={styles.categoryName}>{item.name}</span>
+								<span className={styles.categoryCount}>
+									{getPostCount(item.slug)}
+								</span>
+							</Link>
+						))}
+					</Box>
 				</>
 			)}
-		</div>
+		</Flex>
 	);
 };

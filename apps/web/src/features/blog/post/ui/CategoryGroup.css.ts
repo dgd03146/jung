@@ -2,21 +2,9 @@ import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
-export const categorySection = style({
-	position: 'relative',
-	width: '100%',
-	marginBottom: '1rem',
-	'@media': {
-		'(max-width: 1024px)': {
-			display: 'flex',
-			flex: '1',
-		},
-	},
-});
-
 export const categoryHeader = style({
 	width: '100%',
-	padding: '10px 14px',
+	padding: '8px 12px',
 	display: 'flex',
 	justifyContent: 'space-between',
 
@@ -44,26 +32,6 @@ export const categoryHeaderLink = recipe({
 			},
 		},
 	},
-});
-
-export const categoryTitle = style({
-	fontSize: '13.5px',
-	fontWeight: '600',
-	color: '#1a1a1a',
-	letterSpacing: '-0.01em',
-
-	'@media': {
-		'(max-width: 768px)': {
-			fontSize: '13px',
-		},
-		'(max-width: 375px)': {
-			fontSize: '12px',
-		},
-	},
-});
-
-export const categoryList = style({
-	// padding: '8px 0',
 });
 
 export const categoryItem = recipe({

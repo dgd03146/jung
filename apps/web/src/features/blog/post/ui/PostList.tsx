@@ -195,7 +195,11 @@ const PostList = () => {
 													color='primary'
 													display={{ mobile: 'none', tablet: 'flex' }}
 												>
-													<Typography.Text className={styles.category}>
+													<Typography.Text
+														className={styles.category}
+														background='primary50'
+														color='primary'
+													>
 														{capitalizeFirstLetter('category')}
 													</Typography.Text>
 
@@ -228,7 +232,10 @@ const PostList = () => {
 														marginTop='1'
 														color='primary'
 													>
-														<Typography.Text className={styles.category}>
+														<Typography.Text
+															className={styles.category}
+															background='primary50'
+														>
 															{capitalizeFirstLetter('category')}
 														</Typography.Text>
 

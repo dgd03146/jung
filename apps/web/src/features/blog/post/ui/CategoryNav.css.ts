@@ -13,8 +13,6 @@ export const sidebar = style({
 		'(max-width: 1024px)': {
 			display: 'flex',
 			width: '100%',
-			position: 'static',
-			top: '0',
 		},
 	},
 });

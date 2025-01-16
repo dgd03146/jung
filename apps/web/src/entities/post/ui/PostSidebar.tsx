@@ -1,11 +1,29 @@
 import { useGetAdjacentPosts } from '@/fsd/features/blog/post';
-import { Flex, Stack, Typography } from '@jung/design-system';
+import { Box, Flex, Stack, Tag, Typography } from '@jung/design-system';
 import Link from 'next/link';
 import { BiLogoGmail } from 'react-icons/bi';
 import { BsLinkedin } from 'react-icons/bs';
 import { FaGithub } from 'react-icons/fa';
 import { IoArrowUndoSharp } from 'react-icons/io5';
 import * as styles from './PostSidebar.css';
+
+const SOCIAL_LINKS = [
+	{
+		href: 'mailto:ibory1220@gmail.com',
+		icon: BiLogoGmail,
+		label: 'Email',
+	},
+	{
+		href: 'https://www.linkedin.com/in/dgd03146/',
+		icon: BsLinkedin,
+		label: 'LinkedIn',
+	},
+	{
+		href: 'https://github.com/dgd03146',
+		icon: FaGithub,
+		label: 'GitHub',
+	},
+] as const;
 
 const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 	const { data: adjacentPosts } = useGetAdjacentPosts(postId);
@@ -23,25 +41,37 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 			<Flex
 				minWidth='60'
 				align='center'
-				gap='1'
+				gap='2'
 				color='primary'
 				borderBottomWidth='hairline'
 				borderColor='gray'
 				borderStyle='solid'
 				paddingBottom='8'
 			>
-				<a href='mailto:ibory1220@gmail.com' className={styles.externalLink}>
-					<BiLogoGmail size={16} />
-				</a>
-				<a
-					href='https://www.linkedin.com/in/dgd03146/'
-					className={styles.externalLink}
-				>
-					<BsLinkedin size={16} />
-				</a>
-				<a href='https://github.com/dgd03146' className={styles.externalLink}>
-					<FaGithub size={16} />
-				</a>
+				{SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
+					<Box
+						key={href}
+						as='a'
+						href={href}
+						aria-label={label}
+						target='_blank'
+						rel='noopener noreferrer'
+						color={{
+							base: 'primary',
+							hover: 'primary200',
+						}}
+						transition='fast'
+						background='primary50'
+						paddingY='1'
+						paddingX='2'
+						borderRadius='xs'
+						display='flex'
+						alignItems='center'
+						justifyContent='center'
+					>
+						<Icon size={16} />
+					</Box>
+				))}
 			</Flex>
 
 			<Stack
@@ -53,20 +83,26 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 				borderStyle='solid'
 				paddingBottom='8'
 			>
-				<Typography.SubText level={2} className={styles.sidebarHeader}>
+				<Typography.Text
+					level={1}
+					color='primary'
+					fontWeight='semibold'
+					className={styles.sidebarHeader}
+				>
 					Tags
-				</Typography.SubText>
+				</Typography.Text>
 				<Flex columnGap='2' wrap='wrap' rowGap='2'>
 					{tags.map((tag) => (
-						<div key={tag} className={styles.tag}>
-							{tag}
-						</div>
+						<Tag variant='secondary' key={tag}>
+							<Typography.FootNote level={1}># {tag}</Typography.FootNote>
+						</Tag>
 					))}
 				</Flex>
 			</Stack>
 
 			{adjacentPosts?.previous && (
 				<Stack
+					minWidth='60'
 					space='1'
 					align='left'
 					borderBottomWidth='hairline'
@@ -74,11 +110,21 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 					borderStyle='solid'
 					paddingBottom='8'
 				>
-					<Typography.SubText level={2} className={styles.sidebarHeader}>
+					<Typography.Text
+						level={1}
+						color='primary'
+						fontWeight='semibold'
+						className={styles.sidebarHeader}
+					>
 						Previous Post
-					</Typography.SubText>
+					</Typography.Text>
 					<Link href={`/blog/${adjacentPosts.previous.id}`}>
-						<Typography.Text level={3} className={styles.adjacentPostTitle}>
+						<Typography.Text
+							level={3}
+							color={{ hover: 'primary200' }}
+							truncate='two'
+							transition='fast'
+						>
 							{adjacentPosts.previous.title}
 						</Typography.Text>
 					</Link>
@@ -87,6 +133,7 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 
 			{adjacentPosts?.next && (
 				<Stack
+					minWidth='60'
 					space='1'
 					align='left'
 					borderBottomWidth='hairline'
@@ -94,20 +141,43 @@ const PostSidebar = ({ postId, tags }: { postId: string; tags: string[] }) => {
 					borderStyle='solid'
 					paddingBottom='8'
 				>
-					<Typography.SubText level={2} className={styles.sidebarHeader}>
+					<Typography.Text
+						level={1}
+						color='primary'
+						fontWeight='semibold'
+						className={styles.sidebarHeader}
+					>
 						Next Post
-					</Typography.SubText>
+					</Typography.Text>
 					<Link href={`/blog/${adjacentPosts.next.id}`}>
-						<Typography.Text level={3} className={styles.adjacentPostTitle}>
+						<Typography.Text
+							level={3}
+							color={{ hover: 'primary200' }}
+							truncate='two'
+							transition='fast'
+						>
 							{adjacentPosts.next.title}
 						</Typography.Text>
 					</Link>
 				</Stack>
 			)}
 
-			<Link href='/blog' className={styles.linkText}>
-				<IoArrowUndoSharp className={styles.linkTextIcon} />
-				<p>Back to the post</p>
+			<Link href='/blog'>
+				<Flex
+					gap='2'
+					align='center'
+					color={{ base: 'primary', hover: 'primary200' }}
+				>
+					<IoArrowUndoSharp style={{ transform: 'translateY(-2px)' }} />
+					<Typography.Text
+						level={1}
+						transition='fast'
+						fontWeight='semibold'
+						className={styles.linkText}
+					>
+						Back to the post
+					</Typography.Text>
+				</Flex>
 			</Link>
 		</Stack>
 	);

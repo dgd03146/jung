@@ -135,8 +135,7 @@ export const contentArea = recipe({
 
 export const category = style({
 	fontFamily: 'var(--font-bebas)',
-	// letterSpacing: '0.04em',
-	backgroundColor: palette.primary50,
+
 	padding: '2px 8px',
 	borderRadius: '4px',
 });
