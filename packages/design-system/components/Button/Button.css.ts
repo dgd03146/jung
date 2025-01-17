@@ -46,11 +46,11 @@ export const button = recipe({
 			ghost: sprinkles({
 				background: {
 					base: 'transparent',
-					hover: 'primary50',
+					// hover: 'primary50',
 				},
 				color: {
 					base: 'primary',
-					hover: 'primary200',
+					// hover: 'primary200',
 				},
 			}),
 		},

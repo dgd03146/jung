@@ -14,11 +14,11 @@ export function PhotoDetailSkeleton() {
 			</div>
 
 			<div className={styles.content}>
-				<Box className={styles.header}>
+				<Flex gap='1' flexDirection='column'>
 					<Box height='6' width='3/5' background='gray100' borderRadius='md' />
-				</Box>
+				</Flex>
 
-				<Box className={styles.description}>
+				<Box>
 					<Box
 						height='4'
 						width='full'
@@ -41,7 +41,7 @@ export function PhotoDetailSkeleton() {
 					))}
 				</Flex>
 
-				<Box className={styles.interactionSection}>
+				<Flex paddingY='4' justify='space-between' align='center'>
 					<Box height='4' width='3/5' background='gray100' borderRadius='md' />
 
 					<Flex gap='2'>
@@ -58,7 +58,7 @@ export function PhotoDetailSkeleton() {
 							borderRadius='full'
 						/>
 					</Flex>
-				</Box>
+				</Flex>
 			</div>
 		</div>
 	);

@@ -68,28 +68,7 @@ export const modalContent = style({
 	},
 });
 
-export const header = style({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '4px',
-});
-
-export const description = style({
-	color: '#4B5563',
-});
-
-export const interactionSection = style({
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-	padding: '16px 0',
-	borderTop: '1px solid #E5E7EB',
-});
-
 export const actionButton = style({
-	color: '#0142C0',
-	padding: '8px',
-	transition: 'all 0.2s ease',
 	':hover': {
 		transform: 'scale(1.1)',
 		backgroundColor: 'transparent',

@@ -5,11 +5,11 @@ export const mainNav = style([
 	sprinkles({
 		flexDirection: 'column',
 
-		rowGap: {
-			mobile: '4',
-			tablet: '12',
+		gap: {
+			mobile: '4', // 16px
+			tablet: '6', // 24px
+			desktop: '8', // 32px
 		},
-		columnGap: '8',
 	}),
 	{
 		fontFamily: 'var(--font-bebas)',
@@ -24,11 +24,11 @@ export const subNav = style([
 		},
 		flexDirection: 'column',
 		alignItems: 'flex-start',
-		rowGap: {
-			mobile: '4',
-			tablet: '10',
+		gap: {
+			mobile: '2', // 8px
+			tablet: '4', // 16px
+			desktop: '6', // 24px
 		},
-		columnGap: '4',
 	}),
 	{
 		fontFamily: 'var(--font-bebas)',

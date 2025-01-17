@@ -1,6 +1,6 @@
 'use client';
 
-import { Tabs } from '@jung/design-system/components';
+import { Tabs, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { TABS } from '../config/tabs';
@@ -15,12 +15,12 @@ export const PhotoNavigation = () => {
 	};
 
 	return (
-		<Tabs value={getCurrentTab()} variant='secondary'>
+		<Tabs value={getCurrentTab()} variant='secondary' marginTop='2.5'>
 			<Tabs.List marginBottom='6'>
 				{TABS.map(({ value, label, path }) => (
 					<Tabs.Trigger key={value} value={value}>
 						<Link href={path} scroll={false} style={{ color: 'inherit' }}>
-							{label}
+							<Typography.Heading level={5}>{label}</Typography.Heading>
 						</Link>
 					</Tabs.Trigger>
 				))}

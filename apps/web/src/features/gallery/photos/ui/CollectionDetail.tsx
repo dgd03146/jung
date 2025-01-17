@@ -86,7 +86,7 @@ export function CollectionDetail({ id }: CollectionDetailProps) {
 	}));
 
 	return (
-		<Box>
+		<Container>
 			<Box className={styles.headerSection}>
 				<BlurImage
 					src={collection.cover_image}
@@ -107,7 +107,7 @@ export function CollectionDetail({ id }: CollectionDetailProps) {
 				</Box>
 			</Box>
 
-			<Container>
+			<Box>
 				<MasonryPhotoAlbum
 					photos={formattedPhotos}
 					spacing={24}
@@ -120,7 +120,7 @@ export function CollectionDetail({ id }: CollectionDetailProps) {
 						image: renderNextImage,
 					}}
 				/>
-			</Container>
-		</Box>
+			</Box>
+		</Container>
 	);
 }

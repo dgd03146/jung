@@ -64,7 +64,7 @@ const PostList = () => {
 						No Posts Found
 					</Typography.Heading>
 
-					<Typography.Text level={2} color='gray400' align='center'>
+					<Typography.Text level={2} color='gray400'>
 						{q
 							? `We couldn't find any results for "${q}"`
 							: cat !== 'all'
@@ -151,7 +151,7 @@ const PostList = () => {
 															color='primary'
 															fontWeight='medium'
 															position='absolute'
-															truncate='fast'
+															transition='fast'
 															className={styles.tableNumber}
 														>
 															{index + 1}

@@ -28,18 +28,28 @@ export function SectionTitle() {
 					href={`/${mainSection?.toLowerCase()}`}
 					style={{ display: 'flex', alignItems: 'center' }}
 				>
-					<Typography.FootNote color='primary'>
+					<Typography.Text
+						level={1}
+						color={{ base: 'primary', hover: 'primary200' }}
+						transition='slow'
+					>
 						{mainSection}
-					</Typography.FootNote>
+					</Typography.Text>
 				</Link>
-				<Typography.FootNote color='primary'>/</Typography.FootNote>
+				<Typography.Text level={1} color='primary'>
+					/
+				</Typography.Text>
 				<Link
 					href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
 					style={{ display: 'flex', alignItems: 'center' }}
 				>
-					<Typography.FootNote color='primary'>
+					<Typography.Text
+						level={1}
+						color={{ base: 'primary', hover: 'primary200' }}
+						transition='slow'
+					>
 						{subSection}
-					</Typography.FootNote>
+					</Typography.Text>
 				</Link>
 			</Flex>
 		);

@@ -50,9 +50,14 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			>
 				{!isMenuOpen && (
 					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
-						<Typography.Text level={1} color='primary' className={styles.logo}>
+						<Typography.Heading
+							level={5}
+							color={{ base: 'primary', hover: 'primary200' }}
+							transition='slow'
+							className={styles.logo}
+						>
 							JUNG
-						</Typography.Text>
+						</Typography.Heading>
 					</Link>
 				)}
 				<Box className={styles.menuButtonWrapper}>

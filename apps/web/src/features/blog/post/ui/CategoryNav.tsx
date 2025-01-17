@@ -66,7 +66,7 @@ export const CategoryNav = () => {
 										<Typography.SubText
 											level={2}
 											color='primary'
-											bakground='primary50'
+											background='primary50'
 											paddingY='1'
 											paddingX='2'
 											display={{ mobile: 'none', tablet: 'block' }}
@@ -92,7 +92,7 @@ export const CategoryNav = () => {
 										<Typography.SubText
 											level={2}
 											color='primary'
-											bakground='primary50'
+											background='primary50'
 											paddingY='1'
 											paddingX='2'
 											display={{ mobile: 'none', tablet: 'block' }}
@@ -120,7 +120,7 @@ export const CategoryNav = () => {
 										<Typography.SubText
 											level={2}
 											color='primary'
-											bakground='primary50'
+											background='primary50'
 											paddingY='1'
 											paddingX='2'
 											display={{ mobile: 'none', tablet: 'block' }}

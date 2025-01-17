@@ -21,7 +21,17 @@ const NavLink = ({
 	<Link href={item.path}>
 		<Typography.Heading
 			fontSize={
-				isMainNav ? { tablet: '7xl' } : { mobile: '2xl', tablet: '5xl' }
+				isMainNav
+					? {
+							mobile: '4xl', // 36px
+							tablet: '5xl', // 48px
+							desktop: '6xl', // 60px
+					  }
+					: {
+							mobile: 'xl', // 20px
+							tablet: '2xl', // 24px
+							desktop: '3xl', // 30px
+					  }
 			}
 			color={{
 				base: isActive ? 'primary400' : 'white',
