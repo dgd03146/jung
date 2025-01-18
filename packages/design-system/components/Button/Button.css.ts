@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
@@ -10,49 +11,80 @@ export const button = recipe({
 	}),
 	variants: {
 		variant: {
-			primary: sprinkles({
-				background: {
-					base: 'primary',
-					hover: 'primary200',
+			primary: style([
+				sprinkles({
+					background: {
+						base: 'primary',
+						hover: 'primary200',
+					},
+					color: 'white',
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						boxShadow: '0 4px 8px rgba(1, 66, 192, 0.2)',
+						background: 'linear-gradient(135deg, #0136A3 0%, #0142C0 100%)',
+					},
 				},
-				color: {
-					base: 'white',
-					// hover: 'primary',
+			]),
+			outline: style([
+				sprinkles({
+					borderColor: 'primary100',
+					borderWidth: 'hairline',
+					borderStyle: 'solid',
+					background: {
+						base: 'white',
+					},
+					color: {
+						base: 'primary200',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						borderColor: 'rgba(1, 66, 192, 0.4)',
+						background: 'rgba(1, 66, 192, 0.04)',
+						boxShadow: '0 2px 6px rgba(1, 66, 192, 0.12)',
+						color: '#0142C0',
+					},
 				},
-			}),
-			outline: sprinkles({
-				borderColor: 'primary100',
-				borderWidth: 'hairline',
-				borderStyle: 'solid',
-				background: {
-					hover: 'primary50',
+			]),
+			secondary: style([
+				sprinkles({
+					background: {
+						base: 'primary100',
+					},
+					color: {
+						base: 'primary',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						background:
+							'linear-gradient(135deg, rgba(1, 66, 192, 0.12) 0%, rgba(1, 66, 192, 0.08) 100%)',
+						boxShadow: '0 3px 7px rgba(1, 66, 192, 0.15)',
+						color: '#0136A3',
+					},
 				},
-				color: {
-					base: 'primary200',
-					hover: 'primary',
-					active: 'primary',
+			]),
+			ghost: style([
+				sprinkles({
+					background: {
+						base: 'transparent',
+					},
+					color: {
+						base: 'primary',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						background: 'rgba(1, 66, 192, 0.04)',
+						boxShadow: '0 2px 4px rgba(1, 66, 192, 0.08)',
+					},
 				},
-			}),
-			secondary: sprinkles({
-				background: {
-					base: 'primary100',
-					hover: 'primary',
-				},
-				color: {
-					base: 'primary',
-					hover: 'white',
-				},
-			}),
-			ghost: sprinkles({
-				background: {
-					base: 'transparent',
-					// hover: 'primary50',
-				},
-				color: {
-					base: 'primary',
-					// hover: 'primary200',
-				},
-			}),
+			]),
 		},
 		size: {
 			zero: sprinkles({

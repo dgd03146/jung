@@ -1,7 +1,7 @@
 'use client';
 
 import { LoadingSpinner } from '@/fsd/shared';
-import { Box } from '@jung/design-system';
+import { Box, Container, Grid, Typography } from '@jung/design-system';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useGetGuestbookMessages } from '../api';
@@ -42,25 +42,30 @@ export const MessageWall = () => {
 					}}
 					className={styles.emptyStateContent}
 				>
-					<div className={styles.emptyStateEmoji}>✨</div>
-					<h3 className={styles.emptyStateTitle}>
+					<Box className={styles.emptyStateEmoji}>✨</Box>
+					<Typography.Heading level={4}>
 						Waiting for your first message
-					</h3>
-					<p className={styles.emptyStateText}>
+					</Typography.Heading>
+					<Typography.Text>
 						Make it feel special by leaving a message
-					</p>
+					</Typography.Text>
 				</motion.div>
 			</motion.div>
 		);
 	}
 
 	return (
-		<>
-			<div className={styles.messageWallContainer}>
+		<Container marginY='10'>
+			<Grid
+				gap='4'
+				paddingY='4'
+				marginX='auto'
+				className={styles.messageWallContainer}
+			>
 				{messages.map((message, index) => (
 					<MessageCard key={message.id} message={message} index={index} />
 				))}
-			</div>
+			</Grid>
 			<Box
 				margin='auto'
 				ref={ref}
@@ -72,6 +77,6 @@ export const MessageWall = () => {
 			>
 				{isFetchingNextPage && <LoadingSpinner size='small' />}
 			</Box>
-		</>
+		</Container>
 	);
 };

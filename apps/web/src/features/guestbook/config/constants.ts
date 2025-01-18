@@ -1,14 +1,13 @@
 export const GUESTBOOK_EMOJIS = [
-	'💖',
+	'💙',
 	'✨',
 	'👻',
 	'🎉',
 	'👋',
-	'🙌',
-	'💫',
+	'👨‍💻',
 	'💭',
-	'💀',
-	'👽',
+	'🤖',
+	'🍺',
 ] as const;
 
 export const GUESTBOOK_COLORS = [
@@ -25,4 +24,4 @@ export type GuestbookColor = (typeof GUESTBOOK_COLORS)[number];
 export type GuestbookEmoji = (typeof GUESTBOOK_EMOJIS)[number];
 
 export const DEFAULT_BACKGROUND_COLOR: GuestbookColor = '#FFFFFF';
-export const DEFAULT_EMOJI: GuestbookEmoji = '💖';
+export const DEFAULT_EMOJI: GuestbookEmoji = '💙';

@@ -8,6 +8,14 @@ import { useOptimisticCreateMessage } from '../model/useOptimisticCreateMessage'
 import * as styles from './MessageForm.css';
 
 import {
+	Box,
+	Button,
+	Flex,
+	Stack,
+	Textarea,
+	Typography,
+} from '@jung/design-system/components';
+import {
 	DEFAULT_BACKGROUND_COLOR,
 	DEFAULT_EMOJI,
 	GUESTBOOK_COLORS,
@@ -36,17 +44,19 @@ function SubmitButton({ emoji }: { emoji: GuestbookEmoji }) {
 	}, [pending]);
 
 	return (
-		<button
+		<Button
 			type='submit'
-			className={styles.submitButton}
+			size='md'
+			fontWeight='medium'
+			borderRadius='lg'
 			disabled={pending || isThrottled}
 		>
 			{pending
 				? 'Posting...'
 				: isThrottled
 				  ? 'Please wait...'
-				  : `Post Message ${emoji}`}
-		</button>
+				  : `Post ${emoji}`}
+		</Button>
 	);
 }
 
@@ -72,13 +82,17 @@ export const MessageForm = () => {
 
 	if (!user) {
 		return (
-			<div className={styles.loginContainer}>
-				<div className={styles.loginContent}>
-					<h3>Please sign in to leave a message</h3>
-					<p>Share your thoughts with others by signing in</p>
+			<Box className={styles.loginContainer}>
+				<Stack align='center' gap='10'>
+					<Typography.Heading level={4} color='primary'>
+						Please sign in to leave a message
+					</Typography.Heading>
+					<Typography.Text level={4} color='primary100'>
+						Share your thoughts with others by signing in
+					</Typography.Text>
 					<SocialLogin />
-				</div>
-			</div>
+				</Stack>
+			</Box>
 		);
 	}
 
@@ -88,28 +102,28 @@ export const MessageForm = () => {
 			<input type='hidden' name='emoji' value={selectedEmoji} />
 			<input type='hidden' name='backgroundColor' value={selectedColor} />
 
-			<div className={styles.userInfo}>
+			<Flex
+				align='center'
+				gap='2'
+				background='white100'
+				padding='2'
+				marginBottom='6'
+				borderRadius='lg'
+			>
 				<img
 					src={user.user_metadata.avatar_url}
 					alt={user.user_metadata.full_name}
 					className={styles.avatar}
+					loading='lazy'
 				/>
-				<span>{user.user_metadata.full_name}</span>
-			</div>
-			<textarea
-				name='message'
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-				placeholder='Write your message here... (max 50 characters)'
-				maxLength={50}
-				className={styles.textarea({
-					backgroundColor: selectedColor,
-				})}
-			/>
-			<div className={styles.formFooter}>
-				<div className={styles.emojiPicker}>
+				<Typography.Text level={4}>
+					{user.user_metadata.full_name}
+				</Typography.Text>
+			</Flex>
+			<Stack space='6'>
+				<Flex wrap='wrap' gap='2'>
 					{GUESTBOOK_EMOJIS.map((emoji) => (
-						<button
+						<Button
 							key={emoji}
 							type='button'
 							className={`${styles.emojiButton} ${
@@ -118,12 +132,12 @@ export const MessageForm = () => {
 							onClick={() => setSelectedEmoji(emoji)}
 						>
 							{emoji}
-						</button>
+						</Button>
 					))}
-				</div>
-				<div className={styles.colorPicker}>
+				</Flex>
+				<Flex wrap='wrap' gap='2'>
 					{GUESTBOOK_COLORS.map((color) => (
-						<button
+						<Button
 							key={color}
 							type='button'
 							className={`${styles.colorButton} ${
@@ -134,9 +148,24 @@ export const MessageForm = () => {
 							aria-label={`Select color ${color}`}
 						/>
 					))}
-				</div>
-				<SubmitButton emoji={selectedEmoji} />
-			</div>
+				</Flex>
+			</Stack>
+			<Box position='relative' marginTop='4'>
+				<Textarea
+					name='message'
+					value={message}
+					rows={3}
+					onChange={(e) => setMessage(e.target.value)}
+					placeholder='Write your message here... (max 50 characters)'
+					maxLength={50}
+					className={styles.textarea({
+						backgroundColor: selectedColor,
+					})}
+				/>
+				<Box className={styles.submitButtonWrapper}>
+					<SubmitButton emoji={selectedEmoji} />
+				</Box>
+			</Box>
 		</form>
 	);
 };
