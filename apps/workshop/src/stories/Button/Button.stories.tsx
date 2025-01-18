@@ -21,10 +21,10 @@ const meta = {
 			options: sizeOptions,
 			control: { type: 'select' },
 		},
-		rounded: {
-			options: [true, false],
-			control: { type: 'select' },
-		},
+		// rounded: {
+		// 	options: [true, false],
+		// 	control: { type: 'select' },
+		// },
 		loading: {
 			options: [true, false],
 			control: { type: 'select' },

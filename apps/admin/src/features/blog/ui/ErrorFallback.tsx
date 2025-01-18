@@ -20,7 +20,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
 			<Typography.Text color='gray400' marginBottom='4'>
 				{error.code}
 			</Typography.Text>
-			<Button onClick={resetErrorBoundary} rounded size='lg'>
+			<Button onClick={resetErrorBoundary} size='lg' borderRadius='lg'>
 				Try again
 			</Button>
 		</Box>

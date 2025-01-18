@@ -57,7 +57,7 @@ export const Horizontal: Story = {
 				<Card.Title>This is title</Card.Title>
 				<Card.Description>This is description</Card.Description>
 				<Card.Actions>
-					<Tag rounded>2024.12.07</Tag>
+					<Tag>2024.12.07</Tag>
 					<Tag>Tag</Tag>
 					<Tag>Tag</Tag>
 				</Card.Actions>

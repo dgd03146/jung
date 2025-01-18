@@ -20,10 +20,10 @@ const meta = {
 			options: ['sm', 'md', 'lg'],
 			control: { type: 'select' },
 		},
-		rounded: {
-			options: [true, false],
-			control: { type: 'select' },
-		},
+		// rounded: {
+		// 	options: [true, false],
+		// 	control: { type: 'select' },
+		// },
 	},
 } satisfies Meta<typeof Badge>;
 

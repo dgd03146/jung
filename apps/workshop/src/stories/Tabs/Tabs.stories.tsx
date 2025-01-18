@@ -14,10 +14,10 @@ const meta: Meta<typeof Tabs> = {
 			options: ['primary', 'secondary'],
 			control: { type: 'select' },
 		},
-		rounded: {
-			options: [true, false],
-			control: { type: 'select' },
-		},
+		// rounded: {
+		// 	options: [true, false],
+		// 	control: { type: 'select' },
+		// },
 	},
 } satisfies Meta<typeof Tabs>;
 
