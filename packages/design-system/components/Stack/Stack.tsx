@@ -19,8 +19,8 @@ interface Props
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	children?: ReactNode;
-	space: keyof typeof space;
-	align: keyof typeof alignToFlexAlign;
+	space?: keyof typeof space;
+	align?: keyof typeof alignToFlexAlign;
 }
 
 export const Stack = forwardRef<HTMLDivElement, Props>(
@@ -35,7 +35,7 @@ export const Stack = forwardRef<HTMLDivElement, Props>(
 				display='flex'
 				flexDirection='column'
 				alignItems={alignItems}
-				paddingBottom={space}
+				paddingBottom={space || '0'}
 				ref={ref}
 				{...restProps}
 			>

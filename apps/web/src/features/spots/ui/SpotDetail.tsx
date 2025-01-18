@@ -11,7 +11,18 @@ import {
 import * as styles from './SpotDetail.css';
 
 import { formatDate } from '@/fsd/shared/lib';
-import { Flex } from '@jung/design-system/components';
+import {
+	Badge,
+	Box,
+	Button,
+	Container,
+	Flex,
+	List,
+	ListItem,
+	Stack,
+	Tag,
+	Typography,
+} from '@jung/design-system/components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { useGetSpotById } from '../api';
@@ -47,18 +58,23 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 	const spot = results[0];
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.imageSection}>
+		<Container
+			marginX='auto'
+			boxShadow='primary'
+			borderRadius='xl'
+			marginY='10'
+		>
+			<Box className={styles.imageSection}>
 				{showMap ? (
 					<SpotMap spot={spot} initialCenter={spot.coordinates} />
 				) : (
-					<div
+					<Box
 						className={`${styles.imageGrid} ${getGridClassName(
 							spot?.photos.length ?? 0,
 						)}`}
 					>
 						{spot?.photos.slice(0, 4).map((photo, index) => (
-							<div
+							<Box
 								key={photo.id}
 								className={`${styles.imageWrapper} ${
 									index === 0 ? styles.mainImage : ''
@@ -73,97 +89,132 @@ export function SpotDetail({ spotId }: SpotDetailProps) {
 									className={styles.gridImage}
 								/>
 								{index === 3 && spot.photos.length > 4 && (
-									<div className={styles.lastImageOverlay}>
+									<Box className={styles.lastImageOverlay}>
 										+{spot.photos.length - 4}
-									</div>
+									</Box>
 								)}
-							</div>
+							</Box>
 						))}
-					</div>
+					</Box>
 				)}
-			</div>
+			</Box>
 
-			<div className={styles.content}>
-				<div className={styles.contentHeader}>
-					<div className={styles.titleRow}>
-						<h1 className={styles.title}>{spot?.title}</h1>
+			<Stack maxWidth='tablet' marginX='auto' padding='10' gap='5'>
+				<Typography.Heading level={3}>{spot.title}</Typography.Heading>
+				<Flex gap='1' alignItems='center'>
+					<IoLocationOutline size={16} className={styles.locationIcon} />
+					<Typography.SubText level={3} truncate='two' color='primary300'>
+						{spot.address}
+					</Typography.SubText>
+				</Flex>
 
-						<div className={styles.headerButtons}>
-							<button
-								className={styles.iconButton}
-								onClick={() => toggleLike(spotId)}
-							>
-								{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
-							</button>
+				<Flex
+					justify='space-between'
+					align='center'
+					gap='4'
+					borderBottomWidth='hairline'
+					borderColor='primary50'
+					borderStyle='solid'
+					paddingY='4'
+				>
+					<Badge variant='secondary'>
+						<Typography.SubText level={3} color='primary' fontWeight='medium'>
+							{formatDate(spot.created_at)}
+						</Typography.SubText>
+					</Badge>
 
-							<button
-								className={styles.iconButton}
-								onClick={() => setShowMap((prev) => !prev)}
-								title={showMap ? '사진 보기' : '지도 보기'}
-							>
-								{showMap ? (
-									<IoImageOutline size={18} />
-								) : (
-									<IoMapOutline size={18} />
-								)}
-							</button>
-							<button
-								className={styles.iconButton}
-								onClick={() =>
-									handleShare({
-										title: spot.title,
-										description: spot.description,
-										imageUrl: spot.photos[0]?.url,
-										link: {
-											mobileWebUrl: window.location.href,
-											webUrl: window.location.href,
-										},
-									})
-								}
-								aria-label='Share spot'
-							>
-								<IoShareOutline size={18} />
-							</button>
-						</div>
-					</div>
+					<Flex gap='2'>
+						<Button
+							variant='outline'
+							onClick={() => toggleLike(spotId)}
+							borderRadius='md'
+						>
+							{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+						</Button>
 
-					<div className={styles.meta}>
-						<div className={styles.ratingRow}>
-							{/* <StarRating value={spot.rating} size='md' /> */}
-							<span className={styles.likesCount}>{spot.likes} Likes</span>
-						</div>
-						<Flex justify='space-between'>
-							<Flex gap='1' alignItems='center'>
-								<IoLocationOutline size={16} className={styles.locationIcon} />
-								<span className={styles.location}>{spot?.address}</span>
-							</Flex>
-							<time className={styles.date}>{formatDate(spot.created_at)}</time>
-						</Flex>
-					</div>
-					<div className={styles.tags}>
+						<Button
+							variant='outline'
+							borderRadius='md'
+							selected={showMap}
+							onClick={() => setShowMap((prev) => !prev)}
+							title={showMap ? '사진 보기' : '지도 보기'}
+						>
+							{showMap ? (
+								<IoImageOutline size={18} />
+							) : (
+								<IoMapOutline size={18} />
+							)}
+						</Button>
+						<Button
+							variant='outline'
+							borderRadius='md'
+							onClick={() =>
+								handleShare({
+									title: spot.title,
+									description: spot.description,
+									imageUrl: spot.photos[0]?.url,
+									link: {
+										mobileWebUrl: window.location.href,
+										webUrl: window.location.href,
+									},
+								})
+							}
+							aria-label='Share spot'
+						>
+							<IoShareOutline size={18} />
+						</Button>
+					</Flex>
+				</Flex>
+
+				<Stack space='10'>
+					<Typography.Text level={2} marginY='10'>
+						{spot.description}
+					</Typography.Text>
+
+					<Flex
+						gap='2'
+						wrap='wrap'
+						borderBottomWidth='hairline'
+						borderColor='primary50'
+						borderStyle='solid'
+						paddingBottom='5'
+					>
 						{spot.tags?.map((tag) => (
-							<span key={tag} className={styles.tag}>
-								# {tag}
-							</span>
+							<Tag key={tag} variant='secondary'>
+								<Typography.FootNote level={1}># {tag}</Typography.FootNote>
+							</Tag>
 						))}
-					</div>
-				</div>
+					</Flex>
 
-				<div className={styles.body}>
-					<p className={styles.description}>{spot.description}</p>
-
-					<div className={styles.tips}>
-						<h2 className={styles.tipsTitle}>Tips</h2>
-						<ul className={styles.tipsList}>
-							{spot.tips?.map((tip) => (
-								<li key={tip} className={styles.tipItem}>
-									{tip}
-								</li>
-							))}
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+					<Box marginTop='6'>
+						<Typography.Heading level={5} color='primary' marginBottom='4'>
+							Tips
+						</Typography.Heading>
+						<List
+							items={spot.tips ?? []}
+							display='flex'
+							flexDirection='column'
+							gap='3'
+							renderItem={(tip) => (
+								<ListItem
+									className={styles.tipItem}
+									key={tip}
+									padding='4'
+									borderRadius='lg'
+								>
+									<Typography.Text
+										color='black100'
+										level={4}
+										fontWeight='medium'
+									>
+										{tip}
+									</Typography.Text>
+								</ListItem>
+							)}
+						/>
+					</Box>
+				</Stack>
+			</Stack>
+		</Container>
 	);
 }

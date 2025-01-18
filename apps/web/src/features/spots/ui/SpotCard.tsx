@@ -16,8 +16,6 @@ interface SpotCardProps {
 export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 	const { toggleLike, getIsLiked } = useToggleSpotLike();
 
-	console.log(spot.tags, 'spot tags');
-
 	const isLiked = getIsLiked(spot.id);
 
 	const handleLikeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
