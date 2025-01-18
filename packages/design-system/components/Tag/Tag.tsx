@@ -10,17 +10,20 @@ export interface TagProps
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
-
+	selected?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;
 }
 
 export const Tag = forwardRef<HTMLDivElement, TagProps>(
-	({ variant, size, suffix, children, prefix, ...restProps }, ref) => {
+	(
+		{ variant, size = 'sm', suffix, children, prefix, selected, ...restProps },
+		ref,
+	) => {
 		return (
 			<Box
 				as='div'
-				className={S.tag({ variant, size })}
+				className={S.tag({ variant, size, selected })}
 				ref={ref}
 				{...restProps}
 			>

@@ -12,7 +12,7 @@ export const imageOverlay = style({
 	top: 0,
 	left: 0,
 	right: 0,
-	padding: '8px', // 패딩 줄임
+	padding: '8px',
 	display: 'flex',
 	justifyContent: 'flex-end',
 	alignItems: 'flex-start',
@@ -23,7 +23,6 @@ export const cardWrapper = recipe({
 	base: {
 		display: 'block',
 		width: '100%',
-		aspectRatio: '3/4',
 		textDecoration: 'none',
 		transition: 'all 0.3s ease',
 	},
@@ -35,7 +34,6 @@ export const cardWrapper = recipe({
 				},
 			},
 			compact: {
-				aspectRatio: '2/3',
 				width: '300px',
 				':hover': {
 					transform: 'none',
@@ -85,7 +83,7 @@ export const imageWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				aspectRatio: '4/3',
+				aspectRatio: '16/9',
 
 				selectors: {
 					'&:hover': {
@@ -110,51 +108,6 @@ export const imageWrapper = recipe({
 						boxShadow: 'none',
 					},
 				},
-			},
-		},
-	},
-	defaultVariants: {
-		variant: 'default',
-	},
-});
-
-export const content = recipe({
-	base: {
-		flex: 1,
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '4px',
-	},
-	variants: {
-		variant: {
-			default: {},
-			compact: {
-				padding: '8px',
-				gap: '4px',
-			},
-		},
-	},
-	defaultVariants: {
-		variant: 'default',
-	},
-});
-
-export const title = recipe({
-	base: {
-		flexShrink: 0,
-		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-		display: '-webkit-box',
-		WebkitLineClamp: 1,
-		WebkitBoxOrient: 'vertical',
-		marginBottom: '4px',
-		fontWeight: 500,
-	},
-	variants: {
-		variant: {
-			default: {},
-			compact: {
-				fontSize: '14px',
 			},
 		},
 	},
@@ -188,69 +141,8 @@ export const likeButton = style({
 	},
 });
 
-export const address = recipe({
-	base: {
-		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-		display: '-webkit-box',
-		WebkitLineClamp: 2,
-		WebkitBoxOrient: 'vertical',
-		lineHeight: '1.4',
-		color: palette.gray400,
-
-		fontSize: '12px',
-	},
-	variants: {
-		variant: {
-			default: {},
-			compact: {
-				WebkitLineClamp: 1,
-			},
-		},
-	},
-	defaultVariants: {
-		variant: 'default',
-	},
-});
-
-export const description = style({
-	flex: '0 0 auto',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	display: '-webkit-box',
-	WebkitLineClamp: 2,
-	WebkitBoxOrient: 'vertical',
-	fontSize: '14px',
-});
-
-export const location = recipe({
-	base: {
-		display: 'flex',
-		alignItems: 'flex-start',
-		gap: '4px',
-		flexShrink: 0,
-	},
-	variants: {
-		variant: {
-			default: {},
-			compact: {
-				height: '32px',
-			},
-		},
-	},
-});
-
 export const locationIcon = style({
 	flexShrink: 0,
 
-	color: palette.primary,
-	width: '16px',
-	height: '16px',
-});
-
-export const footer = style({
-	flexDirection: 'column',
-
-	alignItems: 'flex-start',
-	flexShrink: 0,
+	color: palette.primary300,
 });

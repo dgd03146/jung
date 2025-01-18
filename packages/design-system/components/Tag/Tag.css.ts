@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+import { palette } from '../../tokens/palette';
 
 export const tag = recipe({
 	base: sprinkles({
@@ -9,6 +10,7 @@ export const tag = recipe({
 		display: 'inline-flex',
 		alignItems: 'center',
 		gap: '1',
+		transition: 'slow',
 	}),
 	variants: {
 		variant: {
@@ -18,7 +20,6 @@ export const tag = recipe({
 					base: 'primary',
 					hover: 'primary200',
 				},
-				transition: 'fast',
 			}),
 
 			secondary: style([
@@ -26,12 +27,11 @@ export const tag = recipe({
 					display: 'inline-flex',
 					alignItems: 'center',
 					color: 'primary',
-					transition: 'fast',
 				}),
 				{
 					backgroundColor: 'rgba(1, 66, 192, 0.04)',
 					':hover': {
-						backgroundColor: 'rgba(1, 66, 192, 0.08)',
+						backgroundColor: 'rgba(1, 66, 192, 0.1)',
 					},
 				},
 			]),
@@ -46,15 +46,7 @@ export const tag = recipe({
 		},
 
 		selected: {
-			true: sprinkles({
-				color: 'primary',
-				background: {
-					base: 'primary50',
-					hover: 'primary100',
-				},
-				fontWeight: 'medium',
-				transition: 'fast',
-			}),
+			true: {},
 		},
 
 		size: {
@@ -72,8 +64,43 @@ export const tag = recipe({
 			}),
 		},
 	},
-	defaultVariants: {
-		variant: 'primary',
-		size: 'sm',
-	},
+	compoundVariants: [
+		{
+			variants: {
+				variant: 'primary',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary300',
+			}),
+		},
+		{
+			variants: {
+				variant: 'secondary',
+				selected: true,
+			},
+			style: style([
+				{
+					backgroundColor: palette.primary,
+				},
+				sprinkles({
+					color: {
+						base: 'white',
+						hover: 'primary',
+					},
+				}),
+			]),
+		},
+		{
+			variants: {
+				variant: 'ghost',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary',
+				color: 'white',
+				fontWeight: 'semibold',
+			}),
+		},
+	],
 });

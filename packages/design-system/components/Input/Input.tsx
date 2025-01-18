@@ -11,15 +11,14 @@ export interface InputProps
 		AtomProps {
 	variant?: 'primary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg' | 'zero';
-	rounded?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ variant, disabled, size, rounded, ...restProps }, ref?) => {
+	({ variant, disabled, size, ...restProps }, ref?) => {
 		return (
 			<Box
 				as='input'
-				className={S.input({ variant, size, rounded, disabled })}
+				className={S.input({ variant, size, disabled })}
 				ref={ref}
 				disabled={disabled}
 				{...restProps}

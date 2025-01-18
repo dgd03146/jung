@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+import { palette } from '../../tokens';
 
 export const input = recipe({
 	base: [
@@ -15,6 +16,18 @@ export const input = recipe({
 			borderWidth: 'hairline',
 			borderStyle: 'solid',
 		}),
+		style({
+			':focus': {
+				outline: 'none',
+				borderColor: 'transparent',
+				boxShadow: `0 0 0 1px ${palette.primary}, 0 0 0 3px ${palette.primary50}`,
+				transition: 'all 0.2s ease',
+			},
+			':hover': {
+				borderColor: palette.primary200,
+				transition: 'all 0.2s ease',
+			},
+		}),
 	],
 	variants: {
 		variant: {
@@ -24,15 +37,6 @@ export const input = recipe({
 				borderStyle: 'solid',
 			}),
 
-			// outline: sprinkles({
-			// 	borderColor: 'black',
-			// 	outlineColor: 'black',
-			// 	outlineWidth: 'hairline',
-			// 	color: {
-			// 		base: 'black',
-			// 		placeholder: 'gray200',
-			// 	},
-			// }),
 			ghost: sprinkles({
 				border: 'none',
 			}),
@@ -55,11 +59,7 @@ export const input = recipe({
 				paddingY: '2.5',
 			}),
 		},
-		rounded: {
-			true: sprinkles({
-				borderRadius: '2xl',
-			}),
-		},
+
 		disabled: {
 			true: style([
 				sprinkles({
@@ -75,6 +75,5 @@ export const input = recipe({
 	defaultVariants: {
 		variant: 'primary',
 		size: 'sm',
-		rounded: false,
 	},
 });

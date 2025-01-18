@@ -9,6 +9,7 @@ export const fontFamily = {
 	body: '-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
 	code: 'ml, "Roboto Mono", Menlo, monospace',
 	playfair: 'var(--font-playfair)',
+	bebas: 'var(--font-bebas)',
 };
 
 export const fontSizes = {

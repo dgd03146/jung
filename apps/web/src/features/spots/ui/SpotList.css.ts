@@ -6,42 +6,6 @@ const slideUpAnimation = keyframes({
 	'100%': { transform: 'translateY(0)' },
 });
 
-export const header = style({
-	backgroundColor: palette.white,
-	borderBottom: `1px solid ${palette.primary50}`,
-	paddingTop: '8px',
-	paddingBottom: '16px',
-});
-
-export const headerContent = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '12px',
-});
-
-export const viewToggle = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '6px',
-	padding: '8px 16px',
-	border: `1px solid ${palette.primary100}`,
-	borderRadius: '8px',
-	backgroundColor: palette.white,
-	fontSize: '13px',
-	color: palette.primary200,
-	fontWeight: 500,
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-
-	selectors: {
-		'&:hover': {
-			color: palette.primary,
-			borderColor: palette.primary,
-			backgroundColor: palette.primary50,
-		},
-	},
-});
-
 export const main = style({
 	flex: 1,
 	display: 'flex',
@@ -58,35 +22,6 @@ export const gridView = style({
 		'(max-width: 768px)': {
 			gap: '16px',
 			gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-		},
-	},
-});
-
-export const listSection = style({
-	overflowY: 'auto',
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '12px',
-	padding: '8px',
-	borderRadius: '12px',
-	backgroundColor: palette.white,
-	border: `1px solid ${palette.primary100}`,
-	boxShadow: `0 2px 4px ${palette.primary50}`,
-
-	selectors: {
-		'&::-webkit-scrollbar': {
-			width: '6px',
-		},
-		'&::-webkit-scrollbar-track': {
-			background: palette.primary50,
-			borderRadius: '3px',
-		},
-		'&::-webkit-scrollbar-thumb': {
-			background: palette.primary100,
-			borderRadius: '3px',
-		},
-		'&::-webkit-scrollbar-thumb:hover': {
-			background: palette.primary200,
 		},
 	},
 });

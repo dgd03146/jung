@@ -34,7 +34,7 @@ export const searchInput = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: '0 0 0 3px rgba(1, 66, 192, 0.1)',
+		// boxShadow: '0 0 0 1px rgba(1, 66, 192, 0.3)',
 	},
 
 	'::placeholder': {

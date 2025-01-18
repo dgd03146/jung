@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@jung/design-system/components';
+import { Box, Button, Input } from '@jung/design-system/components';
 import { useDebounce } from '@jung/shared/hooks';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 		initialValue || searchParams.get('q') || '',
 	);
 
+	//FIXME: 공용 훅으로 빼기
 	const debouncedValue = useDebounce(value, 300);
 
 	const handleSearch = useCallback(
@@ -40,35 +41,31 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 	}, [debouncedValue, handleSearch]);
 
 	return (
-		<Box className={styles.container}>
-			<Box className={styles.searchWrapper} boxShadow='primary'>
-				<Box className={styles.iconWrapper}>
-					<IoSearchOutline size={18} />
-				</Box>
-				<Box
-					as='input'
-					type='text'
-					value={value}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						setValue(e.target.value)
-					}
-					placeholder='Search...'
-					className={styles.input}
-					aria-label='Search input'
-				/>
-				{value && (
-					<Box
-						as='button'
-						className={styles.clearButton}
-						onClick={() => {
-							setValue('');
-						}}
-						aria-label='Clear search'
-					>
-						<IoCloseOutline size={16} />
-					</Box>
-				)}
+		<Box className={styles.searchWrapper} boxShadow='primary'>
+			<Box className={styles.iconWrapper}>
+				<IoSearchOutline size={18} />
 			</Box>
+			<Input
+				type='text'
+				value={value}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+					setValue(e.target.value)
+				}
+				placeholder='Search...'
+				className={styles.input}
+				aria-label='Search input'
+			/>
+			{value && (
+				<Button
+					className={styles.clearButton}
+					onClick={() => {
+						setValue('');
+					}}
+					aria-label='Clear search'
+				>
+					<IoCloseOutline size={16} />
+				</Button>
+			)}
 		</Box>
 	);
 }
