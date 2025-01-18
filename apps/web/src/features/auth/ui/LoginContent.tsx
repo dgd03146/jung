@@ -2,7 +2,6 @@
 
 import { Box, Button, Flex, Typography } from '@jung/design-system';
 import type { Session } from '@supabase/supabase-js';
-import { useRouter } from 'next/navigation';
 import { signOut } from '../api';
 import * as styles from './LoginContent.css';
 import { SocialLogin } from './SocialLogin';
@@ -13,8 +12,6 @@ interface LoginContentProps {
 }
 
 export function LoginContent({ session, next }: LoginContentProps) {
-	const router = useRouter();
-
 	if (session) {
 		return (
 			<Flex direction='column' align='center' gap='8'>
@@ -28,11 +25,11 @@ export function LoginContent({ session, next }: LoginContentProps) {
 							/>
 						</Box>
 					)}
-					<Flex direction='column' align='center' gap='2'>
-						<Typography.Text level={3} color='primary200'>
-							Welcome back
+					<Flex direction='column' align='center' gap='4'>
+						<Typography.Text level={3} color='primary200' fontWeight='medium'>
+							Welcome Back 💙
 						</Typography.Text>
-						<Typography.Heading level={4} color='primary'>
+						<Typography.Heading level={5} color='primary'>
 							{session.user.user_metadata.name}
 						</Typography.Heading>
 					</Flex>
@@ -41,12 +38,11 @@ export function LoginContent({ session, next }: LoginContentProps) {
 				<form action={signOut}>
 					<Button
 						type='submit'
-						variant='ghost'
 						boxShadow='secondary'
-						color='primary'
-						rounded
+						size='md'
+						borderRadius='lg'
 					>
-						Sign out
+						Sign Out
 					</Button>
 				</form>
 			</Flex>
@@ -56,14 +52,15 @@ export function LoginContent({ session, next }: LoginContentProps) {
 	return (
 		<Flex direction='column' align='center' gap={{ mobile: '6', tv: '8' }}>
 			<Flex direction='column' align='center' gap='8'>
-				<Typography.Heading level={3} color='primary' textAlign='center'>
-					Welcome to Jung's
-				</Typography.Heading>
-				<Typography.Text
-					level={3}
-					color='primary200'
-					className={styles.subtitle}
+				<Typography.Heading
+					level={1}
+					color='primary'
+					textAlign='center'
+					className={styles.title}
 				>
+					JUNG'S
+				</Typography.Heading>
+				<Typography.Text level={2} color='black100' fontWeight='medium'>
 					Sign in with your social account
 				</Typography.Text>
 			</Flex>
@@ -72,14 +69,14 @@ export function LoginContent({ session, next }: LoginContentProps) {
 				<SocialLogin />
 			</Box>
 
-			<Typography.SubText
-				level={3}
-				color='primary100'
-				className={styles.footer}
-			>
-				Your email will not be displayed. Only nickname and profile picture will
-				be visible.
-			</Typography.SubText>
+			<Box textAlign='center'>
+				<Typography.SubText level={2} color='black100'>
+					Your email will not be displayed.
+				</Typography.SubText>
+				<Typography.SubText level={2} color='black100'>
+					Only nickname and profile picture will be visible.
+				</Typography.SubText>
+			</Box>
 		</Flex>
 	);
 }

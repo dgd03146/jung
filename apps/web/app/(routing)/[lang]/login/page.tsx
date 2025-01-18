@@ -1,6 +1,6 @@
 import { LoginContent } from '@/fsd/features/auth';
 import { createClientForServer } from '@/fsd/shared/index.server';
-import { Box } from '@jung/design-system';
+import { Box, Container } from '@jung/design-system';
 import * as styles from './page.css';
 
 export default async function LoginPage({
@@ -14,10 +14,10 @@ export default async function LoginPage({
 	} = await supabase.auth.getSession();
 
 	return (
-		<Box className={styles.container}>
-			<div className={styles.card}>
+		<Container className={styles.container}>
+			<Box className={styles.card}>
 				<LoginContent session={session} next={searchParams.next} />
-			</div>
-		</Box>
+			</Box>
+		</Container>
 	);
 }

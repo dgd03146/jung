@@ -1,4 +1,4 @@
-import { Typography } from '@jung/design-system';
+import { Flex, Typography } from '@jung/design-system';
 import * as styles from './AboutPage.css';
 import { ConnectButton } from './ConnectButton';
 
@@ -6,15 +6,6 @@ const AboutPage = () => {
 	return (
 		<div className={styles.pageContainer}>
 			<div className={styles.contentWrapper}>
-				{/* <header className={styles.header}>
-					<Typography.Heading level={1} className={styles.title}>
-						About Me
-					</Typography.Heading>
-					<Typography.Text className={styles.subtitle}>
-						Let's learn about Jung
-					</Typography.Text>
-				</header> */}
-
 				<div className={styles.contentGrid}>
 					<section className={styles.introCard}>
 						<div className={styles.iconWrapper}>
@@ -25,7 +16,7 @@ const AboutPage = () => {
 						<Typography.Heading level={3} className={styles.cardTitle}>
 							Who I Am
 						</Typography.Heading>
-						<Typography.Text className={styles.cardContent}>
+						<Typography.Text level={2} color='black100'>
 							Hi, I'm Jung, a passionate software engineer based in Korea. I
 							love sharing my thoughts and experiences through this blog, where
 							I explore various topics related to travel, food, and technology.
@@ -35,13 +26,13 @@ const AboutPage = () => {
 					<section className={styles.highlightCard}>
 						<div className={styles.loveIcon}>
 							<span role='img' aria-label='heart'>
-								♥️
+								💙
 							</span>
 						</div>
 						<Typography.Heading level={3} className={styles.highlightTitle}>
 							What I Love
 						</Typography.Heading>
-						<Typography.Text className={styles.highlightContent}>
+						<Typography.Text level={2} color='white100'>
 							I love exploring new places, learning about different cultures,
 							and meeting new people. I also enjoy sharing a cold beer 🍺 and
 							good conversations with friends. I have a soft spot for memes,
@@ -56,9 +47,9 @@ const AboutPage = () => {
 							</span>
 						</div>
 						<Typography.Heading level={3} className={styles.cardTitle}>
-							My Journey
+							This Space
 						</Typography.Heading>
-						<Typography.Text className={styles.cardContent}>
+						<Typography.Text level={2} color='black100'>
 							This website is more than just a portfolio. It’s a blog where I
 							share my ideas and experiences, a showcase of my projects, and a
 							collection of places that are special to me. It shows the moments
@@ -76,7 +67,7 @@ const AboutPage = () => {
 						<Typography.Heading level={3} className={styles.cardTitle}>
 							My Vision
 						</Typography.Heading>
-						<Typography.Text className={styles.cardContent}>
+						<Typography.Text color='black100'>
 							My vision is to be a happy person who enjoys life and tries new
 							things. I want to make the most of every moment, learn from
 							different experiences, and inspire others to do the same. Through
@@ -86,9 +77,9 @@ const AboutPage = () => {
 					</section>
 				</div>
 
-				<div className={styles.ctaContainer}>
+				<Flex justify='center' marginTop='10'>
 					<ConnectButton />
-				</div>
+				</Flex>
 			</div>
 		</div>
 	);

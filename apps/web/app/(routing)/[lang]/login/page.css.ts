@@ -16,7 +16,7 @@ export const container = style([
 
 export const card = style([
 	sprinkles({
-		padding: '8',
+		padding: '10',
 		borderRadius: 'xl',
 
 		boxShadow: 'primary',
