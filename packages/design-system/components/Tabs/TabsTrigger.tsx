@@ -2,7 +2,7 @@ import * as S from './TabsTrigger.css';
 
 import { type LiHTMLAttributes, forwardRef } from 'react';
 
-import { Box, Typography } from '..';
+import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 import { useTabHandler } from './hooks/useTabHandle';
 
@@ -32,9 +32,7 @@ export const TabsTrigger = forwardRef<HTMLLIElement, TabsTriggerProps>(
 				ref={ref}
 				onClick={handleClick}
 			>
-				<Typography.Text level={2} className={S.tab({ isActive, variant })}>
-					{children}
-				</Typography.Text>
+				<Box className={S.tab({ isActive, variant })}>{children}</Box>
 			</Box>
 		);
 	},

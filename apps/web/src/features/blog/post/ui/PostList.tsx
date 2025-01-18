@@ -8,7 +8,7 @@ import {
 	formatDate,
 } from '@/fsd/shared';
 import { SearchBar } from '@/fsd/shared/ui/SearchBar';
-import { Container, Flex } from '@jung/design-system';
+import { Box, Button, Flex, Tag, Typography } from '@jung/design-system';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,8 +16,7 @@ import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { useInView } from 'react-intersection-observer';
-import { CATEGORY_CONFIG } from '../config/constants';
-import { CategorySection } from './CategorySection';
+import { CategoryNav } from './CategoryNav';
 import * as styles from './PostList.css';
 
 type ViewMode = 'list' | 'grid' | 'table';
@@ -44,17 +43,42 @@ const PostList = () => {
 
 	const renderEmptyState = () => {
 		return (
-			<div className={styles.emptyState}>
-				<IoDocumentTextOutline size={30} className={styles.emptyIcon} />
+			<Flex
+				direction='column'
+				align='center'
+				justify='center'
+				gap='4'
+				paddingY='16'
+			>
+				<Box
+					padding='6'
+					borderRadius='full'
+					background='primary50'
+					color='primary'
+				>
+					<IoDocumentTextOutline size={36} />
+				</Box>
 
-				<p className={styles.emptyDescription}>
-					{q
-						? `No results found for "${q}"`
-						: cat !== 'all'
-						  ? `No posts in the ${capitalizeFirstLetter(cat)} category yet`
-						  : 'No blog posts available at the moment'}
-				</p>
-			</div>
+				<Flex direction='column' align='center' gap='2'>
+					<Typography.Heading level={4} color='gray600'>
+						No Posts Found
+					</Typography.Heading>
+
+					<Typography.Text level={2} color='gray400'>
+						{q
+							? `We couldn't find any results for "${q}"`
+							: cat !== 'all'
+							  ? `No posts available in the ${capitalizeFirstLetter(
+										cat,
+								  )} category yet`
+							  : 'No blog posts available at the moment'}
+					</Typography.Text>
+				</Flex>
+
+				<Button variant='outline' size='md' onClick={() => {}}>
+					<Typography.Text>View All Posts</Typography.Text>
+				</Button>
+			</Flex>
 		);
 	};
 
@@ -62,170 +86,211 @@ const PostList = () => {
 	// TODO: SUSPENSE 적용하기
 	// TODO: 카테고리 카운트들 계산 로직
 	return (
-		<div>
-			<div className={styles.content}>
-				<aside className={styles.sidebar}>
-					<CategorySection title='All' />
-					<CategorySection
-						title={CATEGORY_CONFIG.dev.title}
-						items={CATEGORY_CONFIG.dev.items}
-					/>
-					<CategorySection
-						title={CATEGORY_CONFIG.life.title}
-						items={CATEGORY_CONFIG.life.items}
-					/>
-					<CategorySection
-						title={CATEGORY_CONFIG.travel.title}
-						items={CATEGORY_CONFIG.travel.items}
-					/>
-				</aside>
+		<Flex
+			gap={{ mobile: '0', laptop: '10' }}
+			flexDirection={{ mobile: 'column', laptop: 'row' }}
+		>
+			<CategoryNav />
 
-				<main className={styles.mainContent}>
-					<Container>
-						<div className={styles.searchArea}>
-							<SearchBar />
-							<div className={styles.viewToggleGroup}>
-								<button
-									className={styles.viewToggle({ active: viewMode === 'list' })}
-									onClick={() => setViewMode('list')}
-									title='List view'
-								>
-									<CiViewList size={28} />
-								</button>
-								<button
-									className={styles.viewToggle({ active: viewMode === 'grid' })}
-									onClick={() => setViewMode('grid')}
-									title='Grid view'
-								>
-									<BsGrid3X3Gap size={28} />
-								</button>
-								<button
-									className={styles.viewToggle({
-										active: viewMode === 'table',
-									})}
-									onClick={() => setViewMode('table')}
-									title='Table view'
-								>
-									<BsFillPlayFill size={28} />
-								</button>
-							</div>
-						</div>
+			<Box as='main' minWidth='0' flex='1'>
+				<Flex align='center' justify='space-between' gap='2.5'>
+					<SearchBar />
+					<Flex gap='1'>
+						<Button
+							variant='outline'
+							selected={viewMode === 'list'}
+							borderRadius='md'
+							onClick={() => setViewMode('list')}
+							title='List view'
+						>
+							<CiViewList size={28} />
+						</Button>
+						<Button
+							variant='outline'
+							selected={viewMode === 'grid'}
+							borderRadius='md'
+							onClick={() => setViewMode('grid')}
+							title='Grid view'
+						>
+							<BsGrid3X3Gap size={28} />
+						</Button>
+						<Button
+							variant='outline'
+							selected={viewMode === 'table'}
+							borderRadius='md'
+							onClick={() => setViewMode('table')}
+							title='Table view'
+						>
+							<BsFillPlayFill size={28} />
+						</Button>
+					</Flex>
+				</Flex>
 
-						{allPosts.length > 0 ? (
-							<>
-								<div className={styles.postList({ viewMode })}>
-									{allPosts.map((post, index) => (
-										<article
-											key={post.id}
-											className={styles.postCard({ viewMode })}
-										>
-											<Link
-												href={`/blog/${post.id}`}
-												className={styles.postLink}
-											>
-												{viewMode === 'table' ? (
-													<>
-														<Flex align='center' gap='4'>
-															<div className={styles.tableNumberWrapper}>
-																<span className={styles.tableNumber}>
-																	{index + 1}
-																</span>
-																<span className={styles.playButton}>
-																	<BsFillPlayFill size={20} />
-																</span>
-															</div>
-															<BlurImage
-																src={post.imagesrc}
-																alt={post.title}
-																width={40}
-																height={40}
-															/>
-														</Flex>
-														<Flex direction='column' gap='1' flex='1'>
-															<p className={styles.tableTitle}>{post.title}</p>
-															<p className={styles.tableDescription}>
-																{post.description}
-															</p>
-														</Flex>
+				{allPosts.length > 0 ? (
+					<>
+						<Box className={styles.postList({ viewMode })}>
+							{allPosts.map((post, index) => (
+								<Box
+									as='article'
+									key={post.id}
+									className={styles.postCard({ viewMode })}
+								>
+									<Link href={`/blog/${post.id}`} className={styles.postLink}>
+										{viewMode === 'table' ? (
+											<>
+												<Flex align='center' gap='4'>
+													<Flex
+														position='relative'
+														width='6'
+														height='6'
+														justify='center'
+														align='center'
+													>
+														<Typography.Text
+															level={4}
+															color='primary'
+															fontWeight='medium'
+															position='absolute'
+															transition='fast'
+															className={styles.tableNumber}
+														>
+															{index + 1}
+														</Typography.Text>
 														<Flex
 															align='center'
-															gap='2'
-															justify='flex-end'
-															flex='1'
-															display={{ mobile: 'none', tablet: 'flex' }}
+															justify='center'
+															color='primary'
+															position='absolute'
+															opacity={0}
+															transition='fast'
+															className={styles.playButton}
 														>
-															<span className={styles.category}>
-																{capitalizeFirstLetter(post.category)}
-															</span>
-
-															<time
-																className={styles.tableDate}
-																dateTime={post.date}
-															>
-																{formatDate(post.date)}
-															</time>
+															<BsFillPlayFill size={20} />
 														</Flex>
-													</>
-												) : (
-													<>
-														<div className={styles.imageArea({ viewMode })}>
-															<BlurImage
-																src={post.imagesrc}
-																alt={post.title}
-																fill
-																sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-																priority={index <= 6}
-															/>
-														</div>
+													</Flex>
+													<BlurImage
+														src={post.imagesrc}
+														alt={post.title}
+														width={40}
+														height={40}
+													/>
+												</Flex>
+												<Flex direction='column' gap='1' flex='1'>
+													<Typography.Text
+														truncate='single'
+														fontWeight='medium'
+														color={{ hover: 'primary' }}
+													>
+														{post.title}
+													</Typography.Text>
+													<Typography.SubText level={3} truncate='single'>
+														{post.description}
+													</Typography.SubText>
+												</Flex>
+												<Flex
+													align='center'
+													gap='2'
+													justify='flex-end'
+													flex='1'
+													color='primary'
+													display={{ mobile: 'none', tablet: 'flex' }}
+												>
+													<Typography.Text
+														className={styles.category}
+														background='primary50'
+														color='primary'
+													>
+														{capitalizeFirstLetter('category')}
+													</Typography.Text>
 
-														<div className={styles.contentArea({ viewMode })}>
-															<div className={styles.meta}>
-																<span className={styles.category}>
-																	{capitalizeFirstLetter(post.category)}
-																</span>
+													<Typography.SubText level={3}>
+														{formatDate(post.date)}
+													</Typography.SubText>
+												</Flex>
+											</>
+										) : (
+											<>
+												<Box className={styles.imageArea({ viewMode })}>
+													<BlurImage
+														src={post.imagesrc}
+														alt={post.title}
+														fill
+														sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+														priority={index <= 6}
+													/>
+												</Box>
 
-																<span className={styles.date}>
-																	{formatDate(post.date)}
-																</span>
-															</div>
+												<Flex
+													flexDirection='column'
+													flex='1'
+													gap='3'
+													className={styles.contentArea({ viewMode })}
+												>
+													<Flex
+														gap='3'
+														align='center'
+														marginTop='1'
+														color='primary'
+													>
+														<Typography.Text
+															className={styles.category}
+															background='primary50'
+														>
+															{capitalizeFirstLetter('category')}
+														</Typography.Text>
 
-															<h2 className={styles.title({ viewMode })}>
-																{post.title}
-															</h2>
-															<p className={styles.description({ viewMode })}>
-																{post.description}
-															</p>
-															<div className={styles.bottomArea}>
-																{/* 태그 영역 */}
-																{post.tags && post.tags.length > 0 && (
-																	<div className={styles.tagList}>
-																		{post.tags.map((tag) => (
-																			<div key={tag} className={styles.tag}>
-																				{tag}
-																			</div>
-																		))}
-																	</div>
-																)}
-															</div>
-														</div>
-													</>
-												)}
-											</Link>
-										</article>
-									))}
-								</div>
+														<Typography.SubText level={3}>
+															{formatDate(post.date)}
+														</Typography.SubText>
+													</Flex>
 
-								<div ref={ref} className={styles.loadingArea}>
-									{isFetchingNextPage && <LoadingSpinner size='small' />}
-								</div>
-							</>
-						) : (
-							renderEmptyState()
-						)}
-					</Container>
-				</main>
-			</div>
-		</div>
+													<Typography.Heading level={4}>
+														{post.title}
+													</Typography.Heading>
+													<Typography.Text
+														level={3}
+														color='primary400'
+														marginBottom='4'
+														truncate='two'
+													>
+														{post.description}
+													</Typography.Text>
+													<Box marginTop='auto'>
+														{post.tags && post.tags.length > 0 && (
+															<Flex gap='2' wrap='wrap' flex='1' minWidth='0'>
+																{post.tags.map((tag) => (
+																	<Tag key={tag} variant='secondary'>
+																		<Typography.FootNote level={1}>
+																			# {tag}
+																		</Typography.FootNote>
+																	</Tag>
+																))}
+															</Flex>
+														)}
+													</Box>
+												</Flex>
+											</>
+										)}
+									</Link>
+								</Box>
+							))}
+						</Box>
+
+						<Box
+							ref={ref}
+							display='flex'
+							justifyContent='center'
+							paddingY='5'
+							minHeight='10'
+						>
+							{isFetchingNextPage && <LoadingSpinner size='small' />}
+						</Box>
+					</>
+				) : (
+					renderEmptyState()
+				)}
+			</Box>
+		</Flex>
 	);
 };
 

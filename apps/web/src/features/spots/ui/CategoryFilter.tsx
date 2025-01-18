@@ -1,4 +1,4 @@
-import { Box, Tag } from '@jung/design-system/components';
+import { Box, Tag, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
@@ -22,6 +22,7 @@ export function CategoryFilter() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
+	// FIXME: 공용 함수로 빼기
 	const createQueryString = useCallback(
 		(value: string) => {
 			const params = new URLSearchParams(searchParams.toString());
@@ -46,12 +47,12 @@ export function CategoryFilter() {
 					href={`${pathname}?${createQueryString(category.value)}`}
 				>
 					<Tag
-						rounded
-						className={styles.categoryTag({
-							selected: category.value === currentCategory,
-						})}
+						variant='secondary'
+						selected={category.value === currentCategory}
 					>
-						{category.label}
+						<Typography.SubText level={2} fontWeight='medium'>
+							{category.label}
+						</Typography.SubText>
 					</Tag>
 				</Link>
 			))}

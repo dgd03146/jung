@@ -2,7 +2,7 @@ import * as S from './Tag.css';
 
 import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
 
-import { Box, Typography } from '..';
+import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 
 export interface TagProps
@@ -10,23 +10,25 @@ export interface TagProps
 		AtomProps {
 	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg';
-	rounded?: boolean;
+	selected?: boolean;
 	prefix?: ReactNode;
 	suffix?: ReactNode;
 }
 
 export const Tag = forwardRef<HTMLDivElement, TagProps>(
-	({ variant, size, rounded, suffix, children, prefix, ...restProps }, ref) => {
+	(
+		{ variant, size = 'sm', suffix, children, prefix, selected, ...restProps },
+		ref,
+	) => {
 		return (
 			<Box
 				as='div'
-				display='inline-block'
-				className={S.tag({ variant, size, rounded })}
+				className={S.tag({ variant, size, selected })}
 				ref={ref}
 				{...restProps}
 			>
 				{prefix && prefix}
-				<Typography.SubText level={2}>{children}</Typography.SubText>
+				{children}
 				{suffix && suffix}
 			</Box>
 		);

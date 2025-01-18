@@ -9,7 +9,6 @@ const SpotSkeleton = () => {
 				<Box className={styles.titleSkeleton} /> {/* 제목 스켈레톤 */}
 				<Box className={styles.addressSkeleton} /> {/* 주소 스켈레톤 */}
 				<Box className={styles.descriptionSkeleton} /> {/* 설명 스켈레톤 */}
-				<Box className={styles.ratingSkeleton} /> {/* 별점 스켈레톤 */}
 			</Card.Content>
 		</Card>
 	);
@@ -17,7 +16,7 @@ const SpotSkeleton = () => {
 
 const SpotListSkeleton = ({ count = 3 }) => {
 	return (
-		<Container marginY='12'>
+		<Container>
 			<Grid
 				columnGap='4'
 				rowGap='8'

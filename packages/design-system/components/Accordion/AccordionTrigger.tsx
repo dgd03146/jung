@@ -3,7 +3,7 @@ import * as styles from './Accordion.css';
 import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
 import { KeyboardArrowUp } from '../../icons';
 
-import { Box, Stack, Typography } from '..';
+import { Box, Stack } from '..';
 import type { AtomProps } from '../../types';
 
 import { useAccordionContext } from './context/AccordionContext';
@@ -34,9 +34,10 @@ export const AccordionTrigger = forwardRef<
 			aria-controls={id}
 			{...restProps}
 		>
-			<Stack space='5' align={'left'}>
+			<Stack space='0' rowGap='5' align={'left'}>
 				{top && top}
-				<Typography.Text>{children}</Typography.Text>
+
+				{children}
 			</Stack>
 			<Box className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
 				<KeyboardArrowUp />

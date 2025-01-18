@@ -82,6 +82,7 @@ export const tab = recipe({
 					base: 'primary',
 					hover: 'primary',
 				},
+				transition: 'slow',
 			}),
 		},
 	},

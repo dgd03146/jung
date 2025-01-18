@@ -17,6 +17,10 @@ export const palette = {
 
 	// Neutral colors
 	black: '#000000',
+	black100: '#111111',
+	black200: '#080808',
+	black300: '#050505',
+
 	white: '#FFFFFF',
 	white100: '#F8FAFC',
 	white200: '#F5F5F5',

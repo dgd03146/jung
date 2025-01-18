@@ -1,69 +1,113 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
 export const button = recipe({
-	base: [],
+	base: sprinkles({
+		transition: 'fast',
+		display: 'flex',
+		alignItems: 'center',
+		columnGap: '1',
+	}),
 	variants: {
 		variant: {
-			primary: sprinkles({
-				borderColor: 'primary',
-				borderWidth: 'hairline',
-				borderStyle: 'solid',
-				background: {
-					base: 'transparent',
-					hover: 'primary',
+			primary: style([
+				sprinkles({
+					background: {
+						base: 'primary',
+						hover: 'primary200',
+					},
+					color: 'white',
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						boxShadow: '0 4px 8px rgba(1, 66, 192, 0.2)',
+						background: 'linear-gradient(135deg, #0136A3 0%, #0142C0 100%)',
+					},
 				},
-				color: {
-					base: 'primary',
-					hover: 'white',
+			]),
+			outline: style([
+				sprinkles({
+					borderColor: 'primary100',
+					borderWidth: 'hairline',
+					borderStyle: 'solid',
+					background: {
+						base: 'white',
+					},
+					color: {
+						base: 'primary200',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						borderColor: 'rgba(1, 66, 192, 0.4)',
+						background: 'rgba(1, 66, 192, 0.04)',
+						boxShadow: '0 2px 6px rgba(1, 66, 192, 0.12)',
+						color: '#0142C0',
+					},
 				},
-			}),
-			secondary: sprinkles({
-				background: {
-					base: 'primary',
-					hover: 'primary200',
+			]),
+			secondary: style([
+				sprinkles({
+					background: {
+						base: 'primary100',
+					},
+					color: {
+						base: 'primary',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						background:
+							'linear-gradient(135deg, rgba(1, 66, 192, 0.12) 0%, rgba(1, 66, 192, 0.08) 100%)',
+						boxShadow: '0 3px 7px rgba(1, 66, 192, 0.15)',
+						color: '#0136A3',
+					},
 				},
-				color: {
-					base: 'white',
-					hover: 'white',
+			]),
+			ghost: style([
+				sprinkles({
+					background: {
+						base: 'transparent',
+					},
+					color: {
+						base: 'primary',
+					},
+				}),
+				{
+					':hover': {
+						transform: 'translateY(-1px)',
+						background: 'rgba(1, 66, 192, 0.04)',
+						boxShadow: '0 2px 4px rgba(1, 66, 192, 0.08)',
+					},
 				},
-				border: 'none',
-			}),
-
-			ghost: sprinkles({
-				border: 'none',
-				background: {
-					base: 'transparent',
-					// hover: 'primary',
-				},
-				color: {
-					base: 'primary',
-					hover: 'primary100',
-				},
-			}),
+			]),
 		},
 		size: {
 			zero: sprinkles({
 				padding: '0',
 			}),
 			sm: sprinkles({
-				paddingX: '2.5',
-				paddingY: '1.5',
+				paddingX: '2', // 8px
+				paddingY: '1', // 4px
 			}),
 			md: sprinkles({
-				paddingX: '3',
-				paddingY: '2',
+				paddingX: '3', // 12px
+				paddingY: '1.5', // 6px
 			}),
 			lg: sprinkles({
-				paddingX: '3.5',
-				paddingY: '2.5',
+				paddingX: '3.5', // 14px
+				paddingY: '2.5', // 10px
 			}),
 		},
-		rounded: {
-			true: sprinkles({
-				borderRadius: '2xl',
-			}),
+
+		selected: {
+			true: {},
 		},
+
 		loading: {
 			true: sprinkles({
 				background: 'primary100',
@@ -83,13 +127,6 @@ export const button = recipe({
 			}),
 		},
 	},
-	// defaultVariants: {
-	// 	variant: 'primary',
-	// 	size: 'sm',
-	// 	// loading: false,
-	// 	// rounded: false,
-	// 	// disabled: false,
-	// },
 
 	compoundVariants: [
 		{
@@ -116,6 +153,43 @@ export const button = recipe({
 					hover: 'transparent',
 				},
 			}),
+		},
+		{
+			variants: {
+				variant: 'primary',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary200',
+				color: 'white',
+				fontWeight: 'semibold',
+			}),
+		},
+		{
+			variants: {
+				variant: 'secondary',
+				selected: true,
+			},
+			style: sprinkles({
+				background: 'primary100',
+				color: 'primary200',
+				fontWeight: 'semibold',
+			}),
+		},
+		{
+			variants: {
+				variant: 'outline',
+				selected: true,
+			},
+			style: [
+				sprinkles({
+					background: 'primary50',
+					borderColor: 'primary200',
+					boxShadow: 'tertiary',
+					fontWeight: 'semibold',
+					color: 'primary',
+				}),
+			],
 		},
 	],
 });

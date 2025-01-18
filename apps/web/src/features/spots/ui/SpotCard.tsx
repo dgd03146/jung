@@ -1,5 +1,5 @@
 import { BlurImage } from '@/fsd/shared';
-import { Card, Flex } from '@jung/design-system';
+import { Box, Button, Card, Flex, Typography } from '@jung/design-system';
 import Link from 'next/link';
 import { IoLocationOutline } from 'react-icons/io5';
 import * as styles from './SpotCard.css';
@@ -47,40 +47,44 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 								: '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 						}
 					/>
-					<div className={styles.imageOverlay}>
-						<button
+					<Box className={styles.imageOverlay}>
+						<Button
 							className={styles.likeButton}
 							type='button'
 							onClick={handleLikeClick}
 						>
 							{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
-						</button>
-					</div>
+						</Button>
+					</Box>
 				</Card.Media>
 
-				<Card.Content rowGap={variant === 'compact' ? '1' : '2'}>
-					<Card.Title className={styles.title({ variant })} level={3}>
-						{spot.title}
+				<Card.Content
+					rowGap={variant === 'compact' ? '1' : '3'}
+					padding={variant === 'compact' ? '2' : '4'}
+					display='flex'
+					flexDirection='column'
+					height='full'
+				>
+					<Card.Title>
+						<Typography.Heading level={5}>{spot.title}</Typography.Heading>
 					</Card.Title>
 
-					<Flex
-						align='flex-start'
-						gap='1'
-						className={styles.location({ variant })}
-					>
-						<IoLocationOutline size={16} className={styles.locationIcon} />
-						<Card.Description className={styles.address({ variant })}>
-							{spot.address}
-						</Card.Description>
-					</Flex>
 					{variant === 'default' && (
-						<Card.Description className={styles.description}>
-							{spot.description}
+						<Card.Description>
+							<Typography.Text level={3} truncate='two' fontWeight='normal'>
+								{spot.description}
+							</Typography.Text>
 						</Card.Description>
 					)}
-					<Card.Actions className={styles.footer}>
-						{/* <StarRating value={spot.likes} size="sm" /> */}
-					</Card.Actions>
+
+					<Flex align='center' gap='1.5' marginTop='auto'>
+						<IoLocationOutline size={16} className={styles.locationIcon} />
+						<Card.Description>
+							<Typography.SubText level={3} truncate='two' color='primary300'>
+								{spot.address}
+							</Typography.SubText>
+						</Card.Description>
+					</Flex>
 				</Card.Content>
 			</Card>
 		</Link>

@@ -7,13 +7,13 @@ type QueryParams = {
 };
 
 export function useGetSpots(params: QueryParams) {
-	const { sort = 'latest', category_id, q = '' } = params;
+	const { sort = 'latest', q = '' } = params;
 
 	return trpc.spot.getAllSpots.useSuspenseInfiniteQuery(
 		{
 			limit: 12,
 			sort,
-			category_id,
+			// category_id,
 			q,
 		},
 		{

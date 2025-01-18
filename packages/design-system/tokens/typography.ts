@@ -9,27 +9,34 @@ export const fontFamily = {
 	body: '-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
 	code: 'ml, "Roboto Mono", Menlo, monospace',
 	playfair: 'var(--font-playfair)',
+	bebas: 'var(--font-bebas)',
 };
 
 export const fontSizes = {
-	xxxs: '0.5rem', // 8px
-	xxs: '0.625rem', // 10px
-	xs: '0.75rem', // 12px
+	mini: '0.5rem', // 8px
+	xxxs: '0.625rem', // 10px
+	xxs: '0.75rem', // 12px
+	xs: '0.8125rem', // 13px
 	sm: '0.875rem', // 14px
+
+	md: '0.9375rem', // 15px
 	base: '1rem', // 16px
+
 	lg: '1.125rem', // 18px
 	xl: '1.25rem', // 20px
 	'2xl': '1.5rem', // 24px
 	'3xl': '2rem', // 32px
+
 	'4xl': '2.25rem', // 36px
 	'5xl': '3rem', // 48px
 	'6xl': '3.75rem', // 60px
 	'7xl': '4.5rem', // 72px
+
 	'8xl': '6rem', // 96px
 	'9xl': '8rem', // 128px
-	'10xl': '11rem', // 176px, hero font
-	'11xl': '12rem',
-};
+	'10xl': '11rem', // 176px
+	'11xl': '12rem', // 192px
+} as const;
 
 export const lineHeights = {
 	none: '1',
@@ -40,6 +47,7 @@ export const lineHeights = {
 	loose: '2',
 	big: '11.5rem', // hero font
 
+	'2': '0.625rem', // 10px
 	'3': '0.75rem', // 12px
 	'4': '1rem', // 16px
 	'5': '1.25rem', // 20px

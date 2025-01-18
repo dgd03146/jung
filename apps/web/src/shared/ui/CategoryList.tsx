@@ -84,7 +84,7 @@ const CategoryList = () => {
 						href={`${pathname}?${createQueryString('cat', category.name)}`}
 					>
 						<Tag
-							rounded
+							borderRadius='lg'
 							transitionDuration='500'
 							borderColor={{ hover: 'primary200' }}
 							background={

@@ -1,6 +1,7 @@
 import { DEFAULT_BACKGROUND_COLOR, type GuestbookColor } from '../config';
 
 import { formatDate } from '@/fsd/shared';
+import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import * as styles from './MessageWall.css';
@@ -28,24 +29,27 @@ export const MessageCard = ({
 			})}
 		>
 			{message.emoji && (
-				<div className={styles.messageEmoji}>{message.emoji}</div>
+				<Box className={styles.messageEmoji}>{message.emoji}</Box>
 			)}
 
-			<div className={styles.messageHeader}>
-				<img
+			<Flex gap='2' marginBottom='5'>
+				<Box
+					as='img'
 					src={message.author_avatar}
 					alt={message.author_name}
 					className={styles.avatar}
 				/>
-				<div className={styles.authorInfo}>
-					<div className={styles.authorName}>{message.author_name}</div>
-					<div className={styles.messageDate}>
+				<Stack>
+					<Typography.Text level={4}>{message.author_name}</Typography.Text>
+					<Typography.FootNote level={2} color='primary200'>
 						{formatDate(message.created_at)}
-					</div>
-				</div>
-			</div>
+					</Typography.FootNote>
+				</Stack>
+			</Flex>
 
-			<div className={styles.messageContent}>{message.content}</div>
+			<Typography.Text level={3} color='black100'>
+				{message.content}
+			</Typography.Text>
 		</motion.div>
 	);
 };

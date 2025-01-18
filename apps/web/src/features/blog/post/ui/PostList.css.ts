@@ -13,60 +13,6 @@ const fadeIn = keyframes({
 	},
 });
 
-export const searchArea = style({
-	display: 'flex',
-	gap: '10px',
-	justifyContent: 'space-between',
-	marginBottom: '8px',
-	'@media': {
-		'(max-width: 768px)': {
-			marginBottom: '4px',
-		},
-	},
-	alignItems: 'center',
-	// flexDirection: 'column',
-});
-
-export const viewToggleGroup = style({
-	display: 'flex',
-	gap: '4px',
-
-	borderRadius: '8px',
-});
-
-export const viewToggle = recipe({
-	base: {
-		height: '40px',
-		display: 'flex',
-		alignItems: 'center',
-		gap: '6px',
-		padding: '4px 8px',
-		border: `1px solid ${palette.primary100}`,
-		borderRadius: '8px',
-		backgroundColor: palette.white,
-
-		color: palette.primary200,
-		fontWeight: 500,
-
-		transition: 'all 0.2s ease',
-
-		':hover': {
-			borderColor: palette.primary,
-			backgroundColor: palette.primary50,
-			color: palette.primary,
-		},
-	},
-	variants: {
-		active: {
-			true: {
-				backgroundColor: palette.primary50,
-				color: palette.primary,
-				boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-			},
-		},
-	},
-});
-
 export const postList = recipe({
 	base: {
 		width: '100%',
@@ -174,12 +120,7 @@ export const postCard = recipe({
 });
 
 export const contentArea = recipe({
-	base: {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '12px',
-		flex: 1,
-	},
+	base: {},
 	variants: {
 		viewMode: {
 			list: {
@@ -192,121 +133,11 @@ export const contentArea = recipe({
 	},
 });
 
-export const meta = style({
-	display: 'flex',
-	gap: '12px',
-	alignItems: 'center',
-	fontSize: '13px',
-	color: '#666',
-	marginTop: '4px',
-});
-
 export const category = style({
-	padding: '2px 8px',
-	backgroundColor: 'rgba(1, 66, 192, 0.06)',
-	color: palette.primary,
-	borderRadius: '4px',
-	fontSize: '16px',
-	fontWeight: '500',
 	fontFamily: 'var(--font-bebas)',
-	letterSpacing: '0.04em',
-});
 
-export const date = style({
-	color: palette.primary,
-	fontWeight: '400',
-	fontSize: '0.75rem',
-});
-
-export const title = recipe({
-	base: {
-		fontSize: '24px',
-		fontWeight: '700',
-		color: '#1a1a1a',
-		lineHeight: '1.4',
-		transition: 'color 0.2s ease',
-	},
-	variants: {
-		viewMode: {
-			list: {
-				'@media': {
-					'(max-width: 768px)': {
-						fontSize: '16px',
-					},
-				},
-			},
-			grid: {
-				fontSize: '18px',
-			},
-			table: {},
-		},
-	},
-});
-
-export const description = recipe({
-	base: {
-		fontSize: '15px',
-		color: palette.primary400,
-		lineHeight: '1.6',
-		marginBottom: '1rem',
-		display: '-webkit-box',
-		WebkitLineClamp: 2,
-		WebkitBoxOrient: 'vertical',
-		overflow: 'hidden',
-	},
-	variants: {
-		viewMode: {
-			list: {
-				'@media': {
-					'(max-width: 768px)': {
-						fontSize: '13px',
-					},
-				},
-			},
-			grid: {
-				fontSize: '14px',
-			},
-			table: {},
-		},
-	},
-});
-
-export const bottomArea = style({
-	marginTop: 'auto',
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'flex-end',
-	gap: '16px',
-});
-
-export const tagList = style({
-	display: 'flex',
-	flexWrap: 'wrap',
-	gap: '8px',
-	flex: 1,
-	minWidth: 0,
-	marginTop: '16px',
-});
-export const tag = style({
-	fontSize: '12px',
-	fontWeight: '400',
-	color: palette.primary,
-	textDecoration: 'none',
-	transition: 'all 0.2s ease',
-	padding: '6px 12px',
-	borderRadius: '6px',
-	backgroundColor: 'rgba(1, 66, 192, 0.04)',
-	display: 'inline-flex',
-	alignItems: 'center',
-
-	':hover': {
-		backgroundColor: 'rgba(1, 66, 192, 0.08)',
-	},
-	':before': {
-		content: '#',
-		marginRight: '4px',
-		opacity: 0.6,
-	},
+	padding: '2px 8px',
+	borderRadius: '4px',
 });
 
 export const imageArea = recipe({
@@ -355,13 +186,6 @@ export const imageArea = recipe({
 	},
 });
 
-export const loadingArea = style({
-	display: 'flex',
-	justifyContent: 'center',
-	padding: '20px 0',
-	minHeight: '40px',
-});
-
 export const cardWrapper = style({
 	display: 'block',
 	width: '100%',
@@ -373,22 +197,7 @@ export const cardWrapper = style({
 	},
 });
 
-export const tableNumberWrapper = style({
-	position: 'relative',
-	width: '24px',
-	height: '24px',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-});
-
 export const tableNumber = style({
-	fontSize: '14px',
-	color: palette.primary,
-	fontWeight: '500',
-	position: 'absolute',
-	transition: 'all 0.2s ease',
-
 	selectors: {
 		'article:hover &': {
 			opacity: 0,
@@ -398,14 +207,7 @@ export const tableNumber = style({
 });
 
 export const playButton = style({
-	position: 'absolute',
-	opacity: 0,
-	color: palette.primary,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
 	transform: 'scale(0.8)',
-	transition: 'all 0.2s ease',
 
 	selectors: {
 		'article:hover &': {
@@ -416,105 +218,8 @@ export const playButton = style({
 	},
 });
 
-export const tableTitle = style({
-	fontSize: '16px',
-	color: '#333',
-	fontWeight: '400',
-	letterSpacing: '-0.03em',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-
-	selectors: {
-		'article:hover &': {
-			color: '#0142C0',
-		},
-	},
-});
-
-export const tableDescription = style({
-	fontSize: '12px',
-	color: palette.primary400,
-	fontWeight: '400',
-	letterSpacing: '-0.03em',
-	overflow: 'hidden',
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-});
-
-export const tableDate = style({
-	color: palette.primary,
-	fontWeight: '400',
-	fontSize: '0.75rem',
-	textAlign: 'right',
-});
-
 export const postLink = style({
 	display: 'contents',
 	textDecoration: 'none',
 	color: 'inherit',
-});
-
-export const sidebar = style({
-	minWidth: '184px',
-	position: 'sticky',
-	top: '56px',
-	height: 'fit-content',
-	backgroundColor: 'white',
-	zIndex: 10,
-	'@media': {
-		'(max-width: 1024px)': {
-			display: 'flex',
-
-			width: '100%',
-			position: 'static',
-			top: '0',
-		},
-	},
-});
-
-export const count = style({
-	fontSize: '13px',
-	color: '#999',
-});
-
-export const mainContent = style({
-	minWidth: 0,
-	flex: '1',
-});
-
-export const content = style({
-	display: 'flex',
-	gap: '40px',
-
-	'@media': {
-		'(max-width: 1024px)': {
-			flexDirection: 'column',
-			gap: '20px',
-		},
-	},
-});
-
-export const emptyState = style({
-	display: 'flex',
-	flexDirection: 'column',
-	alignItems: 'center',
-	justifyContent: 'center',
-	padding: '64px 24px',
-	textAlign: 'center',
-	minHeight: '400px',
-
-	borderRadius: '12px',
-	margin: '24px 0',
-});
-
-export const emptyIcon = style({
-	color: palette.primary,
-	marginBottom: '16px',
-});
-
-export const emptyDescription = style({
-	fontSize: '18px',
-	fontWeight: '500',
-	color: palette.primary,
 });

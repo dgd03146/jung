@@ -10,18 +10,20 @@ import * as S from './Typography.css';
  * - level `1`: Body text 1
  * - level `2`: Body text 2
  * - level `3`: Body text 3
+ * - level `4`: Body text 4
  */
 
 export interface TextProps
 	extends Omit<ParamHTMLAttributes<HTMLParagraphElement>, 'color'>,
 		AtomProps {
-	level?: 1 | 2 | 3;
+	level?: 1 | 2 | 3 | 4;
 	inline?: boolean;
+	truncate?: 'none' | 'single' | 'two' | 'three';
 }
 
 export const Text = forwardRef<HTMLParagraphElement, TextProps>(
-	({ level = 1, inline, children, className, ...restProps }, ref) => {
-		const textStyle = clsx(S.text({ level, inline }), className);
+	({ level = 2, inline, truncate, children, className, ...restProps }, ref) => {
+		const textStyle = clsx(S.text({ level, inline, truncate }), className);
 
 		return (
 			<Box as='p' className={textStyle} ref={ref} {...restProps}>

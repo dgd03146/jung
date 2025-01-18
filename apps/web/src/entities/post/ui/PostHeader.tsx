@@ -25,16 +25,25 @@ const PostHeader = ({ post }: Props) => {
 					/>
 				</Box>
 				<Stack space={'0'} align={'left'} rowGap='4' flex='1'>
-					<Typography.SubText level={2} className={styles.date}>
+					<Typography.SubText level={3} color='primary'>
 						{formatDate(post.date)}
 					</Typography.SubText>
 					<Typography.Heading level={3}>{post.title}</Typography.Heading>
-					<Typography.Text level={3} className={styles.description}>
+					<Typography.Text
+						level={3}
+						color='primary400'
+						marginBottom='4'
+						truncate='two'
+					>
 						{post.description}
 					</Typography.Text>
-					<p className={styles.category}>
-						{capitalizeFirstLetter(post.category)}
-					</p>
+					<Typography.Text
+						className={styles.category}
+						background='primary50'
+						color='primary'
+					>
+						{capitalizeFirstLetter('category')}
+					</Typography.Text>
 				</Stack>
 			</Flex>
 		</Box>

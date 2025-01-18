@@ -2,72 +2,16 @@ import { sprinkles } from '@jung/design-system/styles';
 import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
-export const container = style([
-	sprinkles({
-		width: 'full',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	}),
-	{
-		minHeight: 'calc(100dvh - 144px)',
-	},
-]);
-
-export const card = style([
-	sprinkles({
-		width: 'full',
-		background: 'white',
-		borderRadius: 'lg',
-		boxShadow: 'primary',
-		padding: '10',
-	}),
-	{
-		maxWidth: '400px',
-
-		'@media': {
-			[`screen and (min-width: ${breakpoints.tablet}px)`]: {
-				padding: '40px',
-			},
-		},
-	},
-]);
-
-export const subtitle = style([
-	sprinkles({
-		textAlign: 'center',
-	}),
-	{
-		maxWidth: '280px',
-		margin: '0 auto',
-		'@media': {
-			[`screen and (min-width: ${breakpoints.tablet}px)`]: {
-				maxWidth: '320px',
-			},
-		},
-	},
-]);
+export const title = style({
+	fontFamily: 'var(--font-bebas)',
+	letterSpacing: '0.02em',
+});
 
 export const socialLoginWrapper = style([
 	sprinkles({
 		width: 'full',
 		display: 'flex',
 		justifyContent: 'center',
-	}),
-	{
-		maxWidth: '280px',
-		margin: '0 auto',
-		'@media': {
-			[`screen and (min-width: ${breakpoints.tablet}px)`]: {
-				maxWidth: '320px',
-			},
-		},
-	},
-]);
-
-export const footer = style([
-	sprinkles({
-		textAlign: 'center',
 	}),
 	{
 		maxWidth: '280px',
@@ -88,8 +32,8 @@ export const avatarWrapper = style([
 		alignItems: 'center',
 	}),
 	{
-		width: '96px',
-		height: '96px',
+		width: '80px',
+		height: '80px',
 		borderRadius: '50%',
 		padding: '3px',
 		background:

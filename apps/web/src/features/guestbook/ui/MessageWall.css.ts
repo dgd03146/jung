@@ -11,17 +11,12 @@ const sparkleAnimation = keyframes({
 });
 
 export const messageWallContainer = style({
-	display: 'grid',
 	gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-	gap: '1.25rem',
-	padding: '1rem 0',
-
-	margin: '0 auto',
 });
 
 export const messageCard = recipe({
 	base: {
-		borderRadius: '16px',
+		borderRadius: '12px',
 		padding: '1rem',
 		boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
 		transition: 'all 0.2s ease',
@@ -50,38 +45,12 @@ export const messageCard = recipe({
 	},
 });
 
-export const messageHeader = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '0.75rem',
-	marginBottom: '1rem',
-});
-
 export const avatar = style({
-	width: '36px',
-	height: '36px',
+	width: '24px',
+	height: '24px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `1.5px solid ${PRIMARY_LIGHT}`,
-});
-
-export const authorInfo = style({
-	flex: 1,
-	minWidth: 0,
-});
-
-export const authorName = style({
-	fontSize: '0.925rem',
-	fontWeight: '600',
-	color: '#1F2937',
-	marginBottom: '0.125rem',
-	fontFamily: "'Inter', sans-serif",
-});
-
-export const messageDate = style({
-	fontSize: '0.75rem',
-	color: '#9CA3AF',
-	fontFamily: "'Inter', sans-serif",
+	border: '1px solid #0142C0',
 });
 
 export const messageEmoji = style({
@@ -97,19 +66,6 @@ export const messageEmoji = style({
 	backgroundColor: PRIMARY_LIGHT,
 	borderRadius: '8px',
 	color: PRIMARY_COLOR,
-});
-
-export const messageContent = style({
-	fontSize: '0.925rem',
-	lineHeight: '1.6',
-	color: '#374151',
-	fontFamily: "'Inter', sans-serif",
-	marginTop: '0.5rem',
-	display: '-webkit-box',
-	WebkitLineClamp: 3,
-	WebkitBoxOrient: 'vertical',
-	overflow: 'hidden',
-	wordBreak: 'break-word',
 });
 
 export const emptyStateContainer = style({
@@ -128,6 +84,9 @@ export const emptyStateContainer = style({
 export const emptyStateContent = style({
 	textAlign: 'center',
 	padding: '2rem',
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '1rem',
 });
 
 export const emptyStateEmoji = style({
@@ -137,19 +96,4 @@ export const emptyStateEmoji = style({
 	filter: 'saturate(1.2)',
 	transform: 'rotate(-5deg)',
 	animation: `${sparkleAnimation} 2s infinite`,
-});
-
-export const emptyStateTitle = style({
-	fontSize: '1.5rem',
-	fontWeight: '600',
-	color: '#2C2C2C',
-	marginBottom: '0.75rem',
-	letterSpacing: '-0.02em',
-});
-
-export const emptyStateText = style({
-	fontSize: '1rem',
-	color: '#666666',
-	lineHeight: '1.5',
-	letterSpacing: '-0.01em',
 });

@@ -9,28 +9,6 @@ export const contentWrapper = style({
 	position: 'relative',
 });
 
-export const header = style({
-	textAlign: 'center',
-	marginBottom: '40px',
-});
-
-export const title = style({
-	fontSize: '4rem',
-	fontWeight: '800',
-	background: 'linear-gradient(135deg, #0142C0 0%, #5B86E5 100%)',
-	WebkitBackgroundClip: 'text',
-	WebkitTextFillColor: 'transparent',
-	marginBottom: '16px',
-	letterSpacing: '-0.02em',
-});
-
-export const subtitle = style({
-	fontSize: '1.25rem',
-	color: '#64748B',
-	fontWeight: '400',
-	letterSpacing: '0.02em',
-});
-
 export const contentGrid = style({
 	display: 'grid',
 	gridTemplateColumns: 'repeat(2, 1fr)',
@@ -140,26 +118,6 @@ export const highlightTitle = style({
 	fontSize: '1.8rem',
 
 	color: 'white',
-});
-
-export const cardContent = style({
-	fontSize: '1.125rem',
-	lineHeight: '1.7',
-	color: '#334155',
-	fontWeight: '400',
-});
-
-export const highlightContent = style({
-	fontSize: '1.125rem',
-	lineHeight: '1.7',
-	color: 'rgba(255, 255, 255, 0.9)',
-	fontWeight: '400',
-});
-
-export const ctaContainer = style({
-	display: 'flex',
-	justifyContent: 'center',
-	marginTop: '64px',
 });
 
 export const ctaButton = style({

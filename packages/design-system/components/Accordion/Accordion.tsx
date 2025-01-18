@@ -28,7 +28,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					ref={ref}
 					display='flex'
 					flexDirection='column'
-					rowGap='4'
+					// rowGap='4'
 					{...restProps}
 				>
 					{Children.map(children, (child, index) =>

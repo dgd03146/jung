@@ -1,10 +1,6 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
-export const container = style({
-	width: '100%',
-});
-
 export const searchWrapper = style({
 	position: 'relative',
 	width: '100%',
@@ -16,16 +12,12 @@ export const searchWrapper = style({
 	borderRadius: '8px',
 	padding: '0 8px',
 	transition: 'all 0.2s ease',
-	boxShadow: '0 0 0 1px rgba(1, 66, 192, 0.1)',
-	// border: `1px solid ${palette.primary100}`,
 
-	// ':hover': {
-	// 	borderColor: palette.primary100,
-	// },
+	border: `1px solid ${palette.primary100}`,
 
 	':focus-within': {
+		boxShadow: `0 0 0 3px ${palette.primary50}`,
 		borderColor: palette.primary,
-		// boxShadow: `0 0 0 3px ${palette.primary50}`,
 	},
 });
 
@@ -48,6 +40,7 @@ export const input = style({
 	outline: 'none',
 	fontSize: '14px',
 	color: palette.primary400,
+	caretColor: palette.primary,
 
 	'::placeholder': {
 		color: palette.gray300,

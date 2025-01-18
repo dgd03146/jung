@@ -1,7 +1,8 @@
 import { usePathname } from '@/fsd/shared';
 import { useSidebarStore } from '@/fsd/shared';
+import { Accordion } from '@jung/design-system';
 import { Link } from '@tanstack/react-router';
-import { HiChevronDown, HiHome } from 'react-icons/hi';
+import { HiHome } from 'react-icons/hi';
 import * as styles from './Sidebar.css';
 
 const menuSections = [
@@ -14,7 +15,7 @@ const menuSections = [
 	{
 		title: 'Blog',
 		items: [
-			{ path: '/blog', label: ' Posts' },
+			{ path: '/blog', label: 'Posts' },
 			{ path: '/blog/new', label: 'New Post' },
 			{ path: '/blog/categories', label: 'Categories' },
 		],
@@ -27,11 +28,10 @@ const menuSections = [
 			{ path: '/gallery/photos/new', label: 'New Photos' },
 		],
 	},
-
 	{
 		title: 'Spots',
 		items: [
-			{ path: '/spots', label: ' Spots' },
+			{ path: '/spots', label: 'Spots' },
 			{ path: '/spots/new', label: 'New Spot' },
 			{ path: '/spots/categories', label: 'Categories' },
 		],
@@ -44,61 +44,40 @@ const menuSections = [
 
 export const Sidebar = () => {
 	const { pathname: currentPage } = usePathname();
-	const { isOpen, openSections, actions } = useSidebarStore();
+	const { isOpen } = useSidebarStore();
 
 	return (
 		<aside className={styles.sidebar({ isOpen })}>
-			<nav className={styles.nav}>
-				{menuSections.map((section) => (
-					<div key={section.title} className={styles.section}>
-						{section.items ? (
-							<>
-								<button
-									onClick={() => actions.toggleSection(section.title)}
-									className={styles.sectionHeader}
-									type='button'
-								>
-									<span className={styles.sectionTitle}>{section.title}</span>
-									<HiChevronDown
-										className={styles.chevronIcon({
-											isOpen: openSections.includes(section.title),
-										})}
-									/>
-								</button>
-								<div
-									className={styles.sectionContent({
-										isOpen: openSections.includes(section.title),
-									})}
-								>
-									{section.items.map((item) => (
-										<Link
-											key={item.path}
-											to={item.path}
-											className={styles.sectionItem({
-												active: currentPage === item.path,
-											})}
-										>
-											<span>{item.label}</span>
-										</Link>
-									))}
-								</div>
-							</>
-						) : (
-							<Link
-								to={section.path}
-								className={styles.dashboardItem({
-									active: currentPage === section.path,
-								})}
-							>
-								{section.icon && (
-									<section.icon className={styles.dashboardIcon} />
-								)}
-								<span>{section.label}</span>
-							</Link>
-						)}
-					</div>
-				))}
-			</nav>
+			<Accordion type='multiple'>
+				{menuSections.map((section) =>
+					section.items ? (
+						<Accordion.Item key={section.title}>
+							<Accordion.Trigger>{section.title}</Accordion.Trigger>
+							<Accordion.Content>
+								{section.items.map((item) => (
+									<Link key={item.path} to={item.path}>
+										<Accordion.Panel active={currentPage === item.path}>
+											{item.label}
+										</Accordion.Panel>
+									</Link>
+								))}
+							</Accordion.Content>
+						</Accordion.Item>
+					) : (
+						<Link
+							to={section.path}
+							className={styles.dashboardItem({
+								active: currentPage === section.path,
+							})}
+						>
+							{section.icon && (
+								<section.icon className={styles.dashboardIcon} />
+							)}
+							<span>{section.label}</span>
+						</Link>
+					),
+				)}
+			</Accordion>
 		</aside>
 	);
 };

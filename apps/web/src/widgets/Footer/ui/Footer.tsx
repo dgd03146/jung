@@ -15,20 +15,18 @@ const Footer = () => {
 			height='18'
 			maxWidth='11/12'
 			marginX='auto'
-			// position='sticky'
-			// bottom={0}
-			zIndex='10'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>
-				<Typography.SubText level={2} color='primary' className={logo}>
+				<Typography.Text level={3} color='primary' className={logo}>
 					ⓒ 2024. Jung. All rights reserved.
-				</Typography.SubText>
+				</Typography.Text>
 
 				<Flex columnGap='4'>
 					<Link href={SOCIAL_NAVIGATION.LINKEDIN}>
 						<Typography.SubText
 							level={2}
 							color={{ base: 'primary', hover: 'primary200' }}
+							transition='slow'
 						>
 							<FaLinkedin size='1.5rem' />
 						</Typography.SubText>
@@ -37,6 +35,7 @@ const Footer = () => {
 						<Typography.SubText
 							level={2}
 							color={{ base: 'primary', hover: 'primary200' }}
+							transition='slow'
 						>
 							<FaGithub size='1.5rem' />
 						</Typography.SubText>
@@ -45,6 +44,7 @@ const Footer = () => {
 						<Typography.SubText
 							level={2}
 							color={{ base: 'primary', hover: 'primary200' }}
+							transition='slow'
 						>
 							<FaYoutube size='1.5rem' />
 						</Typography.SubText>

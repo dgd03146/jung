@@ -37,9 +37,9 @@ export function ErrorBoundary({
 			</Button>
 			{process.env.NODE_ENV === 'development' && (
 				<Box as='details' className={styles.errorDetails}>
-					<summary className={styles.errorDetailsSummary}>
+					<Box as='summary' className={styles.errorDetailsSummary}>
 						Error details
-					</summary>
+					</Box>
 					{error.stack && (
 						<pre className={styles.errorStackTrace}>{error.stack}</pre>
 					)}

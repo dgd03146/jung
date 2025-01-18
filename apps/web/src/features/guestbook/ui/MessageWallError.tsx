@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { FiAlertCircle } from 'react-icons/fi';
 import * as styles from './MessageWallError.css';

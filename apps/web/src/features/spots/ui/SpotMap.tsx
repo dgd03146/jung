@@ -1,7 +1,7 @@
 'use client';
 
+import { Button } from '@jung/design-system/components';
 import { GoogleMap, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-
 import { useCallback, useState } from 'react';
 import { SpotCard } from './SpotCard';
 
@@ -100,9 +100,9 @@ export function SpotMap({
 				</GoogleMap>
 			)}
 
-			<button onClick={onShowListClick} className={styles.showListButton}>
+			<Button onClick={onShowListClick} className={styles.showListButton}>
 				{isListVisible ? 'Hide list' : 'Show list'}
-			</button>
+			</Button>
 		</div>
 	);
 }

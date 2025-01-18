@@ -2,12 +2,9 @@ import { globalStyle, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
 
-// box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
 export const card = recipe({
 	base: [
 		sprinkles({
-			borderRadius: '2xl',
 			padding: '0',
 		}),
 	],
