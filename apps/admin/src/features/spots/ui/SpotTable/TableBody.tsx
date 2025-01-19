@@ -29,8 +29,6 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 			{table.getRowModel().rows.map((row) => {
 				const spot = row.original as Spot;
 
-				console.log(spot, 'spot');
-
 				const category = categoriesData?.allCategories.find(
 					(cat) => cat.id === spot.category_id,
 				);

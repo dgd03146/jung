@@ -1,5 +1,6 @@
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
-import { BlogPage } from '@/fsd/views';
+import { PostList } from '@/fsd/features';
+
+import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
 
 type Sort = 'latest' | 'oldest' | 'popular';
 
@@ -13,11 +14,12 @@ export default async function Page({ searchParams }: PageProps) {
 	const q = (searchParams.q as string) || '';
 
 	void trpc.post.getAllPosts.prefetchInfinite({ limit: 9, cat, sort, q });
+	const categories = await getCategories('blog');
 
 	return (
 		// FIXME: 전체를 HydrationBoundary로 감싸야하나?..
 		<HydrateClient>
-			<BlogPage />
+			<PostList categories={categories} />
 		</HydrateClient>
 	);
 }

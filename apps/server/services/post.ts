@@ -28,7 +28,31 @@ export const postService = {
 			let query = supabase.from('posts').select('*', { count: 'exact' });
 
 			if (cat && cat !== 'all') {
-				query = query.eq('category', cat);
+				const { data: categoryIds, error: categoryError } = await supabase
+					.from('categories')
+					.select('id')
+					.eq('name', cat)
+					.eq('type', 'blog');
+
+				if (categoryError) {
+					throw new TRPCError({
+						code: 'INTERNAL_SERVER_ERROR',
+						message: 'Failed to fetch categories. Please try again later.',
+						cause: categoryError,
+					});
+				}
+
+				if (categoryIds && categoryIds.length > 0) {
+					query = query.in(
+						'category_id',
+						categoryIds.map((category) => category.id),
+					);
+				} else {
+					return {
+						items: [],
+						nextCursor: null,
+					};
+				}
 			}
 
 			if (q) {

@@ -18,8 +18,6 @@ export interface CreateSpotInput {
 }
 
 export const createSpot = async (input: CreateSpotInput): Promise<Spot> => {
-	console.log(input, 'input');
-
 	try {
 		const uploadedPhotos = await Promise.all(
 			input.files.map(async (file) => {
@@ -49,8 +47,6 @@ export const createSpot = async (input: CreateSpotInput): Promise<Spot> => {
 			])
 			.select()
 			.single();
-
-		console.log(spot, 'spot');
 
 		if (spotError) {
 			await Promise.all(

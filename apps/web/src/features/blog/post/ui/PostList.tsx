@@ -9,6 +9,7 @@ import {
 } from '@/fsd/shared';
 import { SearchBar } from '@/fsd/shared/ui/SearchBar';
 import { Box, Button, Flex, Tag, Typography } from '@jung/design-system';
+import type { GetCategoryItem } from '@jung/shared/types';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -22,7 +23,7 @@ import * as styles from './PostList.css';
 type ViewMode = 'list' | 'grid' | 'table';
 type Sort = 'latest' | 'oldest' | 'popular';
 
-const PostList = () => {
+const PostList = ({ categories }: { categories: GetCategoryItem[] }) => {
 	const [viewMode, setViewMode] = useState<ViewMode>('list');
 	const searchParams = useSearchParams();
 	const cat = searchParams.get('cat') || 'all';
@@ -86,14 +87,16 @@ const PostList = () => {
 	// TODO: SUSPENSE 적용하기
 	// TODO: 카테고리 카운트들 계산 로직
 	return (
-		<Flex
-			gap={{ mobile: '0', laptop: '10' }}
-			flexDirection={{ mobile: 'column', laptop: 'row' }}
-		>
-			<CategoryNav />
+		<Flex gap={{ mobile: '0', tablet: '10' }}>
+			<CategoryNav categories={categories} />
 
 			<Box as='main' minWidth='0' flex='1'>
-				<Flex align='center' justify='space-between' gap='2.5'>
+				<Flex
+					align='center'
+					justify='space-between'
+					gap='2.5'
+					paddingBottom='2'
+				>
 					<SearchBar />
 					<Flex gap='1'>
 						<Button

@@ -9,12 +9,7 @@ export const sidebar = style({
 	height: 'fit-content',
 	backgroundColor: 'white',
 	zIndex: 10,
-	'@media': {
-		'(max-width: 1024px)': {
-			display: 'flex',
-			width: '100%',
-		},
-	},
+	borderRight: `1px solid ${palette.primary50}`,
 });
 
 export const categoryLink = recipe({
@@ -22,7 +17,7 @@ export const categoryLink = recipe({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: '16px',
+		padding: '8px 16px',
 
 		textDecoration: 'none',
 		transition: 'all 0.15s ease',
@@ -33,16 +28,6 @@ export const categoryLink = recipe({
 		fontWeight: '600',
 		color: '#1a1a1a',
 		letterSpacing: '-0.01em',
-
-		'@media': {
-			'(max-width: 1024px)': {
-				borderBottom: 'none',
-				padding: '8px 16px',
-				backgroundColor: '#f5f7ff',
-				borderRadius: '8px',
-				whiteSpace: 'nowrap',
-			},
-		},
 
 		':hover': {
 			backgroundColor: 'rgba(1, 66, 192, 0.03)',
@@ -66,21 +51,6 @@ export const categoryLink = recipe({
 					backgroundColor: '#0142C0',
 				},
 			},
-		},
-	},
-});
-
-export const count = style({
-	fontSize: '13px',
-	color: palette.primary,
-	backgroundColor: palette.primary50,
-	padding: '2px 4px',
-	borderRadius: '12px',
-	fontWeight: 'normal',
-
-	'@media': {
-		'(max-width: 768px)': {
-			display: 'none',
 		},
 	},
 });
