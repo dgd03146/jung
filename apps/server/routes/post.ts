@@ -40,8 +40,4 @@ export const postRouter = router({
 	getAdjacentPosts: publicProcedure.input(z.string()).query(({ input }) => {
 		return postService.getAdjacentPosts(input);
 	}),
-
-	getCategoryCounts: publicProcedure.query(async () => {
-		return postService.getCategoryCounts();
-	}),
 });

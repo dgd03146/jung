@@ -40,7 +40,7 @@ const PostList = ({ categories }: { categories: GetCategoryItem[] }) => {
 		}
 	}, [inView, fetchNextPage, hasNextPage]);
 
-	const allPosts = data?.pages.flatMap((page) => page.items) || [];
+	const allPosts = data.pages.flatMap((page) => page.items) || [];
 
 	const renderEmptyState = () => {
 		return (
@@ -203,7 +203,7 @@ const PostList = ({ categories }: { categories: GetCategoryItem[] }) => {
 														background='primary50'
 														color='primary'
 													>
-														{capitalizeFirstLetter('category')}
+														{capitalizeFirstLetter(post.category)}
 													</Typography.Text>
 
 													<Typography.SubText level={3}>
@@ -239,7 +239,7 @@ const PostList = ({ categories }: { categories: GetCategoryItem[] }) => {
 															className={styles.category}
 															background='primary50'
 														>
-															{capitalizeFirstLetter('category')}
+															{capitalizeFirstLetter(post.category)}
 														</Typography.Text>
 
 														<Typography.SubText level={3}>
