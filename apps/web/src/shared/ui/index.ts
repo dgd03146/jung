@@ -10,3 +10,4 @@ export { Modal } from './Modal';
 export { ErrorBoundary } from './ErrorBoundary';
 export { MotionCard } from './MotionCard';
 export { SearchBar } from './SearchBar';
+export { EmptyState } from './EmptyState';

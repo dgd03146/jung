@@ -5,6 +5,7 @@ import { type Dispatch, type SetStateAction, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { LoadingSpinner } from '@/fsd/shared/ui';
+import { EmptyState } from '@/fsd/shared/ui';
 import { Box } from '@jung/design-system/components/Box/Box';
 import { Container } from '@jung/design-system/components/Container/Container';
 import { useSearchParams } from 'next/navigation';
@@ -27,11 +28,11 @@ export const SpotContent = ({
 	setIsListVisible,
 }: SpotContentProps) => {
 	const searchParams = useSearchParams();
-	const category_id = searchParams.get('category_id') || 'all';
+	const cat = searchParams.get('cat') || 'all';
 	const sort = (searchParams.get('sort') as Sort) || 'latest';
 	const q = searchParams.get('q') || '';
 
-	const [data, query] = useGetSpots({ category_id, sort, q });
+	const [data, query] = useGetSpots({ cat, sort, q });
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
 	const { ref, inView } = useInView();
@@ -42,7 +43,11 @@ export const SpotContent = ({
 		}
 	}, [inView, fetchNextPage, hasNextPage]);
 
-	const spots = data?.pages.flatMap((page) => page.items) ?? [];
+	const spots = data.pages.flatMap((page) => page.items) ?? [];
+
+	if (spots.length === 0) {
+		return <EmptyState />;
+	}
 
 	return (
 		<>

@@ -4,16 +4,17 @@ type QueryParams = {
 	category_id?: string;
 	sort?: 'latest' | 'oldest' | 'popular';
 	q?: string;
+	cat?: string;
 };
 
 export function useGetSpots(params: QueryParams) {
-	const { sort = 'latest', q = '' } = params;
+	const { sort, q, cat } = params;
 
 	return trpc.spot.getAllSpots.useSuspenseInfiniteQuery(
 		{
 			limit: 12,
 			sort,
-			// category_id,
+			cat,
 			q,
 		},
 		{

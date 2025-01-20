@@ -6,19 +6,56 @@ import type {
 import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabase';
 
+type SpotWithCategory = Spot & {
+	categories: {
+		name: string;
+	};
+	category_id: string;
+};
+
 export const spotsService = {
 	async findMany({
 		limit,
 		cursor,
-		category_id,
+		cat,
 		q: search,
 		sort = 'latest',
 	}: SpotQueryParams): Promise<SpotQueryResult> {
 		try {
-			let query = supabase.from('spots').select('*', { count: 'exact' });
+			let query = supabase
+				.from('spots')
+				.select(`
+				*,
+				categories!inner(name).name as category
+			`)
+				.eq('categories.type', 'spots');
 
-			if (category_id && category_id !== 'all') {
-				query = query.eq('category_id', category_id);
+			if (cat && cat !== 'all') {
+				const { data: categoryIds, error: categoryError } = await supabase
+					.from('categories')
+					.select('id')
+					.eq('name', cat)
+					.eq('type', 'spots');
+
+				if (categoryError) {
+					throw new TRPCError({
+						code: 'INTERNAL_SERVER_ERROR',
+						message: 'Failed to fetch categories. Please try again later.',
+						cause: categoryError,
+					});
+				}
+
+				if (categoryIds && categoryIds.length > 0) {
+					query = query.in(
+						'category_id',
+						categoryIds.map((category) => category.id),
+					);
+				} else {
+					return {
+						items: [],
+						nextCursor: null,
+					};
+				}
 			}
 
 			if (search) {
@@ -39,7 +76,7 @@ export const spotsService = {
 
 			query = query.limit(limit);
 
-			const { data, error } = await query.returns<Spot[]>();
+			const { data, error } = await query.returns<SpotWithCategory[]>();
 
 			if (error) {
 				throw new TRPCError({
@@ -59,7 +96,13 @@ export const spotsService = {
 			const nextCursor = data[data.length - 1]?.id ?? null;
 
 			return {
-				items: data,
+				items: data.map((spot) => {
+					const { categories, category_id, ...rest } = spot;
+					return {
+						...rest,
+						category: categories.name,
+					};
+				}),
 				nextCursor,
 			};
 		} catch (error) {
