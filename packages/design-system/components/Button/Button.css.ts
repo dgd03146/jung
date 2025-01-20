@@ -181,15 +181,13 @@ export const button = recipe({
 				variant: 'outline',
 				selected: true,
 			},
-			style: [
-				sprinkles({
-					background: 'primary50',
-					borderColor: 'primary200',
-					boxShadow: 'tertiary',
+			style: style([
+				{
+					color: '#0142C0',
 					fontWeight: 'semibold',
-					color: 'primary',
-				}),
-			],
+					backgroundColor: 'rgba(1, 66, 192, 0.07)',
+				},
+			]),
 		},
 	],
 });

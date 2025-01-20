@@ -1,27 +1,30 @@
 'use client';
 
 import { Accordion, Box, Typography } from '@jung/design-system';
+import type { GetCategoryItem } from '@jung/shared/types';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
-import { useGetCategoryCounts } from '../api';
-import { CATEGORY_CONFIG } from '../config/constants';
-import { CategoryGroup } from './CategoryGroup';
 import * as styles from './CategoryNav.css';
 
-export const CategoryNav = () => {
+type Props = {
+	categories: GetCategoryItem[];
+};
+
+export const CategoryNav = ({ categories }: Props) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const currentCat = searchParams.get('cat') || 'all';
-	const { data: categoryCounts } = useGetCategoryCounts();
 
 	const createQueryString = useCallback(
 		(value: string) => {
+			const lowerCaseValue = value.toLowerCase();
+
 			const params = new URLSearchParams(searchParams.toString());
-			if (value === 'all') {
+			if (lowerCaseValue === 'all') {
 				params.delete('cat');
 			} else {
-				params.set('cat', value);
+				params.set('cat', lowerCaseValue);
 			}
 			return params.toString();
 		},
@@ -29,111 +32,75 @@ export const CategoryNav = () => {
 	);
 
 	return (
-		<aside className={styles.sidebar}>
-			<Box
-				display={{ mobile: 'flex', laptop: 'none' }}
-				width='full'
-				marginTop='2'
-			>
-				<CategoryGroup title='All' />
-				{Object.entries(CATEGORY_CONFIG).map(([key, category]) => (
-					<CategoryGroup
-						key={key}
-						title={category.title}
-						items={category.items}
-					/>
+		<Box
+			as='aside'
+			className={styles.sidebar}
+			display={{ mobile: 'none', tablet: 'block' }}
+		>
+			{/* FIXME: 모바일에선 일단 카테고리 안보여줌 */}
+			{/* <Box
+        display={{ mobile: 'flex', laptop: 'none' }}
+        width="full"
+        marginTop="2"
+      >
+        <CategoryGroup title="All" />
+        {categories.map((category) => (
+          <CategoryGroup
+            key={category.id}
+            title={category.name}
+            items={category.subCategories}
+          />
+        ))}
+      </Box> */}
+
+			<Accordion type='multiple'>
+				<Link
+					href='/blog'
+					className={styles.categoryLink({
+						active: currentCat === 'all',
+					})}
+				>
+					All
+				</Link>
+
+				{categories.map((category) => (
+					<Accordion.Item key={category.id}>
+						<Link href={`${pathname}?${createQueryString(category.name)}`}>
+							<Accordion.Trigger
+								hasPanel={category.subCategories.length > 0}
+								active={
+									currentCat.toLowerCase() === category.name.toLowerCase()
+								}
+							>
+								{category.name}
+							</Accordion.Trigger>
+						</Link>
+
+						<Accordion.Content>
+							{category.subCategories.map((subCategory) => (
+								<Link
+									key={subCategory.id}
+									href={`${pathname}?${createQueryString(subCategory.name)}`}
+								>
+									<Accordion.Panel active={currentCat === subCategory.name}>
+										<span>{subCategory.name}</span>
+										<Typography.SubText
+											level={2}
+											color='primary'
+											background='primary50'
+											paddingY='1'
+											paddingX='2'
+											display={{ mobile: 'none', tablet: 'block' }}
+										>
+											{subCategory.postCount}
+										</Typography.SubText>
+									</Accordion.Panel>
+								</Link>
+							))}
+						</Accordion.Content>
+					</Accordion.Item>
 				))}
-			</Box>
-
-			<Box display={{ mobile: 'none', laptop: 'block' }}>
-				<Accordion type='multiple'>
-					<Link
-						href='/blog'
-						className={styles.categoryLink({
-							active: currentCat === null,
-						})}
-					>
-						All
-					</Link>
-
-					<Accordion.Item>
-						<Accordion.Trigger>{CATEGORY_CONFIG.dev.title}</Accordion.Trigger>
-						<Accordion.Content>
-							{CATEGORY_CONFIG.travel.items.map((item) => (
-								<Link key={item.slug} href={item.slug}>
-									<Accordion.Panel active={currentCat === item.slug}>
-										{item.name}
-										<Typography.SubText
-											level={2}
-											color='primary'
-											background='primary50'
-											paddingY='1'
-											paddingX='2'
-											display={{ mobile: 'none', tablet: 'block' }}
-										>
-											{categoryCounts?.[item.slug] ?? 0}
-										</Typography.SubText>
-									</Accordion.Panel>
-								</Link>
-							))}
-						</Accordion.Content>
-					</Accordion.Item>
-
-					<Accordion.Item>
-						<Accordion.Trigger>{CATEGORY_CONFIG.life.title}</Accordion.Trigger>
-						<Accordion.Content>
-							{CATEGORY_CONFIG.travel.items.map((item) => (
-								<Link
-									key={item.slug}
-									href={`${pathname}?${createQueryString(item.slug)}`}
-								>
-									<Accordion.Panel active={currentCat === item.slug}>
-										<span>{item.name}</span>
-										<Typography.SubText
-											level={2}
-											color='primary'
-											background='primary50'
-											paddingY='1'
-											paddingX='2'
-											display={{ mobile: 'none', tablet: 'block' }}
-										>
-											{categoryCounts?.[item.slug] ?? 0}
-										</Typography.SubText>
-									</Accordion.Panel>
-								</Link>
-							))}
-						</Accordion.Content>
-					</Accordion.Item>
-
-					<Accordion.Item>
-						<Accordion.Trigger>
-							{CATEGORY_CONFIG.travel.title}
-						</Accordion.Trigger>
-						<Accordion.Content>
-							{CATEGORY_CONFIG.travel.items.map((item) => (
-								<Link
-									key={item.slug}
-									href={`${pathname}?${createQueryString(item.slug)}`}
-								>
-									<Accordion.Panel active={currentCat === item.slug}>
-										<span>{item.name}</span>
-										<Typography.SubText
-											level={2}
-											color='primary'
-											background='primary50'
-											paddingY='1'
-											paddingX='2'
-											display={{ mobile: 'none', tablet: 'block' }}
-										>
-											{categoryCounts?.[item.slug] ?? 0}
-										</Typography.SubText>
-									</Accordion.Panel>
-								</Link>
-							))}
-						</Accordion.Content>
-					</Accordion.Item>
-				</Accordion>
-			</Box>
-		</aside>
+			</Accordion>
+		</Box>
 	);
 };

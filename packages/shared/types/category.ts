@@ -25,3 +25,17 @@ export interface CategoriesResponse {
 }
 
 export type CategoryType = 'blog' | 'spots';
+
+export type GetCategorySubItem = {
+	id: string;
+	name: string;
+	postCount: number;
+};
+
+export type GetCategoryItem = {
+	id: string;
+	name: string;
+	subCategories: GetCategorySubItem[];
+};
+
+export type GetCategoriesResponse = GetCategoryItem[];

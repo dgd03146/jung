@@ -42,7 +42,7 @@ const PostHeader = ({ post }: Props) => {
 						background='primary50'
 						color='primary'
 					>
-						{capitalizeFirstLetter('category')}
+						{capitalizeFirstLetter(post.category)}
 					</Typography.Text>
 				</Stack>
 			</Flex>

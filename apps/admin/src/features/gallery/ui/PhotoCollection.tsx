@@ -24,8 +24,6 @@ interface FormErrors {
 export const PhotoCollection = () => {
 	const { data: collections = [], isLoading } = useGetCollections();
 
-	console.log(collections, 'collections');
-
 	const createCollectionMutation = useCreateCollection();
 	const updateCollectionMutation = useUpdateCollection();
 	const deleteCollectionMutation = useDeleteCollection();

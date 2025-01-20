@@ -10,6 +10,13 @@ type QueryParams = {
 	q?: string;
 };
 
+type PostWithCategory = Post & {
+	categories: {
+		name: string;
+	};
+	category_id: string;
+};
+
 type QueryResult = {
 	items: Post[];
 	nextCursor: number | null;
@@ -25,10 +32,40 @@ export const postService = {
 		q,
 	}: QueryParams): Promise<QueryResult> {
 		try {
-			let query = supabase.from('posts').select('*', { count: 'exact' });
+			let query = supabase
+				.from('posts')
+				.select(`
+					*,
+					categories!inner(name).name as category
+				`)
+				.eq('categories.type', 'blog');
 
 			if (cat && cat !== 'all') {
-				query = query.eq('category', cat);
+				const { data: categoryIds, error: categoryError } = await supabase
+					.from('categories')
+					.select('id')
+					.eq('name', cat)
+					.eq('type', 'blog');
+
+				if (categoryError) {
+					throw new TRPCError({
+						code: 'INTERNAL_SERVER_ERROR',
+						message: 'Failed to fetch categories. Please try again later.',
+						cause: categoryError,
+					});
+				}
+
+				if (categoryIds && categoryIds.length > 0) {
+					query = query.in(
+						'category_id',
+						categoryIds.map((category) => category.id),
+					);
+				} else {
+					return {
+						items: [],
+						nextCursor: null,
+					};
+				}
 			}
 
 			if (q) {
@@ -62,7 +99,7 @@ export const postService = {
 
 			query = query.limit(limit);
 
-			const { data, error } = await query.returns<Post[]>();
+			const { data, error } = await query.returns<PostWithCategory[]>();
 
 			if (error) {
 				throw new TRPCError({
@@ -83,7 +120,13 @@ export const postService = {
 			const nextCursor = data.length === limit ? Number(lastItem?.id) : null;
 
 			return {
-				items: data,
+				items: data.map((post) => {
+					const { categories, category_id, ...rest } = post;
+					return {
+						...rest,
+						category: categories.name,
+					};
+				}),
 				nextCursor,
 			};
 		} catch (error) {
@@ -98,9 +141,12 @@ export const postService = {
 	async findById(id: string): Promise<Post | null> {
 		const { data, error } = await supabase
 			.from('posts')
-			.select('*')
+			.select(`
+				*,
+				categories!inner(name)->name as category
+			`)
 			.eq('id', id)
-			.single<Post>();
+			.single<PostWithCategory>();
 
 		if (error) {
 			throw new TRPCError({
@@ -117,8 +163,10 @@ export const postService = {
 		}
 
 		try {
+			const { categories, category_id, ...rest } = data;
 			return {
-				...data,
+				...rest,
+				category: categories.name,
 				content:
 					typeof data.content === 'string'
 						? JSON.parse(data.content)
@@ -218,30 +266,6 @@ export const postService = {
 		}
 
 		return data;
-	},
-
-	// 카테고리 카운트
-	async getCategoryCounts() {
-		const { data, error } = await supabase.from('posts').select('category');
-
-		if (error) {
-			throw new TRPCError({
-				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to fetch category counts',
-				cause: error,
-			});
-		}
-
-		const counts = data.reduce(
-			(acc, { category }) => {
-				if (category) {
-					acc[category] = (acc[category] || 0) + 1;
-				}
-				return acc;
-			},
-			{} as Record<string, number>,
-		);
-		return counts;
 	},
 
 	// 이전, 이후 포스트 가져오기

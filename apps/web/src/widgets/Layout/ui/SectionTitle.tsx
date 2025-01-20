@@ -59,7 +59,7 @@ export function SectionTitle() {
 		<Typography.Heading
 			level={2}
 			color='primary'
-			marginY={{ mobile: '1', desktop: '5' }}
+			marginY={{ mobile: '3', desktop: '5' }}
 			width='fit'
 		>
 			<Link href={`/${section}`} className={styles.sectionTitle}>

@@ -9,7 +9,7 @@ export const PostSchema = z.object({
 	tags: z.array(z.string()),
 	title: z.string(),
 	description: z.string(),
-	link: z.string(),
+
 	likes: z.number(),
 	liked_by: z.array(z.string()),
 });

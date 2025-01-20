@@ -13,35 +13,50 @@ export interface AccordionTriggerProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		Omit<AtomProps, 'top'> {
 	top?: ReactNode;
+	hasPanel?: boolean;
+	active?: boolean;
 }
 
 export const AccordionTrigger = forwardRef<
 	HTMLDivElement,
 	AccordionTriggerProps
->(({ children, top, ...restProps }: AccordionTriggerProps, ref) => {
-	const { openIndexes, handleToggleIndex } = useAccordionContext();
-	const { index, id } = useAccordionItemContext();
-	const isOpen = openIndexes.has(index!);
+>(
+	(
+		{
+			children,
+			top,
+			hasPanel = true,
+			active = false,
+			...restProps
+		}: AccordionTriggerProps,
+		ref,
+	) => {
+		const { openIndexes, handleToggleIndex } = useAccordionContext();
+		const { index, id } = useAccordionItemContext();
+		const isOpen = openIndexes.has(index!);
 
-	return (
-		<Box
-			ref={ref}
-			className={styles.trigger}
-			onClick={() => handleToggleIndex(index!)}
-			role='button'
-			id={id}
-			aria-expanded={isOpen ? 'true' : 'false'}
-			aria-controls={id}
-			{...restProps}
-		>
-			<Stack space='0' rowGap='5' align={'left'}>
-				{top && top}
+		return (
+			<Box
+				ref={ref}
+				className={styles.trigger({ active })}
+				onClick={() => handleToggleIndex(index!)}
+				role='button'
+				id={id}
+				aria-expanded={isOpen ? 'true' : 'false'}
+				aria-controls={id}
+				{...restProps}
+			>
+				<Stack space='0' rowGap='5' align={'left'}>
+					{top && top}
 
-				{children}
-			</Stack>
-			<Box className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
-				<KeyboardArrowUp />
+					{children}
+				</Stack>
+				{hasPanel && (
+					<Box className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+						<KeyboardArrowUp />
+					</Box>
+				)}
 			</Box>
-		</Box>
-	);
-});
+		);
+	},
+);

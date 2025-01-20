@@ -1,20 +1,14 @@
 import { Box, Button, Flex, Typography } from '@jung/design-system';
+import type { GetCategorySubItem } from '@jung/shared/types';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
-import { useGetCategoryCounts } from '../api';
 import * as styles from './CategoryGroup.css';
-
-interface CategoryItem {
-	name: string;
-
-	slug: string;
-}
 
 interface CategoryGroupProps {
 	title: string;
-	items?: CategoryItem[];
+	items?: GetCategorySubItem[];
 }
 
 export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
@@ -22,10 +16,6 @@ export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const currentCat = searchParams.get('cat') || 'all';
-
-	const { data: categoryCounts } = useGetCategoryCounts();
-
-	const getPostCount = (slug: string) => categoryCounts?.[slug] ?? 0;
 
 	const createQueryString = useCallback(
 		(value: string) => {
@@ -74,16 +64,14 @@ export const CategoryGroup = ({ title, items }: CategoryGroupProps) => {
 					<Box className={styles.categoryContent({ isOpen })}>
 						{items?.map((item) => (
 							<Link
-								key={item.slug}
-								href={`${pathname}?${createQueryString(item.slug)}`}
+								key={item.id}
+								href={`${pathname}?${createQueryString(item.id)}`}
 								className={styles.categoryItem({
-									active: currentCat === item.slug,
+									active: currentCat === item.id,
 								})}
 							>
 								<span className={styles.categoryName}>{item.name}</span>
-								<span className={styles.categoryCount}>
-									{getPostCount(item.slug)}
-								</span>
+								<span className={styles.categoryCount}>{item.postCount}</span>
 							</Link>
 						))}
 					</Box>

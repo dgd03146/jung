@@ -54,28 +54,61 @@ export const contentChild = style([
 // 	borderBottom: '0.5px solid #EFEFEF',
 // });
 
-export const trigger = style([
-	sprinkles({
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingY: '4',
-		paddingX: '4',
-		cursor: 'pointer',
-		height: 'full',
-	}),
-	{
-		fontSize: '13.5px',
-		fontWeight: '600',
-		color: '#1a1a1a',
-		letterSpacing: '-0.01em',
+export const trigger = recipe({
+	base: style([
+		sprinkles({
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			paddingY: '4',
+			paddingX: '4',
+			cursor: 'pointer',
+			height: 'full',
+		}),
+		{
+			fontSize: '13.5px',
+			fontWeight: '600',
+			color: '#1a1a1a',
+			letterSpacing: '-0.01em',
+			':hover': {
+				backgroundColor: 'rgba(1, 66, 192, 0.03)',
+				color: '#0142C0',
+			},
+		},
+	]),
+	variants: {
+		active: {
+			true: {
+				backgroundColor: '#f5f7ff',
+				color: '#0142C0',
+				fontWeight: '600',
+				transform: 'translateX(2px)',
 
-		':hover': {
-			backgroundColor: 'rgba(1, 66, 192, 0.03)',
-			color: '#0142C0',
+				':before': {
+					content: '""',
+					position: 'absolute',
+					left: '0',
+					top: '50%',
+					transform: 'translateY(-50%)',
+					width: '3px',
+					height: '70%',
+					backgroundColor: '#0142C0',
+					borderRadius: '0 2px 2px 0',
+					transition: 'height 0.2s ease',
+					opacity: 1,
+				},
+
+				':hover': {
+					backgroundColor: '#f0f2ff',
+					transform: 'translateX(2px)',
+				},
+			},
 		},
 	},
-]);
+	defaultVariants: {
+		active: false,
+	},
+});
 
 export const arrow = style([
 	sprinkles({
@@ -166,5 +199,8 @@ export const panel = recipe({
 				},
 			},
 		},
+	},
+	defaultVariants: {
+		active: false,
 	},
 });
