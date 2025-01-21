@@ -1,4 +1,3 @@
-import { Layout } from '@/fsd/widgets';
 import type { Metadata } from 'next';
 import {
 	Anton,
@@ -67,7 +66,7 @@ export default function RootLayout({
 			<body
 				className={`${poppins.className} ${unbounded.variable} ${bebasNeue.variable} ${archivo.variable} ${anton.variable} ${oswald.variable} ${teko.variable}`}
 			>
-				<Layout>{children}</Layout>
+				{children}
 			</body>
 		</html>
 	);

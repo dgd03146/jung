@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getSection } from '../lib/getSection';
 import * as styles from './SectionTitle.css';
+
 export function SectionTitle() {
 	const pathname = usePathname();
 	const isHome = pathname.length === 3;

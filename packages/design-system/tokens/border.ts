@@ -28,4 +28,5 @@ export const borderRadius = {
 	'3xl': '24px',
 	'4xl': '32px',
 	full: '9999px',
+	half: '50%',
 };

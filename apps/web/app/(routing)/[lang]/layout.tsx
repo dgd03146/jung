@@ -4,6 +4,7 @@ import {
 	KakaoProvider,
 	TrpcProvider,
 } from '@/fsd/app/providers';
+import { Layout } from '@/fsd/widgets';
 
 import '@/fsd/app/styles/global.css';
 import { getDictionary } from '@/fsd/shared/config';
@@ -23,7 +24,7 @@ export default async function RootLayout({ params, children }: Props) {
 			>
 				<ClientToastProvider>
 					<KakaoProvider />
-					{children}
+					<Layout>{children}</Layout>
 				</ClientToastProvider>
 
 				{/* Just for convenient switching between different routes */}
