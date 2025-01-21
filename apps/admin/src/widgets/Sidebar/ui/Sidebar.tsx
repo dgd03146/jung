@@ -55,7 +55,7 @@ export const Sidebar = () => {
 							<Accordion.Trigger>{section.title}</Accordion.Trigger>
 							<Accordion.Content>
 								{section.items.map((item) => (
-									<Link key={item.path} to={item.path}>
+									<Link key={item.label} to={item.path}>
 										<Accordion.Panel active={currentPage === item.path}>
 											{item.label}
 										</Accordion.Panel>
@@ -65,6 +65,7 @@ export const Sidebar = () => {
 						</Accordion.Item>
 					) : (
 						<Link
+							key={section.title}
 							to={section.path}
 							className={styles.dashboardItem({
 								active: currentPage === section.path,

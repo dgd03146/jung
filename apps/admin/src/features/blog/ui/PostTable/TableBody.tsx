@@ -1,4 +1,7 @@
 import { useDeletePost } from '@/fsd/features/blog/api';
+import { useGetCategories } from '@/fsd/shared';
+import { CategoryCell } from '@/fsd/shared/ui';
+import type { Post } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -10,6 +13,7 @@ interface TableBodyProps<T> {
 
 export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 	const deletePostMutation = useDeletePost();
+	const { data: categoriesData } = useGetCategories('blog');
 
 	const handleDelete = (id: string) => {
 		if (window.confirm('Are you sure you want to delete this post?')) {
@@ -20,13 +24,22 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 	return (
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
-				const postId = row.getValue('id') as string;
+				const post = row.original as Post;
+				const category = categoriesData?.allCategories.find(
+					(cat) => cat.id === post.category_id,
+				);
+
+				const postId = post.id;
 
 				return (
 					<tr key={row.id} className={styles.row}>
 						{row.getVisibleCells().map((cell) => (
 							<td key={cell.id} className={styles.td}>
-								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								{cell.column.id === 'category' ? (
+									<CategoryCell category={category} />
+								) : (
+									flexRender(cell.column.columnDef.cell, cell.getContext())
+								)}
 							</td>
 						))}
 						<td className={styles.td}>

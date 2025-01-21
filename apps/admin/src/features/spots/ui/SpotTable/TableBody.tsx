@@ -5,10 +5,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDeleteSpot } from '../../api/useDeleteSpot';
 
 import { useGetCategories } from '@/fsd/shared';
+import { CategoryCell, DateCell, ImageCell } from '@/fsd/shared/ui';
 import * as styles from './SpotTable.css';
-import { CategoryCell } from './cells/CategoryCell';
-import { DateCell } from './cells/DateCell';
-import { ImageCell } from './cells/ImageCell';
 
 interface TableBodyProps<T> {
 	table: Table<T>;
