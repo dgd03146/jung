@@ -25,6 +25,7 @@ export const SpotSchema = z.object({
 	likes: z.number(),
 	liked_by: z.array(z.string()),
 	category: z.string().uuid(),
+	category_id: z.string().uuid().optional(),
 });
 
 export const SpotQueryParamsSchema = z.object({

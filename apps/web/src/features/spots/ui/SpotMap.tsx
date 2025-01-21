@@ -2,7 +2,7 @@
 
 import { Button } from '@jung/design-system/components';
 import { GoogleMap, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { SpotCard } from './SpotCard';
 
 import type { Spot } from '@jung/shared/types';
@@ -33,20 +33,16 @@ export function SpotMap({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
 	});
 
-	const [map, setMap] = useState<google.maps.Map | null>(null);
-
 	const {
-		currentCenter,
-		currentZoom,
 		markersData,
 		center,
 		zoom,
 		selectedMarker,
-		setCurrentCenter,
 		setSelectedMarker,
-		setCurrentZoom,
 		handleMarkerClick,
 	} = useMapState(initialCenter, spot, spots || []);
+
+	const { onLoad, onUnmount } = useMapLoad(center);
 
 	if (!markersData.length) {
 		return (
@@ -58,17 +54,6 @@ export function SpotMap({
 			/>
 		);
 	}
-	const { onLoad, onUnmount } = useMapLoad(setMap, center);
-
-	const onMapChange = useCallback(() => {
-		if (!map) return;
-
-		const newCenter = map.getCenter()?.toJSON();
-		const newZoom = map.getZoom();
-
-		if (newCenter) setCurrentCenter(newCenter);
-		if (newZoom) setCurrentZoom(newZoom);
-	}, [map, setCurrentCenter, setCurrentZoom]);
 
 	const onMapClick = useCallback(() => {
 		setSelectedMarker(null);
@@ -83,9 +68,10 @@ export function SpotMap({
 					zoom={zoom}
 					onLoad={onLoad}
 					onUnmount={onUnmount}
-					onDragEnd={onMapChange}
-					onZoomChanged={onMapChange}
-					options={mapOptions}
+					options={{
+						...mapOptions,
+						gestureHandling: 'greedy',
+					}}
 					onClick={onMapClick}
 				>
 					<MarkerCluster

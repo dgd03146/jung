@@ -171,8 +171,7 @@ export const customMarkerLabel = style({
 
 export const markerContainer = style({
 	position: 'absolute',
-	left: '50%',
-	top: '50%',
+
 	transform: 'translate(-50%, -50%)',
 	willChange: 'transform',
 	zIndex: 1,
@@ -207,12 +206,10 @@ export const markerCluster = style({
 	lineHeight: '0',
 	padding: 0,
 	margin: 0,
-	transition: 'all 0.2s ease-out',
+
 	zIndex: 1,
-	transform: 'translate(-50%, -50%)',
 
 	':hover': {
-		transform: 'translate(-50%, -50%) scale(1.05)',
 		boxShadow: '0 8px 16px rgba(30, 64, 175, 0.4)',
 		zIndex: 2,
 	},
@@ -247,9 +244,6 @@ export const customMarkerBase = style({
 	borderRadius: '50%',
 	boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
 	cursor: 'pointer',
-	transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-
-	willChange: 'transform',
 
 	'::after': {
 		content: '""',

@@ -58,5 +58,4 @@ export type SpotCategory =
 	| 'religious'
 	| 'viewpoint'
 	| 'hotel'
-	| 'transport'
-	| 'other';
+	| 'transport';

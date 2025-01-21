@@ -6,9 +6,6 @@ const useMapState = (
 	spot: Spot | undefined,
 	spots: Spot[],
 ) => {
-	const [currentCenter, setCurrentCenter] =
-		useState<google.maps.LatLngLiteral | null>(null);
-	const [currentZoom, setCurrentZoom] = useState<number | null>(null);
 	const [selectedMarker, setSelectedMarker] = useState<Spot | null>(null);
 
 	const markersData = useMemo(() => {
@@ -17,10 +14,6 @@ const useMapState = (
 	}, [spots, spot]);
 
 	const { center, zoom } = useMemo(() => {
-		if (currentCenter && currentZoom !== null) {
-			return { center: currentCenter, zoom: currentZoom };
-		}
-
 		if (initialCenter) {
 			return { center: initialCenter, zoom: 15 };
 		}
@@ -38,7 +31,7 @@ const useMapState = (
 
 		if (markersData.length === 1) {
 			return {
-				center: markersData[0]?.coordinates,
+				center: markersData[0]?.coordinates || { lat: 25, lng: 0 },
 				zoom: 15,
 			};
 		}
@@ -67,7 +60,7 @@ const useMapState = (
 			},
 			zoom: 3,
 		};
-	}, [initialCenter, spot, markersData, currentCenter, currentZoom]);
+	}, [initialCenter, spot, markersData]);
 
 	const handleMarkerClick = useCallback((markerSpot: Spot) => {
 		setSelectedMarker((prev) =>
@@ -76,14 +69,10 @@ const useMapState = (
 	}, []);
 
 	return {
-		currentCenter,
-		currentZoom,
 		markersData,
 		center,
 		zoom,
 		selectedMarker,
-		setCurrentCenter,
-		setCurrentZoom,
 		setSelectedMarker,
 		handleMarkerClick,
 	};

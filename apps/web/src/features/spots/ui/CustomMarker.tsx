@@ -2,6 +2,7 @@ import { useMarkerVisibility } from '@/fsd/features/spots/model';
 
 import { capitalizeFirstLetter } from '@/fsd/shared';
 import { Tag, Typography } from '@jung/design-system/components';
+import type { SpotCategory } from '@jung/shared/types';
 import { Marker, OverlayView } from '@react-google-maps/api';
 import { useState } from 'react';
 import CategoryIcon from './CategoryIcon';
@@ -9,7 +10,7 @@ import * as styles from './SpotMap.css';
 
 interface CustomMarkerProps {
 	position: google.maps.LatLngLiteral;
-	category: SpotCategory;
+	category: string;
 	isSelected: boolean;
 	title: string;
 	onClick: () => void;
@@ -75,12 +76,12 @@ const CustomMarker = ({
 						)}
 						<div
 							className={styles.customMarker({
-								category,
+								category: category as SpotCategory,
 								selected: isSelected,
 							})}
 							onClick={handleClick}
 						>
-							<CategoryIcon category={category} />
+							<CategoryIcon category={category as SpotCategory} />
 						</div>
 					</div>
 				</OverlayView>

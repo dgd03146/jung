@@ -53,7 +53,7 @@ export const NewSpot = () => {
 				description: spot.description,
 				address: spot.address,
 				files: [],
-				category_id: spot.category_id,
+				category_id: spot.category_id || '',
 				coordinates: spot.coordinates,
 				tags: spot.tags || [''],
 				tips: spot.tips || [''],
