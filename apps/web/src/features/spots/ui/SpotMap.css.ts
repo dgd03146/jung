@@ -7,13 +7,13 @@ export const mapContainer = style({
 	position: 'relative',
 
 	boxShadow: '0 4px 24px rgba(0, 0, 0, 0.04)',
-	borderRadius: '24px',
+	borderRadius: '12px',
 	overflow: 'hidden',
 });
 
 export const map = style({
 	minHeight: 'calc(100dvh - 200px)',
-	maxHeight: 'calc(100dvh - 200px)', // 최대 높이 제한 추가
+	maxHeight: 'calc(100dvh - 200px)',
 	backgroundColor: '#f9fafb',
 
 	'@media': {
@@ -69,17 +69,6 @@ export const showListButton = style({
 	},
 
 	background: 'linear-gradient(180deg, #0142C0 0%, #0039AD 100%)',
-});
-
-export const loadingContainer = style({
-	width: '100%',
-	height: '100%',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	backgroundColor: '#f9fafb',
-	borderRadius: '24px',
-	padding: '24px',
 });
 
 export const errorContainer = style({
@@ -182,8 +171,7 @@ export const customMarkerLabel = style({
 
 export const markerContainer = style({
 	position: 'absolute',
-	left: '50%',
-	top: '50%',
+
 	transform: 'translate(-50%, -50%)',
 	willChange: 'transform',
 	zIndex: 1,
@@ -202,27 +190,7 @@ export const markerTooltip = style({
 	pointerEvents: 'none',
 	zIndex: 1,
 	marginBottom: '8px',
-});
-
-export const tooltipCategory = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '4px',
-	fontSize: '12px',
-	color: '#6B7280',
-	marginBottom: '4px',
-});
-
-export const tooltipTitle = style({
-	fontSize: '14px',
-	fontWeight: '500',
-	color: '#1F2937',
-});
-
-export const markerIcon = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
+	textAlign: 'center',
 });
 
 export const markerCluster = style({
@@ -238,12 +206,10 @@ export const markerCluster = style({
 	lineHeight: '0',
 	padding: 0,
 	margin: 0,
-	transition: 'all 0.2s ease-out',
+
 	zIndex: 1,
-	transform: 'translate(-50%, -50%)',
 
 	':hover': {
-		transform: 'translate(-50%, -50%) scale(1.05)',
 		boxShadow: '0 8px 16px rgba(30, 64, 175, 0.4)',
 		zIndex: 2,
 	},
@@ -260,11 +226,11 @@ globalStyle(`${markerCluster} > div`, {
 });
 
 export const markerClusterMedium = style({
-	backgroundColor: '#1E3A8A', // 더 진한 블루
+	backgroundColor: '#1E3A8A',
 });
 
 export const markerClusterLarge = style({
-	backgroundColor: '#172554', // 가장 진한 블루
+	backgroundColor: '#172554',
 });
 
 export const customMarkerBase = style({
@@ -278,9 +244,6 @@ export const customMarkerBase = style({
 	borderRadius: '50%',
 	boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
 	cursor: 'pointer',
-	transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-
-	willChange: 'transform',
 
 	'::after': {
 		content: '""',
@@ -354,6 +317,76 @@ export const customMarker = recipe({
 					borderTop: '8px solid #F97316',
 				},
 			},
+			restaurant: {
+				backgroundColor: '#EF4444',
+				border: '2.5px solid #EF4444',
+				'::after': {
+					borderTop: '8px solid #EF4444',
+				},
+			},
+			museum: {
+				backgroundColor: '#6366F1',
+				border: '2.5px solid #6366F1',
+				'::after': {
+					borderTop: '8px solid #6366F1',
+				},
+			},
+			shopping: {
+				backgroundColor: '#EC4899',
+				border: '2.5px solid #EC4899',
+				'::after': {
+					borderTop: '8px solid #EC4899',
+				},
+			},
+			beach: {
+				backgroundColor: '#14B8A6',
+				border: '2.5px solid #14B8A6',
+				'::after': {
+					borderTop: '8px solid #14B8A6',
+				},
+			},
+			sports: {
+				backgroundColor: '#2563EB',
+				border: '2.5px solid #2563EB',
+				'::after': {
+					borderTop: '8px solid #2563EB',
+				},
+			},
+			entertainment: {
+				backgroundColor: '#D946EF',
+				border: '2.5px solid #D946EF',
+				'::after': {
+					borderTop: '8px solid #D946EF',
+				},
+			},
+			religious: {
+				backgroundColor: '#78716C',
+				border: '2.5px solid #78716C',
+				'::after': {
+					borderTop: '8px solid #78716C',
+				},
+			},
+			viewpoint: {
+				backgroundColor: '#0EA5E9',
+				border: '2.5px solid #0EA5E9',
+				'::after': {
+					borderTop: '8px solid #0EA5E9',
+				},
+			},
+			hotel: {
+				backgroundColor: '#6D28D9',
+				border: '2.5px solid #6D28D9',
+				'::after': {
+					borderTop: '8px solid #6D28D9',
+				},
+			},
+			transport: {
+				backgroundColor: '#64748B',
+				border: '2.5px solid #64748B',
+				'::after': {
+					borderTop: '8px solid #64748B',
+				},
+			},
 		},
 		selected: {
 			true: {
@@ -387,7 +420,6 @@ globalStyle('.gm-style-iw', {
 	maxHeight: 'none !important',
 });
 
-// InfoWindow 화살표
 globalStyle('.gm-style-iw-tc', {
 	filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.1))',
 });

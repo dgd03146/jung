@@ -18,10 +18,11 @@ const MarkerCluster = ({
 		<MarkerClusterer
 			options={{
 				gridSize: 60,
-				minimumClusterSize: 3,
-				maxZoom: 10,
+				minimumClusterSize: 2,
+				maxZoom: 13,
 				averageCenter: true,
 				ignoreHidden: false,
+				zoomOnClick: true,
 				styles: [
 					{
 						textColor: '#FFFFFF',
@@ -57,7 +58,7 @@ const MarkerCluster = ({
 							key={markerSpot.id}
 							title={markerSpot.title}
 							position={markerSpot.coordinates}
-							// category={markerSpot.category}
+							category={markerSpot.category.toLowerCase()}
 							isSelected={selectedMarkerId === markerSpot.id}
 							onClick={() => handleMarkerClick(markerSpot)}
 							clusterer={clusterer}

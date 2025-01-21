@@ -62,7 +62,7 @@ export function SectionTitle() {
 			marginY={{ mobile: '3', desktop: '5' }}
 			width='fit'
 		>
-			<Link href={`/${section}`} className={styles.sectionTitle}>
+			<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
 				{section}.
 			</Link>
 		</Typography.Heading>

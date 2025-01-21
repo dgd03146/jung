@@ -2,7 +2,7 @@
 
 import { Button } from '@jung/design-system/components';
 import { GoogleMap, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { SpotCard } from './SpotCard';
 
 import type { Spot } from '@jung/shared/types';
@@ -11,6 +11,7 @@ import useMapLoad from '../model/useMapLoad';
 import useMapState from '../model/useMapState';
 import MarkerCluster from './MarkerCluster';
 import * as styles from './SpotMap.css';
+import { SpotMapEmptyState } from './SpotMapEmptyState';
 
 interface SpotMapProps {
 	spots?: Spot[];
@@ -32,39 +33,27 @@ export function SpotMap({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
 	});
 
-	const [map, setMap] = useState<google.maps.Map | null>(null);
-
 	const {
-		currentCenter,
-		currentZoom,
 		markersData,
 		center,
 		zoom,
 		selectedMarker,
-		setCurrentCenter,
 		setSelectedMarker,
-		setCurrentZoom,
 		handleMarkerClick,
 	} = useMapState(initialCenter, spot, spots || []);
 
+	const { onLoad, onUnmount } = useMapLoad(center);
+
 	if (!markersData.length) {
 		return (
-			<div className={styles.loadingContainer}>
-				<p>No locations available</p>
-			</div>
+			<SpotMapEmptyState
+				title='There are no places to display'
+				description='There are no places to display. Please try searching for a different location.'
+				actionText='Search for a different location'
+				actionLink='/spots'
+			/>
 		);
 	}
-	const { onLoad, onUnmount } = useMapLoad(setMap, center);
-
-	const onMapChange = useCallback(() => {
-		if (!map) return;
-
-		const newCenter = map.getCenter()?.toJSON();
-		const newZoom = map.getZoom();
-
-		if (newCenter) setCurrentCenter(newCenter);
-		if (newZoom) setCurrentZoom(newZoom);
-	}, [map, setCurrentCenter, setCurrentZoom]);
 
 	const onMapClick = useCallback(() => {
 		setSelectedMarker(null);
@@ -75,13 +64,14 @@ export function SpotMap({
 			{isLoaded && (
 				<GoogleMap
 					mapContainerClassName={styles.map}
-					center={currentCenter || center}
-					zoom={currentZoom || zoom}
+					center={center}
+					zoom={zoom}
 					onLoad={onLoad}
 					onUnmount={onUnmount}
-					onDragEnd={onMapChange}
-					onZoomChanged={onMapChange}
-					options={mapOptions}
+					options={{
+						...mapOptions,
+						gestureHandling: 'greedy',
+					}}
 					onClick={onMapClick}
 				>
 					<MarkerCluster

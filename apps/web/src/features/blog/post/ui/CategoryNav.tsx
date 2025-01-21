@@ -7,11 +7,11 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import * as styles from './CategoryNav.css';
 
-type Props = {
+export const CategoryNav = ({
+	categories,
+}: {
 	categories: GetCategoryItem[];
-};
-
-export const CategoryNav = ({ categories }: Props) => {
+}) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const currentCat = searchParams.get('cat') || 'all';

@@ -1,13 +1,16 @@
 import { useMarkerVisibility } from '@/fsd/features/spots/model';
-// import type { SpotCategory } from '@jung/shared/types';
+
+import { capitalizeFirstLetter } from '@/fsd/shared';
+import { Tag, Typography } from '@jung/design-system/components';
+import type { SpotCategory } from '@jung/shared/types';
 import { Marker, OverlayView } from '@react-google-maps/api';
 import { useState } from 'react';
-// import CategoryIcon from './CategoryIcon';
+import CategoryIcon from './CategoryIcon';
 import * as styles from './SpotMap.css';
 
 interface CustomMarkerProps {
 	position: google.maps.LatLngLiteral;
-	// category: SpotCategory;
+	category: string;
 	isSelected: boolean;
 	title: string;
 	onClick: () => void;
@@ -17,7 +20,7 @@ interface CustomMarkerProps {
 
 const CustomMarker = ({
 	position,
-	// category,
+	category,
 	isSelected,
 	onClick,
 	title,
@@ -56,23 +59,29 @@ const CustomMarker = ({
 					>
 						{isHovered && !isSelected && (
 							<div className={styles.markerTooltip}>
-								<div className={styles.tooltipCategory}>
-									{/* <CategoryIcon category={category} /> */}
-									{/* <span>{category}</span> */}
-								</div>
-								<div className={styles.tooltipTitle}>{title}</div>
+								<Tag variant='secondary' marginBottom='1'>
+									<Typography.SubText
+										level={3}
+										fontWeight='semibold'
+										borderRadius='lg'
+									>
+										{capitalizeFirstLetter(category)}
+									</Typography.SubText>
+								</Tag>
+
+								<Typography.SubText fontWeight='bold' color='black300'>
+									{title}
+								</Typography.SubText>
 							</div>
 						)}
 						<div
 							className={styles.customMarker({
-								// category,
+								category: category as SpotCategory,
 								selected: isSelected,
 							})}
 							onClick={handleClick}
 						>
-							<div className={styles.markerIcon}>
-								{/* <CategoryIcon category={category} /> */}
-							</div>
+							<CategoryIcon category={category as SpotCategory} />
 						</div>
 					</div>
 				</OverlayView>

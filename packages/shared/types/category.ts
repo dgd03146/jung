@@ -39,3 +39,23 @@ export type GetCategoryItem = {
 };
 
 export type GetCategoriesResponse = GetCategoryItem[];
+
+export type SpotCategory =
+	| 'nature'
+	| 'landmark'
+	| 'historic'
+	| 'culture'
+	| 'night'
+	| 'street'
+	| 'park'
+	| 'local'
+	| 'restaurant'
+	| 'museum'
+	| 'shopping'
+	| 'beach'
+	| 'sports'
+	| 'entertainment'
+	| 'religious'
+	| 'viewpoint'
+	| 'hotel'
+	| 'transport';

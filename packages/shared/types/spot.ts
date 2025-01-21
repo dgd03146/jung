@@ -24,13 +24,14 @@ export const SpotSchema = z.object({
 	tips: z.string().array().optional(),
 	likes: z.number(),
 	liked_by: z.array(z.string()),
-	category_id: z.string().uuid(),
+	category: z.string().uuid(),
+	category_id: z.string().uuid().optional(),
 });
 
 export const SpotQueryParamsSchema = z.object({
 	limit: z.number().min(1).max(100).default(10),
 	cursor: z.string().optional(),
-	category_id: z.string().uuid().optional(),
+	cat: z.string().optional(),
 	q: z.string().optional(),
 	sort: z.enum(['latest', 'popular', 'oldest']).optional(),
 });

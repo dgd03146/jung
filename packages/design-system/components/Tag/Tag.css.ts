@@ -82,11 +82,13 @@ export const tag = recipe({
 			style: style([
 				{
 					backgroundColor: palette.primary,
+					':hover': {
+						backgroundColor: palette.primary200,
+					},
 				},
 				sprinkles({
 					color: {
 						base: 'white',
-						hover: 'primary',
 					},
 				}),
 			]),

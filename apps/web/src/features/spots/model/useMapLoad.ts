@@ -1,21 +1,18 @@
 import { useCallback } from 'react';
 
-const useMapLoad = (
-	setMap: (map: google.maps.Map | null) => void,
-	initialMapCenter?: google.maps.LatLngLiteral,
-) => {
+const useMapLoad = (center: google.maps.LatLngLiteral) => {
 	const onLoad = useCallback(
 		(map: google.maps.Map) => {
-			const bounds = new window.google.maps.LatLngBounds(initialMapCenter);
-			map.fitBounds(bounds);
-			setMap(map);
+			map.setCenter(center);
 		},
-		[initialMapCenter, setMap],
+		[center],
 	);
 
-	const onUnmount = useCallback(() => {
-		setMap(null);
-	}, [setMap]);
+	const onUnmount = useCallback((map: google.maps.Map) => {
+		if (map) {
+			google.maps.event.clearInstanceListeners(map);
+		}
+	}, []);
 
 	return { onLoad, onUnmount };
 };

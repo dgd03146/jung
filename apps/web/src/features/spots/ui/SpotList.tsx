@@ -1,15 +1,16 @@
 'use client';
 
 import { LoadingSpinner } from '@/fsd/shared';
+import { SearchBar } from '@/fsd/shared/ui';
 import { Button, Flex } from '@jung/design-system/components';
+import type { GetCategoryItem } from '@jung/shared/types';
 import { Suspense, useState } from 'react';
 import { IoGridOutline, IoMapOutline } from 'react-icons/io5';
-import { SearchBar } from '../../../shared/ui/SearchBar';
 import { CategoryFilter } from './CategoryFilter';
 import { SpotContent } from './SpotContent';
 import SpotListSkeleton from './SpotListSkeleton';
 
-export function SpotList() {
+export function SpotList({ categories }: { categories: GetCategoryItem[] }) {
 	const [isMapView, setIsMapView] = useState(false);
 	const [isListVisible, setIsListVisible] = useState(false);
 
@@ -30,7 +31,7 @@ export function SpotList() {
 				</Button>
 			</Flex>
 
-			<CategoryFilter />
+			<CategoryFilter categories={categories} />
 
 			<Suspense
 				fallback={
