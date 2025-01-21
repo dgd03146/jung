@@ -2,15 +2,15 @@ import { useCallback } from 'react';
 
 const useMapLoad = (
 	setMap: (map: google.maps.Map | null) => void,
-	initialMapCenter?: google.maps.LatLngLiteral,
+	center: google.maps.LatLngLiteral,
 ) => {
 	const onLoad = useCallback(
 		(map: google.maps.Map) => {
-			const bounds = new window.google.maps.LatLngBounds(initialMapCenter);
-			map.fitBounds(bounds);
+			const bounds = new google.maps.LatLngBounds();
+			map.setCenter(center);
 			setMap(map);
 		},
-		[initialMapCenter, setMap],
+		[center, setMap],
 	);
 
 	const onUnmount = useCallback(() => {

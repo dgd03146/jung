@@ -38,10 +38,21 @@ export const card = recipe({
 				justifyContent: 'space-between',
 			}),
 		},
+		rounded: {
+			none: sprinkles({ borderRadius: 'none' }),
+			sm: sprinkles({ borderRadius: 'sm' }),
+			md: sprinkles({ borderRadius: 'md' }),
+			lg: sprinkles({ borderRadius: 'lg' }),
+			xl: sprinkles({ borderRadius: 'xl' }),
+			'2xl': sprinkles({ borderRadius: '2xl' }),
+			'3xl': sprinkles({ borderRadius: '3xl' }),
+			full: sprinkles({ borderRadius: 'full' }),
+		},
 	},
 	defaultVariants: {
 		variant: 'primary',
 		layout: 'vertical',
+		rounded: 'none',
 	},
 });
 

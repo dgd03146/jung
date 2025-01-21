@@ -14,14 +14,34 @@ const MarkerCluster = ({
 	selectedMarkerId,
 	handleMarkerClick,
 }: MarkerClusterProps) => {
+	if (markersData.length < 3) {
+		return (
+			<>
+				{markersData.map((markerSpot) => {
+					return (
+						<CustomMarker
+							key={markerSpot.id}
+							title={markerSpot.title}
+							position={markerSpot.coordinates}
+							category={markerSpot.category.toLowerCase()}
+							isSelected={selectedMarkerId === markerSpot.id}
+							onClick={() => handleMarkerClick(markerSpot)}
+						/>
+					);
+				})}
+			</>
+		);
+	}
+
 	return (
 		<MarkerClusterer
 			options={{
 				gridSize: 60,
-				minimumClusterSize: 3,
-				maxZoom: 10,
+				minimumClusterSize: 2,
+				maxZoom: 13,
 				averageCenter: true,
 				ignoreHidden: false,
+				zoomOnClick: true,
 				styles: [
 					{
 						textColor: '#FFFFFF',
@@ -52,17 +72,19 @@ const MarkerCluster = ({
 		>
 			{(clusterer) => (
 				<>
-					{markersData.map((markerSpot) => (
-						<CustomMarker
-							key={markerSpot.id}
-							title={markerSpot.title}
-							position={markerSpot.coordinates}
-							// category={markerSpot.category}
-							isSelected={selectedMarkerId === markerSpot.id}
-							onClick={() => handleMarkerClick(markerSpot)}
-							clusterer={clusterer}
-						/>
-					))}
+					{markersData.map((markerSpot) => {
+						return (
+							<CustomMarker
+								key={markerSpot.id}
+								title={markerSpot.title}
+								position={markerSpot.coordinates}
+								category={markerSpot.category}
+								isSelected={selectedMarkerId === markerSpot.id}
+								onClick={() => handleMarkerClick(markerSpot)}
+								clusterer={clusterer}
+							/>
+						);
+					})}
 				</>
 			)}
 		</MarkerClusterer>

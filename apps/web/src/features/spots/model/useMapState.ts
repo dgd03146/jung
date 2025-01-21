@@ -17,7 +17,7 @@ const useMapState = (
 	}, [spots, spot]);
 
 	const { center, zoom } = useMemo(() => {
-		if (currentCenter && currentZoom) {
+		if (currentCenter && currentZoom !== null) {
 			return { center: currentCenter, zoom: currentZoom };
 		}
 
@@ -31,8 +31,8 @@ const useMapState = (
 
 		if (!markersData.length) {
 			return {
-				center: { lat: 36.5, lng: 127.5 }, // 한국
-				zoom: 7,
+				center: { lat: 25, lng: 0 },
+				zoom: 2,
 			};
 		}
 
@@ -43,8 +43,28 @@ const useMapState = (
 			};
 		}
 
+		const bounds = markersData.reduce(
+			(acc, marker) => {
+				return {
+					minLat: Math.min(acc.minLat, marker.coordinates.lat),
+					maxLat: Math.max(acc.maxLat, marker.coordinates.lat),
+					minLng: Math.min(acc.minLng, marker.coordinates.lng),
+					maxLng: Math.max(acc.maxLng, marker.coordinates.lng),
+				};
+			},
+			{
+				minLat: 90,
+				maxLat: -90,
+				minLng: 180,
+				maxLng: -180,
+			},
+		);
+
 		return {
-			center: { lat: 45, lng: 60 }, // 유럽과 한국 사이 중간 지점
+			center: {
+				lat: (bounds.minLat + bounds.maxLat) / 2,
+				lng: (bounds.minLng + bounds.maxLng) / 2,
+			},
 			zoom: 3,
 		};
 	}, [initialCenter, spot, markersData, currentCenter, currentZoom]);

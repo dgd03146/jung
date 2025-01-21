@@ -11,6 +11,7 @@ import useMapLoad from '../model/useMapLoad';
 import useMapState from '../model/useMapState';
 import MarkerCluster from './MarkerCluster';
 import * as styles from './SpotMap.css';
+import { SpotMapEmptyState } from './SpotMapEmptyState';
 
 interface SpotMapProps {
 	spots?: Spot[];
@@ -49,9 +50,12 @@ export function SpotMap({
 
 	if (!markersData.length) {
 		return (
-			<div className={styles.loadingContainer}>
-				<p>No locations available</p>
-			</div>
+			<SpotMapEmptyState
+				title='There are no places to display'
+				description='There are no places to display. Please try searching for a different location.'
+				actionText='Search for a different location'
+				actionLink='/spots'
+			/>
 		);
 	}
 	const { onLoad, onUnmount } = useMapLoad(setMap, center);
@@ -75,8 +79,8 @@ export function SpotMap({
 			{isLoaded && (
 				<GoogleMap
 					mapContainerClassName={styles.map}
-					center={currentCenter || center}
-					zoom={currentZoom || zoom}
+					center={center}
+					zoom={zoom}
 					onLoad={onLoad}
 					onUnmount={onUnmount}
 					onDragEnd={onMapChange}

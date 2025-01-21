@@ -34,7 +34,9 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 				display='flex'
 				flexDirection='column'
 				height='full'
+				minHeight={variant === 'compact' ? 'fit' : '90'}
 				position='relative'
+				rounded='lg'
 			>
 				<Card.Media className={styles.imageWrapper({ variant })}>
 					<BlurImage
@@ -53,13 +55,13 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 							type='button'
 							onClick={handleLikeClick}
 						>
-							{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
+							{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
 						</Button>
 					</Box>
 				</Card.Media>
 
 				<Card.Content
-					rowGap={variant === 'compact' ? '1' : '3'}
+					rowGap={variant === 'compact' ? '1' : '4'}
 					padding={variant === 'compact' ? '2' : '4'}
 					display='flex'
 					flexDirection='column'
@@ -80,7 +82,7 @@ export function SpotCard({ spot, variant = 'default' }: SpotCardProps) {
 					<Flex align='center' gap='1.5' marginTop='auto'>
 						<IoLocationOutline size={16} className={styles.locationIcon} />
 						<Card.Description>
-							<Typography.SubText level={3} truncate='two' color='primary300'>
+							<Typography.SubText level={3} truncate='two' fontWeight='normal'>
 								{spot.address}
 							</Typography.SubText>
 						</Card.Description>

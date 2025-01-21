@@ -54,17 +54,11 @@ export const imageWrapper = recipe({
 		flexShrink: '0',
 		backgroundColor: palette.gray100,
 		borderRadius: '12px 12px 0 0',
+		minHeight: '200px',
 		'::before': {
 			content: '""',
-			position: 'absolute',
-			top: '0',
-			left: '0',
-			right: '0',
-			bottom: '0',
-			background:
-				'linear-gradient(45deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%)',
-			opacity: 0,
-			transition: 'opacity 0.5s ease',
+			display: 'block',
+			paddingTop: '66.67%',
 		},
 		'::after': {
 			content: '""',
@@ -83,15 +77,12 @@ export const imageWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				aspectRatio: '16/9',
+				height: '240px',
 
 				selectors: {
 					'&:hover': {
 						transform: 'scale(1.01)',
 						boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
-					},
-					'&:hover::before': {
-						opacity: 1,
 					},
 					'&:hover::after': {
 						opacity: 1,
@@ -100,7 +91,7 @@ export const imageWrapper = recipe({
 				},
 			},
 			compact: {
-				aspectRatio: '16/9',
+				height: '180px',
 
 				selectors: {
 					'&:hover': {
@@ -117,8 +108,8 @@ export const imageWrapper = recipe({
 });
 
 export const likeButton = style({
-	width: '24px',
-	height: '24px',
+	width: '28px',
+	height: '28px',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -144,5 +135,5 @@ export const likeButton = style({
 export const locationIcon = style({
 	flexShrink: 0,
 
-	color: palette.primary300,
+	color: palette.primary,
 });
