@@ -1,4 +1,7 @@
+import { Routes } from '@/fsd/shared/config/routes';
+import { useToast } from '@jung/design-system/components/Toast/hooks/useToast';
 import { createClient } from '@supabase/supabase-js';
+import { useNavigate } from '@tanstack/react-router';
 
 const supabase = createClient(
 	import.meta.env.VITE_SUPABASE_URL,
@@ -6,6 +9,9 @@ const supabase = createClient(
 );
 
 export const useAuth = () => {
+	const showToast = useToast();
+	const navigate = useNavigate();
+
 	const login = async (email: string, password: string) => {
 		console.log(email, password, 'email, password');
 		try {
@@ -52,8 +58,18 @@ export const useAuth = () => {
 	};
 
 	const logout = async () => {
-		const { error } = await supabase.auth.signOut();
-		if (error) throw error;
+		try {
+			const { error } = await supabase.auth.signOut();
+
+			if (error) throw error;
+
+			showToast('Logout successfully!', 'success');
+
+			navigate({ to: Routes.login.path });
+		} catch (error) {
+			showToast('Logout failed!', 'error');
+			throw error;
+		}
 	};
 
 	return { login, logout };
