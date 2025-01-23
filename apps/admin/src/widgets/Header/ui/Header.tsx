@@ -50,7 +50,7 @@ const formatPageTitle = (path: string) => {
 	if (segments.length > 1) {
 		const subSection = segments[segments.length - 1]
 			.split('-')
-			.map((word) => word.charAt(0).toUpperCase() + ord.slice(1).toLowerCase())
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
 			.join(' ');
 		return (
 			<div className={styles.titleWrapper}>
