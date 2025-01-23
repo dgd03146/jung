@@ -2,6 +2,7 @@ import {
 	MdArticle,
 	MdDashboard,
 	MdForum,
+	MdLogin,
 	MdPhotoLibrary,
 	MdRestaurantMenu,
 } from 'react-icons/md';
@@ -15,6 +16,7 @@ export const Routes = {
 	gallery: { path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
 	spots: { path: '/spots', icon: <MdRestaurantMenu />, label: 'spots' },
 	community: { path: '/community', icon: <MdForum />, label: 'community' },
+	login: { path: '/login', icon: <MdLogin />, label: 'login' },
 };
 
 export const RoutesArray = Object.entries(Routes).map(([key, value]) => ({

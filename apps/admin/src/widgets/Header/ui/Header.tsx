@@ -1,15 +1,14 @@
+import { useAuth } from '@/fsd/features/auth/api/useAuth';
 import { usePathname } from '@/fsd/shared';
 import { useSidebarStore } from '@/fsd/shared';
 // FIXME: icons들 다 나중에 shared로 빼야할 듯?
-import { Box, Flex } from '@jung/design-system/components';
+import { Box, Button, Flex } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
 	HiChevronDoubleLeft,
 	HiChevronRight,
+	HiLogout,
 	HiMenuAlt2,
-	HiOutlineBell,
-	HiOutlineChatAlt2,
-	HiOutlineSearch,
 } from 'react-icons/hi';
 
 import * as styles from './Header.css.ts';
@@ -78,6 +77,7 @@ const Header = () => {
 	const pageTitle = formatPageTitle(pathname);
 	const [isScrolled, setIsScrolled] = useState(false);
 	const { isOpen, actions } = useSidebarStore();
+	const { logout } = useAuth();
 
 	const handleScroll = useCallback(() => {
 		if (!isScrolled && window.scrollY > SCROLL_THRESHOLD) {
@@ -121,18 +121,16 @@ const Header = () => {
 				<h1 className={styles.pageTitle}>{pageTitle}</h1>
 			</Flex>
 
-			<Flex alignItems='center' gap='3'>
-				<button className={styles.iconButton}>
-					<HiOutlineSearch size={20} />
-				</button>
-				<button className={styles.iconButton}>
-					<HiOutlineChatAlt2 size={20} />
-				</button>
-				<button className={styles.iconButton}>
-					<HiOutlineBell size={20} />
-					<span className={styles.notificationBadge}>2</span>
-				</button>
-			</Flex>
+			<Button
+				variant='primary'
+				size='md'
+				borderRadius='lg'
+				onClick={() => logout()}
+				prefix={<HiLogout />}
+				fontWeight='medium'
+			>
+				Logout
+			</Button>
 		</Box>
 	);
 };
