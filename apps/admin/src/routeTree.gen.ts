@@ -23,6 +23,7 @@ import { Route as GalleryPhotosIndexImport } from './routes/gallery/photos/index
 import { Route as GalleryPhotosNewIndexImport } from './routes/gallery/photos/new/index';
 import { Route as GuestbookIndexImport } from './routes/guestbook/index';
 import { Route as IndexImport } from './routes/index';
+import { Route as LoginIndexImport } from './routes/login/index';
 import { Route as SpotsSpotIdEditImport } from './routes/spots/$spotId/edit';
 import { Route as SpotsCategoriesIndexImport } from './routes/spots/categories/index';
 import { Route as SpotsIndexImport } from './routes/spots/index';
@@ -37,6 +38,11 @@ const IndexRoute = IndexImport.update({
 
 const SpotsIndexRoute = SpotsIndexImport.update({
 	path: '/spots/',
+	getParentRoute: () => rootRoute,
+} as any);
+
+const LoginIndexRoute = LoginIndexImport.update({
+	path: '/login/',
 	getParentRoute: () => rootRoute,
 } as any);
 
@@ -143,6 +149,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof GuestbookIndexImport;
 			parentRoute: typeof rootRoute;
 		};
+		'/login/': {
+			id: '/login/';
+			path: '/login';
+			fullPath: '/login';
+			preLoaderRoute: typeof LoginIndexImport;
+			parentRoute: typeof rootRoute;
+		};
 		'/spots/': {
 			id: '/spots/';
 			path: '/spots';
@@ -237,6 +250,7 @@ export const routeTree = rootRoute.addChildren({
 	BlogIndexRoute,
 	CommunityIndexRoute,
 	GuestbookIndexRoute,
+	LoginIndexRoute,
 	SpotsIndexRoute,
 	BlogEditPostIdRoute,
 	GalleryCollectionsCollectionIdRoute,
@@ -263,6 +277,7 @@ export const routeTree = rootRoute.addChildren({
         "/blog/",
         "/community/",
         "/guestbook/",
+        "/login/",
         "/spots/",
         "/blog/edit/$postId",
         "/gallery/collections/$collectionId",
@@ -288,6 +303,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/guestbook/": {
       "filePath": "guestbook/index.tsx"
+    },
+    "/login/": {
+      "filePath": "login/index.tsx"
     },
     "/spots/": {
       "filePath": "spots/index.tsx"
