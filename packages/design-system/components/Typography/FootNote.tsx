@@ -3,6 +3,8 @@ import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
 import * as S from './Typography.css';
 
+type FootNoteElement = 'p' | 'span' | 'label' | 'time';
+
 /**
  * Typography FootNote Note
  * @param {number} FootNote - FootNote note level value
@@ -12,15 +14,16 @@ import * as S from './Typography.css';
  */
 
 export interface FootNoteProps
-	extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>,
+	extends Omit<HTMLAttributes<HTMLElement>, 'color'>,
 		AtomProps {
 	level?: 1 | 2 | 3;
+	as?: FootNoteElement;
 }
 
-export const FootNote = forwardRef<HTMLParagraphElement, FootNoteProps>(
-	({ level = 1, children, ...restProps }, ref) => {
+export const FootNote = forwardRef<HTMLElement, FootNoteProps>(
+	({ level = 1, children, as = 'span', ...restProps }, ref) => {
 		return (
-			<Box as='span' className={S.footNote({ level })} ref={ref} {...restProps}>
+			<Box as={as} className={S.footNote({ level })} ref={ref} {...restProps}>
 				{children}
 			</Box>
 		);
