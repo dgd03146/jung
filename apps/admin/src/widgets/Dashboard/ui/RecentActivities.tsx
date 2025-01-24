@@ -1,5 +1,12 @@
+import {
+	Box,
+	Container,
+	Flex,
+	Stack,
+	Tag,
+	Typography,
+} from '@jung/design-system/components';
 import { MdAddPhotoAlternate, MdEdit, MdLocationOn } from 'react-icons/md';
-import * as styles from './RecentActivities.css';
 
 const RecentActivities = () => {
 	const activities = [
@@ -46,31 +53,64 @@ const RecentActivities = () => {
 	];
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.header}>
-				<h2 className={styles.title}>Recent Activities</h2>
-			</div>
-			<div className={styles.activityList}>
+		<Container boxShadow='primary' background='white' borderRadius='2xl'>
+			<Box
+				padding='4'
+				borderBottomWidth='hairline'
+				borderColor='white300'
+				borderStyle='solid'
+			>
+				<Typography.Text level={3} color='primary' fontWeight='semibold'>
+					Recent Activities
+				</Typography.Text>
+			</Box>
+			<Box paddingX='4'>
 				{activities.map((activity) => (
-					<div key={activity.id} className={styles.activityItem}>
-						<div className={styles.iconWrapper}>{activity.icon}</div>
-						<div className={styles.contentArea}>
-							<div className={styles.activityTitle}>{activity.title}</div>
-							<div className={styles.activityMeta}>
-								<span className={styles.tag}>{activity.type}</span>
-								<span className={styles.description}>
+					<Flex
+						key={activity.id}
+						gap='3'
+						paddingY='3'
+						borderBottomWidth='hairline'
+						borderColor='white300'
+						borderStyle='solid'
+					>
+						<Flex
+							align='center'
+							justify='center'
+							width='8'
+							height='8'
+							background='primary50'
+							color='primary'
+							borderRadius='lg'
+							flexShrink={0}
+						>
+							{activity.icon}
+						</Flex>
+						<Stack flex='1' gap='3'>
+							<Typography.Text level={4} color='primary' fontWeight='semibold'>
+								{activity.title}
+							</Typography.Text>
+							<Flex gap='2' align='center'>
+								<Tag variant='secondary'>
+									<Typography.SubText level={1} fontWeight='medium'>
+										{activity.type}
+									</Typography.SubText>
+								</Tag>
+								<Typography.SubText level={1} color='primary300'>
 									{activity.description}
-								</span>
-								<span className={styles.separator}>•</span>
-								<time className={styles.time} dateTime={activity.time}>
-									10 mins ago
-								</time>
-							</div>
-						</div>
-					</div>
+								</Typography.SubText>
+								<Typography.SubText level={1} color='primary'>
+									•
+								</Typography.SubText>
+								<Typography.SubText level={1} color='primary200'>
+									{activity.time}
+								</Typography.SubText>
+							</Flex>
+						</Stack>
+					</Flex>
 				))}
-			</div>
-		</div>
+			</Box>
+		</Container>
 	);
 };
 

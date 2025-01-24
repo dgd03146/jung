@@ -1,9 +1,8 @@
 import { Routes } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
+import { Box, Button, Flex } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiArrowLeft, HiSave, HiX } from 'react-icons/hi';
 import { HiPaperAirplane } from 'react-icons/hi2';
-import * as styles from './EditorHeader.css';
 
 type Props = {
 	onSave: () => void;
@@ -21,45 +20,63 @@ const EditorHeader = ({
 	isEditMode,
 }: Props) => {
 	return (
-		<div className={styles.header}>
-			<Flex justifyContent='space-between' alignItems='center'>
+		<Box width='full' marginTop='2' marginBottom='6'>
+			<Flex display='flex' justifyContent='space-between' alignItems='center'>
 				<Link to={Routes.blog.path}>
-					<button className={styles.backButton}>
-						<HiArrowLeft className={styles.buttonIcon} />
-						<span className={styles.buttonText}>Posts</span>
-					</button>
-				</Link>
-				<div className={styles.buttonGroup}>
-					<button className={styles.actionButton} onClick={onSave}>
-						<HiSave className={styles.buttonIcon} />
-						<span className={styles.buttonText}>Draft</span>
-					</button>
-					<button className={styles.actionButton} onClick={onDiscard}>
-						<HiX className={styles.buttonIcon} />
-						<span className={styles.buttonText}>Discard</span>
-					</button>
-					<button
-						className={styles.submitButton}
-						onClick={onSubmit}
-						disabled={isSubmitting}
+					<Button
+						variant='secondary'
+						color='primary'
+						size='md'
+						borderRadius='md'
+						prefix={<HiArrowLeft size={16} />}
 					>
-						<HiPaperAirplane
-							className={styles.buttonIcon}
-							style={{ transform: 'rotate(90deg)' }}
-						/>
-						<span className={styles.buttonText}>
-							{isSubmitting
-								? isEditMode
-									? 'Updating...'
-									: 'Publishing...'
-								: isEditMode
-								  ? 'Update'
-								  : 'Publish'}
-						</span>
-					</button>
-				</div>
+						Posts
+					</Button>
+				</Link>
+
+				<Flex display='flex' gap={{ base: '1', mobile: '2' }}>
+					<Button
+						variant='outline'
+						color='primary'
+						size='md'
+						borderRadius='md'
+						prefix={<HiSave size={16} />}
+						onClick={onSave}
+					>
+						Draft
+					</Button>
+					<Button
+						variant='outline'
+						size='md'
+						borderRadius='md'
+						prefix={<HiX size={16} />}
+						onClick={onDiscard}
+					>
+						Discard
+					</Button>
+					<Button
+						size='md'
+						borderRadius='md'
+						prefix={
+							<Box
+								as={HiPaperAirplane}
+								size={16}
+								style={{ transform: 'rotate(90deg)' }}
+							/>
+						}
+						onClick={onSubmit}
+					>
+						{isSubmitting
+							? isEditMode
+								? 'Updating...'
+								: 'Publishing...'
+							: isEditMode
+							  ? 'Update'
+							  : 'Publish'}
+					</Button>
+				</Flex>
 			</Flex>
-		</div>
+		</Box>
 	);
 };
 

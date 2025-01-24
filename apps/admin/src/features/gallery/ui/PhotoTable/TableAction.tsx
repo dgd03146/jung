@@ -1,27 +1,35 @@
 import { Routes } from '@/fsd/shared';
+import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiPlus } from 'react-icons/hi';
 import { usePhotoTableFilter } from '../../model/usePhotoTableFilter';
-import * as styles from './PhotoTable.css';
 
 export const TableAction = () => {
 	const { filter, handleFilterChange } = usePhotoTableFilter();
 
 	return (
-		<div className={styles.tableAction}>
-			<input
+		<Flex
+			justify='space-between'
+			align='center'
+			background='white'
+			borderRadius='lg'
+			padding='4'
+			marginBottom='4'
+		>
+			<Input
 				type='text'
-				className={styles.searchInput}
 				value={filter ?? ''}
 				onChange={handleFilterChange}
 				placeholder='Search photos...'
+				borderRadius='md'
+				fontSize='md'
 			/>
 			<Link to={`${Routes.gallery.path}/photos/new`}>
-				<button className={styles.newButton}>
+				<Button borderRadius='md' size='md'>
 					<HiPlus size={14} />
 					New Photos
-				</button>
+				</Button>
 			</Link>
-		</div>
+		</Flex>
 	);
 };

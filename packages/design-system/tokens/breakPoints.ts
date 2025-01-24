@@ -1,4 +1,5 @@
 export const breakpoints = {
+	base: '0px',
 	mobile: '360px',
 	miniTablet: '480px', // 아이패드 미니와 같은 디바이스
 	tablet: '768px',

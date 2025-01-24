@@ -1,16 +1,5 @@
 import { style } from '@vanilla-extract/css';
 
-export const titleSection = style({
-	marginBottom: '20px',
-
-	padding: '20px 0',
-
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '4px',
-	borderBottom: '1px solid rgba(55, 53, 47, 0.09)',
-});
-
 export const titleInput = style({
 	width: '100%',
 	fontSize: '40px',
@@ -18,8 +7,7 @@ export const titleInput = style({
 	color: '#37352F',
 	border: 'none',
 	outline: 'none',
-	// padding: '8px 0',
-	marginBottom: '8px',
+
 	background: 'transparent',
 	caretColor: '#0142C0',
 	fontFamily: 'inherit',
@@ -56,35 +44,6 @@ export const descriptionInput = style({
 	'@media': {
 		'screen and (max-width: 768px)': {
 			fontSize: '14px',
-		},
-	},
-});
-
-export const metaSection = style({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '8px',
-});
-
-export const metaRow = style({
-	display: 'flex',
-
-	gap: '8px',
-});
-
-export const label = style({
-	minWidth: '100px',
-	display: 'flex',
-	alignItems: 'center',
-	gap: '8px',
-	fontSize: '14px',
-	color: '#0142C0',
-	fontWeight: '600',
-
-	'@media': {
-		'screen and (max-width: 768px)': {
-			minWidth: '80px',
-			fontSize: '13px',
 		},
 	},
 });
@@ -133,50 +92,6 @@ export const inlineTagInput = style({
 	},
 });
 
-export const tag = style({
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: '6px',
-	height: '28px',
-	padding: '0 10px',
-	backgroundColor: '#EEF2FF',
-	color: '#0142C0',
-	borderRadius: '6px',
-	fontSize: '13px',
-	fontWeight: '500',
-	userSelect: 'none',
-	border: '1px solid #E6EDFF',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		backgroundColor: '#F0F4FF',
-		borderColor: '#0142C0',
-	},
-});
-
-export const errorMessage = style({
-	fontSize: '13px',
-	color: '#E11D48',
-	display: 'flex',
-	alignItems: 'center',
-	gap: '4px',
-	marginTop: '4px',
-	marginBottom: '12px',
-
-	// padding: '4px 8px',
-});
-
-export const iconWrapper = style({
-	display: 'flex',
-	alignItems: 'center',
-	color: '#0142C0',
-});
-
-export const inputWrapper = style({
-	position: 'relative',
-	marginBottom: '8px',
-});
-
 export const removeTag = style({
 	display: 'inline-flex',
 	alignItems: 'center',
@@ -196,13 +111,6 @@ export const removeTag = style({
 		opacity: 1,
 		backgroundColor: 'rgba(1, 66, 192, 0.08)',
 	},
-});
-
-export const tagRow = style({
-	display: 'flex',
-	flexDirection: 'column',
-
-	gap: '12px',
 });
 
 export const selectWrapper = style({
@@ -237,16 +145,4 @@ export const select = style({
 	'::placeholder': {
 		color: '#94A3B8',
 	},
-});
-
-export const optionsContainer = style({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '8px',
-});
-
-export const optionButton = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '8px',
 });

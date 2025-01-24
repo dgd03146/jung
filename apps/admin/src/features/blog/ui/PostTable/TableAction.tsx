@@ -1,28 +1,36 @@
 import { usePostTableFilter } from '@/fsd/features/blog/model';
 import { Routes } from '@/fsd/shared';
+import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { FaPlus } from 'react-icons/fa';
-import * as styles from './PostTable.css';
 
 const TableAction = () => {
 	const { filter, handleFilterChange } = usePostTableFilter();
 
 	return (
-		<div className={styles.tableAction}>
-			<input
+		<Flex
+			justify='space-between'
+			align='center'
+			background='white'
+			borderRadius='lg'
+			padding='4'
+			marginBottom='4'
+		>
+			<Input
 				type='text'
-				className={styles.searchInput}
 				value={filter ?? ''}
+				borderRadius='md'
+				fontSize='md'
 				onChange={handleFilterChange}
 				placeholder='Search posts...'
 			/>
 			<Link to={`${Routes.blog.path}/new`}>
-				<button className={styles.newButton}>
+				<Button borderRadius='md' size='md'>
 					<FaPlus size={14} />
 					New
-				</button>
+				</Button>
 			</Link>
-		</div>
+		</Flex>
 	);
 };
 

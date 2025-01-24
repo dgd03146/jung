@@ -1,4 +1,15 @@
 import { useGetCollections } from '@/fsd/features/gallery/api';
+import {
+	Box,
+	Button,
+	Card,
+	Flex,
+	Grid,
+	Input,
+	Stack,
+	Textarea,
+	Typography,
+} from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -189,71 +200,120 @@ export const PhotoCollection = () => {
 	if (isLoading) return <PhotoCollectionSkeleton />;
 
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.mainSection}>
-				<div className={styles.header}>
-					<h2 className={styles.title}>Collection Management</h2>
-					<button className={styles.addButton} onClick={handleOpenModal}>
+		<Stack gap='4'>
+			<Box background='white'>
+				<Flex
+					padding='6'
+					justify='space-between'
+					align='center'
+					borderRadius='xl'
+					borderBottomWidth='hairline'
+					borderColor='primary50'
+					borderStyle='solid'
+				>
+					<Typography.Heading level={5} color='primary'>
+						Collection Management
+					</Typography.Heading>
+					<Button borderRadius='lg' size='md' onClick={handleOpenModal}>
 						<HiPlus />
 						New Collection
-					</button>
-				</div>
+					</Button>
+				</Flex>
 
-				<div className={styles.gridView}>
+				<Grid
+					gridTemplateColumns={{ base: '1', tablet: '1/3', laptop: '1/4' }}
+					gap='6'
+					padding='6'
+				>
 					{collections.map((collection) => (
 						<Link
 							key={collection.id}
 							to='/gallery/collections/$collectionId'
 							params={{ collectionId: collection.id }}
-							className={styles.collectionLink}
 						>
-							<motion.div
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: -20 }}
+							<Card
+								variant='outline'
+								rounded='lg'
+								transition='fast'
 								className={styles.collectionCard}
 							>
-								<div className={styles.imageContainer}>
-									<img
+								<Card.Media>
+									<Box
+										as='img'
 										src={collection.cover_image}
 										alt={collection.title}
-										className={styles.image}
+										width='full'
+										height='48'
+										objectFit='cover'
 									/>
-									<div className={styles.actions}>
-										<button
-											className={styles.actionButton}
+									<Flex
+										position='absolute'
+										gap='2'
+										top={10}
+										right={10}
+										className={styles.actions}
+									>
+										<Button
+											variant='secondary'
+											background='white'
 											onClick={(e) => handleEdit(e, collection.id)}
 										>
 											<HiPencil size={16} />
-										</button>
-										<button
-											className={styles.actionButton}
+										</Button>
+										<Button
+											variant='secondary'
+											background='white'
 											onClick={(e) => handleDelete(e, collection.id)}
 											disabled={deleteCollectionMutation.isPending}
 										>
 											<HiTrash size={16} />
-										</button>
-									</div>
-								</div>
-								<div className={styles.content}>
-									<h3 className={styles.title}>{collection.title}</h3>
-									<p className={styles.description}>{collection.description}</p>
-								</div>
-								<div className={styles.footer}>
-									<span className={styles.photoCount}>
-										{collection.photo_count} photos
-									</span>
-									<span className={styles.date}>
-										{new Date(collection.created_at).toLocaleDateString(
-											'ko-KR',
-										)}
-									</span>
-								</div>
-							</motion.div>
+										</Button>
+									</Flex>
+								</Card.Media>
+
+								<Card.Content>
+									<Card.Title>
+										<Typography.Text
+											level={1}
+											color='primary'
+											fontWeight='semibold'
+										>
+											{collection.title}
+										</Typography.Text>
+									</Card.Title>
+									<Card.Description>
+										<Typography.Text level={4} color='primary300'>
+											{collection.description}
+										</Typography.Text>
+									</Card.Description>
+								</Card.Content>
+
+								<Card.Actions>
+									<Box
+										width='full'
+										paddingX='4'
+										paddingY='3'
+										borderTopWidth='hairline'
+										borderColor='primary50'
+										borderStyle='solid'
+									>
+										<Flex justify='space-between' align='center'>
+											<Typography.Text level={4} color='primary'>
+												{collection.photo_count} photos
+											</Typography.Text>
+											<Typography.Text level={4} color='primary300'>
+												{new Date(collection.created_at).toLocaleDateString(
+													'ko-KR',
+												)}
+											</Typography.Text>
+										</Flex>
+									</Box>
+								</Card.Actions>
+							</Card>
 						</Link>
 					))}
-				</div>
-			</div>
+				</Grid>
+			</Box>
 
 			<AnimatePresence>
 				{editingId && (
@@ -271,85 +331,115 @@ export const PhotoCollection = () => {
 							exit={{ scale: 0.9, y: 20 }}
 							onClick={(e) => e.stopPropagation()}
 						>
-							<h3 className={styles.modalTitle}>
+							<Typography.Heading level={5} color='primary' marginBottom='6'>
 								{editingId === 'new'
 									? 'Create New Collection'
 									: 'Edit Collection'}
-							</h3>
-							<div className={styles.formGroup}>
-								<div className={styles.inputGroup}>
-									<label className={styles.inputLabel}>Title</label>
-									<input
+							</Typography.Heading>
+							<Stack gap='4'>
+								<Stack gap='2'>
+									<Typography.Text
+										level={3}
+										color='black100'
+										fontWeight='semibold'
+									>
+										Title
+									</Typography.Text>
+									<Input
 										type='text'
 										name='title'
+										width='full'
 										value={formData.title}
 										onChange={handleInputChange}
 										placeholder='Enter collection title'
-										className={`${styles.input} ${
-											errors.title ? styles.inputError : ''
-										}`}
+										borderRadius='md'
+										borderColor={errors.title ? 'error' : 'inherit'}
 									/>
-									<span className={styles.errorMessage}>
+									<Typography.SubText level={2} color='error'>
 										{errors.title || ' '}
-									</span>
-								</div>
+									</Typography.SubText>
+								</Stack>
 
-								<div className={styles.inputGroup}>
-									<label className={styles.inputLabel}>Description</label>
-									<textarea
+								<Stack gap='2'>
+									<Typography.Text
+										level={3}
+										color='black100'
+										fontWeight='semibold'
+									>
+										Description
+									</Typography.Text>
+									<Textarea
 										name='description'
+										width='full'
 										value={formData.description}
 										onChange={handleInputChange}
 										placeholder='Enter collection description'
-										className={`${styles.textarea} ${
-											errors.description ? styles.inputError : ''
-										}`}
 										rows={4}
+										borderRadius='md'
+										borderColor={errors.description ? 'error' : 'primary'}
 									/>
-									<span className={styles.errorMessage}>
+									<Typography.SubText level={2} color='error'>
 										{errors.description || ' '}
-									</span>
-								</div>
+									</Typography.SubText>
+								</Stack>
 
-								<div className={styles.inputGroup}>
-									<label className={styles.inputLabel}>Cover Image</label>
-									<div className={styles.imageUploadContainer}>
-										<input
+								<Stack gap='2'>
+									<Typography.Text
+										level={3}
+										color='black100'
+										fontWeight='semibold'
+									>
+										Cover Image
+									</Typography.Text>
+									<Flex align='center' gap='2'>
+										<Input
 											type='file'
 											ref={fileInputRef}
 											onChange={handleFileChange}
 											accept='image/*'
-											className={styles.hiddenFileInput}
+											display='none'
 										/>
-										<button
+										<Button
 											type='button'
+											size='md'
+											fontSize='sm'
+											borderRadius='md'
 											onClick={handleUploadClick}
-											className={`${styles.uploadButton} ${
-												errors.cover_image ? styles.buttonError : ''
-											}`}
+											borderColor={errors.cover_image ? 'error' : 'inherit'}
 										>
 											<HiPhoto size={20} />
 											Upload
-										</button>
-										<span className={styles.errorMessage}>
+										</Button>
+										<Typography.SubText level={2} color='error'>
 											{errors.cover_image || ' '}
-										</span>
-									</div>
+										</Typography.SubText>
+									</Flex>
 
-									<div className={styles.imagePreview}>
+									<Box
+										height='60'
+										boxShadow='primary'
+										borderRadius='md'
+										overflow='hidden'
+										marginTop='2'
+									>
 										{previewImage && (
-											<img
+											<Box
+												as='img'
+												width='full'
+												height='full'
+												objectFit='cover'
 												src={previewImage}
 												alt='Cover preview'
-												className={styles.previewImage}
 											/>
 										)}
-									</div>
-								</div>
-							</div>
-							<div className={styles.modalActions}>
-								<button
-									className={styles.cancelButton}
+									</Box>
+								</Stack>
+							</Stack>
+							<Flex justify='flex-end' gap='2' marginTop='6'>
+								<Button
+									variant='outline'
+									size='md'
+									borderRadius='md'
 									onClick={handleCloseModal}
 									disabled={
 										createCollectionMutation.isPending ||
@@ -357,9 +447,10 @@ export const PhotoCollection = () => {
 									}
 								>
 									Cancel
-								</button>
-								<button
-									className={styles.saveButton}
+								</Button>
+								<Button
+									size='md'
+									borderRadius='md'
 									onClick={handleSave}
 									disabled={
 										createCollectionMutation.isPending ||
@@ -373,12 +464,12 @@ export const PhotoCollection = () => {
 										: updateCollectionMutation.isPending
 										  ? 'Updating...'
 										  : 'Update'}
-								</button>
-							</div>
+								</Button>
+							</Flex>
 						</motion.div>
 					</motion.div>
 				)}
 			</AnimatePresence>
-		</div>
+		</Stack>
 	);
 };

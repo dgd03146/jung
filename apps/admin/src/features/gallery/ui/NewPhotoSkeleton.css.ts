@@ -48,14 +48,3 @@ export const skeletonLabel = style([
 		marginBottom: '20px',
 	},
 ]);
-
-export {
-	pageWrapper,
-	header,
-	backButton,
-	title,
-	form,
-	formLayout,
-	imageSection,
-	detailsSection,
-} from './NewPhoto.css';

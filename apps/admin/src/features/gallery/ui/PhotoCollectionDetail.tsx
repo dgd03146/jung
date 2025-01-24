@@ -1,10 +1,17 @@
+import {
+	Box,
+	Button,
+	Checkbox,
+	Flex,
+	Stack,
+	Typography,
+} from '@jung/design-system/components';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
-import { HiCheck, HiPlus, HiTrash } from 'react-icons/hi';
+import { HiPlus, HiTrash } from 'react-icons/hi';
 import { useDeletePhotosFromCollection } from '../api/useDeletePhotosFromCollection';
 import { useGetPhotosByCollectionId } from '../api/useGetPhotosByCollectionId';
-import * as styles from './PhotoCollectionDetail.css.ts';
-import { PhotoCollectionDetailSkeleton } from './PhotoCollectionDetailSkeleton.tsx';
+import { PhotoCollectionDetailSkeleton } from './PhotoCollectionDetailSkeleton';
 
 export const PhotoCollectionDetail = () => {
 	const { collectionId } = useParams({
@@ -75,75 +82,110 @@ export const PhotoCollectionDetail = () => {
 	}
 
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.header}>
-				<h2 className={styles.title}>
-					{collectionTitle} ({total})
-				</h2>
-				<div className={styles.actions}>
-					<button className={styles.actionButton} onClick={handleAddPhotos}>
-						<HiPlus /> New Photos
-					</button>
-					{photos.length > 0 && (
-						<>
-							<button className={styles.actionButton} onClick={handleSelectAll}>
-								{selectedPhotos.length === photos.length
-									? 'Deselect All'
-									: 'Select All'}
-							</button>
-							{selectedPhotos.length > 0 && (
-								<button
-									className={styles.actionButton}
-									data-danger='true'
-									onClick={handleDeleteSelected}
-									disabled={deletePhotosMutation.isPending}
-								>
-									<HiTrash /> Delete {selectedPhotos.length} Selected
-								</button>
+		<Box padding='6'>
+			<Stack space='6'>
+				<Box padding='6' borderRadius='lg' boxShadow='primary'>
+					<Flex
+						display='flex'
+						justifyContent='space-between'
+						alignItems='center'
+					>
+						<Typography.Heading level={5} color='primary'>
+							{collectionTitle} ({total})
+						</Typography.Heading>
+						<Flex display='flex' columnGap='4'>
+							<Button
+								variant='primary'
+								size='md'
+								borderRadius='md'
+								prefix={<HiPlus />}
+								onClick={handleAddPhotos}
+							>
+								New Photos
+							</Button>
+							{photos.length > 0 && (
+								<>
+									<Button
+										variant='secondary'
+										size='md'
+										borderRadius='md'
+										onClick={handleSelectAll}
+									>
+										{selectedPhotos.length === photos.length
+											? 'Deselect All'
+											: 'Select All'}
+									</Button>
+									{selectedPhotos.length > 0 && (
+										<Button
+											variant='outline'
+											size='md'
+											prefix={<HiTrash />}
+											onClick={handleDeleteSelected}
+											disabled={deletePhotosMutation.isPending}
+										>
+											Delete {selectedPhotos.length} Selected
+										</Button>
+									)}
+								</>
 							)}
-						</>
-					)}
-				</div>
-			</div>
+						</Flex>
+					</Flex>
+				</Box>
 
-			{photos.length === 0 ? (
-				<div className={styles.emptyState}>
-					<span className={styles.emptyStateIcon}>🖼️</span>
-					<p className={styles.emptyStateText}>No photos in this collection</p>
-				</div>
-			) : (
-				<div className={styles.photoGrid}>
-					{photos.map((photo) => (
-						<div
-							key={photo.id}
-							className={`${styles.photoItem} ${
-								selectedPhotos.includes(photo.id) ? styles.selected : ''
-							}`}
-							onClick={() => handlePhotoSelect(photo.id)}
-						>
-							<img
-								src={photo.image_url}
-								alt={photo.alt || ''}
-								className={styles.photo}
-							/>
-							<div className={styles.photoOverlay}>
-								<div className={styles.checkboxWrapper}>
-									<input
-										type='checkbox'
-										className={styles.checkbox}
-										checked={selectedPhotos.includes(photo.id)}
-										onChange={(e) => {
-											e.stopPropagation();
-											handlePhotoSelect(photo.id);
-										}}
-									/>
-									<HiCheck className={styles.checkIcon} />
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
-			)}
-		</div>
+				{photos.length === 0 ? (
+					<Box
+						padding='12'
+						borderRadius='lg'
+						borderWidth='hairline'
+						borderStyle='solid'
+						borderColor='gray100'
+						display='flex'
+						alignItems='center'
+						justifyContent='center'
+						flexDirection='column'
+					>
+						<Box fontSize='3xl'>🖼️</Box>
+						<Typography.Text level={2} color='gray500'>
+							No photos in this collection
+						</Typography.Text>
+					</Box>
+				) : (
+					<Flex gap='4' wrap='wrap'>
+						{photos.map((photo) => (
+							<Box
+								key={photo.id}
+								position='relative'
+								borderRadius='lg'
+								borderWidth='hairline'
+								borderStyle='solid'
+								borderColor='gray100'
+								cursor='pointer'
+								width='60'
+								height='60'
+								onClick={() => handlePhotoSelect(photo.id)}
+							>
+								<Box
+									as='img'
+									width='full'
+									height='full'
+									src={photo.image_url}
+									alt={photo.alt || ''}
+									objectFit='cover'
+								/>
+								<Checkbox
+									opacity={selectedPhotos.includes(photo.id) ? 100 : 0}
+									position='absolute'
+									bottom={0}
+									left={0}
+									checked={selectedPhotos.includes(photo.id)}
+									borderRadius='lg'
+									onChange={() => handlePhotoSelect(photo.id)}
+								/>
+							</Box>
+						))}
+					</Flex>
+				)}
+			</Stack>
+		</Box>
 	);
 };

@@ -1,10 +1,10 @@
 import { PhotoTable } from '@/fsd/features/gallery';
-import * as styles from './GalleryPage.css';
+import { Flex } from '@jung/design-system/components';
 
 export default function GalleryPage() {
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.statsSection}>
+		<Flex direction='column' gap='4'>
+			{/* <div className={styles.statsSection}>
 				<div className={styles.statCard}>
 					<span className={styles.statValue}>156</span>
 					<span className={styles.statLabel}>Total Photos</span>
@@ -17,8 +17,8 @@ export default function GalleryPage() {
 					<span className={styles.statValue}>24</span>
 					<span className={styles.statLabel}>Featured</span>
 				</div>
-			</div>
+			</div> */}
 			<PhotoTable />
-		</div>
+		</Flex>
 	);
 }
