@@ -11,23 +11,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root';
-import { Route as IndexImport } from './routes/index';
-import { Route as SpotsIndexImport } from './routes/spots/index';
-import { Route as LoginIndexImport } from './routes/login/index';
-import { Route as GuestbookIndexImport } from './routes/guestbook/index';
-import { Route as CommunityIndexImport } from './routes/community/index';
-import { Route as BlogIndexImport } from './routes/blog/index';
-import { Route as SpotsNewIndexImport } from './routes/spots/new/index';
-import { Route as SpotsCategoriesIndexImport } from './routes/spots/categories/index';
-import { Route as GalleryPhotosIndexImport } from './routes/gallery/photos/index';
-import { Route as GalleryCollectionsIndexImport } from './routes/gallery/collections/index';
-import { Route as BlogNewIndexImport } from './routes/blog/new/index';
 import { Route as BlogCategoriesIndexImport } from './routes/blog/categories/index';
-import { Route as SpotsSpotIdEditImport } from './routes/spots/$spotId/edit';
-import { Route as GalleryCollectionsCollectionIdImport } from './routes/gallery/collections/$collectionId';
 import { Route as BlogEditPostIdImport } from './routes/blog/edit/$postId';
-import { Route as GalleryPhotosNewIndexImport } from './routes/gallery/photos/new/index';
+import { Route as BlogIndexImport } from './routes/blog/index';
+import { Route as BlogNewIndexImport } from './routes/blog/new/index';
+import { Route as CommunityIndexImport } from './routes/community/index';
+import { Route as GalleryCollectionsCollectionIdImport } from './routes/gallery/collections/$collectionId';
+import { Route as GalleryCollectionsIndexImport } from './routes/gallery/collections/index';
 import { Route as GalleryPhotosPhotoIdEditImport } from './routes/gallery/photos/$photoId/edit';
+import { Route as GalleryPhotosIndexImport } from './routes/gallery/photos/index';
+import { Route as GalleryPhotosNewIndexImport } from './routes/gallery/photos/new/index';
+import { Route as GuestbookIndexImport } from './routes/guestbook/index';
+import { Route as IndexImport } from './routes/index';
+import { Route as LoginIndexImport } from './routes/login/index';
+import { Route as SpotsSpotIdEditImport } from './routes/spots/$spotId/edit';
+import { Route as SpotsCategoriesIndexImport } from './routes/spots/categories/index';
+import { Route as SpotsIndexImport } from './routes/spots/index';
+import { Route as SpotsNewIndexImport } from './routes/spots/new/index';
 
 // Create/Update Routes
 
