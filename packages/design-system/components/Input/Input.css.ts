@@ -18,6 +18,10 @@ export const input = recipe({
 				borderColor: 'transparent',
 				boxShadow: `0 0 0 0.5px ${palette.primary}, 0 0 0 2px ${palette.primary50}`,
 			},
+
+			'::placeholder': {
+				color: palette.gray300,
+			},
 		}),
 	],
 	variants: {
