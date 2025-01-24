@@ -19,7 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			variant = 'primary',
-			size = 'sm',
+			size = 'md',
 			selected = false,
 			disabled = false,
 			prefix,
