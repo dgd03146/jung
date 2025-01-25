@@ -1,7 +1,6 @@
-import { Flex } from '@jung/design-system/components';
+import { Button, Flex, Typography } from '@jung/design-system/components';
 import { CiCircleList, CiGrid41 } from 'react-icons/ci';
 import { HiPlus } from 'react-icons/hi2';
-import * as styles from './CategoryHeader.css';
 
 interface CategoryHeaderProps {
 	view: 'grid' | 'list';
@@ -23,30 +22,44 @@ export const CategoryHeader = ({
 		type === 'blog' ? 'New Blog Category' : 'New Spot Category';
 
 	return (
-		<div className={styles.header}>
-			<h2 className={styles.title}>{title}</h2>
+		<Flex
+			paddingY='5'
+			paddingX='6'
+			align='center'
+			justify='space-between'
+			borderBottomWidth='hairline'
+			borderStyle='solid'
+			borderColor='primary50'
+		>
+			<Typography.Heading level={5} color='primary'>
+				{title}
+			</Typography.Heading>
 			<Flex gap='4' align='center'>
-				<div className={styles.viewToggle}>
-					<button
-						className={styles.viewToggleButton}
-						data-active={view === 'grid'}
+				<Flex borderRadius='md' background='primary50'>
+					<Button
+						size='sm'
+						variant='outline'
+						borderRadius='sm'
+						selected={view === 'grid'}
 						onClick={() => onViewChange('grid')}
 					>
 						<CiGrid41 size={20} />
-					</button>
-					<button
-						className={styles.viewToggleButton}
-						data-active={view === 'list'}
+					</Button>
+					<Button
+						size='sm'
+						variant='outline'
+						borderRadius='sm'
+						selected={view === 'list'}
 						onClick={() => onViewChange('list')}
 					>
 						<CiCircleList size={20} />
-					</button>
-				</div>
-				<button className={styles.addButton} onClick={onAddNew}>
+					</Button>
+				</Flex>
+				<Button onClick={onAddNew} borderRadius='md'>
 					<HiPlus />
 					{buttonText}
-				</button>
+				</Button>
 			</Flex>
-		</div>
+		</Flex>
 	);
 };

@@ -1,18 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import {
-	actionButton,
-	actions,
-	dragHandle,
-	postCount,
-} from './CategoryCard.css';
-import { categoryBadge } from './CategoryManager.css';
-
-export const listView = style({
-	display: 'flex',
-	flexDirection: 'column',
-	gap: '12px',
-	padding: '24px',
-});
+import { actionButton, dragHandle, postCount } from './CategoryCard.css';
 
 export const listViewItem = style({
 	display: 'flex',
@@ -27,13 +14,6 @@ export const listViewItem = style({
 		transform: 'translateX(4px)',
 		boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
 	},
-});
-
-export const listViewContent = style({
-	flex: 1,
-	display: 'flex',
-	alignItems: 'center',
-	gap: '16px',
 });
 
 export const listViewMeta = style({
@@ -52,12 +32,19 @@ export const gridView = style({
 	padding: '24px',
 });
 
+export const categoryBadge = style({
+	display: 'inline-flex',
+	alignItems: 'center',
+	padding: '2px 8px',
+	borderRadius: '4px',
+	fontSize: '12px',
+	fontWeight: '500',
+	background: '#f0f2ff',
+	color: '#0142C0',
+});
+
 export const dragHandleStyle = style([dragHandle, {}]);
 
 export const actionButtonStyle = style([actionButton, {}]);
-
-export const actionsStyle = style([actions, {}]);
-
-export const categoryBadgeStyle = style([categoryBadge, {}]);
 
 export const postCountStyle = style([postCount, {}]);

@@ -1,3 +1,4 @@
+import { Box, Grid, Typography } from '@jung/design-system/components';
 import type { CategoryWithCount } from '@jung/shared/types';
 import * as styles from './CategoryStats.css';
 
@@ -20,19 +21,31 @@ export const CategoryStats = ({ allCategories, type }: CategoryStatsProps) => {
 	};
 
 	return (
-		<div className={styles.statsSection}>
-			<div className={styles.statCard}>
-				<span className={styles.statValue}>{allCategories.length}</span>
-				<span className={styles.statLabel}>Total Categories</span>
-			</div>
-			<div className={styles.statCard}>
-				<span className={styles.statValue}>{getTotalCount()}</span>
-				<span className={styles.statLabel}>Total {getItemLabel()}</span>
-			</div>
-			<div className={styles.statCard}>
-				<span className={styles.statValue}>{getDirectCount()}</span>
-				<span className={styles.statLabel}>Direct {getItemLabel()}</span>
-			</div>
-		</div>
+		<Grid gap='4' className={styles.statsSection}>
+			<Box className={styles.statCard}>
+				<Typography.Heading level={4} color='primary' fontWeight='medium'>
+					{allCategories.length}
+				</Typography.Heading>
+				<Typography.SubText level={1} color='black100' fontWeight='medium'>
+					Total Categories
+				</Typography.SubText>
+			</Box>
+			<Box className={styles.statCard}>
+				<Typography.Heading level={4} color='primary' fontWeight='medium'>
+					{getTotalCount()}
+				</Typography.Heading>
+				<Typography.SubText level={1} color='black100' fontWeight='medium'>
+					Total {getItemLabel()}
+				</Typography.SubText>
+			</Box>
+			<Box className={styles.statCard}>
+				<Typography.Heading level={4} color='primary' fontWeight='medium'>
+					{getDirectCount()}
+				</Typography.Heading>
+				<Typography.SubText level={1} color='black100' fontWeight='medium'>
+					Direct {getItemLabel()}
+				</Typography.SubText>
+			</Box>
+		</Grid>
 	);
 };
