@@ -1,5 +1,13 @@
 import { useCreateCategory } from '@/fsd/shared/api/useCreateCategory';
 import { useUpdateCategory } from '@/fsd/shared/api/useUpdateCategory';
+import {
+	Button,
+	Flex,
+	Input,
+	Stack,
+	Textarea,
+	Typography,
+} from '@jung/design-system/components';
 import type {
 	Category,
 	CategoryType,
@@ -122,27 +130,33 @@ export const CategoryForm = memo(
 					className={styles.modalContent}
 					onClick={(e) => e.stopPropagation()}
 				>
-					<h3 className={styles.modalTitle}>
+					<Typography.Heading level={5} color='primary'>
 						{editingId === 'new' ? 'NEW CATEGORY' : 'EDIT CATEGORY'}
-					</h3>
+					</Typography.Heading>
 
-					<div className={styles.formGroup}>
-						<label className={styles.formLabel}>NAME</label>
-						<input
+					<Stack gap='2'>
+						<Typography.Text level={2} marginBottom='2' fontWeight='medium'>
+							NAME
+						</Typography.Text>
+						<Input
+							width='full'
 							type='text'
-							className={`${styles.input} ${
-								errors.name ? styles.inputError : ''
-							}`}
+							borderRadius='md'
+							error={!!errors.name}
 							value={formData.name}
 							onChange={(e) => updateFormData('name', e.target.value)}
 						/>
 						{errors.name && (
-							<span className={styles.errorMessage}>{errors.name}</span>
+							<Typography.SubText color='error' fontSize='sm'>
+								{errors.name}
+							</Typography.SubText>
 						)}
-					</div>
+					</Stack>
 
-					<div className={styles.formGroup}>
-						<label className={styles.formLabel}>PARENT CATEGORY</label>
+					<Stack gap='2'>
+						<Typography.Text level={2} marginBottom='2' fontWeight='medium'>
+							PARENT CATEGORY
+						</Typography.Text>
 						<select
 							className={styles.input}
 							value={formData.parent_id || ''}
@@ -157,48 +171,57 @@ export const CategoryForm = memo(
 								</option>
 							))}
 						</select>
-					</div>
+					</Stack>
 
-					<div className={styles.formGroup}>
-						<label className={styles.formLabel}>DESCRIPTION</label>
-						<textarea
-							className={`${styles.textarea} ${
-								errors.description ? styles.inputError : ''
-							}`}
+					<Stack gap='2'>
+						<Typography.Text level={2} marginBottom='2' fontWeight='medium'>
+							DESCRIPTION
+						</Typography.Text>
+						<Textarea
+							width='full'
+							borderRadius='md'
+							error={!!errors.description}
 							value={formData.description}
 							onChange={(e) => updateFormData('description', e.target.value)}
 						/>
 						{errors.description && (
-							<span className={styles.errorMessage}>{errors.description}</span>
+							<Typography.SubText color='error' fontSize='sm'>
+								{errors.description}
+							</Typography.SubText>
 						)}
-					</div>
+					</Stack>
 
-					<div className={styles.formGroup}>
-						<label className={styles.formLabel}>COLOR</label>
-						<input
+					<Stack gap='2'>
+						<Typography.Text level={2} marginBottom='2' fontWeight='medium'>
+							COLOR
+						</Typography.Text>
+						<Input
 							type='color'
 							className={styles.colorInput}
 							value={formData.color}
 							onChange={(e) => updateFormData('color', e.target.value)}
 						/>
-					</div>
+					</Stack>
 
-					<div className={styles.modalActions}>
-						<button
-							className={styles.cancelButton}
+					<Flex gap='4' justify='flex-end' paddingTop='4'>
+						<Button
+							borderRadius='md'
+							variant='outline'
 							onClick={onClose}
+							loading={isLoading}
 							disabled={isLoading}
 						>
 							Cancel
-						</button>
-						<button
-							className={styles.saveButton}
+						</Button>
+						<Button
+							borderRadius='md'
 							onClick={handleSave}
+							loading={isLoading}
 							disabled={isLoading}
 						>
 							{buttonText}
-						</button>
-					</div>
+						</Button>
+					</Flex>
 				</motion.div>
 			</motion.div>
 		);

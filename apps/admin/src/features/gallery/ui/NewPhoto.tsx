@@ -1,4 +1,13 @@
-import { useToast } from '@jung/design-system/components';
+import {
+	Box,
+	Button,
+	Container,
+	Flex,
+	Input,
+	Textarea,
+	Typography,
+	useToast,
+} from '@jung/design-system/components';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { HiPhoto } from 'react-icons/hi2';
@@ -189,94 +198,137 @@ export const NewPhoto = () => {
 	}
 
 	return (
-		<div className={styles.pageWrapper}>
-			<form onSubmit={handleSubmit} className={styles.form}>
-				<div className={styles.formLayout}>
-					<div className={styles.imageSection}>
-						<div className={styles.sectionTitle}>
+		<Container background='white'>
+			<Box
+				as='form'
+				background='white'
+				borderRadius='lg'
+				padding='6'
+				boxShadow='primary'
+				onSubmit={handleSubmit}
+			>
+				<Flex gap='8' flexDirection={{ base: 'column', laptop: 'row' }}>
+					<Flex flexBasis='2/5' flexDirection='column'>
+						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<HiPhoto size={20} />
-							Image Upload
-						</div>
-						<div className={styles.uploadArea} onClick={handleUploadClick}>
+							<Typography.Text level={1} fontWeight='semibold'>
+								Image Upload
+							</Typography.Text>
+						</Flex>
+
+						<Flex
+							position='relative'
+							align='center'
+							justify='center'
+							aspectRatio='16/9'
+							borderRadius='lg'
+							onClick={handleUploadClick}
+							transition='fast'
+							cursor='pointer'
+							borderStyle='dashed'
+							borderWidth='hairline'
+							borderColor={{ base: 'gray', hover: 'primary' }}
+							width='full'
+							height='full'
+						>
 							{imagePreview ? (
-								<img
+								<Box
+									as='img'
 									src={imagePreview}
 									alt='Preview'
-									className={styles.previewImage}
+									width='full'
+									height='full'
+									objectFit='cover'
 								/>
 							) : (
-								<div className={styles.uploadPrompt}>
+								<Flex
+									flexDirection='column'
+									align='center'
+									justify='center'
+									padding='6'
+									gap='2'
+									color='primary'
+								>
 									<HiPhoto size={40} />
-									<p className={styles.uploadPromptText}>
+									<Typography.Text level={2} fontWeight='semibold'>
 										Click to upload image
-									</p>
-									<span className={styles.uploadPromptSubtext}>
+									</Typography.Text>
+									<Typography.Text
+										level={3}
+										fontWeight='medium'
+										color='primary400'
+									>
 										or drag and drop
-									</span>
-								</div>
+									</Typography.Text>
+								</Flex>
 							)}
-							<input
+							<Input
 								type='file'
 								ref={fileInputRef}
 								onChange={handleFileChange}
 								accept='image/*'
-								className={styles.hiddenFileInput}
+								display='none'
 								required={!isEditMode}
 								disabled={isLoading}
 							/>
-						</div>
-					</div>
+						</Flex>
+					</Flex>
 
-					<div className={styles.detailsSection}>
-						<div className={styles.sectionTitle}>
+					<Box flex='1'>
+						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<MdCollections size={20} />
-							Photo Details
-						</div>
+							<Typography.Text level={1} fontWeight='semibold'>
+								Photo Details
+							</Typography.Text>
+						</Flex>
 
-						<div className={styles.formCard}>
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>
+						<Flex flexDirection='column' gap='4'>
+							<Flex flexDirection='column' gap='2'>
+								<Typography.Text level={2} fontWeight='medium'>
 									Title <span className={styles.required}>*</span>
-								</label>
-								<input
+								</Typography.Text>
+								<Input
 									type='text'
 									name='title'
+									borderRadius='md'
 									value={formData.title}
 									onChange={handleInputChange}
 									placeholder='Enter photo title'
-									className={`${styles.input} ${
-										showErrors && errors.title ? styles.inputError : ''
-									}`}
+									borderColor={showErrors && errors.title ? 'error' : 'inherit'}
 								/>
 								{showErrors && errors.title && (
-									<span className={styles.errorMessage}>{errors.title}</span>
+									<Typography.SubText level={3} color='error'>
+										{errors.title}
+									</Typography.SubText>
 								)}
-							</div>
+							</Flex>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>
+							<Flex flexDirection='column' gap='2'>
+								<Typography.Text level={2} fontWeight='medium'>
 									Description <span className={styles.required}>*</span>
-								</label>
-								<textarea
+								</Typography.Text>
+								<Textarea
 									name='description'
+									borderRadius='md'
 									value={formData.description}
 									onChange={handleInputChange}
 									placeholder='Enter photo description'
-									className={`${styles.textarea} ${
-										showErrors && errors.description ? styles.inputError : ''
-									}`}
+									borderColor={
+										showErrors && errors.description ? 'error' : 'primary200'
+									}
 								/>
 								{showErrors && errors.description && (
-									<span className={styles.errorMessage}>
+									<Typography.SubText level={3} color='error'>
 										{errors.description}
-									</span>
+									</Typography.SubText>
 								)}
-							</div>
+							</Flex>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>
-									Collection <span className={styles.required}>*</span>
-								</label>
+							<Flex flexDirection='column' gap='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Collections
+									<span className={styles.required}>*</span>
+								</Typography.Text>
 								<select
 									name='collection_id'
 									value={formData.collection_id}
@@ -294,51 +346,62 @@ export const NewPhoto = () => {
 									))}
 								</select>
 								{showErrors && errors.collection_id && (
-									<span className={styles.errorMessage}>
+									<Typography.SubText level={3} color='error'>
 										{errors.collection_id}
-									</span>
+									</Typography.SubText>
 								)}
-							</div>
+							</Flex>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Tags</label>
-								<input
+							<Flex flexDirection='column' gap='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Tags
+								</Typography.Text>
+								<Input
 									type='text'
 									name='tags'
+									borderRadius='md'
 									value={formData.tags.join(', ')}
 									onChange={handleTagsChange}
 									placeholder='Enter tags (comma separated)'
-									className={styles.input}
 								/>
-							</div>
+							</Flex>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>File Name</label>
-								<input
+							<Flex flexDirection='column' gap='2'>
+								<Typography.Text
+									level={2}
+									fontWeight='medium'
+									borderRadius='md'
+								>
+									File Name
+								</Typography.Text>
+								<Input
 									type='text'
 									name='alt'
+									borderRadius='md'
 									value={formData.alt}
 									onChange={handleInputChange}
 									placeholder='Enter image alt text'
-									className={styles.input}
 								/>
-							</div>
-						</div>
-					</div>
-				</div>
+							</Flex>
+						</Flex>
+					</Box>
+				</Flex>
 
-				<div className={styles.formActions}>
-					<button
+				<Flex justify='flex-end' marginTop='8' gap='3' paddingY='4'>
+					<Button
 						type='submit'
-						className={styles.submitButton}
+						onClick={handleSubmit}
+						loading={
+							createPhotoMutation.isPending || updatePhotoMutation.isPending
+						}
 						disabled={
 							createPhotoMutation.isPending || updatePhotoMutation.isPending
 						}
 					>
 						{isEditMode ? 'Update Photo' : 'Create Photo'}
-					</button>
-				</div>
-			</form>
-		</div>
+					</Button>
+				</Flex>
+			</Box>
+		</Container>
 	);
 };

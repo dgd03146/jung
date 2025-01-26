@@ -1,4 +1,12 @@
 import {
+	Box,
+	Button,
+	Container,
+	Flex,
+	Grid,
+	Typography,
+} from '@jung/design-system/components';
+import {
 	Area,
 	AreaChart,
 	CartesianGrid,
@@ -42,49 +50,115 @@ const Analytics = () => {
 	];
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.statsGrid}>
-				<div className={styles.statCard}>
-					<div className={styles.statTitle}>Total Views</div>
-					<div className={styles.statValue}>24,589</div>
-					<div className={styles.statTrend}>+12.3%</div>
-				</div>
-				<div className={styles.statCard}>
-					<div className={styles.statTitle}>Avg. Time on Page</div>
-					<div className={styles.statValue}>4m 32s</div>
-					<div className={styles.statTrend}>+5.8%</div>
-				</div>
-				<div className={styles.statCard}>
-					<div className={styles.statTitle}>Bounce Rate</div>
-					<div className={styles.statValue}>32.8%</div>
-					<div className={styles.statTrend}>+2.1%</div>
-				</div>
-				<div className={styles.statCard}>
-					<div className={styles.statTitle}>User Engagement</div>
-					<div className={styles.statValue}>15.2%</div>
-					<div className={styles.statTrend}>+8.4%</div>
-				</div>
-			</div>
+		<Box padding='6'>
+			<Grid
+				gridTemplateColumns={{ mobile: '1', tablet: '1/2', laptop: '1/4' }}
+				gap='4'
+				marginBottom='6'
+			>
+				<Container
+					boxShadow='primary'
+					background='white'
+					borderRadius='xl'
+					padding='4'
+				>
+					<Typography.Text level={3} color='gray500'>
+						Total Views
+					</Typography.Text>
+					<Typography.Heading level={3} color='primary' marginY='2'>
+						24,589
+					</Typography.Heading>
+					<Typography.Text level={3} color='success'>
+						+12.3%
+					</Typography.Text>
+				</Container>
 
-			<div className={styles.chartSection}>
-				<div className={styles.sectionHeader}>
-					<h2 className={styles.sectionTitle}>Traffic Overview</h2>
-					<div className={styles.periodSelector}>
-						<button className={styles.periodButton}>Day</button>
-						<button className={styles.periodButton}>Week</button>
-						<button className={styles.periodButton}>Month</button>
-					</div>
-				</div>
-				<div className={styles.chart}>
-					<ResponsiveContainer width='100%' height={400}>
+				<Container
+					boxShadow='primary'
+					background='white'
+					borderRadius='xl'
+					padding='4'
+				>
+					<Typography.Text level={3} color='gray500'>
+						Avg. Time on Page
+					</Typography.Text>
+					<Typography.Heading level={3} color='primary' marginY='2'>
+						4m 32s
+					</Typography.Heading>
+					<Typography.Text level={3} color='success'>
+						+5.8%
+					</Typography.Text>
+				</Container>
+
+				<Container
+					boxShadow='primary'
+					background='white'
+					borderRadius='xl'
+					padding='4'
+				>
+					<Typography.Text level={3} color='gray500'>
+						Bounce Rate
+					</Typography.Text>
+					<Typography.Heading level={3} color='primary' marginY='2'>
+						32.8%
+					</Typography.Heading>
+					<Typography.Text level={3} color='success'>
+						+2.1%
+					</Typography.Text>
+				</Container>
+
+				<Container
+					boxShadow='primary'
+					background='white'
+					borderRadius='xl'
+					padding='4'
+				>
+					<Typography.Text level={3} color='gray500'>
+						User Engagement
+					</Typography.Text>
+					<Typography.Heading level={3} color='primary' marginY='2'>
+						15.2%
+					</Typography.Heading>
+					<Typography.Text level={3} color='success'>
+						+8.4%
+					</Typography.Text>
+				</Container>
+			</Grid>
+
+			<Container
+				boxShadow='primary'
+				background='white'
+				borderRadius='xl'
+				marginBottom='6'
+			>
+				<Flex
+					justify='space-between'
+					align='center'
+					padding='4'
+					borderBottomWidth='hairline'
+					borderColor='white300'
+					borderStyle='solid'
+				>
+					<Typography.Text level={3} color='primary' fontWeight='semibold'>
+						Traffic Overview
+					</Typography.Text>
+					<Flex gap='2'>
+						<Button variant='ghost' size='sm'>
+							Day
+						</Button>
+						<Button variant='ghost' size='sm'>
+							Week
+						</Button>
+						<Button variant='ghost' size='sm'>
+							Month
+						</Button>
+					</Flex>
+				</Flex>
+				<Box padding='4' height='96'>
+					<ResponsiveContainer width='100%' height='100%'>
 						<AreaChart
 							data={pageViews}
-							margin={{
-								top: 10,
-								right: 30,
-								left: 0,
-								bottom: 0,
-							}}
+							margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
 						>
 							<CartesianGrid
 								strokeDasharray='3 3'
@@ -129,35 +203,46 @@ const Analytics = () => {
 							/>
 						</AreaChart>
 					</ResponsiveContainer>
-				</div>
-			</div>
+				</Box>
+			</Container>
 
-			<div className={styles.contentSection}>
-				<h2 className={styles.sectionTitle}>Top Performing Content</h2>
-				<div className={styles.table}>
-					<table>
-						<thead>
-							<tr>
-								<th>Title</th>
-								<th>Views</th>
-								<th>Avg. Time</th>
-								<th>Engagement</th>
-							</tr>
-						</thead>
-						<tbody>
-							{topPosts.map((post, index) => (
-								<tr key={index}>
-									<td>{post.title}</td>
-									<td>{post.views.toLocaleString()}</td>
-									<td>{post.avgTime}</td>
-									<td>{post.engagement}</td>
+			<Container boxShadow='primary' background='white' borderRadius='xl'>
+				<Box
+					padding='4'
+					borderBottomWidth='hairline'
+					borderColor='white300'
+					borderStyle='solid'
+				>
+					<Typography.Text level={3} color='primary' fontWeight='semibold'>
+						Top Performing Content
+					</Typography.Text>
+				</Box>
+				<Box padding='4'>
+					<div className={styles.table}>
+						<table>
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Views</th>
+									<th>Avg. Time</th>
+									<th>Engagement</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+							</thead>
+							<tbody>
+								{topPosts.map((post, index) => (
+									<tr key={index}>
+										<td>{post.title}</td>
+										<td>{post.views.toLocaleString()}</td>
+										<td>{post.avgTime}</td>
+										<td>{post.engagement}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</Box>
+			</Container>
+		</Box>
 	);
 };
 

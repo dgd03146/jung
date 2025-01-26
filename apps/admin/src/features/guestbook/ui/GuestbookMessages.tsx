@@ -1,3 +1,11 @@
+import {
+	Box,
+	Button,
+	Flex,
+	Grid,
+	Stack,
+	Typography,
+} from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -113,14 +121,16 @@ export const GuestbookMessages = () => {
 	};
 
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.statsSection}>
-				<div className={styles.statCard}>
-					<span className={styles.statValue}>{messages.length}</span>
-					<span className={styles.statLabel}>Total Messages</span>
-				</div>
-				<div className={styles.statCard}>
-					<span className={styles.statValue}>
+		<Stack flexDirection='column' gap='6'>
+			<Grid className={styles.statsSection}>
+				<Box className={styles.statCard}>
+					<Typography.Heading level={4} color='primary' fontWeight='medium'>
+						{messages.length}
+					</Typography.Heading>
+					<Typography.SubText level={1}>Total Messages</Typography.SubText>
+				</Box>
+				<Box className={styles.statCard}>
+					<Typography.Heading level={4} color='primary' fontWeight='medium'>
 						{
 							messages.filter(
 								(m) =>
@@ -128,17 +138,27 @@ export const GuestbookMessages = () => {
 									new Date().toDateString(),
 							).length
 						}
-					</span>
-					<span className={styles.statLabel}>Today</span>
-				</div>
-			</div>
+					</Typography.Heading>
+					<Typography.SubText level={1}>Today</Typography.SubText>
+				</Box>
+			</Grid>
 
-			<div className={styles.mainSection}>
-				<div className={styles.header}>
-					<h2 className={styles.title}>Guestbook Messages</h2>
-				</div>
+			<Box className={styles.mainSection}>
+				<Flex
+					paddingY='5'
+					paddingX='6'
+					justify='space-between'
+					align='center'
+					borderStyle='solid'
+					borderColor='primary50'
+					borderBottomWidth='hairline'
+				>
+					<Typography.Heading level={4} color='primary'>
+						Guestbook Messages
+					</Typography.Heading>
+				</Flex>
 
-				<div className={styles.listView}>
+				<Stack gap='4' padding='6'>
 					<AnimatePresence>
 						{messages.map((message) => (
 							<motion.div
@@ -151,60 +171,66 @@ export const GuestbookMessages = () => {
 									[styles.backgroundColor]: message.background_color || 'white',
 								})}
 							>
-								<div className={styles.listViewContent}>
-									<div className={styles.messageMain}>
-										<div className={styles.authorSection}>
-											<img
+								<Flex align='center' gap='4' paddingX='4'>
+									<Box padding='4' flex='1'>
+										<Flex align='center' gap='3' marginBottom='2'>
+											<Box
+												as='img'
 												src={message.author_avatar}
 												alt={message.author_name}
-												className={styles.avatar}
+												width='8'
+												height='8'
+												borderRadius='half'
+												objectFit='cover'
 											/>
-											<span className={styles.authorName}>
+											<Typography.SubText>
 												{message.author_name}
-											</span>
-											<span className={styles.messageDate}>
+											</Typography.SubText>
+											<Typography.SubText color='gray300'>
 												{new Date(message.created_at).toLocaleDateString()}
-											</span>
-										</div>
-										<div className={styles.messageContent}>
+											</Typography.SubText>
+										</Flex>
+										<Typography.Text level={3}>
 											{message.emoji && (
-												<span className={styles.emoji}>{message.emoji}</span>
+												<Typography.SubText as='span' level={2} marginRight='2'>
+													{message.emoji}
+												</Typography.SubText>
 											)}
 											{message.content}
-										</div>
-									</div>
-									<div className={styles.actions}>
-										<button
+										</Typography.Text>
+									</Box>
+									<Flex gap='2' paddingY='3' paddingX='4'>
+										<Button
 											className={styles.actionButton}
 											data-variant='approve'
 											title='Approve message'
 											onClick={() => handleApprove(message.id)}
 										>
 											<HiCheck className={styles.actionIcon} />
-										</button>
-										<button
+										</Button>
+										<Button
 											className={styles.actionButton}
 											data-variant='reject'
 											title='Reject message'
 											onClick={() => handleReject(message.id)}
 										>
 											<HiXMark className={styles.actionIcon} />
-										</button>
-										<button
+										</Button>
+										<Button
 											className={styles.actionButton}
 											data-variant='delete'
 											title='Delete message'
 											onClick={() => handleDelete(message.id)}
 										>
 											<HiTrash className={styles.actionIcon} />
-										</button>
-									</div>
-								</div>
+										</Button>
+									</Flex>
+								</Flex>
 							</motion.div>
 						))}
 					</AnimatePresence>
-				</div>
-			</div>
-		</div>
+				</Stack>
+			</Box>
+		</Stack>
 	);
 };

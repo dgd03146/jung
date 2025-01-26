@@ -3,10 +3,16 @@ export const gridTemplate = {
 	'1/2': 'repeat(2, minmax(0px, 1fr))',
 	'1/3': 'repeat(3, minmax(0px, 1fr))',
 	'1/4': 'repeat(4, minmax(0px, 1fr))',
+	'1/5': 'repeat(5, minmax(0px, 1fr))',
 	'1/6': 'repeat(6, minmax(0px, 1fr))',
 	'1/8': 'repeat(8, minmax(0px, 1fr))',
 	'1/12': 'repeat(12, minmax(0px, 1fr))',
-	'1/5': 'repeat(5, minmax(0px, 1fr))',
+	'2/3': 'minmax(0px, 2fr) minmax(0px, 1fr)',
+	'3/2': 'minmax(0px, 1fr) minmax(0px, 2fr)',
+	'3/4': 'minmax(0px, 3fr) minmax(0px, 1fr)',
+	'4/3': 'minmax(0px, 1fr) minmax(0px, 3fr)',
+	'auto-fit': 'repeat(auto-fit, minmax(250px, 1fr))',
+	'auto-fill': 'repeat(auto-fill, minmax(250px, 1fr))',
 };
 
 export const gridColumnRow = {

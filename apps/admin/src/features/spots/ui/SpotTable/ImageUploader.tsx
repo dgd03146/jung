@@ -1,4 +1,10 @@
-import { useToast } from '@jung/design-system/components';
+import {
+	Box,
+	Grid,
+	Input,
+	Typography,
+	useToast,
+} from '@jung/design-system/components';
 import type { SpotImageUpload } from '@jung/shared/types';
 import { MdDelete, MdPhoto } from 'react-icons/md';
 import * as styles from './ImageUploader.css';
@@ -56,20 +62,29 @@ export const ImageUploader = ({
 	};
 
 	return (
-		<div className={styles.wrapper}>
-			<div className={styles.imageGrid}>
+		<Box
+			borderRadius='md'
+			background='white'
+			borderStyle='solid'
+			borderWidth='hairline'
+			borderColor='primary50'
+		>
+			<Grid className={styles.imageGrid}>
 				{images
 					.filter((img) => img.status !== 'deleted')
 					.map((image, index) => (
-						<div
+						<Box
 							key={image.id || index}
 							className={styles.imageWrapper}
 							data-area={`img${index + 1}`}
 						>
-							<img
+							<Box
+								as='img'
 								src={image.preview || image.url}
 								alt={`${index + 1}`}
-								className={styles.image}
+								width='full'
+								height='full'
+								objectFit='cover'
 							/>
 							<button
 								type='button'
@@ -78,31 +93,31 @@ export const ImageUploader = ({
 							>
 								<MdDelete size={20} />
 							</button>
-						</div>
+						</Box>
 					))}
 
 				{images.filter((img) => img.status !== 'deleted').length <
 					maxImages && (
-					<label className={styles.uploadButton}>
-						<input
+					<Box as='label' className={styles.uploadButton}>
+						<Input
 							type='file'
 							accept='image/*'
 							multiple
 							onChange={handleImageUpload}
-							className={styles.fileInput}
+							display='none'
 						/>
 						<MdPhoto className={styles.uploadIcon} />
-						<span className={styles.uploadText}>
-							{images.length === 0 ? '이미지 추가하기' : '더 추가하기'}
-						</span>
-						<span className={styles.uploadSubtext}>
+						<Typography.SubText color='gray300'>
+							{images.length === 0 ? 'Add Images' : 'Add More'}
+						</Typography.SubText>
+						<Typography.SubText color='gray300'>
 							{`${
 								images.filter((img) => img.status !== 'deleted').length
 							}/${maxImages}`}
-						</span>
-					</label>
+						</Typography.SubText>
+					</Box>
 				)}
-			</div>
-		</div>
+			</Grid>
+		</Box>
 	);
 };

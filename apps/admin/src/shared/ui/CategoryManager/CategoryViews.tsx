@@ -1,3 +1,11 @@
+import {
+	Box,
+	Button,
+	Flex,
+	Grid,
+	Stack,
+	Typography,
+} from '@jung/design-system/components';
 import type { CategoryWithCount } from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import { Draggable } from 'react-beautiful-dnd';
@@ -19,7 +27,7 @@ export const CategoryListView = ({
 	const getItemLabel = () => (type === 'blog' ? 'posts' : 'spots');
 
 	return (
-		<div className={styles.listView}>
+		<Stack gap='3' padding='6'>
 			{categories.map((category, index) => (
 				<Draggable key={category.id} draggableId={category.id} index={index}>
 					{(provided) => (
@@ -31,44 +39,48 @@ export const CategoryListView = ({
 							exit={{ opacity: 0, x: 20 }}
 							className={styles.listViewItem}
 						>
-							<div className={styles.listViewContent}>
-								<div
+							<Flex flex='1' align='center' gap='4'>
+								<Box
 									className={styles.dragHandleStyle}
 									{...provided.dragHandleProps}
 								>
 									⋮
-								</div>
-								<div
-									className={styles.categoryBadgeStyle}
+								</Box>
+								<Box
+									className={styles.categoryBadge}
 									style={{
 										background: `${category.color}15`,
 										color: category.color,
 									}}
 								>
 									{category.name}
-								</div>
-								<div className={styles.listViewMeta}>
-									<span>
+								</Box>
+								<Box className={styles.listViewMeta}>
+									<Typography.SubText
+										level={1}
+										color='black100'
+										fontWeight='medium'
+									>
 										{category.count} {getItemLabel()}
-									</span>
-									<div className={styles.actionsStyle}>
-										<button
+									</Typography.SubText>
+									<Flex gap='1'>
+										<Button
 											className={styles.actionButtonStyle}
 											onClick={() => onEdit(category.id)}
 										>
 											<HiPencil />
-										</button>
-										<button className={styles.actionButtonStyle}>
+										</Button>
+										<Button className={styles.actionButtonStyle}>
 											<HiTrash />
-										</button>
-									</div>
-								</div>
-							</div>
+										</Button>
+									</Flex>
+								</Box>
+							</Flex>
 						</motion.div>
 					)}
 				</Draggable>
 			))}
-		</div>
+		</Stack>
 	);
 };
 
@@ -86,7 +98,7 @@ export const CategoryGridView = ({
 	type,
 }: CategoryGridViewProps) => {
 	return (
-		<div className={styles.gridView}>
+		<Grid className={styles.gridView}>
 			{mainCategories.map((category, index) => (
 				<Draggable key={category.id} draggableId={category.id} index={index}>
 					{(provided) => (
@@ -103,6 +115,6 @@ export const CategoryGridView = ({
 					)}
 				</Draggable>
 			))}
-		</div>
+		</Grid>
 	);
 };

@@ -1,4 +1,5 @@
 import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
+import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { CategoryWithCount } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -54,58 +55,73 @@ export const CategoryCard = ({
 				[styles.borderColor]: category.color || null,
 			})}
 		>
-			<div className={styles.cardHeader}>
-				<div className={styles.dragHandle} {...dragHandleProps}>
+			<Flex paddingY='4' paddingX='2' justify='space-between' align='center'>
+				<Box className={styles.dragHandle} {...dragHandleProps}>
 					⋮
-				</div>
+				</Box>
 				{hasChildren && (
-					<button
+					<Button
 						onClick={() => setIsExpanded(!isExpanded)}
 						className={styles.expandButton}
 					>
 						{isExpanded ? '▼' : '▶'}
-					</button>
+					</Button>
 				)}
-				<span className={styles.categoryName}>
+				<Typography.SubText
+					level={1}
+					color='black100'
+					fontWeight='medium'
+					flex='1'
+				>
 					{category.name}
 					{category.parent_id ? (
 						<span className={styles.parentBadge}>Sub</span>
 					) : (
 						category.subCategoriesCount > 0 && (
 							<span className={styles.parentBadge}>
-								{subCategories.length} sub
+								{subCategories.length} Sub
 							</span>
 						)
 					)}
-				</span>
-				<div className={styles.actions}>
-					<button
+				</Typography.SubText>
+				<Flex gap='1'>
+					<Button
 						className={styles.actionButton}
+						size='sm'
 						onClick={() => setEditingId(category.id)}
 					>
 						<HiPencil />
-					</button>
-					<button
+					</Button>
+					<Button
 						className={styles.actionButton}
+						size='sm'
 						onClick={handleDelete}
 						disabled={deleteCategory.isPending}
 					>
 						<HiTrash />
-					</button>
-				</div>
-			</div>
+					</Button>
+				</Flex>
+			</Flex>
 
 			{category.description && (
-				<div className={styles.cardContent}>
-					<p className={styles.description}>{category.description}</p>
-				</div>
+				<Box padding='4'>
+					<Typography.SubText color='black100'>
+						{category.description}
+					</Typography.SubText>
+				</Box>
 			)}
 
-			<div className={styles.cardFooter}>
+			<Flex
+				align='center'
+				justify='space-between'
+				paddingY='3'
+				paddingX='4'
+				background='white100'
+			>
 				<span className={styles.postCount}>
 					{category.count} {type === 'blog' ? 'posts' : 'spots'}
 				</span>
-			</div>
+			</Flex>
 
 			{isExpanded && (
 				<AnimatePresence>

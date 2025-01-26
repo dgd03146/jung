@@ -9,14 +9,18 @@ export interface TextareaProps
 	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg' | 'base';
 	rounded?: boolean;
+	error?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-	({ disabled, variant, size, rows, cols, rounded, ...restProps }, ref?) => {
+	(
+		{ disabled, variant, size, rows, cols, rounded, error, ...restProps },
+		ref?,
+	) => {
 		return (
 			<Box
 				as='textarea'
-				className={S.textarea({ variant, size, rounded, disabled })}
+				className={S.textarea({ variant, size, rounded, disabled, error })}
 				cols={cols || 30}
 				rows={rows || 5}
 				disabled={disabled}

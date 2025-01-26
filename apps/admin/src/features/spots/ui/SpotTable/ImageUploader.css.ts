@@ -1,13 +1,5 @@
 import { style } from '@vanilla-extract/css';
 
-export const wrapper = style({
-	width: '100%',
-	borderRadius: '12px',
-
-	background: '#f8f9fa',
-	border: '1px solid #e9ecef',
-});
-
 export const imageGrid = style({
 	display: 'grid',
 	gap: '8px',
@@ -53,12 +45,6 @@ export const imageWrapper = style({
 	':hover': {
 		transform: 'scale(1.01)',
 	},
-});
-
-export const image = style({
-	width: '100%',
-	height: '100%',
-	objectFit: 'cover',
 });
 
 export const deleteButton = style({
@@ -108,19 +94,4 @@ export const uploadIcon = style({
 	fontSize: '32px',
 	color: '#adb5bd',
 	marginBottom: '4px',
-});
-
-export const uploadText = style({
-	fontSize: '15px',
-	fontWeight: 500,
-	color: '#495057',
-});
-
-export const uploadSubtext = style({
-	fontSize: '13px',
-	color: '#868e96',
-});
-
-export const fileInput = style({
-	display: 'none',
 });

@@ -2,7 +2,7 @@ import { useAuth } from '@/fsd/features/auth/api/useAuth';
 import { usePathname } from '@/fsd/shared';
 import { useSidebarStore } from '@/fsd/shared';
 // FIXME: icons들 다 나중에 shared로 빼야할 듯?
-import { Box, Button, Flex } from '@jung/design-system/components';
+import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
 	HiChevronDoubleLeft,
@@ -20,9 +20,11 @@ const formatPageTitle = (path: string) => {
 
 	if (segments.length === 0) {
 		return (
-			<div className={styles.titleWrapper}>
-				<span className={styles.mainPath}>Dashboard</span>
-			</div>
+			<Flex align='center' gap='2'>
+				<Typography.Text color='primary' fontWeight='medium'>
+					Dashboard
+				</Typography.Text>
+			</Flex>
 		);
 	}
 
@@ -39,11 +41,15 @@ const formatPageTitle = (path: string) => {
 
 	if (segments.includes('collections')) {
 		return (
-			<div className={styles.titleWrapper}>
-				<span className={styles.mainPath}>Gallery</span>
-				<HiChevronRight className={styles.titleSeparator} />
-				<span className={styles.subPath}>Collections</span>
-			</div>
+			<Flex align='center' gap='2'>
+				<Typography.Heading level={5} color='primary' fontWeight='semibold'>
+					Gallery
+				</Typography.Heading>
+				<HiChevronRight color='blue' />
+				<Typography.Text level={4} color='primary' fontWeight='medium'>
+					Collections
+				</Typography.Text>
+			</Flex>
 		);
 	}
 
@@ -53,22 +59,28 @@ const formatPageTitle = (path: string) => {
 			.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
 			.join(' ');
 		return (
-			<div className={styles.titleWrapper}>
-				<span className={styles.mainPath}>{mainSection}</span>
-				<HiChevronRight className={styles.titleSeparator} />
-				<span className={styles.subPath}>{subSection}</span>
-			</div>
+			<Flex align='center' gap='2'>
+				<Typography.Text color='primary' fontWeight='semibold'>
+					{mainSection}
+				</Typography.Text>
+				<HiChevronRight color='blue' />
+				<Typography.Text level={4} color='primary' fontWeight='medium'>
+					{subSection}
+				</Typography.Text>
+			</Flex>
 		);
 	}
 
 	return (
-		<div className={styles.titleWrapper}>
-			<span className={styles.mainPath}>{mainSection}</span>
-			<HiChevronRight className={styles.titleSeparator} />
-			<span className={styles.subPath}>
+		<Flex align='center' gap='2'>
+			<Typography.Text color='primary' fontWeight='semibold'>
+				{mainSection}
+			</Typography.Text>
+			<HiChevronRight color='blue' />
+			<Typography.Text level={4} color='primary' fontWeight='medium'>
 				{defaultSubSections[mainSection.toLowerCase()] || 'Overview'}
-			</span>
-		</div>
+			</Typography.Text>
+		</Flex>
 	);
 };
 
@@ -107,9 +119,9 @@ const Header = () => {
 			zIndex='10'
 		>
 			<Flex alignItems='center' gap='1'>
-				<button
+				<Button
+					variant='ghost'
 					onClick={actions.toggle}
-					className={styles.menuButton}
 					aria-label='Toggle sidebar'
 				>
 					{isOpen ? (
@@ -117,8 +129,10 @@ const Header = () => {
 					) : (
 						<HiMenuAlt2 size={20} />
 					)}
-				</button>
-				<h1 className={styles.pageTitle}>{pageTitle}</h1>
+				</Button>
+				<Typography.Heading level={4} color='primary'>
+					{pageTitle}
+				</Typography.Heading>
 			</Flex>
 
 			<Button

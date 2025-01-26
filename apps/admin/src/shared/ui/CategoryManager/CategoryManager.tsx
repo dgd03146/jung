@@ -1,4 +1,5 @@
 import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
+import { Box, Stack } from '@jung/design-system/components';
 import type { CategoryWithCount } from '@jung/shared/types';
 import { useRouter } from '@tanstack/react-router';
 import { AnimatePresence } from 'framer-motion';
@@ -10,7 +11,6 @@ import {
 } from 'react-beautiful-dnd';
 import { CategoryForm } from './CategoryForm';
 import { CategoryHeader } from './CategoryHeader';
-import * as styles from './CategoryManager.css';
 import { CategoryStats } from './CategoryStats';
 import { CategoryGridView, CategoryListView } from './CategoryViews';
 
@@ -44,8 +44,8 @@ export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {
 	};
 
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.mainSection}>
+		<Stack gap='6'>
+			<Box background='white' borderRadius='xl'>
 				<CategoryHeader
 					view={view}
 					onViewChange={setView}
@@ -79,7 +79,7 @@ export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {
 						)}
 					</Droppable>
 				</DragDropContext>
-			</div>
+			</Box>
 
 			<AnimatePresence>
 				{editingId && (
@@ -92,6 +92,6 @@ export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {
 					/>
 				)}
 			</AnimatePresence>
-		</div>
+		</Stack>
 	);
 };

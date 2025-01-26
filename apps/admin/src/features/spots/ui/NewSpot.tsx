@@ -1,5 +1,15 @@
 import { useGetCategories } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
+import {
+	Box,
+	Button,
+	Container,
+	Flex,
+	Input,
+	Stack,
+	Textarea,
+	Typography,
+	useToast,
+} from '@jung/design-system/components';
 import type { SpotImageUpload } from '@jung/shared/types';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
@@ -113,33 +123,71 @@ export const NewSpot = () => {
 		return <div>Loading...</div>;
 	}
 
-	return (
-		<div className={styles.pageWrapper}>
-			<form onSubmit={handleSubmit} className={styles.form}>
-				<div className={styles.formLayout}>
-					<div className={styles.basicSection}>
-						<div className={styles.sectionTitle}>
-							<HiLocationMarker size={20} />
-							Basic Information
-						</div>
+	// TODO: Form Validation 체크 로직 추가
 
-						<div className={styles.formCard}>
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Title</label>
-								<input
+	return (
+		<Container background='white'>
+			<Box
+				as='form'
+				background='white'
+				borderRadius='lg'
+				padding='6'
+				boxShadow='primary'
+				onSubmit={handleSubmit}
+			>
+				<Flex
+					gap={{ base: '6', laptop: '10' }}
+					flexDirection={{ base: 'column', tablet: 'row' }}
+				>
+					{/* Basic Information */}
+					<Stack flexBasis='2/5'>
+						<Flex align='center' gap='2' color='primary' marginBottom='4'>
+							<HiLocationMarker size={20} />
+							<Typography.Text level={1} fontWeight='semibold'>
+								Basic Information
+							</Typography.Text>
+						</Flex>
+
+						<Stack
+							space='4'
+							background='white'
+							borderRadius='lg'
+							padding='6'
+							boxShadow='primary'
+						>
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Title
+									{!formData.title && (
+										<Typography.Text as='span' level={2} color='secondary'>
+											*
+										</Typography.Text>
+									)}
+								</Typography.Text>
+								<Input
+									width='full'
+									borderRadius='md'
 									type='text'
 									value={formData.title}
 									onChange={(e) =>
 										setFormData((prev) => ({ ...prev, title: e.target.value }))
 									}
-									className={styles.input}
 									required
 								/>
-							</div>
+							</Stack>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Description</label>
-								<textarea
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Description
+									{!formData.description && (
+										<Typography.Text as='span' level={2} color='secondary'>
+											*
+										</Typography.Text>
+									)}
+								</Typography.Text>
+								<Textarea
+									width='full'
+									borderRadius='md'
 									value={formData.description}
 									onChange={(e) =>
 										setFormData((prev) => ({
@@ -147,13 +195,19 @@ export const NewSpot = () => {
 											description: e.target.value,
 										}))
 									}
-									className={styles.textarea}
 									required
 								/>
-							</div>
+							</Stack>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Category</label>
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Category
+									{!formData.category_id && (
+										<Typography.Text as='span' level={2} color='secondary'>
+											*
+										</Typography.Text>
+									)}
+								</Typography.Text>
 								<select
 									value={formData.category_id}
 									onChange={(e) =>
@@ -172,13 +226,22 @@ export const NewSpot = () => {
 										</option>
 									))}
 								</select>
-							</div>
+							</Stack>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Location</label>
-								<div className={styles.formRow}>
-									<input
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Location
+									{!formData.address && (
+										<Typography.Text as='span' level={2} color='secondary'>
+											*
+										</Typography.Text>
+									)}
+								</Typography.Text>
+								<Stack space='1'>
+									<Input
 										type='text'
+										width='full'
+										borderRadius='md'
 										value={formData.address || ''}
 										onChange={(e) =>
 											setFormData((prev) => ({
@@ -187,65 +250,90 @@ export const NewSpot = () => {
 											}))
 										}
 										placeholder='Address'
-										className={styles.input}
 									/>
-									<input
-										type='number'
-										value={formData.coordinates?.lat ?? 0}
-										onChange={(e) =>
-											setFormData((prev) => ({
-												...prev,
-												coordinates: {
-													lat: Number(e.target.value) || 0,
-													lng: prev.coordinates?.lng ?? 0,
-												},
-											}))
-										}
-										placeholder='Latitude'
-										step='0.000001'
-										className={styles.input}
-									/>
-									<input
-										type='number'
-										value={formData.coordinates?.lng ?? 0}
-										onChange={(e) =>
-											setFormData((prev) => ({
-												...prev,
-												coordinates: {
-													lat: prev.coordinates?.lat ?? 0,
-													lng: Number(e.target.value) || 0,
-												},
-											}))
-										}
-										placeholder='Longitude'
-										step='0.000001'
-										className={styles.input}
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className={styles.additionalSection}>
-						<div className={styles.sectionTitle}>
-							<HiTag size={20} />
-							Additional Information
-						</div>
+									<Flex gap='2'>
+										<Input
+											type='number'
+											width='full'
+											borderRadius='md'
+											value={formData.coordinates?.lat ?? 0}
+											onChange={(e) =>
+												setFormData((prev) => ({
+													...prev,
+													coordinates: {
+														lat: Number(e.target.value) || 0,
+														lng: prev.coordinates?.lng ?? 0,
+													},
+												}))
+											}
+											placeholder='Latitude'
+											step='0.000001'
+										/>
+										<Input
+											type='number'
+											width='full'
+											borderRadius='md'
+											value={formData.coordinates?.lng ?? 0}
+											onChange={(e) =>
+												setFormData((prev) => ({
+													...prev,
+													coordinates: {
+														lat: prev.coordinates?.lat ?? 0,
+														lng: Number(e.target.value) || 0,
+													},
+												}))
+											}
+											placeholder='Longitude'
+											step='0.000001'
+										/>
+									</Flex>
+								</Stack>
+							</Stack>
+						</Stack>
+					</Stack>
 
-						<div className={styles.formCard}>
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Images</label>
+					{/* Additional Information */}
+					<Stack flex='1'>
+						<Flex align='center' gap='2' color='primary' marginBottom='4'>
+							<HiTag size={20} />
+							<Typography.Text level={1} fontWeight='semibold'>
+								Additional Information
+							</Typography.Text>
+						</Flex>
+						<Stack
+							flex='1'
+							padding='6'
+							space='4'
+							background='white'
+							borderRadius='lg'
+							boxShadow='primary'
+						>
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Images
+								</Typography.Text>
 								<ImageUploader
 									images={images}
 									onChange={setImages}
 									maxImages={4}
 								/>
-							</div>
+							</Stack>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Tips</label>
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Tips
+								</Typography.Text>
 								{formData.tips?.map((tip, index) => (
-									<div key={index} className={styles.arrayField}>
-										<input
+									<Flex
+										key={index}
+										gap='2'
+										marginBottom={
+											index === formData.tips?.length - 1 ? '2' : '0'
+										}
+									>
+										<Input
+											width='full'
+											borderRadius='md'
 											type='text'
 											value={tip}
 											onChange={(e) => {
@@ -254,11 +342,11 @@ export const NewSpot = () => {
 												setFormData((prev) => ({ ...prev, tips: newTips }));
 											}}
 											placeholder='Enter tip'
-											className={styles.input}
 										/>
-										<button
+										<Button
 											type='button'
-											className={styles.iconButton}
+											variant='outline'
+											borderRadius='md'
 											onClick={() => {
 												const newTips = formData.tips?.filter(
 													(_, i) => i !== index,
@@ -267,27 +355,31 @@ export const NewSpot = () => {
 											}}
 										>
 											<MdDelete size={20} />
-										</button>
-									</div>
+										</Button>
+									</Flex>
 								))}
-								<button
-									type='button'
-									className={styles.addButton}
+								<Button
+									variant='outline'
+									borderRadius='md'
+									prefix={<MdAdd size={20} />}
 									onClick={() => {
 										const newTips = [...(formData.tips || []), ''];
 										setFormData((prev) => ({ ...prev, tips: newTips }));
 									}}
 								>
-									<MdAdd size={20} />
 									Add Tip
-								</button>
-							</div>
+								</Button>
+							</Stack>
 
-							<div className={styles.inputGroup}>
-								<label className={styles.label}>Tags</label>
+							<Stack space='2'>
+								<Typography.Text level={2} fontWeight='medium'>
+									Tags
+								</Typography.Text>
 								{formData.tags?.map((tag, index) => (
-									<div key={index} className={styles.arrayField}>
-										<input
+									<Flex key={index} gap='2' marginBottom='2'>
+										<Input
+											borderRadius='md'
+											width='full'
 											type='text'
 											value={tag}
 											onChange={(e) => {
@@ -296,11 +388,10 @@ export const NewSpot = () => {
 												setFormData((prev) => ({ ...prev, tags: newTags }));
 											}}
 											placeholder='Enter tag'
-											className={styles.input}
 										/>
-										<button
-											type='button'
-											className={styles.iconButton}
+										<Button
+											variant='outline'
+											borderRadius='md'
 											onClick={() => {
 												const newTags = formData.tags?.filter(
 													(_, i) => i !== index,
@@ -309,37 +400,35 @@ export const NewSpot = () => {
 											}}
 										>
 											<MdDelete size={20} />
-										</button>
-									</div>
+										</Button>
+									</Flex>
 								))}
-								<button
-									type='button'
-									className={styles.addButton}
+								<Button
+									borderRadius='md'
+									prefix={<MdAdd size={20} />}
 									onClick={() => {
 										const newTags = [...(formData.tags || []), ''];
 										setFormData((prev) => ({ ...prev, tags: newTags }));
 									}}
 								>
-									<MdAdd size={20} />
 									Add Tag
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div className={styles.formActions}>
-					<button
+								</Button>
+							</Stack>
+						</Stack>
+					</Stack>
+				</Flex>
+				<Flex justify='flex-end' gap='2' paddingY='4'>
+					<Button
 						type='submit'
-						className={styles.submitButton}
+						borderRadius='md'
 						disabled={
 							createSpotMutation.isPending || updateSpotMutation.isPending
 						}
 					>
-						{isEditMode ? '스팟 수정' : '스팟 생성'}
-					</button>
-				</div>
-			</form>
-		</div>
+						{isEditMode ? 'Update Spot' : 'Create Spot'}
+					</Button>
+				</Flex>
+			</Box>
+		</Container>
 	);
 };

@@ -1,36 +1,108 @@
-import { HiPlus } from 'react-icons/hi2';
-import * as styles from './PhotoCollectionSkeleton.css';
+import { Box, Flex, Grid, Stack } from '@jung/design-system/components';
 
 export const PhotoCollectionSkeleton = () => {
 	return (
-		<div className={styles.pageWrapper}>
-			<div className={styles.mainSection}>
-				<div className={styles.header}>
-					<h2 className={styles.title}>Collection Management</h2>
-					<button className={styles.addButton} disabled>
-						<HiPlus />
-						New Collection
-					</button>
-				</div>
+		<Box padding='6'>
+			<Stack space='6'>
+				<Box
+					padding='6'
+					borderRadius='lg'
+					borderWidth='hairline'
+					borderStyle='solid'
+					borderColor='gray'
+				>
+					<Flex
+						display='flex'
+						justifyContent='space-between'
+						alignItems='center'
+					>
+						<Box
+							width='48'
+							height='8'
+							background='gray'
+							borderRadius='md'
+							transition='fast'
+						/>
+						<Box
+							width='32'
+							height='10'
+							background='gray'
+							borderRadius='md'
+							transition='fast'
+						/>
+					</Flex>
+				</Box>
 
-				<div className={styles.gridView}>
+				<Grid
+					gridTemplateColumns={{
+						base: '1/2',
+						tablet: '1/3',
+						laptop: '1/4',
+					}}
+					gap='4'
+				>
 					{Array.from({ length: 8 }).map((_, index) => (
-						<div key={index} className={styles.collectionCard}>
-							<div className={styles.imageContainer}>
-								<div className={styles.skeletonImage} />
-							</div>
-							<div className={styles.content}>
-								<div className={styles.skeletonTitle} />
-								<div className={styles.skeletonDescription} />
-							</div>
-							<div className={styles.footer}>
-								<div className={styles.skeletonPhotoCount} />
-								<div className={styles.skeletonDate} />
-							</div>
-						</div>
+						<Box
+							key={index}
+							borderRadius='lg'
+							borderWidth='hairline'
+							borderStyle='solid'
+							borderColor='gray'
+							overflow='hidden'
+						>
+							<Box
+								position='relative'
+								width='full'
+								height='48'
+								background='gray'
+								transition='fast'
+							/>
+
+							<Stack padding='4' space='2'>
+								<Box
+									width='3/5'
+									height='6'
+									background='gray'
+									borderRadius='md'
+									transition='fast'
+								/>
+								<Box
+									width='full'
+									height='8'
+									background='gray'
+									borderRadius='md'
+									transition='fast'
+								/>
+							</Stack>
+
+							<Flex
+								paddingX='4'
+								paddingY='3'
+								justifyContent='space-between'
+								alignItems='center'
+								borderTopWidth='hairline'
+								borderColor='gray'
+								borderStyle='solid'
+							>
+								<Box
+									width='20'
+									height='4'
+									background='gray'
+									borderRadius='md'
+									transition='fast'
+								/>
+								<Box
+									width='24'
+									height='4'
+									background='gray'
+									borderRadius='md'
+									transition='fast'
+								/>
+							</Flex>
+						</Box>
 					))}
-				</div>
-			</div>
-		</div>
+				</Grid>
+			</Stack>
+		</Box>
 	);
 };

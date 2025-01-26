@@ -9,16 +9,17 @@ export interface InputProps
 			'size' | 'width' | 'height' | 'color'
 		>,
 		AtomProps {
-	variant?: 'primary' | 'ghost';
+	variant?: 'primary' | 'secondary' | 'ghost';
 	size?: 'sm' | 'md' | 'lg' | 'zero';
+	error?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ variant, disabled, size, ...restProps }, ref?) => {
+	({ variant, disabled, size, error, ...restProps }, ref?) => {
 		return (
 			<Box
 				as='input'
-				className={S.input({ variant, size, disabled })}
+				className={S.input({ variant, size, disabled, error })}
 				ref={ref}
 				disabled={disabled}
 				{...restProps}

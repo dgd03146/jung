@@ -1,4 +1,10 @@
-import { palette } from '@jung/design-system/tokens';
+import {
+	Box,
+	Container,
+	Flex,
+	Select,
+	Typography,
+} from '@jung/design-system/components';
 import { useState } from 'react';
 import {
 	CartesianGrid,
@@ -11,7 +17,6 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import * as styles from './ActivityChart.css';
 
 type PageType = 'all' | 'home' | 'gallery' | 'posts' | 'spots';
 type PeriodType = '7d' | '30d' | '1y';
@@ -149,31 +154,38 @@ const MOCK_DATA: Record<PeriodType, PageData> = {
 };
 
 const CHART_COLORS = {
-	visitors: '#6366F1', // 인디고
-	pageViews: '#10B981', // 에메랄드
-	avgDuration: '#F59E0B', // 앰버
+	visitors: '#6366F1',
+	pageViews: '#10B981',
+	avgDuration: '#F59E0B',
 };
 
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 	if (active && payload && payload.length) {
 		return (
-			<div className={styles.tooltipContainer}>
-				<div className={styles.tooltipLabel}>{label}</div>
+			<Box background='white' borderRadius='xl' padding='4' boxShadow='primary'>
+				<Typography.Text level={3} color='black100' fontWeight='semibold'>
+					{label}
+				</Typography.Text>
 				{payload.map((pld) => (
-					<div key={pld.name} className={styles.tooltipValue}>
-						<span
-							className={styles.tooltipDot}
+					<Flex key={pld.name} align='center' gap='2'>
+						<Box
+							width='2'
+							height='2'
+							borderRadius='half'
+							display='inline-block'
 							style={{ background: pld.color }}
 						/>
-						<span style={{ color: palette.gray400 }}>{pld.name}:</span>
-						<span style={{ color: palette.gray400 }}>
+						<Typography.Text level={3} color='black100'>
+							{pld.name}:
+						</Typography.Text>
+						<Typography.Text level={3} color='black100'>
 							{pld.dataKey === 'avgDuration'
 								? `${pld.value} min`
 								: pld.value.toLocaleString()}
-						</span>
-					</div>
+						</Typography.Text>
+					</Flex>
 				))}
-			</div>
+			</Box>
 		);
 	}
 	return null;
@@ -210,35 +222,52 @@ const ActivityChart = () => {
 	const data = getData();
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.header}>
-				<h2 className={styles.title}>Weekly Activity</h2>
-				<div className={styles.controls}>
-					<select
-						className={styles.select}
-						value={selectedPage}
-						onChange={(e) => setSelectedPage(e.target.value as PageType)}
+		<Container boxShadow='primary' background='white' borderRadius='2xl'>
+			<Flex
+				justify='space-between'
+				align='center'
+				padding='4'
+				background='white'
+				borderBottomWidth='hairline'
+				borderColor='white300'
+				borderStyle='solid'
+			>
+				<Typography.Text level={3} color='primary' fontWeight='semibold'>
+					Weekly Activity
+				</Typography.Text>
+				<Flex align='center' gap='2'>
+					<Select
+						defaultValue={selectedPage}
+						onValueChange={(value) => setSelectedPage(value as PageType)}
 					>
-						{pages.map((page) => (
-							<option key={page.value} value={page.value}>
-								{page.label}
-							</option>
-						))}
-					</select>
-					<select
-						className={styles.select}
-						value={selectedPeriod}
-						onChange={(e) => setSelectedPeriod(e.target.value as PeriodType)}
+						<Select.Label>Page</Select.Label>
+						<Select.Trigger placeholder='Select Page' />
+						<Select.Menu>
+							{pages.map((page) => (
+								<Select.Item key={page.value} value={page.value}>
+									{page.label}
+								</Select.Item>
+							))}
+						</Select.Menu>
+					</Select>
+
+					<Select
+						defaultValue={selectedPeriod}
+						onValueChange={(value) => setSelectedPeriod(value as PeriodType)}
 					>
-						{periods.map((period) => (
-							<option key={period.value} value={period.value}>
-								{period.label}
-							</option>
-						))}
-					</select>
-				</div>
-			</div>
-			<div className={styles.chartArea}>
+						<Select.Label>Period</Select.Label>
+						<Select.Trigger placeholder='Select Period' />
+						<Select.Menu>
+							{periods.map((period) => (
+								<Select.Item key={period.value} value={period.value}>
+									{period.label}
+								</Select.Item>
+							))}
+						</Select.Menu>
+					</Select>
+				</Flex>
+			</Flex>
+			<Box padding='4' height='80' background='white'>
 				<ResponsiveContainer width='100%' height='100%'>
 					<LineChart
 						data={data}
@@ -316,8 +345,8 @@ const ActivityChart = () => {
 						/>
 					</LineChart>
 				</ResponsiveContainer>
-			</div>
-		</div>
+			</Box>
+		</Container>
 	);
 };
 

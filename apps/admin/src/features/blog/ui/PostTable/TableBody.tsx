@@ -1,6 +1,7 @@
 import { useDeletePost } from '@/fsd/features/blog/api';
 import { useGetCategories } from '@/fsd/shared';
 import { CategoryCell } from '@/fsd/shared/ui';
+import { Button, Flex } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
@@ -21,6 +22,7 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 		}
 	};
 
+	// TODO: 테이블 디자인 시스템 만들기
 	return (
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
@@ -43,19 +45,16 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 							</td>
 						))}
 						<td className={styles.td}>
-							<div style={{ display: 'flex', gap: '8px' }}>
+							<Flex gap='2'>
 								<Link to={'/blog/edit/$postId'} params={{ postId }}>
-									<button className={styles.actionButton}>
+									<Button variant='ghost'>
 										<FaEdit size={16} />
-									</button>
+									</Button>
 								</Link>
-								<button
-									className={styles.actionButton}
-									onClick={() => handleDelete(postId)}
-								>
+								<Button variant='ghost' onClick={() => handleDelete(postId)}>
 									<FaTrash size={16} />
-								</button>
-							</div>
+								</Button>
+							</Flex>
 						</td>
 					</tr>
 				);

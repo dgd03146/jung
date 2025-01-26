@@ -10,6 +10,7 @@ import { vars } from './theme.css';
 
 export const responsiveProperties = defineProperties({
 	conditions: {
+		base: { '@media': getMediaQuery('base') },
 		mobile: { '@media': getMediaQuery('mobile') },
 		miniTablet: { '@media': getMediaQuery('miniTablet') },
 		tablet: { '@media': getMediaQuery('tablet') },
@@ -139,10 +140,10 @@ export const unresponsiveProperties = defineProperties({
 			'4/3': '4 / 3',
 			'16/9': '16 / 9',
 		},
-		top: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-		bottom: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-		left: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-		right: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+		top: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		bottom: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		left: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		right: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 
 		flexShrink: [0, 1],
 		flexGrow: [0, 1],

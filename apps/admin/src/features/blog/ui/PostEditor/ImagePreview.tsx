@@ -1,6 +1,12 @@
 import type { PostWithBlockContent } from '@/fsd/entities';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import { Input, useToast } from '@jung/design-system/components';
+import {
+	Box,
+	Button,
+	Input,
+	Typography,
+	useToast,
+} from '@jung/design-system/components';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HiExclamationCircle } from 'react-icons/hi';
 import { HiPhoto, HiTrash } from 'react-icons/hi2';
@@ -93,38 +99,48 @@ export const ImagePreview = ({
 	return (
 		<>
 			{imagePreview ? (
-				<div className={styles.imagePreviewContainer}>
-					<img src={imagePreview} alt='Cover' className={styles.imagePreview} />
-					<button
+				<Box className={styles.imagePreviewContainer}>
+					<Box
+						as='img'
+						src={imagePreview}
+						alt='Cover'
+						width='full'
+						height='full'
+						objectFit='cover'
+						transition='fast'
+					/>
+					<Button
 						className={styles.removeImageButton}
 						onClick={handleRemoveImage}
 						aria-label='Remove image'
 					>
 						<HiTrash size={16} />
-					</button>
-				</div>
+					</Button>
+				</Box>
 			) : (
-				<div
+				<Box
 					className={styles.imageUploadContainer}
 					data-error={!!validateErrors.imagesrc}
 					onDragOver={handleDragOver}
 					onDrop={handleDrop}
 				>
-					<button
-						className={styles.imageUploadButton}
+					<Button
+						variant='outline'
+						fontSize='sm'
+						fontWeight='medium'
 						onClick={() => fileInputRef.current?.click()}
+						prefix={<HiPhoto size={16} />}
 					>
-						<HiPhoto size={16} />
 						Upload an image
-					</button>
-					<div className={styles.dropText}>or drop an image here</div>
+					</Button>
+					<Typography.SubText>or drop an image here</Typography.SubText>
 					{validateErrors.imagesrc && (
-						<div className={styles.errorContainer}>
+						<Box className={styles.errorContainer} color='error'>
 							<HiExclamationCircle size={16} />
 							{validateErrors.imagesrc}
-						</div>
+						</Box>
 					)}
-				</div>
+				</Box>
 			)}
 			<Input
 				ref={fileInputRef}

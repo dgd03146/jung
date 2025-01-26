@@ -26,13 +26,6 @@ export const categoryCard = style({
 	},
 });
 
-export const cardHeader = style({
-	padding: '16px 8px',
-	display: 'flex',
-	justifyContent: 'space-between',
-	alignItems: 'center',
-});
-
 export const expandButton = style({
 	background: 'transparent',
 	border: 'none',
@@ -57,37 +50,6 @@ export const parentBadge = style({
 	marginLeft: '8px',
 });
 
-export const categoryName = style({
-	fontSize: '14px',
-	fontWeight: '600',
-	color: '#1E293B',
-	flex: 1,
-});
-
-export const cardContent = style({
-	padding: '16px',
-});
-
-export const description = style({
-	fontSize: '13px',
-	lineHeight: '1.5',
-	color: '#475569',
-
-	display: '-webkit-box',
-	WebkitLineClamp: 2,
-	WebkitBoxOrient: 'vertical',
-	overflow: 'hidden',
-});
-
-export const cardFooter = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
-	padding: '12px 16px',
-	borderTop: '1px solid #E5E7EB',
-	background: '#F9FAFB',
-});
-
 export const postCount = style({
 	display: 'inline-flex',
 	alignItems: 'center',
@@ -99,8 +61,6 @@ export const postCount = style({
 	background: '#F1F5F9',
 	borderRadius: '4px',
 });
-
-// Common style
 
 export const actions = style({
 	display: 'flex',

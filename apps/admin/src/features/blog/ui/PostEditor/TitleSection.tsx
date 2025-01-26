@@ -9,6 +9,14 @@ import {
 } from 'react-icons/hi';
 
 import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
+import {
+	Button,
+	Flex,
+	Input,
+	Stack,
+	Tag,
+	Typography,
+} from '@jung/design-system/components';
 import { CustomDatePicker } from './CustomDatePicker';
 import * as styles from './TitleSection.css';
 
@@ -48,144 +56,187 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 	};
 
 	return (
-		<div className={styles.titleSection}>
-			<input
+		<Stack
+			gap='2'
+			marginY='5'
+			space='5'
+			borderBottomWidth='hairline'
+			borderColor='primary50'
+			borderStyle='solid'
+		>
+			<Input
 				className={styles.titleInput}
 				value={title}
 				onChange={(e) => onFieldChange('title', e.target.value)}
 				placeholder='Untitled'
 			/>
 			{errors?.title && (
-				<div className={styles.errorMessage}>
+				<Typography.SubText
+					level={2}
+					color='error'
+					gap='1'
+					display='flex'
+					alignItems='center'
+				>
 					<HiExclamationCircle size={16} /> {errors.title}
-				</div>
+				</Typography.SubText>
 			)}
-			<input
+			<Input
 				className={styles.descriptionInput}
 				value={description}
 				onChange={(e) => onFieldChange('description', e.target.value)}
 				placeholder='Add a description...'
 			/>
 			{errors?.description && (
-				<div className={styles.errorMessage}>
+				<Typography.SubText
+					level={2}
+					color='error'
+					gap='1'
+					display='flex'
+					alignItems='center'
+				>
 					<HiExclamationCircle size={16} /> {errors.description}
-				</div>
+				</Typography.SubText>
 			)}
-			<div className={styles.metaSection}>
-				<div>
-					<div className={styles.metaRow}>
-						<label className={styles.label}>
-							<span className={styles.iconWrapper}>
-								<HiCalendar size={16} />
-							</span>
-							Date
-						</label>
-						<CustomDatePicker
-							selected={post.date ? new Date(post.date) : null}
-							onChange={(date) =>
-								onFieldChange('date', date?.toISOString() ?? '')
-							}
-							placeholderText='Select date'
-						/>
-					</div>
-					{errors?.date && (
-						<div className={styles.errorMessage}>
-							<HiExclamationCircle size={16} /> {errors.date}
-						</div>
-					)}
-				</div>
+			<Stack gap='2'>
+				<Flex gap='2'>
+					<Typography.Text
+						display='flex'
+						alignItems='center'
+						level={3}
+						gap='2'
+						fontWeight='medium'
+						color='primary'
+						minWidth='25'
+					>
+						<HiCalendar size={20} />
+						Date
+					</Typography.Text>
+					<CustomDatePicker
+						selected={post.date ? new Date(post.date) : null}
+						onChange={(date) =>
+							onFieldChange('date', date?.toISOString() ?? '')
+						}
+						placeholderText='Select date'
+					/>
+				</Flex>
+				{errors?.date && (
+					<Typography.SubText
+						level={2}
+						color='error'
+						gap='1'
+						display='flex'
+						alignItems='center'
+					>
+						<HiExclamationCircle size={16} /> {errors.date}
+					</Typography.SubText>
+				)}
 
-				<div>
-					<div className={styles.metaRow}>
-						<label className={styles.label}>
-							<span className={styles.iconWrapper}>
-								<HiFolderOpen size={16} />
-							</span>
-							Category
-						</label>
-						<div className={styles.selectWrapper}>
-							<select
-								className={styles.select}
-								value={post.category || ''}
-								onChange={(e) => onFieldChange('category', e.target.value)}
-								data-error={!!errors?.category}
-							>
-								<option value='' disabled>
-									Select category
-								</option>
-								<optgroup label='Main Categories'>
-									{mainCategories?.map((category) => (
-										<option key={category.id} value={category.id}>
-											{category.name}
-										</option>
-									))}
-								</optgroup>
+				<Flex gap='2'>
+					<Typography.Text
+						display='flex'
+						alignItems='center'
+						level={3}
+						gap='2'
+						fontWeight='medium'
+						color='primary'
+						minWidth='25'
+					>
+						<HiFolderOpen size={20} />
+						Category
+					</Typography.Text>
+					<div className={styles.selectWrapper}>
+						<select
+							className={styles.select}
+							value={post.category || ''}
+							onChange={(e) => onFieldChange('category', e.target.value)}
+							data-error={!!errors?.category}
+						>
+							<option value='' disabled>
+								Select category
+							</option>
+							<optgroup label='Main Categories'>
+								{mainCategories?.map((category) => (
+									<option key={category.id} value={category.id}>
+										{category.name}
+									</option>
+								))}
+							</optgroup>
 
-								{mainCategories?.map((mainCategory) => {
-									const subCats = subCategories?.filter(
-										(sub) => sub.parent_id === mainCategory.id,
+							{mainCategories?.map((mainCategory) => {
+								const subCats = subCategories?.filter(
+									(sub) => sub.parent_id === mainCategory.id,
+								);
+
+								if (subCats && subCats.length > 0) {
+									return (
+										<optgroup
+											key={mainCategory.id}
+											label={`${mainCategory.name} - Sub`}
+										>
+											{subCats.map((subCategory) => (
+												<option key={subCategory.id} value={subCategory.id}>
+													{subCategory.name}
+												</option>
+											))}
+										</optgroup>
 									);
-
-									if (subCats && subCats.length > 0) {
-										return (
-											<optgroup
-												key={mainCategory.id}
-												label={`${mainCategory.name} - Sub`}
-											>
-												{subCats.map((subCategory) => (
-													<option key={subCategory.id} value={subCategory.id}>
-														{subCategory.name}
-													</option>
-												))}
-											</optgroup>
-										);
-									}
-									return null;
-								})}
-							</select>
-						</div>
+								}
+								return null;
+							})}
+						</select>
 					</div>
-					{errors?.category && (
-						<div className={styles.errorMessage}>
-							<HiExclamationCircle size={16} /> {errors.category}
-						</div>
-					)}
-				</div>
+				</Flex>
+				{errors?.category && (
+					<Typography.SubText
+						level={2}
+						color='error'
+						gap='1'
+						display='flex'
+						alignItems='center'
+					>
+						<HiExclamationCircle size={16} /> {errors.category}
+					</Typography.SubText>
+				)}
 
-				<div>
-					<div className={styles.metaRow}>
-						<label className={styles.label}>
-							<span className={styles.iconWrapper}>
-								<HiTag size={16} />
-							</span>
-							Tags
-						</label>
-						<div className={styles.tagInputContainer}>
-							{tags.map((tag, index) => (
-								<span key={index} className={styles.tag}>
-									{tag}
-									<button
-										className={styles.removeTag}
-										onClick={() => {
-											const newTags = tags.filter((_, i) => i !== index);
-											onFieldChange('tags', newTags);
-										}}
-									>
-										×
-									</button>
-								</span>
-							))}
-							<input
-								ref={tagInputRef}
-								className={styles.inlineTagInput}
-								placeholder={tags.length === 0 ? 'Press Enter to add tags' : ''}
-								onKeyDown={handleTagKeyDown}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+				<Flex gap='2'>
+					<Typography.Text
+						display='flex'
+						alignItems='center'
+						level={3}
+						gap='2'
+						fontWeight='medium'
+						color='primary'
+						minWidth='25'
+					>
+						<HiTag size={20} />
+						Tags
+					</Typography.Text>
+					<Flex className={styles.tagInputContainer}>
+						{tags.map((tag, index) => (
+							<Tag key={index} variant='secondary' fontSize='sm'>
+								{tag}
+								<Button
+									className={styles.removeTag}
+									onClick={() => {
+										const newTags = tags.filter((_, i) => i !== index);
+										onFieldChange('tags', newTags);
+									}}
+								>
+									×
+								</Button>
+							</Tag>
+						))}
+						<Input
+							ref={tagInputRef}
+							className={styles.inlineTagInput}
+							placeholder={tags.length === 0 ? 'Press Enter to add tags' : ''}
+							onKeyDown={handleTagKeyDown}
+						/>
+					</Flex>
+				</Flex>
+			</Stack>
+		</Stack>
 	);
 };
 
