@@ -21,9 +21,9 @@ export const updatePostLikesInData = (
 };
 
 export const checkIsLiked = (
-	post: Post | undefined,
+	likedBy: string[],
 	userId: string | undefined,
 ): boolean => {
-	if (!post || !userId) return false;
-	return post.liked_by.includes(userId);
+	if (!userId) return false;
+	return likedBy.includes(userId);
 };

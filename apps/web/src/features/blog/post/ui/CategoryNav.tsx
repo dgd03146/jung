@@ -37,22 +37,6 @@ export const CategoryNav = ({
 			className={styles.sidebar}
 			display={{ mobile: 'none', tablet: 'block' }}
 		>
-			{/* FIXME: 모바일에선 일단 카테고리 안보여줌 */}
-			{/* <Box
-        display={{ mobile: 'flex', laptop: 'none' }}
-        width="full"
-        marginTop="2"
-      >
-        <CategoryGroup title="All" />
-        {categories.map((category) => (
-          <CategoryGroup
-            key={category.id}
-            title={category.name}
-            items={category.subCategories}
-          />
-        ))}
-      </Box> */}
-
 			<Accordion type='multiple'>
 				<Link
 					href='/blog'
