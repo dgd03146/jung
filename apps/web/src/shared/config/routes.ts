@@ -1,13 +1,4 @@
-type RouteItem = {
-	label: string;
-	path: string;
-};
-
-type RouteMap = {
-	[key: string]: RouteItem;
-};
-
-type RouteList = (RouteItem & { id: string })[];
+import type { RouteList, RouteMap } from '../model';
 
 export const PRIMARY_NAVIGATION: RouteMap = {
 	BLOG: {
@@ -22,33 +13,22 @@ export const PRIMARY_NAVIGATION: RouteMap = {
 		label: 'spots',
 		path: '/spots',
 	},
-
 	GUESTBOOK: {
 		label: 'guestbook',
 		path: '/guestbook',
 	},
-};
+} as const;
 
 export const SECONDARY_NAVIGATION: RouteMap = {
 	ABOUT: {
 		label: 'about',
 		path: '/about',
 	},
-
 	LOGIN: {
 		label: 'login',
 		path: '/login',
 	},
-
-	// TAGS: {
-	// 	label: 'tags.',
-	// 	path: '/tags',
-	// },
-	// QUIZ: {
-	// 	label: 'quiz.',
-	// 	path: '/quiz',
-	// },
-};
+} as const;
 
 export const PRIMARY_NAV_LIST: RouteList = Object.entries(
 	PRIMARY_NAVIGATION,

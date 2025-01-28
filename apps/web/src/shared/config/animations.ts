@@ -1,4 +1,4 @@
-export const height = {
+export const HEIGHT_ANIMATION = {
 	initial: {
 		height: 0,
 	},
@@ -12,7 +12,7 @@ export const height = {
 	}),
 };
 
-export const background = {
+export const BACKGROUND_ANIMATION = {
 	initial: {
 		opacity: 0,
 	},
@@ -26,7 +26,7 @@ export const background = {
 	},
 };
 
-export const opacity = {
+export const OPACITY_ANIMATION = {
 	initial: {
 		opacity: 0,
 	},
@@ -40,7 +40,7 @@ export const opacity = {
 	},
 };
 
-export const slideLeft = {
+export const SLIDE_LEFT_ANIMATION = {
 	initial: {
 		x: 150,
 	},
@@ -54,7 +54,7 @@ export const slideLeft = {
 	},
 };
 
-export const rotateX = {
+export const ROTATE_X_ANIMATION = {
 	initial: {
 		rotateX: 90,
 		opacity: 0,
@@ -74,7 +74,7 @@ export const rotateX = {
 	},
 };
 
-export const textBounce = {
+export const TEXT_BOUNCE_ANIMATION = {
 	transform: [
 		'scale3D(1,1,1)',
 		'scale3D(1.1,0.85,1)',
@@ -91,7 +91,7 @@ export const textBounce = {
 	color: '#A8C2F5',
 };
 
-export const textOpacity = {
+export const TEXT_OPACITY_ANIMATION = {
 	hidden: {
 		opacity: 0,
 		y: 20,
@@ -105,4 +105,8 @@ export const textOpacity = {
 	},
 };
 
-export const mountAnim = { initial: 'initial', animate: 'enter', exit: 'exit' };
+export const MOUNT_ANIMATION = {
+	initial: 'initial',
+	animate: 'enter',
+	exit: 'exit',
+};
