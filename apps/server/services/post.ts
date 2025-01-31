@@ -1,4 +1,5 @@
 import type { Post } from '@jung/shared/types';
+import type { AdjacentPosts, PostPreview } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabase';
 
@@ -269,7 +270,7 @@ export const postService = {
 	},
 
 	// 이전, 이후 포스트 가져오기
-	async getAdjacentPosts(currentPostId: string) {
+	async getAdjacentPosts(currentPostId: string): Promise<AdjacentPosts> {
 		const currentPost = await this.findById(currentPostId);
 
 		if (!currentPost) {
@@ -287,14 +288,14 @@ export const postService = {
 				.lt('date', currentPost.date)
 				.order('date', { ascending: false })
 				.limit(1)
-				.single(),
+				.single<PostPreview>(),
 			supabase
 				.from('posts')
 				.select('id, title')
 				.gt('date', currentPost.date)
 				.order('date', { ascending: true })
 				.limit(1)
-				.single(),
+				.single<PostPreview>(),
 		]);
 
 		return {
