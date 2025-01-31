@@ -3,7 +3,7 @@ import {
 	CategorySkeleton,
 } from '@/fsd/features/blog/ui';
 import { CategoryManager } from '@/fsd/shared/ui/CategoryManager/CategoryManager';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryStats } from '@jung/shared/types';
 import { ErrorBoundary } from '@jung/shared/ui';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/blog/categories/')({
 	component: CategoryManagerPage,
 });
 
-const handleUpdateOrder = (items: CategoryWithCount[]) => {
+const handleUpdateOrder = (items: CategoryStats[]) => {
 	// Blog 카테고리 순서 업데이트
 	console.log('Updating blog categories order:', items);
 };

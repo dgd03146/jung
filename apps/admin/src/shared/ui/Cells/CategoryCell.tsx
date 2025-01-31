@@ -1,8 +1,8 @@
 import { Tag } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 
 interface CategoryCellProps {
-	category?: CategoryWithCount;
+	category?: CategoryCount;
 }
 
 export const CategoryCell = ({ category }: CategoryCellProps) => {

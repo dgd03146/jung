@@ -1,6 +1,6 @@
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { CategoriesResponse, CategoryWithCount } from '@jung/shared/types';
+import type { CategoriesResponse, CategoryCount } from '@jung/shared/types';
 
 type CategoryType = 'blog' | 'spots';
 
@@ -71,21 +71,19 @@ export const fetchCategories = async (
 		{} as Record<string, number>,
 	);
 
-	const processedCategories: CategoryWithCount[] = categories.map(
-		(category) => {
-			const directCount = countMap[category.id] || 0;
-			const subCount = subCategoryMap[category.id] || 0;
+	const processedCategories: CategoryCount[] = categories.map((category) => {
+		const directCount = countMap[category.id] || 0;
+		const subCount = subCategoryMap[category.id] || 0;
 
-			return {
-				...category,
-				description: category.description ?? '',
-				color: category.color ?? '#0142C0',
-				count: directCount + subCount,
-				directCount,
-				subCategoriesCount: subCount,
-			};
-		},
-	);
+		return {
+			...category,
+			description: category.description ?? '',
+			color: category.color ?? '#0142C0',
+			count: directCount + subCount,
+			directCount,
+			subCategoriesCount: subCount,
+		};
+	});
 
 	return {
 		mainCategories: processedCategories.filter((cat) => !cat.parent_id),

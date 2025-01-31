@@ -8,11 +8,7 @@ import {
 	Textarea,
 	Typography,
 } from '@jung/design-system/components';
-import type {
-	Category,
-	CategoryType,
-	CategoryWithCount,
-} from '@jung/shared/types';
+import type { Category, CategoryCount, CategoryType } from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import { memo, useCallback, useState } from 'react';
 import * as styles from './CategoryForm.css';
@@ -82,7 +78,7 @@ export const CategoryForm = memo(
 		const handleSave = useCallback(() => {
 			if (validateForm()) {
 				if (editingId === 'new') {
-					createCategory.mutate(formData as Omit<CategoryWithCount, 'id'>, {
+					createCategory.mutate(formData as Omit<CategoryCount, 'id'>, {
 						onSuccess: onClose,
 					});
 				} else if (editingId) {

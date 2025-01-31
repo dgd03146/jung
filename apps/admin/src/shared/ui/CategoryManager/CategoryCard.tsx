@@ -1,6 +1,6 @@
 import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
@@ -9,10 +9,10 @@ import { HiPencil, HiTrash } from 'react-icons/hi';
 import * as styles from './CategoryCard.css';
 
 interface CategoryCardProps {
-	category: CategoryWithCount;
+	category: CategoryCount;
 	level?: number;
 	dragHandleProps?: DraggableProvidedDragHandleProps;
-	subCategories: CategoryWithCount[];
+	subCategories: CategoryCount[];
 	setEditingId: (id: string) => void;
 	type: 'blog' | 'spots';
 }
