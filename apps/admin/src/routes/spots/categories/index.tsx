@@ -3,7 +3,7 @@ import {
 	CategorySkeleton,
 } from '@/fsd/features/blog/ui';
 import { CategoryManager } from '@/fsd/shared/ui/CategoryManager/CategoryManager';
-import type { CategoryStats } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 import { ErrorBoundary } from '@jung/shared/ui';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/spots/categories/')({
 	component: CategoryManagerPage,
 });
 
-const handleUpdateOrder = (items: CategoryStats[]) => {
+const handleUpdateOrder = (items: CategoryCount[]) => {
 	// Spot 카테고리 순서 업데이트
 	console.log('Updating spot categories order:', items);
 };
