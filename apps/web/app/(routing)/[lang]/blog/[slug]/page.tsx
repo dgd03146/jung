@@ -1,5 +1,5 @@
-import PostDetail from '@/fsd/features/blog/post/ui/PostDetail';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { PostDetailPage } from '@/fsd/views/blog';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -81,7 +81,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 	return (
 		<HydrateClient>
-			<PostDetail postId={postId} />
+			<PostDetailPage postId={postId} />
 		</HydrateClient>
 	);
 }
