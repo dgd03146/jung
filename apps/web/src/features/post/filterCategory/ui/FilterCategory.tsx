@@ -1,35 +1,23 @@
 'use client';
 
+import { createQueryString, useSearchParamsState } from '@/fsd/shared';
 import { Accordion, Box, Typography } from '@jung/design-system';
-import type { GetCategoryItem } from '@jung/shared/types';
+import type { CategoryTree } from '@jung/shared/types';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
-import * as styles from './CategoryNav.css';
+import { usePathname } from 'next/navigation';
+import * as styles from './FilterCategory.css';
 
-export const CategoryNav = ({
+export const FilterCategory = ({
 	categories,
 }: {
-	categories: GetCategoryItem[];
+	categories: CategoryTree[];
 }) => {
 	const pathname = usePathname();
-	const searchParams = useSearchParams();
-	const currentCat = searchParams.get('cat') || 'all';
-
-	const createQueryString = useCallback(
-		(value: string) => {
-			const lowerCaseValue = value.toLowerCase();
-
-			const params = new URLSearchParams(searchParams.toString());
-			if (lowerCaseValue === 'all') {
-				params.delete('cat');
-			} else {
-				params.set('cat', lowerCaseValue);
-			}
-			return params.toString();
-		},
-		[searchParams],
-	);
+	const { cat } = useSearchParamsState({
+		defaults: {
+			cat: 'all',
+		} as const,
+	});
 
 	return (
 		<Box
@@ -41,7 +29,7 @@ export const CategoryNav = ({
 				<Link
 					href='/blog'
 					className={styles.categoryLink({
-						active: currentCat === 'all',
+						active: cat === 'all',
 					})}
 				>
 					All
@@ -49,12 +37,16 @@ export const CategoryNav = ({
 
 				{categories.map((category) => (
 					<Accordion.Item key={category.id}>
-						<Link href={`${pathname}?${createQueryString(category.name)}`}>
+						<Link
+							href={`${pathname}?${createQueryString(
+								'cat',
+								category.name,
+								'all',
+							)}`}
+						>
 							<Accordion.Trigger
 								hasPanel={category.subCategories.length > 0}
-								active={
-									currentCat.toLowerCase() === category.name.toLowerCase()
-								}
+								active={cat.toLowerCase() === category.name.toLowerCase()}
 							>
 								{category.name}
 							</Accordion.Trigger>
@@ -64,9 +56,13 @@ export const CategoryNav = ({
 							{category.subCategories.map((subCategory) => (
 								<Link
 									key={subCategory.id}
-									href={`${pathname}?${createQueryString(subCategory.name)}`}
+									href={`${pathname}?${createQueryString(
+										'cat',
+										subCategory.name,
+										'all',
+									)}`}
 								>
-									<Accordion.Panel active={currentCat === subCategory.name}>
+									<Accordion.Panel active={cat === subCategory.name}>
 										<span>{subCategory.name}</span>
 										<Typography.SubText
 											level={2}

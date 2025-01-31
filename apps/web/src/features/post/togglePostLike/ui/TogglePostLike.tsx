@@ -1,15 +1,16 @@
-import { checkIsLiked, useTogglePostLike } from '@/fsd/features/blog/post';
+import { useTogglePostLike } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, Flex, Typography, useToast } from '@jung/design-system';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { isPostLiked } from '../lib/isPostLiked';
 
-interface PostLikeProps {
+interface Props {
 	postId: string;
 	likeCount: number;
 	likedBy: string[];
 }
 
-const PostLike = ({ likeCount, postId, likedBy }: PostLikeProps) => {
+export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
@@ -24,7 +25,7 @@ const PostLike = ({ likeCount, postId, likedBy }: PostLikeProps) => {
 		toggleLike(postId);
 	};
 
-	const isLiked = checkIsLiked(likedBy, user?.id);
+	const isLiked = isPostLiked(likedBy, user?.id);
 
 	return (
 		<Flex justify='center' align='center' columnGap='2' marginY='25'>
@@ -43,5 +44,3 @@ const PostLike = ({ likeCount, postId, likedBy }: PostLikeProps) => {
 		</Flex>
 	);
 };
-
-export default PostLike;

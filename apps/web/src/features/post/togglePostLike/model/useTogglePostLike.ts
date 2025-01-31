@@ -1,7 +1,7 @@
 import { trpc, useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
-import { toggleLikePostAction } from '../api';
-import { updatePostLikesInData } from '../lib';
+import { togglePostLikeAction } from '../api/togglePostLikeAction';
+import { updatePostLikes } from './../lib/updatePostLikes';
 
 export const useTogglePostLike = () => {
 	const utils = trpc.useUtils();
@@ -19,11 +19,11 @@ export const useTogglePostLike = () => {
 
 		// Optimistic update
 		utils.post.getPostById.setData(postId, (old) =>
-			updatePostLikesInData(old, postId, isLiked ? -1 : 1, user.id),
+			updatePostLikes(old, postId, isLiked ? -1 : 1, user.id),
 		);
 
 		try {
-			await toggleLikePostAction(postId, user.id);
+			await togglePostLikeAction(postId, user.id);
 		} catch (error) {
 			// Rollback on error
 			utils.post.getPostById.setData(postId, previousData);

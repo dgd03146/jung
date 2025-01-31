@@ -1,6 +1,6 @@
 import type { Post } from '@jung/shared/types';
 
-export const updatePostLikesInData = (
+export const updatePostLikes = (
 	oldData: Post | undefined | null,
 	postId: string,
 	increment: number,
@@ -18,12 +18,4 @@ export const updatePostLikesInData = (
 		likes: oldData.likes + increment,
 		liked_by: newLikedBy,
 	};
-};
-
-export const checkIsLiked = (
-	likedBy: string[],
-	userId: string | undefined,
-): boolean => {
-	if (!userId) return false;
-	return likedBy.includes(userId);
 };
