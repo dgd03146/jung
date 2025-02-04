@@ -1,19 +1,16 @@
 'use client';
 
-import { CommentError, CommentListSkeleton } from '@/fsd/entities/comment';
 import {
 	PostHeader,
 	PostNavigation,
 	useAdjacentPostsQuery,
 } from '@/fsd/entities/post';
 import { usePostQuery } from '@/fsd/entities/post';
-import { CommentList } from '@/fsd/features/comment';
+import { ViewComments } from '@/fsd/features/comment';
 import { TogglePostLike } from '@/fsd/features/post';
 import { BlockNote } from '@/fsd/shared';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Container, Flex } from '@jung/design-system/components';
-import { ErrorBoundary } from '@jung/shared/ui';
-import { Suspense } from 'react';
 import * as styles from './PostDetailPage.css';
 
 export const PostDetailPage = ({ postId }: { postId: string }) => {
@@ -38,12 +35,7 @@ export const PostDetailPage = ({ postId }: { postId: string }) => {
 						likeCount={post.likes}
 						likedBy={post.liked_by}
 					/>
-
-					<ErrorBoundary fallback={(error) => <CommentError error={error} />}>
-						<Suspense fallback={<CommentListSkeleton />}>
-							<CommentList postId={postId} postLikeCount={post.likes} />
-						</Suspense>
-					</ErrorBoundary>
+					<ViewComments targetId={postId} likeCount={post.likes} />
 				</Container>
 			</Flex>
 		</Container>
