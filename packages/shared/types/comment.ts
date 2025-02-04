@@ -13,6 +13,7 @@ export const CommentSchema = z.object({
 	user_id: z.string(),
 	content: z.string(),
 	created_at: z.string(),
+	updated_at: z.string().nullable(),
 	likes: z.number(),
 	liked_by: z.array(z.string()).default([]),
 	parent_id: z.string().nullable(),

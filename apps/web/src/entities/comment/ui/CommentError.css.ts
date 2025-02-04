@@ -1,9 +1,19 @@
 import { style } from '@vanilla-extract/css';
-import {
-	commentContainer,
-	commentHeader,
-	userAvatar,
-} from '../../../features/blog/comment/ui/CommentList.css';
+
+const borderColor = '#E2E8F0';
+const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
+
+export const commentContainer = style({
+	borderRadius: '12px',
+	border: `1px solid ${borderColor}`,
+	padding: '16px',
+	marginBottom: '16px',
+	transition: 'all 0.2s ease',
+	backgroundColor: '#FFFFFF',
+	':hover': {
+		boxShadow: `0 2px 8px ${primaryLightColor}`,
+	},
+});
 
 export const errorContainer = style([
 	commentContainer,
@@ -14,12 +24,13 @@ export const errorContainer = style([
 	},
 ]);
 
-export const errorHeader = style([
-	commentHeader,
-	{
-		marginBottom: '8px',
-	},
-]);
+export const userAvatar = style({
+	width: '40px',
+	height: '40px',
+	borderRadius: '50%',
+	objectFit: 'cover',
+	border: `2px solid ${primaryLightColor}`,
+});
 
 export const errorAvatar = style([
 	userAvatar,

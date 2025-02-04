@@ -1,6 +1,5 @@
 import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import { Box, Stack } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
 import { useRouter } from '@tanstack/react-router';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -11,11 +10,10 @@ import {
 } from 'react-beautiful-dnd';
 import { CategoryForm } from './CategoryForm';
 import { CategoryHeader } from './CategoryHeader';
-import { CategoryStats } from './CategoryStats';
 import { CategoryGridView, CategoryListView } from './CategoryViews';
 
 interface CategoryManagerProps {
-	onUpdateOrder?: (items: CategoryWithCount[]) => void;
+	onUpdateOrder?: (items: CategoryStats[]) => void;
 }
 
 export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {

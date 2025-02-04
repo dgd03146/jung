@@ -3,8 +3,8 @@ import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import type {
 	CategoriesResponse,
+	CategoryCount,
 	CategoryType,
-	CategoryWithCount,
 } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createCategory } from '../services/createCategory';
@@ -14,7 +14,7 @@ export const useCreateCategory = (type: CategoryType) => {
 	const showToast = useToast();
 
 	return useMutation({
-		mutationFn: (category: Omit<CategoryWithCount, 'id'>) =>
+		mutationFn: (category: Omit<CategoryCount, 'id'>) =>
 			createCategory(category, type),
 
 		onMutate: async (newCategory) => {
@@ -27,7 +27,7 @@ export const useCreateCategory = (type: CategoryType) => {
 			);
 
 			if (previousCategories) {
-				const newTempCategory: CategoryWithCount = {
+				const newTempCategory: CategoryCount = {
 					...newCategory,
 					id: `temp-${Date.now()}`,
 					count: 0,

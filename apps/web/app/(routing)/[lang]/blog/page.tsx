@@ -1,5 +1,5 @@
-import { PostList } from '@/fsd/features';
 import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
+import { BlogPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
 type Sort = 'latest' | 'oldest' | 'popular';
@@ -57,7 +57,7 @@ export default async function Page({ searchParams }: PageProps) {
 
 	return (
 		<HydrateClient>
-			<PostList categories={categories} />
+			<BlogPage categories={categories} />
 		</HydrateClient>
 	);
 }

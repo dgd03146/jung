@@ -12,33 +12,33 @@ export const CategorySchema = z.object({
 
 export type Category = z.infer<typeof CategorySchema>;
 
-export interface CategoryWithCount extends Category {
+export interface CategoryCount extends Category {
 	count: number;
 	directCount: number;
 	subCategoriesCount: number;
 }
 
 export interface CategoriesResponse {
-	mainCategories: CategoryWithCount[];
-	allCategories: CategoryWithCount[];
-	subCategories: CategoryWithCount[];
+	mainCategories: CategoryCount[];
+	allCategories: CategoryCount[];
+	subCategories: CategoryCount[];
 }
 
 export type CategoryType = 'blog' | 'spots';
 
-export type GetCategorySubItem = {
+export type CategoryPreview = {
 	id: string;
 	name: string;
 	postCount: number;
 };
 
-export type GetCategoryItem = {
+export type CategoryTree = {
 	id: string;
 	name: string;
-	subCategories: GetCategorySubItem[];
+	subCategories: CategoryPreview[];
 };
 
-export type GetCategoriesResponse = GetCategoryItem[];
+export type CategoryTreeList = CategoryTree[];
 
 export type SpotCategory =
 	| 'nature'

@@ -6,3 +6,6 @@ export { default as handleLocaleRedirection } from './i18n/helpers/localeRedirec
 export * from './tanstack-query/getQueryClient';
 export { queryKeys } from './tanstack-query/queryKeys';
 export * from './comment';
+export * from './routes';
+export * from './social';
+export * from './animations';

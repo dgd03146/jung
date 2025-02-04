@@ -4,7 +4,13 @@ import {
 	defineProperties,
 } from '@vanilla-extract/sprinkles';
 
-import { grid, letterSpacings, lineHeights, shadows } from '../tokens';
+import {
+	grid,
+	letterSpacings,
+	lineHeights,
+	position,
+	shadows,
+} from '../tokens';
 import { getMediaQuery } from '../utils/getMediaQuery';
 import { vars } from './theme.css';
 
@@ -140,10 +146,10 @@ export const unresponsiveProperties = defineProperties({
 			'4/3': '4 / 3',
 			'16/9': '16 / 9',
 		},
-		top: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-		bottom: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-		left: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-		right: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		top: position,
+		bottom: position,
+		left: position,
+		right: position,
 
 		flexShrink: [0, 1],
 		flexGrow: [0, 1],

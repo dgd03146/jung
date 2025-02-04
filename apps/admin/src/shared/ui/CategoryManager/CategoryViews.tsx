@@ -6,7 +6,7 @@ import {
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 import { motion } from 'framer-motion';
 import { Draggable } from 'react-beautiful-dnd';
 import { HiPencil, HiTrash } from 'react-icons/hi2';
@@ -14,7 +14,7 @@ import { CategoryCard } from './CategoryCard';
 import * as styles from './CategoryView.css';
 
 interface CategoryViewProps {
-	categories: CategoryWithCount[];
+	categories: CategoryCount[];
 	onEdit: (id: string) => void;
 	type: 'blog' | 'spots';
 }
@@ -85,8 +85,8 @@ export const CategoryListView = ({
 };
 
 interface CategoryGridViewProps {
-	mainCategories: CategoryWithCount[];
-	subCategories: CategoryWithCount[];
+	mainCategories: CategoryCount[];
+	subCategories: CategoryCount[];
 	onEdit: (id: string) => void;
 	type: 'blog' | 'spots';
 }
