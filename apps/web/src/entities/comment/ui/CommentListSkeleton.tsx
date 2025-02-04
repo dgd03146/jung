@@ -1,7 +1,6 @@
-import * as styles from '@/fsd/features/blog/comment';
 import { Box, Container, Flex } from '@jung/design-system';
-// CommentsSkeleton.tsx
 import React from 'react';
+import * as styles from './CommentListSkeleton.css';
 
 const CommentSkeleton = ({ isReply = false }: { isReply?: boolean }) => (
 	<Box
@@ -9,7 +8,7 @@ const CommentSkeleton = ({ isReply = false }: { isReply?: boolean }) => (
 			isReply ? styles.skeletonReplyContainer : styles.skeletonCommentContainer
 		}
 	>
-		<Flex className={styles.commentHeader}>
+		<Flex alignItems='center' marginBottom='3' gap='2'>
 			<Box className={styles.skeletonAvatar} />
 			<Flex direction='column'>
 				<Box className={styles.skeletonUserName} />
@@ -18,7 +17,7 @@ const CommentSkeleton = ({ isReply = false }: { isReply?: boolean }) => (
 		</Flex>
 		<Box className={styles.skeletonContent} style={{ width: '100%' }} />
 		<Box className={styles.skeletonContent} style={{ width: '80%' }} />
-		<Flex className={styles.commentFooter}>
+		<Flex justify='space-between' align='center' marginTop='3'>
 			<Flex>
 				<Box className={styles.skeletonAction} />
 				<Box className={styles.skeletonAction} />
