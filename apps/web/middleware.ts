@@ -23,3 +23,5 @@ export function middleware(request: NextRequest) {
 export const config = {
 	matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
+
+// TODO: 소셜 로그인 토큰 검증 추가
