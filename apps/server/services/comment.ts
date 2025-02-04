@@ -188,7 +188,7 @@ export const commentService = {
 		if (commentError) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Failed to create comment. Please try again later.',
+				message: 'Failed to create comment.',
 				cause: commentError,
 			});
 		}
@@ -220,7 +220,7 @@ export const commentService = {
 	},
 
 	async update(id: string, { content }: { content: string }): Promise<Comment> {
-		const { data, error } = await supabase
+		const { data: commentData, error } = await supabase
 			.from('post_comments')
 			.update({ content })
 			.eq('id', id)
@@ -235,7 +235,28 @@ export const commentService = {
 			});
 		}
 
-		return data;
+		const { data: userData, error: userError } =
+			await supabase.auth.admin.getUserById(commentData.user_id);
+
+		if (userError) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to fetch user data. Please try again later.',
+				cause: userError,
+			});
+		}
+
+		const commentWithUser: Comment = {
+			...commentData,
+			user: {
+				id: userData.user.id,
+				email: userData.user.email || '',
+				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				avatar_url: userData.user.user_metadata?.avatar_url || null,
+			},
+		};
+
+		return commentWithUser;
 	},
 
 	async delete(commentId: string): Promise<void> {
@@ -282,7 +303,7 @@ export const commentService = {
 		const hasLiked = comment.liked_by.includes(userId);
 
 		// 좋아요 토글 업데이트
-		const { data, error } = await supabase
+		const { data: commentData, error } = await supabase
 			.from('post_comments')
 			.update({
 				likes: hasLiked ? comment.likes - 1 : comment.likes + 1,
@@ -302,13 +323,34 @@ export const commentService = {
 			});
 		}
 
-		if (!data) {
+		if (!commentData) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
 				message: 'Comment not found or like could not be toggled',
 			});
 		}
 
-		return data;
+		const { data: userData, error: userError } =
+			await supabase.auth.admin.getUserById(commentData.user_id);
+
+		if (userError) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Failed to fetch user data. Please try again later.',
+				cause: userError,
+			});
+		}
+
+		const commentWithUser: Comment = {
+			...commentData,
+			user: {
+				id: userData.user.id,
+				email: userData.user.email || '',
+				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				avatar_url: userData.user.user_metadata?.avatar_url || null,
+			},
+		};
+
+		return commentWithUser;
 	},
 };
