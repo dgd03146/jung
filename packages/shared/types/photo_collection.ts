@@ -32,6 +32,10 @@ export interface CollectionQueryResult {
 }
 
 export interface CollectionPhotoQueryResult {
-	items: Photo[]; // Photo 타입은 photo.ts에서 import
+	items: Photo[];
 	nextCursor: number | null;
+}
+
+export interface CollectionQueryParams {
+	sort?: 'latest' | 'popular';
 }

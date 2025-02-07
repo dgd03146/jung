@@ -1,8 +1,8 @@
-import { CollectionDetail } from '@/fsd/features/gallery/photos';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { CollectionDetailPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
 
-interface CollectionDetailPageProps {
+interface PageProps {
 	params: {
 		id: string;
 		lang: string;
@@ -11,7 +11,7 @@ interface CollectionDetailPageProps {
 
 export async function generateMetadata({
 	params,
-}: CollectionDetailPageProps): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
 	try {
 		const collection = await trpc.photoCollections.getCollectionById(params.id);
 
@@ -96,16 +96,14 @@ export async function generateMetadata({
 	}
 }
 
-export default async function CollectionDetailPage({
-	params,
-}: CollectionDetailPageProps) {
-	const { id } = params;
+export default async function Page({ params }: PageProps) {
+	const { id: collectionId } = params;
 
-	void trpc.photoCollections.getCollectionById.prefetch(id);
+	void trpc.photoCollections.getCollectionById.prefetch(collectionId);
 
 	return (
 		<HydrateClient>
-			<CollectionDetail id={id} />
+			<CollectionDetailPage collectionId={collectionId} />
 		</HydrateClient>
 	);
 }
