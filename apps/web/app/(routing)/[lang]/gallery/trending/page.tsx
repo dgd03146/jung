@@ -1,8 +1,6 @@
-import { PhotoList, PhotoNavigation } from '@/fsd/features/gallery/photos';
-import { LoadingSpinner } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { GalleryPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 type Sort = 'latest' | 'popular';
 
@@ -79,10 +77,7 @@ export default function TrendingPage({ searchParams }: PageProps) {
 
 	return (
 		<HydrateClient>
-			<PhotoNavigation />
-			<Suspense fallback={<LoadingSpinner />}>
-				<PhotoList sort={sort} q={q} />
-			</Suspense>
+			<GalleryPage sort={sort} q={q} />
 		</HydrateClient>
 	);
 }

@@ -1,8 +1,6 @@
-import {
-	PhotoDetail,
-	PhotoDetailSkeleton,
-} from '@/fsd/features/gallery/photos';
+import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { PhotoDetailPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -101,7 +99,7 @@ export default async function PhotoPage({
 	return (
 		<HydrateClient>
 			<Suspense fallback={<PhotoDetailSkeleton />}>
-				<PhotoDetail id={params.id} isModal={false} />
+				<PhotoDetailPage photoId={params.id} isModal={false} />
 			</Suspense>
 		</HydrateClient>
 	);
