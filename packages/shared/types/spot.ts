@@ -52,3 +52,5 @@ export interface SpotImageUpload extends SpotPhoto {
 	file?: File;
 	preview?: string;
 }
+
+export type SpotSort = 'latest' | 'oldest' | 'popular';
