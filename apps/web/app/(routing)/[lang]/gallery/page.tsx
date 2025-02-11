@@ -75,7 +75,7 @@ export default function Page({ searchParams }: PageProps) {
 
 	return (
 		<HydrateClient>
-			<GalleryPage sort={sort} q={q} />
+			<GalleryPage />
 		</HydrateClient>
 	);
 }

@@ -77,7 +77,7 @@ export default function TrendingPage({ searchParams }: PageProps) {
 
 	return (
 		<HydrateClient>
-			<GalleryPage sort={sort} q={q} />
+			<GalleryPage />
 		</HydrateClient>
 	);
 }
