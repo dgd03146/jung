@@ -5,16 +5,27 @@ import {
 	transformPhoto,
 	usePhotosQuery,
 } from '@/fsd/entities/photo';
-import { LoadingSpinner, useInfiniteScroll } from '@/fsd/shared';
+import {
+	LoadingSpinner,
+	useInfiniteScroll,
+	useSearchParamsState,
+} from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
-import type { PhotoQueryParams } from '@jung/shared/types';
 import { Suspense } from 'react';
 
-export const GalleryContent = ({ sort, q }: PhotoQueryParams) => {
+export const GalleryContent = () => {
+	const { sort, q } = useSearchParamsState({
+		defaults: {
+			sort: 'latest',
+			q: '',
+		} as const,
+	});
+
 	const [data, query] = usePhotosQuery({
 		sort,
 		q,
 	});
+
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
@@ -34,7 +45,7 @@ export const GalleryContent = ({ sort, q }: PhotoQueryParams) => {
 	);
 };
 
-export const GalleryPage = ({ sort, q }: PhotoQueryParams) => {
+export const GalleryPage = () => {
 	return (
 		<Suspense
 			fallback={
@@ -43,7 +54,7 @@ export const GalleryPage = ({ sort, q }: PhotoQueryParams) => {
 				</Flex>
 			}
 		>
-			<GalleryContent sort={sort} q={q} />
+			<GalleryContent />
 		</Suspense>
 	);
 };
