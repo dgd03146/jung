@@ -26,7 +26,10 @@ export const useCreateComment = () => {
 
 		const isParentTemporary = parentId?.startsWith('temp-');
 		if (isParentTemporary) {
-			showToast('이전 댓글이 처리되는 동안 기다려주세요.', 'warning');
+			showToast(
+				'Please wait while the previous comment is being processed',
+				'warning',
+			);
 			return false;
 		}
 
@@ -73,7 +76,7 @@ export const useCreateComment = () => {
 				limit: COMMENTS_LIMIT,
 			});
 
-			showToast('댓글이 작성되었습니다.', 'success');
+			showToast('Comment has been created', 'success');
 			return serverComment;
 		} catch (error) {
 			// Rollback logic
@@ -81,7 +84,7 @@ export const useCreateComment = () => {
 				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 				(oldData) => rollbackOptimisticUpdate(oldData, optimisticComment.id),
 			);
-			showToast('댓글 작성에 실패했습니다.', 'error');
+			showToast('Failed to create comment', 'error');
 			return false;
 		}
 	};

@@ -84,7 +84,7 @@ export const useUpdateComment = () => {
 				limit: COMMENTS_LIMIT,
 			});
 
-			showToast('댓글이 수정되었습니다.', 'success');
+			showToast('Comment has been updated', 'success');
 
 			return updatedComment;
 		} catch (error) {
