@@ -20,8 +20,7 @@ export const GUESTBOOK_COLORS = [
 	'#E0F7FA', // 연한 청록
 ] as const;
 
-export type GuestbookColor = (typeof GUESTBOOK_COLORS)[number];
-export type GuestbookEmoji = (typeof GUESTBOOK_EMOJIS)[number];
+export const DEFAULT_BACKGROUND_COLOR = '#FFFFFF';
+export const DEFAULT_EMOJI = '💙';
 
-export const DEFAULT_BACKGROUND_COLOR: GuestbookColor = '#FFFFFF';
-export const DEFAULT_EMOJI: GuestbookEmoji = '💙';
+export const MESSAGE_LIMIT = 6;

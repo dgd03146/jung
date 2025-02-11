@@ -1,12 +1,9 @@
 'use server';
 
-import type {
-	GuestbookColor,
-	GuestbookEmoji,
-} from '@/fsd/features/guestbook/config';
-import { validateGuestbookMessage } from '@/fsd/features/guestbook/lib';
+import type { GuestbookColor, GuestbookEmoji } from '@/fsd/entities/message';
+import { validateGuestbookMessage } from '@/fsd/features/message/createMessage/lib/validateGuestbookMessage';
+
 import { trpc } from '@/fsd/shared/api/trpc/server';
-import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
 type CreateMessageState = {
@@ -58,8 +55,6 @@ export async function createMessageAction(
 			backgroundColor,
 			userId,
 		});
-
-		revalidatePath('/guestbook');
 
 		cookieStore.set('last-submit-time', currentTime.toString(), {
 			maxAge: THROTTLE_TIME / 2000,

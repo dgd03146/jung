@@ -1,9 +1,13 @@
+import {
+	type GuestbookColor,
+	type GuestbookEmoji,
+	MESSAGE_LIMIT,
+} from '@/fsd/entities/message';
 import { trpc } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
 import type { GuestbookMessage } from '@jung/shared/types';
-import { createMessageAction } from '../api/actions/createMessageAction';
-import type { GuestbookColor, GuestbookEmoji } from '../config';
+import { createMessageAction } from '../api/createMessageAction';
 import { validateGuestbookMessage } from '../lib/validateGuestbookMessage';
 
 export const useOptimisticCreateMessage = () => {
@@ -14,7 +18,7 @@ export const useOptimisticCreateMessage = () => {
 	const mutateCreateMessage = async (formData: FormData) => {
 		if (!user) {
 			showToast('Please log in to create a message', 'error');
-			return;
+			return false;
 		}
 
 		const content = formData.get('message') as string;
@@ -44,30 +48,31 @@ export const useOptimisticCreateMessage = () => {
 			created_at: new Date().toISOString(),
 		};
 
-		utils.guestbook.getAllMessages.setInfiniteData({ limit: 9 }, (oldData) => {
-			if (!oldData) return oldData;
-			const firstPage = oldData.pages[0];
-			if (!firstPage) return oldData;
-
-			return {
-				...oldData,
-				pages: [
-					{
-						items: [optimisticMessage, ...firstPage.items],
-						nextCursor: firstPage.nextCursor,
-					},
-					...oldData.pages.slice(1),
-				],
-			};
-		});
+		// Optimistic update
+		utils.guestbook.getAllMessages.setInfiniteData(
+			{ limit: MESSAGE_LIMIT },
+			(oldData) => {
+				if (!oldData) return { pages: [], pageParams: [] };
+				const newPages = oldData.pages.map((page, index) => {
+					if (index === 0) {
+						return {
+							...page,
+							items: [optimisticMessage, ...page.items],
+						};
+					}
+					return page;
+				});
+				return { ...oldData, pages: newPages };
+			},
+		);
 
 		try {
 			const result = await createMessageAction(null, formData);
 
 			if (!result.success) {
-				// throttling 등 서버 측 추가 validation 실패시 롤백
+				// 실패시에만 롤백
 				utils.guestbook.getAllMessages.setInfiniteData(
-					{ limit: 9 },
+					{ limit: MESSAGE_LIMIT },
 					(oldData) => {
 						if (!oldData) return oldData;
 						return {
@@ -79,7 +84,6 @@ export const useOptimisticCreateMessage = () => {
 						};
 					},
 				);
-
 				showToast(result.error || 'Failed to create message', 'error');
 				return false;
 			}
@@ -87,11 +91,12 @@ export const useOptimisticCreateMessage = () => {
 			showToast('Message created successfully! ✨', 'success');
 			return true;
 		} catch (error) {
-			// 서버 에러시 롤백
+			// Rollback on error
 			utils.guestbook.getAllMessages.setInfiniteData(
-				{ limit: 9 },
+				{ limit: MESSAGE_LIMIT },
 				(oldData) => {
 					if (!oldData) return oldData;
+
 					return {
 						...oldData,
 						pages: oldData.pages.map((page) => ({

@@ -1,9 +1,10 @@
 import { trpc } from '@/fsd/shared';
+import { MESSAGE_LIMIT } from '../config/guestbook';
 
-export function useGetGuestbookMessages() {
+export function useMessagesQuery() {
 	return trpc.guestbook.getAllMessages.useSuspenseInfiniteQuery(
 		{
-			limit: 6,
+			limit: MESSAGE_LIMIT,
 		},
 		{
 			getNextPageParam: (lastPage) => {

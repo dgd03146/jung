@@ -4,3 +4,4 @@ export { useCollapsibleHeight } from './useCollapsibleHeight';
 export { usePortal } from './usePortal';
 export { useDebounce } from './useDebounce';
 export { useMediaQuery } from './useMediaQuery';
+export { useThrottle } from './useThrottle';

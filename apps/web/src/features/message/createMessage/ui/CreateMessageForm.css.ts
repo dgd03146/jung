@@ -1,8 +1,6 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { palette } from '@jung/design-system/tokens';
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-
-const PRIMARY_COLOR = '#0142C0';
-const PRIMARY_HOVER = '#0136A3';
 
 export const form = style({
 	maxWidth: '600px',
@@ -13,56 +11,11 @@ export const form = style({
 	boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
 });
 
-export const loginContainer = style({
-	maxWidth: '600px',
-	margin: '0 auto 2rem',
-	padding: '2rem 1rem',
-	backgroundColor: 'white',
-	borderRadius: '16px',
-	boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-	textAlign: 'center',
-});
-
-export const userInfo = style({
-	display: 'flex',
-	alignItems: 'center',
-	gap: '0.75rem',
-	marginBottom: '1.5rem',
-	padding: '0.5rem',
-	borderRadius: '8px',
-	transition: 'all 0.2s ease',
-
-	':hover': {
-		backgroundColor: '#f8f9fa',
-	},
-});
-
-export const avatar = style({
-	width: '28px',
-	height: '28px',
-	borderRadius: '50%',
-	objectFit: 'cover',
-	border: '1px solid #0142C0',
-});
-
-globalStyle(`${userInfo} span`, {
-	fontSize: '0.875rem',
-	color: '#1f2937',
-	fontWeight: '500',
-	fontFamily: "'Inter', sans-serif",
-});
-
-export const submitButtonWrapper = style({
-	position: 'absolute',
-	bottom: '0.75rem',
-	right: '0.75rem',
-});
-
 export const textarea = recipe({
 	base: {
 		width: '100%',
 		padding: '1rem',
-		paddingRight: '7rem',
+
 		borderRadius: '12px',
 		border: '1px solid #e5e7eb',
 		resize: 'none',
@@ -74,7 +27,7 @@ export const textarea = recipe({
 
 		':focus': {
 			outline: 'none',
-			borderColor: PRIMARY_COLOR,
+			borderColor: palette.primary,
 		},
 
 		'::placeholder': {
@@ -113,16 +66,16 @@ export const emojiButton = style({
 
 	':focus': {
 		outline: 'none',
-		backgroundColor: PRIMARY_COLOR,
+		backgroundColor: palette.primary,
 	},
 });
 
 export const emojiButtonSelected = style({
-	backgroundColor: PRIMARY_COLOR,
+	backgroundColor: palette.primary,
 	color: 'white',
 
 	':hover': {
-		backgroundColor: PRIMARY_HOVER,
+		backgroundColor: '#0136A3',
 	},
 });
 
@@ -141,7 +94,7 @@ export const colorButton = style({
 
 	':focus': {
 		outline: 'none',
-		boxShadow: `0 0 0 2px ${PRIMARY_COLOR}40`,
+		boxShadow: `0 0 0 2px ${palette.primary}40`,
 	},
 
 	selectors: {
@@ -155,6 +108,6 @@ export const colorButton = style({
 });
 
 export const colorButtonSelected = style({
-	border: `2px solid ${PRIMARY_COLOR} !important`,
+	border: `2px solid ${palette.primary} !important`,
 	transform: 'scale(1.1)',
 });
