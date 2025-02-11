@@ -7,6 +7,7 @@ interface UseInfiniteScrollProps {
 	hasNextPage?: boolean;
 	fetchNextPage: () => void;
 }
+// TODO: Add isFetchingNextPage for checking if the next page is fetching
 
 export const useInfiniteScroll = ({
 	hasNextPage,
