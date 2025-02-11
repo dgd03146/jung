@@ -7,7 +7,7 @@ import {
 	useSpotsQuery,
 } from '@/fsd/entities/spot';
 import {
-	FilterCategory,
+	FilterSpotCategory,
 	SpotListWithLikes,
 	ToggleSpotListButton,
 	ToggleSpotViewButton,
@@ -75,7 +75,7 @@ export const SpotsPage = ({ categories }: SpotsPageProps) => {
 				<SearchBar />
 				<ToggleSpotViewButton />
 			</Flex>
-			<FilterCategory categories={categories} />
+			<FilterSpotCategory categories={categories} />
 			<Suspense fallback={<SpotListSkeleton count={12} />}>
 				<SpotsContent />
 			</Suspense>

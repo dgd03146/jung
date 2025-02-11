@@ -3,9 +3,9 @@ import { Box, Tag, Typography } from '@jung/design-system/components';
 import type { CategoryTree } from '@jung/shared/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import * as styles from './FilterCategory.css';
+import * as styles from './FilterSpotCategory.css';
 
-export const FilterCategory = ({
+export const FilterSpotCategory = ({
 	categories,
 }: {
 	categories: CategoryTree[];

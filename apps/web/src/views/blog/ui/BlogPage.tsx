@@ -1,6 +1,9 @@
 'use client';
 
-import { FilterCategory, SelectViewMode } from '@/fsd/features/post';
+import {
+	FilterPostCategoryAccordion,
+	SelectViewMode,
+} from '@/fsd/features/post';
 
 import { PostList, type ViewMode, usePostsQuery } from '@/fsd/entities/post';
 import { LoadingSpinner, SearchBar, useInfiniteScroll } from '@/fsd/shared';
@@ -32,7 +35,7 @@ export const BlogPage = ({ categories }: { categories: CategoryTree[] }) => {
 	return (
 		<>
 			<Flex gap={{ mobile: '0', tablet: '10' }}>
-				<FilterCategory categories={categories} />
+				<FilterPostCategoryAccordion categories={categories} />
 				<Box as='main' minWidth='0' flex='1'>
 					<Flex
 						align='center'

@@ -5,9 +5,9 @@ import { Accordion, Box, Typography } from '@jung/design-system';
 import type { CategoryTree } from '@jung/shared/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import * as styles from './FilterCategory.css';
+import * as styles from './FilterPostCategoryAccordion.css';
 
-export const FilterCategory = ({
+export const FilterPostCategoryAccordion = ({
 	categories,
 }: {
 	categories: CategoryTree[];

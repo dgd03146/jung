@@ -1,4 +1,4 @@
-export { FilterCategory } from './filterCategory/ui/FilterCategory';
+export { FilterSpotCategory } from './filterSpotCategory/ui/FilterSpotCategory';
 
 export { useToggleSpotLike } from './toggleSpotLike/model/useToggleSpotLike';
 
