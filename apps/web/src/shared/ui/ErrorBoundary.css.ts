@@ -1,5 +1,4 @@
 import { style } from '@vanilla-extract/css';
-import { calc } from '@vanilla-extract/css-utils';
 
 export const errorContainer = style({
 	display: 'flex',
@@ -7,26 +6,25 @@ export const errorContainer = style({
 	justifyContent: 'center',
 	alignItems: 'center',
 	padding: '2rem',
-	// width: '90%',
-	// maxWidth: '600px',
-	// background: '#F5FBFF',
+
 	borderRadius: '0.75rem',
 	color: '#001F52',
 	textAlign: 'center',
-	boxShadow: '0 4px 10px rgba(0, 39, 102, 0.1)',
 
 	margin: '0 auto',
-	minHeight: calc.subtract('100dvh', '144px'),
-	maxHeight: calc.subtract('100dvh', '144px'),
+	minHeight: '360px',
+
 	overflowY: 'auto',
+	width: '90%',
+
 	'@media': {
 		'screen and (min-width: 768px)': {
 			padding: '3rem',
-			width: '80%',
+			width: '600px',
 		},
 		'screen and (min-width: 1024px)': {
 			padding: '4rem',
-			width: '70%',
+			width: '680px',
 		},
 	},
 });

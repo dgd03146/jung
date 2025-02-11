@@ -1,9 +1,9 @@
 import { Box, Grid, Typography } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 import * as styles from './CategoryStats.css';
 
 interface CategoryStatsProps {
-	allCategories: CategoryWithCount[];
+	allCategories: CategoryCount[];
 	type: 'blog' | 'spots';
 }
 

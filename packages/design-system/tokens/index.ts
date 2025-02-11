@@ -12,3 +12,4 @@ export { palette } from './palette';
 export { borderRadius, borderStyles, borderWidths } from './border';
 export { shadows } from './shadows';
 export * as grid from './grid';
+export { position } from './position';

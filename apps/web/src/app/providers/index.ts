@@ -1,4 +1,4 @@
-export { DictionaryProvider } from './i18n/DictionaryProvider';
-export { ClientToastProvider } from './toast/ClientToastProvider';
-export { KakaoProvider } from './kakao/KakaoProvider';
-export { TrpcProvider } from './trpc/TrpcProvider';
+export { DictionaryProvider } from './DictionaryProvider';
+export { ClientToastProvider } from './ClientToastProvider';
+export { KakaoProvider } from './KakaoProvider';
+export { TrpcProvider } from './TrpcProvider';

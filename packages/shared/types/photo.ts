@@ -18,7 +18,8 @@ export const PhotoSchema = z.object({
 
 export type Photo = z.infer<typeof PhotoSchema>;
 
-export interface CustomPhoto {
+export interface AlbumPhoto {
+	key: string;
 	src: string;
 	width: number;
 	height: number;
@@ -40,4 +41,9 @@ export interface CustomPhoto {
 export interface PhotoQueryResult {
 	items: Photo[];
 	nextCursor: number | null;
+}
+
+export interface PhotoQueryParams {
+	sort?: 'latest' | 'popular';
+	q?: string;
 }

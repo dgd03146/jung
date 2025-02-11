@@ -1,5 +1,5 @@
-import { SpotDetail } from '@/fsd/features/spots/ui';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { SpotDetailPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -18,18 +18,16 @@ export async function generateMetadata({
 			};
 		}
 
-		const locationText = [spot.title, spot.category].filter(Boolean).join(', ');
-
 		return {
-			title: `${spot.title} • ${locationText}`,
+			title: `${spot.title}`,
 			description:
 				spot.description ||
-				`${locationText}에 위치한 ${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
+				`${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
 			openGraph: {
-				title: `JUNG (@jung) • ${spot.title}, ${locationText}`,
+				title: `${spot.title}`,
 				description:
 					spot.description ||
-					`${locationText}에 위치한 ${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
+					`	${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
 				type: 'article',
 				publishedTime: spot.created_at,
 				modifiedTime: spot.updated_at,
@@ -41,17 +39,17 @@ export async function generateMetadata({
 						url: spot.photos[0]?.url || '/images/og/spot-default.jpg',
 						width: 1200,
 						height: 630,
-						alt: `${spot.title}, ${locationText}`,
+						alt: `${spot.title}`,
 					},
 				],
 			},
 			twitter: {
 				card: 'summary_large_image',
-				title: `${spot.title} • ${locationText}`,
+				title: `${spot.title}`,
 				creator: '@jung',
 				description:
 					spot.description ||
-					`${locationText}에 위치한 ${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
+					`${spot.title}의 상세 정보와 추천 포인트를 확인해보세요.`,
 				images: [spot.photos[0]?.url || '/images/og/spot-default.jpg'],
 			},
 			keywords: [
@@ -82,18 +80,14 @@ export async function generateMetadata({
 	}
 }
 
-export default async function SpotDetailPage({
-	params,
-}: {
-	params: { id: string };
-}) {
+export default async function Page({ params }: { params: { id: string } }) {
 	const spotId = params.id;
 
 	void trpc.spot.getSpotById.prefetch(spotId);
 
 	return (
 		<HydrateClient>
-			<SpotDetail spotId={spotId} />
+			<SpotDetailPage spotId={spotId} />
 		</HydrateClient>
 	);
 }

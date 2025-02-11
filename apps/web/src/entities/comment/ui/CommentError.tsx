@@ -9,7 +9,7 @@ interface CommentErrorProps {
 
 const CommentError = ({ error, onRetry }: CommentErrorProps) => (
 	<Box className={styles.errorContainer}>
-		<Flex className={styles.errorHeader}>
+		<Flex alignItems='center' marginBottom='3' gap='2'>
 			<Box className={styles.errorAvatar}>
 				<FiAlertTriangle className={styles.errorIcon} size={24} />
 			</Box>
@@ -23,9 +23,11 @@ const CommentError = ({ error, onRetry }: CommentErrorProps) => (
 			</Flex>
 		</Flex>
 		<Box className={styles.errorContent}>
-			<Typography.Text className={styles.errorMessage}>
-				{error.message}
-			</Typography.Text>
+			{process.env.NODE_ENV === 'development' && (
+				<Typography.Text className={styles.errorMessage}>
+					{error.message}
+				</Typography.Text>
+			)}
 			{onRetry && (
 				<Box className={styles.retryButtonContainer}>
 					<Button onClick={onRetry} className={styles.retryButton}>

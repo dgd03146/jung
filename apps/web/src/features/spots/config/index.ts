@@ -1,1 +1,0 @@
-export { mapOptions } from './mapOptions';

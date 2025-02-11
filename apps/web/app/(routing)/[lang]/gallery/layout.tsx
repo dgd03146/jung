@@ -1,3 +1,5 @@
+import { GalleryNavigationWrapper } from '@/fsd/views/gallery';
+
 interface GalleryLayoutProps {
 	children: React.ReactNode;
 	modal: React.ReactNode;
@@ -6,6 +8,7 @@ interface GalleryLayoutProps {
 export default function GalleryLayout({ children, modal }: GalleryLayoutProps) {
 	return (
 		<>
+			<GalleryNavigationWrapper />
 			{children}
 			{modal}
 		</>

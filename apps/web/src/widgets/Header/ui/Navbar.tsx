@@ -2,7 +2,7 @@
 
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useScrollDetection } from '../model/useScrollDetection';
 import MenuButton from './MenuButton';
 import * as styles from './Navbar.css';
 
@@ -14,20 +14,7 @@ type Props = {
 const SCROLL_THRESHOLD = 50;
 
 const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
-	const [isScrolled, setIsScrolled] = useState(false);
-
-	const handleScroll = useCallback(() => {
-		if (!isScrolled && window.scrollY > SCROLL_THRESHOLD) {
-			setIsScrolled(true);
-		} else if (isScrolled && window.scrollY <= SCROLL_THRESHOLD) {
-			setIsScrolled(false);
-		}
-	}, [isScrolled]);
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, [handleScroll]);
+	const isScrolled = useScrollDetection(SCROLL_THRESHOLD);
 
 	return (
 		<Box

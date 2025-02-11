@@ -1,6 +1,6 @@
 import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import { Box, Stack } from '@jung/design-system/components';
-import type { CategoryWithCount } from '@jung/shared/types';
+import type { CategoryCount } from '@jung/shared/types';
 import { useRouter } from '@tanstack/react-router';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -15,7 +15,7 @@ import { CategoryStats } from './CategoryStats';
 import { CategoryGridView, CategoryListView } from './CategoryViews';
 
 interface CategoryManagerProps {
-	onUpdateOrder?: (items: CategoryWithCount[]) => void;
+	onUpdateOrder?: (items: CategoryCount[]) => void;
 }
 
 export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {

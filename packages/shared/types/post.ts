@@ -15,3 +15,10 @@ export const PostSchema = z.object({
 });
 
 export type Post = z.infer<typeof PostSchema>;
+
+export type PostPreview = Pick<Post, 'id' | 'title'>;
+
+export type AdjacentPosts = {
+	previous: PostPreview | null;
+	next: PostPreview | null;
+};

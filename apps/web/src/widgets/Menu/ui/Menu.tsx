@@ -1,7 +1,13 @@
 import * as styles from './Menu.css';
 
-import { PRIMARY_NAV_LIST, SECONDARY_NAV_LIST } from '@/fsd/app';
-import { background, mountAnim, rotateX, slideLeft } from '@/fsd/shared';
+import {
+	BACKGROUND_ANIMATION,
+	MOUNT_ANIMATION,
+	PRIMARY_NAV_LIST,
+	ROTATE_X_ANIMATION,
+	SECONDARY_NAV_LIST,
+	SLIDE_LEFT_ANIMATION,
+} from '@/fsd/shared/config';
 import { Flex } from '@jung/design-system';
 import { motion } from 'framer-motion';
 import { Navbar } from '../../Header/ui';
@@ -18,11 +24,11 @@ export default function Menu({ isMenuOpen, toggleMenu }: Props) {
 		<motion.div className={styles.stairs}>
 			<Stairs />
 			<motion.div
-				variants={background}
-				{...mountAnim}
+				variants={BACKGROUND_ANIMATION}
+				{...MOUNT_ANIMATION}
 				className={styles.background}
 			>
-				<motion.div variants={rotateX} {...mountAnim}>
+				<motion.div variants={ROTATE_X_ANIMATION} {...MOUNT_ANIMATION}>
 					<Navbar isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 				</motion.div>
 				<Flex
@@ -32,7 +38,7 @@ export default function Menu({ isMenuOpen, toggleMenu }: Props) {
 					background='primary'
 					width='full'
 				>
-					<motion.div variants={slideLeft} {...mountAnim}>
+					<motion.div variants={SLIDE_LEFT_ANIMATION} {...MOUNT_ANIMATION}>
 						<Flex
 							columnGap='16'
 							alignItems='center'

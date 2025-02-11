@@ -1,9 +1,7 @@
-import { PhotoNavigation } from '@/fsd/features';
-import { CollectionGrid } from '@/fsd/features/gallery/photos/ui/CollectionGrid';
-import { LoadingSpinner } from '@/fsd/shared';
+import { COLLECTION_PARAMS } from '@/fsd/entities/photo';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { CollectionPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 type Sort = 'latest' | 'popular';
 
@@ -93,20 +91,15 @@ export async function generateMetadata({
 }
 
 export default function CollectionsPage({ searchParams }: PageProps) {
-	const sort = (searchParams.sort as Sort) || 'latest';
+	const sort = (searchParams.sort as Sort) || COLLECTION_PARAMS.sort;
 
 	void trpc.photoCollections.getAllCollections.prefetch({
 		sort,
 	});
 
 	return (
-		<>
-			<PhotoNavigation />
-			<HydrateClient>
-				<Suspense fallback={<LoadingSpinner />}>
-					<CollectionGrid />
-				</Suspense>
-			</HydrateClient>
-		</>
+		<HydrateClient>
+			<CollectionPage />
+		</HydrateClient>
 	);
 }

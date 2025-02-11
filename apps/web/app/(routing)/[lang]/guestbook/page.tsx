@@ -1,5 +1,6 @@
+import { MESSAGE_LIMIT } from '@/fsd/entities/message';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
-import { GuestbookPage } from '@/fsd/views/guestbook/ui';
+import { GuestbookPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 	description:
 		'JUNG의 방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
 	openGraph: {
-		title: 'JUNG (@jung) • Guestbook',
+		title: 'Guestbook',
 		description:
 			'JUNG의 방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
 		type: 'website',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Guestbook • JUNG',
+		title: 'Guestbook',
 		creator: '@jung',
 		description:
 			'JUNG의 방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-	void trpc.guestbook.getAllMessages.prefetch({ limit: 6 });
+	void trpc.guestbook.getAllMessages.prefetchInfinite({ limit: MESSAGE_LIMIT });
 
 	return (
 		<HydrateClient>

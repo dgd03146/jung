@@ -40,18 +40,24 @@ export function SectionTitle() {
 				<Typography.Text level={1} color='primary'>
 					/
 				</Typography.Text>
-				<Link
-					href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
-					style={{ display: 'flex', alignItems: 'center' }}
-				>
-					<Typography.Text
-						level={1}
-						color={{ base: 'primary', hover: 'primary200' }}
-						transition='slow'
-					>
+				{subSection === 'PHOTO' ? (
+					<Typography.Text level={1} color='primary'>
 						{subSection}
 					</Typography.Text>
-				</Link>
+				) : (
+					<Link
+						href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
+						style={{ display: 'flex', alignItems: 'center' }}
+					>
+						<Typography.Text
+							level={1}
+							color={{ base: 'primary', hover: 'primary200' }}
+							transition='slow'
+						>
+							{subSection}
+						</Typography.Text>
+					</Link>
+				)}
 			</Flex>
 		);
 	}

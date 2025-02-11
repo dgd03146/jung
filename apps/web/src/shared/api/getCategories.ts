@@ -1,9 +1,9 @@
 import { createClientForServer } from '@/fsd/shared/index.server';
-import type { CategoryType, GetCategoryItem } from '@jung/shared/types';
+import type { CategoryTree, CategoryType } from '@jung/shared/types';
 
 export const getCategories = async (
 	type: CategoryType,
-): Promise<GetCategoryItem[]> => {
+): Promise<CategoryTree[]> => {
 	const supabase = createClientForServer();
 
 	const { data: categories, error } = await supabase
