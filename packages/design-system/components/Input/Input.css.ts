@@ -6,6 +6,7 @@ import { palette } from '../../tokens';
 export const input = recipe({
 	base: [
 		sprinkles({
+			width: 'full',
 			background: 'transparent',
 			borderWidth: 'thinnest',
 			borderStyle: 'solid',
