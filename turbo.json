@@ -1,0 +1,59 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local", "**/.env"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "SUPABASE_URL",
+        "SUPABASE_KEY",
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_KEY",
+        "KAKAO_REST_API_KEY",
+        "KAKAO_CLIENT_SECRET"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vite.config.mjs",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
+    },
+
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^test:e2e"]
+    },
+    "test:watch": {
+      "dependsOn": ["^test:watch"]
+    },
+    "build-storybook": {
+      "dependsOn": ["^build-storybook"]
+    },
+    "chromatic": {
+      "dependsOn": ["^chromatic"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "extends": "@jung/typescript-config/react.json",
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@/fsd/*": ["./src/*"],
+      "@jung/server/*": ["../server/*"],
+      "@jung/design-system/*": ["../../packages/design-system/*"],
+      "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/App.jsx",
+    "vite.config.mjs",
+    "vite-env.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

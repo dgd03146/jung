@@ -1,0 +1,29 @@
+{
+  "name": "@jung/shared",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./hooks": "./hooks/index.ts",
+    "./constants": "./constants/index.ts",
+    "./utils": "./utils/index.ts",
+    "./types": "./types/index.ts",
+    "./ui": "./ui/index.ts"
+  },
+  "scripts": {
+    "dev": "echo 'Add dev script here'",
+    "build": "echo 'Add build script here'",
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'"
+  },
+  "dependencies": {
+    "@jung/typescript-config": "workspace:*",
+    "react": "^18.3.1",
+    "react-error-boundary": "^4.0.13",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "server-only": "^0.0.1"
+  }
+}

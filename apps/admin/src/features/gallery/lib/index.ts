@@ -1,0 +1,1 @@
+export { uploadGalleryImage } from './uploadImage';
