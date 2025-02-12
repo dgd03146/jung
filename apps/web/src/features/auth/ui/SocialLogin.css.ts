@@ -52,6 +52,19 @@ export const loginOption = styleVariants({
 			},
 		},
 	],
+	github: [
+		baseLoginOption,
+		{
+			backgroundColor: '#24292e',
+			color: '#FFFFFF',
+			border: '1px solid #24292e',
+			':hover': {
+				backgroundColor: '#2f363d',
+				boxShadow: '0 2px 4px rgba(36,41,46,0.3)',
+				transform: 'translateY(-2px)',
+			},
+		},
+	],
 });
 
 export const iconStyle = style({

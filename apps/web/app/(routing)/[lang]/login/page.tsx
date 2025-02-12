@@ -49,7 +49,7 @@ export default async function LoginPage({
 	return (
 		<Container className={styles.container}>
 			<Box className={styles.card}>
-				<LoginContent session={session} next={searchParams.next} />
+				<LoginContent session={session} />
 			</Box>
 		</Container>
 	);

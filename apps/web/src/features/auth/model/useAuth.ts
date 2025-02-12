@@ -1,25 +1,30 @@
 import { createClient } from '@/fsd/shared';
+import type { SocialProvider } from './SocialProvider';
 
-export type SocialProvider = 'kakao' | 'google';
+interface LoginOptions {
+	redirectTo?: string;
+}
 
 export const useAuth = () => {
 	const supabase = createClient();
 
-	const handleSocialLogin = async (provider: SocialProvider) => {
-		const searchParams = new URLSearchParams(window.location.search);
-		const next = searchParams.get('next');
+	const handleSocialLogin = async (
+		provider: SocialProvider,
+		options?: LoginOptions,
+	) => {
+		const next = options?.redirectTo || '/';
 
 		const redirectTo = `${location.origin}${location.pathname
 			.split('/')
 			.slice(0, 2)
-			.join('/')}/auth/callback?next=${encodeURIComponent(next || '/')}`;
+			.join('/')}/auth/callback?next=${encodeURIComponent(next)}`;
 
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider,
 			options: {
 				redirectTo,
 				queryParams: {
-					next: next || '/',
+					next: next,
 				},
 			},
 		});

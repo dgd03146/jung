@@ -32,13 +32,10 @@ export const avatarWrapper = style([
 		alignItems: 'center',
 	}),
 	{
-		width: '80px',
-		height: '80px',
+		width: '40px',
+		height: '40px',
 		borderRadius: '50%',
 		padding: '3px',
-		background:
-			'linear-gradient(45deg, var(--color-primary-100), var(--color-primary-300))',
-		marginBottom: '8px',
 	},
 ]);
 

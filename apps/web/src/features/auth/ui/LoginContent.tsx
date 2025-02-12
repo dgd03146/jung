@@ -1,21 +1,40 @@
 'use client';
 
-import { Box, Button, Flex, Typography } from '@jung/design-system';
+import { BlurImage } from '@/fsd/shared';
+import { Box, Button, Flex, Stack, Typography } from '@jung/design-system';
 import type { Session } from '@supabase/supabase-js';
+import logo from '/public/images/og/default.png';
 import { signOut } from '../api';
+import { getUserDisplayName } from '../lib/getUserDisplayName';
 import * as styles from './LoginContent.css';
 import { SocialLogin } from './SocialLogin';
 
 interface LoginContentProps {
 	session: Session | null;
-	next?: string;
 }
 
-export function LoginContent({ session, next }: LoginContentProps) {
+export function LoginContent({ session }: LoginContentProps) {
 	if (session) {
+		const displayName = getUserDisplayName(session.user);
+
 		return (
-			<Flex direction='column' align='center' gap='8'>
-				<Flex direction='column' align='center' gap='4'>
+			<Flex direction='column' align='center' gap='2'>
+				<BlurImage
+					src={logo}
+					alt="Jung's logo"
+					width={200}
+					height={200}
+					priority
+					quality={100}
+				/>
+				<Flex
+					align='center'
+					gap='2'
+					boxShadow='primary'
+					paddingY='2'
+					paddingX='4'
+					borderRadius='lg'
+				>
 					{session.user.user_metadata.avatar_url && (
 						<Box className={styles.avatarWrapper}>
 							<img
@@ -25,18 +44,14 @@ export function LoginContent({ session, next }: LoginContentProps) {
 							/>
 						</Box>
 					)}
-					<Flex direction='column' align='center' gap='4'>
-						<Typography.Text level={3} color='primary200' fontWeight='medium'>
-							Welcome Back 💙
-						</Typography.Text>
-						<Typography.Heading level={5} color='primary'>
-							{session.user.user_metadata.name}
-						</Typography.Heading>
-					</Flex>
+					<Typography.Text level={3} color='primary' fontWeight='medium'>
+						{displayName}
+					</Typography.Text>
 				</Flex>
 
 				<form action={signOut}>
 					<Button
+						marginTop='4'
 						type='submit'
 						boxShadow='secondary'
 						size='md'
@@ -50,20 +65,20 @@ export function LoginContent({ session, next }: LoginContentProps) {
 	}
 
 	return (
-		<Flex direction='column' align='center' gap={{ mobile: '6', tv: '8' }}>
-			<Flex direction='column' align='center' gap='8'>
-				<Typography.Heading
-					level={1}
-					color='primary'
-					textAlign='center'
-					className={styles.title}
-				>
-					JUNG'S
-				</Typography.Heading>
+		<Stack align='center' gap={{ mobile: '6', tv: '8' }}>
+			<Stack align='center' gap='2'>
+				<BlurImage
+					src={logo}
+					alt="Jung's logo"
+					width={200}
+					height={200}
+					priority
+					quality={100}
+				/>
 				<Typography.Text level={2} color='black100' fontWeight='medium'>
 					Sign in with your social account
 				</Typography.Text>
-			</Flex>
+			</Stack>
 
 			<Box className={styles.socialLoginWrapper}>
 				<SocialLogin />
@@ -77,6 +92,6 @@ export function LoginContent({ session, next }: LoginContentProps) {
 					Only nickname and profile picture will be visible.
 				</Typography.SubText>
 			</Box>
-		</Flex>
+		</Stack>
 	);
 }
