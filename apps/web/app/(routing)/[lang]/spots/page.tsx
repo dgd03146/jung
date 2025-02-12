@@ -11,30 +11,21 @@ type PageProps = {
 export const metadata: Metadata = {
 	title: 'Spots',
 	description:
-		'우연히 발견한 숨은 공간들, 특별한 순간을 보낸 장소들, 다시 찾고 싶은 나만의 스팟을 기록합니다.',
+		'어디선가 우연히 마주친 공간, 특별한 순간을 채운 장소, 다시 찾고 싶은 나만의 스팟을 기록합니다',
 	openGraph: {
 		title: '나만의 스팟',
 		description:
-			'우연히 발견한 숨은 공간들, 특별한 순간을 보낸 장소들, 다시 찾고 싶은 나만의 스팟을 기록합니다.',
+			'어디선가 우연히 마주친 공간, 특별한 순간을 채운 장소, 다시 찾고 싶은 나만의 스팟을 기록합니다.',
 		type: 'website',
 		siteName: 'JUNG',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/spots.jpg',
-				width: 1200,
-				height: 630,
-				alt: '나만의 스팟 모음',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Spots • 내가 좋았던 장소들',
 		creator: '@jung',
 		description:
-			'우연히 발견한 숨은 공간들, 특별한 순간을 보낸 장소들, 다시 찾고 싶은 나만의 스팟을 기록합니다.',
-		images: ['/images/og/spots.jpg'],
+			'어디선가 우연히 마주친 공간, 특별한 순간을 채운 장소, 다시 찾고 싶은 나만의 스팟을 기록합니다.',
 	},
 	keywords: [
 		'JUNG',

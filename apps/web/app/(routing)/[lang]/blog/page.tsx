@@ -10,29 +10,7 @@ type PageProps = {
 
 export const metadata: Metadata = {
 	title: 'Blog',
-	description: 'JUNG의 블로그에서 개발, 여행, 사진 이야기를 만나보세요.',
-	openGraph: {
-		title: 'JUNG (@jung) • Blog Posts',
-		description: 'JUNG의 블로그에서 개발, 여행, 사진 이야기를 만나보세요.',
-		type: 'website',
-		siteName: 'JUNG Blog',
-		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/blog.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Blog Preview',
-			},
-		],
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: 'JUNG • Blog',
-		creator: '@jung',
-		description: 'JUNG의 블로그에서 개발, 여행, 사진 이야기를 만나보세요.',
-		images: ['/images/og/blog.jpg'],
-	},
+
 	keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
 	authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
 	robots: {

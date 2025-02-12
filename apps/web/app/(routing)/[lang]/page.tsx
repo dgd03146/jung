@@ -4,41 +4,37 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
 	title: 'JUNG',
 	description:
-		'프론트엔드 개발자 JUNG의 개발 이야기와 좋았던 장소들, 일상을 공유합니다.',
+		'개발 이야기, 일상에서 마주친 순간들, 그리고 삶의 기록을 공유합니다.',
 	openGraph: {
 		title: 'JUNG (@jung)',
 		description:
-			'프론트엔드 개발자 JUNG의 개발 이야기와 좋았던 장소들, 일상을 공유합니다.',
+			'개발 이야기, 일상에서 마주친 순간들, 그리고 삶의 기록을 공유합니다.',
 		type: 'website',
 		siteName: 'JUNG',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/home.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Website',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'JUNG',
 		creator: '@jung',
 		description:
-			'프론트엔드 개발자 JUNG의 개발 이야기와 좋았던 장소들, 일상을 공유합니다.',
-		images: ['/images/og/home.jpg'],
+			'개발 이야기, 일상에서 마주친 순간들, 그리고 삶의 기록을 공유합니다.',
 	},
 	keywords: [
 		'JUNG',
-		'프론트엔드',
-		'개발자',
+		'프론트엔드 개발자',
+		'웹 개발',
 		'개발 블로그',
-		'좋은 곳',
-		'일상',
-		'여행',
+		'프로그래밍',
+		'코딩',
+		'기록',
+		'일상 이야기',
+		'여행 기록',
+		'travel log',
 		'frontend developer',
+		'web development',
 		'developer blog',
+		'coding life',
 	],
 	authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
 	robots: {

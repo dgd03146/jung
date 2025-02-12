@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import * as styles from './page.css';
 
 export const metadata: Metadata = {
-	title: 'Login • JUNG',
+	title: 'Login',
 	description: 'JUNG의 웹사이트에 로그인하여 더 많은 기능을 이용해보세요.',
 	robots: {
 		index: false,
@@ -17,21 +17,12 @@ export const metadata: Metadata = {
 		type: 'website',
 		siteName: 'JUNG',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/login.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Login Page',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Login • JUNG',
 		creator: '@jung',
 		description: 'JUNG의 웹사이트에 로그인하여 더 많은 기능을 이용해보세요.',
-		images: ['/images/og/login.jpg'],
 	},
 	alternates: {
 		canonical: 'https://your-domain.com/login',
