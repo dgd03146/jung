@@ -1,7 +1,9 @@
 'use client';
 
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Box, Flex } from '@jung/design-system/components';
+import Image from 'next/image';
 import Link from 'next/link';
+import logo from '/public/images/og/default.png';
 import { useScrollDetection } from '../model/useScrollDetection';
 import MenuButton from './MenuButton';
 import * as styles from './Navbar.css';
@@ -37,14 +39,22 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			>
 				{!isMenuOpen && (
 					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
-						<Typography.Heading
+						<Image
+							src={logo}
+							alt='logo'
+							width={80}
+							height={80}
+							quality={100}
+							priority
+						/>
+						{/* <Typography.Heading
 							level={5}
 							color={{ base: 'primary', hover: 'primary200' }}
 							transition='slow'
 							className={styles.logo}
 						>
 							JUNG
-						</Typography.Heading>
+						</Typography.Heading> */}
 					</Link>
 				)}
 				<Box className={styles.menuButtonWrapper}>

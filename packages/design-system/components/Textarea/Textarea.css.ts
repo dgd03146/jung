@@ -6,6 +6,7 @@ import { palette } from '../../tokens/palette';
 export const textarea = recipe({
 	base: [
 		sprinkles({
+			width: 'full',
 			background: 'transparent',
 			borderWidth: 'thinnest',
 			borderStyle: 'solid',

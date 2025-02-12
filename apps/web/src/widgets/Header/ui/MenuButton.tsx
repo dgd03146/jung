@@ -15,7 +15,7 @@ const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 		aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
 	>
 		<Typography.Heading
-			level={5}
+			level={4}
 			color={{ base: isMenuOpen ? 'white' : 'primary', hover: 'primary200' }}
 			transition='slow'
 			className={logo}

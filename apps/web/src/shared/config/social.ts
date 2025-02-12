@@ -1,4 +1,4 @@
-import { FaGithub, FaYoutube } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 
 import { BiLogoGmail } from 'react-icons/bi';
 import { BsLinkedin } from 'react-icons/bs';
@@ -6,21 +6,21 @@ import { BsLinkedin } from 'react-icons/bs';
 export const SOCIAL_NAVIGATION = {
 	LINKEDIN: 'https://www.linkedin.com/in/dgd03146/',
 	GITHUB: 'https://github.com/dgd03146',
-	YOUTUBE: 'https://www.youtube.com/@ibory1220',
+	// YOUTUBE: 'https://www.youtube.com/@ibory1220',
 	EMAIL: 'mailto:ibory1220@gmail.com',
 } as const;
 
 export const SOCIAL_ICONS = {
 	LINKEDIN: BsLinkedin,
 	GITHUB: FaGithub,
-	YOUTUBE: FaYoutube,
+	// YOUTUBE: FaYoutube,
 	EMAIL: BiLogoGmail,
 } as const;
 
 export const SOCIAL_LABELS = {
 	LINKEDIN: 'LinkedIn',
 	GITHUB: 'GitHub',
-	YOUTUBE: 'YouTube',
+	// YOUTUBE: 'YouTube',
 	EMAIL: 'Email',
 } as const;
 
