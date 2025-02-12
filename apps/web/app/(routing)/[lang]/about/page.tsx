@@ -12,14 +12,6 @@ export const metadata: Metadata = {
 		type: 'profile',
 		siteName: 'JUNG',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/about.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Profile',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
@@ -27,7 +19,6 @@ export const metadata: Metadata = {
 		creator: '@jung',
 		description:
 			'프론트엔드 개발자 JUNG을 소개합니다. 개발에 대한 열정과 여행을 통해 얻은 경험을 공유합니다.',
-		images: ['/images/og/about.jpg'],
 	},
 	keywords: [
 		'JUNG',
