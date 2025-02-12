@@ -18,21 +18,12 @@ export const metadata: Metadata = {
 		type: 'website',
 		siteName: 'JUNG Gallery',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/gallery.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Gallery Preview',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Gallery • JUNG',
 		creator: '@jung',
 		description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
-		images: ['/images/og/gallery.jpg'],
 	},
 	keywords: [
 		'JUNG',
