@@ -1,0 +1,62 @@
+[
+  {
+    "name": "⚙ Setting",
+    "color": "e3dede",
+    "description": "Development environment setup"
+  },
+  {
+    "name": "✨ Feature",
+    "color": "a2eeef",
+    "description": "Feature implement and development"
+  },
+  {
+    "name": "🌏 Deploy",
+    "color": "C2E0C6",
+    "description": "Deployment related"
+  },
+  {
+    "name": "🎨 Design",
+    "color": "FEF2C0",
+    "description": "Markup & styling"
+  },
+  {
+    "name": "🐞 Bug",
+    "color": "d73a4a",
+    "description": "Something isn't working"
+  },
+  {
+    "name": "💻 CrossBrowsing",
+    "color": "C5DEF5",
+    "description": "Browser compatibility"
+  },
+  {
+    "name": "📃 Docs",
+    "color": "1D76DB",
+    "description": "Document writing and editing (README.md, etc.)"
+  },
+  {
+    "name": "📬 API",
+    "color": "D4C5F9",
+    "description": "Server API communication"
+  },
+  {
+    "name": "🔨 Refactor",
+    "color": "f29a4e",
+    "description": "Code refactoring"
+  },
+  {
+    "name": "🙋‍♂️ Question",
+    "color": "9ED447",
+    "description": "Further information is requested"
+  },
+  {
+    "name": "🥰 Accessibility",
+    "color": "facfcf",
+    "description": "Web accessibility related"
+  },
+  {
+    "name": "✅ Test",
+    "color": "ccffc4",
+    "description": "Test related (storybook, jest...)"
+  }
+]

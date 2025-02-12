@@ -1,0 +1,6 @@
+{
+  "extends": "@jung/typescript-config/base.json",
+  "compilerOptions": {
+    "jsx": "react"
+  }
+}

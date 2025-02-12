@@ -1,0 +1,68 @@
+name: Storybook Deployment
+run-name: ${{ github.actor }}'s storybook deploy
+on:
+  pull_request:
+    branches: [main, develop]
+    paths: apps/workshop/**
+  push:
+    branches:
+      - develop
+    paths:
+      - 'apps/workshop/src/**'
+
+jobs:
+  storybook:
+    runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: set up Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: depedency install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm install -no-frozen-lockfile
+        working-directory: apps/workshop
+
+      - name: publish to chromatic
+        id: chromatic
+        uses: chromaui/action@v1
+        with:
+          workingDir: apps/workshop
+          projectToken: ${{ secrets.CHROMATIC_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: comment PR
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: '🚀storybook: ${{ steps.chromatic.outputs.storybookUrl }}'

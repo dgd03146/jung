@@ -1,0 +1,10 @@
+{
+  "extends": "@jung/typescript-config/react.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": ["@testing-library/jest-dom"]
+  },
+
+  // "include": ["./**/**.*"],
+  "exclude": ["node_modules", "dist"]
+}
