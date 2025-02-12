@@ -7,6 +7,7 @@ const Stairs = () => {
 		<>
 			{[...Array(5)].map((_, index) => (
 				<motion.div
+					key={index}
 					variants={HEIGHT_ANIMATION}
 					{...MOUNT_ANIMATION}
 					custom={4 - index}
