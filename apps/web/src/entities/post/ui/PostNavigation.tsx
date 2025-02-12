@@ -19,7 +19,7 @@ const PostNavigation = ({ adjacentPosts, tags }: Props) => {
 			minWidth='60'
 			position='sticky'
 			top={80}
-			height='screenDvh'
+			className={styles.sidebar}
 			display={{ mobile: 'none', laptop: 'flex' }}
 		>
 			<Flex
