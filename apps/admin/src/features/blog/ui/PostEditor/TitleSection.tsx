@@ -148,9 +148,9 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 					<div className={styles.selectWrapper}>
 						<select
 							className={styles.select}
-							value={post.category || ''}
-							onChange={(e) => onFieldChange('category', e.target.value)}
-							data-error={!!errors?.category}
+							value={post.category_id || ''}
+							onChange={(e) => onFieldChange('category_id', e.target.value)}
+							data-error={!!errors?.category_id}
 						>
 							<option value='' disabled>
 								Select category
@@ -187,7 +187,7 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						</select>
 					</div>
 				</Flex>
-				{errors?.category && (
+				{errors?.category_id && (
 					<Typography.SubText
 						level={2}
 						color='error'
@@ -195,7 +195,7 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						display='flex'
 						alignItems='center'
 					>
-						<HiExclamationCircle size={16} /> {errors.category}
+						<HiExclamationCircle size={16} /> {errors.category_id}
 					</Typography.SubText>
 				)}
 
