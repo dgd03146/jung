@@ -1,3 +1,44 @@
 .bn-editor {
   padding-inline: 0 !important;
 }
+.bn-block-content[data-content-type='codeBlock'] {
+  /* background: #f6f6f7 !important; */
+}
+
+.bn-block-content[data-content-type='codeBlock'] > div > select {
+}
+
+.bn-block-outer {
+  margin: 4px 0 !important;
+}
+
+.ProseMirror strong {
+  font-weight: 600;
+}
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror a {
+  color: rgb(35, 131, 226);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(35, 131, 226, 0.4);
+  transition: all 0.1s ease;
+  padding: 0.1em 0.2em;
+  margin: 0 -0.2em;
+  border-radius: 0.2em;
+}
+
+.ProseMirror a:hover {
+  background: rgba(35, 131, 226, 0.08);
+  border-bottom-color: rgba(35, 131, 226, 0.6);
+}
+
+.ProseMirror a:active {
+  background: rgba(35, 131, 226, 0.12);
+}
+
+.ProseMirror a:visited {
+  color: rgb(100, 71, 228);
+  border-bottom-color: rgba(100, 71, 228, 0.4);
+}
