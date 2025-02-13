@@ -53,7 +53,7 @@ const isNonEmptyInlineContent = (
 export const isPostEmpty = (post: PostWithBlockContent): boolean => {
 	const isTitleEmpty = post.title.trim() === '';
 	const isDescriptionEmpty = post.description.trim() === '';
-	const isCategoryEmpty = post.category.trim() === '';
+	const isCategoryEmpty = post.category_id.trim() === '';
 	const isImageSrcEmpty = post.imagesrc.trim() === '';
 	const isContentEmpty =
 		post.content.length === 0 ||
