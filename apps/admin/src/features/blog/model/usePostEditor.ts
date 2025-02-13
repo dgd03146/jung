@@ -75,7 +75,7 @@ export const usePostEditor = () => {
 		const errors: Errors = {
 			title: !data.title.trim() ? 'Enter a title' : '',
 			description: !data.description.trim() ? 'Enter a description' : '',
-			category: !data.category ? 'Select a category' : '',
+			category_id: !data.category_id ? 'Select a category' : '',
 			imagesrc: !data.imagesrc ? 'Upload a featured image' : '',
 			date: !data.date ? 'Select a date' : '',
 		};
