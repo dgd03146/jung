@@ -42,11 +42,12 @@ export const postService = {
 				.eq('categories.type', 'blog');
 
 			if (cat && cat !== 'all') {
-				const { data: categoryIds, error: categoryError } = await supabase
+				const { data: selectedCategory, error: categoryError } = await supabase
 					.from('categories')
 					.select('id')
-					.eq('name', cat)
-					.eq('type', 'blog');
+					.ilike('name', cat)
+					.eq('type', 'blog')
+					.single();
 
 				if (categoryError) {
 					throw new TRPCError({
@@ -56,11 +57,28 @@ export const postService = {
 					});
 				}
 
-				if (categoryIds && categoryIds.length > 0) {
-					query = query.in(
-						'category_id',
-						categoryIds.map((category) => category.id),
-					);
+				if (selectedCategory) {
+					const { data: childCategories, error: childError } = await supabase
+						.from('categories')
+						.select('id')
+						.eq('type', 'blog')
+						.eq('parent_id', selectedCategory.id);
+
+					if (childError) {
+						throw new TRPCError({
+							code: 'INTERNAL_SERVER_ERROR',
+							message:
+								'Failed to fetch child categories. Please try again later.',
+							cause: childError,
+						});
+					}
+
+					const allCategoryIds = [
+						selectedCategory.id,
+						...(childCategories?.map((category) => category.id) || []),
+					];
+
+					query = query.in('category_id', allCategoryIds);
 				} else {
 					return {
 						items: [],
@@ -92,10 +110,11 @@ export const postService = {
 				}
 			}
 
-			query = query.order('date', { ascending: sort === 'oldest' });
-
 			if (sort === 'popular') {
 				query = query.order('views', { ascending: false });
+			} else {
+				const isAscending = sort === 'oldest';
+				query = query.order('date', { ascending: isAscending });
 			}
 
 			query = query.limit(limit);

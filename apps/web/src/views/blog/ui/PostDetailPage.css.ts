@@ -8,4 +8,5 @@ export const flexContainer = style({
 
 export const contentContainer = style({
 	flex: 1,
+	maxWidth: '720px',
 });

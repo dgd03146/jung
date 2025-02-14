@@ -62,7 +62,9 @@ export const FilterPostCategoryAccordion = ({
 										'all',
 									)}`}
 								>
-									<Accordion.Panel active={cat === subCategory.name}>
+									<Accordion.Panel
+										active={cat === subCategory.name.toLowerCase()}
+									>
 										<span>{subCategory.name}</span>
 										<Typography.SubText
 											level={2}
