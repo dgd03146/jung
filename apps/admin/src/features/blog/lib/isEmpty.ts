@@ -7,11 +7,27 @@ import type {
 } from '@blocknote/core';
 
 /**
- * Checks if a block is non-empty.
- * @param block The block to check.
- * @returns True if the block is non-empty, false otherwise.
+ * Checks if inline content is non-empty.
+ * Used for validation only.
  */
-export const isNonEmptyBlock = (block: Block): boolean => {
+const isNonEmptyInlineContent = (
+	content: InlineContent<DefaultInlineContentSchema, DefaultStyleSchema>,
+): boolean => {
+	switch (content.type) {
+		case 'text':
+			return content.text.trim() !== '';
+		case 'link':
+			return !!content.href && content.content.some(isNonEmptyInlineContent);
+		default:
+			return false;
+	}
+};
+
+/**
+ * Checks if a block has meaningful content.
+ * Used for validation only, not for display filtering.
+ */
+const hasContent = (block: Block): boolean => {
 	switch (block.type) {
 		case 'paragraph':
 		case 'heading':
@@ -32,24 +48,8 @@ export const isNonEmptyBlock = (block: Block): boolean => {
 };
 
 /**
- * Checks if inline content is non-empty.
- * @param content The inline content to check.
- * @returns True if the inline content is non-empty, false otherwise.
+ * Checks if a post is completely empty (for validation).
  */
-const isNonEmptyInlineContent = (
-	content: InlineContent<DefaultInlineContentSchema, DefaultStyleSchema>,
-): boolean => {
-	switch (content.type) {
-		case 'text':
-			return content.text.trim() !== '';
-		case 'link':
-			return !!content.href && content.content.some(isNonEmptyInlineContent);
-
-		default:
-			return false;
-	}
-};
-
 export const isPostEmpty = (post: PostWithBlockContent): boolean => {
 	const isTitleEmpty = post.title.trim() === '';
 	const isDescriptionEmpty = post.description.trim() === '';
@@ -57,7 +57,7 @@ export const isPostEmpty = (post: PostWithBlockContent): boolean => {
 	const isImageSrcEmpty = post.imagesrc.trim() === '';
 	const isContentEmpty =
 		post.content.length === 0 ||
-		!post.content.some((block) => isNonEmptyBlock(block));
+		!post.content.some((block) => hasContent(block));
 
 	return (
 		isTitleEmpty &&
