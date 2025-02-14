@@ -25,7 +25,12 @@ type Props = {
 const BlockNote = ({ editor }: Props) => {
 	return (
 		<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
-			<BlockNoteView editor={editor} formattingToolbar={false} theme='light'>
+			<BlockNoteView
+				editor={editor}
+				editable={false}
+				formattingToolbar={false}
+				theme='light'
+			>
 				<FormattingToolbarController
 					formattingToolbar={() => (
 						<FormattingToolbar>
