@@ -8,10 +8,17 @@ import {
 import { usePostQuery } from '@/fsd/entities/post';
 import { ViewComments } from '@/fsd/features/comment';
 import { TogglePostLike } from '@/fsd/features/post';
-import { BlockNote } from '@/fsd/shared';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Container, Flex } from '@jung/design-system/components';
+import dynamic from 'next/dynamic';
 import * as styles from './PostDetailPage.css';
+
+const BlockNoteEditor = dynamic(
+	() => import('@/fsd/shared/ui/BlockNote').then((mod) => mod.BlockNote),
+	{
+		ssr: false,
+	},
+);
 
 export const PostDetailPage = ({ postId }: { postId: string }) => {
 	const [post] = usePostQuery(postId);
@@ -26,10 +33,14 @@ export const PostDetailPage = ({ postId }: { postId: string }) => {
 	return (
 		<Container marginX='auto'>
 			<PostHeader post={post} />
-			<Flex columnGap='10' className={styles.flexContainer}>
+			<Flex
+				flexDirection={{ base: 'column-reverse', laptop: 'row' }}
+				gap={{ base: '0', laptop: '10' }}
+				marginY={{ base: '4', laptop: '10' }}
+			>
 				<PostNavigation tags={post.tags} adjacentPosts={adjacentPosts} />
 				<Container className={styles.contentContainer}>
-					<BlockNote editor={editor} />
+					<BlockNoteEditor editor={editor} />
 					<TogglePostLike
 						postId={postId}
 						likeCount={post.likes}
