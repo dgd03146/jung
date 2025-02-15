@@ -20,7 +20,7 @@ const PostNavigation = ({ adjacentPosts, tags }: Props) => {
 				position={{ laptop: 'sticky' }}
 				top={{ laptop: 80 }}
 				flexDirection={{ base: 'row', laptop: 'column' }}
-				wrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
+				flexWrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
 				alignItems={{ base: 'center', laptop: 'flex-start' }}
 				justifyContent={{ base: 'space-between', laptop: 'flex-start' }}
 			>

@@ -45,9 +45,5 @@ export const backButton = style({
 
 	':hover': {
 		transform: 'translateX(5px)',
-
-		':before': {
-			left: 0,
-		},
 	},
 });

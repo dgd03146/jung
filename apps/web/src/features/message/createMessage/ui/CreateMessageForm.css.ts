@@ -52,10 +52,6 @@ export const textarea = recipe({
 			background: '#E2E8F0',
 			borderRadius: '3px',
 		},
-
-		'::-webkit-scrollbar-thumb:hover': {
-			background: '#CBD5E1',
-		},
 	},
 	variants: {
 		backgroundColor: {
