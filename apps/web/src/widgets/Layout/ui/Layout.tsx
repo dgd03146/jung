@@ -7,7 +7,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<Box className={styles.container}>
 			<Header />
-
 			<Box as='main' className={styles.main}>
 				<Box className={styles.section}>
 					<SectionTitle />
