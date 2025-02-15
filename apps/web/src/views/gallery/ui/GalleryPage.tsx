@@ -6,6 +6,7 @@ import {
 	usePhotosQuery,
 } from '@/fsd/entities/photo';
 import {
+	EmptyState,
 	LoadingSpinner,
 	useInfiniteScroll,
 	useSearchParamsState,
@@ -28,6 +29,11 @@ export const GalleryContent = () => {
 
 	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
+
+	if (photos.length === 0) {
+		return <EmptyState content='photos' />;
+	}
+
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
 
 	const { ref } = useInfiniteScroll({
