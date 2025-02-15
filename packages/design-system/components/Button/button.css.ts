@@ -52,22 +52,22 @@ export const button = recipe({
 			secondary: style([
 				sprinkles({
 					background: {
-						base: 'primary100',
+						base: 'primary50',
 					},
 					color: {
 						base: 'primary',
+						hover: 'primary60',
 					},
 				}),
 				{
 					':hover': {
 						transform: 'translateY(-1px)',
-						background:
-							'linear-gradient(135deg, rgba(1, 66, 192, 0.12) 0%, rgba(1, 66, 192, 0.08) 100%)',
-						boxShadow: '0 3px 7px rgba(1, 66, 192, 0.15)',
-						color: '#0136A3',
+						backgroundColor: '#DBE8FF',
+						boxShadow: '0 3px 12px rgba(1, 66, 192, 0.15)',
 					},
 				},
 			]),
+
 			ghost: style([
 				sprinkles({
 					background: {
