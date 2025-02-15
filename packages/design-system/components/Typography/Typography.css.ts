@@ -64,7 +64,7 @@ export const heading = recipe({
 				sprinkles({
 					fontWeight: 'bold',
 					fontSize: {
-						mobile: '4xl', // 36px
+						mobile: '3xl', // 36px
 						tablet: '4xl', // 36px
 						desktop: '5xl', // 48px
 					},
@@ -79,12 +79,12 @@ export const heading = recipe({
 				sprinkles({
 					fontWeight: 'semibold',
 					fontSize: {
-						mobile: '3xl', // 32px
+						mobile: '2xl', // 24px
 						tablet: '3xl', // 32px
 						desktop: '4xl', // 36px
 					},
 					lineHeight: {
-						mobile: '8', // 32px
+						mobile: '7', // 28px
 						tablet: '9', // 36px
 						desktop: '10', // 40px
 					},
@@ -94,24 +94,9 @@ export const heading = recipe({
 				sprinkles({
 					fontWeight: 'semibold',
 					fontSize: {
-						mobile: '2xl', // 24px
+						mobile: 'xl', // 20px
 						tablet: '2xl', // 24px
 						desktop: '3xl', // 32px
-					},
-					lineHeight: {
-						mobile: '7', // 28px
-						tablet: '7', // 28px
-						desktop: '8', // 28px
-					},
-				}),
-			]),
-			4: style([
-				sprinkles({
-					fontWeight: 'semibold',
-					fontSize: {
-						mobile: 'xl', // 20px
-						tablet: 'xl', // 20px
-						desktop: '2xl', // 24px
 					},
 					lineHeight: {
 						mobile: '6', // 24px
@@ -120,17 +105,32 @@ export const heading = recipe({
 					},
 				}),
 			]),
+			4: style([
+				sprinkles({
+					fontWeight: 'semibold',
+					fontSize: {
+						mobile: 'lg', // 18px
+						tablet: 'xl', // 20px
+						desktop: '2xl', // 24px
+					},
+					lineHeight: {
+						mobile: '5.5', // 22px
+						tablet: '6', // 24px
+						desktop: '6.5', // 26px
+					},
+				}),
+			]),
 			5: style([
 				sprinkles({
 					fontWeight: 'semibold',
 					fontSize: {
-						mobile: 'xl', // 20px
-						tablet: 'xl', // 20px
+						mobile: 'base', // 16px
+						tablet: 'lg', // 18px
 						desktop: 'xl', // 20px
 					},
 					lineHeight: {
-						mobile: '6', // 24px
-						tablet: '6', // 24px
+						mobile: '5', // 20px
+						tablet: '5.5', // 22px
 						desktop: '6', // 24px
 					},
 				}),

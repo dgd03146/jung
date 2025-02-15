@@ -7,6 +7,11 @@ export const palette = {
 	primary400: '#002349',
 
 	primaryLight: '#E6F0FF',
+
+	primary90: 'rgba(1, 66, 192, 0.9)',
+	primary80: 'rgba(1, 66, 192, 0.8)',
+	primary70: 'rgba(1, 66, 192, 0.7)',
+	primary60: 'rgba(1, 66, 192, 0.6)',
 	primary50: '#E8F4FF',
 
 	// Secondary colors
