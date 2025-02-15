@@ -42,17 +42,19 @@ const GuestbookPage = () => {
 	});
 
 	return (
-		<Container position='relative'>
-			<Stack space='10' align='center'>
-				<Typography.Heading color='primary'>GuestBook</Typography.Heading>
+		<Container position='relative' marginX='auto'>
+			<Stack
+				gap={{ base: '6', laptop: '10' }}
+				align='center'
+				marginY={{ base: '6', laptop: '10' }}
+			>
 				<Typography.Heading level={4} color='primary'>
-					Share Your Thoughts ✨
+					Leave your message 💙
 				</Typography.Heading>
+				<motion.div variants={itemAnimation}>
+					<CreateMessageForm />
+				</motion.div>
 			</Stack>
-
-			<motion.div variants={itemAnimation}>
-				<CreateMessageForm />
-			</motion.div>
 
 			<motion.div variants={itemAnimation}>
 				<ErrorBoundary fallback={(error) => <MessageWallError error={error} />}>

@@ -63,19 +63,21 @@ export const CreateMessageForm = () => {
 					))}
 				</Flex>
 			</Stack>
-			<Stack space='4'>
+			<Stack gap='2'>
 				<Textarea
 					name='message'
 					value={message}
 					onChange={(e) => handleMessageChange(e.target.value)}
-					placeholder='Write your message here... (max 50 characters)'
+					placeholder='Write your message here!'
 					maxLength={50}
-					rows={3}
+					rows={2}
 					className={styles.textarea({
 						backgroundColor: selectedColor,
 					})}
 				/>
-				<CreateMessageButton emoji={selectedEmoji} />
+				<Flex justifyContent='flex-end'>
+					<CreateMessageButton emoji={selectedEmoji} />
+				</Flex>
 			</Stack>
 		</form>
 	);
