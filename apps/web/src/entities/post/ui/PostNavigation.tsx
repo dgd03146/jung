@@ -1,8 +1,10 @@
+import { BlurImage } from '@/fsd/shared';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
-import { Box, Flex, Stack, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system';
 import type { AdjacentPosts } from '@jung/shared/types';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
+import logo from '/public/images/og/default.png';
 import * as styles from './PostNavigation.css';
 import { PostTags } from './PostTags';
 
@@ -13,80 +15,60 @@ interface Props {
 
 const PostNavigation = ({ adjacentPosts, tags }: Props) => {
 	return (
-		<Stack
-			space='12'
-			align='left'
-			minWidth='60'
-			position='sticky'
-			top={80}
-			className={styles.sidebar}
-			display={{ mobile: 'none', laptop: 'flex' }}
-		>
+		<Box className={styles.sidebar}>
 			<Flex
-				minWidth='60'
-				align='center'
-				gap='2'
-				color='primary'
-				borderBottomWidth='hairline'
-				borderColor='gray'
-				borderStyle='solid'
-				paddingBottom='8'
+				position={{ laptop: 'sticky' }}
+				top={{ laptop: 80 }}
+				flexDirection={{ base: 'row', laptop: 'column' }}
+				wrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
+				alignItems={{ base: 'center', laptop: 'flex-start' }}
+				justifyContent={{ base: 'space-between', laptop: 'flex-start' }}
 			>
-				{SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
-					<Box
-						key={href}
-						as='a'
-						href={href}
-						aria-label={label}
-						target='_blank'
-						rel='noopener noreferrer'
-						color={{
-							base: 'primary',
-							hover: 'primary200',
-						}}
-						transition='fast'
-						background='primary50'
-						paddingY='1'
-						paddingX='2'
-						borderRadius='xs'
-						display='flex'
-						alignItems='center'
-						justifyContent='center'
-					>
-						<Icon size={16} />
-					</Box>
-				))}
-			</Flex>
-
-			<Stack
-				space='1'
-				align='left'
-				minWidth='60'
-				borderBottomWidth='hairline'
-				borderColor='gray'
-				borderStyle='solid'
-				paddingBottom='8'
-			>
-				<Typography.Text
-					level={1}
+				<Flex
+					align='center'
 					color='primary'
-					fontWeight='semibold'
-					className={styles.sidebarHeader}
+					paddingBottom={{ laptop: '6' }}
+					display={{ base: 'none', laptop: 'flex' }}
+					minWidth={{ laptop: '60' }}
+					gap='2'
 				>
-					Tags
-				</Typography.Text>
-				<PostTags tags={tags} />
-			</Stack>
+					{SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
+						<Box
+							key={href}
+							as='a'
+							href={href}
+							aria-label={label}
+							target='_blank'
+							rel='noopener noreferrer'
+							color={{
+								base: 'primary',
+								hover: 'primary200',
+							}}
+							transition='fast'
+							background='primary50'
+							paddingY='1'
+							paddingX='2'
+							borderRadius='xs'
+							display='flex'
+							alignItems='center'
+							justifyContent='center'
+						>
+							<Icon size={16} />
+						</Box>
+					))}
+					<BlurImage src={logo} alt='logo' width={60} height={60} />
+				</Flex>
 
-			{adjacentPosts.previous && (
-				<Stack
-					minWidth='60'
-					space='1'
-					align='left'
-					borderBottomWidth='hairline'
+				<Flex
+					display={{ base: 'none', laptop: 'flex' }}
+					direction='column'
+					gap='1'
+					minWidth={{ laptop: '60' }}
+					borderTopWidth={{ laptop: 'hairline' }}
+					borderBottomWidth={{ laptop: 'hairline' }}
 					borderColor='gray'
 					borderStyle='solid'
-					paddingBottom='8'
+					paddingY={{ laptop: '8' }}
 				>
 					<Typography.Text
 						level={1}
@@ -94,70 +76,94 @@ const PostNavigation = ({ adjacentPosts, tags }: Props) => {
 						fontWeight='semibold'
 						className={styles.sidebarHeader}
 					>
-						Previous Post
+						Tags
 					</Typography.Text>
-					<Link href={`/blog/${adjacentPosts.previous.id}`}>
-						<Typography.Text
-							level={3}
-							color={{ hover: 'primary200' }}
-							truncate='two'
-							transition='fast'
-						>
-							{adjacentPosts.previous.title}
-						</Typography.Text>
-					</Link>
-				</Stack>
-			)}
-
-			{adjacentPosts.next && (
-				<Stack
-					minWidth='60'
-					space='1'
-					align='left'
-					borderBottomWidth='hairline'
-					borderColor='primary50'
-					borderStyle='solid'
-					paddingBottom='8'
-				>
-					<Typography.Text
-						level={1}
-						color='primary'
-						fontWeight='semibold'
-						className={styles.sidebarHeader}
-					>
-						Next Post
-					</Typography.Text>
-					<Link href={`/blog/${adjacentPosts.next.id}`}>
-						<Typography.Text
-							level={3}
-							color={{ hover: 'primary200' }}
-							truncate='two'
-							transition='fast'
-						>
-							{adjacentPosts.next.title}
-						</Typography.Text>
-					</Link>
-				</Stack>
-			)}
-
-			<Link href='/blog'>
-				<Flex
-					gap='2'
-					align='center'
-					color={{ base: 'primary', hover: 'primary200' }}
-				>
-					<IoArrowUndoSharp style={{ transform: 'translateY(-2px)' }} />
-					<Typography.Text
-						level={1}
-						transition='fast'
-						fontWeight='semibold'
-						className={styles.linkText}
-					>
-						Back to the post
-					</Typography.Text>
+					<PostTags tags={tags} />
 				</Flex>
-			</Link>
-		</Stack>
+
+				{adjacentPosts.previous && (
+					<Flex
+						direction='column'
+						gap='1'
+						minWidth={{ laptop: '60' }}
+						borderTopWidth={{ laptop: 'hairline' }}
+						borderBottomWidth={{ laptop: 'hairline' }}
+						borderColor='gray'
+						borderStyle='solid'
+						paddingY={{ laptop: '8' }}
+					>
+						<Typography.Text
+							level={1}
+							color='primary'
+							fontWeight='semibold'
+							className={styles.sidebarHeader}
+						>
+							Previous Post
+						</Typography.Text>
+						<Link href={`/blog/${adjacentPosts.previous.id}`}>
+							<Typography.Text
+								level={3}
+								color={{ hover: 'primary200' }}
+								truncate='two'
+								transition='fast'
+							>
+								{adjacentPosts.previous.title}
+							</Typography.Text>
+						</Link>
+					</Flex>
+				)}
+
+				{adjacentPosts.next && (
+					<Flex
+						direction='column'
+						gap='1'
+						minWidth={{ laptop: '60' }}
+						borderTopWidth={{ laptop: 'hairline' }}
+						borderBottomWidth={{ laptop: 'hairline' }}
+						borderColor='gray'
+						borderStyle='solid'
+						paddingY={{ laptop: '8' }}
+					>
+						<Typography.Text
+							level={1}
+							color='primary'
+							fontWeight='semibold'
+							className={styles.sidebarHeader}
+						>
+							Next Post
+						</Typography.Text>
+						<Link href={`/blog/${adjacentPosts.next.id}`}>
+							<Typography.Text
+								level={3}
+								color={{ hover: 'primary200' }}
+								truncate='two'
+								transition='fast'
+							>
+								{adjacentPosts.next.title}
+							</Typography.Text>
+						</Link>
+					</Flex>
+				)}
+
+				<Link href='/blog'>
+					<Flex
+						align='center'
+						gap='1'
+						className={styles.backButton}
+						marginTop={{ laptop: '8' }}
+						color={{ base: 'primary', hover: 'primary200' }}
+					>
+						<IoArrowUndoSharp
+							size={18}
+							style={{ transform: 'translateY(-2px)' }}
+						/>
+						<Typography.Text level={1} fontWeight='semibold'>
+							Back to the post
+						</Typography.Text>
+					</Flex>
+				</Link>
+			</Flex>
+		</Box>
 	);
 };
 
