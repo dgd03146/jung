@@ -1,5 +1,4 @@
 import { sprinkles } from '@jung/design-system/styles';
-import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const title = style({
@@ -14,13 +13,7 @@ export const socialLoginWrapper = style([
 		justifyContent: 'center',
 	}),
 	{
-		maxWidth: '280px',
 		margin: '0 auto',
-		'@media': {
-			[`screen and (min-width: ${breakpoints.tablet}px)`]: {
-				maxWidth: '320px',
-			},
-		},
 	},
 ]);
 
