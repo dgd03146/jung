@@ -4,13 +4,13 @@ import { style } from '@vanilla-extract/css';
 export const searchWrapper = style({
 	position: 'relative',
 	width: '100%',
-	height: '40px',
+
 	display: 'flex',
 	alignItems: 'center',
 	background: 'white',
-
+	height: '40px',
 	borderRadius: '8px',
-	padding: '0 8px',
+
 	transition: 'all 0.2s ease',
 
 	border: `1px solid ${palette.primary100}`,
@@ -19,16 +19,6 @@ export const searchWrapper = style({
 		boxShadow: `0 0 0 3px ${palette.primary50}`,
 		borderColor: palette.primary,
 	},
-});
-
-export const iconWrapper = style({
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	width: '32px',
-	height: '100%',
-	flexShrink: 0,
-	color: palette.gray300,
 });
 
 export const input = style({
