@@ -7,22 +7,17 @@ export const container = style([
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: '4',
 	}),
 	{
-		minHeight: calc.subtract('100dvh', '144px'),
+		minHeight: calc.subtract('100dvh', '192px'),
 	},
 ]);
 
 export const card = style([
 	sprinkles({
-		padding: '10',
+		padding: { base: '4', tablet: '6', laptop: '10' },
 		borderRadius: 'xl',
-
+		minWidth: { base: '80', tablet: '100' },
 		boxShadow: 'primary',
-		width: 'full',
 	}),
-	{
-		maxWidth: '400px',
-	},
 ]);
