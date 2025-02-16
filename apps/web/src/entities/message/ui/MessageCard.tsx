@@ -17,7 +17,8 @@ export const MessageCard = ({
 }) => {
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
+			layoutId={message.id}
+			initial={message.id.startsWith('temp-') ? { opacity: 0, y: 20 } : false}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{
 				duration: 0.3,
