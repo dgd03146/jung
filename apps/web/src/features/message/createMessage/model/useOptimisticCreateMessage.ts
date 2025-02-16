@@ -3,8 +3,7 @@ import {
 	type GuestbookEmoji,
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/message';
-import { trpc } from '@/fsd/shared';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { trpc, useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { createMessageAction } from '../api/createMessageAction';
@@ -14,6 +13,22 @@ export const useOptimisticCreateMessage = () => {
 	const utils = trpc.useUtils();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
+
+	const rollbackOptimisticUpdate = (tempId: string) => {
+		utils.guestbook.getAllMessages.setInfiniteData(
+			{ limit: MESSAGE_LIMIT },
+			(oldData) => {
+				if (!oldData) return oldData;
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) => ({
+						...page,
+						items: page.items.filter((item) => item.id !== tempId),
+					})),
+				};
+			},
+		);
+	};
 
 	const mutateCreateMessage = async (formData: FormData) => {
 		if (!user) {
@@ -70,43 +85,18 @@ export const useOptimisticCreateMessage = () => {
 			const result = await createMessageAction(null, formData);
 
 			if (!result.success) {
-				// 실패시에만 롤백
-				utils.guestbook.getAllMessages.setInfiniteData(
-					{ limit: MESSAGE_LIMIT },
-					(oldData) => {
-						if (!oldData) return oldData;
-						return {
-							...oldData,
-							pages: oldData.pages.map((page) => ({
-								...page,
-								items: page.items.filter((item) => item.id !== tempId),
-							})),
-						};
-					},
-				);
+				rollbackOptimisticUpdate(tempId);
 				showToast(result.error || 'Failed to create message', 'error');
 				return false;
 			}
 
+			await utils.guestbook.getAllMessages.invalidate();
 			showToast('Message created successfully! ✨', 'success');
+
 			return true;
 		} catch (error) {
 			// Rollback on error
-			utils.guestbook.getAllMessages.setInfiniteData(
-				{ limit: MESSAGE_LIMIT },
-				(oldData) => {
-					if (!oldData) return oldData;
-
-					return {
-						...oldData,
-						pages: oldData.pages.map((page) => ({
-							...page,
-							items: page.items.filter((item) => item.id !== tempId),
-						})),
-					};
-				},
-			);
-
+			rollbackOptimisticUpdate(tempId);
 			showToast('Failed to create message', 'error');
 			return false;
 		}
