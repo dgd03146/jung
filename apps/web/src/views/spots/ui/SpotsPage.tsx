@@ -60,7 +60,7 @@ function SpotsContent() {
 			) : (
 				<Box width='full' height='full' position='relative' overflow='hidden'>
 					<ViewMap spots={spots} />
-					<ToggleSpotListButton />
+					{spots.length > 0 && <ToggleSpotListButton />}
 					{isSlidListVisible && <SpotList spots={spots} variant='slideUp' />}
 				</Box>
 			)}

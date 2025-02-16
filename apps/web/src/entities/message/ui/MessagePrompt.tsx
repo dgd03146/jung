@@ -1,5 +1,5 @@
 import { SocialLogin } from '@/fsd/features/auth';
-import { Box, Stack, Typography } from '@jung/design-system';
+import { Box, Typography } from '@jung/design-system';
 import * as styles from './MessagePrompt.css';
 
 interface MessagePromptProps {
@@ -8,20 +8,14 @@ interface MessagePromptProps {
 }
 
 export const MessagePrompt = ({
-	title = 'Please sign in to leave a message',
-	description = 'Share your thoughts with others by signing in',
+	description = 'Leave your message by signing in',
 }: MessagePromptProps) => {
 	return (
 		<Box className={styles.container}>
-			<Stack align='center' gap='10'>
-				<Typography.Heading level={4} color='primary'>
-					{title}
-				</Typography.Heading>
-				<Typography.Text level={4} color='primary100'>
-					{description}
-				</Typography.Text>
-				<SocialLogin />
-			</Stack>
+			<Typography.Text level={3} color='primary'>
+				{description}
+			</Typography.Text>
+			<SocialLogin />
 		</Box>
 	);
 };
