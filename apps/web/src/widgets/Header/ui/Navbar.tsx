@@ -31,32 +31,23 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			})}
 		>
 			<Flex
-				justifyContent={isMenuOpen ? 'flex-end' : 'space-between'}
+				justifyContent='space-between'
 				alignItems='center'
 				marginX='auto'
 				maxWidth='11/12'
 				className={styles.navContent}
 			>
-				{!isMenuOpen && (
-					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
-						<Image
-							src={logo}
-							alt='logo'
-							width={80}
-							height={80}
-							quality={100}
-							priority
-						/>
-						{/* <Typography.Heading
-							level={5}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-							className={styles.logo}
-						>
-							JUNG
-						</Typography.Heading> */}
-					</Link>
-				)}
+				<Link href='/' className={styles.logoWrapper}>
+					<Image
+						src={logo}
+						alt='logo'
+						width={80}
+						height={80}
+						priority
+						quality={100}
+					/>
+				</Link>
+
 				<Box className={styles.menuButtonWrapper}>
 					<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 				</Box>

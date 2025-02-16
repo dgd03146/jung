@@ -1,13 +1,12 @@
 'use client';
 
-import { Box, Button, Flex, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 
-import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { capitalizeFirstLetter } from '../lib/capitalizeFirstLetter';
 
-export function EmptyState() {
+export function EmptyState({ content }: { content?: string }) {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 
@@ -20,30 +19,24 @@ export function EmptyState() {
 	const getDescription = () => {
 		if (q) return `We couldn't find any results for "${q}"`;
 		if (cat) {
-			return `No ${segment} available in the ${capitalizeFirstLetter(
+			return `No ${content || segment} available in the ${capitalizeFirstLetter(
 				cat,
 			)} category yet`;
 		}
-		return `No ${segment} available at the moment`;
+		return `No ${content || segment} available at the moment`;
 	};
 
 	const getTitle = () => {
-		return `No ${contentType} Found`;
+		return `No ${content || contentType} Found`;
 	};
-
-	const getButtonText = () => {
-		return `View All ${contentType}`;
-	};
-
-	const baseUrl = pathname.split('?')[0];
 
 	return (
 		<Flex
 			direction='column'
 			align='center'
 			justify='center'
-			gap='6'
-			paddingY='16'
+			gap='8'
+			marginY={{ base: '5', tablet: '10', laptop: '20' }}
 		>
 			<Box
 				padding='6'
@@ -54,23 +47,15 @@ export function EmptyState() {
 				<IoDocumentTextOutline size={36} />
 			</Box>
 
-			<Flex direction='column' align='center' gap='6'>
+			<Flex direction='column' align='center' gap='10'>
 				<Typography.Heading level={4} color='black100'>
 					{getTitle()}
 				</Typography.Heading>
 
-				<Typography.Text level={2} color='primary' fontWeight='medium'>
+				<Typography.Text level={1} color='primary' fontWeight='medium'>
 					{getDescription()}
 				</Typography.Text>
 			</Flex>
-
-			<Link href={baseUrl ?? '/'}>
-				<Button variant='primary' size='lg' borderRadius='lg'>
-					<Typography.Text fontWeight='medium'>
-						{getButtonText()}
-					</Typography.Text>
-				</Button>
-			</Link>
 		</Flex>
 	);
 }

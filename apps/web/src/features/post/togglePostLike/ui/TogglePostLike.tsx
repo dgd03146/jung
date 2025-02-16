@@ -1,6 +1,8 @@
 import { useTogglePostLike } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { Button, Flex, Typography, useToast } from '@jung/design-system';
+import { Button, Flex, useToast } from '@jung/design-system';
+import Link from 'next/link';
+import { BsPencilSquare } from 'react-icons/bs';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { isPostLiked } from '../lib/isPostLiked';
 
@@ -28,19 +30,34 @@ export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 	const isLiked = isPostLiked(likedBy, user?.id);
 
 	return (
-		<Flex justify='center' align='center' columnGap='2' marginY='25'>
+		<Flex
+			justify='center'
+			align='center'
+			gap='4'
+			marginTop='20'
+			marginBottom='24'
+		>
 			<Button
 				variant='outline'
-				color={isLiked ? 'primary' : 'primary100'}
 				onClick={handleLikeClick}
 				aria-label={isLiked ? 'Unlike post' : 'Like post'}
-				border='none'
+				fontSize='sm'
+				borderRadius='md'
+				prefix={isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
 			>
-				{isLiked ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
+				{isLiked ? 'Liked' : 'Like'}
 			</Button>
-			<Typography.Text level={4} color='primary'>
-				{likeCount} {likeCount === 1 ? 'like' : 'likes'}
-			</Typography.Text>
+
+			<Link href='/guestbook'>
+				<Button
+					variant='secondary'
+					borderRadius='md'
+					prefix={<BsPencilSquare size={16} />}
+					fontSize='sm'
+				>
+					Visit Guestbook
+				</Button>
+			</Link>
 		</Flex>
 	);
 };

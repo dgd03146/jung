@@ -1,3 +1,5 @@
+'use client';
+
 import '@/fsd/app/styles/editorStyle.css';
 import type { BlockNoteEditor } from '@blocknote/core';
 import '@blocknote/core/fonts/inter.css';
@@ -22,7 +24,7 @@ type Props = {
 	editor: BlockNoteEditor;
 };
 
-const BlockNote = ({ editor }: Props) => {
+export const BlockNote = ({ editor }: Props) => {
 	return (
 		<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
 			<BlockNoteView
@@ -86,5 +88,3 @@ const BlockNote = ({ editor }: Props) => {
 		</Box>
 	);
 };
-
-export default BlockNote;

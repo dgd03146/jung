@@ -6,6 +6,7 @@ import {
 	useCollectionQuery,
 } from '@/fsd/entities/photo';
 import { BlurImage } from '@/fsd/shared';
+import { EmptyState } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
 import * as styles from './CollectionDetailPage.css';
 
@@ -19,6 +20,10 @@ export const CollectionDetailPage = ({
 	const [data] = useCollectionQuery(collectionId);
 	const { collection, photos } = data;
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
+
+	if (photos.length === 0) {
+		return <EmptyState content='photos' />;
+	}
 
 	return (
 		<Container>

@@ -3,9 +3,7 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const form = style({
-	maxWidth: '600px',
-	margin: '0 auto 2rem',
-	padding: '2rem',
+	padding: '1rem',
 	backgroundColor: 'white',
 	borderRadius: '16px',
 	boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
@@ -14,24 +12,45 @@ export const form = style({
 export const textarea = recipe({
 	base: {
 		width: '100%',
-		padding: '1rem',
-
-		borderRadius: '12px',
-		border: '1px solid #e5e7eb',
+		padding: '14px 16px',
+		borderRadius: '8px',
+		border: '1px solid #E2E8F0',
 		resize: 'none',
-		fontSize: '1rem',
-		lineHeight: '1.6',
-		fontFamily: "'Inter', sans-serif",
-		transition: 'all 0.2s ease',
+		fontSize: '14px',
+
+		transition: 'all 0.2s ease-in-out',
 		marginBottom: '0',
+		backgroundColor: '#F8FAFC',
+
+		color: '#334155',
+
+		':hover': {
+			borderColor: '#CBD5E1',
+		},
 
 		':focus': {
 			outline: 'none',
-			borderColor: palette.primary,
+			borderColor: '#94A3B8',
+
+			boxShadow: '0 2px 8px rgba(148, 163, 184, 0.15)',
 		},
 
 		'::placeholder': {
-			color: '#9ca3af',
+			color: '#94A3B8',
+			fontSize: '14px',
+		},
+
+		'::-webkit-scrollbar': {
+			width: '6px',
+		},
+
+		'::-webkit-scrollbar-track': {
+			background: 'transparent',
+		},
+
+		'::-webkit-scrollbar-thumb': {
+			background: '#E2E8F0',
+			borderRadius: '3px',
 		},
 	},
 	variants: {

@@ -10,11 +10,16 @@ type Props = {
 
 const PostHeader = ({ post }: Props) => {
 	return (
-		<Box className={styles.postHeaderContainer}>
+		<Box
+			borderBottomWidth='hairline'
+			borderColor='gray'
+			borderStyle='solid'
+			paddingBottom={{ base: '4', laptop: '6' }}
+		>
 			<Flex columnGap='10'>
 				<Box
 					className={styles.imgContainer}
-					display={{ mobile: 'none', laptop: 'block' }}
+					display={{ base: 'none', laptop: 'block' }}
 				>
 					<BlurImage
 						src={post.imagesrc}
@@ -24,7 +29,7 @@ const PostHeader = ({ post }: Props) => {
 						priority
 					/>
 				</Box>
-				<Stack space={'0'} align={'left'} rowGap='4' flex='1'>
+				<Stack align={'left'} rowGap={{ base: '2', laptop: '4' }} flex='1'>
 					<Typography.SubText level={3} color='primary'>
 						{formatDate(post.date)}
 					</Typography.SubText>

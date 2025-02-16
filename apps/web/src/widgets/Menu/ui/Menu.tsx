@@ -48,14 +48,6 @@ export default function Menu({ isMenuOpen, toggleMenu }: Props) {
 							<NavLinks items={PRIMARY_NAV_LIST} isMainNav />
 							<NavLinks items={SECONDARY_NAV_LIST} />
 						</Flex>
-						<Flex columnGap='4' marginTop='20'>
-							{/* <Button variant='ghost' onClick={toggleMenu}>
-								<Typography.Text color='white'>en</Typography.Text>
-							</Button>
-							<Button variant='ghost' onClick={toggleMenu}>
-								<Typography.Text color='white'>ko</Typography.Text>
-							</Button> */}
-						</Flex>
 					</motion.div>
 				</Flex>
 			</motion.div>

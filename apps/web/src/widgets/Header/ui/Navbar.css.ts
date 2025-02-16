@@ -43,46 +43,17 @@ export const headerContainer = recipe({
 
 export const navContent = style({
 	height: '100%',
-	// padding: '0 1rem',
+
 	transition: 'all 0.3s ease',
 });
 
-export const logoWrapper = recipe({
-	base: style({
-		position: 'relative',
-		display: 'inline-block',
-		// padding: '0.5rem',
-		transition: 'all 0.3s ease',
-		selectors: {
-			'&:hover': {
-				transform: 'translateY(-1px)',
-			},
+export const logoWrapper = style({
+	marginLeft: '-16px',
+	transition: 'all 0.3s ease',
+	selectors: {
+		'&:hover': {
+			transform: 'translateY(-2px)',
 		},
-	}),
-	variants: {
-		isScrolled: {
-			false: {
-				selectors: {
-					'&::after': {
-						content: '""',
-						position: 'absolute',
-						bottom: 0,
-						left: '50%',
-						width: 0,
-						height: '2px',
-
-						transition: 'all 0.3s ease',
-						transform: 'translateX(-50%)',
-					},
-					'&:hover::after': {
-						width: '100%',
-					},
-				},
-			},
-		},
-	},
-	defaultVariants: {
-		isScrolled: false,
 	},
 });
 

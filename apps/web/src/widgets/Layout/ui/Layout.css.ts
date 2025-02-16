@@ -28,6 +28,12 @@ export const main = style([
 			tablet: 'tablet',
 			laptop: 'laptop',
 		},
+		marginY: {
+			mobile: '4', // 16px
+			tablet: '5', // 20px
+			laptop: '6', // 24px
+			desktop: '6', // 24px
+		},
 	}),
 	{
 		flex: '1 0 auto',

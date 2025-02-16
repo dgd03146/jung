@@ -30,7 +30,6 @@ export function SocialLogin({ onSuccess }: SocialLoginProps) {
 		}
 	};
 
-	// TODO: GITHUB 로그인 추가, 추후 추가 예정
 	return (
 		<Flex justify='flex-end' columnGap='2' marginTop='2'>
 			<Button

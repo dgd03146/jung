@@ -73,7 +73,6 @@ export function LoginContent({ session }: LoginContentProps) {
 					width={200}
 					height={200}
 					priority
-					quality={100}
 				/>
 				<Typography.Text level={2} color='black100' fontWeight='medium'>
 					Sign in with your social account

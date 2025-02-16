@@ -15,16 +15,16 @@ export const CreateMessageButton = ({ emoji }: CreateMessageButtonProps) => {
 	return (
 		<Button
 			type='submit'
-			size='md'
+			variant='secondary'
+			fontSize={{ base: 'sm', tablet: 'base' }}
 			fontWeight='medium'
 			borderRadius='lg'
+			flexShrink={0}
+			loading={isDisabled}
 			disabled={isDisabled}
+			suffix={`${emoji}`}
 		>
-			{isDisabled
-				? 'Posting...'
-				: isThrottled
-				  ? 'Please wait...'
-				  : `Post ${emoji}`}
+			{isDisabled ? 'Posting...' : isThrottled ? 'Please wait...' : 'Post'}
 		</Button>
 	);
 };
