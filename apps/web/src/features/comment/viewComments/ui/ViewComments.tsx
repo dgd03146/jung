@@ -6,7 +6,6 @@ import {
 import { CreateCommentForm } from '@/fsd/features/comment/createComment/ui/CreateCommentForm';
 import { useInfiniteScroll } from '@/fsd/shared';
 import { LoadingSpinner } from '@/fsd/shared/ui';
-import { Container } from '@jung/design-system/components';
 import { Flex } from '@jung/design-system/components/Flex/Flex';
 import type { Comment } from '@jung/shared/types';
 import { Suspense } from 'react';
@@ -37,7 +36,7 @@ export const ViewComments = ({ targetId, likeCount }: ViewCommentsProps) => {
 	);
 
 	return (
-		<Container marginY='10'>
+		<>
 			<CommentStats commentCount={commentCount} likeCount={likeCount} />
 			<CreateCommentForm targetId={targetId} />
 			<Suspense fallback={<CommentListSkeleton />}>
@@ -46,6 +45,6 @@ export const ViewComments = ({ targetId, likeCount }: ViewCommentsProps) => {
 			<Flex justify='center' align='center' ref={ref} minHeight='4'>
 				{isFetchingNextPage && hasNextPage && <LoadingSpinner size='small' />}
 			</Flex>
-		</Container>
+		</>
 	);
 };

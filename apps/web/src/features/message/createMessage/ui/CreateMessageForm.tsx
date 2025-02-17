@@ -1,12 +1,10 @@
 import { useSupabaseAuth } from '@/fsd/shared';
 
-import { Button, Flex, Stack, Textarea } from '@jung/design-system';
+import { Box, Button, Flex, Stack, Textarea } from '@jung/design-system';
 
-import {
-	GUESTBOOK_COLORS,
-	GUESTBOOK_EMOJIS,
-	MessagePrompt,
-} from '@/fsd/entities/message';
+import { SocialLoginPrompt } from '@/fsd/entities/auth';
+import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/message';
+import { SocialLoginButtons } from '@/fsd/features/auth';
 import { useCreateMessage } from '../model/useCreateMessage';
 import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
@@ -24,7 +22,15 @@ export const CreateMessageForm = () => {
 	} = useCreateMessage();
 
 	if (!user) {
-		return <MessagePrompt />;
+		return (
+			<Box
+				boxShadow='primary'
+				padding={{ base: '4', laptop: '6' }}
+				borderRadius='lg'
+			>
+				<SocialLoginPrompt actions={<SocialLoginButtons />} />
+			</Box>
+		);
 	}
 
 	return (
@@ -63,19 +69,21 @@ export const CreateMessageForm = () => {
 					))}
 				</Flex>
 			</Stack>
-			<Stack space='4'>
+			<Stack gap='2'>
 				<Textarea
 					name='message'
 					value={message}
 					onChange={(e) => handleMessageChange(e.target.value)}
-					placeholder='Write your message here... (max 50 characters)'
+					placeholder='Write your message here!'
 					maxLength={50}
-					rows={3}
+					rows={2}
 					className={styles.textarea({
 						backgroundColor: selectedColor,
 					})}
 				/>
-				<CreateMessageButton emoji={selectedEmoji} />
+				<Flex justifyContent='flex-end'>
+					<CreateMessageButton emoji={selectedEmoji} />
+				</Flex>
 			</Stack>
 		</form>
 	);

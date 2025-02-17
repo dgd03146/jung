@@ -39,9 +39,9 @@ export const BlogPage = ({ categories }: { categories: CategoryTree[] }) => {
 				<Box as='main' minWidth='0' flex='1'>
 					<Flex
 						align='center'
-						justify='space-between'
-						gap='2.5'
-						paddingBottom='2'
+						// justify='space-between'
+						gap={{ mobile: '1', tablet: '2.5' }}
+						marginBottom='2'
 					>
 						<SearchBar />
 						<SelectViewMode selected={viewMode} onSelect={setViewMode} />

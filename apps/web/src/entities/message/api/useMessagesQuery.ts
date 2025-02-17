@@ -14,7 +14,7 @@ export function useMessagesQuery() {
 
 				return lastPage.nextCursor;
 			},
-			staleTime: 1000 * 60 * 60 * 5, // 5시간
+			staleTime: 1000 * 60 * 15, // 15분
 			gcTime: 1000 * 60 * 60 * 24, // 24시간
 		},
 	);

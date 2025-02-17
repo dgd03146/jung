@@ -27,6 +27,6 @@ export const EMPTY_POST: PostWithBlockContent = {
 	content: [EMPTY_CONTENT],
 	imagesrc: '',
 	tags: [],
-	category: '',
+	category_id: '',
 	description: '',
 };

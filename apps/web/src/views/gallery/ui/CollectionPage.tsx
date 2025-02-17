@@ -6,6 +6,7 @@ import {
 	useCollectionsQuery,
 } from '@/fsd/entities/photo';
 import { LoadingSpinner } from '@/fsd/shared';
+import { EmptyState } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
 import { Suspense } from 'react';
 
@@ -13,6 +14,10 @@ export const CollectionContent = () => {
 	const [collections] = useCollectionsQuery({
 		sort: COLLECTION_PARAMS.sort,
 	});
+
+	if (collections.length === 0) {
+		return <EmptyState content='collections' />;
+	}
 
 	return <CollectionList collections={collections} />;
 };

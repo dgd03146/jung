@@ -1,10 +1,27 @@
 import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system/components';
-import Link from 'next/link';
 import { BiLogoGmail } from 'react-icons/bi';
 import { FaLinkedin } from 'react-icons/fa';
 import { FaGithub } from 'react-icons/fa';
 import { logo } from '../../Header/ui/Navbar.css';
+
+const SOCIAL_LINKS = [
+	{
+		href: SOCIAL_NAVIGATION.LINKEDIN,
+		icon: FaLinkedin,
+		ariaLabel: 'Visit LinkedIn profile',
+	},
+	{
+		href: SOCIAL_NAVIGATION.GITHUB,
+		icon: FaGithub,
+		ariaLabel: 'Visit GitHub profile',
+	},
+	{
+		href: SOCIAL_NAVIGATION.EMAIL,
+		icon: BiLogoGmail,
+		ariaLabel: 'Send email',
+	},
+];
 
 const Footer = () => {
 	return (
@@ -17,38 +34,30 @@ const Footer = () => {
 			marginX='auto'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>
-				<Typography.Text level={3} color='primary' className={logo}>
+				<Typography.Text level={2} color='primary' className={logo}>
 					ⓒ 2025. Jung. All rights reserved.
 				</Typography.Text>
 
 				<Flex columnGap='4'>
-					<Link href={SOCIAL_NAVIGATION.LINKEDIN}>
-						<Typography.SubText
-							level={2}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
+					{SOCIAL_LINKS.map(({ href, icon: Icon, ariaLabel }) => (
+						<Box
+							key={href}
+							as='a'
+							href={href}
+							target='_blank'
+							rel='noopener noreferrer'
+							role='link'
+							aria-label={ariaLabel}
 						>
-							<FaLinkedin size='1.5rem' />
-						</Typography.SubText>
-					</Link>
-					<Link href={SOCIAL_NAVIGATION.GITHUB}>
-						<Typography.SubText
-							level={2}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-						>
-							<FaGithub size='1.5rem' />
-						</Typography.SubText>
-					</Link>
-					<Link href={SOCIAL_NAVIGATION.EMAIL}>
-						<Typography.SubText
-							level={2}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-						>
-							<BiLogoGmail size='1.5rem' />
-						</Typography.SubText>
-					</Link>
+							<Typography.Heading
+								level={5}
+								color={{ base: 'primary', hover: 'primary200' }}
+								transition='slow'
+							>
+								<Icon />
+							</Typography.Heading>
+						</Box>
+					))}
 				</Flex>
 			</Flex>
 		</Box>

@@ -66,7 +66,7 @@ export const responsiveProperties = defineProperties({
 			'space-evenly',
 		],
 		flex: { ...vars.contentWidth },
-		flexWrap: ['wrap', 'nowrap'],
+		flexWrap: ['wrap', 'nowrap', 'wrap-reverse'],
 		flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
 		paddingTop: vars.space,
 		paddingBottom: vars.space,
@@ -80,6 +80,12 @@ export const responsiveProperties = defineProperties({
 		overflow: ['hidden', 'auto'],
 		opacity: vars.opacity,
 		textAlign: ['left', 'center', 'right'],
+
+		// position
+		top: position,
+		bottom: position,
+		left: position,
+		right: position,
 
 		// grid
 		gridTemplateColumns: grid.gridTemplate,
@@ -126,6 +132,7 @@ export const responsiveProperties = defineProperties({
 		borderRightRadius: ['borderBottomRightRadius', 'borderTopRightRadius'],
 		borderTopRadius: ['borderTopLeftRadius', 'borderTopRightRadius'],
 		borderBottomRadius: ['borderBottomLeftRadius', 'borderBottomRightRadius'],
+		inset: ['top', 'bottom', 'left', 'right'],
 	},
 });
 
@@ -146,10 +153,6 @@ export const unresponsiveProperties = defineProperties({
 			'4/3': '4 / 3',
 			'16/9': '16 / 9',
 		},
-		top: position,
-		bottom: position,
-		left: position,
-		right: position,
 
 		flexShrink: [0, 1],
 		flexGrow: [0, 1],
@@ -209,9 +212,6 @@ export const unresponsiveProperties = defineProperties({
 			'100': 100,
 			auto: 'auto',
 		},
-	},
-	shorthands: {
-		inset: ['top', 'bottom', 'left', 'right'],
 	},
 });
 

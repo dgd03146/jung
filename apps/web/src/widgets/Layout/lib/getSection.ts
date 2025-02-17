@@ -2,14 +2,6 @@ export const getSection = (pathname: string) => {
 	const pathWithoutLocale = pathname.split('/').slice(2).join('/');
 	const paths = pathWithoutLocale.split('/').filter(Boolean);
 
-	if (paths[0] === 'guestbook') {
-		return '';
-	}
-
-	// if (paths[0] === 'about') {
-	// 	return '';
-	// }
-
 	// blog/[id] 숨기기
 	if (
 		(paths[0] === 'blog' && paths.length > 1) ||

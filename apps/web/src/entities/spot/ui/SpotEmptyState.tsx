@@ -6,15 +6,11 @@ import { MdLocationOff } from 'react-icons/md';
 interface EmptyStateProps {
 	title?: string;
 	description?: string;
-	actionText?: string;
-	actionLink?: string;
 }
 
 export function SpotEmptyState({
 	title = 'There are no places to display',
 	description = 'There are no places to display',
-	actionText = 'Search for a different location',
-	actionLink = '/spots',
 }: EmptyStateProps) {
 	return (
 		<Flex
@@ -22,7 +18,8 @@ export function SpotEmptyState({
 			align='center'
 			justify='center'
 			gap='6'
-			paddingY='16'
+			flex='1'
+			marginY={{ base: '5', tablet: '10', laptop: '20' }}
 		>
 			<Box
 				padding='6'
@@ -42,12 +39,6 @@ export function SpotEmptyState({
 					{description}
 				</Typography.Text>
 			</Flex>
-
-			{/* <Link href={actionLink}> */}
-			{/* <Button variant="primary" size="lg" borderRadius="lg"> */}
-			<Typography.Text fontWeight='medium'>{actionText}</Typography.Text>
-			{/* </Button>
-      </Link> */}
 		</Flex>
 	);
 }

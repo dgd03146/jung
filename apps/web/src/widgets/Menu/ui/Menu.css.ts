@@ -19,7 +19,7 @@ export const stairs = style([
 
 export const stair = style([
 	sprinkles({
-		background: 'primary',
+		background: 'primary60',
 	}),
 	{
 		width: '20vw',

@@ -31,7 +31,7 @@ export type Post = {
 	date: string;
 	tags: string[];
 	title: string;
-	category: string;
+	category_id: string;
 	description: string;
 	content: string;
 	updated_at?: string;

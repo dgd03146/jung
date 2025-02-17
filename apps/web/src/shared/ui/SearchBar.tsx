@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Input } from '@jung/design-system/components';
+import { Box, Button, Flex, Input } from '@jung/design-system/components';
 import { IoCloseOutline, IoSearchOutline } from 'react-icons/io5';
 import { useSearch } from '../model/useSearch';
 import * as styles from './SearchBar.css';
@@ -14,9 +14,15 @@ export function SearchBar({ initialValue = '' }: SearchBarProps) {
 
 	return (
 		<Box className={styles.searchWrapper} boxShadow='primary'>
-			<Box className={styles.iconWrapper}>
+			<Flex
+				align='center'
+				justify='center'
+				color='gray300'
+				width='8'
+				flexShrink={0}
+			>
 				<IoSearchOutline size={18} />
-			</Box>
+			</Flex>
 			<Input
 				type='text'
 				value={value}

@@ -1,9 +1,8 @@
 'use client';
 
+import { AppLogo } from '@/fsd/shared';
 import { Box, Flex } from '@jung/design-system/components';
-import Image from 'next/image';
 import Link from 'next/link';
-import logo from '/public/images/og/default.png';
 import { useScrollDetection } from '../model/useScrollDetection';
 import MenuButton from './MenuButton';
 import * as styles from './Navbar.css';
@@ -31,32 +30,16 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			})}
 		>
 			<Flex
-				justifyContent={isMenuOpen ? 'flex-end' : 'space-between'}
+				justifyContent='space-between'
 				alignItems='center'
 				marginX='auto'
 				maxWidth='11/12'
 				className={styles.navContent}
 			>
-				{!isMenuOpen && (
-					<Link href='/' className={styles.logoWrapper({ isScrolled })}>
-						<Image
-							src={logo}
-							alt='logo'
-							width={80}
-							height={80}
-							quality={100}
-							priority
-						/>
-						{/* <Typography.Heading
-							level={5}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-							className={styles.logo}
-						>
-							JUNG
-						</Typography.Heading> */}
-					</Link>
-				)}
+				<Link href='/' className={styles.logoWrapper}>
+					<AppLogo width={80} height={80} />
+				</Link>
+
 				<Box className={styles.menuButtonWrapper}>
 					<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 				</Box>

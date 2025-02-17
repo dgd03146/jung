@@ -1,3 +1,203 @@
+/* 에디터 컨테이너 */
+.bn-container {
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 0 !important;
+}
+
+/* 에디터 기본 설정 */
 .bn-editor {
-  padding-inline: 0 !important;
+  padding: 0 !important;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol' !important; */
+  font-family: source-serif-pro, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
+  color: rgb(55, 53, 47) !important;
+  line-height: 1.6 !important;
+  font-size: 16px !important;
+}
+
+/* 블록 스타일링 */
+.bn-block-outer {
+}
+
+.bn-block-content {
+  padding: 3px 2px !important;
+  /* min-height: 24px !important; */
+}
+
+.bn-block:hover {
+  border-radius: 3px !important;
+  cursor: text;
+}
+
+/* 텍스트 스타일링 */
+.ProseMirror p {
+  margin: 0 0 !important;
+  padding: 0px 0px !important;
+  line-height: 1.5 !important;
+  font-size: 15px !important;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+  font-weight: 400 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+  color: #242424 !important;
+}
+
+[data-file-block] .bn-file-caption {
+  color: rgba(55, 53, 47, 0.65); /* Notion의 캡션 색상 */
+  font-size: 13px;
+  padding: 6px 2px;
+  line-height: 1.4;
+  font-family:
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Helvetica,
+    'Apple Color Emoji',
+    Arial,
+    sans-serif,
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+}
+
+/* 캡션 placeholder 스타일 */
+[data-file-block] .bn-file-caption[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(55, 53, 47, 0.4);
+  pointer-events: none;
+}
+
+/* 캡션 hover 효과 */
+[data-file-block] .bn-file-caption:hover {
+  background: rgba(55, 53, 47, 0.08);
+  border-radius: 2px;
+}
+
+/* 캡션 focus 효과 */
+[data-file-block] .bn-file-caption:focus {
+  background: transparent;
+  outline: none;
+}
+
+/* 파일 블록 컨텐츠 래퍼 */
+[data-file-block] .bn-file-block-content-wrapper {
+  margin: 4px 0;
+}
+
+/* 헤딩 스타일링 */
+.ProseMirror h1 {
+  font-size: 30px !important; /* 1.875rem */
+  margin: 0px 0 !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+.ProseMirror h2 {
+  font-size: 24px !important; /* 1.5rem */
+  margin: 0px 0 !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+.ProseMirror h3 {
+  font-size: 20px !important; /* 1.25rem */
+  margin: 0px 0 !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+/* 리스트 스타일링 */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em !important;
+  margin: 2px 0 !important;
+  line-height: 1.5 !important;
+}
+
+.ProseMirror li {
+  padding: 3px 0 !important;
+}
+
+.ProseMirror strong {
+  font-weight: 600 !important;
+  color: rgb(55, 53, 47) !important;
+}
+
+.ProseMirror em {
+  font-style: italic !important;
+  color: rgb(55, 53, 47) !important;
+}
+
+/* 링크 스타일링 */
+.ProseMirror a {
+  color: rgb(35, 131, 226) !important;
+  text-decoration: none !important;
+  opacity: 0.7 !important;
+  background: rgba(35, 131, 226, 0.1) !important;
+  padding: 0 2px !important;
+  border-radius: 3px !important;
+}
+
+.ProseMirror a:hover {
+  opacity: 1 !important;
+  background: rgba(35, 131, 226, 0.15) !important;
+}
+
+/* 인용구 스타일링 */
+.ProseMirror blockquote {
+  margin: 0.5em 0 !important;
+  padding-left: 1em !important;
+  border-left: 3px solid rgba(55, 53, 47, 0.2) !important;
+  color: rgba(55, 53, 47, 0.7) !important;
+}
+
+.bn-inline-content code {
+  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+    Courier, monospace;
+  line-height: normal;
+  background: rgba(135, 131, 120, 0.15);
+  color: rgba(51, 126, 169, 1);
+  border-radius: 4px;
+  font-size: 85%;
+  padding: 0.2em 0.4em;
+  fill: rgba(51, 126, 169, 1);
+  isolation: auto;
+}
+
+.bn-block-content[data-content-type='codeBlock'] {
+  flex-grow: 1 !important;
+  text-align: left !important;
+  position: relative !important;
+  min-width: 0px !important;
+  width: 100% !important;
+  background-color: rgb(47, 45, 43) !important;
+  border-radius: 4px !important;
+  margin: 4px 0;
+}
+
+.bn-block-content[data-content-type='codeBlock'] > pre {
+  padding: 34px 22px;
+}
+
+.bn-block-content[data-content-type='codeBlock'] > pre > code {
+  font-size: 13.6px;
+  line-height: 1.5;
+  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+    Courier, monospace;
 }
