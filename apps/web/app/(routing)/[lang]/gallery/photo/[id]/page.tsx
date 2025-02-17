@@ -1,4 +1,5 @@
 import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
@@ -69,10 +70,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `https://your-domain.com/gallery/photo/${params.id}`,
+				canonical: `${siteUrl}/gallery/photo/${params.id}`,
 				languages: {
-					en: `https://your-domain.com/en/gallery/photo/${params.id}`,
-					ko: `https://your-domain.com/ko/gallery/photo/${params.id}`,
+					en: `${siteUrl}/en/gallery/photo/${params.id}`,
+					ko: `${siteUrl}/ko/gallery/photo/${params.id}`,
 				},
 			},
 		};

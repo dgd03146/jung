@@ -1,4 +1,5 @@
 import { COLLECTION_PARAMS } from '@/fsd/entities/photo';
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
@@ -72,10 +73,10 @@ export async function generateMetadata({
 				},
 			},
 			alternates: {
-				canonical: 'https://your-domain.com/gallery/collections',
+				canonical: `${siteUrl}/gallery/collections`,
 				languages: {
-					en: 'https://your-domain.com/en/gallery/collections',
-					ko: 'https://your-domain.com/ko/gallery/collections',
+					en: `${siteUrl}/en/gallery/collections`,
+					ko: `${siteUrl}/ko/gallery/collections`,
 				},
 			},
 		};

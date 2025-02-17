@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { AboutPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -30,12 +31,12 @@ export const metadata: Metadata = {
 		'여행',
 		'frontend developer',
 	],
-	authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+	authors: [{ name: 'JUNG', url: siteUrl }],
 	alternates: {
-		canonical: 'https://your-domain.com/about',
+		canonical: `${siteUrl}/about`,
 		languages: {
-			en: 'https://your-domain.com/en/about',
-			ko: 'https://your-domain.com/ko/about',
+			en: `${siteUrl}/en/about`,
+			ko: `${siteUrl}/ko/about`,
 		},
 	},
 };

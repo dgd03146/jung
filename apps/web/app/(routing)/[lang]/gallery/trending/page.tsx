@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
@@ -19,14 +20,6 @@ export const metadata: Metadata = {
 		type: 'website',
 		siteName: 'JUNG Gallery',
 		locale: 'ko_KR',
-		images: [
-			{
-				url: '/images/og/gallery-trending.jpg',
-				width: 1200,
-				height: 630,
-				alt: 'JUNG Gallery Trending Photos',
-			},
-		],
 	},
 	twitter: {
 		card: 'summary_large_image',
@@ -34,7 +27,6 @@ export const metadata: Metadata = {
 		creator: '@jung',
 		description:
 			'많은 사람들이 좋아하는 인기 여행 사진과 일상 기록들을 만나보세요.',
-		images: ['/images/og/gallery-trending.jpg'],
 	},
 	keywords: [
 		'JUNG',
@@ -57,10 +49,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: 'https://your-domain.com/gallery/trending',
+		canonical: `${siteUrl}/gallery/trending`,
 		languages: {
-			en: 'https://your-domain.com/en/gallery/trending',
-			ko: 'https://your-domain.com/ko/gallery/trending',
+			en: `${siteUrl}/en/gallery/trending`,
+			ko: `${siteUrl}/ko/gallery/trending`,
 		},
 	},
 };

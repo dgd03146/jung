@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
 import { BlogPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 	title: 'Blog',
 
 	keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
-	authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+	authors: [{ name: 'JUNG', url: siteUrl }],
 	robots: {
 		index: true,
 		follow: true,
