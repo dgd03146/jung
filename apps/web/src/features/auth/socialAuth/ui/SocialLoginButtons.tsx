@@ -5,16 +5,16 @@ import { usePathname } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { SiKakaotalk } from 'react-icons/si';
 import { VscGithub } from 'react-icons/vsc';
-import { useAuth } from '../model';
 import type { SocialProvider } from '../model/SocialProvider';
-import * as styles from './SocialLogin.css';
+import { useSocialLogin } from '../model/useSocialLogin';
+import * as styles from './SocialLoginButton.css';
 
 interface SocialLoginProps {
 	onSuccess?: () => void;
 }
 
-export function SocialLogin({ onSuccess }: SocialLoginProps) {
-	const { handleSocialLogin } = useAuth();
+export function SocialLoginButtons({ onSuccess }: SocialLoginProps) {
+	const { handleSocialLogin } = useSocialLogin();
 	const pathname = usePathname();
 	const showToast = useToast();
 

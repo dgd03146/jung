@@ -5,7 +5,7 @@ interface LoginOptions {
 	redirectTo?: string;
 }
 
-export const useAuth = () => {
+export const useSocialLogin = () => {
 	const supabase = createClient();
 
 	const handleSocialLogin = async (

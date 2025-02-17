@@ -49,7 +49,7 @@ const GuestbookPage = () => {
 				marginY={{ base: '6', laptop: '10' }}
 			>
 				<Typography.Heading level={4} color='primary'>
-					Leave your message 💙
+					Leave Your Message 💙
 				</Typography.Heading>
 				<motion.div variants={itemAnimation}>
 					<CreateMessageForm />
