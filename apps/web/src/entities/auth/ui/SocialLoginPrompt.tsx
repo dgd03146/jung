@@ -4,21 +4,18 @@ import type { ReactNode } from 'react';
 
 export const SocialLoginPrompt = ({ actions }: { actions: ReactNode }) => {
 	return (
-		<Stack align='center' gap={{ mobile: '6', tv: '8' }}>
+		<Stack align='center' gap={{ base: '4', laptop: '6' }}>
 			<Stack align='center' gap='2'>
 				<AppLogo />
-				<Typography.Text level={2} color='black100' fontWeight='medium'>
-					Sign in with your social account
-				</Typography.Text>
+				{actions && actions}
 			</Stack>
-			{actions && actions}
-			<Box textAlign='center'>
-				<Typography.SubText level={2} color='black100'>
-					Your email will not be displayed.
-				</Typography.SubText>
-				<Typography.SubText level={2} color='black100'>
-					Only nickname and profile picture will be visible.
-				</Typography.SubText>
+			<Box display={{ base: 'none', tablet: 'block' }}>
+				<Typography.FootNote as='p' level={1}>
+					🔵 Google sign-in shows your email (before '@') & profile picture
+				</Typography.FootNote>
+				<Typography.FootNote as='p' level={1}>
+					🔵 GitHub and Kakao show your nickname & profile picture
+				</Typography.FootNote>
 			</Box>
 		</Stack>
 	);
