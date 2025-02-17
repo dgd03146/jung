@@ -1,6 +1,6 @@
 export { AboutPage } from './about/ui';
-export { HomePage } from './home/ui';
-export { BlogPage } from './blog/ui';
-export { PostDetailPage } from './blog/ui';
+export { BlogPage, PostDetailPage } from './blog/ui';
 export { GuestbookPage } from './guestbook/ui';
-export { SpotsPage, SpotDetailPage } from './spots/ui';
+export { HomePage } from './home/ui';
+export { LoginPage } from './login/ui';
+export { SpotDetailPage, SpotsPage } from './spots/ui';
