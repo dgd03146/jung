@@ -7,6 +7,7 @@ import {
 	GUESTBOOK_EMOJIS,
 	MessagePrompt,
 } from '@/fsd/entities/message';
+import { SocialLoginButtons } from '@/fsd/features/auth';
 import { useCreateMessage } from '../model/useCreateMessage';
 import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
@@ -24,7 +25,7 @@ export const CreateMessageForm = () => {
 	} = useCreateMessage();
 
 	if (!user) {
-		return <MessagePrompt />;
+		return <MessagePrompt actions={<SocialLoginButtons />} />;
 	}
 
 	return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { SocialLogin } from '@/fsd/features/auth';
+import { SocialLoginButtons } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
 import {
 	Box,
@@ -116,7 +116,7 @@ export const CreateCommentForm = ({
 						disabled
 						rows={4}
 					/>
-					<SocialLogin />
+					<SocialLoginButtons />
 				</>
 			)}
 		</Box>
