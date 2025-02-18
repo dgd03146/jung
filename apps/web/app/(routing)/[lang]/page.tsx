@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { HomePage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
 		'developer blog',
 		'coding life',
 	],
-	authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+	authors: [{ name: 'JUNG', url: siteUrl }],
 	robots: {
 		index: true,
 		follow: true,
@@ -48,14 +49,14 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: 'https://your-domain.com',
+		canonical: siteUrl,
 		languages: {
-			en: 'https://your-domain.com/en',
-			ko: 'https://your-domain.com/ko',
+			en: `${siteUrl}/en`,
+			ko: `${siteUrl}/ko`,
 		},
 	},
 	verification: {
-		google: 'your-google-verification-code',
+		google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE,
 	},
 };
 

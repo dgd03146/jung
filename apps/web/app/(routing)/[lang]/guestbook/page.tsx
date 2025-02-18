@@ -1,4 +1,5 @@
 import { MESSAGE_LIMIT } from '@/fsd/entities/message';
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -33,10 +34,10 @@ export const metadata: Metadata = {
 		'community',
 	],
 	alternates: {
-		canonical: 'https://your-domain.com/guestbook',
+		canonical: `${siteUrl}/guestbook`,
 		languages: {
-			en: 'https://your-domain.com/en/guestbook',
-			ko: 'https://your-domain.com/ko/guestbook',
+			en: `${siteUrl}/en/guestbook`,
+			ko: `${siteUrl}/ko/guestbook`,
 		},
 	},
 };

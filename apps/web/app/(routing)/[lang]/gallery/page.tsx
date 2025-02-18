@@ -1,4 +1,5 @@
 import { PHOTO_PARAMS } from '@/fsd/entities/photo';
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
@@ -46,10 +47,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: 'https://your-domain.com/gallery',
+		canonical: `${siteUrl}/gallery`,
 		languages: {
-			en: 'https://your-domain.com/en/gallery',
-			ko: 'https://your-domain.com/ko/gallery',
+			en: `${siteUrl}/en/gallery`,
+			ko: `${siteUrl}/ko/gallery`,
 		},
 	},
 };

@@ -1,4 +1,5 @@
 import { SPOT_PARAMS } from '@/fsd/entities/spot';
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
 import { SpotsPage } from '@/fsd/views';
 import type { SpotSort } from '@jung/shared/types';
@@ -39,10 +40,10 @@ export const metadata: Metadata = {
 		'favorite places',
 	],
 	alternates: {
-		canonical: 'https://your-domain.com/spots',
+		canonical: `${siteUrl}/spots`,
 		languages: {
-			en: 'https://your-domain.com/en/spots',
-			ko: 'https://your-domain.com/ko/spots',
+			en: `${siteUrl}/en/spots`,
+			ko: `${siteUrl}/ko/spots`,
 		},
 	},
 	robots: {

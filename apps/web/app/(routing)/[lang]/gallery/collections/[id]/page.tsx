@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
@@ -43,17 +44,6 @@ export async function generateMetadata({
 				authors: ['JUNG'],
 				siteName: 'JUNG Gallery',
 				locale: 'ko_KR',
-				images: [
-					{
-						url:
-							collection.collection.cover_image ||
-							collection.photos?.[0]?.imageUrl ||
-							'/images/og/collection-default.jpg',
-						width: 1200,
-						height: 630,
-						alt: `${collection.collection.title} Collection`,
-					},
-				],
 			},
 			twitter: {
 				card: 'summary_large_image',
@@ -62,11 +52,6 @@ export async function generateMetadata({
 				description:
 					collection.collection.description ||
 					`${locationInfo}${photoCount}장의 사진으로 구성된 컬렉션입니다.`,
-				images: [
-					collection.collection.cover_image ||
-						collection.photos?.[0]?.imageUrl ||
-						'/images/og/collection-default.jpg',
-				],
 			},
 			keywords: [
 				'JUNG',
@@ -78,10 +63,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `https://your-domain.com/gallery/collections/${params.id}`,
+				canonical: `${siteUrl}/gallery/collections/${params.id}`,
 				languages: {
-					en: `https://your-domain.com/en/gallery/collections/${params.id}`,
-					ko: `https://your-domain.com/ko/gallery/collections/${params.id}`,
+					en: `${siteUrl}/en/gallery/collections/${params.id}`,
+					ko: `${siteUrl}/ko/gallery/collections/${params.id}`,
 				},
 			},
 		};
