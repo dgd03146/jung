@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { createClientForServer } from '@/fsd/shared/index.server';
 import { LoginPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -23,10 +24,10 @@ export const metadata: Metadata = {
 		description: 'JUNG의 웹사이트에 로그인하여 더 많은 기능을 이용해보세요.',
 	},
 	alternates: {
-		canonical: 'https://your-domain.com/login',
+		canonical: `${siteUrl}/login`,
 		languages: {
-			en: 'https://your-domain.com/en/login',
-			ko: 'https://your-domain.com/ko/login',
+			en: `${siteUrl}/en/login`,
+			ko: `${siteUrl}/ko/login`,
 		},
 	},
 	verification: {

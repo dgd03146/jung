@@ -1,3 +1,4 @@
+import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { SpotDetailPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -61,10 +62,10 @@ export async function generateMetadata({
 				...(spot.tags || []),
 			].filter(Boolean),
 			alternates: {
-				canonical: `https://your-domain.com/spots/${params.id}`,
+				canonical: `${siteUrl}/spots/${params.id}`,
 				languages: {
-					en: `https://your-domain.com/en/spots/${params.id}`,
-					ko: `https://your-domain.com/ko/spots/${params.id}`,
+					en: `${siteUrl}/en/spots/${params.id}`,
+					ko: `${siteUrl}/ko/spots/${params.id}`,
 				},
 			},
 			authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
