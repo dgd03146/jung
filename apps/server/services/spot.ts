@@ -34,7 +34,7 @@ export const spotsService = {
 				const { data: categoryIds, error: categoryError } = await supabase
 					.from('categories')
 					.select('id')
-					.eq('name', cat)
+					.ilike('name', cat)
 					.eq('type', 'spots');
 
 				if (categoryError) {
