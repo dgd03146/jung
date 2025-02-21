@@ -48,13 +48,21 @@ function SpotsContent() {
 		hasNextPage,
 	});
 
+	console.log(
+		hasNextPage,
+		isFetchingNextPage,
+		'hasNextPage, isFetchingNextPage',
+	);
+
 	return (
 		<Stack flex='1' marginY='4' width='full'>
 			{isListView ? (
 				<Box>
 					<SpotListWithLikes spots={spots} />
 					<Flex justify='center' align='center' minHeight='10' ref={ref}>
-						{isFetchingNextPage && <LoadingSpinner size='small' />}
+						{isFetchingNextPage && hasNextPage && (
+							<LoadingSpinner size='small' />
+						)}
 					</Flex>
 				</Box>
 			) : (
