@@ -83,11 +83,12 @@ export const spotsService = {
 			if (!data || data.length === 0) {
 				return {
 					items: [],
-					nextCursor: null,
+					nextCursor: undefined,
 				};
 			}
 
-			const nextCursor = data[data.length - 1]?.id ?? null;
+			const nextCursor =
+				data.length === limit ? data[data.length - 1]?.id : undefined;
 
 			return {
 				items: data.map((spot) => {
