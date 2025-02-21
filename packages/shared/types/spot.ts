@@ -54,3 +54,10 @@ export interface SpotImageUpload extends SpotPhoto {
 }
 
 export type SpotSort = 'latest' | 'oldest' | 'popular';
+
+export type SpotWithCategory = Spot & {
+	categories: {
+		name: string;
+	};
+	category_id: string;
+};

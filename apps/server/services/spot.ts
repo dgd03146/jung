@@ -2,16 +2,10 @@ import type {
 	Spot,
 	SpotQueryParams,
 	SpotQueryResult,
+	SpotWithCategory,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabase';
-
-type SpotWithCategory = Spot & {
-	categories: {
-		name: string;
-	};
-	category_id: string;
-};
 
 export const spotsService = {
 	async findMany({
@@ -118,9 +112,12 @@ export const spotsService = {
 	async findById(id: string): Promise<Spot> {
 		const { data, error } = await supabase
 			.from('spots')
-			.select('*')
+			.select(`
+				*,
+				categories!inner(name)->name as category
+			`)
 			.eq('id', id)
-			.single<Spot>();
+			.single<SpotWithCategory>();
 
 		if (error) {
 			throw new TRPCError({
@@ -137,7 +134,19 @@ export const spotsService = {
 			});
 		}
 
-		return data;
+		try {
+			const { categories, category_id, ...rest } = data;
+			return {
+				...rest,
+				category: categories.name,
+			};
+		} catch (e) {
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'Invalid spot data format',
+				cause: e,
+			});
+		}
 	},
 
 	async toggleLike({
