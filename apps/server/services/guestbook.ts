@@ -3,6 +3,7 @@ import type {
 	GuestbookQueryResult,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { getUserDisplayName } from '../lib/getUserDisplayName';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -115,7 +116,7 @@ export const guestbookService = {
 
 		const user = await this.fetchUserInfo(userId);
 
-		const userName = user.user_metadata?.full_name || user.email;
+		const userName = getUserDisplayName(user);
 		const userAvatar =
 			user.user_metadata?.avatar_url ||
 			`https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
