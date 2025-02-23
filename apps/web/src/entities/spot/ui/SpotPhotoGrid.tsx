@@ -1,8 +1,8 @@
 import { BlurImage } from '@/fsd/shared/ui';
 import { Box } from '@jung/design-system/components';
 import type { SpotPhoto } from '@jung/shared/types';
-import * as styles from './SpotPhotoGrid.css';
 import type { GridVariant } from './SpotPhotoGrid.css';
+import * as styles from './SpotPhotoGrid.css';
 
 interface SpotPhotoGridProps {
 	photos: SpotPhoto[];
@@ -19,8 +19,6 @@ export function SpotPhotoGrid({ photos }: SpotPhotoGridProps) {
 	const count = photos.length > 4 ? 4 : photos.length;
 	const variant = GRID_VARIANTS[count];
 
-	console.log(photos, 'photos, spotphotogrid is rendered');
-
 	return (
 		<Box
 			className={`${styles.imageGrid} ${styles.gridVariants({
@@ -29,7 +27,7 @@ export function SpotPhotoGrid({ photos }: SpotPhotoGridProps) {
 		>
 			{photos.slice(0, 4).map((photo, index) => (
 				<Box
-					key={photo.id}
+					key={index}
 					className={`${styles.imageWrapper} ${
 						index === 0 ? styles.mainImage : ''
 					}`}

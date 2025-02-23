@@ -38,7 +38,7 @@ export const SpotQueryParamsSchema = z.object({
 
 export const SpotQueryResultSchema = z.object({
 	items: z.array(SpotSchema),
-	nextCursor: z.string().nullable(),
+	nextCursor: z.string().nullable().optional(),
 });
 
 export type SpotPhoto = z.infer<typeof SpotPhotoSchema>;
@@ -54,3 +54,10 @@ export interface SpotImageUpload extends SpotPhoto {
 }
 
 export type SpotSort = 'latest' | 'oldest' | 'popular';
+
+export type SpotWithCategory = Spot & {
+	categories: {
+		name: string;
+	};
+	category_id: string;
+};

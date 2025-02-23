@@ -19,7 +19,7 @@ export function useSpotsQuery(params: QueryParams) {
 		},
 		{
 			getNextPageParam: (lastPage) => {
-				if (lastPage.nextCursor === null) {
+				if (!lastPage.items.length || lastPage.items.length < 12) {
 					return undefined;
 				}
 				return lastPage.nextCursor;

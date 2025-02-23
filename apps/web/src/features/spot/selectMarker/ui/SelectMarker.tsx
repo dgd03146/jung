@@ -69,13 +69,13 @@ export const SelectMarker = ({ spot, clusterer }: SelectMarkerProps) => {
 						)}
 						<div
 							className={styles.customMarker({
-								category: spot.category.toLowerCase() as SpotCategory,
+								category: spot.category?.toLowerCase() as SpotCategory,
 								selected: isSelected,
 							})}
 							onClick={handleClick}
 						>
 							<CategoryIcon
-								category={spot.category.toLowerCase() as SpotCategory}
+								category={spot.category?.toLowerCase() as SpotCategory}
 							/>
 						</div>
 					</div>

@@ -5,6 +5,7 @@ import type {
 	CommentUser,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { getUserDisplayName } from '../lib/getUserDisplayName';
 import { supabase } from '../lib/supabase';
 
 import type { PageParams, User } from '@supabase/supabase-js';
@@ -126,7 +127,7 @@ export const CommentService = {
 				acc[user.id] = {
 					id: user.id,
 					email: user.email || '',
-					full_name: user.user_metadata?.full_name || 'Anonymous',
+					full_name: getUserDisplayName(user) || 'Anonymous',
 					avatar_url: user.user_metadata?.avatar_url || null,
 				};
 				return acc;
@@ -205,13 +206,15 @@ export const commentService = {
 			});
 		}
 
+		const userName = getUserDisplayName(userData.user);
+
 		// 댓글과 사용자 정보 결합
 		const commentWithUser: Comment = {
 			...commentData,
 			user: {
 				id: userData.user.id,
 				email: userData.user.email || '',
-				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				full_name: userName || 'Anonymous',
 				avatar_url: userData.user.user_metadata?.avatar_url || null,
 			},
 		};
@@ -246,12 +249,14 @@ export const commentService = {
 			});
 		}
 
+		const userName = getUserDisplayName(userData.user);
+
 		const commentWithUser: Comment = {
 			...commentData,
 			user: {
 				id: userData.user.id,
 				email: userData.user.email || '',
-				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				full_name: userName || 'Anonymous',
 				avatar_url: userData.user.user_metadata?.avatar_url || null,
 			},
 		};
@@ -341,12 +346,14 @@ export const commentService = {
 			});
 		}
 
+		const userName = getUserDisplayName(userData.user);
+
 		const commentWithUser: Comment = {
 			...commentData,
 			user: {
 				id: userData.user.id,
 				email: userData.user.email || '',
-				full_name: userData.user.user_metadata?.full_name || 'Anonymous',
+				full_name: userName || 'Anonymous',
 				avatar_url: userData.user.user_metadata?.avatar_url || null,
 			},
 		};
