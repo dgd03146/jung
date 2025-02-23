@@ -1,37 +1,38 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-export const useScrollDetection = (threshold: number) => {
+import { useEffect, useState } from 'react';
+
+export const useScrollDetection = ({
+	threshold,
+	hysteresis = 20,
+}: { threshold: number; hysteresis?: number }) => {
 	const [isScrolled, setIsScrolled] = useState(false);
-	const lastScrollY = useRef(0);
 	const ticking = useRef(false);
 
-	const handleScroll = useCallback(() => {
-		const currentScrollY = window.scrollY;
-
-		if (!ticking.current) {
-			window.requestAnimationFrame(() => {
-				if (currentScrollY > threshold && !isScrolled) {
-					setIsScrolled(true);
-				} else if (currentScrollY <= threshold && isScrolled) {
-					setIsScrolled(false);
-				}
-
-				lastScrollY.current = currentScrollY;
-				ticking.current = false;
-			});
-
-			ticking.current = true;
-		}
-	}, [isScrolled, threshold]);
-
 	useEffect(() => {
-		handleScroll();
+		const handleScroll = () => {
+			if (!ticking.current) {
+				ticking.current = true;
+				requestAnimationFrame(() => {
+					const currentScrollY = window.scrollY;
+
+					if (!isScrolled && currentScrollY > threshold + hysteresis) {
+						setIsScrolled(true);
+					} else if (isScrolled && currentScrollY < threshold - hysteresis) {
+						setIsScrolled(false);
+					}
+
+					ticking.current = false;
+				});
+			}
+		};
+
 		window.addEventListener('scroll', handleScroll, { passive: true });
 
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 		};
-	}, [handleScroll]);
+	}, [threshold, hysteresis, isScrolled]);
 
 	return isScrolled;
 };
