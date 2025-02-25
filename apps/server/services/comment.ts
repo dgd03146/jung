@@ -21,7 +21,7 @@ export const CommentService = {
 		order = 'desc',
 	}: CommentQueryParams): Promise<CommentQueryResult> {
 		// 댓글 정보 가져오기
-		const comments = await this.fetchComments(postId, limit, cursor, order);
+		const comments = await this.fetchComments(postId, limit + 1, cursor, order);
 
 		// 사용자 ID 목록 추출 (댓글 작성자 + 답글 작성자)
 		const userIds = this.extractUserIds(comments);
@@ -36,11 +36,14 @@ export const CommentService = {
 		const formattedComments = this.formatComments(comments, userMap);
 
 		const hasNextPage = comments.length > limit;
+
 		const itemsToReturn = comments.slice(0, limit);
 
 		return {
-			items: formattedComments,
-			nextCursor: itemsToReturn[itemsToReturn.length - 1]?.created_at ?? null,
+			items: formattedComments.slice(0, limit),
+			nextCursor: hasNextPage
+				? itemsToReturn[itemsToReturn.length - 1]?.created_at
+				: undefined,
 			hasNextPage,
 		};
 	},
@@ -65,7 +68,7 @@ export const CommentService = {
 			query = query.lt('created_at', cursor);
 		}
 
-		query = query.limit(limit);
+		query = query.limit(limit + 1);
 
 		const { data: comments, error } = await query;
 
