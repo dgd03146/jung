@@ -1,8 +1,6 @@
 'use client';
 
-import { trpc } from '@/fsd/shared';
-import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { createCommentAction } from '../api/createCommentAction';
@@ -22,8 +20,6 @@ export const useCreateComment = () => {
 	const submitComment = async (postId: string, parentId?: string) => {
 		if (!user || !newComment.trim()) return false;
 
-		console.log('parentId', parentId);
-
 		const isParentTemporary = parentId?.startsWith('temp-');
 		if (isParentTemporary) {
 			showToast(
@@ -33,6 +29,8 @@ export const useCreateComment = () => {
 			return false;
 		}
 
+		const queryKey = getCommentsQueryKey(postId);
+
 		const optimisticComment = createOptimisticComment(
 			newComment,
 			user,
@@ -40,16 +38,12 @@ export const useCreateComment = () => {
 			parentId,
 		);
 
-		// Optimistic update
-		utils.comment.getCommentsByPostId.setInfiniteData(
-			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-			(oldData) =>
-				updateOptimisticComment(oldData, optimisticComment, parentId),
+		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			updateOptimisticComment(oldData, optimisticComment, parentId),
 		);
 
 		setNewComment('');
 
-		// Server action
 		try {
 			const serverComment = await createCommentAction(
 				postId,
@@ -58,31 +52,15 @@ export const useCreateComment = () => {
 				parentId,
 			);
 
-			// Replace optimistic with real data
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-				(oldData) =>
-					replaceOptimisticWithReal(
-						oldData,
-						optimisticComment.id,
-						serverComment,
-					),
+			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+				replaceOptimisticWithReal(oldData, optimisticComment.id, serverComment),
 			);
-
-			// Invalidate the query to reflect the new comment
-			await utils.comment.getCommentsByPostId.invalidate({
-				postId,
-				order: COMMENTS_DEFAULT_ORDER,
-				limit: COMMENTS_LIMIT,
-			});
 
 			showToast('Comment has been created', 'success');
 			return serverComment;
 		} catch (error) {
-			// Rollback logic
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-				(oldData) => rollbackOptimisticUpdate(oldData, optimisticComment.id),
+			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+				rollbackOptimisticUpdate(oldData, optimisticComment.id),
 			);
 			showToast('Failed to create comment', 'error');
 			return false;

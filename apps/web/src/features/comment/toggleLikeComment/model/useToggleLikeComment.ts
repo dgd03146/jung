@@ -1,9 +1,4 @@
-import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
-	trpc,
-	useSupabaseAuth,
-} from '@/fsd/shared';
+import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
@@ -28,11 +23,10 @@ export const useToggleLikeComment = () => {
 			return;
 		}
 
-		const existingData = utils.comment.getCommentsByPostId.getInfiniteData({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		});
+		const queryKey = getCommentsQueryKey(postId);
+
+		const existingData =
+			utils.comment.getCommentsByPostId.getInfiniteData(queryKey);
 
 		if (!existingData) {
 			showToast('Comment data not found', 'error');
@@ -62,9 +56,8 @@ export const useToggleLikeComment = () => {
 			$optimistic: true,
 		};
 
-		utils.comment.getCommentsByPostId.setInfiniteData(
-			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-			(oldData) => replaceOptimisticLike(oldData, commentId, tempComment),
+		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			replaceOptimisticLike(oldData, commentId, tempComment),
 		);
 
 		try {
@@ -74,13 +67,12 @@ export const useToggleLikeComment = () => {
 				user.id,
 			);
 
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-				(oldData) => replaceOptimisticLike(oldData, commentId, serverComment),
+			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+				replaceOptimisticLike(oldData, commentId, serverComment),
 			);
 		} catch (error) {
 			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
+				queryKey,
 				() => originalData,
 			);
 
