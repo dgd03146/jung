@@ -14,21 +14,26 @@ export const createOptimisticComment = (
 	user: User,
 	postId: string,
 	parentId?: string,
-): Comment => ({
-	id: `temp-${postId}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-	content,
-	created_at: new Date().toISOString(),
-	updated_at: new Date().toISOString(),
-	user: {
-		id: user.id,
-		full_name: getUserDisplayName(user),
-		avatar_url: user.user_metadata.avatar_url,
-		email: user.email || '',
-	},
-	likes: 0,
-	liked_by: [],
-	replies: [],
-	post_id: postId,
-	user_id: user.id,
-	parent_id: parentId || null,
-});
+): Comment => {
+	const slightlyInPast = new Date(Date.now() - 1000);
+	return {
+		id: `temp-${postId}-${Date.now()}-${Math.random()
+			.toString(36)
+			.slice(2, 7)}`,
+		content,
+		created_at: slightlyInPast.toISOString(),
+		updated_at: slightlyInPast.toISOString(),
+		user: {
+			id: user.id,
+			full_name: getUserDisplayName(user),
+			avatar_url: user.user_metadata.avatar_url,
+			email: user.email || '',
+		},
+		likes: 0,
+		liked_by: [],
+		replies: [],
+		post_id: postId,
+		user_id: user.id,
+		parent_id: parentId || null,
+	};
+};
