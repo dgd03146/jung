@@ -1,6 +1,9 @@
-import { trpc } from '@/fsd/shared';
-import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
-import { useSupabaseAuth } from '@/fsd/shared';
+import {
+	COMMENTS_DEFAULT_ORDER,
+	COMMENTS_LIMIT,
+	trpc,
+	useSupabaseAuth,
+} from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
@@ -36,6 +39,8 @@ export const useToggleLikeComment = () => {
 			return;
 		}
 
+		const originalData = structuredClone(existingData);
+
 		const { comment, isLiked } = findCommentAndCheckLike(
 			existingData,
 			commentId,
@@ -57,7 +62,6 @@ export const useToggleLikeComment = () => {
 			$optimistic: true,
 		};
 
-		// Optimistic update
 		utils.comment.getCommentsByPostId.setInfiniteData(
 			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 			(oldData) => replaceOptimisticLike(oldData, commentId, tempComment),
@@ -70,14 +74,16 @@ export const useToggleLikeComment = () => {
 				user.id,
 			);
 
-			// Replace optimistic like with server comment
 			utils.comment.getCommentsByPostId.setInfiniteData(
 				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 				(oldData) => replaceOptimisticLike(oldData, commentId, serverComment),
 			);
 		} catch (error) {
-			// Rollback on error
-			await utils.comment.getCommentsByPostId.invalidate({ postId });
+			utils.comment.getCommentsByPostId.setInfiniteData(
+				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
+				() => originalData,
+			);
+
 			handleError(error);
 		}
 	};
