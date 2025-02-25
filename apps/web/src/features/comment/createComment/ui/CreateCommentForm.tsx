@@ -39,8 +39,8 @@ export const CreateCommentForm = ({
 			return;
 		}
 
-		await submitComment(targetId, parentId);
 		onCancel?.();
+		await submitComment(targetId, parentId);
 	};
 
 	return (
