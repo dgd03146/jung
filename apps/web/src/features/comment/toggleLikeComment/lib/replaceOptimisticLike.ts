@@ -1,3 +1,6 @@
+import type { CommentData } from '@/fsd/shared';
+import type { Comment } from '@jung/shared/types';
+
 export const replaceOptimisticLike = (
 	oldData: CommentData | undefined,
 	commentId: string,
@@ -22,7 +25,6 @@ export const replaceOptimisticLike = (
 					if (item.id === commentId) {
 						return {
 							...serverComment,
-
 							replies: serverComment.replies ?? item.replies,
 						};
 					}
