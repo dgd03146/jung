@@ -1,7 +1,7 @@
 'use client';
 
 import { SocialLoginButtons } from '@/fsd/features/auth';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { getUserDisplayName, useSupabaseAuth } from '@/fsd/shared';
 import {
 	Box,
 	Button,
@@ -14,6 +14,7 @@ import {
 
 import { useCreateComment } from '../model/useCreateComment';
 import * as styles from './CreateCommentForm.css';
+
 
 interface CreateCommentFormProps {
 	targetId: string;
@@ -59,11 +60,11 @@ export const CreateCommentForm = ({
 								alt='User Avatar'
 								className={styles.userAvatar}
 							/>
-							<Typography.SubText level={2}>
-								{user?.user_metadata?.full_name ||
-									user?.email?.split('@')[0] ||
-									'User'}
-							</Typography.SubText>
+							{user && (
+								<Typography.SubText level={2}>
+									{getUserDisplayName(user)}
+								</Typography.SubText>
+							)}
 						</Stack>
 					)}
 					<Box flex='1'>
