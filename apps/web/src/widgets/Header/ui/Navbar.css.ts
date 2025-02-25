@@ -1,5 +1,4 @@
-import { style } from '@vanilla-extract/css';
-import { keyframes } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 const fadeIn = keyframes({

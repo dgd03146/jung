@@ -15,7 +15,7 @@ type Props = {
 const SCROLL_THRESHOLD = 50;
 
 const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
-	const isScrolled = useScrollDetection(SCROLL_THRESHOLD);
+	const isScrolled = useScrollDetection({ threshold: SCROLL_THRESHOLD });
 
 	return (
 		<Box
