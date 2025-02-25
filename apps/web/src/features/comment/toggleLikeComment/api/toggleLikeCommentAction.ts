@@ -1,7 +1,6 @@
 'use server';
 
 import { trpc } from '@/fsd/shared/api/trpc/server';
-import { revalidatePath } from 'next/cache';
 
 export async function toggleLikeCommentAction(
 	commentId: string,
@@ -13,6 +12,5 @@ export async function toggleLikeCommentAction(
 		userId: userId,
 	});
 
-	revalidatePath(`/blog/${postId}`);
 	return updatedComment;
 }

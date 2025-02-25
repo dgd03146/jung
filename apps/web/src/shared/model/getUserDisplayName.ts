@@ -12,6 +12,6 @@ export const getUserDisplayName = (user: User): string => {
 		case 'kakao':
 			return metadata.nickname || metadata.name || 'Kakao User';
 		default:
-			return metadata.name || 'User';
+			return metadata.name || 'Anonymous';
 	}
 };

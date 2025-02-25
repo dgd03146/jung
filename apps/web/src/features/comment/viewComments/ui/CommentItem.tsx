@@ -11,6 +11,9 @@ import { CreateCommentForm } from '../../createComment/ui/CreateCommentForm';
 import { DeleteCommentButton } from '../../deleteComment';
 import { EditCommentForm } from '../../editComment/ui/EditCommentForm';
 import { ToggleLikeCommentButton } from '../../toggleLikeComment';
+import { COMMENT_MODES } from '../config/constants';
+
+import type { CommentMode } from '../model/types';
 import * as styles from './CommentItem.css';
 
 interface CommentItemProps {
@@ -25,23 +28,33 @@ export const CommentItem = ({
 	isNested = false,
 }: CommentItemProps) => {
 	const { user: currentUser } = useSupabaseAuth();
-	const [isReplying, setIsReplying] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
+	const [commentMode, setCommentMode] = useState<CommentMode>(
+		COMMENT_MODES.DEFAULT,
+	);
 	const isCommentOwner = currentUser?.id === comment.user_id;
 
 	const isLiked = currentUser
 		? comment.liked_by.includes(currentUser.id)
 		: false;
 
-	const handleIsEditing = () => {
-		setIsEditing(!isEditing);
-	};
-
 	const commentUpdatedAt = comment.updated_at || comment.created_at;
 	const avatarUrl = comment.user.avatar_url || '/default-avatar.png';
 	const userName = comment.user.full_name;
 
 	const isReply = !isNested && currentUser;
+
+	const isEditFormVisible = commentMode === COMMENT_MODES.EDITING;
+	const canShowReplyButton = isReply && commentMode === COMMENT_MODES.DEFAULT;
+	const canShowEditControls =
+		isCommentOwner && commentMode === COMMENT_MODES.DEFAULT;
+	const isReplyFormVisible = commentMode === COMMENT_MODES.REPLYING;
+	const hasReplies = comment.replies && comment.replies.length > 0;
+
+	const toggleMode = (mode: CommentMode) => {
+		setCommentMode((prevMode) =>
+			prevMode === mode ? COMMENT_MODES.DEFAULT : mode,
+		);
+	};
 
 	return (
 		<Box
@@ -54,12 +67,12 @@ export const CommentItem = ({
 				userName={userName}
 				createdAt={commentUpdatedAt}
 			/>
-			{isEditing ? (
+			{isEditFormVisible ? (
 				<EditCommentForm
 					commentId={comment.id}
 					initialContent={comment.content}
 					targetId={targetId}
-					onSuccess={handleIsEditing}
+					onSuccess={() => setCommentMode(COMMENT_MODES.DEFAULT)}
 				/>
 			) : (
 				<Typography.SubText className={styles.commentContent}>
@@ -74,20 +87,24 @@ export const CommentItem = ({
 						isLiked={isLiked}
 						likesCount={comment.likes}
 					/>
-					{isReply && (
+					{canShowReplyButton && (
 						<Button
 							variant='ghost'
 							fontSize='xxs'
-							onClick={() => setIsReplying(!isReplying)}
+							onClick={() => toggleMode(COMMENT_MODES.REPLYING)}
 						>
 							<FaRegComment size={12} style={{ marginRight: '4px' }} />
 							Reply
 						</Button>
 					)}
 				</Flex>
-				{isCommentOwner && (
+				{canShowEditControls && (
 					<Flex>
-						<Button variant='ghost' fontSize='xxs' onClick={handleIsEditing}>
+						<Button
+							variant='ghost'
+							fontSize='xxs'
+							onClick={() => toggleMode(COMMENT_MODES.EDITING)}
+						>
 							<FaEdit size={12} style={{ marginRight: '4px' }} />
 							Edit
 						</Button>
@@ -95,16 +112,17 @@ export const CommentItem = ({
 					</Flex>
 				)}
 			</Flex>
-			{isReplying && (
+			{isReplyFormVisible && (
 				<Box>
 					<CreateCommentForm
 						targetId={targetId}
 						parentId={comment.id}
 						isReply={true}
+						onCancel={() => setCommentMode(COMMENT_MODES.DEFAULT)}
 					/>
 				</Box>
 			)}
-			{comment.replies && comment.replies.length > 0 && (
+			{hasReplies && (
 				<Box className={styles.replyContainer}>
 					{comment.replies.map((reply) => (
 						<CommentItem

@@ -1,7 +1,7 @@
 'use client';
 
 import { SocialLoginButtons } from '@/fsd/features/auth';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { getUserDisplayName, useSupabaseAuth } from '@/fsd/shared';
 import {
 	Box,
 	Button,
@@ -31,6 +31,7 @@ export const CreateCommentForm = ({
 	const showToast = useToast();
 	const { session, user, signOut } = useSupabaseAuth();
 	const { newComment, setNewComment, submitComment } = useCreateComment();
+	const userAvatar = user?.user_metadata?.avatar_url || '/default-avatar.png';
 
 	const handleSubmit = async () => {
 		if (!newComment || newComment.trim() === '') {
@@ -38,8 +39,8 @@ export const CreateCommentForm = ({
 			return;
 		}
 
-		await submitComment(targetId, parentId);
 		onCancel?.();
+		await submitComment(targetId, parentId);
 	};
 
 	return (
@@ -49,20 +50,18 @@ export const CreateCommentForm = ({
 			}
 			marginBottom='4'
 		>
-			{session ? (
+			{session && user ? (
 				<Flex gap='4' align='flex-start'>
 					{!isReply && (
 						<Stack align='center'>
 							<Box
 								as='img'
-								src={user?.user_metadata?.avatar_url || '/default-avatar.png'}
+								src={userAvatar}
 								alt='User Avatar'
 								className={styles.userAvatar}
 							/>
 							<Typography.SubText level={2}>
-								{user?.user_metadata?.full_name ||
-									user?.email?.split('@')[0] ||
-									'User'}
+								{getUserDisplayName(user)}
 							</Typography.SubText>
 						</Stack>
 					)}

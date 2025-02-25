@@ -1,7 +1,6 @@
 'use server';
 
 import { trpc } from '@/fsd/shared/api/trpc/server';
-import { revalidatePath } from 'next/cache';
 
 export async function createCommentAction(
 	postId: string,
@@ -16,6 +15,5 @@ export async function createCommentAction(
 		parentId,
 	});
 
-	revalidatePath(`/blog/${postId}`);
 	return newComment;
 }

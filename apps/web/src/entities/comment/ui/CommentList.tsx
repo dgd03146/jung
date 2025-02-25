@@ -10,14 +10,20 @@ interface CommentListProps {
 export const CommentList = ({ comments, renderItem }: CommentListProps) => {
 	return (
 		<>
-			{comments.map((comment) => (
-				<ErrorBoundary
-					key={comment.id}
-					fallback={(error) => <CommentError error={error} />}
-				>
-					{renderItem(comment)}
-				</ErrorBoundary>
-			))}
+			{comments.map((comment, index) => {
+				const stableKey = `comment-${comment.user_id}-${index}-${
+					comment.parent_id || 'root'
+				}`;
+
+				return (
+					<ErrorBoundary
+						key={stableKey}
+						fallback={(error) => <CommentError error={error} />}
+					>
+						{renderItem(comment)}
+					</ErrorBoundary>
+				);
+			})}
 		</>
 	);
 };
