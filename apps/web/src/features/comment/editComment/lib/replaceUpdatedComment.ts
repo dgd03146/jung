@@ -10,22 +10,37 @@ export const replaceUpdatedComment = (
 
 	return {
 		...oldData,
-		pages: oldData.pages.map((page) => ({
-			...page,
-			items: page.items.map((item) => {
-				if (item.id === commentId) return updatedComment;
+		pages: oldData.pages.map((page) => {
+			const hasTargetComment = page.items.some(
+				(item) =>
+					item.id === commentId ||
+					item.replies?.some((reply) => reply.id === commentId),
+			);
 
-				if (item.replies?.some((reply) => reply.id === commentId)) {
-					return {
-						...item,
-						replies: item.replies.map((reply) =>
-							reply.id === commentId ? updatedComment : reply,
-						),
-					};
-				}
+			if (!hasTargetComment) return page;
 
-				return item;
-			}),
-		})),
+			return {
+				...page,
+				items: page.items.map((item) => {
+					if (item.id === commentId) {
+						return {
+							...updatedComment,
+							replies: updatedComment.replies ?? item.replies,
+						};
+					}
+
+					if (item.replies?.some((reply) => reply.id === commentId)) {
+						return {
+							...item,
+							replies: item.replies.map((reply) =>
+								reply.id === commentId ? updatedComment : reply,
+							),
+						};
+					}
+
+					return item;
+				}),
+			};
+		}),
 	};
 };
