@@ -10,16 +10,33 @@ export const removeCommentAndReplies = (
 	commentId: string,
 ): CommentData => {
 	if (!oldData) return { pages: [], pageParams: [] };
+
 	return {
 		...oldData,
-		pages: oldData.pages.map((page) => ({
-			...page,
-			items: page.items
-				.filter((item) => item.id !== commentId)
-				.map((item) => ({
-					...item,
-					replies: item.replies?.filter((reply) => reply.id !== commentId),
-				})),
-		})),
+		pages: oldData.pages.map((page) => {
+			const hasTargetComment = page.items.some(
+				(item) =>
+					item.id === commentId ||
+					item.replies?.some((reply) => reply.id === commentId),
+			);
+
+			if (!hasTargetComment) return page;
+
+			return {
+				...page,
+				items: page.items
+
+					.filter((item) => item.id !== commentId)
+					.map((item) => {
+						if (item.replies?.some((reply) => reply.id === commentId)) {
+							return {
+								...item,
+								replies: item.replies.filter((reply) => reply.id !== commentId),
+							};
+						}
+						return item;
+					}),
+			};
+		}),
 	};
 };
