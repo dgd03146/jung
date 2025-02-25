@@ -1,5 +1,7 @@
+import { getUserDisplayName } from '@/fsd/shared';
 import type { Comment } from '@jung/shared/types';
 import type { User } from '@supabase/supabase-js';
+
 /**
  * Creates an optimistic comment for immediate UI updates
  * @param content - The comment content
@@ -19,7 +21,7 @@ export const createOptimisticComment = (
 	updated_at: new Date().toISOString(),
 	user: {
 		id: user.id,
-		full_name: user.user_metadata.full_name,
+		full_name: getUserDisplayName(user),
 		avatar_url: user.user_metadata.avatar_url,
 		email: user.email || '',
 	},
