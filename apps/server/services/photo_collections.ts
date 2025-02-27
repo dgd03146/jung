@@ -43,7 +43,6 @@ export const collectionsService = {
 	// 특정 컬렉션 조회
 	async findById(id: string) {
 		try {
-			// 1. Collection 정보 조회
 			const { data: collection, error: collectionError } = await supabase
 				.from('collections')
 				.select('*')
@@ -57,25 +56,14 @@ export const collectionsService = {
 				});
 			}
 
-			// 2. Collection에 속한 photos 조회
-			const { data: collectionPhotos, error: collectionPhotosError } =
-				await supabase
-					.from('collection_photos')
-					.select('photo_id')
-					.eq('collection_id', id);
-
-			if (collectionPhotosError) {
-				throw new TRPCError({
-					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Failed to fetch collection photo IDs',
-				});
-			}
-
-			const photoIds = collectionPhotos.map((item) => item.photo_id);
 			const { data: photos, error: photosError } = await supabase
 				.from('photos')
-				.select('*')
-				.in('id', photoIds);
+				.select(`
+					*,
+					collection_photos!inner(collection_id)
+				`)
+				.eq('collection_photos.collection_id', id)
+				.order('created_at', { ascending: false });
 
 			if (photosError) {
 				throw new TRPCError({

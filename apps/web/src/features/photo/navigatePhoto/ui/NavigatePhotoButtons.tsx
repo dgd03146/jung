@@ -3,15 +3,30 @@
 import { Box, Button } from '@jung/design-system/components';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
-import { useAdjacentPhotos } from '../model/useAdjacentPhotos';
+import {
+	useAdjacentPhotosQuery,
+	usePhotoFilterStore,
+} from '@/fsd/entities/photo';
 import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './NavigatePhotoButton.css';
 
-export const NavigatePhotoButtons = ({ photoId }: { photoId: string }) => {
-	const { previousPhoto, nextPhoto } = useAdjacentPhotos({
-		id: photoId,
-		isModal: true,
-	});
+interface Props {
+	photoId: string;
+	isModal: boolean;
+}
+
+export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
+	const { sort, collectionId } = usePhotoFilterStore();
+
+	const [adjacentPhotos] = isModal
+		? useAdjacentPhotosQuery({
+				id: photoId,
+				sort,
+				collectionId,
+		  })
+		: [{ previous: null, next: null }];
+
+	const { previous: previousPhoto, next: nextPhoto } = adjacentPhotos;
 
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhotoId: previousPhoto?.id,
@@ -19,10 +34,14 @@ export const NavigatePhotoButtons = ({ photoId }: { photoId: string }) => {
 		isModal: true,
 	});
 
+	const containerClassName = `${styles.modalNavigationButtonsContainer} ${
+		!previousPhoto || !nextPhoto ? styles.singleButtonContainer : ''
+	}`;
+
 	return (
 		<Box className={styles.modalNavigationWrapper}>
-			<div className={styles.modalNavigationButtonsContainer}>
-				{previousPhoto && (
+			<div className={containerClassName}>
+				{previousPhoto ? (
 					<Button
 						onClick={() => handleNavigation(previousPhoto.id)}
 						className={styles.modalNavigationButton}
@@ -30,7 +49,10 @@ export const NavigatePhotoButtons = ({ photoId }: { photoId: string }) => {
 					>
 						<HiChevronLeft className={styles.navigationIcon} />
 					</Button>
+				) : (
+					<div className={styles.placeholderButton} />
 				)}
+
 				{nextPhoto && (
 					<Button
 						onClick={() => handleNavigation(nextPhoto.id)}

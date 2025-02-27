@@ -1,8 +1,7 @@
 'use client';
 
 import { Modal } from '@/fsd/shared';
-import { Box, Button, Typography } from '@jung/design-system';
-import { useToast } from '@jung/design-system';
+import { Box, Button, Typography, useToast } from '@jung/design-system';
 import { createPortal } from 'react-dom';
 import { FaLink, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
@@ -40,8 +39,8 @@ export function ShareModal({ isOpen, onClose, links }: ShareModalProps) {
 		<Modal variant='share' onClose={onClose} showCloseButton={false}>
 			<Box className={styles.shareModalContent}>
 				<Box className={styles.header}>
-					<Typography.Text level={2} color='primary'>
-						Share
+					<Typography.Text level={1} color='primary' fontWeight='medium'>
+						Share with socials
 					</Typography.Text>
 					<button
 						onClick={onClose}
@@ -56,28 +55,28 @@ export function ShareModal({ isOpen, onClose, links }: ShareModalProps) {
 					<Button
 						onClick={links.kakao}
 						prefix={<RiKakaoTalkFill size={20} />}
-						className={styles.socialButtonVariants.kakao}
+						className={styles.socialButton({ platform: 'kakao' })}
 					>
 						KakaoTalk
 					</Button>
 					<Button
 						onClick={() => window.open(links.whatsapp, '_blank')}
 						prefix={<FaWhatsapp size={20} />}
-						className={styles.socialButtonVariants.whatsapp}
+						className={styles.socialButton({ platform: 'whatsapp' })}
 					>
 						WhatsApp
 					</Button>
 					<Button
 						onClick={() => window.open(links.x, '_blank')}
 						prefix={<FaXTwitter size={20} />}
-						className={styles.socialButtonVariants.x}
+						className={styles.socialButton({ platform: 'x' })}
 					>
 						X
 					</Button>
 					<Button
 						onClick={() => window.open(links.linkedin, '_blank')}
 						prefix={<FaLinkedin size={20} />}
-						className={styles.socialButtonVariants.linkedin}
+						className={styles.socialButton({ platform: 'linkedin' })}
 					>
 						LinkedIn
 					</Button>
@@ -87,19 +86,12 @@ export function ShareModal({ isOpen, onClose, links }: ShareModalProps) {
 
 				<Button
 					onClick={copyToClipboard}
-					variant='ghost'
-					size='zero'
+					variant='secondary'
+					gap='1'
 					prefix={<FaLink size={20} />}
-					color={{
-						base: 'primary',
-						hover: 'primary200',
-					}}
-					background={{
-						base: 'transparent',
-						hover: 'primary50',
-					}}
+					borderRadius='lg'
 				>
-					Copy Link
+					Copy link
 				</Button>
 			</Box>
 		</Modal>,

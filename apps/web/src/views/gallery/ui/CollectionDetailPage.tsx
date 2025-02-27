@@ -1,13 +1,14 @@
 'use client';
 
 import {
+	PhotoCard,
 	PhotoList,
 	transformPhoto,
 	useCollectionQuery,
 } from '@/fsd/entities/photo';
-import { BlurImage } from '@/fsd/shared';
-import { EmptyState } from '@/fsd/shared';
+import { BlurImage, EmptyState } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
+import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
 import * as styles from './CollectionDetailPage.css';
 
 interface CollectionDetailPageProps {
@@ -17,6 +18,8 @@ interface CollectionDetailPageProps {
 export const CollectionDetailPage = ({
 	collectionId,
 }: CollectionDetailPageProps) => {
+	useGalleryRouteSync();
+
 	const [data] = useCollectionQuery(collectionId);
 	const { collection, photos } = data;
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
@@ -47,7 +50,14 @@ export const CollectionDetailPage = ({
 				</Box>
 			</Box>
 			<Box>
-				<PhotoList photos={formattedPhotos} />
+				<PhotoList
+					photos={formattedPhotos}
+					renderPhoto={{
+						image: (props, context) => (
+							<PhotoCard imageProps={props} contextProps={context} />
+						),
+					}}
+				/>
 			</Box>
 		</Container>
 	);

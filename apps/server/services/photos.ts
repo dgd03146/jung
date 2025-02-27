@@ -5,7 +5,6 @@ import { supabase } from '../lib/supabase';
 type QueryParams = {
 	limit: number;
 	cursor?: number;
-
 	sort?: 'latest' | 'popular';
 	q?: string;
 };
@@ -19,24 +18,20 @@ export const photosService = {
 	async findMany({
 		limit,
 		cursor,
-		sort = 'latest', // 기본값 설정
+		sort = 'latest',
 		q,
 	}: QueryParams): Promise<QueryResult> {
 		try {
 			let query = supabase.from('photos').select('*', { count: 'exact' });
 
-			// 검색 조건 적용
 			if (q) {
 				query = query.or(`description.ilike.%${q}%,tags.cs.{${q}}`);
 			}
 
-			query = query.order('created_at', { ascending: false });
-
-			// cursor 기반 페이지네이션
 			if (cursor) {
 				const { data: cursorPhoto, error: cursorError } = await supabase
 					.from('photos')
-					.select('created_at')
+					.select('created_at, likes, id')
 					.eq('id', cursor)
 					.single();
 
@@ -49,18 +44,24 @@ export const photosService = {
 				}
 
 				if (cursorPhoto) {
-					query = query.lt('created_at', cursorPhoto.created_at);
+					if (sort === 'popular') {
+						query = query.or(
+							`likes.lt.${cursorPhoto.likes},likes.eq.${cursorPhoto.likes}.and.created_at.lt.${cursorPhoto.created_at}`,
+						);
+					} else {
+						query = query.lt('created_at', cursorPhoto.created_at);
+					}
 				}
 			}
 
-			// 정렬 조건 적용 (popular인 경우 추가 정렬)
 			if (sort === 'popular') {
-				query = query.order('views', { ascending: false });
+				query = query
+					.order('likes', { ascending: false })
+					.order('created_at', { ascending: false });
 			} else {
 				query = query.order('created_at', { ascending: false });
 			}
 
-			// 페이지 크기 제한
 			query = query.limit(limit);
 
 			const { data, error } = await query.returns<Photo[]>();
@@ -80,7 +81,7 @@ export const photosService = {
 				};
 			}
 
-			// 다음 페이지 cursor 계산
+			// 다음 페이지가 있는지 확인 (마지막 페이지 계산)
 			const nextCursor =
 				data.length === limit ? Number(data[data.length - 1]?.id) : null;
 
@@ -138,29 +139,110 @@ export const photosService = {
 		}
 	},
 
-	async findAdjacentPhotos(id: string): Promise<{
+	async findAdjacentPhotos(
+		id: string,
+		options?: {
+			sort?: 'latest' | 'popular';
+			collectionId?: string;
+		},
+	): Promise<{
 		previous: Photo | null;
 		next: Photo | null;
 	}> {
 		try {
-			// findById 재사용
+			const { sort, collectionId } = options || {};
+
 			const currentPhoto = await this.findById(id);
+			// 컬렉션 ID가 제공된 경우 (무조건 최신순)
+			if (collectionId) {
+				const { data: previousPhoto } = await supabase
+					.from('photos')
+					.select(`
+						*,
+						collection_photos!inner(collection_id)
+					`)
+					.eq('collection_photos.collection_id', collectionId)
+					.gt('created_at', currentPhoto.created_at)
+					.order('created_at', { ascending: true })
+					.limit(1)
+					.single();
 
-			// 이전 사진 찾기
+				const { data: nextPhoto } = await supabase
+					.from('photos')
+					.select(`
+						*,
+						collection_photos!inner(collection_id)
+					`)
+					.eq('collection_photos.collection_id', collectionId)
+					.lt('created_at', currentPhoto.created_at)
+					.order('created_at', { ascending: false })
+					.limit(1)
+					.single();
+
+				return {
+					previous: previousPhoto || null,
+					next: nextPhoto || null,
+				};
+			}
+
+			// trending page일때 인기순
+			if (sort === 'popular') {
+				const { data: prevMoreLikes } = await supabase
+					.from('photos')
+					.select('*')
+					.gt('likes', currentPhoto.likes)
+					.order('likes', { ascending: true })
+					.limit(1)
+					.maybeSingle();
+
+				const { data: prevSameLikes } = await supabase
+					.from('photos')
+					.select('*')
+					.eq('likes', currentPhoto.likes)
+					.gt('created_at', currentPhoto.created_at)
+					.order('created_at', { ascending: true })
+					.limit(1)
+					.maybeSingle();
+
+				const { data: nextLessLikes } = await supabase
+					.from('photos')
+					.select('*')
+					.lt('likes', currentPhoto.likes)
+					.order('likes', { ascending: false })
+					.limit(1)
+					.maybeSingle();
+
+				const { data: nextSameLikes } = await supabase
+					.from('photos')
+					.select('*')
+					.eq('likes', currentPhoto.likes)
+					.lt('created_at', currentPhoto.created_at)
+					.order('created_at', { ascending: false })
+					.limit(1)
+					.maybeSingle();
+
+				const previousPhoto = prevMoreLikes || prevSameLikes;
+				const nextPhoto = nextLessLikes || nextSameLikes;
+
+				return {
+					previous: previousPhoto || null,
+					next: nextPhoto || null,
+				};
+			}
+			// 최신순 정렬 (기본)
 			const { data: previousPhoto } = await supabase
-				.from('photos')
-				.select('*')
-				.lt('created_at', currentPhoto.created_at)
-				.order('created_at', { ascending: false })
-				.limit(1)
-				.single();
-
-			// 다음 사진 찾기
-			const { data: nextPhoto } = await supabase
 				.from('photos')
 				.select('*')
 				.gt('created_at', currentPhoto.created_at)
 				.order('created_at', { ascending: true })
+				.limit(1)
+				.single();
+
+			const { data: nextPhoto } = await supabase
+				.from('photos')
+				.select('*')
+				.lt('created_at', currentPhoto.created_at)
+				.order('created_at', { ascending: false })
 				.limit(1)
 				.single();
 

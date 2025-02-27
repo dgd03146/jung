@@ -35,7 +35,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					animate='visible'
 					exit='exit'
 				>
-					{isModal && <NavigatePhotoButtons photoId={photoId} />}
+					{isModal && <NavigatePhotoButtons photoId={photoId} isModal />}
 
 					<motion.div className={styles.container({ isModal })}>
 						<motion.div
@@ -56,12 +56,12 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							variants={photoDetailVariants.content}
 						>
 							<Flex gap='1' flexDirection='column'>
-								<Typography.Heading level={4}>
+								<Typography.Heading level={5}>
 									{currentPhoto.title}
 								</Typography.Heading>
 							</Flex>
 
-							<Typography.Text level={1} fontWeight='medium'>
+							<Typography.Text level={2}>
 								{currentPhoto.description}
 							</Typography.Text>
 

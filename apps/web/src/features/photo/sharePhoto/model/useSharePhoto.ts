@@ -90,16 +90,22 @@ export const useSharePhoto = () => {
 					text: photo.description || '',
 					url: window.location.href,
 				});
+
 				return;
 			}
+
+			setSelectedPhoto(photo);
+			setIsShareModalOpen(true);
 		} catch (error) {
 			if (error instanceof Error && error.name !== 'AbortError') {
-				showToast('공유하기 중 오류가 발생했습니다', 'error');
+				showToast('Error is occured while sharing', 'error');
+			}
+
+			if (!(error instanceof Error) || error.name !== 'AbortError') {
+				setSelectedPhoto(photo);
+				setIsShareModalOpen(true);
 			}
 		}
-
-		setSelectedPhoto(photo);
-		setIsShareModalOpen(true);
 	};
 
 	const closeShareModal = () => {
