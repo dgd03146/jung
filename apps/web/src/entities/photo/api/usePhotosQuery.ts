@@ -2,8 +2,8 @@ import { trpc } from '@/fsd/shared';
 import type { PhotoQueryParams } from '@jung/shared/types';
 import { PHOTO_PARAMS } from '../config/constants';
 
-export function usePhotosQuery(params: PhotoQueryParams = {}) {
-	const { sort = PHOTO_PARAMS.SORT, q = PHOTO_PARAMS.QUERY } = params;
+export function usePhotosQuery(params: PhotoQueryParams) {
+	const { sort, q } = params;
 
 	return trpc.photos.getAllPhotos.useSuspenseInfiniteQuery(
 		{
@@ -20,8 +20,8 @@ export function usePhotosQuery(params: PhotoQueryParams = {}) {
 				return lastPage.nextCursor;
 			},
 			// FIXME: MAGIC NUMBER 제거
-			staleTime: 1000 * 60 * 60 * 5, // 5시간
-			gcTime: 1000 * 60 * 60 * 24, // 24시간
+			staleTime: 1000 * 60 * 60 * 24, // 24시간
+			gcTime: 1000 * 60 * 60 * 48, // 48시간
 		},
 	);
 }

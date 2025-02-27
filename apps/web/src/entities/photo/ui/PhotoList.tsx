@@ -1,14 +1,14 @@
 import type { AlbumPhoto } from '@jung/shared/types';
-import { MasonryPhotoAlbum } from 'react-photo-album';
+import { MasonryPhotoAlbum, type Render } from 'react-photo-album';
 import 'react-photo-album/masonry.css';
 import { ALBUM_OPTIONS } from '../config/constants';
-import { PhotoCard } from './PhotoCard';
 
 interface PhotoListProps {
 	photos: AlbumPhoto[];
+	renderPhoto: Render<AlbumPhoto>;
 }
 
-export const PhotoList = ({ photos }: PhotoListProps) => {
+export const PhotoList = ({ photos, renderPhoto }: PhotoListProps) => {
 	return (
 		<MasonryPhotoAlbum
 			photos={photos}
@@ -20,11 +20,7 @@ export const PhotoList = ({ photos }: PhotoListProps) => {
 					return ALBUM_OPTIONS.COLUMNS.LAPTOP;
 				return ALBUM_OPTIONS.COLUMNS.DESKTOP;
 			}}
-			render={{
-				image: (props, context) => (
-					<PhotoCard imageProps={props} contextProps={context} />
-				),
-			}}
+			render={renderPhoto}
 		/>
 	);
 };

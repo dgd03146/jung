@@ -1,17 +1,8 @@
-import { trpc } from '@/fsd/shared';
-import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
-	useSupabaseAuth,
-} from '@/fsd/shared';
+import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
 
 import { useToast } from '@jung/design-system';
-import type { CommentQueryResult } from '@jung/shared/types';
-import type { InfiniteData } from '@tanstack/react-query';
 import { updateCommentAction } from '../api/updateCommentAction';
 import { findCommentById, replaceUpdatedComment } from '../lib';
-
-type CommentData = InfiniteData<CommentQueryResult, string | null>;
 
 export const useUpdateComment = () => {
 	const utils = trpc.useUtils();
@@ -37,11 +28,10 @@ export const useUpdateComment = () => {
 			return;
 		}
 
-		const existingData = utils.comment.getCommentsByPostId.getInfiniteData({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		});
+		const queryKey = getCommentsQueryKey(postId);
+
+		const existingData =
+			utils.comment.getCommentsByPostId.getInfiniteData(queryKey);
 
 		if (!existingData) {
 			showToast('Comment data not found', 'error');
@@ -55,13 +45,11 @@ export const useUpdateComment = () => {
 			return;
 		}
 
-		utils.comment.getCommentsByPostId.setInfiniteData(
-			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-			(oldData) =>
-				replaceUpdatedComment(oldData, commentId, {
-					...previousComment,
-					content,
-				}),
+		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			replaceUpdatedComment(oldData, commentId, {
+				...previousComment,
+				content,
+			}),
 		);
 
 		try {
@@ -71,27 +59,16 @@ export const useUpdateComment = () => {
 				postId,
 			);
 
-			// Replace optimistic with real data
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-				(oldData) => replaceUpdatedComment(oldData, commentId, updatedComment),
+			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+				replaceUpdatedComment(oldData, commentId, updatedComment),
 			);
-
-			// Invalidate the query to reflect the new comment
-			await utils.comment.getCommentsByPostId.invalidate({
-				postId,
-				order: COMMENTS_DEFAULT_ORDER,
-				limit: COMMENTS_LIMIT,
-			});
 
 			showToast('Comment has been updated', 'success');
 
 			return updatedComment;
 		} catch (error) {
-			// Rollback on error
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
-				(oldData) => replaceUpdatedComment(oldData, commentId, previousComment),
+			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+				replaceUpdatedComment(oldData, commentId, previousComment),
 			);
 			handleError(error);
 		}

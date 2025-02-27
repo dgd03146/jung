@@ -1,4 +1,6 @@
-export { PhotoList } from './PhotoList';
+export { PhotoCard } from './PhotoCard';
+
 export { CollectionList } from './CollectionList';
-export { PhotoTags } from './PhotoTags';
 export { PhotoDetailSkeleton } from './PhotoDetailSkeleton';
+export { PhotoList } from './PhotoList';
+export { PhotoTags } from './PhotoTags';

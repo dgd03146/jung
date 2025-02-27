@@ -1,9 +1,9 @@
+import { PHOTO_PARAMS } from '@/fsd/entities';
+import type { Sort } from '@/fsd/shared';
 import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
-
-type Sort = 'latest' | 'popular';
 
 type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
@@ -62,14 +62,14 @@ export default function TrendingPage({ searchParams }: PageProps) {
 	const q = (searchParams.q as string) || '';
 
 	void trpc.photos.getAllPhotos.prefetchInfinite({
-		limit: 8,
+		limit: PHOTO_PARAMS.LIMIT,
 		sort,
 		q,
 	});
 
 	return (
 		<HydrateClient>
-			<GalleryPage />
+			<GalleryPage sort={sort} />
 		</HydrateClient>
 	);
 }

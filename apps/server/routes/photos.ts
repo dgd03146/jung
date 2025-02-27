@@ -24,10 +24,18 @@ export const photosRouter = router({
 		return photosService.findById(input);
 	}),
 
-	getAdjacentPhotos: publicProcedure.input(z.string()).query(async (opts) => {
-		const { input } = opts;
-		return photosService.findAdjacentPhotos(input);
-	}),
+	getAdjacentPhotos: publicProcedure
+		.input(
+			z.object({
+				id: z.string(),
+				sort: z.enum(['latest', 'popular']).optional().default('latest'),
+				collectionId: z.string().optional(),
+			}),
+		)
+		.query(async (opts) => {
+			const { id, sort, collectionId } = opts.input;
+			return photosService.findAdjacentPhotos(id, { sort, collectionId });
+		}),
 
 	toggleLike: publicProcedure
 		.input(

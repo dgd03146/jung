@@ -1,10 +1,9 @@
 import { COLLECTION_PARAMS } from '@/fsd/entities/photo';
+import type { Sort } from '@/fsd/shared';
 import { siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
-
-type Sort = 'latest' | 'popular';
 
 type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
