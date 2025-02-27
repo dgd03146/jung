@@ -1,14 +1,32 @@
 'use client';
 
-import { animate, motion, useMotionValue } from 'framer-motion';
+import {
+	type MotionValue,
+	animate,
+	motion,
+	useMotionValue,
+} from 'framer-motion';
 import { type ReactNode, useRef } from 'react';
 import * as styles from './MotionCard.css';
 
 type MotionCardProps = {
 	children: ReactNode;
+	sensitivity?: number; // 회전 민감도 조절
+	hoverScale?: number; // 호버 시 확대 비율
 };
 
-export const MotionCard = ({ children }: MotionCardProps) => {
+// 애니메이션 설정 상수화
+const SPRING_OPTIONS = {
+	type: 'spring' as const,
+	stiffness: 400,
+	damping: 30,
+};
+
+export const MotionCard = ({
+	children,
+	sensitivity = 15,
+	hoverScale = 1.05,
+}: MotionCardProps) => {
 	const cardRef = useRef<HTMLDivElement>(null);
 	const rotateX = useMotionValue(0);
 	const rotateY = useMotionValue(0);
@@ -19,56 +37,35 @@ export const MotionCard = ({ children }: MotionCardProps) => {
 
 		const card = cardRef.current;
 		const rect = card.getBoundingClientRect();
+
 		const centerX = rect.left + rect.width / 2;
 		const centerY = rect.top + rect.height / 2;
-
 		const distanceX = event.clientX - centerX;
 		const distanceY = event.clientY - centerY;
 
-		const rotateYValue = (distanceX / (rect.width / 2)) * 15;
-		const rotateXValue = -(distanceY / (rect.height / 2)) * 15;
+		const rotateYValue = (distanceX / (rect.width / 2)) * sensitivity;
+		const rotateXValue = -(distanceY / (rect.height / 2)) * sensitivity;
 
 		if (scale.get() === 1) {
-			animate(scale, 1.05, {
-				type: 'spring',
-				stiffness: 400,
-				damping: 30,
-			});
+			animateMotionValue(scale, hoverScale);
 		}
 
-		animate(rotateX, rotateXValue, {
-			type: 'spring',
-			stiffness: 400,
-			damping: 30,
-			mass: 0.5,
-		});
-
-		animate(rotateY, rotateYValue, {
-			type: 'spring',
-			stiffness: 400,
-			damping: 30,
-			mass: 0.5,
-		});
+		animateMotionValue(rotateX, rotateXValue, { mass: 0.5 });
+		animateMotionValue(rotateY, rotateYValue, { mass: 0.5 });
 	}
 
 	function handleMouseLeave() {
-		animate(scale, 1, {
-			type: 'spring',
-			stiffness: 400,
-			damping: 30,
-		});
+		animateMotionValue(scale, 1);
+		animateMotionValue(rotateX, 0);
+		animateMotionValue(rotateY, 0);
+	}
 
-		animate(rotateX, 0, {
-			type: 'spring',
-			stiffness: 400,
-			damping: 30,
-		});
-
-		animate(rotateY, 0, {
-			type: 'spring',
-			stiffness: 400,
-			damping: 30,
-		});
+	function animateMotionValue(
+		value: MotionValue<number>,
+		target: number,
+		options = {},
+	) {
+		animate(value, target, { ...SPRING_OPTIONS, ...options });
 	}
 
 	return (
@@ -79,8 +76,6 @@ export const MotionCard = ({ children }: MotionCardProps) => {
 				rotateX,
 				rotateY,
 				scale,
-				transformStyle: 'preserve-3d',
-				perspective: '1000px',
 				transformOrigin: 'center',
 			}}
 			onMouseMove={handleMouseMove}
