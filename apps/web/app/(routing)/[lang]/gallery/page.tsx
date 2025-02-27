@@ -1,10 +1,8 @@
 import { PHOTO_PARAMS } from '@/fsd/entities/photo';
-import { siteUrl } from '@/fsd/shared';
+import { type Sort, siteUrl } from '@/fsd/shared';
 import { HydrateClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
 import type { Metadata } from 'next';
-
-type Sort = 'latest' | 'popular';
 
 type PageProps = {
 	searchParams: { [key: string]: string | string[] | undefined };
@@ -67,7 +65,7 @@ export default function Page({ searchParams }: PageProps) {
 
 	return (
 		<HydrateClient>
-			<GalleryPage />
+			<GalleryPage sort={sort} />
 		</HydrateClient>
 	);
 }
