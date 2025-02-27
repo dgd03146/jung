@@ -47,7 +47,14 @@ export const CollectionDetailPage = ({
 				</Box>
 			</Box>
 			<Box>
-				<PhotoList photos={formattedPhotos} />
+				<PhotoList
+					photos={formattedPhotos}
+					renderPhoto={{
+						image: (props, context) => (
+							<PhotoCard imageProps={props} contextProps={context} />
+						),
+					}}
+				/>
 			</Box>
 		</Container>
 	);

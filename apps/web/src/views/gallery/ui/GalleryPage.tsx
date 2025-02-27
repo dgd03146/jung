@@ -43,7 +43,14 @@ export const GalleryContent = () => {
 
 	return (
 		<>
-			<PhotoList photos={formattedPhotos} />
+			<PhotoList
+				photos={formattedPhotos}
+				renderPhoto={{
+					image: (props, context) => (
+						<PhotoCard imageProps={props} contextProps={context} />
+					),
+				}}
+			/>
 			<Flex justify='center' align='center' minHeight='10' ref={ref}>
 				{isFetchingNextPage && <LoadingSpinner size='small' />}
 			</Flex>
