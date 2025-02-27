@@ -35,7 +35,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					animate='visible'
 					exit='exit'
 				>
-					{isModal && <NavigatePhotoButtons photoId={photoId} />}
+					{isModal && <NavigatePhotoButtons photoId={photoId} isModal />}
 
 					<motion.div className={styles.container({ isModal })}>
 						<motion.div
