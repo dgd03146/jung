@@ -5,8 +5,7 @@ import {
 	transformPhoto,
 	useCollectionQuery,
 } from '@/fsd/entities/photo';
-import { BlurImage } from '@/fsd/shared';
-import { EmptyState } from '@/fsd/shared';
+import { BlurImage, EmptyState } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
 import * as styles from './CollectionDetailPage.css';
 
