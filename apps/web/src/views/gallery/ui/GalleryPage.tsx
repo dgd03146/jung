@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	PhotoCard,
 	PhotoList,
 	transformPhoto,
 	usePhotosQuery,
@@ -8,16 +9,20 @@ import {
 import {
 	EmptyState,
 	LoadingSpinner,
+	type Sort,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
 import { Suspense } from 'react';
+import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
 
-export const GalleryContent = () => {
-	const { sort, q } = useSearchParamsState({
+export const GalleryContent = ({ sort }: { sort: Sort }) => {
+	useGalleryRouteSync();
+
+	const { q } = useSearchParamsState({
 		defaults: {
-			sort: 'latest',
+			sort,
 			q: '',
 		} as const,
 	});
@@ -58,7 +63,7 @@ export const GalleryContent = () => {
 	);
 };
 
-export const GalleryPage = () => {
+export const GalleryPage = ({ sort }: { sort: Sort }) => {
 	return (
 		<Suspense
 			fallback={
@@ -67,7 +72,7 @@ export const GalleryPage = () => {
 				</Flex>
 			}
 		>
-			<GalleryContent />
+			<GalleryContent sort={sort} />
 		</Suspense>
 	);
 };
