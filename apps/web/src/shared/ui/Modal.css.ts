@@ -37,18 +37,16 @@ export const shareOverlay = style([
 
 export const photoContent = style({
 	position: 'relative',
-	maxWidth: '935px',
+	maxWidth: '80vw',
 	width: '100%',
-	margin: '20px',
+	// margin: '20px',
 	backgroundColor: 'white',
 	overflow: 'hidden',
 	pointerEvents: 'auto',
 
 	'@media': {
-		'(max-width: 768px)': {
-			margin: 0,
-			height: '100%',
-			borderRadius: 0,
+		'screen and (min-width: 1200px)': {
+			maxWidth: '1024px',
 		},
 	},
 });
