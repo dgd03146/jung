@@ -1,4 +1,4 @@
-export { DictionaryProvider } from './DictionaryProvider';
 export { ClientToastProvider } from './ClientToastProvider';
+export { DictionaryProvider } from './DictionaryProvider';
 export { KakaoProvider } from './KakaoProvider';
-export { TrpcProvider } from './TrpcProvider';
+export { TRPCReactProvider, useTRPC } from './TRPCClientProvider';
