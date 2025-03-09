@@ -21,9 +21,11 @@ export const postRouter = router({
 			return postService.findMany({ limit, cursor, cat, sort, q });
 		}),
 
-	getPostById: publicProcedure.input(z.string()).query(({ input }) => {
-		return postService.findById(input);
-	}),
+	getPostById: publicProcedure
+		.input(z.object({ postId: z.string() }))
+		.query(({ input }) => {
+			return postService.findById(input);
+		}),
 
 	createPost: publicProcedure
 		.input(PostSchema.omit({ id: true }))
@@ -37,7 +39,9 @@ export const postRouter = router({
 			return postService.toggleLike(input);
 		}),
 
-	getAdjacentPosts: publicProcedure.input(z.string()).query(({ input }) => {
-		return postService.getAdjacentPosts(input);
-	}),
+	getAdjacentPosts: publicProcedure
+		.input(z.object({ postId: z.string() }))
+		.query(({ input }) => {
+			return postService.getAdjacentPosts(input);
+		}),
 });
