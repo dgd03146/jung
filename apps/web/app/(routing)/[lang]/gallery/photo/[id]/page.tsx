@@ -1,7 +1,8 @@
 import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -11,7 +12,7 @@ export async function generateMetadata({
 	params: { id: string; lang: string };
 }): Promise<Metadata> {
 	try {
-		const photo = await trpc.photos.getPhotoById(params.id);
+		const photo = await caller.photos.getPhotoById(params.id);
 
 		if (!photo) {
 			return {
@@ -88,20 +89,21 @@ export async function generateMetadata({
 	}
 }
 
-export default async function PhotoPage({
+export default function PhotoPage({
 	params,
 }: {
 	params: { id: string };
 }) {
 	const photoId = params.id;
 
-	void trpc.photos.getPhotoById.prefetch(photoId);
+	const queryClient = getQueryClient();
+	queryClient.prefetchQuery(trpc.photos.getPhotoById.queryOptions(photoId));
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<Suspense fallback={<PhotoDetailSkeleton />}>
 				<PhotoDetailPage photoId={params.id} isModal={false} />
 			</Suspense>
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }

@@ -1,13 +1,9 @@
-import { PHOTO_PARAMS } from '@/fsd/entities';
-import type { Sort } from '@/fsd/shared';
+import { TRENDING_PHOTO_PARAMS } from '@/fsd/entities';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-
-type PageProps = {
-	searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export const metadata: Metadata = {
 	title: 'Trending Photos • Gallery',
@@ -57,19 +53,20 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function TrendingPage({ searchParams }: PageProps) {
-	const sort: Sort = 'popular';
-	const q = (searchParams.q as string) || '';
+export default function TrendingPage() {
+	const queryClient = getQueryClient();
 
-	void trpc.photos.getAllPhotos.prefetchInfinite({
-		limit: PHOTO_PARAMS.LIMIT,
-		sort,
-		q,
-	});
+	queryClient.prefetchInfiniteQuery(
+		trpc.photos.getAllPhotos.infiniteQueryOptions({
+			limit: TRENDING_PHOTO_PARAMS.LIMIT,
+			sort: TRENDING_PHOTO_PARAMS.SORT,
+			q: TRENDING_PHOTO_PARAMS.QUERY,
+		}),
+	);
 
 	return (
-		<HydrateClient>
-			<GalleryPage sort={sort} />
-		</HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<GalleryPage isTrending />
+		</HydrationBoundary>
 	);
 }

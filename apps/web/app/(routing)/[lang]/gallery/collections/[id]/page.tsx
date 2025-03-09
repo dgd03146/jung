@@ -1,12 +1,12 @@
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 interface PageProps {
 	params: {
 		id: string;
-		lang: string;
 	};
 }
 
@@ -14,7 +14,9 @@ export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
 	try {
-		const collection = await trpc.photoCollections.getCollectionById(params.id);
+		const collection = await caller.photoCollections.getCollectionById(
+			params.id,
+		);
 
 		if (!collection) {
 			return {
@@ -83,12 +85,15 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
 	const { id: collectionId } = params;
+	const queryClient = getQueryClient();
 
-	void trpc.photoCollections.getCollectionById.prefetch(collectionId);
+	queryClient.prefetchQuery(
+		trpc.photoCollections.getCollectionById.queryOptions(collectionId),
+	);
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<CollectionDetailPage collectionId={collectionId} />
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }

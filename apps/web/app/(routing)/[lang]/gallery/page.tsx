@@ -1,12 +1,9 @@
 import { PHOTO_PARAMS } from '@/fsd/entities/photo';
-import { type Sort, siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { siteUrl } from '@/fsd/shared';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryPage } from '@/fsd/views/gallery';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-
-type PageProps = {
-	searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export const metadata: Metadata = {
 	title: 'Gallery',
@@ -53,19 +50,20 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function Page({ searchParams }: PageProps) {
-	const sort = (searchParams.sort as Sort) || PHOTO_PARAMS.SORT;
-	const q = (searchParams.q as string) || PHOTO_PARAMS.QUERY;
+export default function Page() {
+	const queryClient = getQueryClient();
 
-	void trpc.photos.getAllPhotos.prefetchInfinite({
-		limit: PHOTO_PARAMS.LIMIT,
-		sort,
-		q,
-	});
+	queryClient.prefetchInfiniteQuery(
+		trpc.photos.getAllPhotos.infiniteQueryOptions({
+			limit: PHOTO_PARAMS.LIMIT,
+			sort: PHOTO_PARAMS.SORT,
+			q: PHOTO_PARAMS.QUERY,
+		}),
+	);
 
 	return (
-		<HydrateClient>
-			<GalleryPage sort={sort} />
-		</HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<GalleryPage />
+		</HydrationBoundary>
 	);
 }
