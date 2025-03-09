@@ -1,6 +1,7 @@
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { SpotDetailPage } from '@/fsd/views';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -9,7 +10,7 @@ export async function generateMetadata({
 	params: { id: string; lang: string };
 }): Promise<Metadata> {
 	try {
-		const spot = await trpc.spot.getSpotById(params.id);
+		const spot = await caller.spot.getSpotById(params.id);
 
 		if (!spot) {
 			return {
@@ -84,11 +85,12 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { id: string } }) {
 	const spotId = params.id;
 
-	void trpc.spot.getSpotById.prefetch(spotId);
+	const queryClient = getQueryClient();
+	queryClient.prefetchQuery(trpc.spot.getSpotById.queryOptions(spotId));
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<SpotDetailPage spotId={spotId} />
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }
