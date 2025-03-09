@@ -53,7 +53,7 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.7.2",
     "vite": "^5.2.12"
   }
 }
