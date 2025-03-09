@@ -1,8 +1,17 @@
-import { trpc } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function usePostQuery(postId: string) {
-	return trpc.post.getPostById.useSuspenseQuery(postId, {
-		staleTime: 1000 * 60 * 5, // 5분
-		gcTime: 1000 * 60 * 60, // 1시간
-	});
+	const trpc = useTRPC();
+	return useSuspenseQuery(
+		trpc.post.getPostById.queryOptions(
+			{
+				postId,
+			},
+			{
+				staleTime: 1000 * 60 * 5, // 5분
+				gcTime: 1000 * 60 * 60, // 1시간
+			},
+		),
+	);
 }
