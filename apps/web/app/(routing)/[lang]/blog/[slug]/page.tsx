@@ -1,5 +1,6 @@
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PostDetailPage } from '@/fsd/views/blog';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -8,7 +9,7 @@ export async function generateMetadata({
 	params: { slug: string; lang: string };
 }): Promise<Metadata> {
 	try {
-		const post = await trpc.post.getPostById(params.slug);
+		const post = await caller.post.getPostById({ postId: params.slug });
 
 		if (!post) {
 			return {
@@ -74,14 +75,15 @@ export async function generateMetadata({
 	}
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { slug: string } }) {
 	const postId = params.slug;
+	const queryClient = getQueryClient();
 
-	void trpc.post.getPostById.prefetch(postId);
+	queryClient.prefetchQuery(trpc.post.getPostById.queryOptions({ postId }));
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<PostDetailPage postId={postId} />
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }

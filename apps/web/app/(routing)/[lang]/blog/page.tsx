@@ -1,13 +1,9 @@
+import { BLOG_DEFAULTS } from '@/fsd/entities/post';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { BlogPage } from '@/fsd/views';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-
-type Sort = 'latest' | 'oldest' | 'popular';
-
-type PageProps = {
-	searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export const metadata: Metadata = {
 	title: 'Blog',
@@ -26,17 +22,29 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function Page({ searchParams }: PageProps) {
-	const cat = (searchParams.cat as string) || 'all';
-	const sort = (searchParams.sort as Sort) || 'latest';
-	const q = (searchParams.q as string) || '';
 
-	void trpc.post.getAllPosts.prefetchInfinite({ limit: 9, cat, sort, q });
-	const categories = await getCategories('blog');
+
+export const revalidate = 3600;
+
+export default async function Page() {
+	const queryClient = getQueryClient();
+
+	await queryClient.prefetchInfiniteQuery(
+		trpc.post.getAllPosts.infiniteQueryOptions({
+			limit: BLOG_DEFAULTS.LIMIT,
+			cat: BLOG_DEFAULTS.CATEGORY,
+			sort: BLOG_DEFAULTS.SORT,
+			q: BLOG_DEFAULTS.QUERY,
+		}),
+	);
+
+	await queryClient.prefetchQuery(
+		trpc.category.getCategories.queryOptions({ type: 'blog' }),
+	);
 
 	return (
-		<HydrateClient>
-			<BlogPage categories={categories} />
-		</HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<BlogPage />
+		</HydrationBoundary>
 	);
 }
