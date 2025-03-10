@@ -1,4 +1,5 @@
-import { trpc } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 type QueryParams = {
 	category_id?: string;
@@ -9,8 +10,9 @@ type QueryParams = {
 
 export function useSpotsQuery(params: QueryParams) {
 	const { sort, q, cat } = params;
+	const trpc = useTRPC();
 
-	return trpc.spot.getAllSpots.useSuspenseInfiniteQuery(
+	const infiniteOptions = trpc.spot.getAllSpots.infiniteQueryOptions(
 		{
 			limit: 12,
 			sort,
@@ -28,4 +30,6 @@ export function useSpotsQuery(params: QueryParams) {
 			gcTime: 1000 * 60 * 60 * 24, // 24시간
 		},
 	);
+
+	return useSuspenseInfiniteQuery(infiniteOptions);
 }
