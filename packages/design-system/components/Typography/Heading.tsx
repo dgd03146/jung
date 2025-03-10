@@ -19,17 +19,21 @@ export interface HeadingProps
 	extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'>,
 		AtomProps {
 	level?: 1 | 2 | 3 | 4 | 5;
+
+	as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 	variant?: 'hero';
+	className?: string;
+	children: React.ReactNode;
 }
 
 export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-	({ level = 1, children, className, variant, ...restProps }, ref) => {
-		const as = `h${level}` as ElementType;
+	({ level = 1, as, children, className, variant, ...restProps }, ref) => {
+		const headingTag = as || (`h${Math.min(level, 5)}` as ElementType);
 
 		const headingStyle = clsx(S.heading({ level, variant }), className);
 
 		return (
-			<Box as={as} ref={ref} className={headingStyle} {...restProps}>
+			<Box as={headingTag} ref={ref} className={headingStyle} {...restProps}>
 				{children}
 			</Box>
 		);

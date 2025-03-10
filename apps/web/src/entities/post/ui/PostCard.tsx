@@ -85,7 +85,9 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 					</Typography.SubText>
 				</Flex>
 
-				<Typography.Heading level={4}>{post.title}</Typography.Heading>
+				<Typography.Heading as='h1' level={4}>
+					{post.title}
+				</Typography.Heading>
 
 				<Typography.Text
 					level={3}
