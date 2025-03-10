@@ -3,6 +3,10 @@ import { ZodError } from 'zod';
 
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 
+export const createTRPCContext = async () => {
+	return {};
+};
+
 const t = initTRPC.create({
 	errorFormatter(opts) {
 		const { shape, error } = opts;

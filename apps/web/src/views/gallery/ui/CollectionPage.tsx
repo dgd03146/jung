@@ -10,7 +10,7 @@ import { Flex } from '@jung/design-system/components';
 import { Suspense } from 'react';
 
 export const CollectionContent = () => {
-	const [collections] = useCollectionsQuery({
+	const { data: collections } = useCollectionsQuery({
 		sort: COLLECTION_PARAMS.sort,
 	});
 

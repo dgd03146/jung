@@ -4,8 +4,8 @@ import {
 	PostHeader,
 	PostNavigation,
 	useAdjacentPostsQuery,
+	usePostQuery,
 } from '@/fsd/entities/post';
-import { usePostQuery } from '@/fsd/entities/post';
 import { ViewComments } from '@/fsd/features/comment';
 import { TogglePostLike } from '@/fsd/features/post';
 import { useCreateBlockNote } from '@blocknote/react';
@@ -21,8 +21,8 @@ const BlockNoteEditor = dynamic(
 );
 
 export const PostDetailPage = ({ postId }: { postId: string }) => {
-	const [post] = usePostQuery(postId);
-	const [adjacentPosts] = useAdjacentPostsQuery(postId);
+	const { data: post } = usePostQuery(postId);
+	const { data: adjacentPosts } = useAdjacentPostsQuery(postId);
 
 	if (!post) {
 		throw new Error('Post not found');

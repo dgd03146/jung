@@ -23,7 +23,7 @@ export const SpotDetailPage = ({ spotId }: { spotId: string }) => {
 };
 
 function SpotDetailContent({ spotId }: { spotId: string }) {
-	const [spot] = useSpotQuery(spotId);
+	const { data: spot } = useSpotQuery(spotId);
 	const { isListView } = useSpotStore();
 
 	return (

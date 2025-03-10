@@ -1,11 +1,13 @@
-import { trpc } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useCollectionQuery(collectionId: string) {
-	return trpc.photoCollections.getCollectionById.useSuspenseQuery(
-		collectionId,
-		{
+	const trpc = useTRPC();
+
+	return useSuspenseQuery(
+		trpc.photoCollections.getCollectionById.queryOptions(collectionId, {
 			staleTime: 1000 * 60 * 60 * 5, // 5시간
 			gcTime: 1000 * 60 * 60 * 24, // 24시간
-		},
+		}),
 	);
 }

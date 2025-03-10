@@ -1,13 +1,9 @@
 import { SPOT_PARAMS } from '@/fsd/entities/spot';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, getCategories, trpc } from '@/fsd/shared/index.server';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { SpotsPage } from '@/fsd/views';
-import type { SpotSort } from '@jung/shared/types';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-
-type PageProps = {
-	searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export const metadata: Metadata = {
 	title: 'Spots',
@@ -58,22 +54,27 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function Page({ searchParams }: PageProps) {
-	const sort = (searchParams.sort as SpotSort) || SPOT_PARAMS.SORT;
-	const q = (searchParams.q as string) || SPOT_PARAMS.QUERY;
-	const cat = (searchParams.category_id as string) || SPOT_PARAMS.CAT;
+export const revalidate = 21600;
 
-	const categories = await getCategories('spots');
-	void trpc.spot.getAllSpots.prefetchInfinite({
-		limit: SPOT_PARAMS.LIMIT,
-		sort,
-		cat,
-		q,
-	});
+export default async function Page() {
+	const queryClient = getQueryClient();
+
+	await queryClient.prefetchInfiniteQuery(
+		trpc.spot.getAllSpots.infiniteQueryOptions({
+			limit: SPOT_PARAMS.LIMIT,
+			sort: SPOT_PARAMS.SORT,
+			cat: SPOT_PARAMS.CAT,
+			q: SPOT_PARAMS.QUERY,
+		}),
+	);
+
+	await queryClient.prefetchQuery(
+		trpc.category.getCategories.queryOptions({ type: 'spots' }),
+	);
 
 	return (
-		<HydrateClient>
-			<SpotsPage categories={categories} />
-		</HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<SpotsPage />
+		</HydrationBoundary>
 	);
 }

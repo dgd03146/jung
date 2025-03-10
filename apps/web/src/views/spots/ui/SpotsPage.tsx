@@ -38,10 +38,9 @@ function SpotsContent() {
 		} as const,
 	});
 
-	const [data, query] = useSpotsQuery({ cat, sort, q });
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		useSpotsQuery({ cat, sort, q });
 	const spots = data.pages.flatMap((page) => page.items) ?? [];
-
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,

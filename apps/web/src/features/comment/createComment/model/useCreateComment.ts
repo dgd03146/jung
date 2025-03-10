@@ -1,7 +1,13 @@
 'use client';
 
-import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import {
+	COMMENTS_DEFAULT_ORDER,
+	COMMENTS_LIMIT,
+	useSupabaseAuth,
+} from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { createCommentAction } from '../api/createCommentAction';
 import {
@@ -13,7 +19,8 @@ import {
 
 export const useCreateComment = () => {
 	const [newComment, setNewComment] = useState('');
-	const utils = trpc.useUtils();
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
@@ -29,7 +36,11 @@ export const useCreateComment = () => {
 			return false;
 		}
 
-		const queryKey = getCommentsQueryKey(postId);
+		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+			postId,
+			order: COMMENTS_DEFAULT_ORDER,
+			limit: COMMENTS_LIMIT,
+		});
 
 		const optimisticComment = createOptimisticComment(
 			newComment,
@@ -38,13 +49,15 @@ export const useCreateComment = () => {
 			parentId,
 		);
 
-		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
-			updateOptimisticComment(oldData, optimisticComment, parentId),
-		);
-
-		setNewComment('');
-
 		try {
+			await queryClient.ensureInfiniteQueryData(queryOptions);
+
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+				updateOptimisticComment(oldData, optimisticComment, parentId),
+			);
+
+			setNewComment('');
+
 			const serverComment = await createCommentAction(
 				postId,
 				newComment,
@@ -52,16 +65,21 @@ export const useCreateComment = () => {
 				parentId,
 			);
 
-			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
 				replaceOptimisticWithReal(oldData, optimisticComment.id, serverComment),
 			);
 
 			showToast('Comment has been created', 'success');
 			return serverComment;
 		} catch (error) {
-			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
-				rollbackOptimisticUpdate(oldData, optimisticComment.id),
-			);
+			try {
+				queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+					rollbackOptimisticUpdate(oldData, optimisticComment.id),
+				);
+			} catch (rollbackError) {
+				queryClient.invalidateQueries(queryOptions);
+			}
+
 			showToast('Failed to create comment', 'error');
 			return false;
 		}

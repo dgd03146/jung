@@ -1,11 +1,19 @@
-import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
+'use client';
 
-import { useToast } from '@jung/design-system';
+import { useTRPC } from '@/fsd/app';
+import {
+	COMMENTS_DEFAULT_ORDER,
+	COMMENTS_LIMIT,
+	useSupabaseAuth,
+} from '@/fsd/shared';
+import { useToast } from '@jung/design-system/components';
+import { useQueryClient } from '@tanstack/react-query';
 import { updateCommentAction } from '../api/updateCommentAction';
 import { findCommentById, replaceUpdatedComment } from '../lib';
 
 export const useUpdateComment = () => {
-	const utils = trpc.useUtils();
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
@@ -28,38 +36,32 @@ export const useUpdateComment = () => {
 			return;
 		}
 
-		const queryKey = getCommentsQueryKey(postId);
-
-		const existingData =
-			utils.comment.getCommentsByPostId.getInfiniteData(queryKey);
-
-		if (!existingData) {
-			showToast('Comment data not found', 'error');
-			return;
-		}
-
-		const previousComment = findCommentById(existingData, commentId);
-
-		if (!previousComment) {
-			showToast('Comment to update not found', 'error');
-			return;
-		}
-
-		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
-			replaceUpdatedComment(oldData, commentId, {
-				...previousComment,
-				content,
-			}),
-		);
+		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+			postId,
+			order: COMMENTS_DEFAULT_ORDER,
+			limit: COMMENTS_LIMIT,
+		});
 
 		try {
-			const updatedComment = await updateCommentAction(
-				commentId,
-				content,
-				postId,
+			const data = await queryClient.ensureInfiniteQueryData(queryOptions);
+
+			const previousComment = findCommentById(data, commentId);
+
+			if (!previousComment) {
+				showToast('Comment to update not found', 'error');
+				return;
+			}
+
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+				replaceUpdatedComment(oldData, commentId, {
+					...previousComment,
+					content,
+				}),
 			);
 
-			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			const updatedComment = await updateCommentAction(commentId, content);
+
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
 				replaceUpdatedComment(oldData, commentId, updatedComment),
 			);
 
@@ -67,9 +69,27 @@ export const useUpdateComment = () => {
 
 			return updatedComment;
 		} catch (error) {
-			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
-				replaceUpdatedComment(oldData, commentId, previousComment),
-			);
+			// 에러 발생 시 롤백 시도
+			try {
+				const data = queryClient.getQueryData(queryOptions.queryKey);
+				if (data) {
+					const previousComment = findCommentById(data, commentId);
+					if (previousComment) {
+						queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+							replaceUpdatedComment(oldData, commentId, previousComment),
+						);
+					} else {
+						// 롤백할 댓글을 찾지 못하면 무효화
+						throw new Error('Cannot find comment to rollback');
+					}
+				} else {
+					throw new Error('No data available for rollback');
+				}
+			} catch (rollbackError) {
+				// 롤백 실패 시 무효화로 폴백
+				queryClient.invalidateQueries(queryOptions);
+			}
+
 			handleError(error);
 		}
 	};

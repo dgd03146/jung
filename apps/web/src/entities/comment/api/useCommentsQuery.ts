@@ -1,7 +1,11 @@
-import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT, trpc } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 export const useCommentsQuery = (postId: string) => {
-	return trpc.comment.getCommentsByPostId.useSuspenseInfiniteQuery(
+	const trpc = useTRPC();
+
+	const infiniteOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions(
 		{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
 		{
 			getNextPageParam: (lastPage) => {
@@ -12,4 +16,6 @@ export const useCommentsQuery = (postId: string) => {
 			gcTime: 60 * 60 * 1000, // 1시간
 		},
 	);
+
+	return useSuspenseInfiniteQuery(infiniteOptions);
 };

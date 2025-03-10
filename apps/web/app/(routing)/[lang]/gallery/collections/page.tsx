@@ -1,20 +1,14 @@
 import { COLLECTION_PARAMS } from '@/fsd/entities/photo';
-import type { Sort } from '@/fsd/shared';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionPage } from '@/fsd/views/gallery';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
-type PageProps = {
-	searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export async function generateMetadata({
-	searchParams,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
 	try {
-		const collections = await trpc.photoCollections.getAllCollections({
-			sort: (searchParams.sort as Sort) || 'latest',
+		const collections = await caller.photoCollections.getAllCollections({
+			sort: COLLECTION_PARAMS.sort,
 		});
 
 		const collectionNames = collections
@@ -90,16 +84,18 @@ export async function generateMetadata({
 	}
 }
 
-export default function CollectionsPage({ searchParams }: PageProps) {
-	const sort = (searchParams.sort as Sort) || COLLECTION_PARAMS.sort;
+export default function CollectionsPage() {
+	const queryClient = getQueryClient();
 
-	void trpc.photoCollections.getAllCollections.prefetch({
-		sort,
-	});
+	queryClient.prefetchQuery(
+		trpc.photoCollections.getAllCollections.queryOptions({
+			sort: COLLECTION_PARAMS.sort,
+		}),
+	);
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<CollectionPage />
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }

@@ -1,6 +1,6 @@
 'use server';
 
-import { trpc } from '@/fsd/shared/api/trpc/server';
+import { caller } from '@/fsd/shared/api/trpc/server';
 
 export async function createCommentAction(
 	postId: string,
@@ -8,7 +8,7 @@ export async function createCommentAction(
 	userId: string,
 	parentId?: string,
 ) {
-	const newComment = await trpc.comment.createComment({
+	const newComment = await caller.comment.createComment({
 		postId,
 		content,
 		userId,

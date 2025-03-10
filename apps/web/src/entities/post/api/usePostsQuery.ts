@@ -1,17 +1,20 @@
-import { trpc } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { BLOG_DEFAULTS, type BlogSort } from '../config/blog';
 
 type QueryParams = {
 	cat?: string;
-	sort?: 'latest' | 'oldest' | 'popular';
+	sort?: BlogSort;
 	q?: string;
 };
 
 export function usePostsQuery(params: QueryParams = {}) {
 	const { cat, sort, q } = params;
+	const trpc = useTRPC();
 
-	return trpc.post.getAllPosts.useSuspenseInfiniteQuery(
+	const infiniteOptions = trpc.post.getAllPosts.infiniteQueryOptions(
 		{
-			limit: 9,
+			limit: BLOG_DEFAULTS.LIMIT,
 			cat,
 			sort,
 			q,
@@ -20,4 +23,6 @@ export function usePostsQuery(params: QueryParams = {}) {
 			getNextPageParam: (lastPage) => lastPage.nextCursor,
 		},
 	);
+
+	return useSuspenseInfiniteQuery(infiniteOptions);
 }

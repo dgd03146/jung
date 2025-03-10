@@ -20,7 +20,7 @@ export const CollectionDetailPage = ({
 }: CollectionDetailPageProps) => {
 	useGalleryRouteSync();
 
-	const [data] = useCollectionQuery(collectionId);
+	const { data } = useCollectionQuery(collectionId);
 	const { collection, photos } = data;
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
 

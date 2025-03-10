@@ -1,7 +1,8 @@
 import { MESSAGE_LIMIT } from '@/fsd/entities/message';
 import { siteUrl } from '@/fsd/shared';
-import { HydrateClient, trpc } from '@/fsd/shared/index.server';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookPage } from '@/fsd/views';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -42,12 +43,17 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function Page() {
-	void trpc.guestbook.getAllMessages.prefetchInfinite({ limit: MESSAGE_LIMIT });
+export default function Page() {
+	const queryClient = getQueryClient();
+	queryClient.prefetchInfiniteQuery(
+		trpc.guestbook.getAllMessages.infiniteQueryOptions({
+			limit: MESSAGE_LIMIT,
+		}),
+	);
 
 	return (
-		<HydrateClient>
+		<HydrationBoundary state={dehydrate(queryClient)}>
 			<GuestbookPage />
-		</HydrateClient>
+		</HydrationBoundary>
 	);
 }

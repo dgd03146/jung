@@ -267,7 +267,7 @@ export const commentService = {
 		return commentWithUser;
 	},
 
-	async delete(commentId: string): Promise<void> {
+	async delete({ commentId }: { commentId: string }): Promise<void> {
 		const { error } = await supabase
 			.from('post_comments')
 			.delete()

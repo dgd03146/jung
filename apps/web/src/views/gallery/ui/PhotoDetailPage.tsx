@@ -22,7 +22,7 @@ interface PhotoDetailPageProps {
 }
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
-	const [currentPhoto] = usePhotoQuery(photoId);
+	const { data: currentPhoto } = usePhotoQuery(photoId);
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
 

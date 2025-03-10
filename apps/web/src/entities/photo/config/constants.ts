@@ -11,6 +11,12 @@ export const ALBUM_OPTIONS = {
 	},
 } as const;
 
+export const TRENDING_PHOTO_PARAMS = {
+	LIMIT: 8,
+	QUERY: '',
+	SORT: 'popular',
+} as const;
+
 export const PHOTO_PARAMS = {
 	LIMIT: 8,
 	QUERY: '',
