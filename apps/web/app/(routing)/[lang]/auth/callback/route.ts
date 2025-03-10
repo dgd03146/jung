@@ -1,4 +1,4 @@
-import { createClientForServer } from '@/fsd/shared/api/supabase/server';
+import { createClient } from '@/fsd/shared/api/supabase/server';
 import { NextResponse } from 'next/server';
 // The client you created from the Server-Side Auth instructions
 
@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 	const next = searchParams.get('next') ?? '/';
 
 	if (code) {
-		const supabase = createClientForServer();
+		const supabase = await createClient();
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 		if (!error) {
 			const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer

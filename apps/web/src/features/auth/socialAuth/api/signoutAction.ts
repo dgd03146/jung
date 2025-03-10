@@ -1,8 +1,8 @@
 'use server';
 
-import { createClientForServer } from '@/fsd/shared/index.server';
+import { createClient } from '@/fsd/shared/index.server';
 
 export async function signOut() {
-	const supabase = createClientForServer();
+	const supabase = await createClient();
 	await supabase.auth.signOut();
 }

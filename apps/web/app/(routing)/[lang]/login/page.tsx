@@ -1,5 +1,5 @@
 import { siteUrl } from '@/fsd/shared';
-import { createClientForServer } from '@/fsd/shared/index.server';
+import { createClient } from '@/fsd/shared/index.server';
 import { LoginPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-	const supabase = createClientForServer();
+	const supabase = await createClient();
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
