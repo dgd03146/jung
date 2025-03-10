@@ -75,7 +75,7 @@ function SpotsContent() {
 	);
 }
 
-export const SpotsPage = ({ categories }: SpotsPageProps) => {
+export const SpotsPage = () => {
 	return (
 		<>
 			<Flex gap='3' align='center'>
