@@ -1,4 +1,4 @@
-import logo from '/public/images/og/default.png';
+import logo from '/public/images/logo.png';
 import BlurImage from './BlurImage';
 
 export const AppLogo = ({
@@ -7,13 +7,6 @@ export const AppLogo = ({
 	height = 200,
 }: { alt?: string; width?: number; height?: number }) => {
 	return (
-		<BlurImage
-			src={logo}
-			alt={alt}
-			width={width}
-			height={height}
-			priority
-			quality={100}
-		/>
+		<BlurImage src={logo} alt={alt} width={width} height={height} priority />
 	);
 };

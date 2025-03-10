@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 		siteName: 'JUNG',
 		images: [
 			{
-				url: '/images/og/default.png',
+				url: '/images/logo.png',
 				width: 1200,
 				height: 630,
 				alt: 'JUNG',
