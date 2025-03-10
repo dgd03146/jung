@@ -1,33 +1,37 @@
+import { useTRPC } from '@/fsd/app';
 import {
 	type GuestbookColor,
 	type GuestbookEmoji,
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/message';
-import { trpc, useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+import { useSupabaseAuth } from '@/fsd/shared';
+import { useToast } from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { createMessageAction } from '../api/createMessageAction';
 import { validateGuestbookMessage } from '../lib/validateGuestbookMessage';
 
 export const useOptimisticCreateMessage = () => {
-	const utils = trpc.useUtils();
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
+	const queryOptions = trpc.guestbook.getAllMessages.infiniteQueryOptions({
+		limit: MESSAGE_LIMIT,
+	});
+
 	const rollbackOptimisticUpdate = (tempId: string) => {
-		utils.guestbook.getAllMessages.setInfiniteData(
-			{ limit: MESSAGE_LIMIT },
-			(oldData) => {
-				if (!oldData) return oldData;
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) => ({
-						...page,
-						items: page.items.filter((item) => item.id !== tempId),
-					})),
-				};
-			},
-		);
+		queryClient.setQueryData(queryOptions.queryKey, (oldData) => {
+			if (!oldData) return oldData;
+			return {
+				...oldData,
+				pages: oldData.pages.map((page) => ({
+					...page,
+					items: page.items.filter((item) => item.id !== tempId),
+				})),
+			};
+		});
 	};
 
 	const mutateCreateMessage = async (formData: FormData) => {
@@ -63,10 +67,12 @@ export const useOptimisticCreateMessage = () => {
 			created_at: new Date().toISOString(),
 		};
 
-		// Optimistic update
-		utils.guestbook.getAllMessages.setInfiniteData(
-			{ limit: MESSAGE_LIMIT },
-			(oldData) => {
+		try {
+			// 데이터 먼저 확보
+			await queryClient.ensureInfiniteQueryData(queryOptions);
+
+			// 낙관적 업데이트 적용
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) => {
 				if (!oldData) return { pages: [], pageParams: [] };
 				const newPages = oldData.pages.map((page, index) => {
 					if (index === 0) {
@@ -78,10 +84,8 @@ export const useOptimisticCreateMessage = () => {
 					return page;
 				});
 				return { ...oldData, pages: newPages };
-			},
-		);
+			});
 
-		try {
 			const result = await createMessageAction(null, formData);
 
 			if (!result.success) {
@@ -90,7 +94,7 @@ export const useOptimisticCreateMessage = () => {
 				return false;
 			}
 
-			await utils.guestbook.getAllMessages.invalidate();
+			await queryClient.invalidateQueries(queryOptions);
 			showToast('Message created successfully! ✨', 'success');
 
 			return true;
