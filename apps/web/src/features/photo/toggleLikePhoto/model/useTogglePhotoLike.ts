@@ -1,11 +1,14 @@
-import { trpc, useSupabaseAuth } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/app';
+import { useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
 import type { Photo } from '@jung/shared/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { toggleLikePhotoAction } from '../api/toggleLikePhotoAction';
 import { updatePhotoLikes } from '../lib/updatePhotoLikes';
 
 export const useTogglePhotoLike = () => {
-	const utils = trpc.useUtils();
+	const queryClient = useQueryClient();
+	const trpc = useTRPC();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
@@ -15,30 +18,50 @@ export const useTogglePhotoLike = () => {
 			return false;
 		}
 
-		const previousData = utils.photos.getPhotoById.getData(photoId);
+		const previousData = queryClient.getQueryData(
+			trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+		);
+
 		const isLiked = !!previousData?.liked_by?.includes(user.id);
 
-		utils.photos.getPhotoById.setData(photoId, (old: Photo | undefined) =>
-			updatePhotoLikes(old, isLiked ? -1 : 1, user.id),
+		// 낙관적 업데이트
+		queryClient.setQueryData(
+			trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+			(old: Photo | undefined) =>
+				updatePhotoLikes(old, isLiked ? -1 : 1, user.id),
 		);
 
 		try {
 			const updatedPhoto = await toggleLikePhotoAction(photoId, user.id);
 
 			if (updatedPhoto) {
-				utils.photos.getPhotoById.setData(photoId, updatedPhoto);
+				queryClient.setQueryData(
+					trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+					updatedPhoto,
+				);
 			}
 
 			return true;
 		} catch (error) {
-			utils.photos.getPhotoById.setData(photoId, previousData);
-			showToast('Failed to update like', 'error');
+			// 에러 발생 시 이전 데이터로 롤백
+			queryClient.setQueryData(
+				trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+				previousData,
+			);
+
+			if (error instanceof Error) {
+				showToast(`Failed to update like: ${error.message}`, 'error');
+			} else {
+				showToast('Failed to update like', 'error');
+			}
 			return false;
 		}
 	};
 
 	const getIsLiked = (photoId: string) => {
-		const photo = utils.photos.getPhotoById.getData(photoId);
+		const photo = queryClient.getQueryData<Photo>(
+			trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+		);
 		return !!photo?.liked_by?.includes(user?.id ?? '');
 	};
 
