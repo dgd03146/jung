@@ -43,7 +43,7 @@ const HomePage = () => {
 		},
 	};
 
-	const textArray = ['Hey,', "I'm", 'JUNG'];
+	const HeroText = ['Hey,', "I'm", 'JUNG'];
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -69,9 +69,9 @@ const HomePage = () => {
 									},
 									hidden: {},
 								}}
-								aria-hidden
+								aria-label={HeroText.join(' ')}
 							>
-								{textArray.map((line, lineIndex) => (
+								{HeroText.map((line, lineIndex) => (
 									<AnimatedLine
 										key={`${line}-${lineIndex}`}
 										line={line}
