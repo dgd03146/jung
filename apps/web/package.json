@@ -10,7 +10,8 @@
     "format": "pnpm biome format --write .",
     "lint": "pnpm biome lint . --apply",
     "test:e2e": "playwright test",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@blocknote/core": "^0.23.6",
@@ -26,7 +27,6 @@
     "@mantine/hooks": "^7.14.1",
     "@react-google-maps/api": "^2.20.3",
     "@react-google-maps/marker-clusterer": "^2.20.0",
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "^5.67.1",
@@ -56,12 +56,16 @@
   "devDependencies": {
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
+    "@next/bundle-analyzer": "^15.2.1",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20.14.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vanilla-extract/next-plugin": "^2.4.1",
-    "browserslist": "^4.24.4",
+
+    "cross-env": "^7.0.3",
+
     "typescript": "^5.7.2"
+
   }
 }
