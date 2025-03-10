@@ -32,7 +32,7 @@ const itemAnimation = {
 };
 
 const GuestbookPage = () => {
-	const [data, { fetchNextPage, hasNextPage, isFetchingNextPage }] =
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useMessagesQuery();
 	const messages = data.pages.flatMap((page) => page.items) ?? [];
 

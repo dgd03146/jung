@@ -27,12 +27,12 @@ export const GalleryContent = ({ sort }: { sort: Sort }) => {
 		} as const,
 	});
 
-	const [data, query] = usePhotosQuery({
-		sort,
-		q,
-	});
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		usePhotosQuery({
+			sort,
+			q,
+		});
 
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
 
 	if (photos.length === 0) {
