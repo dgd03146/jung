@@ -11,6 +11,16 @@ const nextConfig = {
   compress: true,
 
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 768, 1024, 1280, 1440, 1920],
+    minimumCacheTTL: 60 * 60 * 24 * 7,
+    imageSizes: [
+      32, 40, 80, 128, 
+      180,200, 300,  
+      450, 640, 
+      800, 1000
+    ],
+
     remotePatterns: [
       {
         protocol: 'https',

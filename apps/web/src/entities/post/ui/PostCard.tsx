@@ -66,8 +66,12 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 					src={post.imagesrc}
 					alt={post.title}
 					fill
-					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-					priority={index !== undefined && index <= 6}
+					sizes={
+						viewMode === 'list'
+							? '(max-width: 480px) 180px, (max-width: 768px) 200px, 200px'
+							: '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw'
+					}
+					priority={index !== undefined && index <= 3}
 				/>
 			</Box>
 			<Flex
