@@ -1,8 +1,21 @@
-import { createServerClient } from '@supabase/ssr';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-export async function createClient() {
-	const cookieStore = await cookies();
+import { type CookieOptions, createServerClient } from '@supabase/ssr';
+
+let supabase: ReturnType<typeof createServerComponentClient> | null = null;
+
+export const createClient = () => {
+	if (supabase === null) {
+		supabase = createServerComponentClient({
+			cookies: () => cookies(),
+		});
+	}
+	return supabase;
+};
+
+export function createClientForServer() {
+	const cookieStore = cookies();
 
 	return createServerClient(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,7 +25,13 @@ export async function createClient() {
 				getAll() {
 					return cookieStore.getAll();
 				},
-				setAll(cookiesToSet) {
+				setAll(
+					cookiesToSet: {
+						name: string;
+						value: string;
+						options: CookieOptions;
+					}[],
+				) {
 					try {
 						for (const { name, value, options } of cookiesToSet) {
 							cookieStore.set(name, value, options);
