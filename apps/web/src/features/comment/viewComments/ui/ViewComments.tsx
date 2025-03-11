@@ -2,6 +2,7 @@ import {
 	CommentList,
 	CommentListSkeleton,
 	CommentStats,
+	useCommentsQuery,
 } from '@/fsd/entities/comment';
 import { CreateCommentForm } from '@/fsd/features/comment/createComment/ui/CreateCommentForm';
 import { useInfiniteScroll } from '@/fsd/shared';
@@ -9,7 +10,6 @@ import { LoadingSpinner } from '@/fsd/shared/ui';
 import { Flex } from '@jung/design-system/components/Flex/Flex';
 import type { Comment } from '@jung/shared/types';
 import { Suspense } from 'react';
-import { useCommentsQuery } from '../api/useCommentsQuery';
 import { calculateCommentCount } from '../lib/calculateCommentCount';
 import { CommentItem } from './CommentItem';
 
@@ -19,8 +19,9 @@ interface ViewCommentsProps {
 }
 
 export const ViewComments = ({ targetId, likeCount }: ViewCommentsProps) => {
-	const [data, query] = useCommentsQuery(targetId);
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		useCommentsQuery(targetId);
+
 	const { ref } = useInfiniteScroll({ hasNextPage, fetchNextPage });
 
 	const comments = data.pages.flatMap((page) => page.items) ?? [];
