@@ -27,7 +27,7 @@ export interface SpotFilters {
 const PAGE_SIZE = 10;
 
 export const useSpotTable = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate({ from: '/spots' });
 	const searchParams = useSearch({ from: '/spots/' }) as SpotFilters;
 	const queryClient = useQueryClient();
 

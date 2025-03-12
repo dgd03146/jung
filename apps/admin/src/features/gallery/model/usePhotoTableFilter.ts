@@ -5,7 +5,7 @@ import type { PhotoFilters } from './usePhotoTable';
 
 export const usePhotoTableFilter = () => {
 	const searchParams: PhotoFilters = useSearch({ from: '/gallery/photos/' });
-	const navigate = useNavigate();
+	const navigate = useNavigate({ from: '/gallery/photos' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 

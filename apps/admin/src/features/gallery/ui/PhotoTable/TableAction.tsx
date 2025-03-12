@@ -1,4 +1,3 @@
-import { Routes } from '@/fsd/shared';
 import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiPlus } from 'react-icons/hi';
@@ -24,7 +23,7 @@ export const TableAction = () => {
 				borderRadius='md'
 				fontSize='md'
 			/>
-			<Link to={`${Routes.gallery.path}/photos/new`}>
+			<Link to='/gallery/photos/new'>
 				<Button borderRadius='md' size='md'>
 					<HiPlus size={14} />
 					New Photos
