@@ -1,7 +1,7 @@
 'use server';
 
-import { trpc } from '@/fsd/shared/api/trpc/server';
+import { caller } from '@/fsd/shared/api/trpc/server';
 
-export async function deleteCommentAction(commentId: string, postId: string) {
-	await trpc.comment.deleteComment(commentId);
+export async function deleteCommentAction(commentId: string) {
+	await caller.comment.deleteComment({ commentId });
 }

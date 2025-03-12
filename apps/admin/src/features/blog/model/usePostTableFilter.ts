@@ -6,7 +6,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 export const usePostTableFilter = () => {
 	const searchParams: PostFilters = useSearch({ from: '/blog/' });
-	const navigate = useNavigate();
+	const navigate = useNavigate({ from: '/blog' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 

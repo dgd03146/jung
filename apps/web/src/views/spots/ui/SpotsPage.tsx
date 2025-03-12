@@ -8,6 +8,7 @@ import {
 } from '@/fsd/entities/spot';
 import {
 	FilterSpotCategory,
+	FilterSpotCategorySkeleton,
 	SpotListWithLikes,
 	ToggleSpotListButton,
 	ToggleSpotViewButton,
@@ -17,16 +18,12 @@ import {
 import {
 	LoadingSpinner,
 	SearchBar,
+	SearchBarSkeleton,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Box, Flex, Stack } from '@jung/design-system/components';
-import type { CategoryTree } from '@jung/shared/types';
 import { Suspense } from 'react';
-
-interface SpotsPageProps {
-	categories: CategoryTree[];
-}
 
 function SpotsContent() {
 	const { isListView, isSlidListVisible } = useSpotStore();
@@ -38,21 +35,14 @@ function SpotsContent() {
 		} as const,
 	});
 
-	const [data, query] = useSpotsQuery({ cat, sort, q });
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		useSpotsQuery({ cat, sort, q });
 	const spots = data.pages.flatMap((page) => page.items) ?? [];
-
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,
 		hasNextPage,
 	});
-
-	console.log(
-		hasNextPage,
-		isFetchingNextPage,
-		'hasNextPage, isFetchingNextPage',
-	);
 
 	return (
 		<Stack flex='1' marginY='4' width='full'>
@@ -76,14 +66,18 @@ function SpotsContent() {
 	);
 }
 
-export const SpotsPage = ({ categories }: SpotsPageProps) => {
+export const SpotsPage = () => {
 	return (
 		<>
 			<Flex gap='3' align='center'>
-				<SearchBar />
+				<Suspense fallback={<SearchBarSkeleton />}>
+					<SearchBar />
+				</Suspense>
 				<ToggleSpotViewButton />
 			</Flex>
-			<FilterSpotCategory categories={categories} />
+			<Suspense fallback={<FilterSpotCategorySkeleton length={6} />}>
+				<FilterSpotCategory />
+			</Suspense>
 			<Suspense fallback={<SpotListSkeleton count={12} />}>
 				<SpotsContent />
 			</Suspense>

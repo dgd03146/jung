@@ -1,21 +1,29 @@
+import { useTRPC } from '@/fsd/app';
 import { createQueryString, useSearchParamsState } from '@/fsd/shared';
 import { Box, Tag, Typography } from '@jung/design-system/components';
-import type { CategoryTree } from '@jung/shared/types';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as styles from './FilterSpotCategory.css';
 
-export const FilterSpotCategory = ({
-	categories,
-}: {
-	categories: CategoryTree[];
-}) => {
+export const FilterSpotCategory = () => {
 	const pathname = usePathname();
 	const { cat } = useSearchParamsState({
 		defaults: {
 			cat: 'all',
 		} as const,
 	});
+
+	const trpc = useTRPC();
+	const { data: categories } = useSuspenseQuery(
+		trpc.category.getCategories.queryOptions(
+			{ type: 'spots' },
+			{
+				staleTime: 1000 * 60 * 60 * 24, // 24시간
+				gcTime: 1000 * 60 * 60 * 24 * 7, // 7일
+			},
+		),
+	);
 
 	return (
 		<Box className={styles.container}>

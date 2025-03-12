@@ -1,6 +1,8 @@
+import { useTRPC } from '@/fsd/app';
 import { SPOT_PARAMS } from '@/fsd/entities/spot';
-import { trpc, useSupabaseAuth } from '@/fsd/shared';
+import { useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { toggleLikeSpotAction } from '../api/toggleLikeSpotAction';
 
@@ -12,7 +14,8 @@ const spotQueryParams = {
 } as const;
 
 export const useToggleSpotLike = () => {
-	const utils = trpc.useUtils();
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 	const userId = user?.id || '';
@@ -36,11 +39,15 @@ export const useToggleSpotLike = () => {
 		}
 
 		const spotData = isDetailPage
-			? utils.spot.getSpotById.getData(spotId)
+			? queryClient.getQueryData(
+					trpc.spot.getSpotById.queryOptions(spotId).queryKey,
+			  )
 			: null;
 
 		const allSpots = !isDetailPage
-			? utils.spot.getAllSpots.getInfiniteData(spotQueryParams)
+			? queryClient.getQueryData(
+					trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
+			  )
 			: null;
 
 		const previousData =
@@ -57,43 +64,49 @@ export const useToggleSpotLike = () => {
 
 		// 상세 페이지에서 좋아요 누를 때
 		if (spotData && isDetailPage) {
-			utils.spot.getSpotById.setData(spotId, (old) => {
-				if (!old) return old;
+			queryClient.setQueryData(
+				trpc.spot.getSpotById.queryOptions(spotId).queryKey,
+				(old) => {
+					if (!old) return old;
 
-				return {
-					...old,
-					likes: isLiked ? old.likes - 1 : old.likes + 1,
-					liked_by: isLiked
-						? old.liked_by.filter((id) => id !== user.id)
-						: [...(old.liked_by || []), user.id],
-				};
-			});
+					return {
+						...old,
+						likes: isLiked ? old.likes - 1 : old.likes + 1,
+						liked_by: isLiked
+							? old.liked_by.filter((id) => id !== user.id)
+							: [...(old.liked_by || []), user.id],
+					};
+				},
+			);
 		}
 
 		//  리스트 페이지에서 좋아요 누를 때
 		if (allSpots && !isDetailPage) {
-			utils.spot.getAllSpots.setInfiniteData(spotQueryParams, (old) => {
-				if (!old) return old;
+			queryClient.setQueryData(
+				trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
+				(old) => {
+					if (!old) return old;
 
-				return {
-					...old,
-					pages: old.pages.map((page) => ({
-						...page,
-						items: page.items.map((s) => {
-							if (s.id === spotId) {
-								return {
-									...s,
-									likes: isLiked ? s.likes - 1 : s.likes + 1,
-									liked_by: isLiked
-										? s.liked_by.filter((id) => id !== user.id)
-										: [...(s.liked_by || []), user.id],
-								};
-							}
-							return s;
-						}),
-					})),
-				};
-			});
+					return {
+						...old,
+						pages: old.pages.map((page) => ({
+							...page,
+							items: page.items.map((s) => {
+								if (s.id === spotId) {
+									return {
+										...s,
+										likes: isLiked ? s.likes - 1 : s.likes + 1,
+										liked_by: isLiked
+											? s.liked_by.filter((id) => id !== user.id)
+											: [...(s.liked_by || []), user.id],
+									};
+								}
+								return s;
+							}),
+						})),
+					};
+				},
+			);
 		}
 
 		try {
@@ -101,19 +114,26 @@ export const useToggleSpotLike = () => {
 			return true;
 		} catch (error) {
 			// Rollback on error
-			utils.spot.getSpotById.setData(spotId, previousData);
+			queryClient.setQueryData(
+				trpc.spot.getSpotById.queryOptions(spotId).queryKey,
+				previousData,
+			);
 			showToast('Failed to update like', 'error');
 			return false;
 		}
 	};
 
 	const getIsLiked = (spotId: string) => {
-		const spotData = utils.spot.getSpotById.getData(spotId);
+		const spotData = queryClient.getQueryData(
+			trpc.spot.getSpotById.queryOptions(spotId).queryKey,
+		);
 		if (spotData && isDetailPage) {
 			return !!spotData.liked_by?.includes(user?.id ?? '');
 		}
 
-		const allSpots = utils.spot.getAllSpots.getInfiniteData(spotQueryParams);
+		const allSpots = queryClient.getQueryData(
+			trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
+		);
 		const spot = allSpots?.pages
 			.flatMap((page) => page.items)
 			.find((s) => s.id === spotId);

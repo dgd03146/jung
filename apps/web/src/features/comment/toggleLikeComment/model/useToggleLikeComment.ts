@@ -1,10 +1,20 @@
-import { getCommentsQueryKey, trpc, useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+'use client';
+
+import { useTRPC } from '@/fsd/app';
+import {
+	COMMENTS_DEFAULT_ORDER,
+	COMMENTS_LIMIT,
+	type CommentData,
+	useSupabaseAuth,
+} from '@/fsd/shared';
+import { useToast } from '@jung/design-system/components';
+import { useQueryClient } from '@tanstack/react-query';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
 
 export const useToggleLikeComment = () => {
-	const utils = trpc.useUtils();
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
@@ -23,27 +33,32 @@ export const useToggleLikeComment = () => {
 			return;
 		}
 
-		const queryKey = getCommentsQueryKey(postId);
+		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+			postId,
+			order: COMMENTS_DEFAULT_ORDER,
+			limit: COMMENTS_LIMIT,
+		});
 
-		const existingData =
-			utils.comment.getCommentsByPostId.getInfiniteData(queryKey);
-
-		if (!existingData) {
-			showToast('Comment data not found', 'error');
+		let existingData: CommentData | undefined;
+		try {
+			existingData = await queryClient.ensureInfiniteQueryData(queryOptions);
+		} catch (fetchError) {
+			showToast('Unable to fetch comments', 'error');
 			return;
 		}
-
-		const originalData = structuredClone(existingData);
 
 		const { comment, isLiked } = findCommentAndCheckLike(
 			existingData,
 			commentId,
 			user.id,
 		);
+
 		if (!comment) {
 			showToast('Comment not found', 'error');
 			return;
 		}
+
+		const originalComment = structuredClone(comment);
 
 		const likeIncrement = isLiked ? -1 : 1;
 
@@ -56,7 +71,7 @@ export const useToggleLikeComment = () => {
 			$optimistic: true,
 		};
 
-		utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+		queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
 			replaceOptimisticLike(oldData, commentId, tempComment),
 		);
 
@@ -67,13 +82,12 @@ export const useToggleLikeComment = () => {
 				user.id,
 			);
 
-			utils.comment.getCommentsByPostId.setInfiniteData(queryKey, (oldData) =>
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
 				replaceOptimisticLike(oldData, commentId, serverComment),
 			);
 		} catch (error) {
-			utils.comment.getCommentsByPostId.setInfiniteData(
-				queryKey,
-				() => originalData,
+			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+				replaceOptimisticLike(oldData, commentId, originalComment),
 			);
 
 			handleError(error);

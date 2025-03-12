@@ -2,7 +2,7 @@ import {
 	ClientToastProvider,
 	DictionaryProvider,
 	KakaoProvider,
-	TrpcProvider,
+	TRPCReactProvider,
 } from '@/fsd/app/providers';
 import { Layout } from '@/fsd/widgets';
 
@@ -15,9 +15,13 @@ interface Props {
 	children: React.ReactNode;
 }
 
+export async function generateStaticParams() {
+	return [{ lang: 'ko' }, { lang: 'en' }];
+}
+
 export default async function RootLayout({ params, children }: Props) {
 	return (
-		<TrpcProvider>
+		<TRPCReactProvider>
 			<DictionaryProvider
 				lang={params.lang}
 				initialDictionary={await getDictionary(params.lang)}
@@ -30,6 +34,6 @@ export default async function RootLayout({ params, children }: Props) {
 				{/* Just for convenient switching between different routes */}
 				{/* <NavigationLinks /> */}
 			</DictionaryProvider>
-		</TrpcProvider>
+		</TRPCReactProvider>
 	);
 }

@@ -4,11 +4,11 @@ import {
 	PostHeader,
 	PostNavigation,
 	useAdjacentPostsQuery,
+	usePostQuery,
 } from '@/fsd/entities/post';
-import { usePostQuery } from '@/fsd/entities/post';
 import { ViewComments } from '@/fsd/features/comment';
 import { TogglePostLike } from '@/fsd/features/post';
-import { useCreateBlockNote } from '@blocknote/react';
+import { LoadingSpinner } from '@/fsd/shared';
 import { Container, Flex } from '@jung/design-system/components';
 import dynamic from 'next/dynamic';
 import * as styles from './PostDetailPage.css';
@@ -17,18 +17,17 @@ const BlockNoteEditor = dynamic(
 	() => import('@/fsd/shared/ui/BlockNote').then((mod) => mod.BlockNote),
 	{
 		ssr: false,
+		loading: () => <LoadingSpinner size='medium' />,
 	},
 );
 
 export const PostDetailPage = ({ postId }: { postId: string }) => {
-	const [post] = usePostQuery(postId);
-	const [adjacentPosts] = useAdjacentPostsQuery(postId);
+	const { data: post } = usePostQuery(postId);
+	const { data: adjacentPosts } = useAdjacentPostsQuery(postId);
 
 	if (!post) {
 		throw new Error('Post not found');
 	}
-
-	const editor = useCreateBlockNote({ initialContent: post.content });
 
 	return (
 		<Container marginX='auto'>
@@ -40,7 +39,7 @@ export const PostDetailPage = ({ postId }: { postId: string }) => {
 			>
 				<PostNavigation tags={post.tags} adjacentPosts={adjacentPosts} />
 				<Container className={styles.contentContainer}>
-					<BlockNoteEditor editor={editor} />
+					<BlockNoteEditor initialContent={post.content} />
 					<TogglePostLike
 						postId={postId}
 						likeCount={post.likes}

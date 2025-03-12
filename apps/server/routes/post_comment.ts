@@ -46,9 +46,11 @@ export const commentRouter = router({
 		}),
 
 	// 댓글 삭제
-	deleteComment: publicProcedure.input(z.string()).mutation(({ input }) => {
-		return commentService.delete(input);
-	}),
+	deleteComment: publicProcedure
+		.input(z.object({ commentId: z.string() }))
+		.mutation(({ input }) => {
+			return commentService.delete(input);
+		}),
 
 	// 댓글 좋아요 토글
 	toggleLike: publicProcedure

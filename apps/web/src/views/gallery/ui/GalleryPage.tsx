@@ -1,15 +1,16 @@
 'use client';
 
 import {
+	PHOTO_PARAMS,
 	PhotoCard,
 	PhotoList,
+	TRENDING_PHOTO_PARAMS,
 	transformPhoto,
 	usePhotosQuery,
 } from '@/fsd/entities/photo';
 import {
 	EmptyState,
 	LoadingSpinner,
-	type Sort,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
@@ -17,22 +18,22 @@ import { Flex } from '@jung/design-system/components';
 import { Suspense } from 'react';
 import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
 
-export const GalleryContent = ({ sort }: { sort: Sort }) => {
+export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
 	useGalleryRouteSync();
 
-	const { q } = useSearchParamsState({
+	const { q, sort } = useSearchParamsState({
 		defaults: {
-			sort,
-			q: '',
+			sort: isTrending ? TRENDING_PHOTO_PARAMS.SORT : PHOTO_PARAMS.SORT,
+			q: PHOTO_PARAMS.QUERY,
 		} as const,
 	});
 
-	const [data, query] = usePhotosQuery({
-		sort,
-		q,
-	});
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		usePhotosQuery({
+			sort,
+			q,
+		});
 
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = query;
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
 
 	if (photos.length === 0) {
@@ -63,7 +64,7 @@ export const GalleryContent = ({ sort }: { sort: Sort }) => {
 	);
 };
 
-export const GalleryPage = ({ sort }: { sort: Sort }) => {
+export const GalleryPage = ({ isTrending }: { isTrending?: boolean }) => {
 	return (
 		<Suspense
 			fallback={
@@ -72,7 +73,7 @@ export const GalleryPage = ({ sort }: { sort: Sort }) => {
 				</Flex>
 			}
 		>
-			<GalleryContent sort={sort} />
+			<GalleryContent isTrending={isTrending} />
 		</Suspense>
 	);
 };

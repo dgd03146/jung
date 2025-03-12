@@ -3,7 +3,7 @@
 import type { GuestbookColor, GuestbookEmoji } from '@/fsd/entities/message';
 import { validateGuestbookMessage } from '@/fsd/features/message/createMessage/lib/validateGuestbookMessage';
 
-import { trpc } from '@/fsd/shared/api/trpc/server';
+import { caller } from '@/fsd/shared/api/trpc/server';
 import { cookies } from 'next/headers';
 
 type CreateMessageState = {
@@ -49,7 +49,7 @@ export async function createMessageAction(
 			};
 		}
 
-		await trpc.guestbook.createMessage({
+		await caller.guestbook.createMessage({
 			content: content.trim(),
 			emoji,
 			backgroundColor,

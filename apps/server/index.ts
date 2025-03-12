@@ -1,4 +1,3 @@
-export { caller } from './routes/app';
-export { router } from './lib/trpc';
-export { type AppRouter, appRouter } from './routes/app';
 export { supabase } from './lib/supabase';
+export { createTRPCContext, router } from './lib/trpc';
+export { appRouter, caller, type AppRouter } from './routes/app';
