@@ -1,5 +1,4 @@
 import { usePostTableFilter } from '@/fsd/features/blog/model';
-import { Routes } from '@/fsd/shared';
 import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { FaPlus } from 'react-icons/fa';
@@ -24,7 +23,7 @@ const TableAction = () => {
 				onChange={handleFilterChange}
 				placeholder='Search posts...'
 			/>
-			<Link to={`${Routes.blog.path}/new`}>
+			<Link to='/blog/new'>
 				<Button borderRadius='md' size='md'>
 					<FaPlus size={14} />
 					New

@@ -4,7 +4,7 @@ import { Box, Flex, Typography } from '@jung/design-system';
 import type { AdjacentPosts } from '@jung/shared/types';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
-import logo from '/public/images/og/default.png';
+import logo from '/public/images/logo.png';
 import * as styles from './PostNavigation.css';
 import { PostTags } from './PostTags';
 

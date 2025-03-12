@@ -1,8 +1,7 @@
 import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { BiLogoGmail } from 'react-icons/bi';
-import { FaLinkedin } from 'react-icons/fa';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { logo } from '../../Header/ui/Navbar.css';
 
 const SOCIAL_LINKS = [
@@ -49,13 +48,13 @@ const Footer = () => {
 							role='link'
 							aria-label={ariaLabel}
 						>
-							<Typography.Heading
-								level={5}
+							<Typography.Text
+								level={1}
 								color={{ base: 'primary', hover: 'primary200' }}
 								transition='slow'
 							>
 								<Icon />
-							</Typography.Heading>
+							</Typography.Text>
 						</Box>
 					))}
 				</Flex>

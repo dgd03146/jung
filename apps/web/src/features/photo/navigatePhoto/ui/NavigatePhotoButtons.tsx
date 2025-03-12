@@ -18,15 +18,15 @@ interface Props {
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 	const { sort, collectionId } = usePhotoFilterStore();
 
-	const [adjacentPhotos] = isModal
-		? useAdjacentPhotosQuery({
-				id: photoId,
-				sort,
-				collectionId,
-		  })
-		: [{ previous: null, next: null }];
+	const { data: adjacentPhotos } = useAdjacentPhotosQuery({
+		id: photoId,
+		sort,
+		collectionId,
+		enabled: isModal,
+	});
 
-	const { previous: previousPhoto, next: nextPhoto } = adjacentPhotos;
+	const { previous: previousPhoto, next: nextPhoto } =
+		isModal && adjacentPhotos ? adjacentPhotos : { previous: null, next: null };
 
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhotoId: previousPhoto?.id,

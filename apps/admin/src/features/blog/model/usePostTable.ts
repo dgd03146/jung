@@ -32,7 +32,7 @@ export const postColumns: ColumnDef<AdminPost>[] = [
 const PAGE_SIZE = 10;
 
 export const usePostTable = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate({ from: '/blog' });
 	const searchParams = useSearch({ from: '/blog/' }) as PostFilters;
 	const queryClient = useQueryClient();
 

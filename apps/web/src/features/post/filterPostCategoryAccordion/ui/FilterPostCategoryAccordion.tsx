@@ -1,23 +1,33 @@
 'use client';
 
+import { useTRPC } from '@/fsd/app';
+import { BLOG_DEFAULTS } from '@/fsd/entities';
 import { createQueryString, useSearchParamsState } from '@/fsd/shared';
 import { Accordion, Box, Typography } from '@jung/design-system';
-import type { CategoryTree } from '@jung/shared/types';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as styles from './FilterPostCategoryAccordion.css';
 
-export const FilterPostCategoryAccordion = ({
-	categories,
-}: {
-	categories: CategoryTree[];
-}) => {
+export const FilterPostCategoryAccordion = () => {
 	const pathname = usePathname();
 	const { cat } = useSearchParamsState({
 		defaults: {
-			cat: 'all',
+			cat: BLOG_DEFAULTS.CATEGORY,
 		} as const,
 	});
+
+	const trpc = useTRPC();
+
+	const { data: categories } = useSuspenseQuery(
+		trpc.category.getCategories.queryOptions(
+			{ type: 'blog' },
+			{
+				staleTime: 1000 * 60 * 60 * 24, // 24시간
+				gcTime: 1000 * 60 * 60 * 24 * 7, // 7일
+			},
+		),
+	);
 
 	return (
 		<Box

@@ -1,7 +1,11 @@
 'use client';
 
 import '@/fsd/app/styles/editorStyle.css';
-import type { BlockNoteEditor } from '@blocknote/core';
+import {
+	BlockNoteSchema,
+	customizeCodeBlock,
+	defaultBlockSpecs,
+} from '@blocknote/core';
 import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
@@ -17,14 +21,40 @@ import {
 	NestBlockButton,
 	TextAlignButton,
 	UnnestBlockButton,
+	useCreateBlockNote,
 } from '@blocknote/react';
 import { Box } from '@jung/design-system/components';
 
+const customCodeBlock = customizeCodeBlock({
+	defaultLanguage: 'typescript',
+	supportedLanguages: [
+		{ id: 'javascript', match: ['javascript', 'js'], name: 'JavaScript' },
+		{ id: 'typescript', match: ['typescript', 'ts'], name: 'TypeScript' },
+		{ id: 'html', match: ['html'], name: 'HTML' },
+		{ id: 'css', match: ['css'], name: 'CSS' },
+		{ id: 'json', match: ['json'], name: 'JSON' },
+		{ id: 'markdown', match: ['markdown', 'md'], name: 'Markdown' },
+	],
+});
+
+const schema = BlockNoteSchema.create({
+	blockSpecs: {
+		...defaultBlockSpecs,
+		codeBlock: customCodeBlock,
+	},
+});
+type CustomPartialBlock = typeof schema.PartialBlock;
+
 type Props = {
-	editor: BlockNoteEditor;
+	initialContent: CustomPartialBlock[];
 };
 
-export const BlockNote = ({ editor }: Props) => {
+export const BlockNote = ({ initialContent }: Props) => {
+	const editor = useCreateBlockNote({
+		initialContent,
+		schema,
+	});
+
 	return (
 		<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
 			<BlockNoteView
