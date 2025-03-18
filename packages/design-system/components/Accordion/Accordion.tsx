@@ -16,11 +16,22 @@ export interface AccordionProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	type?: 'single' | 'multiple';
+	initialOpenIndex?: number;
+	storageKey?: string;
 }
 
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
-	({ type = 'single', children, ...restProps }: AccordionProps, ref) => {
-		const { value } = useAccordion(type);
+	(
+		{
+			type = 'single',
+			initialOpenIndex,
+			storageKey,
+			children,
+			...restProps
+		}: AccordionProps,
+		ref,
+	) => {
+		const { value } = useAccordion({ type, initialOpenIndex, storageKey });
 
 		return (
 			<AccordionContext.Provider value={value}>
