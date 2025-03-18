@@ -1,19 +1,24 @@
+'use client';
+
 import { BlurImage } from '@/fsd/shared';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system';
-import type { AdjacentPosts } from '@jung/shared/types';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
 import logo from '/public/images/logo.png';
+import { usePostQuery } from '../api';
+import { useAdjacentPostsQuery } from '../api/useAdjacentPostsQuery';
 import * as styles from './PostNavigation.css';
 import { PostTags } from './PostTags';
 
 interface Props {
-	adjacentPosts: AdjacentPosts;
-	tags: string[];
+	postId: string;
 }
 
-const PostNavigation = ({ adjacentPosts, tags }: Props) => {
+const PostNavigation = ({ postId }: Props) => {
+	const { data: post } = usePostQuery(postId);
+	const { data: adjacentPosts } = useAdjacentPostsQuery(postId);
+
 	return (
 		<Box className={styles.sidebar}>
 			<Flex
@@ -59,27 +64,29 @@ const PostNavigation = ({ adjacentPosts, tags }: Props) => {
 					<BlurImage src={logo} alt='logo' width={60} height={60} />
 				</Flex>
 
-				<Flex
-					display={{ base: 'none', laptop: 'flex' }}
-					direction='column'
-					gap='1'
-					minWidth={{ laptop: '60' }}
-					borderTopWidth={{ laptop: 'hairline' }}
-					borderBottomWidth={{ laptop: 'hairline' }}
-					borderColor='gray'
-					borderStyle='solid'
-					paddingY={{ laptop: '8' }}
-				>
-					<Typography.Text
-						level={1}
-						color='primary'
-						fontWeight='semibold'
-						className={styles.sidebarHeader}
+				{post?.tags && (
+					<Flex
+						display={{ base: 'none', laptop: 'flex' }}
+						direction='column'
+						gap='1'
+						minWidth={{ laptop: '60' }}
+						borderTopWidth={{ laptop: 'hairline' }}
+						borderBottomWidth={{ laptop: 'hairline' }}
+						borderColor='gray'
+						borderStyle='solid'
+						paddingY={{ laptop: '8' }}
 					>
-						Tags
-					</Typography.Text>
-					<PostTags tags={tags} />
-				</Flex>
+						<Typography.Text
+							level={1}
+							color='primary'
+							fontWeight='semibold'
+							className={styles.sidebarHeader}
+						>
+							Tags
+						</Typography.Text>
+						<PostTags tags={post.tags} />
+					</Flex>
+				)}
 
 				{adjacentPosts.previous && (
 					<Flex
