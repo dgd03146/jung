@@ -12,3 +12,4 @@ export { MotionCard } from './MotionCard';
 export { default as NavigationLinks } from './NavigationLinks';
 export { SearchBar } from './SearchBar';
 export { SearchBarSkeleton } from './SearchBarSkeleton';
+export { EditorSkeleton } from './EditorSkeleton';
