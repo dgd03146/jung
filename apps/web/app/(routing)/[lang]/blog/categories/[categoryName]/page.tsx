@@ -5,7 +5,7 @@ import {
 	ViewPosts,
 } from '@/fsd/features/post';
 import { SearchBarSkeleton } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { BlogPageControls } from '@/fsd/views';
 import { Box, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
@@ -14,22 +14,7 @@ import { Suspense } from 'react';
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const categories = await caller.category.getCategories({ type: 'blog' });
-
-	const params = [
-		{ categoryName: BLOG_DEFAULTS.CATEGORY },
-		...categories.map((category) => ({
-			categoryName: category.name.toLowerCase(),
-		})),
-
-		...categories.flatMap((category) =>
-			category.subCategories.map((subCategory) => ({
-				categoryName: subCategory.name.toLowerCase(),
-			})),
-		),
-	];
-
-	return params;
+	return [];
 }
 
 export default async function CategoryPostsPage({
