@@ -1,29 +1,32 @@
 'use client';
 
 import { BLOG_DEFAULTS, usePostsQuery } from '@/fsd/entities';
-import { PostList, type ViewMode } from '@/fsd/entities/post';
+import { PostList, useViewModeStore } from '@/fsd/entities/post';
 import {
 	LoadingSpinner,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
+import { useParams } from 'next/navigation';
 
-interface ViewPostsProps {
-	viewMode: ViewMode;
-}
+export const ViewPosts = () => {
+	const { viewMode } = useViewModeStore();
+	const params = useParams();
+	const categoryName =
+		typeof params.categoryName === 'string'
+			? params.categoryName
+			: BLOG_DEFAULTS.CATEGORY;
 
-export const ViewPosts = ({ viewMode }: ViewPostsProps) => {
-	const { cat, sort, q } = useSearchParamsState({
+	const { sort, q } = useSearchParamsState({
 		defaults: {
-			cat: BLOG_DEFAULTS.CATEGORY,
 			sort: BLOG_DEFAULTS.SORT,
 			q: BLOG_DEFAULTS.QUERY,
 		} as const,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		usePostsQuery({ cat, sort, q });
+		usePostsQuery({ cat: categoryName, sort, q });
 
 	const posts = data.pages.flatMap((page) => page.items) ?? [];
 
