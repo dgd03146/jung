@@ -5,13 +5,13 @@ import { useAccordion } from './useAccordion';
 describe('useAccordion hook', () => {
 	describe('single type', () => {
 		it('initializes with correct default values', () => {
-			const { result } = renderHook(() => useAccordion('single'));
+			const { result } = renderHook(() => useAccordion({ type: 'single' }));
 
 			expect(result.current.value.openIndexes).toEqual(new Set());
 		});
 
 		it('handles toggle index correctly', () => {
-			const { result } = renderHook(() => useAccordion('single'));
+			const { result } = renderHook(() => useAccordion({ type: 'single' }));
 
 			act(() => {
 				result.current.value.handleToggleIndex(1);
@@ -29,13 +29,13 @@ describe('useAccordion hook', () => {
 
 	describe('multiple type', () => {
 		it('initializes with correct default values', () => {
-			const { result } = renderHook(() => useAccordion('multiple'));
+			const { result } = renderHook(() => useAccordion({ type: 'multiple' }));
 
 			expect(result.current.value.openIndexes).toEqual(new Set());
 		});
 
 		it('handles toggle index correctly', () => {
-			const { result } = renderHook(() => useAccordion('multiple'));
+			const { result } = renderHook(() => useAccordion({ type: 'multiple' }));
 
 			act(() => {
 				result.current.value.handleToggleIndex(1);
