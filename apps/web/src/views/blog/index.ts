@@ -1,2 +1,1 @@
-export { BlogPage } from './ui/BlogPage';
-export { PostDetailPage } from './ui/PostDetailPage';
+export * from './ui';

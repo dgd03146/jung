@@ -1,5 +1,5 @@
 export { AboutPage } from './about/ui';
-export { BlogPage, PostDetailPage } from './blog/ui';
+export * from './blog';
 export { GuestbookPage } from './guestbook/ui';
 export { HomePage } from './home/ui';
 export { LoginPage } from './login/ui';
