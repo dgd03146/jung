@@ -45,6 +45,29 @@ export const contentChild = style([
 	}),
 ]);
 
+export const contentNoAnimation = recipe({
+	base: sprinkles({
+		display: 'flex',
+		flexDirection: 'column',
+		overflow: 'hidden',
+	}),
+	variants: {
+		isOpen: {
+			true: {
+				maxHeight: 'none',
+				visibility: 'visible',
+			},
+			false: {
+				maxHeight: '0px',
+				visibility: 'hidden',
+			},
+		},
+	},
+	defaultVariants: {
+		isOpen: false,
+	},
+});
+
 // globalStyle(`${contentChild}:first-child`, {
 // 	paddingTop: '16px',
 // });

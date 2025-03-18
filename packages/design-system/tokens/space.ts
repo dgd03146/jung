@@ -58,6 +58,8 @@ export const space = {
 	'112': '28rem', // 448px
 	'116': '29rem', // 464px
 	'120': '30rem', // 480px
+	'180': '45rem', // 720px
+
 	auto: 'auto',
 	full: '100%',
 	fit: 'fit-content',

@@ -7,7 +7,7 @@ import {
 import { Layout } from '@/fsd/widgets';
 
 import '@/fsd/app/styles/global.css';
-import { getDictionary } from '@/fsd/shared/config';
+import { SUPPORTED_LANGS, getDictionary } from '@/fsd/shared/config';
 
 interface Props {
 	params: { lang: string };
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-	return [{ lang: 'ko' }, { lang: 'en' }];
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
 }
 
 export default async function RootLayout({ params, children }: Props) {

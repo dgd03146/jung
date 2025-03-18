@@ -6,13 +6,19 @@ import type { AppRouter } from '@jung/server';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import {
+	createTRPCClient,
+	httpBatchLink,
+	httpLink,
+	splitLink,
+} from '@trpc/client';
 import { createTRPCContext } from '@trpc/tanstack-react-query';
+import fetchPonyfill from 'fetch-ponyfill';
 import { useState } from 'react';
 
 export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
 
-function getUrl() {
+export function getUrl() {
 	const base = (() => {
 		if (typeof window !== 'undefined') return '';
 		if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
@@ -34,9 +40,22 @@ export function TRPCReactProvider(
 	const [trpcClient] = useState(() =>
 		createTRPCClient<AppRouter>({
 			links: [
-				httpBatchLink({
-					// transformer: superjson, <-- if you use a data transformer
-					url: getUrl(),
+				splitLink({
+					condition(op) {
+						// check for context property `skipBatch`
+						return op.context.skipBatch === true;
+					},
+					// when condition is true, use normal request
+					true: httpLink({
+						// vercel issue with fetch undici
+						fetch: fetchPonyfill().fetch,
+						url: `${getUrl()}`,
+					}),
+					// when condition is false, use batching
+					false: httpBatchLink({
+						fetch: fetchPonyfill().fetch,
+						url: `${getUrl()}`,
+					}),
 				}),
 			],
 		}),

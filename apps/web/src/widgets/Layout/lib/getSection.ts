@@ -4,7 +4,7 @@ export const getSection = (pathname: string) => {
 
 	// blog/[id] 숨기기
 	if (
-		(paths[0] === 'blog' && paths.length > 1) ||
+		(paths[0] === 'blog' && paths.length > 1 && paths[1] !== 'categories') ||
 		(paths[0] === 'spots' && paths.length > 1)
 	) {
 		return '';

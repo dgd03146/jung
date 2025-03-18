@@ -1,14 +1,20 @@
-import { BlurImage, formatDate } from '@/fsd/shared';
-import { capitalizeFirstLetter } from '@/fsd/shared';
+'use client';
+
+import { usePostQuery } from '@/fsd/entities/post';
+import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
 import { Box, Flex, Stack, Typography } from '@jung/design-system';
-import type { Post } from '@jung/shared/types';
 import * as styles from './PostHeader.css';
 
 type Props = {
-	post: Post;
+	postId: string;
 };
 
-const PostHeader = ({ post }: Props) => {
+const PostHeader = ({ postId }: Props) => {
+	const { data: post } = usePostQuery(postId);
+
+	if (!post) {
+		throw new Error('Post not found');
+	}
 	return (
 		<Box
 			borderBottomWidth='hairline'
