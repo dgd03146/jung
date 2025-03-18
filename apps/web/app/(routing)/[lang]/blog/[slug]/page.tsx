@@ -1,4 +1,5 @@
 import {
+	BLOG_DEFAULTS,
 	PostHeader,
 	PostNavigation,
 	PostNavigationSkeleton,
@@ -86,7 +87,13 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const posts = await caller.post.getAllPosts({
+		limit: BLOG_DEFAULTS.LIMIT,
+		sort: BLOG_DEFAULTS.SORT,
+		q: BLOG_DEFAULTS.QUERY,
+	});
+
+	return posts.items.map((post) => ({ slug: String(post.id) }));
 }
 
 export default function Page({ params }: { params: { slug: string } }) {
