@@ -1,9 +1,16 @@
-import { BLOG_DEFAULTS } from '@/fsd/entities/post';
-import { siteUrl } from '@/fsd/shared';
+import { BLOG_DEFAULTS, PostListSkeleton } from '@/fsd/entities/post';
+import {
+	FilterPostCategoryAccordion,
+	FilterPostCategoryAccordionSkeleton,
+	ViewPosts,
+} from '@/fsd/features/post';
+import { SearchBarSkeleton, siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { BlogPage } from '@/fsd/views';
+import { BlogPageControls } from '@/fsd/views';
+import { Box, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Blog',
@@ -36,13 +43,25 @@ export default async function Page() {
 		}),
 	);
 
-	await queryClient.prefetchQuery(
+	queryClient.prefetchQuery(
 		trpc.category.getCategories.queryOptions({ type: 'blog' }),
 	);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<BlogPage />
+			<Flex gap={{ mobile: '0', tablet: '10' }}>
+				<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
+					<FilterPostCategoryAccordion />
+				</Suspense>
+				<Box as='main' minWidth='0' flex='1'>
+					<Suspense fallback={<SearchBarSkeleton />}>
+						<BlogPageControls />
+					</Suspense>
+					<Suspense fallback={<PostListSkeleton count={6} />}>
+						<ViewPosts />
+					</Suspense>
+				</Box>
+			</Flex>
 		</HydrationBoundary>
 	);
 }
