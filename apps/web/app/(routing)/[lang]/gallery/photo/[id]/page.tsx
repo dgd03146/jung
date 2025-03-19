@@ -89,6 +89,12 @@ export async function generateMetadata({
 	}
 }
 
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return [];
+}
+
 export default function PhotoPage({
 	params,
 }: {
