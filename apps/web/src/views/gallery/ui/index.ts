@@ -1,6 +1,5 @@
-export { GalleryPage } from './GalleryPage';
-export { CollectionPage } from './CollectionPage';
-export { PhotoDetailPage } from './PhotoDetailPage';
+export { CollectionContent } from './CollectionContent';
 export { CollectionDetailPage } from './CollectionDetailPage';
+export { GalleryContent } from './GalleryContent';
 export { GalleryNavigationWrapper } from './GalleryNavigationWrapper';
 export { PhotoDetailPage } from './PhotoDetailPage';

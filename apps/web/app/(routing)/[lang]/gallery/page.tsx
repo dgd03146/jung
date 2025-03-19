@@ -1,9 +1,11 @@
 import { PHOTO_PARAMS } from '@/fsd/entities/photo';
-import { siteUrl } from '@/fsd/shared';
+import { LoadingSpinner, siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { GalleryPage } from '@/fsd/views/gallery';
+import { GalleryContent } from '@/fsd/views/gallery';
+import { Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Gallery',
@@ -50,6 +52,8 @@ export const metadata: Metadata = {
 	},
 };
 
+export const revalidate = 21600;
+
 export default function Page() {
 	const queryClient = getQueryClient();
 
@@ -63,7 +67,15 @@ export default function Page() {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<GalleryPage />
+			<Suspense
+				fallback={
+					<Flex justify='center' align='center' height='1/4'>
+						<LoadingSpinner size='medium' />
+					</Flex>
+				}
+			>
+				<GalleryContent />
+			</Suspense>
 		</HydrationBoundary>
 	);
 }
