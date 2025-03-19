@@ -1,8 +1,10 @@
+import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
 import { siteUrl } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 interface PageProps {
 	params: {
@@ -83,6 +85,12 @@ export async function generateMetadata({
 	}
 }
 
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return [];
+}
+
 export default async function Page({ params }: PageProps) {
 	const { id: collectionId } = params;
 	const queryClient = getQueryClient();
@@ -93,7 +101,9 @@ export default async function Page({ params }: PageProps) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<CollectionDetailPage collectionId={collectionId} />
+			<Suspense fallback={<PhotoDetailSkeleton />}>
+				<CollectionDetailPage collectionId={collectionId} />
+			</Suspense>
 		</HydrationBoundary>
 	);
 }
