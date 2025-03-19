@@ -1,7 +1,7 @@
-import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
-import { siteUrl } from '@/fsd/shared';
+import { LoadingSpinner, siteUrl } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
+import { Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -101,7 +101,13 @@ export default async function Page({ params }: PageProps) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense fallback={<PhotoDetailSkeleton />}>
+			<Suspense
+				fallback={
+					<Flex justify='center' align='center' height='1/4'>
+						<LoadingSpinner size='medium' />
+					</Flex>
+				}
+			>
 				<CollectionDetailPage collectionId={collectionId} />
 			</Suspense>
 		</HydrationBoundary>
