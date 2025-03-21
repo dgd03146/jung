@@ -2,11 +2,13 @@
   "name": "@jung/design-system",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     ".": "./components/index.ts",
-    "./icons": "./icons/index.ts",
-    "./tokens": "./tokens/index.ts"
+    "./tokens": "./tokens/index.ts",
+    "./styles": "./styles/index.ts"
   },
+  "sideEffects": false,
   "scripts": {
     "format": "pnpm biome format --write .",
     "lint": "pnpm biome lint . --apply",
@@ -14,31 +16,54 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest",
-      "clean": "find . -type f -name 'vite.config.*.timestamp-*' -ls -delete 2>/dev/null"
+    "clean": "find . -type f -name 'vite.config.*.timestamp-*' -ls -delete 2>/dev/null",
+    "size": "size-limit",
+    "size:why": "size-limit --why"
   },
+  "size-limit": [
+    {
+      "name": "components",
+      "path": "dist/components/index.js",
+      "limit": "50 KB"
+    },
+    {
+      "name": "tokens",
+      "path": "dist/tokens/index.js",
+      "limit": "5 KB"
+    },
+    {
+      "name": "styles",
+      "path": "dist/styles/index.js",
+      "limit": "3 KB"
+    }
+  ],
   "devDependencies": {
     "@jung/configs": "workspace:*",
     "@jung/shared": "workspace:*",
     "@jung/typescript-config": "workspace:*",
+
+    "@size-limit/esbuild-why": "^11.2.0",
+    "@size-limit/preset-small-lib": "^11.2.0",
     "@turbo/gen": "^1.13.3",
-    "@types/lodash": "^4.17.4",
     "@types/node": "^20.14.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vanilla-extract/css": "^1.15.2",
     "@vanilla-extract/css-utils": "^0.1.4",
     "@vanilla-extract/dynamic": "^2.1.1",
     "@vanilla-extract/esbuild-plugin": "^2.3.8",
-    "@vanilla-extract/recipes": "^0.5.3",
-    "@vanilla-extract/sprinkles": "^1.6.2",
-    "clsx": "^2.1.1",
-    "react": "^18.3.1",
+    "size-limit": "^11.2.0",
     "tsup": "^8.1.0",
     "typescript": "^5.7.2"
   },
+  "peerDependencies": {
+    "@vanilla-extract/css": "^1.15.0",
+    "@vanilla-extract/recipes": "^0.5.0",
+    "@vanilla-extract/sprinkles": "^1.6.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "react-dom": "^18.3.1",
+    "clsx": "^2.1.1",
     "react-icons": "^5.2.1",
     "react-spinners": "^0.13.8"
   }
