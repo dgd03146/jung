@@ -22,6 +22,7 @@ export const overlay = style({
 	background: 'linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0))',
 	opacity: 0,
 	transition: 'opacity 0.2s',
+	alignItems: 'end',
 	':hover': {
 		opacity: 1,
 	},

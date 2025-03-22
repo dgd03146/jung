@@ -1,6 +1,6 @@
 import { useTRPC } from '@/fsd/app';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import { useQueryClient } from '@tanstack/react-query';
 import { togglePostLikeAction } from '../api/togglePostLikeAction';
 import { updatePostLikes } from './../lib/updatePostLikes';

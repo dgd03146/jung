@@ -1,6 +1,12 @@
 'use client';
 
-import { Box, Button, Flex, Textarea, useToast } from '@jung/design-system';
+import {
+	Box,
+	Button,
+	Flex,
+	Textarea,
+	useToast,
+} from '@jung/design-system/components';
 import { useState } from 'react';
 import { useUpdateComment } from '../model/useUpdateComment';
 import * as styles from './EditCommentForm.css';
@@ -35,7 +41,7 @@ export const EditCommentForm = ({
 	return (
 		<Box className={styles.commentContainer} marginBottom='4'>
 			<Flex gap='4' alignItems='flex-start'>
-				<Box flex='1'>
+				<Box flex={1}>
 					<Textarea
 						fontSize='xs'
 						borderRadius='md'

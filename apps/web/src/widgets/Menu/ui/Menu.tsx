@@ -8,7 +8,7 @@ import {
 	SECONDARY_NAV_LIST,
 	SLIDE_LEFT_ANIMATION,
 } from '@/fsd/shared/config';
-import { Flex } from '@jung/design-system';
+import { Flex } from '@jung/design-system/components';
 import { motion } from 'framer-motion';
 import { Navbar } from '../../Header/ui';
 import NavLinks from './NavLinks';

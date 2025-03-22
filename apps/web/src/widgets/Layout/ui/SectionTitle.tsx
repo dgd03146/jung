@@ -29,11 +29,7 @@ export function SectionTitle() {
 					href={`/${mainSection?.toLowerCase()}`}
 					style={{ display: 'flex', alignItems: 'center' }}
 				>
-					<Typography.Text
-						level={1}
-						color={{ base: 'primary', hover: 'primary200' }}
-						transition='slow'
-					>
+					<Typography.Text level={1} className={styles.sectionText}>
 						{mainSection}
 					</Typography.Text>
 				</Link>
@@ -49,11 +45,7 @@ export function SectionTitle() {
 						href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
 						style={{ display: 'flex', alignItems: 'center' }}
 					>
-						<Typography.Text
-							level={1}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-						>
+						<Typography.Text level={1} className={styles.sectionText}>
 							{subSection}
 						</Typography.Text>
 					</Link>

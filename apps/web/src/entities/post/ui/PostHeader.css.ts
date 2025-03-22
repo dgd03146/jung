@@ -17,3 +17,7 @@ export const category = style({
 	padding: '2px 8px',
 	borderRadius: '4px',
 });
+
+export const container = style({
+	borderBottomWidth: '1px',
+});

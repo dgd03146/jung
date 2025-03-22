@@ -29,7 +29,7 @@ export const input = style({
 	background: 'none',
 	outline: 'none',
 	fontSize: '14px',
-	color: palette.primary400,
+	color: palette.primary300,
 	caretColor: palette.primary,
 
 	'::placeholder': {

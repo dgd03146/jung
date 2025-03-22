@@ -1,5 +1,5 @@
 import type { ViewMode } from '@/fsd/entities/post';
-import { Button, Flex } from '@jung/design-system';
+import { Button, Flex } from '@jung/design-system/components';
 import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 

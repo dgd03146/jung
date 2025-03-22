@@ -1,4 +1,4 @@
-import { Flex } from '@jung/design-system';
+import { Flex } from '@jung/design-system/components';
 import { useMemo } from 'react';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import * as styles from './StarRating.css';

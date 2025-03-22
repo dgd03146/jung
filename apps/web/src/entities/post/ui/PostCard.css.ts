@@ -148,6 +148,7 @@ export const category = style({
 });
 
 export const tableNumber = style({
+	transition: 'transform 0.15s ease, opacity 0.15s ease',
 	selectors: {
 		'article:hover &': {
 			opacity: 0,
@@ -158,6 +159,8 @@ export const tableNumber = style({
 
 export const playButton = style({
 	transform: 'scale(0.8)',
+	opacity: 0,
+	transition: 'transform 0.15s ease, opacity 0.15s ease',
 
 	selectors: {
 		'article:hover &': {
@@ -165,5 +168,12 @@ export const playButton = style({
 			transform: 'scale(1)',
 			animation: `${fadeIn} 0.2s ease`,
 		},
+	},
+});
+
+export const title = style({
+	transition: 'color 0.15s ease',
+	':hover': {
+		color: palette.primary,
 	},
 });

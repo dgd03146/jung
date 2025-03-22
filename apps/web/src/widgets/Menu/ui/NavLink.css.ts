@@ -1,4 +1,5 @@
 import { sprinkles } from '@jung/design-system/styles';
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const mainNav = style([
@@ -34,3 +35,10 @@ export const subNav = style([
 		fontFamily: 'var(--font-bebas)',
 	},
 ]);
+
+export const navLinkText = style({
+	':hover': {
+		transition: 'color 0.3s ease-in-out',
+		color: palette.primary200,
+	},
+});

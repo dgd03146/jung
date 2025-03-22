@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@jung/design-system';
+import { Box, Typography } from '@jung/design-system/components';
 import { motion } from 'framer-motion';
 import { containerAnimation, contentAnimation } from '../config/animations';
 import * as styles from './EmptyMessageWall.css';

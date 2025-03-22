@@ -53,7 +53,7 @@ export default async function Page() {
 				<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
 					<FilterPostCategoryAccordion />
 				</Suspense>
-				<Box as='main' minWidth='0' flex='1'>
+				<Box as='main' minWidth='0' flex={1}>
 					<Suspense fallback={<SearchBarSkeleton />}>
 						<BlogPageControls />
 					</Suspense>

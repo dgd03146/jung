@@ -1,4 +1,4 @@
-import { Flex, Typography } from '@jung/design-system';
+import { Flex, Typography } from '@jung/design-system/components';
 import { FaRegComment, FaRegHeart } from 'react-icons/fa';
 
 interface CommentStatsProps {

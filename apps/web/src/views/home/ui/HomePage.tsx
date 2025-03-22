@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatedLine, useInViewAnimation } from '@/fsd/shared';
-import { Stack, Typography } from '@jung/design-system';
+import { Stack, Typography } from '@jung/design-system/components';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
 import { useRef } from 'react';
 import * as styles from './HomePage.css';

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@jung/design-system';
+import { Box, Typography } from '@jung/design-system/components';
 import * as styles from './MessagePrompt.css';
 
 interface MessagePromptProps {

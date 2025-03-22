@@ -107,7 +107,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 					<Suspense fallback={<PostNavigationSkeleton />}>
 						<PostNavigation postId={postId} />
 					</Suspense>
-					<Container flex='1' maxWidth='180'>
+					<Container flex={1} maxWidth='180'>
 						<Suspense fallback={<PostDetailContentSkeleton />}>
 							<PostDetailContent postId={postId} />
 						</Suspense>

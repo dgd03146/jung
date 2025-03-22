@@ -70,7 +70,7 @@ export const shortParagraphSkeleton = style([
 export const imageSkeleton = style([
 	skeletonShimmer,
 	{
-		height: '220px',
+		height: '224px',
 		width: '100%',
 		borderRadius: '8px',
 		backgroundColor: palette.gray,

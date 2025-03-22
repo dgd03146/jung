@@ -39,7 +39,6 @@ export const PhotoCard = ({ imageProps, contextProps }: PhotoCardProps) => {
 						position='absolute'
 						className={styles.overlay}
 						display='flex'
-						alignItems='end'
 						padding='4'
 					>
 						<Typography.SubText

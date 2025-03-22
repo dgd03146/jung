@@ -1,5 +1,5 @@
 import { formatRelativeTime } from '@/fsd/shared';
-import { Box, Flex, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system/components';
 import * as styles from './CommentUserInfo.css';
 
 interface CommentUserInfoProps {

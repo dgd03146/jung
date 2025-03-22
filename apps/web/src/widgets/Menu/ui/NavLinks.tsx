@@ -33,10 +33,8 @@ const NavLink = ({
 							desktop: '3xl', // 30px
 					  }
 			}
-			color={{
-				base: isActive ? 'primary400' : 'white',
-				hover: 'primary200',
-			}}
+			color={isActive ? 'primary300' : 'white'}
+			className={styles.navLinkText}
 		>
 			{item.label}
 		</Typography.Heading>

@@ -32,3 +32,8 @@ export const overlay = style({
 		transform: 'translateZ(40px)',
 	},
 });
+
+export const collectionListGrid = style({
+	gridColumnStart: 'auto',
+	gridColumnEnd: 'auto',
+});

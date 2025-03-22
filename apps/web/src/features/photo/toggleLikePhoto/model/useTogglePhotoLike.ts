@@ -1,6 +1,6 @@
 import { useTRPC } from '@/fsd/app';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { toggleLikePhotoAction } from '../api/toggleLikePhotoAction';

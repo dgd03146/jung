@@ -1,4 +1,4 @@
-import { Box, Container, Flex } from '@jung/design-system';
+import { Box, Container, Flex } from '@jung/design-system/components';
 import React from 'react';
 import * as styles from './CommentListSkeleton.css';
 

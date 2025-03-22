@@ -1,5 +1,5 @@
 import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
-import { Box, Flex, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
 import Link from 'next/link';
 import { BsFillPlayFill } from 'react-icons/bs';
@@ -25,11 +25,11 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 					height={40}
 				/>
 			</Flex>
-			<Flex direction='column' gap='1' flex='1'>
+			<Flex direction='column' gap='1' flex={1}>
 				<Typography.Text
 					truncate='single'
 					fontWeight='medium'
-					color={{ hover: 'primary' }}
+					className={styles.title}
 				>
 					{post.title}
 				</Typography.Text>
@@ -41,7 +41,7 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 				align='center'
 				gap='2'
 				justify='flex-end'
-				flex='1'
+				flex={1}
 				color='primary'
 				display={{ mobile: 'none', tablet: 'flex' }}
 			>
@@ -76,7 +76,7 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 			</Box>
 			<Flex
 				flexDirection='column'
-				flex='1'
+				flex={1}
 				gap='3'
 				className={styles.contentArea({ viewMode })}
 			>
@@ -95,7 +95,7 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 
 				<Typography.Text
 					level={3}
-					color='primary400'
+					color='primary300'
 					marginBottom='4'
 					truncate='two'
 				>
@@ -138,7 +138,6 @@ const TableIndex = ({ index }: { index?: number }) => {
 				color='primary'
 				fontWeight='medium'
 				position='absolute'
-				transition='fast'
 				className={styles.tableNumber}
 			>
 				{index + 1}
@@ -148,8 +147,6 @@ const TableIndex = ({ index }: { index?: number }) => {
 				justify='center'
 				color='primary'
 				position='absolute'
-				opacity={0}
-				transition='fast'
 				className={styles.playButton}
 			>
 				<BsFillPlayFill size={20} />

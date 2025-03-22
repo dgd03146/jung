@@ -1,5 +1,5 @@
 import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
-import { Box, GridItem, Typography } from '@jung/design-system/components';
+import { Box, Typography } from '@jung/design-system/components';
 import type { Collection } from '@jung/shared/types';
 import Link from 'next/link';
 import * as styles from './CollectionItem.css';
@@ -11,7 +11,7 @@ type CollectionItemProps = {
 
 export const CollectionItem = ({ collection, index }: CollectionItemProps) => {
 	return (
-		<GridItem colStart='auto' colEnd='auto'>
+		<Box className={styles.collectionListGrid}>
 			<Link
 				href={ROUTES.COLLECTION.pathById(collection.id)}
 				className={styles.gridLink}
@@ -36,6 +36,6 @@ export const CollectionItem = ({ collection, index }: CollectionItemProps) => {
 					</Box>
 				</MotionCard>
 			</Link>
-		</GridItem>
+		</Box>
 	);
 };

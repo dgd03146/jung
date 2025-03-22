@@ -2,7 +2,7 @@
 
 import { useTRPC } from '@/fsd/app';
 import { BLOG_DEFAULTS } from '@/fsd/entities/post';
-import { Accordion, Box, Typography } from '@jung/design-system';
+import { Accordion, Box, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useMemo } from 'react';

@@ -1,5 +1,5 @@
 import { BlurImage } from '@/fsd/shared';
-import { Box, Card, Flex, Typography } from '@jung/design-system';
+import { Box, Card, Flex, Typography } from '@jung/design-system/components';
 import type { Spot } from '@jung/shared/types';
 import Link from 'next/link';
 import { IoLocationOutline } from 'react-icons/io5';
@@ -26,7 +26,7 @@ export const SpotCard = ({
 				display='flex'
 				flexDirection='column'
 				height='full'
-				minHeight={variant === 'compact' ? 'fit' : '104'}
+				className={styles.card({ variant })}
 				position='relative'
 				rounded='lg'
 			>

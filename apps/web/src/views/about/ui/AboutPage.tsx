@@ -1,4 +1,4 @@
-import { Flex, Stack, Typography } from '@jung/design-system';
+import { Flex, Stack, Typography } from '@jung/design-system/components';
 import * as content from '../config/content';
 import * as styles from './AboutPage.css';
 import { ConnectButton } from './ConnectButton';

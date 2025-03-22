@@ -1,6 +1,6 @@
 'use client';
 
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { useState } from 'react';
 

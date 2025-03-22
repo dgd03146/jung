@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from '@jung/design-system';
+import { Box, Flex, Stack } from '@jung/design-system/components';
 import * as styles from './PostHeaderSkeleton.css';
 
 export const PostHeaderSkeleton = () => {
@@ -18,7 +18,7 @@ export const PostHeaderSkeleton = () => {
 				<Stack
 					align={'left'}
 					rowGap={{ base: '2', laptop: '4' }}
-					flex='1'
+					flex={1}
 					className={styles.contentStack}
 				>
 					<Box
@@ -61,7 +61,7 @@ export const PostHeaderSkeleton = () => {
 
 					<Box
 						width='20'
-						height='7'
+						height='6'
 						background='gray'
 						borderRadius='md'
 						className={styles.categorySkeleton}

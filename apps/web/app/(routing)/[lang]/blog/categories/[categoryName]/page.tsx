@@ -41,7 +41,7 @@ export default async function CategoryPostsPage({
 					<FilterPostCategoryAccordion currentCategory={categoryName} />
 				</Suspense>
 
-				<Box as='main' minWidth='0' flex='1'>
+				<Box as='main' minWidth='0' flex={1}>
 					<Suspense fallback={<SearchBarSkeleton />}>
 						<BlogPageControls />
 					</Suspense>
