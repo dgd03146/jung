@@ -95,3 +95,7 @@ export const uploadIcon = style({
 	color: '#adb5bd',
 	marginBottom: '4px',
 });
+
+export const image = style({
+	objectFit: 'cover',
+});

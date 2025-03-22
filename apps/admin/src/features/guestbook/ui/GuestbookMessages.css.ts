@@ -107,3 +107,11 @@ export const gridViewItem = style({
 		boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
 	},
 });
+
+export const headerContainer = style({
+	borderBottomWidth: '1px',
+});
+
+export const image = style({
+	objectFit: 'cover',
+});

@@ -2,7 +2,6 @@ import {
 	Box,
 	Button,
 	Flex,
-	Grid,
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
@@ -39,7 +38,7 @@ export const CategoryListView = ({
 							exit={{ opacity: 0, x: 20 }}
 							className={styles.listViewItem}
 						>
-							<Flex flex='1' align='center' gap='4'>
+							<Flex flex={1} align='center' gap='4'>
 								<Box
 									className={styles.dragHandleStyle}
 									{...provided.dragHandleProps}
@@ -98,7 +97,7 @@ export const CategoryGridView = ({
 	type,
 }: CategoryGridViewProps) => {
 	return (
-		<Grid className={styles.gridView}>
+		<Box className={styles.gridView}>
 			{mainCategories.map((category, index) => (
 				<Draggable key={category.id} draggableId={category.id} index={index}>
 					{(provided) => (
@@ -115,6 +114,6 @@ export const CategoryGridView = ({
 					)}
 				</Draggable>
 			))}
-		</Grid>
+		</Box>
 	);
 };

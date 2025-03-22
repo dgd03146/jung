@@ -1,4 +1,5 @@
-import { Box, Flex, Grid, Stack } from '@jung/design-system/components';
+import { Box, Flex, Stack } from '@jung/design-system/components';
+import * as styles from './PhotoCollectionSkeleton.css';
 
 export const PhotoCollectionSkeleton = () => {
 	return (
@@ -21,26 +22,19 @@ export const PhotoCollectionSkeleton = () => {
 							height='8'
 							background='gray'
 							borderRadius='md'
-							transition='fast'
+							className={styles.transition}
 						/>
 						<Box
 							width='32'
 							height='10'
 							background='gray'
 							borderRadius='md'
-							transition='fast'
+							className={styles.transition}
 						/>
 					</Flex>
 				</Box>
 
-				<Grid
-					gridTemplateColumns={{
-						base: '1/2',
-						tablet: '1/3',
-						laptop: '1/4',
-					}}
-					gap='4'
-				>
+				<Box className={styles.collectionGrid} gap='4'>
 					{Array.from({ length: 8 }).map((_, index) => (
 						<Box
 							key={index}
@@ -55,7 +49,7 @@ export const PhotoCollectionSkeleton = () => {
 								width='full'
 								height='48'
 								background='gray'
-								transition='fast'
+								className={styles.transition}
 							/>
 
 							<Stack padding='4' space='2'>
@@ -64,23 +58,23 @@ export const PhotoCollectionSkeleton = () => {
 									height='6'
 									background='gray'
 									borderRadius='md'
-									transition='fast'
+									className={styles.transition}
 								/>
 								<Box
 									width='full'
 									height='8'
 									background='gray'
 									borderRadius='md'
-									transition='fast'
+									className={styles.transition}
 								/>
 							</Stack>
 
 							<Flex
+								className={styles.borderTop}
 								paddingX='4'
 								paddingY='3'
 								justifyContent='space-between'
 								alignItems='center'
-								borderTopWidth='hairline'
 								borderColor='gray'
 								borderStyle='solid'
 							>
@@ -89,19 +83,19 @@ export const PhotoCollectionSkeleton = () => {
 									height='4'
 									background='gray'
 									borderRadius='md'
-									transition='fast'
+									className={styles.transition}
 								/>
 								<Box
 									width='24'
 									height='4'
 									background='gray'
 									borderRadius='md'
-									transition='fast'
+									className={styles.transition}
 								/>
 							</Flex>
 						</Box>
 					))}
-				</Grid>
+				</Box>
 			</Stack>
 		</Box>
 	);

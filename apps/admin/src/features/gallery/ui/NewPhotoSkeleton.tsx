@@ -1,14 +1,13 @@
-import { Box, Container, Flex, Grid } from '@jung/design-system/components';
+import { Box, Container, Flex } from '@jung/design-system/components';
+import * as styles from './NewPhotoSkeleton.css';
 
 export const NewPhotoSkeleton = () => {
 	return (
 		<Box padding='6'>
 			<Container background='white' borderRadius='xl' boxShadow='primary'>
-				<Grid
-					gridTemplateColumns={{
-						base: '1',
-						tablet: '1/2',
-					}}
+				<Box
+					display='grid'
+					className={styles.skeletonContainer}
 					gap='6'
 					padding='6'
 				>
@@ -65,7 +64,7 @@ export const NewPhotoSkeleton = () => {
 							<Box height='10' background='gray' borderRadius='md' />
 						</Box>
 					</Flex>
-				</Grid>
+				</Box>
 			</Container>
 		</Box>
 	);

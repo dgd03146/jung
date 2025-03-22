@@ -1,5 +1,4 @@
 import { Button, Flex, Typography } from '@jung/design-system/components';
-
 import type { Table } from '@tanstack/react-table';
 import {
 	BiChevronLeft,
@@ -7,6 +6,7 @@ import {
 	BiFirstPage,
 	BiLastPage,
 } from 'react-icons/bi';
+import * as styles from './TablePagination.css';
 
 interface TablePaginationProps<T> {
 	table: Table<T>;
@@ -21,8 +21,8 @@ export const TablePagination = <T,>({ table }: TablePaginationProps<T>) => (
 			of {table.getPageCount()}
 		</Typography.SubText>
 		<Button
+			className={styles.button}
 			boxShadow='primary'
-			border='none'
 			onClick={() => table.setPageIndex(0)}
 			disabled={!table.getCanPreviousPage()}
 		>
@@ -30,7 +30,7 @@ export const TablePagination = <T,>({ table }: TablePaginationProps<T>) => (
 		</Button>
 		<Button
 			boxShadow='primary'
-			border='none'
+			className={styles.button}
 			onClick={() => table.previousPage()}
 			disabled={!table.getCanPreviousPage()}
 		>
@@ -38,7 +38,7 @@ export const TablePagination = <T,>({ table }: TablePaginationProps<T>) => (
 		</Button>
 		<Button
 			boxShadow='primary'
-			border='none'
+			className={styles.button}
 			onClick={() => table.nextPage()}
 			disabled={!table.getCanNextPage()}
 		>
@@ -46,7 +46,7 @@ export const TablePagination = <T,>({ table }: TablePaginationProps<T>) => (
 		</Button>
 		<Button
 			boxShadow='primary'
-			border='none'
+			className={styles.button}
 			onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 			disabled={!table.getCanNextPage()}
 		>

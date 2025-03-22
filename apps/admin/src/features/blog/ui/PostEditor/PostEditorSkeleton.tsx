@@ -47,8 +47,8 @@ const PostEditorSkeleton = () => {
 						{isEditPage ? 'Update' : 'Create'}
 					</Button>
 				</Flex>
-				<Box background='gray' height='60' borderRadius='lg' />
-				<Box background='gray' height='14' borderRadius='lg' width='3/5' />
+				<Box background='gray' height='48' borderRadius='lg' />
+				<Box background='gray' height='12' borderRadius='lg' width='3/5' />
 				<Box background='gray' height='10' borderRadius='lg' width='2/3' />
 				<Box background='gray' height='80' borderRadius='lg' />
 			</Flex>

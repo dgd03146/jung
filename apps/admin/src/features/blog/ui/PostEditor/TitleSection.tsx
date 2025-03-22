@@ -60,9 +60,9 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 			gap='2'
 			marginY='5'
 			space='5'
-			borderBottomWidth='hairline'
 			borderColor='primary50'
 			borderStyle='solid'
+			className={styles.titleSection}
 		>
 			<Input
 				className={styles.titleInput}
@@ -107,7 +107,7 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						gap='2'
 						fontWeight='medium'
 						color='primary'
-						minWidth='25'
+						minWidth='24'
 					>
 						<HiCalendar size={20} />
 						Date
@@ -140,7 +140,7 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						gap='2'
 						fontWeight='medium'
 						color='primary'
-						minWidth='25'
+						minWidth='24'
 					>
 						<HiFolderOpen size={20} />
 						Category
@@ -207,7 +207,7 @@ const TitleSection = ({ post, errors, onFieldChange }: TitleSectionProps) => {
 						gap='2'
 						fontWeight='medium'
 						color='primary'
-						minWidth='25'
+						minWidth='24'
 					>
 						<HiTag size={20} />
 						Tags

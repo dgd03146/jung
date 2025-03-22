@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@jung/design-system/components';
+import { Box, Typography } from '@jung/design-system/components';
 import type { CategoryCount } from '@jung/shared/types';
 import * as styles from './CategoryStats.css';
 
@@ -21,7 +21,7 @@ export const CategoryStats = ({ allCategories, type }: CategoryStatsProps) => {
 	};
 
 	return (
-		<Grid gap='4' className={styles.statsSection}>
+		<Box gap='4' className={styles.statsSection}>
 			<Box className={styles.statCard}>
 				<Typography.Heading level={4} color='primary' fontWeight='medium'>
 					{allCategories.length}
@@ -46,6 +46,6 @@ export const CategoryStats = ({ allCategories, type }: CategoryStatsProps) => {
 					Direct {getItemLabel()}
 				</Typography.SubText>
 			</Box>
-		</Grid>
+		</Box>
 	);
 };
