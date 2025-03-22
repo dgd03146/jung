@@ -25,6 +25,8 @@ export const space = {
 	'80': '20rem', // 320px
 	'96': '24rem', // 384px
 
+	'180': '45rem', // 720px
+
 	auto: 'auto',
 	full: '100%',
 	fit: 'fit-content',
@@ -46,5 +48,7 @@ export const extendedSpace = {
 	'1/2': '50%',
 	'2/3': '66.666667%',
 	'3/4': '75%',
+	'3/5': '60%',
+	'4/5': '80%',
 	...breakpoints,
 };

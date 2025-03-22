@@ -4,22 +4,21 @@ import { calc } from '@vanilla-extract/css-utils';
 
 export const stairs = style([
 	sprinkles({
-		top: 0,
-		left: 0,
 		position: 'fixed',
-		zIndex: '20',
-
+		zIndex: '50',
 		height: 'screenDvh',
 		display: 'flex',
 	}),
 	{
-		transition: 'all 1s',
+		top: 0,
+		left: 0,
+		transition: 'all 1.5s',
 	},
 ]);
 
 export const stair = style([
 	sprinkles({
-		background: 'primary60',
+		background: 'primary50',
 	}),
 	{
 		width: '20vw',

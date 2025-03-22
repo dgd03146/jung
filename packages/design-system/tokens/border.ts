@@ -10,6 +10,7 @@ export const borderWidths = {
 };
 
 export const borderRadius = {
+	xs: '2px',
 	sm: '4px',
 	md: '6px',
 	lg: '8px',

@@ -44,6 +44,7 @@ export const responsiveProperties = defineProperties({
 		width: vars.contentWidth,
 		maxWidth: vars.contentWidth,
 		minWidth: vars.contentWidth,
+		minHeight: vars.contentWidth,
 		gap: vars.space,
 		columnGap: vars.space,
 		rowGap: vars.space,
@@ -79,7 +80,7 @@ export const unresponsiveProperties = defineProperties({
 		position: ['absolute', 'relative', 'fixed', 'sticky'],
 		flexShrink: [0, 1],
 		flexGrow: [0, 1],
-
+		flex: [1],
 		borderStyle: ['solid', 'none'],
 		cursor: ['default', 'pointer', 'not-allowed'],
 		overflow: ['hidden', 'auto'],
