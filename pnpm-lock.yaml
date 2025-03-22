@@ -455,6 +455,15 @@ importers:
 
   packages/design-system:
     dependencies:
+      '@vanilla-extract/css':
+        specifier: ^1.15.0
+        version: 1.17.1(babel-plugin-macros@3.1.0)
+      '@vanilla-extract/recipes':
+        specifier: ^0.5.0
+        version: 0.5.5(@vanilla-extract/css@1.17.1(babel-plugin-macros@3.1.0))
+      '@vanilla-extract/sprinkles':
+        specifier: ^1.6.0
+        version: 1.6.3(@vanilla-extract/css@1.17.1(babel-plugin-macros@3.1.0))
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -498,9 +507,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.5(@types/react@18.3.18)
-      '@vanilla-extract/css':
-        specifier: ^1.15.2
-        version: 1.17.1(babel-plugin-macros@3.1.0)
       '@vanilla-extract/css-utils':
         specifier: ^0.1.4
         version: 0.1.4
@@ -510,12 +516,6 @@ importers:
       '@vanilla-extract/esbuild-plugin':
         specifier: ^2.3.8
         version: 2.3.15(babel-plugin-macros@3.1.0)(esbuild@0.25.0)
-      '@vanilla-extract/recipes':
-        specifier: ^0.5.3
-        version: 0.5.5(@vanilla-extract/css@1.17.1(babel-plugin-macros@3.1.0))
-      '@vanilla-extract/sprinkles':
-        specifier: ^1.6.2
-        version: 1.6.3(@vanilla-extract/css@1.17.1(babel-plugin-macros@3.1.0))
       size-limit:
         specifier: ^11.2.0
         version: 11.2.0
