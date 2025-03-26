@@ -21,9 +21,7 @@ export function pick<T extends Record<string, any>, K extends keyof T>(
 ): Pick<T, K> {
 	const result = {} as Pick<T, K>;
 
-	for (let i = 0; i < keys.length; i++) {
-		const key = keys[i];
-
+	for (const key of keys) {
 		if (Object.prototype.hasOwnProperty.call(obj, key)) {
 			result[key] = obj[key];
 		}
@@ -39,8 +37,7 @@ export function omit<T extends Record<string, any>, K extends keyof T>(
 ): Omit<T, K> {
 	const result = { ...obj };
 
-	for (let i = 0; i < keys.length; i++) {
-		const key = keys[i];
+	for (const key of keys) {
 		delete result[key];
 	}
 
