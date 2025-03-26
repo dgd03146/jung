@@ -4,7 +4,7 @@ import * as styles from './PostDetailContentSkeleton.css';
 
 export const PostDetailContentSkeleton = () => {
 	return (
-		<Container flex={1} maxWidth='180' className={styles.container}>
+		<Container className={styles.container}>
 			{/* 에디터 스켈레톤 */}
 
 			<EditorSkeleton />

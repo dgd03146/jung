@@ -1,5 +1,4 @@
 import { sprinkles } from '@jung/design-system/styles';
-import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -23,7 +22,7 @@ export const card = style([
 	{
 		minWidth: '320px',
 		'@media': {
-			[`(min-width: ${breakpoints.tablet})`]: {
+			'(min-width: 768px)': {
 				minWidth: '400px',
 			},
 		},

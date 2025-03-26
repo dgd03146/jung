@@ -33,7 +33,7 @@ const NavLink = ({
 							laptop: '3xl', // 30px
 					  }
 			}
-			color={isActive ? 'primary300' : 'white'}
+			color={isActive ? 'primary400' : 'white'}
 			className={styles.navLinkText}
 		>
 			{item.label}

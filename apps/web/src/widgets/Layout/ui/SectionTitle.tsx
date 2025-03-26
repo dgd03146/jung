@@ -22,12 +22,12 @@ export function SectionTitle() {
 			<Flex
 				alignItems='center'
 				gap='2'
-				marginBottom='6'
+				color='primary'
 				className={styles.sectionTitle}
 			>
 				<Link
 					href={`/${mainSection?.toLowerCase()}`}
-					style={{ display: 'flex', alignItems: 'center' }}
+					className={styles.sectionLink}
 				>
 					<Typography.Text level={1} className={styles.sectionText}>
 						{mainSection}
@@ -55,15 +55,10 @@ export function SectionTitle() {
 	}
 
 	return (
-		<Typography.Heading
-			level={2}
-			color='primary'
-			marginBottom={{ mobile: '3', desktop: '5' }}
-			width='fit'
-		>
-			<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
+		<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
+			<Typography.Heading level={2} color='primary'>
 				{section}.
-			</Link>
-		</Typography.Heading>
+			</Typography.Heading>
+		</Link>
 	);
 }

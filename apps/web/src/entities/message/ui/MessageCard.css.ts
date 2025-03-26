@@ -53,5 +53,5 @@ export const avatar = style({
 	height: '24px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `1px solid ${palette.primary}`,
+	// border: `1px solid ${palette.primary}`,
 });

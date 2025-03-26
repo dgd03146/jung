@@ -1,11 +1,9 @@
 'use client';
 
-import { BlurImage } from '@/fsd/shared';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
-import logo from '/public/images/logo.png';
 import { usePostQuery } from '../api';
 import { useAdjacentPostsQuery } from '../api/useAdjacentPostsQuery';
 import * as styles from './PostNavigation.css';
@@ -24,7 +22,6 @@ const PostNavigation = ({ postId }: Props) => {
 			<Flex
 				className={styles.sidebarContainer}
 				flexDirection={{ base: 'row', laptop: 'column' }}
-				flexWrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
 				alignItems={{ base: 'center', laptop: 'flex-start' }}
 				justifyContent={{ base: 'space-between', laptop: 'flex-start' }}
 			>
@@ -33,7 +30,6 @@ const PostNavigation = ({ postId }: Props) => {
 					color='primary'
 					paddingBottom={{ laptop: '6' }}
 					display={{ base: 'none', laptop: 'flex' }}
-					className={styles.sidebarContainerInner}
 					gap='2'
 				>
 					{SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
@@ -56,15 +52,14 @@ const PostNavigation = ({ postId }: Props) => {
 							<Icon size={16} />
 						</Box>
 					))}
-					<BlurImage src={logo} alt='logo' width={60} height={60} />
 				</Flex>
 
 				{post?.tags && (
 					<Flex
+						className={styles.tagsContainer}
 						display={{ base: 'none', laptop: 'flex' }}
 						direction='column'
 						gap='1'
-						className={styles.tagsContainer}
 						borderColor='gray'
 						borderStyle='solid'
 						paddingY={{ laptop: '8' }}

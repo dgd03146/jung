@@ -8,12 +8,7 @@ import {
 import { CreateMessageForm } from '@/fsd/features/message';
 
 import { LoadingSpinner, useInfiniteScroll } from '@/fsd/shared';
-import {
-	Box,
-	Container,
-	Stack,
-	Typography,
-} from '@jung/design-system/components';
+import { Box, Container, Stack } from '@jung/design-system/components';
 import { ErrorBoundary } from '@jung/shared/ui';
 import { motion } from 'framer-motion';
 import { Suspense } from 'react';
@@ -48,9 +43,9 @@ const GuestbookPage = () => {
 				align='center'
 				marginY={{ base: '6', laptop: '10' }}
 			>
-				<Typography.Heading level={4} color='primary'>
+				{/* <Typography.Heading level={4} color='primary'>
 					Leave Your Message 💙
-				</Typography.Heading>
+				</Typography.Heading> */}
 				<motion.div variants={itemAnimation}>
 					<CreateMessageForm />
 				</motion.div>

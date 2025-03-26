@@ -22,6 +22,7 @@ export const SpotCard = ({
 			className={styles.cardWrapper({ variant })}
 		>
 			<Card
+				boxShadow='primary'
 				variant='outline'
 				display='flex'
 				flexDirection='column'

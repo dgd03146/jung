@@ -41,7 +41,7 @@ export const PostNavigationSkeleton = () => {
 					<Box background='gray' className={styles.sectionTitle} />
 
 					<Box className={styles.tagContainer}>
-						{Array(5)
+						{Array(2)
 							.fill(0)
 							.map((_, index) => (
 								<Box key={index} background='gray' className={styles.tag} />

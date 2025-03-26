@@ -22,7 +22,7 @@ const PostHeader = ({ postId }: Props) => {
 			borderStyle='solid'
 			paddingBottom={{ base: '4', laptop: '6' }}
 		>
-			<Flex columnGap='10'>
+			<Flex columnGap='12'>
 				<Box
 					className={styles.imgContainer}
 					display={{ base: 'none', laptop: 'block' }}
