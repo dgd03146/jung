@@ -1,4 +1,3 @@
-import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const table = style({
@@ -36,10 +35,10 @@ export const borderBottomStyle = style({
 export const gridContainer = style({
 	gridTemplateColumns: 'minmax(0px, 1fr)',
 	'@media': {
-		[`(min-width: ${breakpoints.tablet})`]: {
+		'(min-width: 768px)': {
 			gridTemplateColumns: 'repeat(2, minmax(0px, 1fr))',
 		},
-		[`(min-width: ${breakpoints.laptop})`]: {
+		'(min-width: 1024px)': {
 			gridTemplateColumns: 'repeat(4, minmax(0px, 1fr))',
 		},
 	},

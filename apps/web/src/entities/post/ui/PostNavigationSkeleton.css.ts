@@ -1,9 +1,8 @@
-import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const minWidthResponsive = style({
 	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
+		'(min-width: 1024px)': {
 			width: '240px',
 		},
 	},
@@ -12,7 +11,7 @@ export const minWidthResponsive = style({
 export const sidebar = style({
 	width: '100%',
 	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
+		'(min-width: 1024px)': {
 			width: '240px',
 		},
 	},
@@ -20,7 +19,7 @@ export const sidebar = style({
 
 export const sidebarContainer = style({
 	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
+		'(min-width: 1024px)': {
 			top: 80,
 			position: 'sticky',
 		},

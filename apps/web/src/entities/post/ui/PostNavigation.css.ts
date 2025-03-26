@@ -1,4 +1,4 @@
-import { breakpoints, palette } from '@jung/design-system/tokens';
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -9,30 +9,28 @@ export const linkText = style({
 
 export const sidebar = style({
 	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
-			height: calc.subtract('100dvh', '144px'),
-		},
-	},
-});
-
-export const minWidth = style({
-	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
-			minWidth: '240px',
+		'(min-width: 1024px)': {
+			minHeight: calc.subtract('100dvh', '144px'),
+			maxWidth: '240px',
 		},
 	},
 });
 
 export const sidebarContainer = style({
 	'@media': {
-		[`(min-width: ${breakpoints.laptop}px)`]: {
+		'(min-width: 1024px)': {
 			top: 80,
 			position: 'sticky',
 		},
 	},
 });
-
-export const sidebarContainerInner = style([minWidth]);
+export const minWidth = style({
+	'@media': {
+		'(min-width: 1024px)': {
+			minWidth: '240px',
+		},
+	},
+});
 
 export const sidebarHeader = style({
 	fontFamily: 'var(--font-bebas)',
@@ -86,7 +84,7 @@ export const tagsContainer = style([
 	minWidth,
 	{
 		'@media': {
-			[`(min-width: ${breakpoints.laptop}px)`]: {
+			'(min-width: 1024px)': {
 				borderTopWidth: '1px',
 				borderBottomWidth: '1px',
 			},

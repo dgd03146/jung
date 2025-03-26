@@ -1,5 +1,4 @@
 import { sprinkles } from '@jung/design-system/styles';
-import { breakpoints } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
@@ -21,20 +20,19 @@ export const main = style([
 			mobile: '4', // 16px
 			tablet: '5', // 20px
 			laptop: '6', // 24px
-			desktop: '6', // 24px
 		},
 	}),
 	{
-		flex: '1 0 auto',
+		flex: '1',
 		maxWidth: '92%',
 		gridTemplateColumns: 'repeat(6, minmax(0px, 1fr))',
 		gridColumnGap: '16px',
 		'@media': {
-			[`(min-width: ${breakpoints.laptop})`]: {
+			'(min-width: 1024px)': {
 				gridTemplateColumns: 'repeat(8, minmax(0px, 1fr))',
 				gridColumnGap: '20px',
 			},
-			[`(min-width: ${breakpoints.desktop})`]: {
+			'(min-width: 1280px)': {
 				gridTemplateColumns: 'repeat(12, minmax(0px, 1fr))',
 				gridColumnGap: '24px',
 			},
@@ -43,12 +41,15 @@ export const main = style([
 ]);
 
 export const section = style({
+	display: 'grid',
 	gridColumn: '1/7',
+	gap: '12px',
 	'@media': {
-		[`(min-width: ${breakpoints.laptop})`]: {
+		'(min-width: 1024px)': {
 			gridColumn: '1/9',
+			gap: '20px',
 		},
-		[`(min-width: ${breakpoints.desktop})`]: {
+		'(min-width: 1280px)': {
 			gridColumn: '1/13',
 		},
 	},

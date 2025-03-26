@@ -1,4 +1,3 @@
-import { breakpoints } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 
 export const shimmer = keyframes({
@@ -15,7 +14,7 @@ export const gridContainer = style({
 	gap: '8px',
 	gridTemplateColumns: 'minmax(0px, 1fr)',
 	'@media': {
-		[`(min-width: ${breakpoints.tablet})`]: {
+		'(min-width: 768px)': {
 			gridTemplateColumns: 'repeat(2, minmax(0px, 1fr))',
 		},
 	},
@@ -28,7 +27,7 @@ export const skeletonContainer = style({
 export const gridItem = style({
 	gridTemplateColumns: 'minmax(0px, 1fr)',
 	'@media': {
-		[`(min-width: ${breakpoints.tablet})`]: {
+		'(min-width: 768px)': {
 			gridTemplateColumns: 'auto-fit',
 		},
 	},

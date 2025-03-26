@@ -9,7 +9,7 @@ export const mainNav = style([
 		gap: {
 			mobile: '4', // 16px
 			tablet: '6', // 24px
-			desktop: '8', // 32px
+			laptop: '8', // 32px
 		},
 	}),
 	{
@@ -28,7 +28,7 @@ export const subNav = style([
 		gap: {
 			mobile: '2', // 8px
 			tablet: '4', // 16px
-			desktop: '6', // 24px
+			laptop: '6', // 24px
 		},
 	}),
 	{

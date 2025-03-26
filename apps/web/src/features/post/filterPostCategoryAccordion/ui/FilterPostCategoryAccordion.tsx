@@ -42,11 +42,7 @@ export const FilterPostCategoryAccordion = ({
 	}, [categories, currentCategory]);
 
 	return (
-		<Box
-			as='aside'
-			className={styles.sidebar}
-			display={{ mobile: 'none', tablet: 'block' }}
-		>
+		<Box as='aside' className={styles.sidebar}>
 			<Accordion type='multiple' initialOpenIndex={parentCategoryIndex}>
 				<Link
 					href='/blog'
@@ -88,7 +84,6 @@ export const FilterPostCategoryAccordion = ({
 												background='primary50'
 												paddingY='1'
 												paddingX='2'
-												display={{ mobile: 'none', tablet: 'block' }}
 											>
 												{subCategory.postCount}
 											</Typography.SubText>
