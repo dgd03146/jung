@@ -25,21 +25,14 @@ export const space = {
 	'80': '20rem', // 320px
 	'96': '24rem', // 384px
 
-	'180': '45rem', // 720px
-
 	auto: 'auto',
 	full: '100%',
 	fit: 'fit-content',
 	max: 'max-content',
 	min: 'min-content',
 
-	screenVh: '100vh',
-	screenVw: '100vw',
 	screenDvh: '100dvh',
 	screenDvw: '100dvw',
-	'50vw': '50vw',
-	'50vh': '50vh',
-	'90vw': '90vw',
 };
 
 export const extendedSpace = {

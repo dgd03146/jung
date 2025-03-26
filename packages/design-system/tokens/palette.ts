@@ -5,6 +5,7 @@ export const palette = {
 	primary100: '#A8C2F5', // 연한 청색
 	primary200: '#5B86E5', // 짙은 청색,
 	primary300: '#002766',
+	primary400: '#002349',
 
 	// Secondary colors
 	secondary: '#00875A',
