@@ -1,7 +1,12 @@
 'use client';
 
 import { Modal } from '@/fsd/shared';
-import { Box, Button, Typography, useToast } from '@jung/design-system';
+import {
+	Box,
+	Button,
+	Typography,
+	useToast,
+} from '@jung/design-system/components';
 import { createPortal } from 'react-dom';
 import { FaLink, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';

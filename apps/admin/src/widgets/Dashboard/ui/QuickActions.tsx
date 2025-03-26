@@ -3,12 +3,12 @@ import {
 	Box,
 	Container,
 	Flex,
-	Grid,
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { MdAdd, MdLocationOn, MdSettings, MdUpload } from 'react-icons/md';
+import * as styles from './QuickActions.css';
 
 const QuickActions = () => {
 	const actions = [
@@ -41,8 +41,8 @@ const QuickActions = () => {
 	return (
 		<Container boxShadow='primary' background='white' borderRadius='2xl'>
 			<Box
+				className={styles.borderBottom}
 				padding='4'
-				borderBottomWidth='hairline'
 				borderColor='white300'
 				borderStyle='solid'
 			>
@@ -50,18 +50,14 @@ const QuickActions = () => {
 					Quick Actions
 				</Typography.Text>
 			</Box>
-			<Grid
-				gridTemplateColumns={{ mobile: '1', tablet: '1/2', laptop: '1/4' }}
-				padding='1'
-				gap='1'
-			>
+			<Box className={styles.gridActionsContainer} padding='1' gap='1'>
 				{actions.map((action, index) => (
 					<Link key={index} to={action.to}>
 						<Flex
 							align='center'
 							gap='4'
 							padding='4'
-							background={{ hover: 'primary50' }}
+							className={styles.actionItem}
 						>
 							<Flex
 								align='center'
@@ -89,7 +85,7 @@ const QuickActions = () => {
 						</Flex>
 					</Link>
 				))}
-			</Grid>
+			</Box>
 		</Container>
 	);
 };

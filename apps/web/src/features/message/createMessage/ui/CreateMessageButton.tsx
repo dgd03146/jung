@@ -1,5 +1,5 @@
 import type { GuestbookEmoji } from '@/fsd/entities/message/model/guestbook';
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { useThrottle } from '@jung/shared/hooks';
 import { useFormStatus } from 'react-dom';
 

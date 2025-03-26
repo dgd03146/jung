@@ -129,3 +129,7 @@ export const lastImageOverlay = style({
 	fontWeight: '600',
 	cursor: 'pointer',
 });
+
+export const spotInfoContainer = style({
+	borderBottomWidth: '1px',
+});

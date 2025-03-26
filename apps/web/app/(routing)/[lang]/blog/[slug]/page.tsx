@@ -10,6 +10,7 @@ import { Container, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import * as styles from './page.css';
 
 export async function generateMetadata({
 	params,
@@ -97,21 +98,20 @@ export default function Page({ params }: { params: { slug: string } }) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Container marginX='auto'>
+			<Container className={styles.container}>
 				<PostHeader postId={postId} />
 				<Flex
 					flexDirection={{ base: 'column-reverse', laptop: 'row' }}
-					gap={{ base: '0', laptop: '10' }}
+					gap={{ base: '0', laptop: '12' }}
 					marginY={{ base: '4', laptop: '10' }}
 				>
 					<Suspense fallback={<PostNavigationSkeleton />}>
 						<PostNavigation postId={postId} />
 					</Suspense>
-					<Container flex='1' maxWidth='180'>
-						<Suspense fallback={<PostDetailContentSkeleton />}>
-							<PostDetailContent postId={postId} />
-						</Suspense>
-					</Container>
+
+					<Suspense fallback={<PostDetailContentSkeleton />}>
+						<PostDetailContent postId={postId} />
+					</Suspense>
 				</Flex>
 			</Container>
 		</HydrationBoundary>

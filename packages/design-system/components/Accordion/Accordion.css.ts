@@ -68,15 +68,6 @@ export const contentNoAnimation = recipe({
 	},
 });
 
-// globalStyle(`${contentChild}:first-child`, {
-// 	paddingTop: '16px',
-// });
-
-// globalStyle(`${contentChild}:not(:last-child)`, {
-// 	paddingBottom: '16px',
-// 	borderBottom: '0.5px solid #EFEFEF',
-// });
-
 export const trigger = recipe({
 	base: style([
 		sprinkles({

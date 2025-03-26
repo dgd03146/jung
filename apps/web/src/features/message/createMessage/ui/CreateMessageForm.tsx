@@ -1,6 +1,12 @@
 import { useSupabaseAuth } from '@/fsd/shared';
 
-import { Box, Button, Flex, Stack, Textarea } from '@jung/design-system';
+import {
+	Box,
+	Button,
+	Flex,
+	Stack,
+	Textarea,
+} from '@jung/design-system/components';
 
 import { SocialLoginPrompt } from '@/fsd/entities/auth';
 import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/message';

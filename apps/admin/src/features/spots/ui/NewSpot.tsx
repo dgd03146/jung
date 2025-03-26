@@ -140,7 +140,7 @@ export const NewSpot = () => {
 					flexDirection={{ base: 'column', tablet: 'row' }}
 				>
 					{/* Basic Information */}
-					<Stack flexBasis='2/5'>
+					<Stack className={styles.basicInfoContainer}>
 						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<HiLocationMarker size={20} />
 							<Typography.Text level={1} fontWeight='semibold'>
@@ -293,7 +293,7 @@ export const NewSpot = () => {
 					</Stack>
 
 					{/* Additional Information */}
-					<Stack flex='1'>
+					<Stack flex={1}>
 						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<HiTag size={20} />
 							<Typography.Text level={1} fontWeight='semibold'>
@@ -301,7 +301,7 @@ export const NewSpot = () => {
 							</Typography.Text>
 						</Flex>
 						<Stack
-							flex='1'
+							flex={1}
 							padding='6'
 							space='4'
 							background='white'

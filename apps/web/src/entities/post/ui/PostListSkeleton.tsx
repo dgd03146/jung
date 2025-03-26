@@ -1,4 +1,4 @@
-import { Box, Container } from '@jung/design-system';
+import { Box, Container } from '@jung/design-system/components';
 import * as styles from './PostListSkeleton.css';
 
 const PostCardSkeleton = () => {
@@ -35,7 +35,7 @@ const PostCardSkeleton = () => {
 						<Box
 							key={index}
 							width='20'
-							height='7'
+							height='6'
 							background='gray'
 							borderRadius='md'
 							className={styles.tagSkeleton}

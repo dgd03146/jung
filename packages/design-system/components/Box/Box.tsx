@@ -21,15 +21,17 @@ type BoxComponent = <C extends ElementType = 'div'>(
 ) => ReactNode;
 
 export const Box: BoxComponent = forwardRef<HTMLElement, BoxProps<ElementType>>(
-	({ as, ...restProps }, ref) => {
-		const [atomsProps, propsToForward] = extractAtoms(restProps);
+	({ as, className, ...other }, ref) => {
+		const [atomsProps, propsToForward] = extractAtoms(other);
 		const Component: ElementType = as || 'div';
-		const className = atoms({
-			className: propsToForward?.className,
+		const atomClassName = atoms({
+			className,
 			reset: typeof Component === 'string' ? Component : 'div',
 			...atomsProps,
 		});
 
-		return <Component {...propsToForward} className={className} ref={ref} />;
+		return (
+			<Component {...propsToForward} className={atomClassName} ref={ref} />
+		);
 	},
 );

@@ -1,29 +1,33 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+import { palette } from '../../tokens/palette';
 
 export const button = recipe({
-	base: sprinkles({
-		transition: 'fast',
-		display: 'flex',
-		alignItems: 'center',
-		columnGap: '1',
-	}),
+	base: style([
+		sprinkles({
+			display: 'flex',
+			alignItems: 'center',
+			columnGap: '1',
+		}),
+		{
+			transition: 'transform 0.15s ease, opacity 0.15s ease',
+		},
+	]),
 	variants: {
 		variant: {
 			primary: style([
 				sprinkles({
-					background: {
-						base: 'primary',
-						hover: 'primary200',
-					},
+					background: 'primary',
 					color: 'white',
 				}),
+
 				{
 					':hover': {
 						transform: 'translateY(-1px)',
 						boxShadow: '0 4px 8px rgba(1, 66, 192, 0.2)',
-						background: 'linear-gradient(135deg, #0136A3 0%, #0142C0 100%)',
+						backgroundColor:
+							'linear-gradient(135deg, #0136A3 0%, #0142C0 100%)',
 					},
 				},
 			]),
@@ -32,18 +36,14 @@ export const button = recipe({
 					borderColor: 'primary100',
 					borderWidth: 'hairline',
 					borderStyle: 'solid',
-					background: {
-						base: 'white',
-					},
-					color: {
-						base: 'primary200',
-					},
+					background: 'white',
+					color: 'primary200',
 				}),
 				{
 					':hover': {
 						transform: 'translateY(-1px)',
 						borderColor: 'rgba(1, 66, 192, 0.4)',
-						background: 'rgba(1, 66, 192, 0.04)',
+						backgroundColor: 'rgba(1, 66, 192, 0.04)',
 						boxShadow: '0 2px 6px rgba(1, 66, 192, 0.12)',
 						color: '#0142C0',
 					},
@@ -51,31 +51,23 @@ export const button = recipe({
 			]),
 			secondary: style([
 				sprinkles({
-					background: {
-						base: 'primary50',
-					},
-					color: {
-						base: 'primary',
-						hover: 'primary60',
-					},
+					background: 'primary50',
+					color: 'primary',
 				}),
 				{
 					':hover': {
 						transform: 'translateY(-1px)',
 						backgroundColor: '#DBE8FF',
 						boxShadow: '0 3px 12px rgba(1, 66, 192, 0.15)',
+						color: palette.primary50,
 					},
 				},
 			]),
 
 			ghost: style([
 				sprinkles({
-					background: {
-						base: 'transparent',
-					},
-					color: {
-						base: 'primary',
-					},
+					background: 'transparent',
+					color: 'primary',
 				}),
 				{
 					':hover': {
@@ -99,8 +91,8 @@ export const button = recipe({
 				paddingY: '1.5', // 6px
 			}),
 			lg: sprinkles({
-				paddingX: '3.5', // 14px
-				paddingY: '2.5', // 10px
+				paddingX: '4', // 16px
+				paddingY: '2', // 8px
 			}),
 		},
 
@@ -118,12 +110,8 @@ export const button = recipe({
 		disabled: {
 			true: sprinkles({
 				cursor: 'not-allowed',
-				background: {
-					base: 'primary100',
-				},
-				color: {
-					base: 'primary',
-				},
+				background: 'primary100',
+				color: 'primary',
 			}),
 		},
 	},
@@ -135,10 +123,7 @@ export const button = recipe({
 			},
 			style: sprinkles({
 				cursor: 'default',
-				background: {
-					base: 'primary100',
-					hover: 'primary100',
-				},
+				background: 'primary100',
 			}),
 		},
 		{
@@ -146,13 +131,17 @@ export const button = recipe({
 				loading: true,
 				variant: 'primary',
 			},
-			style: sprinkles({
-				cursor: 'default',
-				background: {
-					base: 'primary100',
-					hover: 'transparent',
+			style: style([
+				sprinkles({
+					cursor: 'default',
+					background: 'primary100',
+				}),
+				{
+					':hover': {
+						backgroundColor: 'transparent',
+					},
 				},
-			}),
+			]),
 		},
 		{
 			variants: {

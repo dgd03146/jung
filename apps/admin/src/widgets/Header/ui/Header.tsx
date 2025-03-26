@@ -1,6 +1,5 @@
 import { useAuth } from '@/fsd/features/auth/api/useAuth';
-import { usePathname } from '@/fsd/shared';
-import { useSidebarStore } from '@/fsd/shared';
+import { usePathname, useSidebarStore } from '@/fsd/shared';
 // FIXME: icons들 다 나중에 shared로 빼야할 듯?
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
@@ -108,7 +107,6 @@ const Header = () => {
 		<Box
 			as='header'
 			position='sticky'
-			top={0}
 			paddingX={{ mobile: '4', laptop: '8' }}
 			display='flex'
 			width='full'

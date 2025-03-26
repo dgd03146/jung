@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Stack } from '@jung/design-system/components';
+import { Box, Flex, Stack } from '@jung/design-system/components';
 import * as styles from './CategorySkeleton.css';
 
 interface CategorySkeletonProps {
@@ -8,13 +8,7 @@ interface CategorySkeletonProps {
 export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 	return (
 		<Stack space='6'>
-			<Grid
-				gridTemplateColumns={{
-					base: '1',
-					tablet: '1/2',
-				}}
-				gap='4'
-			>
+			<Box className={styles.gridContainer} gap='4'>
 				{/* Stats Cards */}
 				{[1, 2].map((i) => (
 					<Box
@@ -36,7 +30,7 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 							/>
 							<Box
 								height='4'
-								width='28'
+								width='24'
 								background='gray'
 								borderRadius='lg'
 								className={styles.shimmer}
@@ -44,7 +38,7 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 						</Stack>
 					</Box>
 				))}
-			</Grid>
+			</Box>
 
 			<Box
 				background='white'
@@ -59,20 +53,20 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 					justify='space-between'
 					align='center'
 					padding='5'
-					borderBottomWidth='hairline'
 					borderStyle='solid'
 					borderColor='gray'
+					className={styles.borderBottomWidth}
 				>
 					<Box
 						height='6'
-						width='45'
+						width='40'
 						background='gray'
 						borderRadius='lg'
 						className={styles.shimmer}
 					/>
 					<Box
 						height='10'
-						width='28'
+						width='24'
 						background='gray'
 						borderRadius='lg'
 						className={styles.shimmer}
@@ -80,22 +74,15 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 				</Flex>
 
 				{/* Grid */}
-				<Grid
-					gridTemplateColumns={{
-						base: '1',
-						tablet: 'auto-fit',
-					}}
-					gap='5'
-					padding='6'
-				>
+				<Box className={styles.gridItem} gap='5' padding='6'>
 					{Array.from({ length: cardCount }, (_, i) => (
 						<Box
 							key={i}
 							background='white'
 							borderRadius='xl'
 							borderStyle='solid'
-							borderTopWidth='hairline'
 							borderColor='gray300'
+							className={styles.skeletonContainer}
 						>
 							<Flex justify='space-between' align='center' padding='4'>
 								<Box
@@ -106,7 +93,7 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 									className={styles.shimmer}
 								/>
 								<Box
-									height='7'
+									height='6'
 									width='16'
 									background='gray'
 									borderRadius='lg'
@@ -131,7 +118,7 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 							<Box
 								padding='3'
 								paddingX='4'
-								borderTopWidth='hairline'
+								className={styles.borderTopWidth}
 								borderStyle='solid'
 								borderColor='gray'
 								background='gray'
@@ -146,7 +133,7 @@ export function CategorySkeleton({ cardCount = 8 }: CategorySkeletonProps) {
 							</Box>
 						</Box>
 					))}
-				</Grid>
+				</Box>
 			</Box>
 		</Stack>
 	);

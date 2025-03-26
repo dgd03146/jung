@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useToggleLikeComment } from '../model/useToggleLikeComment';
 

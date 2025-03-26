@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Typography } from '@jung/design-system';
+import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { FiAlertTriangle } from 'react-icons/fi';
 import * as styles from './CommentError.css';
 

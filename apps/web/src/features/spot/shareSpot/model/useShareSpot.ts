@@ -1,4 +1,4 @@
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 
 // 공유 플랫폼 타입 정의

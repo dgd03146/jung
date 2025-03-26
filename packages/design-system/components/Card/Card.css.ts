@@ -24,9 +24,7 @@ export const card = recipe({
 			outline: sprinkles({
 				boxShadow: 'primary',
 			}),
-			ghost: sprinkles({
-				border: 'none',
-			}),
+			ghost: { border: 'none' },
 		},
 		layout: {
 			vertical: sprinkles({
@@ -39,7 +37,7 @@ export const card = recipe({
 			}),
 		},
 		rounded: {
-			none: sprinkles({ borderRadius: 'none' }),
+			none: { borderRadius: 'none' },
 			sm: sprinkles({ borderRadius: 'sm' }),
 			md: sprinkles({ borderRadius: 'md' }),
 			lg: sprinkles({ borderRadius: 'lg' }),

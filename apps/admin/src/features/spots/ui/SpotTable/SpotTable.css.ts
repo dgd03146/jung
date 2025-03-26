@@ -91,52 +91,12 @@ export const table = style({
 	borderCollapse: 'collapse',
 });
 
-export const th = style({
-	// display: 'flex',
-	// alignItems: 'center',
-	// justifyContent: 'center',
-
-	padding: '8px 16px',
-	backgroundColor: 'white',
-	borderBottom: '1px solid #F1F5F9',
-
-	whiteSpace: 'nowrap',
-	fontSize: '13px',
-	fontWeight: '600',
-	color: '#64748B',
-	transition: 'all 0.2s ease',
-
-	'@media': {
-		'(max-width: 768px)': {
-			padding: '12px 16px',
-			fontSize: '12px',
-		},
-	},
-});
-
 export const row = style({
 	transition: 'all 0.2s ease',
 	backgroundColor: 'white',
 
 	':hover': {
 		backgroundColor: '#F8FAFC',
-	},
-});
-
-export const td = style({
-	padding: '16px 24px',
-	borderBottom: '1px solid #F1F5F9',
-	fontSize: '14px',
-	color: '#334155',
-	transition: 'all 0.2s ease',
-	verticalAlign: 'middle',
-	textAlign: 'center',
-
-	'@media': {
-		'(max-width: 768px)': {
-			padding: '12px 16px',
-			fontSize: '13px',
-		},
 	},
 });
 
@@ -258,4 +218,47 @@ export const textAlignLeft = style({
 
 export const textAlignRight = style({
 	textAlign: 'right',
+});
+
+export const toggleSortingButton = style({
+	color: palette.primary,
+	':hover': {
+		transition: 'color 0.3s ease-in-out',
+		color: palette.primary200,
+	},
+});
+
+export const th = style({
+	padding: '16px 24px',
+	backgroundColor: 'white',
+	borderBottom: '1px solid #F1F5F9',
+	textAlign: 'left',
+	whiteSpace: 'nowrap',
+	fontSize: '13px',
+	fontWeight: '600',
+	color: '#64748B',
+	transition: 'all 0.2s ease',
+
+	'@media': {
+		'(max-width: 768px)': {
+			padding: '12px 16px',
+			fontSize: '12px',
+		},
+	},
+});
+
+export const td = style({
+	padding: '16px 24px',
+	borderBottom: '1px solid #F1F5F9',
+	fontSize: '14px',
+	color: '#334155',
+	transition: 'all 0.2s ease',
+	verticalAlign: 'middle',
+
+	'@media': {
+		'(max-width: 768px)': {
+			padding: '12px 16px',
+			fontSize: '13px',
+		},
+	},
 });

@@ -39,7 +39,6 @@ export const EditorSkeleton = () => {
 			{/* 이미지 블록 */}
 			<Box
 				className={styles.imageSkeleton}
-				height='56'
 				width='full'
 				borderRadius='xl'
 				background='gray'
@@ -99,7 +98,6 @@ export const EditorSkeleton = () => {
 			<Box
 				className={styles.shortParagraphSkeleton}
 				height='4'
-				width='2/5'
 				borderRadius='md'
 				background='gray'
 			/>

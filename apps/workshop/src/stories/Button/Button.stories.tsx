@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button, type ButtonProps, Flex } from '@jung/design-system';
-import { CheckIcon, CloseIcon } from '@jung/design-system/icons';
+
 import { sizeOptions, variantOptions } from './options';
 
 const meta = {
@@ -90,8 +90,8 @@ export const Disabled: Story = {
 export const WithIcons: Story = {
 	render: (args) => <Template {...args} />,
 	args: {
-		prefix: <CloseIcon />,
-		suffix: <CheckIcon />,
+		prefix: '✅',
+		suffix: '✅',
 		variant: 'primary',
 	},
 };

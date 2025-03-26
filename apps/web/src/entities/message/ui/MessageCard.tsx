@@ -44,7 +44,7 @@ export const MessageCard = ({
 				/>
 				<Stack>
 					<Typography.Text level={4}>{message.author_name}</Typography.Text>
-					<Typography.FootNote level={2} color='primary200'>
+					<Typography.FootNote level={2} color='primary400'>
 						{formatDate(message.created_at)}
 					</Typography.FootNote>
 				</Stack>

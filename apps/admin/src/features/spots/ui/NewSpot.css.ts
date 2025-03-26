@@ -40,3 +40,7 @@ export const select = style({
 		borderColor: '#cbd5e1',
 	},
 });
+
+export const basicInfoContainer = style({
+	flexBasis: '40%',
+});

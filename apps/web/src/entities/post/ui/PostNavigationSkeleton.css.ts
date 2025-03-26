@@ -1,5 +1,13 @@
 import { style } from '@vanilla-extract/css';
 
+export const minWidthResponsive = style({
+	'@media': {
+		'(min-width: 1024px)': {
+			width: '240px',
+		},
+	},
+});
+
 export const sidebar = style({
 	width: '100%',
 	'@media': {
@@ -9,12 +17,24 @@ export const sidebar = style({
 	},
 });
 
-export const sidebarSection = style({
-	borderTopWidth: '1px',
-	borderBottomWidth: '1px',
-	borderStyle: 'solid',
-	borderColor: '#ececec',
+export const sidebarContainer = style({
+	'@media': {
+		'(min-width: 1024px)': {
+			top: 80,
+			position: 'sticky',
+		},
+	},
 });
+
+export const sidebarSection = style([
+	minWidthResponsive,
+	{
+		borderTopWidth: '1px',
+		borderBottomWidth: '1px',
+		borderStyle: 'solid',
+		borderColor: '#ececec',
+	},
+]);
 
 export const socialContainer = style({
 	display: 'flex',

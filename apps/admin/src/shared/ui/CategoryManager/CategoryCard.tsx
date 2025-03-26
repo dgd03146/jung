@@ -71,7 +71,7 @@ export const CategoryCard = ({
 					level={1}
 					color='black100'
 					fontWeight='medium'
-					flex='1'
+					flex={1}
 				>
 					{category.name}
 					{category.parent_id ? (

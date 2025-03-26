@@ -22,8 +22,6 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			as='header'
 			position='sticky'
 			width='full'
-			top={0}
-			zIndex={isMenuOpen ? '20' : '10'}
 			className={styles.headerContainer({
 				isScrolled,
 				isMenuOpen,
@@ -33,7 +31,6 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 				justifyContent='space-between'
 				alignItems='center'
 				marginX='auto'
-				maxWidth='11/12'
 				className={styles.navContent}
 			>
 				<Link href='/' className={styles.logoWrapper}>

@@ -2,7 +2,6 @@ import {
 	Box,
 	Button,
 	Flex,
-	Grid,
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
@@ -122,7 +121,7 @@ export const GuestbookMessages = () => {
 
 	return (
 		<Stack flexDirection='column' gap='6'>
-			<Grid className={styles.statsSection}>
+			<Box className={styles.statsSection}>
 				<Box className={styles.statCard}>
 					<Typography.Heading level={4} color='primary' fontWeight='medium'>
 						{messages.length}
@@ -141,7 +140,7 @@ export const GuestbookMessages = () => {
 					</Typography.Heading>
 					<Typography.SubText level={1}>Today</Typography.SubText>
 				</Box>
-			</Grid>
+			</Box>
 
 			<Box className={styles.mainSection}>
 				<Flex
@@ -151,7 +150,7 @@ export const GuestbookMessages = () => {
 					align='center'
 					borderStyle='solid'
 					borderColor='primary50'
-					borderBottomWidth='hairline'
+					className={styles.headerContainer}
 				>
 					<Typography.Heading level={4} color='primary'>
 						Guestbook Messages
@@ -172,7 +171,7 @@ export const GuestbookMessages = () => {
 								})}
 							>
 								<Flex align='center' gap='4' paddingX='4'>
-									<Box padding='4' flex='1'>
+									<Box padding='4' flex={1}>
 										<Flex align='center' gap='3' marginBottom='2'>
 											<Box
 												as='img'
@@ -181,7 +180,7 @@ export const GuestbookMessages = () => {
 												width='8'
 												height='8'
 												borderRadius='half'
-												objectFit='cover'
+												className={styles.image}
 											/>
 											<Typography.SubText>
 												{message.author_name}

@@ -1,15 +1,14 @@
+export { borderRadius, borderStyles, borderWidths } from './border';
 export { breakpoints } from './breakPoints';
+export { opacity } from './opacity';
+export { palette } from './palette';
+export { position } from './position';
+export { shadows } from './shadows';
+export { extendedSpace, space } from './space';
 export {
 	fontFamily,
 	fontSizes,
 	fontWeights,
-	lineHeights,
 	letterSpacings,
+	lineHeights,
 } from './typography';
-export { opacity } from './opacity';
-export { space, extendedSpace } from './space';
-export { palette } from './palette';
-export { borderRadius, borderStyles, borderWidths } from './border';
-export { shadows } from './shadows';
-export * as grid from './grid';
-export { position } from './position';

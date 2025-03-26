@@ -1,3 +1,4 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const tableAction = style({
@@ -52,5 +53,13 @@ export const row = style({
 
 	':hover': {
 		backgroundColor: '#F8FAFC',
+	},
+});
+
+export const toggleSortingButton = style({
+	color: palette.primary,
+	':hover': {
+		transition: 'color 0.3s ease-in-out',
+		color: palette.primary200,
 	},
 });

@@ -1,11 +1,9 @@
 'use client';
 
-import { BlurImage } from '@/fsd/shared';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
-import { Box, Flex, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
-import logo from '/public/images/logo.png';
 import { usePostQuery } from '../api';
 import { useAdjacentPostsQuery } from '../api/useAdjacentPostsQuery';
 import * as styles from './PostNavigation.css';
@@ -22,10 +20,8 @@ const PostNavigation = ({ postId }: Props) => {
 	return (
 		<Box className={styles.sidebar}>
 			<Flex
-				position={{ laptop: 'sticky' }}
-				top={{ laptop: 80 }}
+				className={styles.sidebarContainer}
 				flexDirection={{ base: 'row', laptop: 'column' }}
-				flexWrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
 				alignItems={{ base: 'center', laptop: 'flex-start' }}
 				justifyContent={{ base: 'space-between', laptop: 'flex-start' }}
 			>
@@ -34,7 +30,6 @@ const PostNavigation = ({ postId }: Props) => {
 					color='primary'
 					paddingBottom={{ laptop: '6' }}
 					display={{ base: 'none', laptop: 'flex' }}
-					minWidth={{ laptop: '60' }}
 					gap='2'
 				>
 					{SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
@@ -45,11 +40,7 @@ const PostNavigation = ({ postId }: Props) => {
 							aria-label={label}
 							target='_blank'
 							rel='noopener noreferrer'
-							color={{
-								base: 'primary',
-								hover: 'primary200',
-							}}
-							transition='fast'
+							className={styles.SocialIconContainer}
 							background='primary50'
 							paddingY='1'
 							paddingX='2'
@@ -61,17 +52,14 @@ const PostNavigation = ({ postId }: Props) => {
 							<Icon size={16} />
 						</Box>
 					))}
-					<BlurImage src={logo} alt='logo' width={60} height={60} />
 				</Flex>
 
 				{post?.tags && (
 					<Flex
+						className={styles.tagsContainer}
 						display={{ base: 'none', laptop: 'flex' }}
 						direction='column'
 						gap='1'
-						minWidth={{ laptop: '60' }}
-						borderTopWidth={{ laptop: 'hairline' }}
-						borderBottomWidth={{ laptop: 'hairline' }}
 						borderColor='gray'
 						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
@@ -92,9 +80,7 @@ const PostNavigation = ({ postId }: Props) => {
 					<Flex
 						direction='column'
 						gap='1'
-						minWidth={{ laptop: '60' }}
-						borderTopWidth={{ laptop: 'hairline' }}
-						borderBottomWidth={{ laptop: 'hairline' }}
+						className={styles.adjacentPostContainer}
 						borderColor='gray'
 						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
@@ -110,9 +96,8 @@ const PostNavigation = ({ postId }: Props) => {
 						<Link href={`/blog/${adjacentPosts.previous.id}`}>
 							<Typography.Text
 								level={3}
-								color={{ hover: 'primary200' }}
+								className={styles.adjacentPostTitle}
 								truncate='two'
-								transition='fast'
 							>
 								{adjacentPosts.previous.title}
 							</Typography.Text>
@@ -124,9 +109,7 @@ const PostNavigation = ({ postId }: Props) => {
 					<Flex
 						direction='column'
 						gap='1'
-						minWidth={{ laptop: '60' }}
-						borderTopWidth={{ laptop: 'hairline' }}
-						borderBottomWidth={{ laptop: 'hairline' }}
+						className={styles.adjacentPostContainer}
 						borderColor='gray'
 						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
@@ -142,9 +125,8 @@ const PostNavigation = ({ postId }: Props) => {
 						<Link href={`/blog/${adjacentPosts.next.id}`}>
 							<Typography.Text
 								level={3}
-								color={{ hover: 'primary200' }}
+								className={styles.adjacentPostTitle}
 								truncate='two'
-								transition='fast'
 							>
 								{adjacentPosts.next.title}
 							</Typography.Text>
@@ -158,7 +140,6 @@ const PostNavigation = ({ postId }: Props) => {
 						gap='1'
 						className={styles.backButton}
 						marginTop={{ laptop: '8' }}
-						color={{ base: 'primary', hover: 'primary200' }}
 					>
 						<IoArrowUndoSharp
 							size={18}

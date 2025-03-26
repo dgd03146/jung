@@ -17,6 +17,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
+import * as styles from './AcitivityChart.css';
 
 type PageType = 'all' | 'home' | 'gallery' | 'posts' | 'spots';
 type PeriodType = '7d' | '30d' | '1y';
@@ -224,11 +225,11 @@ const ActivityChart = () => {
 	return (
 		<Container boxShadow='primary' background='white' borderRadius='2xl'>
 			<Flex
+				className={styles.borderBottomStyle}
 				justify='space-between'
 				align='center'
 				padding='4'
 				background='white'
-				borderBottomWidth='hairline'
 				borderColor='white300'
 				borderStyle='solid'
 			>

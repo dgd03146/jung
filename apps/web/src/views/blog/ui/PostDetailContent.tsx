@@ -24,7 +24,7 @@ export const PostDetailContent = ({ postId }: { postId: string }) => {
 	}
 
 	return (
-		<Container flex='1' maxWidth='180'>
+		<Container flex={1}>
 			<BlockNoteEditor initialContent={post.content} />
 			<TogglePostLike
 				postId={postId}

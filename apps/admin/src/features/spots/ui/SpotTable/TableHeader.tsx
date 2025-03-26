@@ -18,7 +18,7 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 						<Box
 							as='button'
 							width='full'
-							color={{ base: 'primary', hover: 'primary200' }}
+							className={styles.toggleSortingButton}
 							onClick={header.column.getToggleSortingHandler()}
 						>
 							<Typography.Text

@@ -1,8 +1,7 @@
 'use client';
 
-import { Box } from '@jung/design-system';
-import { type Variant, useAnimationControls } from 'framer-motion';
-import { m } from 'framer-motion';
+import { Box } from '@jung/design-system/components';
+import { type Variant, m, useAnimationControls } from 'framer-motion';
 import { memo, useCallback, useMemo } from 'react';
 
 type AnimatedLineProps = {

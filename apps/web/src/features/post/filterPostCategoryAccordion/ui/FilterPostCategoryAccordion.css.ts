@@ -10,6 +10,13 @@ export const sidebar = style({
 	backgroundColor: 'white',
 	zIndex: 10,
 	borderRight: `1px solid ${palette.primary50}`,
+	display: 'none',
+
+	'@media': {
+		'(min-width: 768px)': {
+			display: 'block',
+		},
+	},
 });
 
 export const categoryLink = recipe({

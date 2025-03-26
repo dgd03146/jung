@@ -1,7 +1,7 @@
 import { useTRPC } from '@/fsd/app';
 import { SPOT_PARAMS } from '@/fsd/entities/spot';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { toggleLikeSpotAction } from '../api/toggleLikeSpotAction';

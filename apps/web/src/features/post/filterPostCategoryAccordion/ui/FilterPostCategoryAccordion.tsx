@@ -2,7 +2,7 @@
 
 import { useTRPC } from '@/fsd/app';
 import { BLOG_DEFAULTS } from '@/fsd/entities/post';
-import { Accordion, Box, Typography } from '@jung/design-system';
+import { Accordion, Box, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -42,11 +42,7 @@ export const FilterPostCategoryAccordion = ({
 	}, [categories, currentCategory]);
 
 	return (
-		<Box
-			as='aside'
-			className={styles.sidebar}
-			display={{ mobile: 'none', tablet: 'block' }}
-		>
+		<Box as='aside' className={styles.sidebar}>
 			<Accordion type='multiple' initialOpenIndex={parentCategoryIndex}>
 				<Link
 					href='/blog'
@@ -88,7 +84,6 @@ export const FilterPostCategoryAccordion = ({
 												background='primary50'
 												paddingY='1'
 												paddingX='2'
-												display={{ mobile: 'none', tablet: 'block' }}
 											>
 												{subCategory.postCount}
 											</Typography.SubText>

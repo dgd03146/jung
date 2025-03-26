@@ -8,11 +8,12 @@ export const input = recipe({
 		sprinkles({
 			width: 'full',
 			background: 'transparent',
-			borderWidth: 'thinnest',
+
 			borderStyle: 'solid',
-			transition: 'fast',
 		}),
 		style({
+			borderWidth: '0.5px',
+			transition: 'transform 0.15s ease, opacity 0.15s ease',
 			outline: 'none',
 			':focus': {
 				outline: 'none',
@@ -28,7 +29,7 @@ export const input = recipe({
 	variants: {
 		variant: {
 			primary: sprinkles({
-				borderColor: 'white400',
+				borderColor: 'white300',
 				borderWidth: 'hairline',
 				borderStyle: 'solid',
 			}),
@@ -47,7 +48,7 @@ export const input = recipe({
 				}),
 			],
 
-			ghost: sprinkles({
+			ghost: style({
 				border: 'none',
 				outlineColor: 'transparent',
 			}),

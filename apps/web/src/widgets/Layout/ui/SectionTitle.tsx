@@ -22,18 +22,14 @@ export function SectionTitle() {
 			<Flex
 				alignItems='center'
 				gap='2'
-				marginBottom='6'
+				color='primary'
 				className={styles.sectionTitle}
 			>
 				<Link
 					href={`/${mainSection?.toLowerCase()}`}
-					style={{ display: 'flex', alignItems: 'center' }}
+					className={styles.sectionLink}
 				>
-					<Typography.Text
-						level={1}
-						color={{ base: 'primary', hover: 'primary200' }}
-						transition='slow'
-					>
+					<Typography.Text level={1} className={styles.sectionText}>
 						{mainSection}
 					</Typography.Text>
 				</Link>
@@ -49,11 +45,7 @@ export function SectionTitle() {
 						href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
 						style={{ display: 'flex', alignItems: 'center' }}
 					>
-						<Typography.Text
-							level={1}
-							color={{ base: 'primary', hover: 'primary200' }}
-							transition='slow'
-						>
+						<Typography.Text level={1} className={styles.sectionText}>
 							{subSection}
 						</Typography.Text>
 					</Link>
@@ -63,15 +55,10 @@ export function SectionTitle() {
 	}
 
 	return (
-		<Typography.Heading
-			level={2}
-			color='primary'
-			marginBottom={{ mobile: '3', desktop: '5' }}
-			width='fit'
-		>
-			<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
+		<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
+			<Typography.Heading level={2} color='primary'>
 				{section}.
-			</Link>
-		</Typography.Heading>
+			</Typography.Heading>
+		</Link>
 	);
 }

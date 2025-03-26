@@ -1,4 +1,10 @@
-import { Box, Container, Flex, Stack, Typography } from '@jung/design-system';
+import {
+	Box,
+	Container,
+	Flex,
+	Stack,
+	Typography,
+} from '@jung/design-system/components';
 import * as styles from './SpotDetailSkeleton.css';
 
 export function SpotDetailSkeleton() {
@@ -26,7 +32,7 @@ export function SpotDetailSkeleton() {
 					justify='space-between'
 					align='center'
 					gap='4'
-					borderBottomWidth='hairline'
+					className={styles.actionBarSkeleton}
 					borderColor='primary50'
 					borderStyle='solid'
 					paddingY='4'

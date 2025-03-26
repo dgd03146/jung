@@ -6,7 +6,7 @@ import type { Post } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { type Table, flexRender } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import * as styles from './PostTable.css';
+import * as styles from './Table.css';
 
 interface TableBodyProps<T> {
 	table: Table<T>;

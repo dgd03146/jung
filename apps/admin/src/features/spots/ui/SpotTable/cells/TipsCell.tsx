@@ -17,13 +17,13 @@ export const TipsCell = ({ tips }: TipsCellProps) => (
 				className={styles.tipItem}
 			>
 				<MdLightbulb size={14} color='#6B7280' />
-				<Typography.Text level={3} color='gray600' className={styles.tipText}>
+				<Typography.Text level={3} color='gray300' className={styles.tipText}>
 					{tip}
 				</Typography.Text>
 			</Box>
 		))}
 		{tips.length > 2 && (
-			<Typography.Text level={3} color='gray400'>
+			<Typography.Text level={3} color='gray300'>
 				+{tips.length - 2}개 더보기
 			</Typography.Text>
 		)}

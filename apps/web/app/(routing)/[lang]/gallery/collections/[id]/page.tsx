@@ -1,8 +1,10 @@
-import { siteUrl } from '@/fsd/shared';
+import { LoadingSpinner, siteUrl } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
+import { Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 interface PageProps {
 	params: {
@@ -83,6 +85,12 @@ export async function generateMetadata({
 	}
 }
 
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return [];
+}
+
 export default async function Page({ params }: PageProps) {
 	const { id: collectionId } = params;
 	const queryClient = getQueryClient();
@@ -93,7 +101,15 @@ export default async function Page({ params }: PageProps) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<CollectionDetailPage collectionId={collectionId} />
+			<Suspense
+				fallback={
+					<Flex justify='center' align='center' height='1/4'>
+						<LoadingSpinner size='medium' />
+					</Flex>
+				}
+			>
+				<CollectionDetailPage collectionId={collectionId} />
+			</Suspense>
 		</HydrationBoundary>
 	);
 }

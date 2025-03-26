@@ -1,5 +1,5 @@
 import { AppLogo } from '@/fsd/shared';
-import { Box, Stack, Typography } from '@jung/design-system';
+import { Box, Stack, Typography } from '@jung/design-system/components';
 import type { ReactNode } from 'react';
 
 export const SocialLoginPrompt = ({ actions }: { actions: ReactNode }) => {

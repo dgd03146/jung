@@ -1,4 +1,4 @@
-import { Box, Card, Container, Grid } from '@jung/design-system';
+import { Box, Card, Container } from '@jung/design-system/components';
 import * as styles from './SpotListSkeleton.css';
 
 export const SpotSkeleton = () => {
@@ -17,19 +17,16 @@ export const SpotSkeleton = () => {
 export const SpotListSkeleton = ({ count = 3 }: { count?: number }) => {
 	return (
 		<Container>
-			<Grid
+			<Box
+				display='grid'
 				columnGap='4'
 				rowGap='8'
-				gridTemplateColumns={{
-					mobile: '1',
-					tablet: '1/2',
-					laptop: '1/3',
-				}}
+				className={styles.spotListGrid}
 			>
 				{Array.from({ length: count }).map((_, index) => (
 					<SpotSkeleton key={index} />
 				))}
-			</Grid>
+			</Box>
 		</Container>
 	);
 };

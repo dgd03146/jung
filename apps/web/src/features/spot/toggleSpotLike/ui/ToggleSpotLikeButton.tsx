@@ -1,4 +1,4 @@
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useToggleSpotLike } from '../model/useToggleSpotLike';
 import * as styles from './ToggleSpotLikeButton.css';

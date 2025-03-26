@@ -2,11 +2,11 @@ import {
 	Box,
 	Container,
 	Flex,
-	Grid,
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
 import { HiTrendingUp } from 'react-icons/hi';
+import * as styles from './DashboardStats.css';
 
 const DashboardStats = () => {
 	const stats = [
@@ -43,8 +43,8 @@ const DashboardStats = () => {
 	return (
 		<Container boxShadow='primary' background='white' borderRadius='2xl'>
 			<Box
+				className={styles.borderBottomStyle}
 				padding='4'
-				borderBottomWidth='hairline'
 				borderColor='white300'
 				borderStyle='solid'
 			>
@@ -52,17 +52,16 @@ const DashboardStats = () => {
 					Weekly Highlights
 				</Typography.Text>
 			</Box>
-			<Grid gridTemplateColumns={{ mobile: '1', tablet: '1/2', laptop: '1/4' }}>
+			<Box className={styles.gridContainer}>
 				{stats.map((stat, index) => (
 					<Flex
 						key={index}
 						paddingY='6'
-						paddingX='7'
+						paddingX='8'
 						position='relative'
-						transition='fast'
-						background={{ hover: 'white100' }}
+						className={styles.gridItem}
 					>
-						<Stack gap='4' flex='1'>
+						<Stack gap='4' flex={1}>
 							<Flex gap='3' justify='space-between' align='center'>
 								<Typography.Text
 									level={4}
@@ -73,7 +72,7 @@ const DashboardStats = () => {
 								</Typography.Text>
 								<Typography.Text
 									level={4}
-									color='primary400'
+									color='primary300'
 									fontWeight='semibold'
 								>
 									{stat.title}
@@ -86,7 +85,7 @@ const DashboardStats = () => {
 									</Typography.SubText>
 								)}
 								<Flex align='center' gap='1.5' paddingY='1.5' paddingX='2.5'>
-									<Typography.Text level={2} color='green'>
+									<Typography.Text level={2} color='success'>
 										<HiTrendingUp size={16} />+{stat.trend}%
 									</Typography.Text>
 									<Typography.SubText level={2} color='gray300'>
@@ -97,7 +96,7 @@ const DashboardStats = () => {
 						</Stack>
 					</Flex>
 				))}
-			</Grid>
+			</Box>
 		</Container>
 	);
 };

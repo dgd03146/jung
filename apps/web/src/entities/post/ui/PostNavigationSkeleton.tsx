@@ -1,12 +1,11 @@
-import { Box, Flex } from '@jung/design-system';
+import { Box, Flex } from '@jung/design-system/components';
 import * as styles from './PostNavigationSkeleton.css';
 
 export const PostNavigationSkeleton = () => {
 	return (
 		<Box className={styles.sidebar}>
 			<Flex
-				position={{ laptop: 'sticky' }}
-				top={{ laptop: 80 }}
+				className={styles.sidebarContainer}
 				flexDirection={{ base: 'row', laptop: 'column' }}
 				flexWrap={{ base: 'wrap-reverse', laptop: 'nowrap' }}
 				alignItems={{ base: 'center', laptop: 'flex-start' }}
@@ -16,7 +15,6 @@ export const PostNavigationSkeleton = () => {
 					align='center'
 					paddingBottom={{ laptop: '6' }}
 					display={{ base: 'none', laptop: 'flex' }}
-					minWidth={{ laptop: '60' }}
 					gap='2'
 					className={styles.socialContainer}
 				>
@@ -37,18 +35,13 @@ export const PostNavigationSkeleton = () => {
 					display={{ base: 'none', laptop: 'flex' }}
 					direction='column'
 					gap='1'
-					minWidth={{ laptop: '60' }}
-					borderTopWidth={{ laptop: 'hairline' }}
-					borderBottomWidth={{ laptop: 'hairline' }}
-					borderColor='gray'
-					borderStyle='solid'
 					paddingY={{ laptop: '8' }}
 					className={styles.sidebarSection}
 				>
 					<Box background='gray' className={styles.sectionTitle} />
 
 					<Box className={styles.tagContainer}>
-						{Array(5)
+						{Array(2)
 							.fill(0)
 							.map((_, index) => (
 								<Box key={index} background='gray' className={styles.tag} />
@@ -59,11 +52,6 @@ export const PostNavigationSkeleton = () => {
 				<Flex
 					direction='column'
 					gap='1'
-					minWidth={{ laptop: '60' }}
-					borderTopWidth={{ laptop: 'hairline' }}
-					borderBottomWidth={{ laptop: 'hairline' }}
-					borderColor='gray'
-					borderStyle='solid'
 					paddingY={{ laptop: '8' }}
 					className={styles.sidebarSection}
 				>
@@ -81,11 +69,6 @@ export const PostNavigationSkeleton = () => {
 				<Flex
 					direction='column'
 					gap='1'
-					minWidth={{ laptop: '60' }}
-					borderTopWidth={{ laptop: 'hairline' }}
-					borderBottomWidth={{ laptop: 'hairline' }}
-					borderColor='gray'
-					borderStyle='solid'
 					paddingY={{ laptop: '8' }}
 					className={styles.sidebarSection}
 				>

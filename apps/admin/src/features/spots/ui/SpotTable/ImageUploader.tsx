@@ -1,6 +1,5 @@
 import {
 	Box,
-	Grid,
 	Input,
 	Typography,
 	useToast,
@@ -69,7 +68,7 @@ export const ImageUploader = ({
 			borderWidth='hairline'
 			borderColor='primary50'
 		>
-			<Grid className={styles.imageGrid}>
+			<Box className={styles.imageGrid}>
 				{images
 					.filter((img) => img.status !== 'deleted')
 					.map((image, index) => (
@@ -84,7 +83,7 @@ export const ImageUploader = ({
 								alt={`${index + 1}`}
 								width='full'
 								height='full'
-								objectFit='cover'
+								className={styles.image}
 							/>
 							<button
 								type='button'
@@ -117,7 +116,7 @@ export const ImageUploader = ({
 						</Typography.SubText>
 					</Box>
 				)}
-			</Grid>
+			</Box>
 		</Box>
 	);
 };

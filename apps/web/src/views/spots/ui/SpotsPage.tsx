@@ -45,7 +45,7 @@ function SpotsContent() {
 	});
 
 	return (
-		<Stack flex='1' marginY='4' width='full'>
+		<Stack flex={1} marginY='4' width='full'>
 			{isListView ? (
 				<Box>
 					<SpotListWithLikes spots={spots} />

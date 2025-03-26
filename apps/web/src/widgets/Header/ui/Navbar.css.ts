@@ -13,6 +13,7 @@ export const headerContainer = recipe({
 		transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 		animation: `${fadeIn} 0.5s ease-out`,
 		borderBottom: '1px solid transparent',
+		top: 0,
 	}),
 	variants: {
 		isScrolled: {
@@ -30,7 +31,11 @@ export const headerContainer = recipe({
 		},
 		isMenuOpen: {
 			true: {
+				zIndex: 20,
 				backgroundColor: 'transparent',
+			},
+			false: {
+				zIndex: 10,
 			},
 		},
 	},
@@ -42,8 +47,7 @@ export const headerContainer = recipe({
 
 export const navContent = style({
 	height: '100%',
-
-	transition: 'all 0.3s ease',
+	maxWidth: '92%',
 });
 
 export const logoWrapper = style({
@@ -54,10 +58,6 @@ export const logoWrapper = style({
 			transform: 'translateY(-2px)',
 		},
 	},
-});
-
-export const logo = style({
-	fontFamily: 'var(--font-bebas)',
 });
 
 export const menuButtonWrapper = style({

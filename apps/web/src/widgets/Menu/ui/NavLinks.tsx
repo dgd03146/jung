@@ -1,6 +1,7 @@
 import { Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { extractFirstMeaningfulSegment } from '../lib/extractFirstMeaningfulSegment';
 import * as styles from './NavLink.css';
 
 type NavItem = {
@@ -25,18 +26,16 @@ const NavLink = ({
 					? {
 							mobile: '4xl', // 36px
 							tablet: '5xl', // 48px
-							desktop: '6xl', // 60px
+							laptop: '6xl', // 60px
 					  }
 					: {
 							mobile: 'xl', // 20px
 							tablet: '2xl', // 24px
-							desktop: '3xl', // 30px
+							laptop: '3xl', // 30px
 					  }
 			}
-			color={{
-				base: isActive ? 'primary400' : 'white',
-				hover: 'primary200',
-			}}
+			color={isActive ? 'primary400' : 'white'}
+			className={styles.navLinkText}
 		>
 			{item.label}
 		</Typography.Heading>
@@ -51,7 +50,8 @@ const NavLinks = ({
 	isMainNav?: boolean;
 }) => {
 	const pathname = usePathname();
-	const extractedPath = pathname.replace(/^\/[a-z]{2}\//, '');
+
+	const extractedPath = extractFirstMeaningfulSegment(pathname);
 
 	return (
 		<Flex className={isMainNav ? styles.mainNav : styles.subNav}>

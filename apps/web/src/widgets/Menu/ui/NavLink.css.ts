@@ -1,4 +1,5 @@
 import { sprinkles } from '@jung/design-system/styles';
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const mainNav = style([
@@ -8,7 +9,7 @@ export const mainNav = style([
 		gap: {
 			mobile: '4', // 16px
 			tablet: '6', // 24px
-			desktop: '8', // 32px
+			laptop: '8', // 32px
 		},
 	}),
 	{
@@ -27,10 +28,17 @@ export const subNav = style([
 		gap: {
 			mobile: '2', // 8px
 			tablet: '4', // 16px
-			desktop: '6', // 24px
+			laptop: '6', // 24px
 		},
 	}),
 	{
 		fontFamily: 'var(--font-bebas)',
 	},
 ]);
+
+export const navLinkText = style({
+	':hover': {
+		transition: 'color 0.3s ease-in-out',
+		color: palette.primary200,
+	},
+});
