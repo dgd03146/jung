@@ -6,8 +6,6 @@ import type { Atoms } from '../types/atoms';
 
 const keys = Array.from(sprinkles.properties.keys());
 
-const AtomKeys = typeof keys;
-
 /**
 
  * The `pick` function is used to extract the Sprinkles props from the `props` object.
