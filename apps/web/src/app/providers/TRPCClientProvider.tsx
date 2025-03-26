@@ -18,6 +18,8 @@ import { useState } from 'react';
 
 export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
 
+export const useTRPCClient = useTRPC as typeof useTRPC;
+
 export function getUrl() {
 	const base = (() => {
 		if (typeof window !== 'undefined') return '';
