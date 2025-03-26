@@ -2,9 +2,10 @@ import { vanillaExtractPlugin } from '@vanilla-extract/esbuild-plugin';
 import { defineConfig } from 'tsup';
 
 import pkg from './package.json';
+
 const externals = [
-	...Object.keys(pkg.dependencies || {}),
 	...Object.keys(pkg.peerDependencies || {}),
+	...Object.keys(pkg.dependencies || {}),
 ];
 
 export default defineConfig({
@@ -12,7 +13,7 @@ export default defineConfig({
 	treeshake: true,
 	entry: ['components/index.ts', 'tokens/index.ts', 'styles/index.ts'],
 	format: ['esm'],
-	splitting: false,
+	splitting: true,
 	dts: true,
 	clean: true,
 	minify: true,
