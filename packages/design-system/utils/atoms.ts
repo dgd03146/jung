@@ -4,6 +4,10 @@ import clsx from 'clsx';
 
 import type { Atoms } from '../types/atoms';
 
+const keys = Array.from(sprinkles.properties.keys());
+
+const AtomKeys = typeof keys;
+
 /**
 
  * The `pick` function is used to extract the Sprinkles props from the `props` object.
@@ -12,41 +16,47 @@ import type { Atoms } from '../types/atoms';
  * The function returns an array with two elements: the Sprinkles props and the remaining props.
  */
 
-function pick<T extends object>(
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function pick<T extends Record<string, any>, K extends keyof T>(
 	obj: T,
-	keys: string[],
-): Record<string, unknown> {
-	const result: Record<string, unknown> = {};
+	keys: readonly K[],
+): Pick<T, K> {
+	const result = {} as Pick<T, K>;
 
-	for (const key of keys) {
-		if (key in obj) {
-			result[key] = obj[key as keyof T];
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+
+		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+			result[key] = obj[key];
 		}
 	}
 
 	return result;
 }
-function omit<T extends object>(obj: T, keys: string[]): Partial<T> {
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function omit<T extends Record<string, any>, K extends keyof T>(
+	obj: T,
+	keys: readonly K[],
+): Omit<T, K> {
 	const result = { ...obj };
 
-	for (const key of keys) {
-		if (key in result) {
-			delete result[key as keyof typeof result];
-		}
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+		delete result[key];
 	}
 
-	return result;
+	return result as Omit<T, K>;
 }
 
-const keys = Array.from(sprinkles.properties.keys());
-
 export const extractAtoms = <P extends object>(props: P) => {
-	const atomProps = pick(props, keys);
-	const otherProps = omit(props, keys);
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const atomProps = pick(props, keys as any);
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const otherProps = omit(props, keys as any);
 
 	return [atomProps, otherProps] as const;
 };
-
 /**
  * Generates a class name string based on the provided Atoms object.
  * @param atoms - The Atoms object containing style properties.
@@ -58,16 +68,6 @@ export const extractAtoms = <P extends object>(props: P) => {
  * The final class name string is returned, which can be used to apply styles to a component.
  */
 
-function generateClassNames(atoms: Atoms) {
-	const { reset, className, ...rest } = atoms;
-	const sprinklesClassNames = sprinkles(rest);
-	return clsx(
-		sprinklesClassNames,
-		className,
-		reset ? [elementResets[reset]] : null,
-	);
-}
-
 /**
  * A utility function that generates a class name string based on the provided Atoms object.
  * @param atoms - The Atoms object containing style properties.
@@ -75,5 +75,12 @@ function generateClassNames(atoms: Atoms) {
  */
 
 export function atoms(atoms: Atoms) {
-	return generateClassNames(atoms);
+	const { reset, className, ...rest } = atoms;
+	const sprinklesClassNames = sprinkles(rest);
+
+	return clsx(
+		sprinklesClassNames,
+		className,
+		reset ? [elementResets[reset]] : null,
+	);
 }
