@@ -1,6 +1,7 @@
 import { Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { extractFirstMeaningfulSegment } from '../lib/extractFirstMeaningfulSegment';
 import * as styles from './NavLink.css';
 
 type NavItem = {
@@ -49,7 +50,8 @@ const NavLinks = ({
 	isMainNav?: boolean;
 }) => {
 	const pathname = usePathname();
-	const extractedPath = pathname.replace(/^\/[a-z]{2}\//, '');
+
+	const extractedPath = extractFirstMeaningfulSegment(pathname);
 
 	return (
 		<Flex className={isMainNav ? styles.mainNav : styles.subNav}>
