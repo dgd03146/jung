@@ -130,3 +130,8 @@ export const colorButtonSelected = style({
 	border: `2px solid ${palette.primary} !important`,
 	transform: 'scale(1.1)',
 });
+
+export const disabled = style({
+	opacity: 0.6,
+	cursor: 'not-allowed',
+});
