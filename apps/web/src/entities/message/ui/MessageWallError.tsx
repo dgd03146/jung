@@ -6,9 +6,10 @@ import * as styles from './MessageWallError.css';
 
 interface MessageWallErrorProps {
 	error: Error;
+	onReset?: () => void;
 }
 
-export const MessageWallError = ({ error }: MessageWallErrorProps) => {
+export const MessageWallError = ({ error, onReset }: MessageWallErrorProps) => {
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 20 }}
@@ -33,14 +34,16 @@ export const MessageWallError = ({ error }: MessageWallErrorProps) => {
 				<h3 className={styles.title}>Unable to Load Guestbook</h3>
 				<p className={styles.description}>Please try again in a moment</p>
 				<p className={styles.errorMessage}>{error.message}</p>
-				<motion.button
-					whileHover={{ scale: 1.02 }}
-					whileTap={{ scale: 0.98 }}
-					onClick={() => window.location.reload()}
-					className={styles.refreshButton}
-				>
-					Refresh
-				</motion.button>
+				{onReset && (
+					<motion.button
+						whileHover={{ scale: 1.02 }}
+						whileTap={{ scale: 0.98 }}
+						onClick={onReset}
+						className={styles.refreshButton}
+					>
+						Refresh
+					</motion.button>
+				)}
 			</motion.div>
 		</motion.div>
 	);
