@@ -14,10 +14,9 @@ export const responsiveProperties = defineProperties({
 		mobile: { '@media': getMediaQuery('mobile') },
 		tablet: { '@media': getMediaQuery('tablet') },
 		laptop: { '@media': getMediaQuery('laptop') },
-		desktop: { '@media': getMediaQuery('desktop') },
 	},
 	defaultCondition: 'mobile',
-	responsiveArray: ['base', 'mobile', 'tablet', 'laptop', 'desktop'],
+	responsiveArray: ['base', 'mobile', 'tablet', 'laptop'],
 	properties: {
 		display: [
 			'none',
@@ -46,6 +45,7 @@ export const responsiveProperties = defineProperties({
 		minWidth: vars.contentWidth,
 		minHeight: vars.contentWidth,
 		gap: vars.space,
+
 		columnGap: vars.space,
 		rowGap: vars.space,
 		fontSize: vars.fontSizes,
@@ -106,8 +106,8 @@ type SprinklesProperties = [
 type SprinklesFnType = ReturnType<typeof createSprinkles<SprinklesProperties>>;
 
 export const sprinkles: SprinklesFnType = createSprinkles(
-	tokenProperties,
 	responsiveProperties,
+	tokenProperties,
 	unresponsiveProperties,
 );
 
