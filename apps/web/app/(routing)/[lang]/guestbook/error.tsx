@@ -1,6 +1,6 @@
 'use client';
 
-import { ErrorBoundary } from '@/fsd/shared';
+import { MessageWallError } from '@/fsd/entities/message';
 
 export default function GuestBookError({
 	error,
@@ -9,13 +9,5 @@ export default function GuestBookError({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
-	return (
-		<ErrorBoundary
-			error={error}
-			reset={reset}
-			title='Guestbook Error'
-			description='Unable to load Guestbook content. Please try again later.'
-			actionLabel='Refresh'
-		/>
-	);
+	return <MessageWallError error={error} onReset={reset} />;
 }
