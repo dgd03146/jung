@@ -18,7 +18,6 @@ export const colors = [
 			{ name: 'secondary100', colorCode: palette.secondary100 },
 			{ name: 'secondary200', colorCode: palette.secondary200 },
 			{ name: 'secondary300', colorCode: palette.secondary300 },
-			{ name: 'secondary400', colorCode: palette.secondary400 },
 		],
 	},
 	{
@@ -31,7 +30,6 @@ export const colors = [
 			{ name: 'gray', colorCode: palette.gray },
 			{ name: 'gray100', colorCode: palette.gray100 },
 			{ name: 'gray300', colorCode: palette.gray300 },
-			{ name: 'gray400', colorCode: palette.gray400 },
 		],
 	},
 
@@ -40,15 +38,6 @@ export const colors = [
 		colors: [
 			{ name: 'success', colorCode: palette.success },
 			{ name: 'error', colorCode: palette.error },
-		],
-	},
-	{
-		title: 'Common Colors',
-		colors: [
-			{ name: 'blue', colorCode: palette.blue },
-			{ name: 'green', colorCode: palette.green },
-			{ name: 'yellow', colorCode: palette.yellow },
-			{ name: 'orange', colorCode: palette.orange },
 		],
 	},
 ] as const;
