@@ -1,4 +1,4 @@
-import { SPOT_PARAMS } from '@/fsd/entities/spot';
+import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { SpotsPage } from '@/fsd/views';
@@ -61,10 +61,10 @@ export default async function Page() {
 
 	await queryClient.prefetchInfiniteQuery(
 		trpc.spot.getAllSpots.infiniteQueryOptions({
-			limit: SPOT_PARAMS.LIMIT,
-			sort: SPOT_PARAMS.SORT,
-			cat: SPOT_PARAMS.CAT,
-			q: SPOT_PARAMS.QUERY,
+			limit: SPOT_DEFAULTS.LIMIT,
+			sort: SPOT_DEFAULTS.SORT,
+			cat: SPOT_DEFAULTS.CAT,
+			q: SPOT_DEFAULTS.QUERY,
 		}),
 	);
 
