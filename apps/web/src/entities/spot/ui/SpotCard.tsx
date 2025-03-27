@@ -29,7 +29,7 @@ export const SpotCard = ({
 				height='full'
 				className={styles.card({ variant })}
 				position='relative'
-				rounded='lg'
+				borderRadius='xl'
 			>
 				<Card.Media className={styles.imageWrapper({ variant })}>
 					<BlurImage

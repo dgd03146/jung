@@ -1,42 +1,37 @@
 'use client';
 
+import { SPOT_DEFAULTS, SpotList, useSpotsQuery } from '@/fsd/entities/spot';
 import {
-	SPOT_PARAMS,
-	SpotList,
-	SpotListSkeleton,
-	useSpotsQuery,
-} from '@/fsd/entities/spot';
-import {
-	FilterSpotCategory,
-	FilterSpotCategorySkeleton,
 	SpotListWithLikes,
 	ToggleSpotListButton,
-	ToggleSpotViewButton,
 	ViewMap,
 	useSpotStore,
 } from '@/fsd/features/spot';
 import {
 	LoadingSpinner,
-	SearchBar,
-	SearchBarSkeleton,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Box, Flex, Stack } from '@jung/design-system/components';
-import { Suspense } from 'react';
+import { useParams } from 'next/navigation';
 
-function SpotsContent() {
+export const SpotsContent = () => {
 	const { isListView, isSlidListVisible } = useSpotStore();
-	const { cat, sort, q } = useSearchParamsState({
+	const params = useParams();
+	const categoryName =
+		typeof params.categoryName === 'string'
+			? params.categoryName
+			: SPOT_DEFAULTS.CAT;
+
+	const { sort, q } = useSearchParamsState({
 		defaults: {
-			cat: SPOT_PARAMS.CAT,
-			sort: SPOT_PARAMS.SORT,
-			q: SPOT_PARAMS.QUERY,
+			sort: SPOT_DEFAULTS.SORT,
+			q: SPOT_DEFAULTS.QUERY,
 		} as const,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		useSpotsQuery({ cat, sort, q });
+		useSpotsQuery({ cat: categoryName, sort, q });
 	const spots = data.pages.flatMap((page) => page.items) ?? [];
 
 	const { ref } = useInfiniteScroll({
@@ -63,24 +58,5 @@ function SpotsContent() {
 				</Box>
 			)}
 		</Stack>
-	);
-}
-
-export const SpotsPage = () => {
-	return (
-		<>
-			<Flex gap='3' align='center'>
-				<Suspense fallback={<SearchBarSkeleton />}>
-					<SearchBar />
-				</Suspense>
-				<ToggleSpotViewButton />
-			</Flex>
-			<Suspense fallback={<FilterSpotCategorySkeleton length={6} />}>
-				<FilterSpotCategory />
-			</Suspense>
-			<Suspense fallback={<SpotListSkeleton count={12} />}>
-				<SpotsContent />
-			</Suspense>
-		</>
 	);
 };

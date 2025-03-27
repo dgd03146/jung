@@ -1,4 +1,4 @@
-export const SPOT_PARAMS = {
+export const SPOT_DEFAULTS = {
 	LIMIT: 12,
 	QUERY: '',
 	SORT: 'latest',

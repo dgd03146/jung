@@ -1,3 +1,4 @@
+'use client';
 import { useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 

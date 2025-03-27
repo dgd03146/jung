@@ -1,3 +1,5 @@
+'use client';
+
 import type { Spot } from '@jung/shared/types';
 import { useMemo, useRef } from 'react';
 

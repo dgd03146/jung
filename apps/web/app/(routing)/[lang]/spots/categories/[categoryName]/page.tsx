@@ -1,15 +1,15 @@
-import { BLOG_DEFAULTS } from '@/fsd/entities/post';
+import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { BlogLayout } from '../../_components/BlogLayout';
+import { SpotsLayout } from '../../_components/SpotsLayout';
 
-export const revalidate = 21600;
+export const revalidate = 21600; // 6시간
 
 export async function generateStaticParams() {
 	return [];
 }
 
-export default async function CategoryPostsPage({
+export default async function CategorySpotsPage({
 	params,
 }: {
 	params: { categoryName: string };
@@ -18,17 +18,17 @@ export default async function CategoryPostsPage({
 	const categoryName = params.categoryName;
 
 	await queryClient.prefetchInfiniteQuery(
-		trpc.post.getAllPosts.infiniteQueryOptions({
-			limit: BLOG_DEFAULTS.LIMIT,
+		trpc.spot.getAllSpots.infiniteQueryOptions({
+			limit: SPOT_DEFAULTS.LIMIT,
 			cat: categoryName,
-			sort: BLOG_DEFAULTS.SORT,
-			q: BLOG_DEFAULTS.QUERY,
+			sort: SPOT_DEFAULTS.SORT,
+			q: SPOT_DEFAULTS.QUERY,
 		}),
 	);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<BlogLayout currentCategory={categoryName} />
+			<SpotsLayout currentCategory={categoryName} />
 		</HydrationBoundary>
 	);
 }
