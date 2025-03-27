@@ -1,15 +1,7 @@
-import { BLOG_DEFAULTS, PostListSkeleton } from '@/fsd/entities/post';
-import {
-	FilterPostCategoryAccordion,
-	FilterPostCategoryAccordionSkeleton,
-	ViewPosts,
-} from '@/fsd/features/post';
-import { SearchBarSkeleton } from '@/fsd/shared';
+import { BLOG_DEFAULTS } from '@/fsd/entities/post';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { BlogPageControls } from '@/fsd/views';
-import { Box, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { Suspense } from 'react';
+import { BlogLayout } from '../../_components/BlogLayout';
 
 export const revalidate = 21600;
 
@@ -36,20 +28,7 @@ export default async function CategoryPostsPage({
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Flex gap={{ mobile: '0', tablet: '10' }}>
-				<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
-					<FilterPostCategoryAccordion currentCategory={categoryName} />
-				</Suspense>
-
-				<Box as='main' minWidth='0' flex={1}>
-					<Suspense fallback={<SearchBarSkeleton />}>
-						<BlogPageControls />
-					</Suspense>
-					<Suspense fallback={<PostListSkeleton count={6} />}>
-						<ViewPosts />
-					</Suspense>
-				</Box>
-			</Flex>
+			<BlogLayout currentCategory={categoryName} />
 		</HydrationBoundary>
 	);
 }
