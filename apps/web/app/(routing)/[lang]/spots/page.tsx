@@ -1,9 +1,9 @@
 import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { SpotsPage } from '@/fsd/views';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { SpotsLayout } from './_components/SpotsLayout';
 
 export const metadata: Metadata = {
 	title: 'Spots',
@@ -68,13 +68,13 @@ export default async function Page() {
 		}),
 	);
 
-	await queryClient.prefetchQuery(
+	queryClient.prefetchQuery(
 		trpc.category.getCategories.queryOptions({ type: 'spots' }),
 	);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<SpotsPage />
+			<SpotsLayout />
 		</HydrationBoundary>
 	);
 }
