@@ -15,7 +15,7 @@ interface BlogLayoutProps {
 
 export const BlogLayout = ({ currentCategory }: BlogLayoutProps) => {
 	return (
-		<Flex gap={{ mobile: '0', tablet: '10' }}>
+		<Flex gap={{ tablet: '10' }}>
 			<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
 				<FilterPostCategoryAccordion currentCategory={currentCategory} />
 			</Suspense>

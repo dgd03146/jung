@@ -41,13 +41,12 @@ export const main = style([
 ]);
 
 export const section = style({
-	display: 'grid',
+	// display: 'grid',
 	gridColumn: '1/7',
-	gap: '12px',
+
 	'@media': {
 		'(min-width: 1024px)': {
 			gridColumn: '1/9',
-			gap: '20px',
 		},
 		'(min-width: 1280px)': {
 			gridColumn: '1/13',
