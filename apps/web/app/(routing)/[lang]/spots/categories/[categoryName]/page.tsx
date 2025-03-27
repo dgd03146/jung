@@ -17,13 +17,17 @@ export default async function CategorySpotsPage({
 	const queryClient = getQueryClient();
 	const categoryName = params.categoryName;
 
-	await queryClient.prefetchInfiniteQuery(
+	queryClient.prefetchInfiniteQuery(
 		trpc.spot.getAllSpots.infiniteQueryOptions({
 			limit: SPOT_DEFAULTS.LIMIT,
 			cat: categoryName,
 			sort: SPOT_DEFAULTS.SORT,
 			q: SPOT_DEFAULTS.QUERY,
 		}),
+	);
+
+	queryClient.prefetchQuery(
+		trpc.category.getCategories.queryOptions({ type: 'spots' }),
 	);
 
 	return (

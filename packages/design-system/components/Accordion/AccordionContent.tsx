@@ -45,7 +45,7 @@ export const AccordionContent = forwardRef<
 			})}
 			className={contentClass}
 			ref={contentRef || ref}
-			HIDDEN={isOpen ? undefined : 'until-found'}
+			// HIDDEN={isOpen ? undefined : 'until-found'}
 			role='region'
 			aria-labelledby={id}
 			tabIndex={isOpen ? 0 : -1}

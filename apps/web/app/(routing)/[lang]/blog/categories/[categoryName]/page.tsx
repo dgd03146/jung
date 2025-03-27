@@ -17,13 +17,17 @@ export default async function CategoryPostsPage({
 	const queryClient = getQueryClient();
 	const categoryName = params.categoryName;
 
-	await queryClient.prefetchInfiniteQuery(
+	queryClient.prefetchInfiniteQuery(
 		trpc.post.getAllPosts.infiniteQueryOptions({
 			limit: BLOG_DEFAULTS.LIMIT,
 			cat: categoryName,
 			sort: BLOG_DEFAULTS.SORT,
 			q: BLOG_DEFAULTS.QUERY,
 		}),
+	);
+
+	queryClient.prefetchQuery(
+		trpc.category.getCategories.queryOptions({ type: 'blog' }),
 	);
 
 	return (
