@@ -1,3 +1,5 @@
+'use client';
+
 import { useTRPC } from '@/fsd/app';
 import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { useSupabaseAuth } from '@/fsd/shared';

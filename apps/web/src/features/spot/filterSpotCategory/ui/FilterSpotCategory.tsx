@@ -1,3 +1,5 @@
+'use client';
+
 import { useTRPC } from '@/fsd/app';
 import { createQueryString, useSearchParamsState } from '@/fsd/shared';
 import { Box, Tag, Typography } from '@jung/design-system/components';
