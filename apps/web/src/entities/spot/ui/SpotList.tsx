@@ -1,5 +1,6 @@
 import { Box } from '@jung/design-system/components';
 import type { Spot } from '@jung/shared/types';
+import { Fragment } from 'react';
 import { SpotCard } from './SpotCard';
 import { SpotEmptyState } from './SpotEmptyState';
 import * as styles from './SpotList.css';
@@ -22,9 +23,9 @@ export function SpotList({
 	return (
 		<Box className={styles.spotList({ variant })}>
 			{spots.map((spot) => (
-				<Box key={spot.id}>
+				<Fragment key={spot.id}>
 					{renderSpot ? renderSpot(spot) : <SpotCard spot={spot} />}
-				</Box>
+				</Fragment>
 			))}
 		</Box>
 	);
