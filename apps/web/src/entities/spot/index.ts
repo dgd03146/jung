@@ -1,4 +1,4 @@
 export * from './ui';
 
-export * from './config/constants';
+export * from './config/spots';
 export * from './api';

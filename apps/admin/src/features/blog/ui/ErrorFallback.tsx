@@ -17,7 +17,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
 					{error.message}
 				</Typography.Heading>
 			</Flex>
-			<Typography.Text color='gray400' marginBottom='4'>
+			<Typography.Text color='gray300' marginBottom='4'>
 				{error.code}
 			</Typography.Text>
 			<Button onClick={resetErrorBoundary} size='lg' borderRadius='lg'>

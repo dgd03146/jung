@@ -11,18 +11,6 @@ export const main = style([
 	sprinkles({
 		display: 'grid',
 		marginX: 'auto',
-		maxWidth: '11/12',
-		gridTemplateColumns: {
-			desktop: '1/12',
-			laptop: '1/8',
-			tablet: '1/6',
-			mobile: '1/6',
-		},
-		gridColumnGap: {
-			desktop: '6',
-			laptop: '5',
-			mobile: '4',
-		},
 		width: {
 			mobile: 'tablet',
 			tablet: 'tablet',
@@ -32,21 +20,37 @@ export const main = style([
 			mobile: '4', // 16px
 			tablet: '5', // 20px
 			laptop: '6', // 24px
-			desktop: '6', // 24px
 		},
 	}),
 	{
-		flex: '1 0 auto',
+		flex: '1',
+		maxWidth: '92%',
+		gridTemplateColumns: 'repeat(6, minmax(0px, 1fr))',
+		gridColumnGap: '16px',
+		'@media': {
+			'(min-width: 1024px)': {
+				gridTemplateColumns: 'repeat(8, minmax(0px, 1fr))',
+				gridColumnGap: '20px',
+			},
+			'(min-width: 1280px)': {
+				gridTemplateColumns: 'repeat(12, minmax(0px, 1fr))',
+				gridColumnGap: '24px',
+			},
+		},
 	},
 ]);
 
-export const section = style([
-	sprinkles({
-		gridColumn: {
-			mobile: '1/7',
-			tablet: '1/7',
-			laptop: '1/9',
-			desktop: '1/13',
+export const section = style({
+	display: 'grid',
+	gridColumn: '1/7',
+	gap: '12px',
+	'@media': {
+		'(min-width: 1024px)': {
+			gridColumn: '1/9',
+			gap: '20px',
 		},
-	}),
-]);
+		'(min-width: 1280px)': {
+			gridColumn: '1/13',
+		},
+	},
+});

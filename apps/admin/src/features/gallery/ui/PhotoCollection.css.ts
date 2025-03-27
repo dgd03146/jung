@@ -1,5 +1,17 @@
 import { style } from '@vanilla-extract/css';
 
+export const collectionGrid = style({
+	gridTemplateColumns: 'minmax(0px, 1fr)',
+	'@media': {
+		'(min-width: 768px)': {
+			gridTemplateColumns: 'repeat(3, minmax(0px, 1fr))',
+		},
+		'(min-width: 1024px)': {
+			gridTemplateColumns: 'repeat(4, minmax(0px, 1fr))',
+		},
+	},
+});
+
 export const collectionCard = style({
 	background: 'white',
 	borderRadius: '12px',
@@ -13,8 +25,18 @@ export const collectionCard = style({
 	},
 });
 
+export const collectionCardImage = style({
+	objectFit: 'cover',
+});
+
+export const actionsContainer = style({
+	borderTopWidth: '1px',
+});
+
 export const actions = style({
 	opacity: 0,
+	top: 10,
+	right: 10,
 
 	selectors: {
 		[`${collectionCard}:hover &`]: {
@@ -46,4 +68,16 @@ export const modalContent = style({
 
 	overflow: 'auto',
 	position: 'relative',
+});
+
+export const titleContainer = style({
+	borderBottomWidth: '1px',
+});
+
+export const previewImageContainer = style({
+	height: '240px',
+});
+
+export const previewImage = style({
+	objectFit: 'cover',
 });

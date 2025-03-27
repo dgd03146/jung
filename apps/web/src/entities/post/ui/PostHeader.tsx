@@ -1,22 +1,28 @@
-import { BlurImage, formatDate } from '@/fsd/shared';
-import { capitalizeFirstLetter } from '@/fsd/shared';
-import { Box, Flex, Stack, Typography } from '@jung/design-system';
-import type { Post } from '@jung/shared/types';
+'use client';
+
+import { usePostQuery } from '@/fsd/entities/post';
+import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
+import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import * as styles from './PostHeader.css';
 
 type Props = {
-	post: Post;
+	postId: string;
 };
 
-const PostHeader = ({ post }: Props) => {
+const PostHeader = ({ postId }: Props) => {
+	const { data: post } = usePostQuery(postId);
+
+	if (!post) {
+		throw new Error('Post not found');
+	}
 	return (
 		<Box
-			borderBottomWidth='hairline'
+			className={styles.container}
 			borderColor='gray'
 			borderStyle='solid'
 			paddingBottom={{ base: '4', laptop: '6' }}
 		>
-			<Flex columnGap='10'>
+			<Flex columnGap='12'>
 				<Box
 					className={styles.imgContainer}
 					display={{ base: 'none', laptop: 'block' }}
@@ -29,14 +35,14 @@ const PostHeader = ({ post }: Props) => {
 						priority
 					/>
 				</Box>
-				<Stack align={'left'} rowGap={{ base: '2', laptop: '4' }} flex='1'>
+				<Stack align={'left'} rowGap={{ base: '2', laptop: '4' }} flex={1}>
 					<Typography.SubText level={3} color='primary'>
 						{formatDate(post.date)}
 					</Typography.SubText>
 					<Typography.Heading level={3}>{post.title}</Typography.Heading>
 					<Typography.Text
 						level={3}
-						color='primary400'
+						color='primary300'
 						marginBottom='4'
 						truncate='two'
 					>

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { HiPlus, HiTrash } from 'react-icons/hi';
 import { useDeletePhotosFromCollection } from '../api/useDeletePhotosFromCollection';
 import { useGetPhotosByCollectionId } from '../api/useGetPhotosByCollectionId';
+import * as styles from './PhotoCollectionDetail.css';
 import { PhotoCollectionDetailSkeleton } from './PhotoCollectionDetailSkeleton';
 
 export const PhotoCollectionDetail = () => {
@@ -145,7 +146,7 @@ export const PhotoCollectionDetail = () => {
 						flexDirection='column'
 					>
 						<Box fontSize='3xl'>🖼️</Box>
-						<Typography.Text level={2} color='gray500'>
+						<Typography.Text level={2} color='gray300'>
 							No photos in this collection
 						</Typography.Text>
 					</Box>
@@ -154,14 +155,13 @@ export const PhotoCollectionDetail = () => {
 						{photos.map((photo) => (
 							<Box
 								key={photo.id}
+								className={styles.photoContainer}
 								position='relative'
 								borderRadius='lg'
 								borderWidth='hairline'
 								borderStyle='solid'
 								borderColor='gray100'
 								cursor='pointer'
-								width='60'
-								height='60'
 								onClick={() => handlePhotoSelect(photo.id)}
 							>
 								<Box
@@ -170,13 +170,13 @@ export const PhotoCollectionDetail = () => {
 									height='full'
 									src={photo.image_url}
 									alt={photo.alt || ''}
-									objectFit='cover'
+									className={styles.photoImage}
 								/>
 								<Checkbox
-									opacity={selectedPhotos.includes(photo.id) ? 100 : 0}
+									className={styles.checkbox({
+										opacity: selectedPhotos.includes(photo.id),
+									})}
 									position='absolute'
-									bottom={0}
-									left={0}
 									checked={selectedPhotos.includes(photo.id)}
 									borderRadius='lg'
 									onChange={() => handlePhotoSelect(photo.id)}

@@ -69,3 +69,7 @@ export const addButton = style({
 		boxShadow: '0 4px 6px rgba(124, 58, 237, 0.2)',
 	},
 });
+
+export const borderBottom = style({
+	borderBottomWidth: '1px',
+});

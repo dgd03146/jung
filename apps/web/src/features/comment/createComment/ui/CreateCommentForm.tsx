@@ -10,7 +10,7 @@ import {
 	Textarea,
 	Typography,
 	useToast,
-} from '@jung/design-system';
+} from '@jung/design-system/components';
 
 import { useCreateComment } from '../model/useCreateComment';
 import * as styles from './CreateCommentForm.css';
@@ -65,7 +65,7 @@ export const CreateCommentForm = ({
 							</Typography.SubText>
 						</Stack>
 					)}
-					<Box flex='1'>
+					<Box flex={1}>
 						<Textarea
 							borderRadius='md'
 							fontSize='sm'

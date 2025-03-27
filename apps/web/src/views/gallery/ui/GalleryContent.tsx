@@ -15,7 +15,6 @@ import {
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
-import { Suspense } from 'react';
 import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
 
 export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
@@ -61,19 +60,5 @@ export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
 				{isFetchingNextPage && <LoadingSpinner size='small' />}
 			</Flex>
 		</>
-	);
-};
-
-export const GalleryPage = ({ isTrending }: { isTrending?: boolean }) => {
-	return (
-		<Suspense
-			fallback={
-				<Flex justify='center' align='center' height='1/4'>
-					<LoadingSpinner size='medium' />
-				</Flex>
-			}
-		>
-			<GalleryContent isTrending={isTrending} />
-		</Suspense>
 	);
 };

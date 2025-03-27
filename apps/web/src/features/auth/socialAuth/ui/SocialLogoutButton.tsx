@@ -1,4 +1,4 @@
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { signOut } from '../api/signoutAction';
 
 export const SocialLogoutButton = () => {

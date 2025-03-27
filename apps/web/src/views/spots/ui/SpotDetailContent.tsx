@@ -1,28 +1,14 @@
 'use client';
 
-import {
-	SpotDetailCard,
-	SpotDetailSkeleton,
-	SpotPhotoGrid,
-	useSpotQuery,
-} from '@/fsd/entities';
+import { SpotDetailCard, SpotPhotoGrid, useSpotQuery } from '@/fsd/entities';
 import {
 	ShareSpotButton,
 	ToggleSpotViewButton,
 	ViewMap,
 	useSpotStore,
 } from '@/fsd/features/spot';
-import { Suspense } from 'react';
 
-export const SpotDetailPage = ({ spotId }: { spotId: string }) => {
-	return (
-		<Suspense fallback={<SpotDetailSkeleton />}>
-			<SpotDetailContent spotId={spotId} />
-		</Suspense>
-	);
-};
-
-function SpotDetailContent({ spotId }: { spotId: string }) {
+export const SpotDetailContent = ({ spotId }: { spotId: string }) => {
 	const { data: spot } = useSpotQuery(spotId);
 	const { isListView } = useSpotStore();
 
@@ -44,4 +30,4 @@ function SpotDetailContent({ spotId }: { spotId: string }) {
 			)}
 		/>
 	);
-}
+};

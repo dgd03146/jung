@@ -1,6 +1,7 @@
 import { Button, Flex, Typography } from '@jung/design-system/components';
 import { CiCircleList, CiGrid41 } from 'react-icons/ci';
 import { HiPlus } from 'react-icons/hi2';
+import * as styles from './CategoryHeader.css';
 
 interface CategoryHeaderProps {
 	view: 'grid' | 'list';
@@ -27,9 +28,9 @@ export const CategoryHeader = ({
 			paddingX='6'
 			align='center'
 			justify='space-between'
-			borderBottomWidth='hairline'
 			borderStyle='solid'
 			borderColor='primary50'
+			className={styles.borderBottom}
 		>
 			<Typography.Heading level={5} color='primary'>
 				{title}

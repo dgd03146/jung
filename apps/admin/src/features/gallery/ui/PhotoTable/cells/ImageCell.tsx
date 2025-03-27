@@ -1,4 +1,5 @@
 import { Box } from '@jung/design-system/components';
+import * as styles from './ImageCell.css';
 
 interface ImageCellProps {
 	url: string;
@@ -8,11 +9,11 @@ interface ImageCellProps {
 export const ImageCell = ({ url, alt }: ImageCellProps) => (
 	<Box
 		as='img'
+		className={styles.imageCell}
 		src={url}
 		alt={alt}
 		width='20'
 		height='20'
-		objectFit='cover'
 		borderRadius='lg'
 		boxShadow='primary'
 	/>

@@ -2,7 +2,8 @@ export { AnimatedLine } from './AnimatedLine';
 export { AppLogo } from './AppLogo';
 export { default as BlockNoteErrorFallback } from './BlockNoteErrorFallback';
 export { default as BlurImage } from './BlurImage';
-export { default as CategoryList } from './CategoryList';
+
+export { EditorSkeleton } from './EditorSkeleton';
 export { EmptyState } from './EmptyState';
 export { ErrorBoundary } from './ErrorBoundary';
 export { default as LanguageSwitcher } from './LanguageSwitcher';

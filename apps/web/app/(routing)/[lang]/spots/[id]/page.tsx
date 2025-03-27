@@ -1,8 +1,11 @@
+import { SpotDetailSkeleton } from '@/fsd/entities/spot';
 import { siteUrl } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { SpotDetailPage } from '@/fsd/views';
+
+import { SpotDetailContent } from '@/fsd/views';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export async function generateMetadata({
 	params,
@@ -82,6 +85,12 @@ export async function generateMetadata({
 	}
 }
 
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return [];
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
 	const spotId = params.id;
 
@@ -90,7 +99,9 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<SpotDetailPage spotId={spotId} />
+			<Suspense fallback={<SpotDetailSkeleton />}>
+				<SpotDetailContent spotId={spotId} />
+			</Suspense>
 		</HydrationBoundary>
 	);
 }

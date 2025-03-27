@@ -2,7 +2,8 @@ import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { BiLogoGmail } from 'react-icons/bi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { logo } from '../../Header/ui/Navbar.css';
+
+import * as styles from './Footer.css';
 
 const SOCIAL_LINKS = [
 	{
@@ -26,14 +27,17 @@ const Footer = () => {
 	return (
 		<Box
 			as='footer'
+			className={styles.footer}
 			paddingY='4'
 			width='full'
-			height='18'
-			maxWidth='11/12'
 			marginX='auto'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>
-				<Typography.Text level={2} color='primary' className={logo}>
+				<Typography.Text
+					level={2}
+					color='primary'
+					className={styles.footerText}
+				>
 					ⓒ 2025. Jung. All rights reserved.
 				</Typography.Text>
 
@@ -48,11 +52,7 @@ const Footer = () => {
 							role='link'
 							aria-label={ariaLabel}
 						>
-							<Typography.Text
-								level={1}
-								color={{ base: 'primary', hover: 'primary200' }}
-								transition='slow'
-							>
+							<Typography.Text level={1} className={styles.socialIconText}>
 								<Icon />
 							</Typography.Text>
 						</Box>

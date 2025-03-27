@@ -1,4 +1,3 @@
-import type { ClassValue } from 'clsx';
 import type { Sprinkles } from '../styles/index';
 
 /**
@@ -9,7 +8,7 @@ import type { Sprinkles } from '../styles/index';
 
 export interface Atoms extends Sprinkles {
 	reset?: keyof JSX.IntrinsicElements;
-	className?: ClassValue;
+	className?: string | string[];
 }
 
 export type AtomProps = Omit<Atoms, 'className' | 'reset'>;

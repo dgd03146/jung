@@ -14,7 +14,7 @@ export const messageCard = recipe({
 
 		':hover': {
 			boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
-			borderColor: palette.primaryLight,
+			borderColor: palette.primary50,
 		},
 	},
 	variants: {
@@ -43,7 +43,7 @@ export const messageEmoji = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	backgroundColor: palette.primaryLight,
+	backgroundColor: palette.primary50,
 	borderRadius: '8px',
 	color: palette.primary,
 });
@@ -53,5 +53,5 @@ export const avatar = style({
 	height: '24px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `1px solid ${palette.primary}`,
+	// border: `1px solid ${palette.primary}`,
 });

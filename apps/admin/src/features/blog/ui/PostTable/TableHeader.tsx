@@ -3,7 +3,7 @@ import { type Table, flexRender } from '@tanstack/react-table';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { GiClick } from 'react-icons/gi';
 import { RxCaretSort } from 'react-icons/rx';
-import * as styles from './PostTable.css';
+import * as styles from './Table.css';
 
 interface TableHeaderProps<T> {
 	table: Table<T>;
@@ -18,9 +18,9 @@ export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
 					<Box as='th' key={header.id} className={styles.th}>
 						<Box
 							as='button'
+							className={styles.toggleSortingButton}
 							width='full'
 							display='flex'
-							color={{ base: 'primary', hover: 'primary200' }}
 							onClick={header.column.getToggleSortingHandler()}
 						>
 							<Typography.Text

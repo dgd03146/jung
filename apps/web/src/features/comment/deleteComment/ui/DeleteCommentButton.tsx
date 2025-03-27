@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { FaTrash } from 'react-icons/fa';
 import { useDeleteComment } from '../model/useDeleteComment';
 

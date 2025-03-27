@@ -17,7 +17,14 @@ export const card = style([
 	sprinkles({
 		padding: { base: '4', tablet: '6', laptop: '10' },
 		borderRadius: 'xl',
-		minWidth: { base: '80', tablet: '100' },
 		boxShadow: 'primary',
 	}),
+	{
+		minWidth: '320px',
+		'@media': {
+			'(min-width: 768px)': {
+				minWidth: '400px',
+			},
+		},
+	},
 ]);

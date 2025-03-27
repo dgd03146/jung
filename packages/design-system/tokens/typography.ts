@@ -1,14 +1,5 @@
 export const fontFamily = {
-	notoSans: 'var(--font-noto-sans-kor)',
-	pretendard: 'var(--font-pretendard)',
-	nanumMyeongjo: 'var(--font-nanumMyeongjo)',
-	inter: 'var(--font-inter)',
-	rubik: 'var(--font-rubik)',
-	dm: 'var(--font-dm-sans)',
 	poppins: 'var(--font-poppins)',
-	body: '-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
-	code: 'ml, "Roboto Mono", Menlo, monospace',
-	playfair: 'var(--font-playfair)',
 	bebas: 'var(--font-bebas)',
 };
 
@@ -26,16 +17,13 @@ export const fontSizes = {
 	xl: '1.25rem', // 20px
 	'2xl': '1.5rem', // 24px
 	'3xl': '2rem', // 32px
-
 	'4xl': '2.25rem', // 36px
 	'5xl': '3rem', // 48px
-	'6xl': '3.75rem', // 60px
-	'7xl': '4.5rem', // 72px
-
+	'6xl': '4rem', // 64px
+	'7xl': '5rem', // 80px
 	'8xl': '6rem', // 96px
-	'9xl': '8rem', // 128px
-	'10xl': '11rem', // 176px
-	'11xl': '12rem', // 192px
+	'9xl': '7rem', // 112px
+	'10xl': '8rem', // 128px
 } as const;
 
 export const lineHeights = {
@@ -70,15 +58,10 @@ export const lineHeights = {
 };
 
 export const fontWeights = {
-	hairline: '100',
-	thin: '200',
-	light: '300',
 	normal: '400',
 	medium: '500',
 	semibold: '600',
 	bold: '700',
-	extrabold: '800',
-	black: '900',
 };
 
 export const letterSpacings = {

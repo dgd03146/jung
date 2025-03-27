@@ -45,14 +45,28 @@ export const contentChild = style([
 	}),
 ]);
 
-// globalStyle(`${contentChild}:first-child`, {
-// 	paddingTop: '16px',
-// });
-
-// globalStyle(`${contentChild}:not(:last-child)`, {
-// 	paddingBottom: '16px',
-// 	borderBottom: '0.5px solid #EFEFEF',
-// });
+export const contentNoAnimation = recipe({
+	base: sprinkles({
+		display: 'flex',
+		flexDirection: 'column',
+		overflow: 'hidden',
+	}),
+	variants: {
+		isOpen: {
+			true: {
+				maxHeight: 'none',
+				visibility: 'visible',
+			},
+			false: {
+				maxHeight: '0px',
+				visibility: 'hidden',
+			},
+		},
+	},
+	defaultVariants: {
+		isOpen: false,
+	},
+});
 
 export const trigger = recipe({
 	base: style([

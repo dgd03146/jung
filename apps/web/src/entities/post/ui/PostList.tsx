@@ -3,7 +3,7 @@
 import type { ViewMode } from '@/fsd/entities/post';
 import { PostCard } from '@/fsd/entities/post/ui';
 import { EmptyState } from '@/fsd/shared/ui';
-import { Box } from '@jung/design-system';
+import { Box } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
 import * as styles from './PostList.css';
 

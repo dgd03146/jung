@@ -4,7 +4,6 @@ import {
 	Button,
 	Card,
 	Flex,
-	Grid,
 	Input,
 	Stack,
 	Textarea,
@@ -203,11 +202,11 @@ export const PhotoCollection = () => {
 		<Stack gap='4'>
 			<Box background='white'>
 				<Flex
+					className={styles.titleContainer}
 					padding='6'
 					justify='space-between'
 					align='center'
 					borderRadius='xl'
-					borderBottomWidth='hairline'
 					borderColor='primary50'
 					borderStyle='solid'
 				>
@@ -220,11 +219,7 @@ export const PhotoCollection = () => {
 					</Button>
 				</Flex>
 
-				<Grid
-					gridTemplateColumns={{ base: '1', tablet: '1/3', laptop: '1/4' }}
-					gap='6'
-					padding='6'
-				>
+				<Box className={styles.collectionGrid} gap='6' padding='6'>
 					{collections.map((collection) => (
 						<Link
 							key={collection.id}
@@ -234,7 +229,6 @@ export const PhotoCollection = () => {
 							<Card
 								variant='outline'
 								rounded='lg'
-								transition='fast'
 								className={styles.collectionCard}
 							>
 								<Card.Media>
@@ -244,15 +238,9 @@ export const PhotoCollection = () => {
 										alt={collection.title}
 										width='full'
 										height='48'
-										objectFit='cover'
+										className={styles.collectionCardImage}
 									/>
-									<Flex
-										position='absolute'
-										gap='2'
-										top={10}
-										right={10}
-										className={styles.actions}
-									>
+									<Flex position='absolute' gap='2' className={styles.actions}>
 										<Button
 											variant='secondary'
 											background='white'
@@ -290,10 +278,10 @@ export const PhotoCollection = () => {
 
 								<Card.Actions>
 									<Box
+										className={styles.actionsContainer}
 										width='full'
 										paddingX='4'
 										paddingY='3'
-										borderTopWidth='hairline'
 										borderColor='primary50'
 										borderStyle='solid'
 									>
@@ -312,7 +300,7 @@ export const PhotoCollection = () => {
 							</Card>
 						</Link>
 					))}
-				</Grid>
+				</Box>
 			</Box>
 
 			<AnimatePresence>
@@ -416,7 +404,7 @@ export const PhotoCollection = () => {
 									</Flex>
 
 									<Box
-										height='60'
+										className={styles.previewImageContainer}
 										boxShadow='primary'
 										borderRadius='md'
 										overflow='hidden'
@@ -424,10 +412,10 @@ export const PhotoCollection = () => {
 									>
 										{previewImage && (
 											<Box
+												className={styles.previewImage}
 												as='img'
 												width='full'
 												height='full'
-												objectFit='cover'
 												src={previewImage}
 												alt='Cover preview'
 											/>

@@ -1,5 +1,9 @@
 import { style } from '@vanilla-extract/css';
 
+export const titleSection = style({
+	borderBottomWidth: '1px',
+});
+
 export const titleInput = style({
 	width: '100%',
 	fontSize: '40px',

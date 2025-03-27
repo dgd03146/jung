@@ -31,15 +31,22 @@ export const AccordionTrigger = forwardRef<
 		}: AccordionTriggerProps,
 		ref,
 	) => {
-		const { openIndexes, handleToggleIndex } = useAccordionContext();
+		const { openIndexes, handleToggleIndex, setAnimationEnabled } =
+			useAccordionContext();
 		const { index, id } = useAccordionItemContext();
 		const isOpen = openIndexes.has(index!);
+
+		const handleClick = () => {
+			setAnimationEnabled(true);
+
+			handleToggleIndex(index!);
+		};
 
 		return (
 			<Box
 				ref={ref}
 				className={styles.trigger({ active })}
-				onClick={() => handleToggleIndex(index!)}
+				onClick={handleClick}
 				role='button'
 				id={id}
 				aria-expanded={isOpen ? 'true' : 'false'}

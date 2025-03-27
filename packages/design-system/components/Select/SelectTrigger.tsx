@@ -5,6 +5,8 @@ import { SelectorIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
 import { useSelectContext } from './context/SelectProvider';
 
+import * as styles from './SelectTrigger.css';
+
 export interface Props
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix' | 'color'>,
 		AtomProps {
@@ -29,6 +31,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 
 		return (
 			<Button
+				className={styles.trigger}
 				role='button'
 				aria-controls='listbox'
 				aria-expanded={open}
@@ -47,8 +50,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 				size='sm'
 				fontSize='sm'
 				minWidth='40'
-				whiteSpace='nowrap'
-				caretColor='transparent'
 				ref={ref}
 				{...restProps}
 				suffix={<SelectorIcon />}

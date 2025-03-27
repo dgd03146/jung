@@ -3,6 +3,7 @@
 import { Button } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { FaShareAlt } from 'react-icons/fa';
+import * as styles from './SharePhotoButton.css';
 
 interface SharePhotoButtonProps {
 	photo: Photo;
@@ -14,7 +15,7 @@ export const SharePhotoButton = ({ photo, onShare }: SharePhotoButtonProps) => {
 		<Button
 			variant='ghost'
 			color='primary'
-			transition='fast'
+			className={styles.sharePhotoButton}
 			onClick={() => onShare(photo)}
 			aria-label='사진 공유하기'
 		>

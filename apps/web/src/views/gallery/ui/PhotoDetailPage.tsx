@@ -72,10 +72,10 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							<PhotoTags tags={currentPhoto.tags} />
 
 							<Flex
+								className={styles.likesContainer}
 								paddingY='4'
 								justify='space-between'
 								align='center'
-								borderTopWidth='hairline'
 								borderColor='primary50'
 								borderStyle='solid'
 							>

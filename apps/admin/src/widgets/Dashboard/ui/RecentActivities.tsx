@@ -7,6 +7,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { MdAddPhotoAlternate, MdEdit, MdLocationOn } from 'react-icons/md';
+import * as styles from './RecentActivities.css';
 
 const RecentActivities = () => {
 	const activities = [
@@ -56,7 +57,7 @@ const RecentActivities = () => {
 		<Container boxShadow='primary' background='white' borderRadius='2xl'>
 			<Box
 				padding='4'
-				borderBottomWidth='hairline'
+				className={styles.borderBottom}
 				borderColor='white300'
 				borderStyle='solid'
 			>
@@ -70,7 +71,7 @@ const RecentActivities = () => {
 						key={activity.id}
 						gap='3'
 						paddingY='3'
-						borderBottomWidth='hairline'
+						className={styles.borderBottom}
 						borderColor='white300'
 						borderStyle='solid'
 					>
@@ -86,7 +87,7 @@ const RecentActivities = () => {
 						>
 							{activity.icon}
 						</Flex>
-						<Stack flex='1' gap='3'>
+						<Stack flex={1} gap='3'>
 							<Typography.Text level={4} color='primary' fontWeight='semibold'>
 								{activity.title}
 							</Typography.Text>

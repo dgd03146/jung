@@ -1,16 +1,18 @@
+'use client';
+
 import { useTRPC } from '@/fsd/app';
-import { SPOT_PARAMS } from '@/fsd/entities/spot';
+import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system';
+import { useToast } from '@jung/design-system/components';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { toggleLikeSpotAction } from '../api/toggleLikeSpotAction';
 
 const spotQueryParams = {
-	cat: SPOT_PARAMS.CAT,
-	limit: SPOT_PARAMS.LIMIT,
-	q: SPOT_PARAMS.QUERY,
-	sort: SPOT_PARAMS.SORT,
+	cat: SPOT_DEFAULTS.CAT,
+	limit: SPOT_DEFAULTS.LIMIT,
+	q: SPOT_DEFAULTS.QUERY,
+	sort: SPOT_DEFAULTS.SORT,
 } as const;
 
 export const useToggleSpotLike = () => {

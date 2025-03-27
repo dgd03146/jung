@@ -1,9 +1,9 @@
 import { BLOG_DEFAULTS } from '@/fsd/entities/post';
 import { siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { BlogPage } from '@/fsd/views';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { BlogLayout } from './_components/BlogLayout';
 
 export const metadata: Metadata = {
 	title: 'Blog',
@@ -36,13 +36,13 @@ export default async function Page() {
 		}),
 	);
 
-	await queryClient.prefetchQuery(
+	queryClient.prefetchQuery(
 		trpc.category.getCategories.queryOptions({ type: 'blog' }),
 	);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<BlogPage />
+			<BlogLayout />
 		</HydrationBoundary>
 	);
 }

@@ -7,7 +7,7 @@ export const postRouter = router({
 	getAllPosts: publicProcedure
 		.input(
 			z.object({
-				limit: z.number().min(1).max(100).default(10),
+				limit: z.number().min(1).max(100),
 				cursor: z.number().optional(),
 				cat: z.string().optional(),
 				sort: z.enum(['latest', 'oldest', 'popular']).default('latest'),

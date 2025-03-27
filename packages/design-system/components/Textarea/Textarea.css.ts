@@ -8,11 +8,11 @@ export const textarea = recipe({
 		sprinkles({
 			width: 'full',
 			background: 'transparent',
-			borderWidth: 'thinnest',
 			borderStyle: 'solid',
-			transition: 'fast',
 		}),
 		style({
+			borderWidth: '0.5px',
+			transition: 'transform 0.15s ease, opacity 0.15s ease',
 			resize: 'none',
 			outline: 'none',
 			':focus': {
@@ -25,7 +25,7 @@ export const textarea = recipe({
 	variants: {
 		variant: {
 			primary: sprinkles({
-				borderColor: 'white400',
+				borderColor: 'white300',
 				borderWidth: 'hairline',
 				borderStyle: 'solid',
 			}),
@@ -43,7 +43,7 @@ export const textarea = recipe({
 					},
 				}),
 			],
-			ghost: sprinkles({
+			ghost: style({
 				border: 'none',
 				outlineColor: 'transparent',
 			}),

@@ -1,4 +1,5 @@
 import { Flex, Tag, Typography } from '@jung/design-system/components';
+import * as styles from './SpotTags.css';
 
 interface SpotTagsProps {
 	tags: string[];
@@ -11,7 +12,7 @@ export function SpotTags({ tags }: SpotTagsProps) {
 		<Flex
 			gap='2'
 			wrap='wrap'
-			borderBottomWidth='hairline'
+			className={styles.tagsContainer}
 			borderColor='primary50'
 			borderStyle='solid'
 			paddingBottom='5'

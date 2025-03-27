@@ -7,7 +7,7 @@ import {
 	Input,
 	Typography,
 	useToast,
-} from '@jung/design-system';
+} from '@jung/design-system/components';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import * as styles from './LoginPage.css';
@@ -132,7 +132,7 @@ export default function LoginPage() {
 									) : (
 										<Typography.SubText
 											level={2}
-											color='primary400'
+											color='primary300'
 											minHeight='5'
 										>
 											테스트 계정: test@1111.com
@@ -178,7 +178,7 @@ export default function LoginPage() {
 									) : (
 										<Typography.SubText
 											level={2}
-											color='primary400'
+											color='primary300'
 											minHeight='5'
 										>
 											테스트 비밀번호: test1111

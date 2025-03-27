@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@jung/design-system';
+import { Box } from '@jung/design-system/components';
 import * as accordionStyles from './FilterPostCategoryAccordion.css';
 import * as styles from './FilterPostCategoryAccordionSkeleton.css';
 

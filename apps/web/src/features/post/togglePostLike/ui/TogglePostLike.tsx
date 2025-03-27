@@ -1,6 +1,6 @@
 import { useTogglePostLike } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { Button, Flex, useToast } from '@jung/design-system';
+import { Button, Flex, useToast } from '@jung/design-system/components';
 import Link from 'next/link';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';

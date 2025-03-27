@@ -6,6 +6,8 @@ export type AccordionContextState = {
 	type?: 'single' | 'multiple';
 	openIndexes: Set<number>;
 	handleToggleIndex: (index: number) => void;
+	animationEnabled: boolean;
+	setAnimationEnabled: (enabled: boolean) => void;
 };
 
 export const AccordionContext = createContext<AccordionContextState | null>(

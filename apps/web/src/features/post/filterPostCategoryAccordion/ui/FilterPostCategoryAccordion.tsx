@@ -1,22 +1,20 @@
 'use client';
 
 import { useTRPC } from '@/fsd/app';
-import { BLOG_DEFAULTS } from '@/fsd/entities';
-import { createQueryString, useSearchParamsState } from '@/fsd/shared';
-import { Accordion, Box, Typography } from '@jung/design-system';
+import { BLOG_DEFAULTS } from '@/fsd/entities/post';
+import { Accordion, Box, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import * as styles from './FilterPostCategoryAccordion.css';
 
-export const FilterPostCategoryAccordion = () => {
-	const pathname = usePathname();
-	const { cat } = useSearchParamsState({
-		defaults: {
-			cat: BLOG_DEFAULTS.CATEGORY,
-		} as const,
-	});
+interface Props {
+	currentCategory?: string;
+}
 
+export const FilterPostCategoryAccordion = ({
+	currentCategory = BLOG_DEFAULTS.CATEGORY,
+}: Props) => {
 	const trpc = useTRPC();
 
 	const { data: categories } = useSuspenseQuery(
@@ -29,69 +27,73 @@ export const FilterPostCategoryAccordion = () => {
 		),
 	);
 
+	const parentCategoryIndex = useMemo(() => {
+		if (!categories || currentCategory === BLOG_DEFAULTS.CATEGORY) return -1;
+
+		for (let i = 0; i < categories.length; i++) {
+			const hasSubCategory = categories[i]?.subCategories.some(
+				(sub) => sub.name.toLowerCase() === currentCategory.toLowerCase(),
+			);
+
+			if (hasSubCategory) return i + 2;
+		}
+
+		return -1;
+	}, [categories, currentCategory]);
+
 	return (
-		<Box
-			as='aside'
-			className={styles.sidebar}
-			display={{ mobile: 'none', tablet: 'block' }}
-		>
-			<Accordion type='multiple'>
+		<Box as='aside' className={styles.sidebar}>
+			<Accordion type='multiple' initialOpenIndex={parentCategoryIndex}>
 				<Link
 					href='/blog'
 					className={styles.categoryLink({
-						active: cat === 'all',
+						active: currentCategory === BLOG_DEFAULTS.CATEGORY,
 					})}
 				>
 					All
 				</Link>
 
-				{categories.map((category) => (
-					<Accordion.Item key={category.id}>
-						<Link
-							href={`${pathname}?${createQueryString(
-								'cat',
-								category.name,
-								'all',
-							)}`}
-						>
+				{categories.map((category) => {
+					// const isCategoryActive =
+					// currentCategory.toLowerCase() === category.name.toLowerCase();
+					return (
+						<Accordion.Item key={category.id}>
 							<Accordion.Trigger
 								hasPanel={category.subCategories.length > 0}
-								active={cat.toLowerCase() === category.name.toLowerCase()}
+								// active={isCategoryActive}
 							>
 								{category.name}
 							</Accordion.Trigger>
-						</Link>
 
-						<Accordion.Content>
-							{category.subCategories.map((subCategory) => (
-								<Link
-									key={subCategory.id}
-									href={`${pathname}?${createQueryString(
-										'cat',
-										subCategory.name,
-										'all',
-									)}`}
-								>
-									<Accordion.Panel
-										active={cat === subCategory.name.toLowerCase()}
+							<Accordion.Content>
+								{category.subCategories.map((subCategory) => (
+									<Link
+										key={subCategory.id}
+										href={`/blog/categories/${subCategory.name.toLowerCase()}`}
 									>
-										<span>{subCategory.name}</span>
-										<Typography.SubText
-											level={2}
-											color='primary'
-											background='primary50'
-											paddingY='1'
-											paddingX='2'
-											display={{ mobile: 'none', tablet: 'block' }}
+										<Accordion.Panel
+											active={
+												currentCategory.toLowerCase() ===
+												subCategory.name.toLowerCase()
+											}
 										>
-											{subCategory.postCount}
-										</Typography.SubText>
-									</Accordion.Panel>
-								</Link>
-							))}
-						</Accordion.Content>
-					</Accordion.Item>
-				))}
+											<span>{subCategory.name}</span>
+											<Typography.SubText
+												level={2}
+												color='primary'
+												background='primary50'
+												paddingY='1'
+												paddingX='2'
+											>
+												{subCategory.postCount}
+											</Typography.SubText>
+										</Accordion.Panel>
+									</Link>
+								))}
+							</Accordion.Content>
+						</Accordion.Item>
+					);
+				})}
 			</Accordion>
 		</Box>
 	);

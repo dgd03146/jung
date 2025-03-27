@@ -8,17 +8,16 @@ const MAIN_MARGIN = {
 	mobile: 32,
 	tablet: 40,
 	laptop: 48,
-	desktop: 48,
 };
 
-const SUBSECTION_MARGIN = HEADER_HEIGHT + FOOTER_HEIGHT + MAIN_MARGIN.desktop;
+const SUBSECTION_MARGIN = HEADER_HEIGHT + FOOTER_HEIGHT + MAIN_MARGIN.laptop;
 
 export const container = style([
 	sprinkles({
 		paddingY: {
 			mobile: '8',
 			tablet: '12',
-			desktop: '16',
+			laptop: '16',
 		},
 		display: 'flex',
 		alignItems: 'center',

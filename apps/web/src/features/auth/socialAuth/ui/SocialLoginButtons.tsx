@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Flex, useToast } from '@jung/design-system';
+import { Button, Flex, useToast } from '@jung/design-system/components';
 import { usePathname } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { SiKakaotalk } from 'react-icons/si';

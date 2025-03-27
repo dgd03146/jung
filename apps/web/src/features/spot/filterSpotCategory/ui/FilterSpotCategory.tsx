@@ -1,19 +1,19 @@
+'use client';
+
 import { useTRPC } from '@/fsd/app';
-import { createQueryString, useSearchParamsState } from '@/fsd/shared';
+import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 import { Box, Tag, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import * as styles from './FilterSpotCategory.css';
 
-export const FilterSpotCategory = () => {
-	const pathname = usePathname();
-	const { cat } = useSearchParamsState({
-		defaults: {
-			cat: 'all',
-		} as const,
-	});
+interface Props {
+	currentCategory?: string;
+}
 
+export const FilterSpotCategory = ({
+	currentCategory = SPOT_DEFAULTS.CAT,
+}: Props) => {
 	const trpc = useTRPC();
 	const { data: categories } = useSuspenseQuery(
 		trpc.category.getCategories.queryOptions(
@@ -27,8 +27,11 @@ export const FilterSpotCategory = () => {
 
 	return (
 		<Box className={styles.container}>
-			<Link href={`${pathname}?${createQueryString('cat', 'all', 'all')}`}>
-				<Tag variant='secondary' selected={cat === 'all'}>
+			<Link href='/spots'>
+				<Tag
+					variant='secondary'
+					selected={currentCategory === SPOT_DEFAULTS.CAT}
+				>
 					<Typography.SubText level={2} fontWeight='medium'>
 						All
 					</Typography.SubText>
@@ -37,11 +40,13 @@ export const FilterSpotCategory = () => {
 			{categories.map((category) => (
 				<Link
 					key={category.id}
-					href={`${pathname}?${createQueryString('cat', category.name, 'all')}`}
+					href={`/spots/categories/${category.name.toLowerCase()}`}
 				>
 					<Tag
 						variant='secondary'
-						selected={category.name.toLowerCase() === cat.toLowerCase()}
+						selected={
+							category.name.toLowerCase() === currentCategory.toLowerCase()
+						}
 					>
 						<Typography.SubText level={2} fontWeight='medium'>
 							{category.name}

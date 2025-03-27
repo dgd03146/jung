@@ -1,24 +1,33 @@
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+import { palette } from '../../tokens/palette';
 
 export const badge = recipe({
-	base: sprinkles({
-		borderRadius: 'sm',
-		display: 'inline-flex',
-		alignItems: 'center',
-		gap: '1',
-		transition: 'slow',
-	}),
+	base: style([
+		sprinkles({
+			borderRadius: 'sm',
+			display: 'inline-flex',
+			alignItems: 'center',
+			gap: '1',
+		}),
+		{
+			transition: 'transform 0.3s ease, opacity 0.3s ease',
+		},
+	]),
 	variants: {
 		variant: {
-			primary: sprinkles({
-				color: 'white',
-				background: {
-					base: 'primary',
-					hover: 'primary200',
+			primary: style([
+				sprinkles({
+					color: 'white',
+					background: 'primary',
+				}),
+				{
+					':hover': {
+						backgroundColor: palette.primary200,
+					},
 				},
-			}),
+			]),
 
 			secondary: style([
 				sprinkles({
@@ -35,10 +44,7 @@ export const badge = recipe({
 			]),
 
 			ghost: sprinkles({
-				background: {
-					base: 'transparent',
-				},
-				color: {},
+				background: 'transparent',
 				padding: '0',
 			}),
 		},

@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	DEFAULT_BACKGROUND_COLOR,
 	DEFAULT_EMOJI,

@@ -29,16 +29,24 @@ export const trigger = recipe({
 			},
 		},
 		isActive: {
-			true: sprinkles({
-				borderBottomWidth: 'medium',
-				borderStyle: 'solid',
-				borderColor: 'primary',
-			}),
-			false: sprinkles({
-				borderBottomWidth: 'hairline',
-				borderStyle: 'solid',
-				borderColor: 'primary100',
-			}),
+			true: style([
+				sprinkles({
+					borderStyle: 'solid',
+					borderColor: 'primary',
+				}),
+				{
+					borderBottomWidth: '2px',
+				},
+			]),
+			false: style([
+				sprinkles({
+					borderStyle: 'solid',
+					borderColor: 'primary100',
+				}),
+				{
+					borderBottomWidth: '1px',
+				},
+			]),
 		},
 	},
 
@@ -48,10 +56,14 @@ export const trigger = recipe({
 				variant: 'primary',
 				isActive: true,
 			},
-			style: sprinkles({
-				border: 'none',
-				background: 'primary',
-			}),
+			style: style([
+				sprinkles({
+					background: 'primary',
+				}),
+				{
+					border: 'none',
+				},
+			]),
 		},
 	],
 });
@@ -77,13 +89,14 @@ export const tab = recipe({
 			true: sprinkles({
 				color: 'primary',
 			}),
-			false: sprinkles({
-				color: {
-					base: 'primary',
-					hover: 'primary',
+			false: style([
+				sprinkles({
+					color: 'primary',
+				}),
+				{
+					transition: 'transform 0.3s ease, opacity 0.3s ease',
 				},
-				transition: 'slow',
-			}),
+			]),
 		},
 	},
 

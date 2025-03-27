@@ -1,7 +1,16 @@
+import {
+	PostHeader,
+	PostNavigation,
+	PostNavigationSkeleton,
+} from '@/fsd/entities/post';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { PostDetailPage } from '@/fsd/views/blog';
+import { PostDetailContent } from '@/fsd/views/blog/ui/PostDetailContent';
+import { PostDetailContentSkeleton } from '@/fsd/views/blog/ui/PostDetailContentSkeleton';
+import { Container, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import * as styles from './page.css';
 
 export async function generateMetadata({
 	params,
@@ -75,6 +84,12 @@ export async function generateMetadata({
 	}
 }
 
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return [];
+}
+
 export default function Page({ params }: { params: { slug: string } }) {
 	const postId = params.slug;
 	const queryClient = getQueryClient();
@@ -83,7 +98,22 @@ export default function Page({ params }: { params: { slug: string } }) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<PostDetailPage postId={postId} />
+			<Container className={styles.container}>
+				<PostHeader postId={postId} />
+				<Flex
+					flexDirection={{ base: 'column-reverse', laptop: 'row' }}
+					gap={{ base: '0', laptop: '12' }}
+					marginY={{ base: '4', laptop: '10' }}
+				>
+					<Suspense fallback={<PostNavigationSkeleton />}>
+						<PostNavigation postId={postId} />
+					</Suspense>
+
+					<Suspense fallback={<PostDetailContentSkeleton />}>
+						<PostDetailContent postId={postId} />
+					</Suspense>
+				</Flex>
+			</Container>
 		</HydrationBoundary>
 	);
 }

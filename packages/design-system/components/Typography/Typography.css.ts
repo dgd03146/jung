@@ -25,17 +25,17 @@ export const heading = recipe({
 					marginBottom: {
 						mobile: '4',
 						tablet: '5',
-						desktop: '6',
+						laptop: '6',
 					},
 					fontSize: {
 						mobile: '7xl', // 72px
 						tablet: '8xl', // 96px
-						desktop: '9xl', // 128px
+						laptop: '9xl', // 128px
 					},
 					lineHeight: {
 						mobile: '17', // 6rem
 						tablet: '18', // 7rem
-						desktop: '19', // 11.5rem
+						laptop: '19', // 11.5rem
 					},
 				}),
 				{
@@ -66,12 +66,12 @@ export const heading = recipe({
 					fontSize: {
 						mobile: '3xl', // 36px
 						tablet: '4xl', // 36px
-						desktop: '5xl', // 48px
+						laptop: '5xl', // 48px
 					},
 					lineHeight: {
 						mobile: '10', // 40px
 						tablet: '12', // 48px
-						desktop: '14', // 56px
+						laptop: '14', // 56px
 					},
 				}),
 			]),
@@ -81,12 +81,12 @@ export const heading = recipe({
 					fontSize: {
 						mobile: '2xl', // 24px
 						tablet: '3xl', // 32px
-						desktop: '4xl', // 36px
+						laptop: '4xl', // 36px
 					},
 					lineHeight: {
 						mobile: '7', // 28px
 						tablet: '9', // 36px
-						desktop: '10', // 40px
+						laptop: '10', // 40px
 					},
 				}),
 			]),
@@ -96,12 +96,12 @@ export const heading = recipe({
 					fontSize: {
 						mobile: 'xl', // 20px
 						tablet: '2xl', // 24px
-						desktop: '3xl', // 32px
+						laptop: '3xl', // 32px
 					},
 					lineHeight: {
 						mobile: '6', // 24px
 						tablet: '6', // 24px
-						desktop: '7', // 28px
+						laptop: '7', // 28px
 					},
 				}),
 			]),
@@ -111,12 +111,12 @@ export const heading = recipe({
 					fontSize: {
 						mobile: 'lg', // 18px
 						tablet: 'xl', // 20px
-						desktop: '2xl', // 24px
+						laptop: '2xl', // 24px
 					},
 					lineHeight: {
 						mobile: '5.5', // 22px
 						tablet: '6', // 24px
-						desktop: '6.5', // 26px
+						laptop: '6.5', // 26px
 					},
 				}),
 			]),
@@ -126,12 +126,12 @@ export const heading = recipe({
 					fontSize: {
 						mobile: 'base', // 16px
 						tablet: 'lg', // 18px
-						desktop: 'xl', // 20px
+						laptop: 'xl', // 20px
 					},
 					lineHeight: {
 						mobile: '5', // 20px
 						tablet: '5.5', // 22px
-						desktop: '6', // 24px
+						laptop: '6', // 24px
 					},
 				}),
 			]),
@@ -183,24 +183,24 @@ export const text = recipe({
 				fontSize: {
 					mobile: 'base', // 16px
 					tablet: 'lg', // 18px
-					desktop: 'lg', // 18px
+					laptop: 'lg', // 18px
 				},
 				lineHeight: {
 					mobile: '6', // 24px
 					tablet: '6.5', // 26px
-					desktop: '6.5', // 26px
+					laptop: '6.5', // 26px
 				},
 			}),
 			2: sprinkles({
 				fontSize: {
 					mobile: 'sm', // 14px
 					tablet: 'base', // 16px
-					desktop: 'base', // 16px
+					laptop: 'base', // 16px
 				},
 				lineHeight: {
 					mobile: '5.5', // 22px
 					tablet: '6', // 24px
-					desktop: '6', // 24px
+					laptop: '6', // 24px
 				},
 			}),
 
@@ -208,12 +208,12 @@ export const text = recipe({
 				fontSize: {
 					mobile: 'xs', // 13px
 					tablet: 'sm', // 14px
-					desktop: 'md', // 15px
+					laptop: 'md', // 15px
 				},
 				lineHeight: {
 					mobile: '5', // 20px
 					tablet: '5.5', // 22px
-					desktop: '5.5', // 22px
+					laptop: '5.5', // 22px
 				},
 			}),
 
@@ -221,12 +221,12 @@ export const text = recipe({
 				fontSize: {
 					mobile: 'xxs', // 12px
 					tablet: 'xs', // 13px
-					desktop: 'sm', // 14px
+					laptop: 'sm', // 14px
 				},
 				lineHeight: {
 					mobile: '4', // 16px
 					tablet: '5', // 20px
-					desktop: '5', // 20px
+					laptop: '5', // 20px
 				},
 			}),
 		},
@@ -312,12 +312,12 @@ export const footNote = recipe({
 				fontSize: {
 					mobile: 'xxxs', // 10px
 					tablet: 'xxxs', // 10px
-					desktop: 'xxxs', // 10px
+					laptop: 'xxxs', // 10px
 				},
 				lineHeight: {
 					mobile: '3', // 12px
 					tablet: '2', // 10px
-					desktop: '2', // 10px
+					laptop: '2', // 10px
 				},
 			}),
 		},

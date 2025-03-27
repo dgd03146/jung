@@ -208,7 +208,7 @@ export const NewPhoto = () => {
 				onSubmit={handleSubmit}
 			>
 				<Flex gap='8' flexDirection={{ base: 'column', laptop: 'row' }}>
-					<Flex flexBasis='2/5' flexDirection='column'>
+					<Flex flexDirection='column' className={styles.flexBasis}>
 						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<HiPhoto size={20} />
 							<Typography.Text level={1} fontWeight='semibold'>
@@ -220,16 +220,12 @@ export const NewPhoto = () => {
 							position='relative'
 							align='center'
 							justify='center'
-							aspectRatio='16/9'
 							borderRadius='lg'
 							onClick={handleUploadClick}
-							transition='fast'
 							cursor='pointer'
-							borderStyle='dashed'
-							borderWidth='hairline'
-							borderColor={{ base: 'gray', hover: 'primary' }}
 							width='full'
 							height='full'
+							className={styles.imagePreviewContainer}
 						>
 							{imagePreview ? (
 								<Box
@@ -238,7 +234,7 @@ export const NewPhoto = () => {
 									alt='Preview'
 									width='full'
 									height='full'
-									objectFit='cover'
+									className={styles.imagePreview}
 								/>
 							) : (
 								<Flex
@@ -256,7 +252,7 @@ export const NewPhoto = () => {
 									<Typography.Text
 										level={3}
 										fontWeight='medium'
-										color='primary400'
+										color='primary300'
 									>
 										or drag and drop
 									</Typography.Text>
@@ -274,7 +270,7 @@ export const NewPhoto = () => {
 						</Flex>
 					</Flex>
 
-					<Box flex='1'>
+					<Box flex={1}>
 						<Flex align='center' gap='2' color='primary' marginBottom='4'>
 							<MdCollections size={20} />
 							<Typography.Text level={1} fontWeight='semibold'>

@@ -1,2 +1,2 @@
-export { SpotsPage } from './SpotsPage';
-export { SpotDetailPage } from './SpotDetailPage';
+export { SpotDetailContent } from './SpotDetailContent';
+export { SpotsContent } from './SpotsContent';

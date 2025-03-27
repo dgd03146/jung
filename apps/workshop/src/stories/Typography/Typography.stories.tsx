@@ -29,11 +29,12 @@ export const Default: Story = {
 				<Text level={1}>Text 1</Text>
 				<Text level={2}>Text 2</Text>
 				<Text level={3}>Text 3</Text>
+				<Text level={4}>Text 4</Text>
 				<br />
 				<SubText level={1}>SubText 1</SubText>
 				<SubText level={2}>SubText 2</SubText>
 				<SubText level={3}>SubText 3</SubText>
-				<SubText level={4}>SubText 4</SubText>
+
 				<br />
 				<FootNote level={1}>FootNote 1</FootNote>
 				<FootNote level={2}>FootNote 2</FootNote>

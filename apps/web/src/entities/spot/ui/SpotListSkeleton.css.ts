@@ -7,7 +7,6 @@ export const skeletonCardStyle = style({
 	flexDirection: 'column',
 	borderRadius: '12px',
 	overflow: 'hidden',
-
 	marginBottom: '16px',
 });
 
@@ -44,4 +43,17 @@ export const ratingSkeleton = style({
 	width: '30%',
 	backgroundColor: palette.gray,
 	borderRadius: '4px',
+});
+
+export const spotListGrid = style({
+	gridTemplateColumns: 'minmax(0px, 1fr)',
+
+	'@media': {
+		'(min-width: 768px)': {
+			gridTemplateColumns: 'repeat(2, minmax(0px, 1fr))',
+		},
+		'(min-width: 1024px)': {
+			gridTemplateColumns: 'repeat(3, minmax(0px, 1fr))',
+		},
+	},
 });

@@ -105,3 +105,7 @@ export const tipItemSkeleton = style([
 		border: '1px solid rgba(1, 66, 192, 0.12)',
 	},
 ]);
+
+export const actionBarSkeleton = style({
+	borderBottomWidth: '1px',
+});

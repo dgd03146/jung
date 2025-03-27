@@ -1,24 +1,15 @@
 export const borderStyles = {
 	none: 'none',
 	solid: 'solid',
-	dashed: 'dashed',
-	dotted: 'dotted',
 };
 
 export const borderWidths = {
 	none: '0px',
-	thinnest: '0.5px',
 	hairline: '1px',
-	thin: '1.5px',
-	regular: '2px',
-	medium: '2.5px',
-	thick: '3px',
-	thicker: '4px',
-	thickest: '8px',
+	medium: '2px',
 };
 
 export const borderRadius = {
-	none: '0px',
 	xs: '2px',
 	sm: '4px',
 	md: '6px',

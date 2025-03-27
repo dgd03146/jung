@@ -137,3 +137,19 @@ export const locationIcon = style({
 
 	color: palette.primary,
 });
+
+export const card = recipe({
+	variants: {
+		variant: {
+			compact: {
+				minHeight: 'fit-content',
+			},
+			default: {
+				minHeight: '416px',
+			},
+		},
+	},
+	defaultVariants: {
+		variant: 'default',
+	},
+});

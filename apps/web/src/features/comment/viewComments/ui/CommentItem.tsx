@@ -1,7 +1,7 @@
 'use client';
 
 import { useSupabaseAuth } from '@/fsd/shared';
-import { Box, Button, Flex, Typography } from '@jung/design-system';
+import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { Comment } from '@jung/shared/types';
 import { useState } from 'react';
 import { FaEdit, FaRegComment } from 'react-icons/fa';

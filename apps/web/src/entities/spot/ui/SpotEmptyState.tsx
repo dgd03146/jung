@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Flex, Typography } from '@jung/design-system';
+import { Box, Flex, Typography } from '@jung/design-system/components';
 import { MdLocationOff } from 'react-icons/md';
 
 interface EmptyStateProps {
@@ -18,7 +18,7 @@ export function SpotEmptyState({
 			align='center'
 			justify='center'
 			gap='6'
-			flex='1'
+			flex={1}
 			marginY={{ base: '5', tablet: '10', laptop: '20' }}
 		>
 			<Box

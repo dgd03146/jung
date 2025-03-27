@@ -1,5 +1,7 @@
+'use client';
+
 import { useSpotStore } from '@/fsd/features/spot';
-import { Button } from '@jung/design-system';
+import { Button } from '@jung/design-system/components';
 import { IoGridOutline, IoMapOutline } from 'react-icons/io5';
 
 export function ToggleSpotViewButton() {

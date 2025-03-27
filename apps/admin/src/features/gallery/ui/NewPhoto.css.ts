@@ -1,4 +1,9 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+
+export const flexBasis = style({
+	flexBasis: '2/5',
+});
 
 export const inputError = style({
 	borderColor: 'red',
@@ -48,4 +53,20 @@ export const select = style({
 
 export const required = style({
 	color: 'red',
+});
+
+export const imagePreviewContainer = style({
+	transition: 'all 0.2s ease',
+	borderStyle: 'dashed',
+	borderWidth: '1px',
+	borderColor: palette.gray,
+	aspectRatio: '16/9',
+
+	':hover': {
+		borderColor: palette.primary,
+	},
+});
+
+export const imagePreview = style({
+	objectFit: 'cover',
 });

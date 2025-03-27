@@ -12,26 +12,26 @@ const dictionaries: Record<string, () => Promise<DictionaryType>> = {
 		import('../dictionaries/ko.json').then(
 			(module) => module.default as DictionaryType,
 		),
-	ru: () =>
-		import('../dictionaries/ru.json').then(
-			(module) => module.default as DictionaryType,
-		),
-	de: () =>
-		import('../dictionaries/de.json').then(
-			(module) => module.default as DictionaryType,
-		),
-	it: () =>
-		import('../dictionaries/it.json').then(
-			(module) => module.default as DictionaryType,
-		),
-	fr: () =>
-		import('../dictionaries/fr.json').then(
-			(module) => module.default as DictionaryType,
-		),
-	es: () =>
-		import('../dictionaries/es.json').then(
-			(module) => module.default as DictionaryType,
-		),
+	// ru: () =>
+	// 	import('../dictionaries/ru.json').then(
+	// 		(module) => module.default as DictionaryType,
+	// 	),
+	// de: () =>
+	// 	import('../dictionaries/de.json').then(
+	// 		(module) => module.default as DictionaryType,
+	// 	),
+	// it: () =>
+	// 	import('../dictionaries/it.json').then(
+	// 		(module) => module.default as DictionaryType,
+	// 	),
+	// fr: () =>
+	// 	import('../dictionaries/fr.json').then(
+	// 		(module) => module.default as DictionaryType,
+	// 	),
+	// es: () =>
+	// 	import('../dictionaries/es.json').then(
+	// 		(module) => module.default as DictionaryType,
+	// 	),
 };
 
 /**

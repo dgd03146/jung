@@ -1,9 +1,12 @@
-import { MESSAGE_LIMIT } from '@/fsd/entities/message';
+import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/message';
+import { CreateMessageForm } from '@/fsd/features/message';
 import { siteUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { GuestbookPage } from '@/fsd/views';
+import { GuestbookContent } from '@/fsd/views';
+import { Container, Stack, Typography } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Guestbook',
@@ -43,6 +46,8 @@ export const metadata: Metadata = {
 	},
 };
 
+export const revalidate = 0;
+
 export default function Page() {
 	const queryClient = getQueryClient();
 	queryClient.prefetchInfiniteQuery(
@@ -53,7 +58,21 @@ export default function Page() {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<GuestbookPage />
+			<Container position='relative' marginX='auto'>
+				<Stack
+					gap={{ base: '6', laptop: '10' }}
+					align='center'
+					marginY={{ base: '6', laptop: '10' }}
+				>
+					<Typography.Heading level={4} color='primary'>
+						Leave Your Message 💙
+					</Typography.Heading>
+					<CreateMessageForm />
+				</Stack>
+				<Suspense fallback={<MessageListSkeleton />}>
+					<GuestbookContent />
+				</Suspense>
+			</Container>
 		</HydrationBoundary>
 	);
 }

@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const container = recipe({
@@ -76,4 +77,8 @@ export const content = recipe({
 			},
 		},
 	},
+});
+
+export const likesContainer = style({
+	borderTopWidth: '1px',
 });

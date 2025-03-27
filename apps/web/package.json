@@ -41,6 +41,7 @@
     "@vanilla-extract/dynamic": "^2.1.1",
     "@vanilla-extract/recipes": "^0.5.3",
     "clsx": "^2.1.1",
+    "fetch-ponyfill": "^7.1.0",
     "framer-motion": "^11.2.10",
     "negotiator": "^0.6.3",
     "next": "^14.2.3",
@@ -62,10 +63,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vanilla-extract/next-plugin": "^2.4.1",
-
     "cross-env": "^7.0.3",
-
     "typescript": "^5.7.2"
-
   }
 }

@@ -28,7 +28,7 @@ const TableSkeleton = () => {
 							{[...Array(SKELETON_COLUMNS)].map((_, cellIndex) => (
 								<Box as='td' key={cellIndex} className={styles.td}>
 									<Box
-										height='9'
+										height='8'
 										width='full'
 										background='gray'
 										borderRadius='md'

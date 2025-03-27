@@ -5,9 +5,7 @@ import {
 	CollectionList,
 	useCollectionsQuery,
 } from '@/fsd/entities/photo';
-import { EmptyState, LoadingSpinner } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
-import { Suspense } from 'react';
+import { EmptyState } from '@/fsd/shared';
 
 export const CollectionContent = () => {
 	const { data: collections } = useCollectionsQuery({
@@ -19,18 +17,4 @@ export const CollectionContent = () => {
 	}
 
 	return <CollectionList collections={collections} />;
-};
-
-export const CollectionPage = () => {
-	return (
-		<Suspense
-			fallback={
-				<Flex justify='center' align='center' height='1/4'>
-					<LoadingSpinner size='medium' />
-				</Flex>
-			}
-		>
-			<CollectionContent />
-		</Suspense>
-	);
 };

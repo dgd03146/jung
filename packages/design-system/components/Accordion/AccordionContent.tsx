@@ -22,7 +22,8 @@ export const AccordionContent = forwardRef<
 	HTMLDivElement,
 	AccordionContentProps
 >(({ className, children, ...restProps }: AccordionContentProps, ref) => {
-	const { openIndexes, handleToggleIndex } = useAccordionContext();
+	const { openIndexes, handleToggleIndex, animationEnabled } =
+		useAccordionContext();
 	const { index, id } = useAccordionItemContext();
 	const isOpen = openIndexes.has(index!);
 
@@ -33,12 +34,16 @@ export const AccordionContent = forwardRef<
 		isOpen,
 	);
 
+	const contentClass = animationEnabled
+		? styles.content({ isOpen })
+		: styles.contentNoAnimation({ isOpen });
+
 	return (
 		<Box
 			style={assignInlineVars({
 				[styles.contentHeightVar]: `${contentHeight}px`,
 			})}
-			className={styles.content({ isOpen })}
+			className={contentClass}
 			ref={contentRef || ref}
 			HIDDEN={isOpen ? undefined : 'until-found'}
 			role='region'

@@ -1,3 +1,5 @@
+'use client';
+
 import { CategoryIcon } from '@/fsd/entities/spot';
 import { useMarkerStore } from '@/fsd/features/spot';
 import { capitalizeFirstLetter } from '@/fsd/shared';

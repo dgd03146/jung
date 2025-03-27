@@ -4,7 +4,13 @@
  * Unfortunately, the useDictionary hook cannot be used on this page
  * because the app/layout.tsx and app/not-found.tsx cannot be placed in app/(routing)/[lang]/ folder
  */
-import { Box, Button, Container, Flex, Typography } from '@jung/design-system';
+import {
+	Box,
+	Button,
+	Container,
+	Flex,
+	Typography,
+} from '@jung/design-system/components';
 import Link from 'next/link';
 import { MdOutlineSearchOff } from 'react-icons/md';
 

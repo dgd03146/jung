@@ -4,21 +4,25 @@ import { sprinkles } from '../../styles/sprinkles.css';
 import { palette } from '../../tokens/palette';
 
 export const tag = recipe({
-	base: sprinkles({
-		borderRadius: 'sm',
-		cursor: 'pointer',
-		display: 'inline-flex',
-		alignItems: 'center',
-		gap: '1',
-		transition: 'slow',
-	}),
+	base: style([
+		sprinkles({
+			borderRadius: 'sm',
+			cursor: 'pointer',
+			display: 'inline-flex',
+			alignItems: 'center',
+			gap: '1',
+		}),
+		{
+			transition: 'transform 0.3s ease, opacity 0.3s ease',
+		},
+	]),
 	variants: {
 		variant: {
-			primary: sprinkles({
+			primary: style({
 				color: 'white',
-				background: {
-					base: 'primary',
-					hover: 'primary200',
+				background: palette.primary,
+				':hover': {
+					background: palette.primary200,
 				},
 			}),
 
@@ -37,10 +41,7 @@ export const tag = recipe({
 			]),
 
 			ghost: sprinkles({
-				background: {
-					base: 'transparent',
-				},
-				color: {},
+				background: 'transparent',
 				padding: '0',
 			}),
 		},
@@ -51,11 +52,11 @@ export const tag = recipe({
 
 		size: {
 			sm: sprinkles({
-				paddingX: '3',
-				paddingY: '1.5',
+				paddingX: '2.5',
+				paddingY: '1',
 			}),
 			md: sprinkles({
-				padding: '3.5',
+				padding: '3',
 				paddingY: '1.5',
 			}),
 			lg: sprinkles({
@@ -79,19 +80,13 @@ export const tag = recipe({
 				variant: 'secondary',
 				selected: true,
 			},
-			style: style([
-				{
-					backgroundColor: palette.primary,
-					':hover': {
-						backgroundColor: palette.primary200,
-					},
+			style: style({
+				backgroundColor: palette.primary,
+				':hover': {
+					backgroundColor: palette.primary200,
 				},
-				sprinkles({
-					color: {
-						base: 'white',
-					},
-				}),
-			]),
+				color: 'white',
+			}),
 		},
 		{
 			variants: {

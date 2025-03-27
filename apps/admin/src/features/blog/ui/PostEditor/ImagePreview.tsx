@@ -106,8 +106,6 @@ export const ImagePreview = ({
 						alt='Cover'
 						width='full'
 						height='full'
-						objectFit='cover'
-						transition='fast'
 					/>
 					<Button
 						className={styles.removeImageButton}

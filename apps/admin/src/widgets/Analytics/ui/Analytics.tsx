@@ -3,7 +3,6 @@ import {
 	Button,
 	Container,
 	Flex,
-	Grid,
 	Typography,
 } from '@jung/design-system/components';
 import {
@@ -51,18 +50,14 @@ const Analytics = () => {
 
 	return (
 		<Box padding='6'>
-			<Grid
-				gridTemplateColumns={{ mobile: '1', tablet: '1/2', laptop: '1/4' }}
-				gap='4'
-				marginBottom='6'
-			>
+			<Box className={styles.gridContainer} gap='4' marginBottom='6'>
 				<Container
 					boxShadow='primary'
 					background='white'
 					borderRadius='xl'
 					padding='4'
 				>
-					<Typography.Text level={3} color='gray500'>
+					<Typography.Text level={3} color='gray300'>
 						Total Views
 					</Typography.Text>
 					<Typography.Heading level={3} color='primary' marginY='2'>
@@ -79,7 +74,7 @@ const Analytics = () => {
 					borderRadius='xl'
 					padding='4'
 				>
-					<Typography.Text level={3} color='gray500'>
+					<Typography.Text level={3} color='gray300'>
 						Avg. Time on Page
 					</Typography.Text>
 					<Typography.Heading level={3} color='primary' marginY='2'>
@@ -96,7 +91,7 @@ const Analytics = () => {
 					borderRadius='xl'
 					padding='4'
 				>
-					<Typography.Text level={3} color='gray500'>
+					<Typography.Text level={3} color='gray300'>
 						Bounce Rate
 					</Typography.Text>
 					<Typography.Heading level={3} color='primary' marginY='2'>
@@ -113,7 +108,7 @@ const Analytics = () => {
 					borderRadius='xl'
 					padding='4'
 				>
-					<Typography.Text level={3} color='gray500'>
+					<Typography.Text level={3} color='gray300'>
 						User Engagement
 					</Typography.Text>
 					<Typography.Heading level={3} color='primary' marginY='2'>
@@ -123,7 +118,7 @@ const Analytics = () => {
 						+8.4%
 					</Typography.Text>
 				</Container>
-			</Grid>
+			</Box>
 
 			<Container
 				boxShadow='primary'
@@ -135,9 +130,9 @@ const Analytics = () => {
 					justify='space-between'
 					align='center'
 					padding='4'
-					borderBottomWidth='hairline'
 					borderColor='white300'
 					borderStyle='solid'
+					className={styles.borderBottomStyle}
 				>
 					<Typography.Text level={3} color='primary' fontWeight='semibold'>
 						Traffic Overview
@@ -209,9 +204,9 @@ const Analytics = () => {
 			<Container boxShadow='primary' background='white' borderRadius='xl'>
 				<Box
 					padding='4'
-					borderBottomWidth='hairline'
 					borderColor='white300'
 					borderStyle='solid'
+					className={styles.borderBottomStyle}
 				>
 					<Typography.Text level={3} color='primary' fontWeight='semibold'>
 						Top Performing Content

@@ -1,1 +1,1 @@
-export { default as GuestbookPage } from './GuestbookPage';
+export { GuestbookContent } from './GuestbookContent';
