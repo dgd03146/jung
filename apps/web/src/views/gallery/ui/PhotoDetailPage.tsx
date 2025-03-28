@@ -45,8 +45,8 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							<BlurImage
 								src={currentPhoto.image_url}
 								alt={currentPhoto.alt}
-								fill
 								priority
+								fill
 								sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
 							/>
 						</motion.div>
@@ -55,15 +55,13 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							className={styles.content({ isModal })}
 							variants={photoDetailVariants.content}
 						>
-							<Flex gap='1' flexDirection='column'>
-								<Typography.Heading level={5}>
-									{currentPhoto.title}
-								</Typography.Heading>
-							</Flex>
-
-							<Typography.Text level={2}>
-								{currentPhoto.description}
+							<Typography.Text level={2} fontWeight='semibold'>
+								{currentPhoto.title}
 							</Typography.Text>
+
+							<Typography.SubText level={2}>
+								{currentPhoto.description}
+							</Typography.SubText>
 
 							<Typography.SubText level={3} color='primary'>
 								{formatDate(currentPhoto.created_at)}

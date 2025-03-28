@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 export const sectionTitle = style({
 	fontFamily: 'var(--font-bebas)',
 	marginBottom: '12px',
-	display: 'inline-block',
+	display: 'inline-flex',
 	'@media': {
 		'(min-width: 768px)': {
 			marginBottom: '20px',

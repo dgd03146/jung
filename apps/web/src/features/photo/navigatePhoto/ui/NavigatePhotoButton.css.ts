@@ -20,12 +20,16 @@ export const modalNavigationButtonsContainer = style({
 	width: '100%',
 	position: 'absolute',
 	pointerEvents: 'none',
-	maxWidth: '90vw',
+	maxWidth: '95vw',
 	// padding: '0 40px',
 
 	'@media': {
+		'screen and (min-width: 768px)': {
+			maxWidth: calc.add('95vw', '40px'),
+		},
+
 		'screen and (min-width: 1200px)': {
-			maxWidth: calc.add('1024px', '100px'),
+			maxWidth: calc.add('1100px', '80px'),
 		},
 	},
 });
@@ -35,7 +39,7 @@ export const modalNavigationButton = style({
 	height: '30px',
 	borderRadius: '50%',
 
-	backgroundColor: 'rgba(255, 255, 255, 0.9)',
+	backgroundColor: 'rgba(255, 255, 255, 0.6)',
 	backdropFilter: 'blur(8px)',
 	border: 'none',
 	boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
