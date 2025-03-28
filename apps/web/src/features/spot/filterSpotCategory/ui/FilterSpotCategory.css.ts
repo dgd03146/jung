@@ -11,10 +11,10 @@ export const container = style([
 			mobile: '2', // 8px
 			tablet: '3', // 12px
 		},
-		// marginTop: {
-		// 	mobile: '2', // 8px
-		// 	tablet: '4', // 16px
-		// },
+		marginTop: {
+			mobile: '2', // 8px
+			tablet: '4', // 16px
+		},
 		position: 'relative',
 		display: 'flex',
 		flexWrap: 'wrap',

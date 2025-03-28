@@ -25,9 +25,9 @@ export const PHOTO_PARAMS = {
 } as const;
 
 export const PRIORITY_IMAGE = {
-	MOBILE: 4,
-	LAPTOP: 6,
-	DESKTOP: 8,
+	MOBILE: 2,
+	LAPTOP: 4,
+	DESKTOP: 6,
 } as const;
 
 export const COLLECTION_PARAMS = {

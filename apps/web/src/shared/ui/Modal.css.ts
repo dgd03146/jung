@@ -19,8 +19,8 @@ export const overlay = style({
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: 'rgba(0, 0, 0, 0.8)',
-	backdropFilter: 'blur(4px)',
+	backgroundColor: 'rgba(0, 0, 0, 0.85)',
+	backdropFilter: 'blur(2px)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -37,16 +37,18 @@ export const shareOverlay = style([
 
 export const photoContent = style({
 	position: 'relative',
-	maxWidth: '80vw',
+	maxWidth: '95vw',
 	width: '100%',
-	// margin: '20px',
-	backgroundColor: 'white',
+	height: 'auto',
+	maxHeight: '90dvh',
 	overflow: 'hidden',
 	pointerEvents: 'auto',
 
+	backgroundColor: 'transparent',
+
 	'@media': {
 		'screen and (min-width: 1200px)': {
-			maxWidth: '1024px',
+			maxWidth: '1100px',
 		},
 	},
 });

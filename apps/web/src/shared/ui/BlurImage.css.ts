@@ -16,7 +16,7 @@ export const image = style({
 });
 
 export const fillImage = style({
-	objectFit: 'cover',
+	// objectFit: 'cover',
 	width: '100%',
 	height: '100%',
 });
