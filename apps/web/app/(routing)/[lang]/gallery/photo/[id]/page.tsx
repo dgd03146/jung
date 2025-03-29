@@ -1,10 +1,16 @@
 import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
-import { siteUrl } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+
+import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
 
 export async function generateMetadata({
 	params,
@@ -71,11 +77,14 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${siteUrl}/gallery/photo/${params.id}`,
+				canonical: `${getApiUrl()}/gallery/photo/${params.id}`,
 				languages: {
-					en: `${siteUrl}/en/gallery/photo/${params.id}`,
-					ko: `${siteUrl}/ko/gallery/photo/${params.id}`,
+					en: `${getApiUrl()}/en/gallery/photo/${params.id}`,
+					ko: `${getApiUrl()}/ko/gallery/photo/${params.id}`,
 				},
+			},
+			verification: {
+				google: getGoogleVerificationCode(),
 			},
 		};
 	} catch (error) {
@@ -92,7 +101,22 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const photos = await caller.photos.getAllPhotos({
+		limit: PHOTO_DEFAULTS.LIMIT,
+		sort: PHOTO_DEFAULTS.SORT,
+		q: PHOTO_DEFAULTS.QUERY,
+	});
+
+	const PhotoIds = photos.items.map((photo) => photo.id);
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const id of PhotoIds) {
+			params.push({ lang, id: String(id) });
+		}
+	}
+
+	return params;
 }
 
 export default function PhotoPage({

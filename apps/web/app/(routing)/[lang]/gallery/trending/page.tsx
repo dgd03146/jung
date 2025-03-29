@@ -1,8 +1,14 @@
-import { TRENDING_PHOTO_PARAMS } from '@/fsd/entities';
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
+import {
+	LoadingSpinner,
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
+
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -47,24 +53,31 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${siteUrl}/gallery/trending`,
+		canonical: `${getApiUrl()}/gallery/trending`,
 		languages: {
-			en: `${siteUrl}/en/gallery/trending`,
-			ko: `${siteUrl}/ko/gallery/trending`,
+			en: `${getApiUrl()}/en/gallery/trending`,
+			ko: `${getApiUrl()}/ko/gallery/trending`,
 		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 
 export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default function TrendingPage() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(
 		trpc.photos.getAllPhotos.infiniteQueryOptions({
-			limit: TRENDING_PHOTO_PARAMS.LIMIT,
-			sort: TRENDING_PHOTO_PARAMS.SORT,
-			q: TRENDING_PHOTO_PARAMS.QUERY,
+			limit: TRENDING_PHOTO_DEFAULTS.LIMIT,
+			sort: TRENDING_PHOTO_DEFAULTS.SORT,
+			q: TRENDING_PHOTO_DEFAULTS.QUERY,
 		}),
 	);
 

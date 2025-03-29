@@ -1,4 +1,8 @@
-import { siteUrl } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { AboutPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -31,15 +35,22 @@ export const metadata: Metadata = {
 		'여행',
 		'frontend developer',
 	],
-	authors: [{ name: 'JUNG', url: siteUrl }],
+	authors: [{ name: 'JUNG', url: getApiUrl() }],
 	alternates: {
-		canonical: `${siteUrl}/about`,
+		canonical: `${getApiUrl()}/about`,
 		languages: {
-			en: `${siteUrl}/en/about`,
-			ko: `${siteUrl}/ko/about`,
+			en: `${getApiUrl()}/en/about`,
+			ko: `${getApiUrl()}/ko/about`,
 		},
 	},
+	verification: {
+		google: getGoogleVerificationCode(),
+	},
 };
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 const Page = () => {
 	return <AboutPage />;

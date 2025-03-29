@@ -1,5 +1,10 @@
-import { PHOTO_PARAMS } from '@/fsd/entities/photo';
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
+import {
+	LoadingSpinner,
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
@@ -44,24 +49,31 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${siteUrl}/gallery`,
+		canonical: `${getApiUrl()}/gallery`,
 		languages: {
-			en: `${siteUrl}/en/gallery`,
-			ko: `${siteUrl}/ko/gallery`,
+			en: `${getApiUrl()}/en/gallery`,
+			ko: `${getApiUrl()}/ko/gallery`,
 		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 
 export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default function Page() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(
 		trpc.photos.getAllPhotos.infiniteQueryOptions({
-			limit: PHOTO_PARAMS.LIMIT,
-			sort: PHOTO_PARAMS.SORT,
-			q: PHOTO_PARAMS.QUERY,
+			limit: PHOTO_DEFAULTS.LIMIT,
+			sort: PHOTO_DEFAULTS.SORT,
+			q: PHOTO_DEFAULTS.QUERY,
 		}),
 	);
 
