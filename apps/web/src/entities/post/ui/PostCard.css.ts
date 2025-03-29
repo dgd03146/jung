@@ -43,13 +43,16 @@ export const postCard = recipe({
 				display: 'flex',
 				flexDirection: 'column',
 				borderRadius: '8px',
-				border: '1px solid rgba(1, 66, 192, 0.08)',
+				boxShadow: '0 12px 24px rgba(1, 66, 192, 0.06)',
+				// border: '1px solid rgba(1, 66, 192, 0.08)',
 				overflow: 'hidden',
-				transition: 'all 0.3s ease',
+
 				':hover': {
+					transition: 'all 0.3s ease',
 					transform: 'translateY(-4px)',
-					boxShadow: '0 12px 24px rgba(1, 66, 192, 0.06)',
-					borderColor: 'rgba(1, 66, 192, 0.12)',
+					backgroundColor: 'rgba(1, 66, 192, 0.03)',
+					// boxShadow: '0 12px 24px rgba(1, 66, 192, 0.06)',
+					// borderColor: 'rgba(1, 66, 192, 0.12)',
 				},
 			},
 			table: {
@@ -93,19 +96,17 @@ export const imageArea = recipe({
 				height: 'auto',
 				maxInlineSize: '200px',
 				blockSize: 'auto',
-				aspectRatio: '5/4',
+
 				'@media': {
 					'(max-width: 1024px)': {
 						width: '200px',
 						maxInlineSize: '200px',
 						blockSize: 'auto',
-						aspectRatio: '5/4',
 					},
 					'(max-width: 768px)': {
 						width: '180px',
 						maxInlineSize: '100%',
 						height: 'auto',
-						aspectRatio: '16/9',
 					},
 				},
 			},
@@ -114,7 +115,7 @@ export const imageArea = recipe({
 				height: 'auto',
 				borderRadius: '8px 8px 0 0',
 				blockSize: 'auto',
-				aspectRatio: '16/9',
+				aspectRatio: '1.618/1',
 				'@media': {
 					'(max-width: 1024px)': {},
 				},
