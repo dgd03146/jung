@@ -1,4 +1,4 @@
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import type { Metadata } from 'next';
 import { Bebas_Neue, Poppins } from 'next/font/google';
 
@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	metadataBase: new URL(siteUrl),
+	metadataBase: new URL(getApiUrl()),
 	title: {
 		template: '%s',
 		default: 'JUNG',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
-		url: siteUrl,
+		url: getApiUrl(),
 		siteName: 'JUNG',
 		images: [
 			{
@@ -57,9 +57,15 @@ export const metadata: Metadata = {
 			'max-snippet': -1,
 		},
 	},
+	alternates: {
+		canonical: `${getApiUrl()}`,
+		languages: {
+			en: `${getApiUrl()}/en`,
+			ko: `${getApiUrl()}/ko`,
+		},
+	},
 	verification: {
-		google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE,
-		yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION_CODE,
+		google: getGoogleVerificationCode(),
 	},
 };
 

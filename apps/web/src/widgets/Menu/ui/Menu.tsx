@@ -1,3 +1,5 @@
+'use client';
+
 import * as styles from './Menu.css';
 
 import {

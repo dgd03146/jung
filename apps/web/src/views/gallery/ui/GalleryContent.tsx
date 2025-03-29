@@ -1,10 +1,10 @@
 'use client';
 
 import {
-	PHOTO_PARAMS,
+	PHOTO_DEFAULTS,
 	PhotoCard,
 	PhotoList,
-	TRENDING_PHOTO_PARAMS,
+	TRENDING_PHOTO_DEFAULTS,
 	transformPhoto,
 	usePhotosQuery,
 } from '@/fsd/entities/photo';
@@ -22,8 +22,8 @@ export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
 
 	const { q, sort } = useSearchParamsState({
 		defaults: {
-			sort: isTrending ? TRENDING_PHOTO_PARAMS.SORT : PHOTO_PARAMS.SORT,
-			q: PHOTO_PARAMS.QUERY,
+			sort: isTrending ? TRENDING_PHOTO_DEFAULTS.SORT : PHOTO_DEFAULTS.SORT,
+			q: PHOTO_DEFAULTS.QUERY,
 		} as const,
 	});
 

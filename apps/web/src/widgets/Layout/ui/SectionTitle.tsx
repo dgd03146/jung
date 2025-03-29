@@ -43,7 +43,7 @@ export function SectionTitle() {
 				) : (
 					<Link
 						href={`/${mainSection?.toLowerCase()}/${subSection?.toLowerCase()}`}
-						style={{ display: 'flex', alignItems: 'center' }}
+						className={styles.sectionLink}
 					>
 						<Typography.Text level={1} className={styles.sectionText}>
 							{subSection}
@@ -56,7 +56,7 @@ export function SectionTitle() {
 
 	return (
 		<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
-			<Typography.Heading level={2} color='primary'>
+			<Typography.Heading level={2} color='primary' width='fit'>
 				{section}.
 			</Typography.Heading>
 		</Link>

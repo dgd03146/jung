@@ -7,16 +7,12 @@ import {
 import { Layout } from '@/fsd/widgets';
 
 import '@/fsd/app/styles/global.css';
-import { SUPPORTED_LANGS, getDictionary } from '@/fsd/shared/config';
+import { getDictionary } from '@/fsd/shared/config';
 
 interface Props {
 	params: { lang: string };
 
 	children: React.ReactNode;
-}
-
-export async function generateStaticParams() {
-	return SUPPORTED_LANGS.map((lang) => ({ lang }));
 }
 
 export default async function RootLayout({ params, children }: Props) {

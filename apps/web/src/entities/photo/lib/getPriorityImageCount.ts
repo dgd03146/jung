@@ -1,4 +1,4 @@
-import { ALBUM_OPTIONS, PRIORITY_IMAGE } from '../config/constants';
+import { ALBUM_OPTIONS, PRIORITY_IMAGE } from '../config/photo';
 
 export const getPriorityImageCount = (width: number): number => {
 	if (width < ALBUM_OPTIONS.BREAKPOINTS.MOBILE) {

@@ -3,7 +3,13 @@ import { style } from '@vanilla-extract/css';
 
 export const sectionTitle = style({
 	fontFamily: 'var(--font-bebas)',
-	display: 'inline-block',
+	marginBottom: '12px',
+	display: 'inline-flex',
+	'@media': {
+		'(min-width: 768px)': {
+			marginBottom: '20px',
+		},
+	},
 });
 
 export const sectionText = style({

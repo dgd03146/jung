@@ -1,7 +1,7 @@
 import { useTRPC } from '@/fsd/app';
 import type { PhotoQueryParams } from '@jung/shared/types';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { PHOTO_PARAMS } from '../config/constants';
+import { PHOTO_DEFAULTS } from '../config/photo';
 
 export function usePhotosQuery(params: PhotoQueryParams) {
 	const { sort, q } = params;
@@ -9,7 +9,7 @@ export function usePhotosQuery(params: PhotoQueryParams) {
 
 	const infiniteOptions = trpc.photos.getAllPhotos.infiniteQueryOptions(
 		{
-			limit: PHOTO_PARAMS.LIMIT,
+			limit: PHOTO_DEFAULTS.LIMIT,
 			sort,
 			q,
 		},

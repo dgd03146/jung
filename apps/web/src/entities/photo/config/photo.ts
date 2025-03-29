@@ -12,24 +12,24 @@ export const ALBUM_OPTIONS = {
 	},
 } as const;
 
-export const TRENDING_PHOTO_PARAMS = {
-	LIMIT: 8,
+export const TRENDING_PHOTO_DEFAULTS = {
+	LIMIT: 12,
 	QUERY: '',
 	SORT: 'popular',
 } as const;
 
-export const PHOTO_PARAMS = {
-	LIMIT: 8,
+export const PHOTO_DEFAULTS = {
+	LIMIT: 12,
 	QUERY: '',
 	SORT: 'latest',
 } as const;
 
 export const PRIORITY_IMAGE = {
-	MOBILE: 4,
-	LAPTOP: 6,
-	DESKTOP: 8,
+	MOBILE: 2,
+	LAPTOP: 4,
+	DESKTOP: 6,
 } as const;
 
-export const COLLECTION_PARAMS = {
+export const COLLECTION_DEFAULTS = {
 	sort: 'latest',
 } as const;

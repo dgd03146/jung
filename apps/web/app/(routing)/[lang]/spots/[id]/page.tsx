@@ -1,6 +1,12 @@
 import { SpotDetailSkeleton } from '@/fsd/entities/spot';
-import { siteUrl } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+
+import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
 
 import { SpotDetailContent } from '@/fsd/views';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
@@ -66,13 +72,16 @@ export async function generateMetadata({
 				...(spot.tags || []),
 			].filter(Boolean),
 			alternates: {
-				canonical: `${siteUrl}/spots/${params.id}`,
+				canonical: `${getApiUrl()}/spots/${params.id}`,
 				languages: {
-					en: `${siteUrl}/en/spots/${params.id}`,
-					ko: `${siteUrl}/ko/spots/${params.id}`,
+					en: `${getApiUrl()}/en/spots/${params.id}`,
+					ko: `${getApiUrl()}/ko/spots/${params.id}`,
 				},
 			},
-			authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+			verification: {
+				google: getGoogleVerificationCode(),
+			},
+			authors: [{ name: 'JUNG', url: getApiUrl() }],
 		};
 	} catch (error) {
 		console.error('Error generating metadata:', error);
@@ -88,7 +97,23 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const spots = await caller.spot.getAllSpots({
+		limit: SPOT_DEFAULTS.LIMIT,
+		sort: SPOT_DEFAULTS.SORT,
+		cat: SPOT_DEFAULTS.CAT,
+		q: SPOT_DEFAULTS.QUERY,
+	});
+
+	const popularSpotIds = spots.items.map((spot) => spot.id);
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const id of popularSpotIds) {
+			params.push({ lang, id });
+		}
+	}
+
+	return params;
 }
 
 export default async function Page({ params }: { params: { id: string } }) {

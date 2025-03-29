@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	COLLECTION_PARAMS,
+	COLLECTION_DEFAULTS,
 	CollectionList,
 	useCollectionsQuery,
 } from '@/fsd/entities/photo';
@@ -9,7 +9,7 @@ import { EmptyState } from '@/fsd/shared';
 
 export const CollectionContent = () => {
 	const { data: collections } = useCollectionsQuery({
-		sort: COLLECTION_PARAMS.sort,
+		sort: COLLECTION_DEFAULTS.sort,
 	});
 
 	if (collections.length === 0) {
