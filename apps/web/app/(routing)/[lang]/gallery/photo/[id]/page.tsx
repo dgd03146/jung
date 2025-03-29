@@ -1,5 +1,5 @@
 import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
@@ -71,11 +71,14 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${siteUrl}/gallery/photo/${params.id}`,
+				canonical: `${getApiUrl()}/gallery/photo/${params.id}`,
 				languages: {
-					en: `${siteUrl}/en/gallery/photo/${params.id}`,
-					ko: `${siteUrl}/ko/gallery/photo/${params.id}`,
+					en: `${getApiUrl()}/en/gallery/photo/${params.id}`,
+					ko: `${getApiUrl()}/ko/gallery/photo/${params.id}`,
 				},
+			},
+			verification: {
+				google: getGoogleVerificationCode(),
 			},
 		};
 	} catch (error) {

@@ -1,5 +1,5 @@
 import { SpotDetailSkeleton } from '@/fsd/entities/spot';
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 
 import { SpotDetailContent } from '@/fsd/views';
@@ -66,13 +66,16 @@ export async function generateMetadata({
 				...(spot.tags || []),
 			].filter(Boolean),
 			alternates: {
-				canonical: `${siteUrl}/spots/${params.id}`,
+				canonical: `${getApiUrl()}/spots/${params.id}`,
 				languages: {
-					en: `${siteUrl}/en/spots/${params.id}`,
-					ko: `${siteUrl}/ko/spots/${params.id}`,
+					en: `${getApiUrl()}/en/spots/${params.id}`,
+					ko: `${getApiUrl()}/ko/spots/${params.id}`,
 				},
 			},
-			authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+			verification: {
+				google: getGoogleVerificationCode(),
+			},
+			authors: [{ name: 'JUNG', url: getApiUrl() }],
 		};
 	} catch (error) {
 		console.error('Error generating metadata:', error);

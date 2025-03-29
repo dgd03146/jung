@@ -1,4 +1,4 @@
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl } from '@/fsd/shared';
 import { HomePage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 		'developer blog',
 		'coding life',
 	],
-	authors: [{ name: 'JUNG', url: siteUrl }],
+	authors: [{ name: 'JUNG', url: getApiUrl() }],
 	robots: {
 		index: true,
 		follow: true,
@@ -49,10 +49,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: siteUrl,
+		canonical: getApiUrl(),
 		languages: {
-			en: `${siteUrl}/en`,
-			ko: `${siteUrl}/ko`,
+			en: `${getApiUrl()}/en`,
+			ko: `${getApiUrl()}/ko`,
 		},
 	},
 	verification: {

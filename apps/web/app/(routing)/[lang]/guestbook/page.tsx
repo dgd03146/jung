@@ -1,6 +1,6 @@
 import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/message';
 import { CreateMessageForm } from '@/fsd/features/message';
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
 import { Container, Stack, Typography } from '@jung/design-system/components';
@@ -38,11 +38,14 @@ export const metadata: Metadata = {
 		'community',
 	],
 	alternates: {
-		canonical: `${siteUrl}/guestbook`,
+		canonical: `${getApiUrl()}/guestbook`,
 		languages: {
-			en: `${siteUrl}/en/guestbook`,
-			ko: `${siteUrl}/ko/guestbook`,
+			en: `${getApiUrl()}/en/guestbook`,
+			ko: `${getApiUrl()}/ko/guestbook`,
 		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 

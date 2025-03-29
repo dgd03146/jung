@@ -3,6 +3,7 @@ import {
 	PostNavigation,
 	PostNavigationSkeleton,
 } from '@/fsd/entities/post';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PostDetailContent } from '@/fsd/views/blog/ui/PostDetailContent';
 import { PostDetailContentSkeleton } from '@/fsd/views/blog/ui/PostDetailContentSkeleton';
@@ -63,14 +64,17 @@ export async function generateMetadata({
 					`JUNG의 블로그에서 "${post.title}" 포스트를 읽어보세요.`,
 				images: [post.imagesrc || '/images/og/blog-default.jpg'],
 			},
-			authors: [{ name: 'JUNG', url: 'https://your-domain.com' }],
+			authors: [{ name: 'JUNG', url: getApiUrl() }],
 			keywords: [...(post.tags || []), 'JUNG Blog', '개발 블로그'],
 			alternates: {
-				canonical: `https://your-domain.com/blog/${post.id}`,
+				canonical: `${getApiUrl()}/blog/${post.id}`,
 				languages: {
-					en: `https://your-domain.com/en/blog/${post.id}`,
-					ko: `https://your-domain.com/ko/blog/${post.id}`,
+					en: `${getApiUrl()}/en/blog/${post.id}`,
+					ko: `${getApiUrl()}/ko/blog/${post.id}`,
 				},
+			},
+			verification: {
+				google: getGoogleVerificationCode(),
 			},
 		};
 	} catch (error) {

@@ -1,4 +1,4 @@
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { createClient } from '@/fsd/shared/index.server';
 import { LoginPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 		description: 'JUNG의 웹사이트에 로그인하여 더 많은 기능을 이용해보세요.',
 	},
 	alternates: {
-		canonical: `${siteUrl}/login`,
+		canonical: `${getApiUrl()}/login`,
 		languages: {
-			en: `${siteUrl}/en/login`,
-			ko: `${siteUrl}/ko/login`,
+			en: `${getApiUrl()}/en/login`,
+			ko: `${getApiUrl()}/ko/login`,
 		},
 	},
 	verification: {
-		google: 'your-google-verification-code',
+		google: getGoogleVerificationCode(),
 	},
 };
 

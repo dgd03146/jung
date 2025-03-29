@@ -1,5 +1,5 @@
 import { BLOG_DEFAULTS } from '@/fsd/entities/post';
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	title: 'Blog',
 
 	keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
-	authors: [{ name: 'JUNG', url: siteUrl }],
+	authors: [{ name: 'JUNG', url: getApiUrl() }],
 	robots: {
 		index: true,
 		follow: true,
@@ -19,6 +19,16 @@ export const metadata: Metadata = {
 			'max-image-preview': 'large',
 			'max-snippet': -1,
 		},
+	},
+	alternates: {
+		canonical: `${getApiUrl()}/blog`,
+		languages: {
+			en: `${getApiUrl()}/en/blog`,
+			ko: `${getApiUrl()}/ko/blog`,
+		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 

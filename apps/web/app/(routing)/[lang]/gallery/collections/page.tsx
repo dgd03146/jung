@@ -1,5 +1,9 @@
-import { COLLECTION_PARAMS } from '@/fsd/entities/photo';
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import { COLLECTION_DEFAULTS } from '@/fsd/entities/photo';
+import {
+	LoadingSpinner,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
@@ -10,7 +14,7 @@ import { Suspense } from 'react';
 export async function generateMetadata(): Promise<Metadata> {
 	try {
 		const collections = await caller.photoCollections.getAllCollections({
-			sort: COLLECTION_PARAMS.sort,
+			sort: COLLECTION_DEFAULTS.sort,
 		});
 
 		const collectionNames = collections
@@ -68,11 +72,14 @@ export async function generateMetadata(): Promise<Metadata> {
 				},
 			},
 			alternates: {
-				canonical: `${siteUrl}/gallery/collections`,
+				canonical: `${getApiUrl()}/gallery/collections`,
 				languages: {
-					en: `${siteUrl}/en/gallery/collections`,
-					ko: `${siteUrl}/ko/gallery/collections`,
+					en: `${getApiUrl()}/en/gallery/collections`,
+					ko: `${getApiUrl()}/ko/gallery/collections`,
 				},
+			},
+			verification: {
+				google: getGoogleVerificationCode(),
 			},
 		};
 	} catch (error) {

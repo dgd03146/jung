@@ -1,4 +1,8 @@
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import {
+	LoadingSpinner,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
@@ -67,11 +71,14 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${siteUrl}/gallery/collections/${params.id}`,
+				canonical: `${getApiUrl}/gallery/collections/${params.id}`,
 				languages: {
-					en: `${siteUrl}/en/gallery/collections/${params.id}`,
-					ko: `${siteUrl}/ko/gallery/collections/${params.id}`,
+					en: `${getApiUrl}/en/gallery/collections/${params.id}`,
+					ko: `${getApiUrl}/ko/gallery/collections/${params.id}`,
 				},
+			},
+			verification: {
+				google: getGoogleVerificationCode(),
 			},
 		};
 	} catch (error) {

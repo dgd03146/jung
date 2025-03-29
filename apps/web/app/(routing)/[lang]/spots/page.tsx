@@ -1,5 +1,5 @@
 import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
-import { siteUrl } from '@/fsd/shared';
+import { getApiUrl } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -36,10 +36,10 @@ export const metadata: Metadata = {
 		'favorite places',
 	],
 	alternates: {
-		canonical: `${siteUrl}/spots`,
+		canonical: `${getApiUrl()}/spots`,
 		languages: {
-			en: `${siteUrl}/en/spots`,
-			ko: `${siteUrl}/ko/spots`,
+			en: `${getApiUrl()}/en/spots`,
+			ko: `${getApiUrl()}/ko/spots`,
 		},
 	},
 	robots: {

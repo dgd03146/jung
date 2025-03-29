@@ -1,5 +1,9 @@
 import { PHOTO_PARAMS } from '@/fsd/entities/photo';
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import {
+	LoadingSpinner,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
@@ -44,11 +48,14 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${siteUrl}/gallery`,
+		canonical: `${getApiUrl()}/gallery`,
 		languages: {
-			en: `${siteUrl}/en/gallery`,
-			ko: `${siteUrl}/ko/gallery`,
+			en: `${getApiUrl()}/en/gallery`,
+			ko: `${getApiUrl()}/ko/gallery`,
 		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 

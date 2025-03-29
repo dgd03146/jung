@@ -1,5 +1,9 @@
 import { TRENDING_PHOTO_PARAMS } from '@/fsd/entities';
-import { LoadingSpinner, siteUrl } from '@/fsd/shared';
+import {
+	LoadingSpinner,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GalleryContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
@@ -47,11 +51,14 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${siteUrl}/gallery/trending`,
+		canonical: `${getApiUrl()}/gallery/trending`,
 		languages: {
-			en: `${siteUrl}/en/gallery/trending`,
-			ko: `${siteUrl}/ko/gallery/trending`,
+			en: `${getApiUrl()}/en/gallery/trending`,
+			ko: `${getApiUrl()}/ko/gallery/trending`,
 		},
+	},
+	verification: {
+		google: getGoogleVerificationCode(),
 	},
 };
 
