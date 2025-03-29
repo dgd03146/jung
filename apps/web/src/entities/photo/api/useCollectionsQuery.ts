@@ -1,10 +1,10 @@
 import { useTRPC } from '@/fsd/app';
 import type { CollectionQueryParams } from '@jung/shared/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { COLLECTION_PARAMS } from '../config/constants';
+import { COLLECTION_DEFAULTS } from '../config/photo';
 
 export function useCollectionsQuery(params: CollectionQueryParams = {}) {
-	const { sort = COLLECTION_PARAMS.sort } = params;
+	const { sort = COLLECTION_DEFAULTS.sort } = params;
 	const trpc = useTRPC();
 
 	return useSuspenseQuery(

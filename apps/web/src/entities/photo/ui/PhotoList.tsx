@@ -1,7 +1,7 @@
 import type { AlbumPhoto } from '@jung/shared/types';
 import { MasonryPhotoAlbum, type Render } from 'react-photo-album';
 import 'react-photo-album/masonry.css';
-import { ALBUM_OPTIONS } from '../config/constants';
+import { ALBUM_OPTIONS } from '../config/photo';
 
 interface PhotoListProps {
 	photos: AlbumPhoto[];
