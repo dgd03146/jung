@@ -1,5 +1,9 @@
 import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
-import { getApiUrl } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -52,9 +56,16 @@ export const metadata: Metadata = {
 			'max-snippet': -1,
 		},
 	},
+	verification: {
+		google: getGoogleVerificationCode(),
+	},
 };
 
 export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default async function Page() {
 	const queryClient = getQueryClient();

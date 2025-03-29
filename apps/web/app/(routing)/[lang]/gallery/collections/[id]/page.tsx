@@ -1,5 +1,7 @@
+import { COLLECTION_DEFAULTS } from '@/fsd/entities/photo';
 import {
 	LoadingSpinner,
+	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
@@ -95,7 +97,19 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const collections = await caller.photoCollections.getAllCollections({
+		sort: COLLECTION_DEFAULTS.sort,
+	});
+
+	const CollectionIds = collections.map((collection) => collection.id);
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const id of CollectionIds) {
+			params.push({ lang, id });
+		}
+	}
+	return params;
 }
 
 export default async function Page({ params }: PageProps) {

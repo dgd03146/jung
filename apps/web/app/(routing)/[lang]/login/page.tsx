@@ -1,4 +1,8 @@
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { createClient } from '@/fsd/shared/index.server';
 import { LoginPage } from '@/fsd/views';
 import type { Metadata } from 'next';
@@ -34,6 +38,10 @@ export const metadata: Metadata = {
 		google: getGoogleVerificationCode(),
 	},
 };
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default async function Page() {
 	const supabase = await createClient();

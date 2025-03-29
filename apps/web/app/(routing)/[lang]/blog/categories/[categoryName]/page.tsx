@@ -1,9 +1,13 @@
 import { BLOG_DEFAULTS } from '@/fsd/entities/post';
+
 import {
+	SUPPORTED_LANGS,
 	capitalizeFirstLetter,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { BlogLayout } from '../../_components/BlogLayout';
@@ -60,7 +64,19 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const categories = await caller.category.getCategories({ type: 'blog' });
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const category of categories) {
+			params.push({
+				lang,
+				categoryName: category.name,
+			});
+		}
+	}
+
+	return params;
 }
 
 export default async function CategoryPostsPage({

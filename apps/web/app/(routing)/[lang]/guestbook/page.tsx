@@ -1,6 +1,10 @@
 import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/message';
 import { CreateMessageForm } from '@/fsd/features/message';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
 import { Container, Stack, Typography } from '@jung/design-system/components';
@@ -50,6 +54,10 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 0;
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default function Page() {
 	const queryClient = getQueryClient();

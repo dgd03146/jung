@@ -1,12 +1,19 @@
 import {
+	BLOG_DEFAULTS,
 	PostHeader,
 	PostNavigation,
 	PostNavigationSkeleton,
 } from '@/fsd/entities/post';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import {
+	COMMENTS_DEFAULT_ORDER,
+	COMMENTS_LIMIT,
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
+
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { PostDetailContent } from '@/fsd/views/blog/ui/PostDetailContent';
-import { PostDetailContentSkeleton } from '@/fsd/views/blog/ui/PostDetailContentSkeleton';
+import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
 import { Container, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -91,7 +98,23 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	return [];
+	const posts = await caller.post.getAllPosts({
+		limit: BLOG_DEFAULTS.LIMIT,
+		sort: BLOG_DEFAULTS.SORT,
+		cat: BLOG_DEFAULTS.CATEGORY,
+		q: BLOG_DEFAULTS.QUERY,
+	});
+
+	const PostIds = posts.items.map((post) => post.id);
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const id of PostIds) {
+			params.push({ lang, slug: String(id) });
+		}
+	}
+
+	return params;
 }
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -99,6 +122,18 @@ export default function Page({ params }: { params: { slug: string } }) {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchQuery(trpc.post.getPostById.queryOptions({ postId }));
+
+	queryClient.prefetchQuery(
+		trpc.post.getAdjacentPosts.queryOptions({ postId }),
+	);
+
+	queryClient.prefetchInfiniteQuery(
+		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+			postId,
+			order: COMMENTS_DEFAULT_ORDER,
+			limit: COMMENTS_LIMIT,
+		}),
+	);
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>

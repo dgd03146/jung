@@ -1,6 +1,7 @@
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/photo';
 import {
 	LoadingSpinner,
+	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
@@ -95,12 +96,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 21600;
 
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
+
 export default function CollectionsPage() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchQuery(
 		trpc.photoCollections.getAllCollections.queryOptions({
-			sort: COLLECTION_PARAMS.sort,
+			sort: COLLECTION_DEFAULTS.sort,
 		}),
 	);
 

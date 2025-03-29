@@ -1,6 +1,7 @@
-import { PHOTO_PARAMS } from '@/fsd/entities/photo';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
 import {
 	LoadingSpinner,
+	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
@@ -61,14 +62,18 @@ export const metadata: Metadata = {
 
 export const revalidate = 21600;
 
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
+
 export default function Page() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(
 		trpc.photos.getAllPhotos.infiniteQueryOptions({
-			limit: PHOTO_PARAMS.LIMIT,
-			sort: PHOTO_PARAMS.SORT,
-			q: PHOTO_PARAMS.QUERY,
+			limit: PHOTO_DEFAULTS.LIMIT,
+			sort: PHOTO_DEFAULTS.SORT,
+			q: PHOTO_DEFAULTS.QUERY,
 		}),
 	);
 

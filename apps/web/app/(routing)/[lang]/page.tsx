@@ -1,4 +1,8 @@
-import { getApiUrl } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { HomePage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -56,9 +60,13 @@ export const metadata: Metadata = {
 		},
 	},
 	verification: {
-		google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE,
+		google: getGoogleVerificationCode(),
 	},
 };
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 export default function Home() {
 	return <HomePage />;

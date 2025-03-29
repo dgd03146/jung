@@ -1,4 +1,8 @@
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import {
+	SUPPORTED_LANGS,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
 import { AboutPage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -43,6 +47,10 @@ export const metadata: Metadata = {
 		google: getGoogleVerificationCode(),
 	},
 };
+
+export async function generateStaticParams() {
+	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+}
 
 const Page = () => {
 	return <AboutPage />;
