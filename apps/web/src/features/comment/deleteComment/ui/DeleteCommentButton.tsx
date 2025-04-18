@@ -6,26 +6,31 @@ import { useDeleteComment } from '../model/useDeleteComment';
 
 interface DeleteCommentButtonProps {
 	commentId: string;
-	targetId: string;
+	postId: string;
 }
 
 export const DeleteCommentButton = ({
 	commentId,
-	targetId,
+	postId,
 }: DeleteCommentButtonProps) => {
-	const deleteComment = useDeleteComment();
+	const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment();
 
 	const handleDelete = () => {
 		if (window.confirm('Are you sure you want to delete this comment?')) {
-			console.log('deleteComment', commentId, targetId);
-			deleteComment(commentId, targetId);
+			deleteComment({ commentId, postId });
 		}
 	};
 
 	return (
-		<Button variant='ghost' fontSize='xxs' onClick={handleDelete}>
+		<Button
+			variant='ghost'
+			fontSize='xxs'
+			onClick={handleDelete}
+			disabled={isDeleting}
+			color='error'
+		>
 			<FaTrash size={12} style={{ marginRight: '4px' }} />
-			Delete
+			{isDeleting ? 'Deleting...' : 'Delete'}
 		</Button>
 	);
 };

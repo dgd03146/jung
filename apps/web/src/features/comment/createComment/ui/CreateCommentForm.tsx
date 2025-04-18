@@ -16,14 +16,14 @@ import { useCreateComment } from '../model/useCreateComment';
 import * as styles from './CreateCommentForm.css';
 
 interface CreateCommentFormProps {
-	targetId: string;
+	postId: string;
 	parentId?: string;
 	isReply?: boolean;
 	onCancel?: () => void;
 }
 
 export const CreateCommentForm = ({
-	targetId,
+	postId,
 	parentId,
 	isReply = false,
 	onCancel,
@@ -40,7 +40,7 @@ export const CreateCommentForm = ({
 		}
 
 		onCancel?.();
-		await submitComment(targetId, parentId);
+		await submitComment(postId, parentId);
 	};
 
 	return (

@@ -1,1 +1,5 @@
-export { ViewComments } from './viewComments/ui/ViewComments';
+export * from './createComment';
+
+export * from './deleteComment';
+export * from './editComment';
+export * from './toggleLikeComment';
