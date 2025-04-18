@@ -26,7 +26,7 @@ const CommentSkeleton = ({ isReply = false }: { isReply?: boolean }) => (
 	</Box>
 );
 
-const CommentListSkeleton = () => (
+export const CommentListSkeleton = () => (
 	<Container marginY='20'>
 		<Flex columnGap='4' alignItems='center' marginBottom='4'>
 			<Box className={styles.skeletonAction} />
@@ -46,5 +46,3 @@ const CommentListSkeleton = () => (
 		))}
 	</Container>
 );
-
-export default CommentListSkeleton;
