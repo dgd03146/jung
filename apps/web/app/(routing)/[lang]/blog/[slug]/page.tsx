@@ -12,6 +12,7 @@ import {
 
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
+import { CommentSection } from '@/fsd/widgets/comment';
 import { Container, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -137,10 +138,12 @@ export default function Page({ params }: { params: { slug: string } }) {
 					<Suspense fallback={<PostNavigationSkeleton />}>
 						<PostNavigation postId={postId} />
 					</Suspense>
-
-					<Suspense fallback={<PostDetailContentSkeleton />}>
-						<PostDetailContent postId={postId} />
-					</Suspense>
+					<Container flex={1}>
+						<Suspense fallback={<PostDetailContentSkeleton />}>
+							<PostDetailContent postId={postId} />
+						</Suspense>
+						<CommentSection postId={postId} />
+					</Container>
 				</Flex>
 			</Container>
 		</HydrationBoundary>
