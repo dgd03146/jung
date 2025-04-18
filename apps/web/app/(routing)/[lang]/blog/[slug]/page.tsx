@@ -5,8 +5,6 @@ import {
 	PostNavigationSkeleton,
 } from '@/fsd/entities/post';
 import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
 	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
@@ -125,14 +123,6 @@ export default function Page({ params }: { params: { slug: string } }) {
 
 	queryClient.prefetchQuery(
 		trpc.post.getAdjacentPosts.queryOptions({ postId }),
-	);
-
-	queryClient.prefetchInfiniteQuery(
-		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		}),
 	);
 
 	return (
