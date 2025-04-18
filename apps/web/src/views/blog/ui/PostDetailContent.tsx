@@ -4,7 +4,7 @@ import { TogglePostLike } from '@/fsd/features/post';
 
 import { usePostQuery } from '@/fsd/entities/post';
 
-import { ViewComments } from '@/fsd/features/comment';
+import { CommentSection } from '@/fsd/widgets/comment';
 import { Container } from '@jung/design-system/components';
 import dynamic from 'next/dynamic';
 
@@ -31,7 +31,7 @@ export const PostDetailContent = ({ postId }: { postId: string }) => {
 				likeCount={post.likes}
 				likedBy={post.liked_by}
 			/>
-			<ViewComments targetId={postId} likeCount={post.likes} />
+			<CommentSection postId={postId} likeCount={post.likes} />
 		</Container>
 	);
 };
