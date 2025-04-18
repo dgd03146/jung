@@ -20,31 +20,43 @@ export const CommentService = {
 		cursor,
 		order = 'desc',
 	}: CommentQueryParams): Promise<CommentQueryResult> {
-		// 댓글 정보 가져오기
+		const { count: totalCount, error: countError } = await supabase
+			.from('post_comments')
+			.select('*', { count: 'exact', head: true })
+			.eq('post_id', postId)
+			.is('parent_id', null);
+
+		if (countError) {
+			console.error('Supabase count query error:', countError);
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: `Failed to count comments: ${countError.message}`,
+				cause: countError,
+			});
+		}
+
 		const comments = await this.fetchComments(postId, limit + 1, cursor, order);
 
-		// 사용자 ID 목록 추출 (댓글 작성자 + 답글 작성자)
 		const userIds = this.extractUserIds(comments);
 
-		// Auth API를 사용하여 사용자 정보 가져오기
 		const users = await this.fetchUserInfo(userIds);
 
-		//사용자 정보를 객체로 변환
 		const userMap = this.createUserMap(users);
 
-		// 댓글과 사용자 정보 결합
 		const formattedComments = this.formatComments(comments, userMap);
 
 		const hasNextPage = comments.length > limit;
-
-		const itemsToReturn = comments.slice(0, limit);
+		const itemsToReturn = hasNextPage
+			? formattedComments.slice(0, limit)
+			: formattedComments;
 
 		return {
-			items: formattedComments.slice(0, limit),
+			items: itemsToReturn,
 			nextCursor: hasNextPage
-				? itemsToReturn[itemsToReturn.length - 1]?.created_at
-				: undefined,
+				? itemsToReturn[itemsToReturn.length - 1]?.created_at ?? null
+				: null,
 			hasNextPage,
+			totalCount: totalCount ?? 0,
 		};
 	},
 
