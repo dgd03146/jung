@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { vars } from '@jung/design-system/styles/theme.css';
 import type { Comment } from '@jung/shared/types';

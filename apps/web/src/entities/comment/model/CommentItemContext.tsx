@@ -1,3 +1,5 @@
+'use client';
+
 import type { Comment } from '@jung/shared/types';
 import { createContext, useContext } from 'react';
 
@@ -30,6 +32,18 @@ export const useCommentItemContext = () => {
 	if (!context) {
 		throw new Error(
 			'useCommentItemContext must be used within a CommentItemProvider',
+		);
+	}
+	return context;
+};
+
+export const CommentContext = createContext<Comment | null>(null);
+
+export const useCommentContext = () => {
+	const context = useContext(CommentContext);
+	if (!context) {
+		throw new Error(
+			'useCommentContext must be used within a CommentItem provider',
 		);
 	}
 	return context;

@@ -17,20 +17,25 @@ export const ToggleLikeCommentButton = ({
 	isLiked,
 	likesCount,
 }: ToggleLikeCommentButtonProps) => {
-	const toggleLikeComment = useToggleLikeComment();
+	const { mutate: toggleLikeMutate, isPending } = useToggleLikeComment();
+
+	const handleClick = () => {
+		toggleLikeMutate({ commentId, postId: targetId });
+	};
 
 	return (
 		<Button
 			variant='ghost'
 			fontSize='xxs'
-			onClick={() => toggleLikeComment(commentId, targetId)}
+			onClick={handleClick}
+			disabled={isPending}
 		>
 			{isLiked ? (
 				<FaHeart size={12} style={{ marginRight: '4px', color: 'red' }} />
 			) : (
 				<FaRegHeart size={12} style={{ marginRight: '4px' }} />
 			)}
-			{likesCount}
+			{isPending ? '...' : likesCount}
 		</Button>
 	);
 };
