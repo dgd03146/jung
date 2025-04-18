@@ -8,7 +8,7 @@ import {
 	useSupabaseAuth,
 } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
 
@@ -18,81 +18,92 @@ export const useToggleLikeComment = () => {
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
-	const handleError = (error: unknown) => {
-		if (error instanceof Error) {
-			showToast(`Failed to toggle like: ${error.message}`, 'error');
-		} else {
-			showToast('Failed to toggle like', 'error');
-		}
-		console.error('Error toggling comment like:', error);
-	};
-
-	const mutateToggleLikeComment = async (commentId: string, postId: string) => {
-		if (!user) {
-			showToast('Please log in to like comments', 'error');
-			return;
-		}
-
-		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+	const queryOptions = (postId: string) =>
+		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
 			postId,
 			order: COMMENTS_DEFAULT_ORDER,
 			limit: COMMENTS_LIMIT,
 		});
 
-		let existingData: CommentData | undefined;
-		try {
-			existingData = await queryClient.ensureInfiniteQueryData(queryOptions);
-		} catch (fetchError) {
-			showToast('Unable to fetch comments', 'error');
-			return;
-		}
-
-		const { comment, isLiked } = findCommentAndCheckLike(
-			existingData,
+	const mutation = useMutation({
+		mutationFn: async ({
 			commentId,
-			user.id,
-		);
+			postId,
+		}: { commentId: string; postId: string }) => {
+			if (!user) {
+				throw new Error('Please log in to like comments');
+			}
 
-		if (!comment) {
-			showToast('Comment not found', 'error');
-			return;
-		}
+			const currentQueryOptions = queryOptions(postId);
+			let existingData: CommentData | undefined;
+			try {
+				existingData =
+					await queryClient.ensureInfiniteQueryData(currentQueryOptions);
+			} catch (fetchError) {
+				throw new Error('Unable to fetch comments');
+			}
 
-		const originalComment = structuredClone(comment);
-
-		const likeIncrement = isLiked ? -1 : 1;
-
-		const tempComment = {
-			...comment,
-			likes: comment.likes + likeIncrement,
-			liked_by: isLiked
-				? comment.liked_by.filter((id) => id !== user.id)
-				: [...comment.liked_by, user.id],
-			$optimistic: true,
-		};
-
-		queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-			replaceOptimisticLike(oldData, commentId, tempComment),
-		);
-
-		try {
-			const serverComment = await toggleLikeCommentAction(
+			const { comment, isLiked } = findCommentAndCheckLike(
+				existingData,
 				commentId,
-				postId,
 				user.id,
 			);
 
-			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-				replaceOptimisticLike(oldData, commentId, serverComment),
-			);
-		} catch (error) {
-			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-				replaceOptimisticLike(oldData, commentId, originalComment),
+			if (!comment) {
+				throw new Error('Comment not found');
+			}
+
+			const originalComment = structuredClone(comment);
+			const likeIncrement = isLiked ? -1 : 1;
+			const tempComment = {
+				...comment,
+				likes: comment.likes + likeIncrement,
+				liked_by: isLiked
+					? comment.liked_by.filter((id) => id !== user.id)
+					: [...comment.liked_by, user.id],
+				$optimistic: true,
+			};
+
+			queryClient.setQueryData(currentQueryOptions.queryKey, (oldData) =>
+				replaceOptimisticLike(oldData, commentId, tempComment),
 			);
 
-			handleError(error);
-		}
-	};
+			try {
+				const serverComment = await toggleLikeCommentAction(
+					commentId,
+					postId,
+					user.id,
+				);
+				return {
+					serverComment,
+					originalComment,
+					queryKey: currentQueryOptions.queryKey,
+				};
+			} catch (error) {
+				queryClient.setQueryData(currentQueryOptions.queryKey, (oldData) =>
+					replaceOptimisticLike(oldData, commentId, originalComment),
+				);
+				throw error;
+			}
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(data.queryKey, (oldData) =>
+				replaceOptimisticLike(
+					oldData,
+					data.originalComment.id,
+					data.serverComment,
+				),
+			);
+		},
+		onError: (error, variables) => {
+			const message =
+				error instanceof Error ? error.message : 'Failed to toggle like';
+			if (message !== 'Please log in to like comments') {
+				showToast(message, 'error');
+			}
+			console.error('Error toggling comment like:', error);
+		},
+	});
 
-	return mutateToggleLikeComment;
+	return { mutate: mutation.mutate, isPending: mutation.isPending };
 };

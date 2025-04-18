@@ -1,15 +1,16 @@
+import { vars } from '@jung/design-system/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
-const borderColor = '#E2E8F0';
-const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
+const borderColor = vars.palette.gray300;
+const primaryLightColor = vars.palette.primary100;
 
 export const commentContainer = style({
 	borderRadius: '12px',
 	border: `1px solid ${borderColor}`,
-	padding: '16px',
-	marginBottom: '16px',
+	padding: vars.space[4],
+	marginBottom: vars.space[4],
 	transition: 'all 0.2s ease',
-	backgroundColor: '#FFFFFF',
+	backgroundColor: vars.palette.white,
 	':hover': {
 		boxShadow: `0 2px 8px ${primaryLightColor}`,
 	},
@@ -18,9 +19,12 @@ export const commentContainer = style({
 export const errorContainer = style([
 	commentContainer,
 	{
-		margin: '16px 0',
-		backgroundColor: 'rgba(220, 38, 38, 0.05)',
-		border: '1px solid rgba(220, 38, 38, 0.2)',
+		margin: `${vars.space[4]} 0`,
+		backgroundColor: vars.palette.white,
+		border: `1px solid ${vars.palette.error}`,
+		':hover': {
+			boxShadow: 'none',
+		},
 	},
 ]);
 
@@ -32,47 +36,36 @@ export const userAvatar = style({
 	border: `2px solid ${primaryLightColor}`,
 });
 
-export const errorAvatar = style([
-	userAvatar,
-	{
-		backgroundColor: '#DC2626',
-		marginRight: '8px',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-]);
+export const errorAvatar = style({
+	width: '40px',
+	height: '40px',
+	borderRadius: '50%',
+	backgroundColor: vars.palette.error,
+	marginRight: vars.space[2],
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	flexShrink: 0,
+});
 
 export const errorIcon = style({
-	color: '#FFFFFF',
+	color: vars.palette.white,
 });
 
 export const errorContent = style({
-	marginTop: '8px',
+	marginTop: vars.space[2],
+	paddingLeft: `calc(40px + ${vars.space[2]})`,
 });
 
 export const errorMessage = style({
-	color: '#DC2626',
-	fontSize: '14px',
-	lineHeight: 1.5,
+	color: vars.palette.error,
+	wordBreak: 'break-word',
 });
 
 export const retryButtonContainer = style({
 	display: 'flex',
 	justifyContent: 'flex-end',
-	marginTop: '12px',
+	marginTop: vars.space[3],
 });
 
-export const retryButton = style({
-	marginTop: '12px',
-	padding: '6px 12px',
-	backgroundColor: '#DC2626',
-	color: '#FFFFFF',
-	border: 'none',
-	borderRadius: '4px',
-	cursor: 'pointer',
-	transition: 'background-color 0.2s',
-	':hover': {
-		backgroundColor: '#B91C1C',
-	},
-});
+export const retryButton = style({});

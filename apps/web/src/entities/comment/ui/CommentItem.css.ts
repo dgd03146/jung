@@ -19,7 +19,7 @@ export const commentContainer = style({
 });
 
 export const nestedCommentContainer = style({
-	padding: '12px',
+	padding: '12px 12px 0 12px',
 	marginBottom: '12px',
 	backgroundColor: 'transparent',
 	border: 'none',
@@ -29,8 +29,8 @@ export const nestedCommentContainer = style({
 });
 
 export const nestedCommentItem = style({
-	marginBottom: '16px',
-	paddingBottom: '16px',
+	marginBottom: '12px',
+	paddingBottom: '8px',
 	borderBottom: `1px solid ${borderColor}`,
 	':last-child': {
 		marginBottom: 0,
@@ -40,8 +40,8 @@ export const nestedCommentItem = style({
 });
 
 export const replyContainer = style({
-	marginLeft: '12px',
-	marginTop: '12px',
+	marginLeft: '30px',
+	marginTop: '8px',
 	padding: '12px',
 	borderLeft: `2px solid ${primaryLightColor}`,
 	backgroundColor: veryLightBlueColor,
@@ -55,3 +55,5 @@ export const commentContent = style({
 	color: textColor,
 	marginBottom: '12px',
 });
+
+// ... (rest of the file if any)

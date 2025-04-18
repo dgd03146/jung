@@ -1,6 +1,6 @@
 import { useTRPC } from '@/fsd/app';
 import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useCommentsQuery = (postId: string) => {
 	const trpc = useTRPC();
@@ -17,5 +17,5 @@ export const useCommentsQuery = (postId: string) => {
 		},
 	);
 
-	return useSuspenseInfiniteQuery(infiniteOptions);
+	return useInfiniteQuery(infiniteOptions);
 };

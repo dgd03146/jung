@@ -7,7 +7,7 @@ import {
 	type CommentData,
 } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCommentAction } from '../api/deleteCommentAction';
 import { removeCommentAndReplies } from '../lib/removeCommentAndReplies';
 
@@ -16,53 +16,61 @@ export const useDeleteComment = () => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 
-	const mutateDeleteComment = async (commentId: string, postId: string) => {
-		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+	const queryOptions = (postId: string) =>
+		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
 			postId,
 			order: COMMENTS_DEFAULT_ORDER,
 			limit: COMMENTS_LIMIT,
 		});
 
-		// 삭제 전 데이터 저장
-		let originalData: CommentData | undefined;
+	const mutation = useMutation({
+		mutationFn: async ({
+			commentId,
+			postId,
+		}: { commentId: string; postId: string }) => {
+			// Temporary comments only exist client-side
+			if (!commentId.startsWith('temp-')) {
+				await deleteCommentAction(commentId);
+			}
+		},
+		onMutate: async ({ commentId, postId }) => {
+			const currentQueryOptions = queryOptions(postId);
+			await queryClient.cancelQueries({
+				queryKey: currentQueryOptions.queryKey,
+			});
 
-		try {
-			const data = await queryClient.ensureInfiniteQueryData(queryOptions);
+			const previousData = queryClient.getQueryData<CommentData>(
+				currentQueryOptions.queryKey,
+			);
 
-			originalData = structuredClone(data);
-
-			// 낙관적 업데이트 적용
-			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+			queryClient.setQueryData(currentQueryOptions.queryKey, (oldData) =>
 				removeCommentAndReplies(oldData, commentId),
 			);
 
-			if (commentId.startsWith('temp-')) {
+			return { previousData, queryKey: currentQueryOptions.queryKey }; // Return context for rollback
+		},
+		onError: (err, variables, context) => {
+			// Rollback on error
+			if (context?.previousData) {
+				queryClient.setQueryData(context.queryKey, context.previousData);
+			}
+			const message =
+				err instanceof Error ? err.message : 'Failed to delete comment';
+			showToast(message, 'error');
+			console.error('Error deleting comment:', err);
+		},
+		onSettled: (data, error, variables, context) => {
+			// Invalidate the query on success or after rollback
+			// queryClient.invalidateQueries({ queryKey: context?.queryKey });
+		},
+		onSuccess: (data, variables) => {
+			if (variables.commentId.startsWith('temp-')) {
 				showToast('Temporary comment has been deleted', 'success');
-				return;
-			}
-
-			await deleteCommentAction(commentId);
-			showToast('Comment has been deleted', 'success');
-		} catch (error) {
-			// 오류 발생 시 저장해둔 원본 데이터로 롤백
-			if (originalData) {
-				try {
-					queryClient.setQueryData(queryOptions.queryKey, originalData);
-				} catch (rollbackError) {
-					console.error('Rollback failed:', rollbackError);
-					queryClient.invalidateQueries(queryOptions);
-				}
 			} else {
-				queryClient.invalidateQueries(queryOptions);
+				showToast('Comment has been deleted', 'success');
 			}
+		},
+	});
 
-			if (error instanceof Error) {
-				showToast(`Failed to delete comment: ${error.message}`, 'error');
-			} else {
-				showToast('Failed to delete comment', 'error');
-			}
-		}
-	};
-
-	return mutateDeleteComment;
+	return { mutate: mutation.mutate, isPending: mutation.isPending }; // Return mutate function and pending state
 };

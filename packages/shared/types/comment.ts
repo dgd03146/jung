@@ -32,6 +32,7 @@ export type CommentQueryResult = {
 	items: Comment[];
 	nextCursor: string | null;
 	hasNextPage: boolean;
+	totalCount: number;
 };
 
 export type CommentUser = z.infer<typeof CommentUserSchema>;

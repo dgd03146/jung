@@ -4,8 +4,6 @@ import { TogglePostLike } from '@/fsd/features/post';
 
 import { usePostQuery } from '@/fsd/entities/post';
 
-import { ViewComments } from '@/fsd/features/comment';
-import { Container } from '@jung/design-system/components';
 import dynamic from 'next/dynamic';
 
 const BlockNoteEditor = dynamic(
@@ -24,14 +22,13 @@ export const PostDetailContent = ({ postId }: { postId: string }) => {
 	}
 
 	return (
-		<Container flex={1}>
+		<>
 			<BlockNoteEditor initialContent={post.content} />
 			<TogglePostLike
 				postId={postId}
 				likeCount={post.likes}
 				likedBy={post.liked_by}
 			/>
-			<ViewComments targetId={postId} likeCount={post.likes} />
-		</Container>
+		</>
 	);
 };

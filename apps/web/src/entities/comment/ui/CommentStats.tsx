@@ -6,7 +6,10 @@ interface CommentStatsProps {
 	likeCount: number;
 }
 
-const CommentStats = ({ commentCount, likeCount }: CommentStatsProps) => (
+export const CommentStats = ({
+	commentCount,
+	likeCount,
+}: CommentStatsProps) => (
 	<Flex columnGap='4' alignItems='center' marginBottom='4'>
 		<Flex alignItems='center' columnGap='1'>
 			<FaRegComment size={18} color='#0142C0' />
@@ -22,5 +25,3 @@ const CommentStats = ({ commentCount, likeCount }: CommentStatsProps) => (
 		</Flex>
 	</Flex>
 );
-
-export default CommentStats;

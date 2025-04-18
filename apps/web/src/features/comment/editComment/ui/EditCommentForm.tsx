@@ -14,15 +14,17 @@ import * as styles from './EditCommentForm.css';
 interface EditCommentFormProps {
 	commentId: string;
 	initialContent: string;
-	targetId: string;
+	postId: string;
 	onSuccess?: () => void;
+	onCancel?: () => void;
 }
 
 export const EditCommentForm = ({
 	commentId,
 	initialContent,
-	targetId,
+	postId,
 	onSuccess,
+	onCancel,
 }: EditCommentFormProps) => {
 	const showToast = useToast();
 	const [content, setContent] = useState(initialContent);
@@ -34,7 +36,7 @@ export const EditCommentForm = ({
 			return;
 		}
 
-		await updateComment(commentId, content, targetId);
+		await updateComment(commentId, content, postId);
 		onSuccess?.();
 	};
 
@@ -55,7 +57,7 @@ export const EditCommentForm = ({
 							variant='outline'
 							borderRadius='md'
 							fontSize='xs'
-							onClick={onSuccess}
+							onClick={onCancel}
 						>
 							Cancel
 						</Button>
