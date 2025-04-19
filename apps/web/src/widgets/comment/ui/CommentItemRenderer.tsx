@@ -32,7 +32,6 @@ export const CommentItemRenderer = ({
 	const isNested = !!comment.parent_id;
 
 	const isOwner = currentUser?.id === comment.user_id;
-	const isEditable = isOwner && !isNested;
 	const isLiked = currentUser
 		? comment.liked_by.includes(currentUser.id)
 		: false;
@@ -69,7 +68,7 @@ export const CommentItemRenderer = ({
 		>
 			<CommentItem.UserInfo />
 
-			{isEditable ? (
+			{isEditing && isOwner ? (
 				<EditCommentForm
 					commentId={comment.id}
 					initialContent={comment.content}
