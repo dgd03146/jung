@@ -4,95 +4,95 @@ import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
-	useSupabaseAuth,
+	type CommentData,
 } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useQueryClient } from '@tanstack/react-query';
+import type { Comment } from '@jung/shared/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateCommentAction } from '../api/updateCommentAction';
 import { findCommentById, replaceUpdatedComment } from '../lib';
+
+interface UpdateCommentContext {
+	previousData?: CommentData;
+	originalComment?: Comment | null;
+}
 
 export const useUpdateComment = () => {
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
-	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
-	const handleError = (error: unknown) => {
-		if (error instanceof Error) {
-			showToast(`Failed to update comment: ${error.message}`, 'error');
-		} else {
-			showToast('Failed to update comment', 'error');
-		}
-		console.error('Error editing comment:', error);
-	};
-
-	const mutateUpdateComment = async (
-		commentId: string,
-		content: string,
-		postId: string,
-	) => {
-		if (!user) {
-			showToast('Please log in to update comments', 'error');
-			return;
-		}
-
-		const queryOptions = trpc.comment.getCommentsByPostId.infiniteQueryOptions({
+	const getQueryOptions = (postId: string) =>
+		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
 			postId,
 			order: COMMENTS_DEFAULT_ORDER,
 			limit: COMMENTS_LIMIT,
 		});
 
-		try {
-			const data = await queryClient.ensureInfiniteQueryData(queryOptions);
+	const mutation = useMutation<
+		Comment,
+		Error,
+		{ commentId: string; content: string; postId: string },
+		UpdateCommentContext
+	>({
+		mutationFn: updateCommentAction,
 
-			const previousComment = findCommentById(data, commentId);
+		onMutate: async (variables) => {
+			const { postId, commentId, content } = variables;
+			const queryOptions = getQueryOptions(postId);
 
-			if (!previousComment) {
-				showToast('Comment to update not found', 'error');
-				return;
+			await queryClient.cancelQueries({ queryKey: queryOptions.queryKey });
+
+			const previousData = queryClient.getQueryData<CommentData>(
+				queryOptions.queryKey,
+			);
+
+			let originalComment: Comment | null = null;
+			if (previousData) {
+				originalComment = findCommentById(previousData, commentId) ?? null;
 			}
 
-			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-				replaceUpdatedComment(oldData, commentId, {
-					...previousComment,
-					content,
-				}),
-			);
+			if (previousData && originalComment) {
+				const optimisticComment = { ...originalComment, content };
+				queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
+					replaceUpdatedComment(oldData, commentId, optimisticComment),
+				);
+			}
 
-			const updatedComment = await updateCommentAction(commentId, content);
+			return { previousData, originalComment };
+		},
 
-			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-				replaceUpdatedComment(oldData, commentId, updatedComment),
-			);
+		onError: (error, variables, context) => {
+			if (context?.previousData) {
+				queryClient.setQueryData(
+					getQueryOptions(variables.postId).queryKey,
+					context.previousData,
+				);
+				console.log('Rolled back optimistic update due to error.');
+			} else {
+				queryClient.invalidateQueries({
+					queryKey: getQueryOptions(variables.postId).queryKey,
+				});
+			}
 
+			showToast(`Failed to update comment: ${error.message}`, 'error');
+			console.error('Error editing comment:', error);
+		},
+
+		onSuccess: (data, variables, context) => {
 			showToast('Comment has been updated', 'success');
+		},
 
-			return updatedComment;
-		} catch (error) {
-			// 에러 발생 시 롤백 시도
-			try {
-				const data = queryClient.getQueryData(queryOptions.queryKey);
-				if (data) {
-					const previousComment = findCommentById(data, commentId);
-					if (previousComment) {
-						queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
-							replaceUpdatedComment(oldData, commentId, previousComment),
-						);
-					} else {
-						// 롤백할 댓글을 찾지 못하면 무효화
-						throw new Error('Cannot find comment to rollback');
-					}
-				} else {
-					throw new Error('No data available for rollback');
-				}
-			} catch (rollbackError) {
-				// 롤백 실패 시 무효화로 폴백
-				queryClient.invalidateQueries(queryOptions);
-			}
+		onSettled: async (data, error, variables, context) => {
+			await queryClient.invalidateQueries({
+				queryKey: getQueryOptions(variables.postId).queryKey,
+			});
+			console.log('Invalidated comment query after mutation settled.');
+		},
+	});
 
-			handleError(error);
-		}
+	return {
+		mutate: mutation.mutate,
+		isPending: mutation.isPending,
 	};
-
-	return mutateUpdateComment;
 };
