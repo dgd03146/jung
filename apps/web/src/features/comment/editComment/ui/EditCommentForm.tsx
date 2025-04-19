@@ -30,13 +30,13 @@ export const EditCommentForm = ({
 	const [content, setContent] = useState(initialContent);
 	const updateComment = useUpdateComment();
 
-	const handleSubmit = async () => {
+	const handleSubmit = () => {
 		if (!content || content.trim() === '') {
 			showToast('Please enter a comment.', 'error');
 			return;
 		}
 
-		await updateComment(commentId, content, postId);
+		updateComment.mutate({ commentId, content, postId });
 		onSuccess?.();
 	};
 

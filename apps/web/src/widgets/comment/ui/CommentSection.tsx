@@ -23,17 +23,23 @@ interface CommentSectionProps {
 }
 
 export const CommentSection = ({ postId }: CommentSectionProps) => {
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-		useCommentsQuery(postId);
+	const {
+		data: commentsData,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading,
+	} = useCommentsQuery(postId);
 
 	const { data: post } = usePostQuery(postId);
 	const { user: currentUser } = useSupabaseAuth();
 
 	const { ref } = useInfiniteScroll({ hasNextPage, fetchNextPage });
 
-	const commentCount = data?.pages[0]?.totalCount ?? 0;
+	const commentCount = commentsData?.pages[0]?.totalCount ?? 0;
 	const comments =
-		data?.pages.flatMap((page: { items: Comment[] }) => page.items) ?? [];
+		commentsData?.pages.flatMap((page: { items: Comment[] }) => page.items) ??
+		[];
 
 	const renderItem = (comment: Comment) => (
 		<CommentItemRenderer

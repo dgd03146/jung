@@ -30,7 +30,7 @@ export const useDeleteComment = () => {
 		}: { commentId: string; postId: string }) => {
 			// Temporary comments only exist client-side
 			if (!commentId.startsWith('temp-')) {
-				await deleteCommentAction(commentId);
+				await deleteCommentAction({ commentId, postId });
 			}
 		},
 		onMutate: async ({ commentId, postId }) => {

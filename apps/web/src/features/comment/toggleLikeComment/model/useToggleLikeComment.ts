@@ -69,11 +69,11 @@ export const useToggleLikeComment = () => {
 			);
 
 			try {
-				const serverComment = await toggleLikeCommentAction(
+				const serverComment = await toggleLikeCommentAction({
 					commentId,
 					postId,
-					user.id,
-				);
+					userId: user.id,
+				});
 				return {
 					serverComment,
 					originalComment,
@@ -102,6 +102,11 @@ export const useToggleLikeComment = () => {
 				showToast(message, 'error');
 			}
 			console.error('Error toggling comment like:', error);
+		},
+		onSettled: async (data, error, variables, context) => {
+			await queryClient.invalidateQueries({
+				queryKey: queryOptions(variables.postId).queryKey,
+			});
 		},
 	});
 

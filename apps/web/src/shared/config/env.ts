@@ -49,3 +49,11 @@ export const getGoogleMapsApiKey = (): string => {
 export const getGoogleVerificationCode = (): string => {
 	return process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE || '';
 };
+
+export const getResendApiKey = (): string => {
+	return process.env.NEXT_PUBLIC_RESEND_API_KEY || '';
+};
+
+export const getResendEmailFrom = (): string => {
+	return process.env.NEXT_PUBLIC_RESEND_EMAIL_FROM || '';
+};

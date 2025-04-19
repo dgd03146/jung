@@ -37,3 +37,11 @@ export type CommentQueryResult = {
 
 export type CommentUser = z.infer<typeof CommentUserSchema>;
 export type Comment = z.infer<typeof CommentSchema> & { replies: Comment[] };
+
+export const CreateReplyInputSchema = z.object({
+	parentCommentId: z.string().min(1, 'Need parent comment id.'),
+	postId: z.string().min(1, 'Need post id.'),
+	content: z.string().min(1, 'Need content.'),
+});
+
+export type CreateReplyInput = z.infer<typeof CreateReplyInputSchema>;
