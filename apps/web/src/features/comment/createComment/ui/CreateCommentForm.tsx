@@ -19,11 +19,13 @@ interface CreateCommentFormProps {
 	postId: string;
 	parentId?: string;
 	isReply?: boolean;
+	postTitle: string;
 	onCancel?: () => void;
 }
 
 export const CreateCommentForm = ({
 	postId,
+	postTitle,
 	parentId,
 	isReply = false,
 	onCancel,
@@ -33,14 +35,14 @@ export const CreateCommentForm = ({
 	const { newComment, setNewComment, submitComment } = useCreateComment();
 	const userAvatar = user?.user_metadata?.avatar_url || '/default-avatar.png';
 
-	const handleSubmit = async () => {
+	const handleSubmit = () => {
 		if (!newComment || newComment.trim() === '') {
 			showToast('Please enter a comment.', 'error');
 			return;
 		}
 
 		onCancel?.();
-		await submitComment(postId, parentId);
+		submitComment({ postId, parentId, newComment, postTitle });
 	};
 
 	return (

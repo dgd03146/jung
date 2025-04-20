@@ -31,20 +31,38 @@ export const useCreateComment = () => {
 		mutationFn: async ({
 			postId,
 			parentId,
-		}: { postId: string; parentId?: string }) => {
-			if (!user || !newComment.trim()) {
-				throw new Error('User not logged in or comment empty');
+			content,
+			postTitle,
+		}: {
+			postId: string;
+			parentId?: string;
+			content: string;
+			postTitle: string;
+		}) => {
+			if (!user || !content.trim()) {
+				showToast('Please enter a comment and log in.', 'warning');
+				return;
 			}
 			const isParentTemporary = parentId?.startsWith('temp-');
 			if (isParentTemporary) {
-				throw new Error(
+				showToast(
 					'Please wait while the previous comment is being processed',
+					'warning',
 				);
+				return;
 			}
-			return createCommentAction(postId, newComment, user.id, parentId);
+
+			setNewComment('');
+			return createCommentAction({
+				postId,
+				postTitle,
+				content,
+				userId: user.id,
+				parentId,
+			});
 		},
 		onMutate: async (variables) => {
-			const { postId, parentId } = variables;
+			const { postId, parentId, content } = variables;
 			const queryOptions = getQueryOptions(postId);
 
 			await queryClient.cancelQueries({ queryKey: queryOptions.queryKey });
@@ -54,7 +72,7 @@ export const useCreateComment = () => {
 			);
 
 			const optimisticComment = createOptimisticComment(
-				newComment,
+				content,
 				user!,
 				postId,
 				parentId,
@@ -63,8 +81,6 @@ export const useCreateComment = () => {
 			queryClient.setQueryData(queryOptions.queryKey, (oldData) =>
 				updateOptimisticComment(oldData, optimisticComment, parentId),
 			);
-
-			setNewComment('');
 
 			return { previousData, optimisticCommentId: optimisticComment.id };
 		},
@@ -85,9 +101,7 @@ export const useCreateComment = () => {
 				showToast(message, 'error');
 			}
 		},
-		onSuccess: (data, variables, context) => {
-			showToast('Comment has been created', 'success');
-		},
+		onSuccess: () => {},
 		onSettled: async (data, error, variables, context) => {
 			await queryClient.invalidateQueries({
 				queryKey: getQueryOptions(variables.postId).queryKey,
@@ -95,7 +109,17 @@ export const useCreateComment = () => {
 		},
 	});
 
-	const submitComment = (postId: string, parentId?: string) => {
+	const submitComment = ({
+		postId,
+		parentId,
+		newComment,
+		postTitle,
+	}: {
+		postId: string;
+		parentId?: string;
+		newComment: string;
+		postTitle: string;
+	}) => {
 		if (!user || !newComment.trim()) {
 			showToast('Please enter a comment and log in.', 'warning');
 			return;
@@ -108,7 +132,7 @@ export const useCreateComment = () => {
 			);
 			return;
 		}
-		mutation.mutate({ postId, parentId });
+		mutation.mutate({ postId, parentId, content: newComment, postTitle });
 	};
 
 	return {
