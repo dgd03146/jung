@@ -55,5 +55,3 @@ export const commentContent = style({
 	color: textColor,
 	marginBottom: '12px',
 });
-
-// ... (rest of the file if any)

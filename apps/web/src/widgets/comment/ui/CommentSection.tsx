@@ -32,6 +32,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 	} = useCommentsQuery(postId);
 
 	const { data: post } = usePostQuery(postId);
+
 	const { user: currentUser } = useSupabaseAuth();
 
 	const { ref } = useInfiniteScroll({ hasNextPage, fetchNextPage });
@@ -46,16 +47,17 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 			key={comment.id}
 			comment={comment}
 			postId={postId}
+			postTitle={post?.title || ''}
 			currentUser={currentUser}
 		/>
 	);
 
-	const isEmptyComments = commentCount === 0;
+	const isEmptyComments = !isLoading && commentCount === 0;
 
 	return (
 		<>
 			<CommentStats commentCount={commentCount} likeCount={post?.likes ?? 0} />
-			<CreateCommentForm postId={postId} />
+			<CreateCommentForm postId={postId} postTitle={post?.title || ''} />
 
 			{isLoading ? (
 				<CommentListSkeleton />
