@@ -61,14 +61,10 @@ export const useDeleteComment = () => {
 		},
 		onSettled: (data, error, variables, context) => {
 			// Invalidate the query on success or after rollback
-			// queryClient.invalidateQueries({ queryKey: context?.queryKey });
+			queryClient.invalidateQueries({ queryKey: context?.queryKey });
 		},
 		onSuccess: (data, variables) => {
-			if (variables.commentId.startsWith('temp-')) {
-				showToast('Temporary comment has been deleted', 'success');
-			} else {
-				showToast('Comment has been deleted', 'success');
-			}
+			showToast('Comment has been deleted', 'success');
 		},
 	});
 

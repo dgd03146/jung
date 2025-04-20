@@ -17,12 +17,14 @@ interface CommentItemRendererProps {
 	comment: Comment;
 	postId: string;
 	currentUser: User | null;
+	postTitle: string;
 }
 
 export const CommentItemRenderer = ({
 	comment,
 	postId,
 	currentUser,
+	postTitle,
 }: CommentItemRendererProps) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isReplying, setIsReplying] = useState(false);
@@ -53,6 +55,7 @@ export const CommentItemRenderer = ({
 						comment={reply}
 						postId={postId}
 						currentUser={currentUser}
+						postTitle={postTitle}
 					/>
 				))}
 			</Box>
@@ -109,6 +112,7 @@ export const CommentItemRenderer = ({
 			{isReplying && (
 				<CreateCommentForm
 					postId={postId}
+					postTitle={postTitle}
 					parentId={comment.id}
 					isReply={true}
 					onCancel={handleToggleReply}
