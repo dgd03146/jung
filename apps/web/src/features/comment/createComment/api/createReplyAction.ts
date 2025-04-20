@@ -1,21 +1,23 @@
 'use server';
 
-import { getApiUrl } from '@/fsd/shared/config';
+import { getApiUrl, getResendApiKey } from '@/fsd/shared/config';
 import { TRPCError } from '@trpc/server';
 import { revalidatePath } from 'next/cache';
 import { Resend } from 'resend';
 
 import type { CreateReplyInput } from '@jung/shared/types';
 
-import { createClient } from '@/fsd/shared/api/supabase/server';
+import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/comment';
+import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { caller } from '@/fsd/shared/api/trpc/server';
-import { getResendApiKey } from '@/fsd/shared/config';
+import { createClient } from '@/fsd/shared/index.server';
+import { NO_REPLY_EMAIL } from '../config/constant';
 
 const resendApiKey = getResendApiKey();
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 if (!resendApiKey) {
 	console.warn(
-		'RESEND_API_KEY is not set. Email notifications will be disabled.',
+		'(createReplyAction) RESEND_API_KEY is not set. Reply notifications will be disabled.',
 	);
 }
 
@@ -46,83 +48,80 @@ export async function createReplyAction(input: CreateReplyInput) {
 			userId: user.id,
 		});
 
+		revalidatePath(`/blog/${postId}`);
+
 		if (resend) {
 			try {
 				const { data: parentCommentData, error: parentCommentError } =
 					await supabase
 						.from('post_comments')
-						.select('user_id')
+						.select('*')
 						.eq('id', parentCommentId)
 						.single();
 
 				if (parentCommentError) {
 					console.error('Error fetching parent comment:', parentCommentError);
-					throw new Error('원 댓글 정보를 가져오는 데 실패했습니다.');
 				}
 
-				const parentAuthorId = parentCommentData?.user_id;
+				const parentAuthorId = parentCommentData.user_id;
 
-				if (parentAuthorId && parentAuthorId !== user.id) {
-					const { data: parentAuthor, error: parentAuthorError } =
-						await supabase
-							.from('profiles')
-							.select('email, full_name')
-							.eq('id', parentAuthorId)
-							.single();
+				const { data: parentAuthor, error: parentAuthorError } = await supabase
+					.from('profiles')
+					.select('*')
+					.eq('id', parentAuthorId)
+					.single();
 
-					if (parentAuthorError) {
-						console.error(
-							'Error fetching parent author profile:',
-							parentAuthorError,
-						);
-					}
+				if (parentAuthorError) {
+					console.error(
+						'Error fetching parent author profile:',
+						parentAuthorError,
+					);
+				}
 
-					if (parentAuthor?.email) {
+				if (parentAuthor?.email) {
+					const replierName = getUserDisplayName(user);
+					// const replierAvatarUrl = user.user_metadata?.avatar_url;
+
+					const { data: emailData, error: emailError } =
 						await resend.emails.send({
-							from: `JUNG Archive <${getApiUrl()}>`,
+							from: `Jung Archive <${NO_REPLY_EMAIL}>`,
 							to: parentAuthor.email,
-							subject: '[JUNG Archive] 회원님의 댓글에 새 답글이 달렸습니다!',
-							html: `
-                                <p>회원님의 댓글에 <strong>${
-																	user.user_metadata?.full_name ||
-																	user.email ||
-																	'누군가'
-																}</strong>님이 새 답글을 남겼습니다:</p>
-                                <div style="border-left: 2px solid #ccc; padding-left: 1em; margin: 1em 0;">
-                                    ${content}
-                                </div>
-                                <p>
-                                    <a href="${getApiUrl()}/blog/${postId}"> 
-                                        답글 확인하러 가기
-                                    </a>
-                                </p>
-                                <hr>
-                                <p style="font-size: 0.8em; color: #777;">
-                                    이 알림은 회원님의 댓글에 답글이 달렸을 때 발송됩니다. 
-                                </p>
-                            `,
+							subject: '[JUNG Archive] 회원님의 댓글에 답글이 달렸습니다!',
+							react: CommentNotificationEmailTemplateInline({
+								emailTitle: '새 답글 알림',
+								mainText: `${replierName}님이 회원님의 댓글에 답글을 남겼습니다.`,
+								postUrl: `${getApiUrl()}/blog/${postId}`,
+								// commentContent: newReply.content,
+								commenterName: replierName,
+								// commenterAvatarUrl: replierAvatarUrl,
+								createdAt: formatDate(newReply.created_at),
+								buttonText: '답글 확인하러 가기',
+							}),
 						});
+
+					if (emailError) {
+						console.error(
+							`Failed to send reply notification email to ${parentAuthor.email}:`,
+							emailError,
+						);
+					} else {
 						console.log(
-							`Reply notification email sent to ${parentAuthor.email}`,
+							`Reply notification email sent to ${parentAuthor.email}:`,
+							emailData,
 						);
 					}
-				}
-			} catch (emailError: unknown) {
-				if (emailError instanceof Error) {
-					console.error(
-						'Failed to send reply notification email:',
-						emailError.message,
-					);
 				} else {
-					console.error(
-						'Failed to send reply notification email:',
-						String(emailError),
+					console.log(
+						`Parent author (ID: ${parentAuthorId}) email not found. Skipping notification.`,
 					);
 				}
+			} catch (emailCatchError) {
+				console.error(
+					'Error during reply notification email process:',
+					emailCatchError,
+				);
 			}
 		}
-
-		revalidatePath(`/blog/${postId}`);
 
 		return {
 			id: newReply.id,

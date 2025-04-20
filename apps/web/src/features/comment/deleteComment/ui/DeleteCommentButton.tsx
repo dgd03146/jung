@@ -27,7 +27,7 @@ export const DeleteCommentButton = ({
 			fontSize='xxs'
 			onClick={handleDelete}
 			disabled={isDeleting}
-			color='error'
+			color='primary'
 		>
 			<FaTrash size={12} style={{ marginRight: '4px' }} />
 			{isDeleting ? 'Deleting...' : 'Delete'}

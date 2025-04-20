@@ -21,7 +21,7 @@ export const updateOptimisticComment = (
 				if (item.id === parentId) {
 					return {
 						...item,
-						replies: [...(item.replies || []), optimisticComment],
+						replies: [optimisticComment, ...(item.replies || [])],
 					};
 				}
 				return item;

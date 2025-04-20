@@ -79,15 +79,12 @@ export const useUpdateComment = () => {
 			console.error('Error editing comment:', error);
 		},
 
-		onSuccess: (data, variables, context) => {
-			showToast('Comment has been updated', 'success');
-		},
+		onSuccess: (data, variables, context) => {},
 
 		onSettled: async (data, error, variables, context) => {
 			await queryClient.invalidateQueries({
 				queryKey: getQueryOptions(variables.postId).queryKey,
 			});
-			console.log('Invalidated comment query after mutation settled.');
 		},
 	});
 

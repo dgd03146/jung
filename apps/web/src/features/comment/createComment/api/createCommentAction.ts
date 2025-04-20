@@ -8,25 +8,39 @@ import {
 } from '@/fsd/shared/config';
 import type { CreateReplyInput } from '@jung/shared/types';
 
+import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/comment';
+import { formatDate, getUserDisplayName } from '@/fsd/shared';
+import { createClient } from '@/fsd/shared/index.server';
+
 import { revalidatePath } from 'next/cache';
 import { Resend } from 'resend';
+import { NO_REPLY_EMAIL } from '../config/constant';
 import { createReplyAction } from './createReplyAction';
 
 const resendApiKey = getResendApiKey();
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 if (!resendApiKey) {
 	console.warn(
-		'(createCommentAction) RESEND_API_KEY is not set. Owner notifications will be disabled.',
+		'(createCommentAction) RESEND_API_KEY is not set. Comment notifications will be disabled.',
 	);
 }
 
-export async function createCommentAction(
-	postId: string,
-	content: string,
-	userId: string,
-	parentId?: string,
-) {
+export async function createCommentAction({
+	postId,
+	postTitle,
+	content,
+	userId,
+	parentId,
+}: {
+	postId: string;
+	content: string;
+	userId: string;
+	postTitle: string;
+	parentId?: string;
+}) {
+	const supabase = await createClient();
 	try {
+		// reply comment logic
 		if (parentId) {
 			const replyInput: CreateReplyInput = {
 				postId,
@@ -37,41 +51,64 @@ export async function createCommentAction(
 			return replyResult;
 		}
 
+		// new comment logic
 		const newComment = await caller.comment.createComment({
 			postId,
 			content,
 			userId,
 		});
 
+		revalidatePath(`/blog/${postId}`);
+
+		// email logic
 		if (resend) {
 			try {
-				await resend.emails.send({
-					from: `JUNG Archive Notification <${getApiUrl()}>`,
-					to: getResendEmailFrom(),
-					subject: `[JUNG Archive] 새 댓글 알림 (Post ID: ${postId})`,
-					html: `
-                        <p>새 댓글이 작성되었습니다.</p>
-                        <ul>
-                            <li><strong>Post ID:</strong> ${postId}</li>
-                            <li><strong>User ID:</strong> ${userId}</li> 
-                            {/* Optionally fetch user email/name here if needed */}
-                        </ul>
-                        <p><strong>내용:</strong></p>
-                        <div style="border-left: 2px solid #ccc; padding-left: 1em; margin: 1em 0;">
-                            ${content}
-                        </div>
-                        <p>
-                            <a href="${getApiUrl()}/blog/${postId}">게시글 보러가기</a>
-                        </p>
-                    `,
-				});
-				console.log('Admin notification email sent for new comment.');
-			} catch (emailError: unknown) {
-				console.error('Failed to send admin notification email:', emailError);
+				const { data: commenterDataResult, error: userError } =
+					await supabase.auth.admin.getUserById(userId);
+
+				if (userError) {
+					console.error('Error fetching commenter data:', userError);
+				}
+
+				const commenter = commenterDataResult?.user;
+				const commenterName = commenter
+					? getUserDisplayName(commenter)
+					: 'Anonymous';
+				// const commenterAvatarUrl = commenter?.user_metadata?.avatar_url;
+
+				const { data: emailData, error: emailError } = await resend.emails.send(
+					{
+						from: `Jung Archive <${NO_REPLY_EMAIL}>`,
+						to: getResendEmailFrom(),
+						subject: `[JUNG Archive] 새 댓글: ${postTitle || postId}`,
+						react: CommentNotificationEmailTemplateInline({
+							emailTitle: '새 댓글이 달렸습니다!',
+							mainText: `${commenterName}님이 '${
+								postTitle || '게시글'
+							}'에 댓글을 남겼습니다.`,
+							postUrl: `${getApiUrl()}/blog/${postId}`,
+							// commentContent: newComment.content,
+							commenterName: commenterName,
+							// commenterAvatarUrl: commenterAvatarUrl,
+							createdAt: formatDate(newComment.created_at),
+							buttonText: '게시글에서 댓글 확인하기',
+						}),
+					},
+				);
+
+				if (emailError) {
+					return console.error(
+						'Failed to send admin notification email:',
+						emailError,
+					);
+				}
+			} catch (emailCatchError) {
+				console.error(
+					'Error during admin notification email process:',
+					emailCatchError,
+				);
 			}
 		}
-
-		revalidatePath(`/blog/${postId}`);
 
 		return newComment;
 	} catch (error) {

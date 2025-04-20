@@ -23,8 +23,7 @@ export const CommentService = {
 		const { count: totalCount, error: countError } = await supabase
 			.from('post_comments')
 			.select('*', { count: 'exact', head: true })
-			.eq('post_id', postId)
-			.is('parent_id', null);
+			.eq('post_id', postId);
 
 		if (countError) {
 			console.error('Supabase count query error:', countError);
