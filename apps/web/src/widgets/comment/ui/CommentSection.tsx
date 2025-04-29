@@ -56,7 +56,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 
 	return (
 		<>
-			<CommentStats commentCount={commentCount} likeCount={post?.likes ?? 0} />
+			<CommentStats commentCount={commentCount} />
 			<CreateCommentForm postId={postId} postTitle={post?.title || ''} />
 
 			{isLoading ? (

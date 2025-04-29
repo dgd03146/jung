@@ -16,7 +16,7 @@ export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 
-	const toggleLike = useTogglePostLike();
+	const { toggleLike } = useTogglePostLike();
 
 	const handleLikeClick = () => {
 		if (!user) {
@@ -44,18 +44,19 @@ export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 				fontSize='sm'
 				borderRadius='md'
 				prefix={isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
+				// loading={isPending}
 			>
-				{isLiked ? 'Liked' : 'Like'}
+				{likeCount} {likeCount > 1 ? 'Likes' : 'Like'}
 			</Button>
 
 			<Link href='/guestbook'>
 				<Button
-					variant='secondary'
+					variant='primary'
 					borderRadius='md'
 					prefix={<BsPencilSquare size={16} />}
 					fontSize='sm'
 				>
-					Visit Guestbook
+					Guestbook
 				</Button>
 			</Link>
 		</Flex>
