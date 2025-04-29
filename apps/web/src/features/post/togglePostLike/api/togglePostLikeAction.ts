@@ -8,7 +8,11 @@ export async function togglePostLikeAction(postId: string, userId: string) {
 		postId,
 		userId: userId,
 	});
-
-	revalidatePath(`/blog/${postId}`);
-	return updatedPost;
+	try {
+		revalidatePath(`/blog/${postId}`);
+		return updatedPost;
+	} catch (error) {
+		console.error('Failed to toggle post like:', error);
+		throw new Error('Failed to toggle post like');
+	}
 }
