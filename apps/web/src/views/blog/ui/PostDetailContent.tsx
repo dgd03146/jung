@@ -4,13 +4,14 @@ import { TogglePostLike } from '@/fsd/features/post';
 
 import { usePostQuery } from '@/fsd/entities/post';
 
+import { EditorSkeleton } from '@/fsd/shared/ui/EditorSkeleton';
 import dynamic from 'next/dynamic';
 
 const BlockNoteEditor = dynamic(
 	() => import('@/fsd/shared/ui/BlockNote').then((mod) => mod.BlockNote),
 	{
 		ssr: false,
-		// loading: () => <EditorSkeleton />,
+		loading: () => <EditorSkeleton />,
 	},
 );
 
