@@ -1,7 +1,7 @@
 import { Container, Flex } from '@jung/design-system/components';
 import { usePostEditor } from '../../model/usePostEditor';
 import ErrorFallback from '../ErrorFallback';
-import BlockNote from './BlockNote';
+import { BlockNote } from './BlockNote';
 import EditorHeader from './EditorHeader';
 import { ImagePreview } from './ImagePreview';
 import PostEditorSkeleton from './PostEditorSkeleton';
@@ -10,7 +10,7 @@ import TitleSection from './TitleSection';
 const PostEditor = () => {
 	const {
 		localPost,
-		editor,
+
 		formErrors,
 		handleSave,
 		handleDiscard,
@@ -51,7 +51,7 @@ const PostEditor = () => {
 					errors={formErrors || {}}
 				/>
 
-				<BlockNote editor={editor} />
+				<BlockNote initialContent={localPost.content} />
 			</Flex>
 		</Container>
 	);
