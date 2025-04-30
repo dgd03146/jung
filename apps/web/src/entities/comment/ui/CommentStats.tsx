@@ -5,7 +5,7 @@ interface CommentStatsProps {
 }
 
 export const CommentStats = ({ commentCount }: CommentStatsProps) => (
-	<Typography.Text level={2} color='primary'>
+	<Typography.SubText level={2} color='primary' marginBottom='2'>
 		{commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
-	</Typography.Text>
+	</Typography.SubText>
 );

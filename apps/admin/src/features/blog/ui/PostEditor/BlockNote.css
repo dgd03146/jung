@@ -1,0 +1,393 @@
+/* 에디터 컨테이너 */
+.bn-container {
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 0 !important;
+}
+
+/* 에디터 기본 설정 */
+.bn-editor {
+  padding: 0 !important;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol' !important; */
+  font-family: source-serif-pro, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
+  color: rgb(55, 53, 47) !important;
+  background-color:transparent;
+}
+
+/* 블록 스타일링 */
+.bn-block-outer {
+ 
+}
+
+.bn-block-content {
+  padding: 0 !important;
+  /* min-height: 24px !important; */
+}
+
+.bn-block:hover {
+
+}
+
+.ProseMirror .ProseMirror-trailingBreak {
+  height: 16px !important;
+  display: block !important;
+  content: "" !important;
+  pointer-events: none !important;
+}
+
+
+[data-file-block] .bn-file-caption {
+  color: rgba(55, 53, 47, 0.65); /* Notion의 캡션 색상 */
+  font-size: 13px;
+  padding: 6px 2px;
+  line-height: 1.4;
+  font-family:
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Helvetica,
+    'Apple Color Emoji',
+    Arial,
+    sans-serif,
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+}
+
+/* 캡션 placeholder 스타일 */
+[data-file-block] .bn-file-caption[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(55, 53, 47, 0.4);
+  pointer-events: none;
+}
+
+/* 캡션 hover 효과 */
+[data-file-block] .bn-file-caption:hover {
+  background: rgba(55, 53, 47, 0.08);
+  border-radius: 2px;
+}
+
+/* 캡션 focus 효과 */
+[data-file-block] .bn-file-caption:focus {
+  background: transparent;
+  outline: none;
+}
+
+/* 파일 블록 컨텐츠 래퍼 */
+[data-file-block] .bn-file-block-content-wrapper {
+  margin: 4px 0;
+}
+
+.bn-block-outer {
+  border-left: none !important;
+}
+
+/* 혹시 누가 불러서 다시 생기지 않도록 확실하게 제압 */
+.bn-block-outer::before,
+.bn-block-outer::after {
+  border-left: none !important;
+  outline: none !important;
+}
+
+/* Depth 1 */
+.bn-block-group .bn-block-group > .bn-block-outer:not([data-prev-depth-changed])::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(1, 66, 192, 0.2);
+  border-radius: 4px;
+}
+
+/* Depth 2 */
+.bn-block-group .bn-block-group .bn-block-outer:not([data-prev-depth-changed])::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(1, 66, 192, 0.12);
+  border-radius: 4px;
+}
+
+/* Depth 3+ */
+.bn-block-group .bn-block-group .bn-block-group .bn-block-outer:not([data-prev-depth-changed])::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: rgba(1, 66, 192, 0.08);
+  border-radius: 4px;
+}
+
+/* 헤딩 스타일링 */
+.ProseMirror h1 {
+  font-size: 30px !important;
+  margin: 2rem 0 8px 0 !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+.ProseMirror h2 {
+  font-size: 24px !important;
+  margin: 1.4em 0 6px 0 !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+.ProseMirror h3 {
+  font-size: 20px !important;
+  margin: 1rem 0 4px 0!important; 
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+}
+
+/* 텍스트 스타일링 */
+.ProseMirror p {
+  margin: 1px 0 !important;
+  padding: 3px 2px !important;
+  line-height:  1.75!important;
+  font-size: 15px !important;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+  font-weight: 400 !important;
+  white-space: pre-wrap !important;
+  white-space-collapse: preserve !important;
+  text-wrap-mode: wrap !important;
+  color: #2c2c2c !important;
+}
+
+
+.ProseMirror strong {
+  font-weight: 600 !important;
+  color: rgb(55, 53, 47) !important;
+}
+
+.ProseMirror em {
+  font-style: italic !important;
+  color: rgb(55, 53, 47) !important;
+}
+
+/* 링크 스타일링 */
+.ProseMirror a {
+  color: rgb(35, 131, 226) !important;
+  text-decoration: none !important;
+  opacity: 0.7 !important;
+  background: rgba(35, 131, 226, 0.1) !important;
+  padding: 0 2px !important;
+  border-radius: 3px !important;
+}
+
+.ProseMirror a:hover {
+  opacity: 1 !important;
+  background: rgba(35, 131, 226, 0.15) !important;
+}
+
+/* 인용구 스타일링 */
+.ProseMirror blockquote {
+  margin: 0.5em 0 !important;
+  padding-left: 1em !important;
+  border-left: 3px solid rgba(55, 53, 47, 0.2) !important;
+  color: rgba(55, 53, 47, 0.7) !important;
+}
+
+.bn-inline-content code {
+  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+    Courier, monospace;
+  line-height: normal;
+  background: rgba(135, 131, 120, 0.15);
+  color: rgba(51, 126, 169, 1);
+  border-radius: 4px;
+  font-size: 85%;
+  padding: 0.2em 0.4em;
+  fill: rgba(51, 126, 169, 1);
+  isolation: auto;
+}
+
+/* --- 코드 블록 --- */
+/* 코드 블록 컨테이너 */
+.bn-block-content[data-content-type='codeBlock'] {
+  flex-grow: 1 !important; /* BlockNote 기본 스타일 유지 */
+  text-align: left !important; /* BlockNote 기본 스타일 유지 */
+  position: relative !important; /* 선택기 위치 기준점 */
+  min-width: 0px !important; /* BlockNote 기본 스타일 유지 */
+  width: 100% !important; /* BlockNote 기본 스타일 유지 */
+  background-color: #f7f6f3; /* Notion 라이트 모드 코드 배경 */
+  border-radius: 4px !important; /* BlockNote 기본 스타일 유지 */
+  margin: 4px 0;
+  transition: background-color 0.3s ease; /* 테마 전환 부드럽게 */
+}
+
+/* 코드 블록 내부 pre (패딩 등) */
+.bn-block-content[data-content-type='codeBlock'] > pre {
+  padding: 34px 22px;
+  margin: 0;
+  overflow-x: auto;
+  background: transparent; /* 배경은 부모에서 제어 */
+}
+
+/* 코드 블록 내부 code (폰트 등) */
+.bn-block-content[data-content-type='codeBlock'] > pre > code {
+  font-size: 13.6px;
+  line-height: 1.5;
+  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+    Courier, monospace;
+  background: transparent !important; /* Shiki가 색상 적용 */
+  padding: 0 !important;
+}
+
+/* --- Notion 스타일 코드 블록 언어 선택기 --- */
+/* 기존 스타일 제거하고 아래 내용으로 대체 */
+.bn-block-content[data-content-type='codeBlock'] > div > select {
+  /* 초기 상태: 숨김 */
+  opacity: 0;
+  pointer-events: none;
+
+  /* 위치: 오른쪽 상단 */
+  position: absolute;
+  top: 8px; /* 상단 여백 */
+  right: 8px; /* 우측 여백 */
+  z-index: 10; /* 다른 요소 위에 표시 */
+
+  /* 기본 스타일 리셋 */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none; /* 테두리 없음 */
+  outline: none;
+  box-shadow: none; /* 기본 그림자 제거 */
+
+  /* 너비 자동 조절 */
+  display: inline-block;
+  width: 80px !important;
+
+  /* Notion 스타일 (Light Mode) */
+  background-color: rgba(55, 53, 47, 0.07);
+  border-radius: 3px;
+  padding: 2px 20px 2px 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  color: #37352F;
+
+  /* 커스텀 화살표 (Light Mode - 어두운 색) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2337352F' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center; /* 화살표 위치 미세 조정 */
+  background-size: 10px 10px; /* 화살표 크기 */
+}
+
+/* 코드 블록에 마우스 호버 시 선택기 표시 */
+.bn-block-content[data-content-type='codeBlock']:hover > div > select {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 선택기 호버 상태 (Light Mode) */
+.bn-block-content[data-content-type='codeBlock'] > div > select:hover {
+  background-color: rgba(55, 53, 47, 0.12); /* 호버 시 배경 약간 진하게 */
+}
+
+/* 선택기 포커스 상태 (Light Mode) - Notion은 특별한 효과 없음 */
+.bn-block-content[data-content-type='codeBlock'] > div > select:focus {
+  background-color: rgba(55, 53, 47, 0.12);
+}
+
+/* ============================================ */
+/* === Notion 스타일 언어 선택기 (Dark Mode) === */
+/* ============================================ */
+
+.dark-theme .bn-block-content[data-content-type='codeBlock'] {
+  background-color: rgb(37, 37, 37); /* Notion 다크 모드 코드 배경 */
+}
+
+.dark-theme .bn-block-content[data-content-type='codeBlock'] > div > select {
+  background-color: rgba(255, 255, 255, 0.09); /* 다크 모드 연한 배경 */
+  color: rgba(255, 255, 255, 0.6); /* 다크 모드 연한 텍스트 */
+
+  /* 커스텀 화살표 (Dark Mode - 밝은 색) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23cccccc' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
+.dark-theme .bn-block-content[data-content-type='codeBlock'] > div > select:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-theme .bn-block-content[data-content-type='codeBlock'] > div > select:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* --- 불릿 리스트 아이템 스타일링 --- */
+.bn-block-content[data-content-type=bulletListItem] {
+  display: flex; /* BlockNote 구조 유지 */
+  align-items: baseline; /* 불릿과 텍스트 줄 맞춤 */
+  gap: 0.5em; /* 불릿과 텍스트 사이 간격 조정 */
+
+  /* 부모(.bn-editor) 스타일 상속 */
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+
+  /* 문단과 유사한 간격 */
+  margin: 0 0 0.3em 0; /* 하단 마진으로 항목 구분 */
+  padding: 3px 2px; /* 내부 패딩 최소화 */
+  min-height: unset; /* 고정 높이 제거, 내용에 따라 조절 */
+}
+
+/* 다크 모드에서는 색상만 상속받으므로 별도 규칙 불필요 */
+
+/* 리스트 스타일링 */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.7em !important;
+  margin: 4px 0;
+  list-style-position: outside;
+}
+
+.ProseMirror li {
+  padding: 3px 0 !important;
+  margin: 1px 0;
+  min-height: 24px !important;
+  color: inherit;
+}
+
+/* 중첩된 리스트 스타일링 */
+.ProseMirror ul ul,
+.ProseMirror ol ol,
+.ProseMirror ul ol,
+.ProseMirror ol ul {
+  margin: 0;
+  padding-left: 1.7em;
+} 
+
+
+
+
+.bn-visual-media-wrapper {
+  cursor: default !important;
+}
+
+.bn-block-content.ProseMirror-selectednode>*{
+  outline: none !important;
+}

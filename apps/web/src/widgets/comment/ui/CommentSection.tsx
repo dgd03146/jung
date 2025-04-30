@@ -65,7 +65,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 				<EmptyComments />
 			) : (
 				<CommentList
-					comments={comments.filter((c) => !c.parent_id)}
+					comments={comments.filter((c: Comment) => !c.parent_id)}
 					renderItem={renderItem}
 				/>
 			)}

@@ -1,11 +1,7 @@
 'use client';
 
-import '@/fsd/app/styles/editorStyle.css';
-import {
-	BlockNoteSchema,
-	customizeCodeBlock,
-	defaultBlockSpecs,
-} from '@blocknote/core';
+import { createHighlighter } from '@/fsd/shared/lib/shiki.bundle';
+import type { PartialBlock } from '@blocknote/core';
 import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
@@ -24,45 +20,65 @@ import {
 	useCreateBlockNote,
 } from '@blocknote/react';
 import { Box } from '@jung/design-system/components';
-
-const customCodeBlock = customizeCodeBlock({
-	defaultLanguage: 'typescript',
-	supportedLanguages: [
-		{ id: 'javascript', match: ['javascript', 'js'], name: 'JavaScript' },
-		{ id: 'typescript', match: ['typescript', 'ts'], name: 'TypeScript' },
-		{ id: 'html', match: ['html'], name: 'HTML' },
-		{ id: 'css', match: ['css'], name: 'CSS' },
-		{ id: 'json', match: ['json'], name: 'JSON' },
-		{ id: 'markdown', match: ['markdown', 'md'], name: 'Markdown' },
-	],
-});
-
-const schema = BlockNoteSchema.create({
-	blockSpecs: {
-		...defaultBlockSpecs,
-		codeBlock: customCodeBlock,
-	},
-});
-type CustomPartialBlock = typeof schema.PartialBlock;
+import './BlockNote.css';
 
 type Props = {
-	initialContent: CustomPartialBlock[];
+	initialContent: PartialBlock[];
 };
 
 export const BlockNote = ({ initialContent }: Props) => {
 	const editor = useCreateBlockNote({
 		initialContent,
-		schema,
+		codeBlock: {
+			supportedLanguages: {
+				javascript: {
+					name: 'JavaScript',
+					aliases: ['js'],
+				},
+				typescript: {
+					name: 'TypeScript',
+					aliases: ['ts'],
+				},
+				html: {
+					name: 'Html',
+				},
+				css: {
+					name: 'Css',
+				},
+				json: {
+					name: 'Json',
+				},
+				jsx: {
+					name: 'Jsx',
+				},
+				tsx: {
+					name: 'Tsx',
+				},
+				markdown: {
+					name: 'Markdown',
+					aliases: ['md'],
+				},
+			},
+			createHighlighter: () =>
+				createHighlighter({
+					themes: ['one-light'],
+					langs: [
+						'javascript',
+						'typescript',
+						'html',
+						'css',
+						'json',
+						'markdown',
+						'jsx',
+						'tsx',
+					],
+				}),
+		},
 	});
 
 	return (
 		<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
-			<BlockNoteView
-				editor={editor}
-				editable={false}
-				formattingToolbar={false}
-				theme='light'
-			>
+			<BlockNoteView editor={editor} editable={false} formattingToolbar={false}>
 				<FormattingToolbarController
 					formattingToolbar={() => (
 						<FormattingToolbar>
