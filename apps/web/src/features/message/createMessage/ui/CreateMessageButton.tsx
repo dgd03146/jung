@@ -3,6 +3,8 @@
 import type { GuestbookEmoji } from '@/fsd/entities/message/model/guestbook';
 import { Button } from '@jung/design-system/components';
 import { useThrottle } from '@jung/shared/hooks';
+
+// @ts-ignore
 import { useFormStatus } from 'react-dom';
 
 interface CreateMessageButtonProps {
