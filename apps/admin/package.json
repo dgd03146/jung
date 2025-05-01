@@ -13,9 +13,14 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@blocknote/core": "^0.23.6",
-    "@blocknote/mantine": "^0.23.6",
-    "@blocknote/react": "^0.23.6",
+    "@blocknote/core": "^0.29.1",
+    "@blocknote/mantine": "^0.29.1",
+    "@blocknote/react": "^0.29.1",
+    "@shikijs/core": "^3.3.0",
+    "@shikijs/engine-javascript": "^3.3.0",
+    "@shikijs/langs": "^3.3.0",
+    "@shikijs/langs-precompiled": "^3.3.0",
+    "@shikijs/themes": "^3.3.0",
     "@jung/design-system": "workspace:*",
     "@jung/server": "workspace:*",
     "@jung/shared": "workspace:*",
@@ -43,6 +48,7 @@
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",
+    "@shikijs/types": "^3.3.0",
     "@tanstack/router-devtools": "^1.50.0",
     "@tanstack/router-plugin": "^1.49.3",
     "@types/react": "^18.3.3",
@@ -53,7 +59,7 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.3",
     "vite": "^5.2.12"
   }
 }

@@ -1,5 +1,6 @@
 {
   "name": "web",
+  "sideEffects": false,
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,9 +15,10 @@
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
-    "@blocknote/core": "^0.23.6",
-    "@blocknote/mantine": "^0.23.6",
-    "@blocknote/react": "^0.23.6",
+    "@blocknote/code-block": "^0.29.1",
+    "@blocknote/core": "^0.29.1",
+    "@blocknote/mantine": "^0.29.1",
+    "@blocknote/react": "^0.29.1",
     "@emotion/react": "^11.13.5",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@jung/design-system": "workspace:*",
@@ -27,15 +29,18 @@
     "@mantine/hooks": "^7.14.1",
     "@react-google-maps/api": "^2.20.3",
     "@react-google-maps/marker-clusterer": "^2.20.0",
+    "@shikijs/core": "^3.3.0",
+    "@shikijs/engine-javascript": "^3.3.0",
+    "@shikijs/langs": "^3.3.0",
+    "@shikijs/langs-precompiled": "^3.3.0",
+    "@shikijs/themes": "^3.3.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "^5.67.1",
     "@tanstack/react-query-devtools": "^5.67.1",
-    "@trpc/client": "11.0.0-rc.824",
-    "@trpc/next": "11.0.0-rc.824",
-    "@trpc/react-query": "11.0.0-rc.824",
-    "@trpc/server": "11.0.0-rc.824",
-    "@trpc/tanstack-react-query": "11.0.0-rc.824",
+    "@trpc/client": "11.1.2",
+    "@trpc/server": "11.1.2",
+    "@trpc/tanstack-react-query": "11.1.2",
     "@vanilla-extract/css": "^1.15.2",
     "@vanilla-extract/css-utils": "^0.1.4",
     "@vanilla-extract/dynamic": "^2.1.1",
@@ -53,18 +58,20 @@
     "react-photo-album": "^3.0.2",
     "resend": "^4.3.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.34.1",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
     "@next/bundle-analyzer": "^15.2.1",
+    "@shikijs/types": "^3.3.0",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20.14.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vanilla-extract/next-plugin": "^2.4.1",
     "cross-env": "^7.0.3",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.3"
   }
 }

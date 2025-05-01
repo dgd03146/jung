@@ -14,7 +14,7 @@
     "@jung/shared": "workspace:*",
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@trpc/server": "11.0.0-rc.824",
+    "@trpc/server": "11.1.2",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   },
@@ -24,6 +24,6 @@
     "@types/node": "^20.14.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.16.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.3"
   }
 }
