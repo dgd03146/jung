@@ -6,7 +6,7 @@ export const titleSection = style({
 
 export const titleInput = style({
 	width: '100%',
-	fontSize: '40px',
+	fontSize: '28px',
 	fontWeight: '700',
 	color: '#37352F',
 	border: 'none',

@@ -239,7 +239,7 @@
 
 /* 코드 블록 내부 pre (패딩 등) */
 .bn-block-content[data-content-type='codeBlock'] > pre {
-  padding: 34px 22px;
+  padding: 28px 20px 28px 20px;
   margin: 0;
   overflow-x: auto;
   background: transparent; /* 배경은 부모에서 제어 */
@@ -338,22 +338,7 @@
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* --- 불릿 리스트 아이템 스타일링 --- */
-.bn-block-content[data-content-type=bulletListItem] {
-  display: flex; /* BlockNote 구조 유지 */
-  align-items: baseline; /* 불릿과 텍스트 줄 맞춤 */
-  gap: 0.5em; /* 불릿과 텍스트 사이 간격 조정 */
 
-  /* 부모(.bn-editor) 스타일 상속 */
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-
-  /* 문단과 유사한 간격 */
-  margin: 0 0 0.3em 0; /* 하단 마진으로 항목 구분 */
-  padding: 3px 2px; /* 내부 패딩 최소화 */
-  min-height: unset; /* 고정 높이 제거, 내용에 따라 조절 */
-}
 
 /* 다크 모드에서는 색상만 상속받으므로 별도 규칙 불필요 */
 
@@ -390,4 +375,50 @@
 
 .bn-block-content.ProseMirror-selectednode>*{
   outline: none !important;
+}
+
+/* --- 불릿 리스트 아이템 스타일링 --- */
+.bn-block-content[data-content-type=bulletListItem] {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em; 
+
+
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+
+
+  margin: 0 0 0.3em 0; 
+  padding: 3px 2px; 
+  min-height: unset; 
+}
+
+.bn-block-content[data-content-type=numberedListItem] {
+  display: flex;          
+  align-items: baseline;  
+  gap: 0.5em;          
+  
+
+  margin: 0 0 0.3em 0; 
+  padding: 3px 2px;     
+}
+
+
+.bn-block-content[data-content-type=numberedListItem]::before {
+  content: var(--index) "."; 
+  
+
+  width: auto; 
+
+
+  text-align: left; 
+  color: rgba(55, 53, 47, 0.65); 
+  font-size: inherit; 
+  line-height: inherit; 
+  box-sizing: border-box;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+
+
 }
