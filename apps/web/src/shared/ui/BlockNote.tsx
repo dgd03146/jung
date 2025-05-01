@@ -30,6 +30,7 @@ export const BlockNote = ({ initialContent }: Props) => {
 	const editor = useCreateBlockNote({
 		initialContent,
 		codeBlock: {
+			defaultLanguage: 'tsx',
 			supportedLanguages: {
 				javascript: {
 					name: 'JavaScript',

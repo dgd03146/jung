@@ -10,7 +10,7 @@ import TitleSection from './TitleSection';
 const PostEditor = () => {
 	const {
 		localPost,
-
+		editor,
 		formErrors,
 		handleSave,
 		handleDiscard,
@@ -51,7 +51,7 @@ const PostEditor = () => {
 					errors={formErrors || {}}
 				/>
 
-				<BlockNote initialContent={localPost.content} />
+				<BlockNote editor={editor} />
 			</Flex>
 		</Container>
 	);

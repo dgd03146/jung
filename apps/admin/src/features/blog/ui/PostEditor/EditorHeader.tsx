@@ -24,9 +24,9 @@ const EditorHeader = ({
 			<Flex display='flex' justifyContent='space-between' alignItems='center'>
 				<Link to={Routes.blog.path}>
 					<Button
-						variant='secondary'
+						variant='outline'
 						color='primary'
-						size='md'
+						size='sm'
 						borderRadius='md'
 						prefix={<HiArrowLeft size={16} />}
 					>
@@ -38,7 +38,7 @@ const EditorHeader = ({
 					<Button
 						variant='outline'
 						color='primary'
-						size='md'
+						size='sm'
 						borderRadius='md'
 						prefix={<HiSave size={16} />}
 						onClick={onSave}
@@ -47,7 +47,7 @@ const EditorHeader = ({
 					</Button>
 					<Button
 						variant='outline'
-						size='md'
+						size='sm'
 						borderRadius='md'
 						prefix={<HiX size={16} />}
 						onClick={onDiscard}
@@ -55,7 +55,7 @@ const EditorHeader = ({
 						Discard
 					</Button>
 					<Button
-						size='md'
+						size='sm'
 						borderRadius='md'
 						prefix={
 							<Box
