@@ -5,7 +5,7 @@ export const container = style({
 	display: 'flex',
 	flexDirection: 'column',
 	minHeight: '100dvh',
-	marginX: 'auto',
+	margin: '0 auto',
 });
 
 export const main = style([
