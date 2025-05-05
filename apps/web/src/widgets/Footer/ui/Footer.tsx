@@ -29,7 +29,11 @@ const Footer = () => {
 			as='footer'
 			className={styles.footer}
 			paddingY='4'
-			width='full'
+			width={{
+				base: 'tablet',
+				tablet: 'tablet',
+				laptop: 'laptop',
+			}}
 			marginX='auto'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>

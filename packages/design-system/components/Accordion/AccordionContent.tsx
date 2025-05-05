@@ -25,7 +25,9 @@ export const AccordionContent = forwardRef<
 	const { openIndexes, handleToggleIndex, animationEnabled } =
 		useAccordionContext();
 	const { index, id } = useAccordionItemContext();
-	const isOpen = openIndexes.has(index!);
+	const isValidIndex = typeof index === 'number';
+	const isOpen =
+		isValidIndex && openIndexes instanceof Set && openIndexes.has(index);
 
 	const contentRef = useRef<HTMLDivElement>(null);
 	useBeforeMatch<HTMLDivElement>(contentRef, () => handleToggleIndex(index!));

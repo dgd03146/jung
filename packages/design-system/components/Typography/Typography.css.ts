@@ -2,6 +2,21 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles';
 
+const truncateStyles = {
+	multiline: (lines: number) =>
+		style({
+			display: '-webkit-box',
+			WebkitLineClamp: lines,
+			WebkitBoxOrient: 'vertical',
+			overflow: 'hidden',
+		}),
+	singleline: style({
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+	}),
+};
+
 /**
  * Typography Heading
  * - h1: 48px (5xl) - 페이지 타이틀
@@ -136,7 +151,14 @@ export const heading = recipe({
 				}),
 			]),
 		},
+		truncate: {
+			none: {},
+			single: truncateStyles.singleline,
+			two: truncateStyles.multiline(2),
+			three: truncateStyles.multiline(3),
+		},
 	},
+
 	compoundVariants: [
 		{
 			variants: {
@@ -156,20 +178,6 @@ export const heading = recipe({
  * - level3: 15px (md) - 중간 본문
  * - level4: 14px (sm) - 작은 본문
  */
-const truncateStyles = {
-	multiline: (lines: number) =>
-		style({
-			display: '-webkit-box',
-			WebkitLineClamp: lines,
-			WebkitBoxOrient: 'vertical',
-			overflow: 'hidden',
-		}),
-	singleline: style({
-		whiteSpace: 'nowrap',
-		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-	}),
-};
 
 export const text = recipe({
 	base: [

@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useStorage } from '@jung/shared/hooks';
+import { useCallback, useMemo, useState } from 'react';
 
 const ACCORDION_STATE_KEY = 'accordion-open-state';
 
@@ -15,44 +16,21 @@ export const useAccordion = ({
 	initialOpenIndex,
 	storageKey = ACCORDION_STATE_KEY,
 }: UseAccordionProps) => {
-	const [openIndexes, setOpenIndexes] = useState<Set<number>>(() => {
+	const getInitialOpenIndexes = useCallback(() => {
 		const initialSet = new Set<number>();
-
-		if (typeof window !== 'undefined') {
-			try {
-				const savedState = localStorage.getItem(storageKey);
-				if (savedState) {
-					const parsedState = JSON.parse(savedState);
-					for (const index of parsedState) {
-						initialSet.add(index);
-					}
-				}
-			} catch (e) {
-				console.error('Failed to load accordion state from localStorage', e);
-			}
-		}
-
 		if (initialOpenIndex !== undefined && initialOpenIndex >= 0) {
 			initialSet.add(initialOpenIndex);
 		}
-
 		return initialSet;
-	});
+	}, [initialOpenIndex]);
+
+	const [openIndexes, setOpenIndexes] = useStorage<Set<number>>(
+		storageKey,
+		getInitialOpenIndexes(),
+		'sessionStorage',
+	);
 
 	const [animationEnabled, setAnimationEnabled] = useState(false);
-
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			try {
-				localStorage.setItem(
-					storageKey,
-					JSON.stringify(Array.from(openIndexes)),
-				);
-			} catch (e) {
-				console.error('Failed to save accordion state to localStorage', e);
-			}
-		}
-	}, [openIndexes, storageKey]);
 
 	const handleToggleIndex = useCallback(
 		(index: number) => {
@@ -75,7 +53,7 @@ export const useAccordion = ({
 				return newSet;
 			});
 		},
-		[type],
+		[type, setOpenIndexes],
 	);
 
 	const value = useMemo(

@@ -5,7 +5,7 @@ import { recipe } from '@vanilla-extract/recipes';
 export const sidebar = style({
 	minWidth: '184px',
 	position: 'sticky',
-	top: '56px',
+	top: '76px',
 	height: 'fit-content',
 	backgroundColor: 'white',
 	zIndex: 10,

@@ -5,6 +5,7 @@ export const container = style({
 	display: 'flex',
 	flexDirection: 'column',
 	minHeight: '100dvh',
+	margin: '0 auto',
 });
 
 export const main = style([
@@ -12,12 +13,12 @@ export const main = style([
 		display: 'grid',
 		marginX: 'auto',
 		width: {
-			mobile: 'tablet',
+			base: 'tablet',
 			tablet: 'tablet',
 			laptop: 'laptop',
 		},
 		marginY: {
-			mobile: '4', // 16px
+			base: '4', // 16px
 			tablet: '5', // 20px
 			laptop: '6', // 24px
 		},

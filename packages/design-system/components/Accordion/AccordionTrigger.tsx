@@ -33,13 +33,17 @@ export const AccordionTrigger = forwardRef<
 	) => {
 		const { openIndexes, handleToggleIndex, setAnimationEnabled } =
 			useAccordionContext();
+
 		const { index, id } = useAccordionItemContext();
-		const isOpen = openIndexes.has(index!);
+
+		const isValidIndex = typeof index === 'number';
+		const isOpen =
+			isValidIndex && openIndexes instanceof Set && openIndexes.has(index);
 
 		const handleClick = () => {
+			if (!isValidIndex) return;
 			setAnimationEnabled(true);
-
-			handleToggleIndex(index!);
+			handleToggleIndex(index);
 		};
 
 		return (
