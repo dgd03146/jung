@@ -24,6 +24,7 @@ export const postCard = recipe({
 				display: 'flex',
 				gap: '40px',
 				padding: '24px 0',
+				minHeight: '235px',
 				borderBottom: `1px solid ${palette.primary50}`,
 
 				transition: 'all 0.3s ease',
@@ -36,6 +37,7 @@ export const postCard = recipe({
 					'(max-width: 768px)': {
 						gap: '16px',
 						padding: '18px 0',
+						minHeight: '210px',
 					},
 				},
 			},
@@ -88,37 +90,27 @@ export const imageArea = recipe({
 		borderRadius: '8px',
 		backgroundColor: '#f8f9fa',
 		transition: 'transform 0.3s ease',
+		aspectRatio: '4 / 3',
 	},
 	variants: {
 		viewMode: {
 			list: {
 				width: '200px',
-				height: 'auto',
-				maxInlineSize: '200px',
-				blockSize: 'auto',
 
 				'@media': {
 					'(max-width: 1024px)': {
 						width: '200px',
-						maxInlineSize: '200px',
-						blockSize: 'auto',
 					},
 					'(max-width: 768px)': {
 						width: '180px',
 						maxInlineSize: '100%',
-						height: 'auto',
 					},
 				},
 			},
 			grid: {
-				width: 'auto',
-				height: 'auto',
+				width: '100%',
+				// aspectRatio: '1.618 / 1',
 				borderRadius: '8px 8px 0 0',
-				blockSize: 'auto',
-				aspectRatio: '1.618/1',
-				'@media': {
-					'(max-width: 1024px)': {},
-				},
 			},
 			table: {},
 		},
