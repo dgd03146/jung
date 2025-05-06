@@ -26,7 +26,7 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			as='header'
 			position='sticky'
 			width='full'
-			marginX='auto'
+			// marginX='auto'
 			className={styles.headerContainer({
 				isScrolled,
 				isMenuOpen,

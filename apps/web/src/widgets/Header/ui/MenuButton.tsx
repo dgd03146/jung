@@ -14,6 +14,7 @@ const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 		onClick={toggleMenu}
 		aria-expanded={isMenuOpen}
 		aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+		display={{ base: 'block', tablet: 'none' }}
 	>
 		<Typography.Heading
 			level={4}
