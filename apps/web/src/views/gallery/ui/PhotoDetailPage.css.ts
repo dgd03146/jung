@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const container = recipe({
@@ -8,7 +8,7 @@ export const container = recipe({
 		width: '100%',
 		maxWidth: '100%',
 		margin: '0 auto',
-		backgroundColor: 'white',
+		// backgroundColor: 'white',
 	},
 	variants: {
 		isModal: {
@@ -20,8 +20,7 @@ export const container = recipe({
 						flexDirection: 'row',
 
 						maxWidth: '90vw',
-						maxHeight: '65dvh',
-						height: '65dvh',
+						maxHeight: '75dvh',
 					},
 				},
 			},
@@ -29,12 +28,15 @@ export const container = recipe({
 	},
 });
 
+export const aspectRatioVar = createVar();
+
 export const imageWrapper = recipe({
 	base: {
+		display: 'flex',
 		position: 'relative',
 		width: '100%',
-		aspectRatio: '1/1',
 		backgroundColor: 'black',
+		aspectRatio: aspectRatioVar,
 	},
 	variants: {
 		isModal: {
@@ -42,8 +44,8 @@ export const imageWrapper = recipe({
 				'@media': {
 					'(min-width: 768px)': {
 						width: '65%',
-						maxHeight: '65dvh',
-						height: '65dvh',
+						maxWidth: '100%',
+						maxHeight: '75dvh',
 					},
 				},
 			},
@@ -66,8 +68,8 @@ export const content = recipe({
 				'@media': {
 					'(min-width: 768px)': {
 						width: '35%',
-						maxHeight: '65dvh',
-						height: '65dvh',
+						maxHeight: '75dvh',
+						height: '75dvh',
 						padding: '20px',
 					},
 				},
