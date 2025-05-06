@@ -13,9 +13,10 @@ import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { Flex, Typography } from '@jung/design-system/components';
 
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { photoDetailVariants } from '../config/animations';
+import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
-
 interface PhotoDetailPageProps {
 	photoId: string;
 	isModal?: boolean;
@@ -25,6 +26,14 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
+
+	const { imageSizes } = useImageSizes({
+		width: currentPhoto?.width || 1,
+		height: currentPhoto?.height || 1,
+		isModal,
+	});
+
+	if (!currentPhoto) return null;
 
 	return (
 		<>
@@ -41,13 +50,16 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 						<motion.div
 							className={styles.imageWrapper({ isModal })}
 							variants={photoDetailVariants.image}
+							style={assignInlineVars({
+								[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
+							})}
 						>
 							<BlurImage
 								src={currentPhoto.image_url}
 								alt={currentPhoto.alt}
-								priority
+								style={{ objectFit: 'contain' }}
 								fill
-								sizes='(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 840px'
+								sizes={imageSizes}
 							/>
 						</motion.div>
 

@@ -25,11 +25,7 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 		<Box
 			as='header'
 			position='sticky'
-			width={{
-				base: 'tablet',
-				tablet: 'tablet',
-				laptop: 'laptop',
-			}}
+			width='full'
 			marginX='auto'
 			className={styles.headerContainer({
 				isScrolled,
@@ -39,6 +35,11 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			<Flex
 				justifyContent='space-between'
 				alignItems='center'
+				width={{
+					base: 'tablet',
+					tablet: 'tablet',
+					laptop: 'laptop',
+				}}
 				marginX='auto'
 				className={styles.navContent}
 			>

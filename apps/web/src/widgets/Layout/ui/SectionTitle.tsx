@@ -56,7 +56,7 @@ export function SectionTitle() {
 
 	return (
 		<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
-			<Typography.Heading level={2} color='primary' width='fit'>
+			<Typography.Heading level={3} color='primary' width='fit'>
 				{section}.
 			</Typography.Heading>
 		</Link>

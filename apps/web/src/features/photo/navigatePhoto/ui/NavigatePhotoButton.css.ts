@@ -20,16 +20,16 @@ export const modalNavigationButtonsContainer = style({
 	width: '100%',
 	position: 'absolute',
 	pointerEvents: 'none',
-	maxWidth: '95vw',
+	maxWidth: '90vw',
 	// padding: '0 40px',
 
 	'@media': {
 		'screen and (min-width: 768px)': {
-			maxWidth: calc.add('95vw', '40px'),
+			maxWidth: calc.add('90vw', '40px'),
 		},
 
 		'screen and (min-width: 1200px)': {
-			maxWidth: calc.add('1100px', '80px'),
+			maxWidth: calc.add('1000px', '100px'),
 		},
 	},
 });
