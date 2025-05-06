@@ -10,7 +10,6 @@ export const container = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	pointerEvents: 'none',
 });
 
 export const overlay = style({
@@ -24,7 +23,6 @@ export const overlay = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	pointerEvents: 'auto',
 	zIndex: 1,
 });
 
@@ -37,18 +35,17 @@ export const shareOverlay = style([
 
 export const photoContent = style({
 	position: 'relative',
-	maxWidth: '95vw',
+	maxWidth: '90vw',
 	width: '100%',
 	height: 'auto',
-	maxHeight: '90dvh',
+	maxHeight: '75dvh',
 	overflow: 'hidden',
-	pointerEvents: 'auto',
 
 	backgroundColor: 'transparent',
 
 	'@media': {
 		'screen and (min-width: 1200px)': {
-			maxWidth: '1100px',
+			maxWidth: 'min(90vw, 1000px)',
 		},
 	},
 });
