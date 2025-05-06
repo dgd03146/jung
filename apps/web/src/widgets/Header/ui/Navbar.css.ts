@@ -108,7 +108,6 @@ export const desktopNavLinkItem = style({
 });
 
 export const navLinkText = style({
-	fontSize: '1.35rem',
 	fontWeight: '600',
 	color: palette.primary,
 	fontFamily: 'var(--font-bebas)',

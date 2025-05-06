@@ -19,8 +19,8 @@ export const main = style([
 		},
 		marginY: {
 			base: '4', // 16px
-			tablet: '5', // 20px
-			laptop: '6', // 24px
+			tablet: '8', // 32px
+			laptop: '10', // 40px
 		},
 	}),
 	{
