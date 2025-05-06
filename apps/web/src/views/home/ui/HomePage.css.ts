@@ -6,8 +6,8 @@ const HEADER_HEIGHT = 72; // 헤더 높이
 const FOOTER_HEIGHT = 72; // 푸터 높이
 const MAIN_MARGIN = {
 	mobile: 32,
-	tablet: 40,
-	laptop: 48,
+	tablet: 64,
+	laptop: 80,
 };
 
 const SUBSECTION_MARGIN = HEADER_HEIGHT + FOOTER_HEIGHT + MAIN_MARGIN.laptop;

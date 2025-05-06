@@ -20,7 +20,10 @@ export const headerContainer = recipe({
 		animation: `${fadeIn} 0.5s ease-out`,
 		borderBottom: '1px solid transparent',
 		top: 0,
-		maxWidth: '92%',
+
+		position: 'sticky',
+
+		zIndex: 10,
 	}),
 	variants: {
 		isScrolled: {
@@ -42,7 +45,7 @@ export const headerContainer = recipe({
 				backgroundColor: 'transparent',
 			},
 			false: {
-				zIndex: 10,
+				// zIndex: 10,
 			},
 		},
 	},
@@ -54,7 +57,7 @@ export const headerContainer = recipe({
 
 export const navContent = style({
 	height: '100%',
-	// maxWidth: '92%',
+	maxWidth: '92%',
 });
 
 export const logoWrapper = style({
@@ -71,9 +74,9 @@ export const logoWrapper = style({
 });
 
 export const menuButtonWrapper = style({
-	position: 'relative',
+	// position: 'relative',
 	display: 'none',
-	gap: '10px',
+	// gap: '10px',
 	transition: 'transform 0.2s ease',
 	selectors: {
 		'&:hover': {

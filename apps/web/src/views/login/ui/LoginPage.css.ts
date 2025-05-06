@@ -9,7 +9,7 @@ export const container = style([
 		alignItems: 'center',
 	}),
 	{
-		minHeight: calc.subtract('100dvh', '192px'),
+		minHeight: calc.subtract('100dvh', '224px'),
 	},
 ]);
 
