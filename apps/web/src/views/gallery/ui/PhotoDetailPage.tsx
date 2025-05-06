@@ -27,7 +27,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
 
-	const imageSizes = useImageSizes({
+	const { imageSizes } = useImageSizes({
 		width: currentPhoto?.width || 1,
 		height: currentPhoto?.height || 1,
 		isModal,
