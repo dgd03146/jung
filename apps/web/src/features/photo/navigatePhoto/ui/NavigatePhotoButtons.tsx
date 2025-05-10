@@ -48,21 +48,23 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 	return (
 		<Box className={styles.modalNavigationWrapper}>
 			<div className={containerClassName}>
-				{previousPhoto && (
+				{previousPhoto ? (
 					<Button
 						onClick={() => handleNavigation(previousPhoto.id)}
 						className={styles.modalNavigationButton}
-						aria-label='이전 사진 보기 (← 키)'
+						aria-label='previous photo (← key)'
 					>
 						<HiChevronLeft className={styles.navigationIcon} />
 					</Button>
+				) : (
+					<div className={styles.placeholderButton} />
 				)}
 
 				{nextPhoto && (
 					<Button
 						onClick={() => handleNavigation(nextPhoto.id)}
 						className={styles.modalNavigationButton}
-						aria-label='다음 사진 보기 (→ 키)'
+						aria-label='next photo (→ key)'
 					>
 						<HiChevronRight className={styles.navigationIcon} />
 					</Button>
