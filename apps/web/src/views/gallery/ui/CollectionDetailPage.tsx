@@ -8,7 +8,9 @@ import {
 } from '@/fsd/entities/photo';
 import { BlurImage, EmptyState } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
-import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { usePhotoFilter } from '../model/PhotoFilterContext';
 import * as styles from './CollectionDetailPage.css';
 
 interface CollectionDetailPageProps {
@@ -18,7 +20,25 @@ interface CollectionDetailPageProps {
 export const CollectionDetailPage = ({
 	collectionId,
 }: CollectionDetailPageProps) => {
-	useGalleryRouteSync();
+	const pathname = usePathname();
+	const { setSort, setCollectionId } = usePhotoFilter();
+
+	useEffect(() => {
+		// 인터셉팅 라우트 감지
+		const isPhotoIntercepting = /\/gallery\/photo\/\d+/.test(pathname);
+
+		if (!isPhotoIntercepting) {
+			const isTrending = pathname.includes('/trending');
+			if (isTrending) {
+				setSort('popular');
+			} else {
+				setSort('latest');
+			}
+
+			const collectionMatch = pathname.match(/\/collections\/([^\/]+)/);
+			setCollectionId(collectionMatch ? collectionMatch[1] : undefined);
+		}
+	}, [pathname, setSort, setCollectionId]);
 
 	const { data } = useCollectionQuery(collectionId);
 	const { collection, photos } = data;

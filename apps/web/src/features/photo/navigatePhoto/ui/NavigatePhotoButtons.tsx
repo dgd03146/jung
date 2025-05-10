@@ -3,10 +3,8 @@
 import { Box, Button } from '@jung/design-system/components';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
-import {
-	useAdjacentPhotosQuery,
-	usePhotoFilterStore,
-} from '@/fsd/entities/photo';
+import { useAdjacentPhotosQuery } from '@/fsd/entities/photo';
+import { usePhotoFilter } from '@/fsd/views/gallery';
 import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './NavigatePhotoButton.css';
 
@@ -16,7 +14,7 @@ interface Props {
 }
 
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
-	const { sort, collectionId } = usePhotoFilterStore();
+	const { sort, collectionId } = usePhotoFilter();
 
 	const { data: adjacentPhotos } = useAdjacentPhotosQuery({
 		id: photoId,
@@ -31,7 +29,7 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhotoId: previousPhoto?.id,
 		nextPhotoId: nextPhoto?.id,
-		isModal: true,
+		isModal,
 	});
 
 	const containerClassName = `${styles.modalNavigationButtonsContainer} ${
