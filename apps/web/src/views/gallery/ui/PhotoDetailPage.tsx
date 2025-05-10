@@ -7,24 +7,18 @@ import {
 	ToggleLikePhotoButton,
 	useSharePhoto,
 } from '@/fsd/features/photo';
-import { AnimatePresence, motion } from 'framer-motion';
 
-import {
-	// PHOTO_DEFAULTS, // useInitialPhotoDetail 훅 내부에서 사용
-	PhotoTags,
-	usePhotoQuery,
-} from '@/fsd/entities/photo';
-// 새로 만든 커스텀 훅 import (경로 수정)
+import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
+
 import { useInitialPhotoDetail } from '@/fsd/entities/photo/model/useInitialPhotoDetail';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { Flex, Typography } from '@jung/design-system/components';
 
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { photoDetailVariants } from '../config/animations';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
 
-import { usePhotoFilter } from '@/fsd/views/gallery';
+import { PhotoDetailSkeleton, usePhotoFilter } from '@/fsd/views/gallery';
 
 interface PhotoDetailPageProps {
 	photoId: string;
@@ -53,78 +47,68 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 		isModal,
 	});
 
+	if (!currentPhoto) {
+		return <PhotoDetailSkeleton isModal={isModal} />;
+	}
+
 	return (
 		<>
-			<AnimatePresence mode='wait'>
-				<motion.div
-					key={`container-${photoId}`}
-					initial='hidden'
-					animate='visible'
-					exit='exit'
-				>
-					{isModal && (
-						<NavigatePhotoButtons photoId={photoId} isModal={isModal} />
-					)}
+			<div key={`container-${photoId}`}>
+				{isModal && (
+					<NavigatePhotoButtons photoId={photoId} isModal={isModal} />
+				)}
 
-					<motion.div className={styles.container({ isModal })}>
-						<motion.div
-							className={styles.imageWrapper({ isModal })}
-							variants={photoDetailVariants.image}
-							style={assignInlineVars({
-								[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
-							})}
-						>
-							<BlurImage
-								src={currentPhoto.image_url}
-								alt={currentPhoto.alt}
-								style={{ objectFit: 'contain' }}
-								fill
-								sizes={imageSizes}
-							/>
-						</motion.div>
+				<div className={styles.container({ isModal })}>
+					<div
+						className={styles.imageWrapper({ isModal })}
+						style={assignInlineVars({
+							[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
+						})}
+					>
+						<BlurImage
+							src={currentPhoto.image_url}
+							alt={currentPhoto.alt}
+							style={{ objectFit: 'contain' }}
+							fill
+							sizes={imageSizes}
+						/>
+					</div>
 
-						<motion.div
-							className={styles.content({ isModal })}
-							variants={photoDetailVariants.content}
+					<div className={styles.content({ isModal })}>
+						<Typography.Text level={2} fontWeight='semibold'>
+							{currentPhoto.title}
+						</Typography.Text>
+
+						<Typography.SubText level={2}>
+							{currentPhoto.description}
+						</Typography.SubText>
+
+						<Typography.SubText level={3} color='primary'>
+							{formatDate(currentPhoto.created_at)}
+						</Typography.SubText>
+
+						<PhotoTags tags={currentPhoto.tags} />
+
+						<Flex
+							className={styles.likesContainer}
+							paddingY='4'
+							justify='space-between'
+							align='center'
+							borderColor='primary50'
+							borderStyle='solid'
 						>
-							<Typography.Text level={2} fontWeight='semibold'>
-								{currentPhoto.title}
+							<Typography.Text level={4} color='primary'>
+								{currentPhoto.likes} likes
 							</Typography.Text>
 
-							<Typography.SubText level={2}>
-								{currentPhoto.description}
-							</Typography.SubText>
-
-							<Typography.SubText level={3} color='primary'>
-								{formatDate(currentPhoto.created_at)}
-							</Typography.SubText>
-
-							<PhotoTags tags={currentPhoto.tags} />
-
-							<Flex
-								className={styles.likesContainer}
-								paddingY='4'
-								justify='space-between'
-								align='center'
-								borderColor='primary50'
-								borderStyle='solid'
-							>
-								<Typography.Text level={4} color='primary'>
-									{currentPhoto.likes} likes
-								</Typography.Text>
-
-								<Flex gap='4'>
-									<ToggleLikePhotoButton photoId={photoId} />
-									<SharePhotoButton
-										photo={currentPhoto}
-										onShare={handleShare}
-									/>
-								</Flex>
+							<Flex gap='4'>
+								<ToggleLikePhotoButton photoId={photoId} />
+								<SharePhotoButton photo={currentPhoto} onShare={handleShare} />
 							</Flex>
-						</motion.div>
-					</motion.div>
-				</motion.div>
-			</AnimatePresence>
+						</Flex>
+					</div>
+				</div>
+			</div>
 
 			{isShareModalOpen && (
 				<ShareModal
