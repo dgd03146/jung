@@ -3,10 +3,9 @@
 import { Box, Button } from '@jung/design-system/components';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
-import {
-	useAdjacentPhotosQuery,
-	usePhotoFilterStore,
-} from '@/fsd/entities/photo';
+import { useAdjacentPhotosQuery } from '@/fsd/entities/photo';
+import { usePhotoFilter } from '@/fsd/views/gallery';
+import { useInitialAdjacentPhotos } from '../model/useInitialAdjacentPhotos';
 import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './NavigatePhotoButton.css';
 
@@ -16,22 +15,30 @@ interface Props {
 }
 
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
-	const { sort, collectionId } = usePhotoFilterStore();
+	const { sort, collectionId } = usePhotoFilter();
+
+	const initialAdjacentData = useInitialAdjacentPhotos({
+		photoId,
+		sort,
+		collectionId,
+	});
 
 	const { data: adjacentPhotos } = useAdjacentPhotosQuery({
 		id: photoId,
 		sort,
 		collectionId,
-		enabled: isModal,
+		initialData: initialAdjacentData,
+		enabled: isModal && !initialAdjacentData,
 	});
 
-	const { previous: previousPhoto, next: nextPhoto } =
-		isModal && adjacentPhotos ? adjacentPhotos : { previous: null, next: null };
+	const previousPhoto =
+		isModal && adjacentPhotos ? adjacentPhotos.previous : null;
+	const nextPhoto = isModal && adjacentPhotos ? adjacentPhotos.next : null;
 
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhotoId: previousPhoto?.id,
 		nextPhotoId: nextPhoto?.id,
-		isModal: true,
+		isModal,
 	});
 
 	const containerClassName = `${styles.modalNavigationButtonsContainer} ${
@@ -41,7 +48,7 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 	return (
 		<Box className={styles.modalNavigationWrapper}>
 			<div className={containerClassName}>
-				{previousPhoto ? (
+				{previousPhoto && (
 					<Button
 						onClick={() => handleNavigation(previousPhoto.id)}
 						className={styles.modalNavigationButton}
@@ -49,8 +56,6 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 					>
 						<HiChevronLeft className={styles.navigationIcon} />
 					</Button>
-				) : (
-					<div className={styles.placeholderButton} />
 				)}
 
 				{nextPhoto && (

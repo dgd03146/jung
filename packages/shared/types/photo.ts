@@ -47,3 +47,8 @@ export interface PhotoQueryParams {
 	sort?: 'latest' | 'popular';
 	q?: string;
 }
+
+export interface AdjacentPhotosData {
+	previous: Photo | null;
+	next: Photo | null;
+}

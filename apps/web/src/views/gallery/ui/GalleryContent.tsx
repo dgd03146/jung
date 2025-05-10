@@ -15,10 +15,30 @@ import {
 	useSearchParamsState,
 } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
-import { useGalleryRouteSync } from '../model/useGalleryRouteSync';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { usePhotoFilter } from '../model/PhotoFilterContext';
 
 export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
-	useGalleryRouteSync();
+	const pathname = usePathname();
+	const { setSort, setCollectionId } = usePhotoFilter();
+
+	useEffect(() => {
+		// 인터셉팅 라우트 감지
+		const isPhotoIntercepting = /\/gallery\/photo\/\d+/.test(pathname);
+
+		if (!isPhotoIntercepting) {
+			const isTrending = pathname.includes('/trending');
+			if (isTrending) {
+				setSort('popular');
+			} else {
+				setSort('latest');
+			}
+
+			const collectionMatch = pathname.match(/\/collections\/([^\/]+)/);
+			setCollectionId(collectionMatch ? collectionMatch[1] : undefined);
+		}
+	}, [pathname, setSort, setCollectionId]);
 
 	const { q, sort } = useSearchParamsState({
 		defaults: {

@@ -1,4 +1,4 @@
-import { PhotoDetailSkeleton } from '@/fsd/entities/photo';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,
@@ -6,11 +6,10 @@ import {
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
+import { PhotoDetailSkeleton } from '@/fsd/views/gallery/ui';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-
-import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
 
 export async function generateMetadata({
 	params,
