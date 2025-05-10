@@ -6,7 +6,6 @@ export const container = recipe({
 		display: 'flex',
 		flexDirection: 'column',
 		width: '100%',
-		maxWidth: '100%',
 		margin: '0 auto',
 		// backgroundColor: 'white',
 	},
@@ -18,9 +17,24 @@ export const container = recipe({
 				'@media': {
 					'(min-width: 768px)': {
 						flexDirection: 'row',
-
 						maxWidth: '90vw',
 						maxHeight: '75dvh',
+					},
+					'(max-width: 767px)': {
+						height: '100dvh',
+						maxHeight: '100dvh',
+						overflow: 'hidden',
+					},
+				},
+			},
+			false: {
+				maxWidth: '600px',
+				margin: '0 auto',
+
+				'@media': {
+					'(max-width: 767px)': {
+						maxWidth: '100%',
+						padding: '0 16px',
 					},
 				},
 			},
@@ -37,6 +51,7 @@ export const imageWrapper = recipe({
 		width: '100%',
 		backgroundColor: 'black',
 		aspectRatio: aspectRatioVar,
+		overflow: 'hidden',
 	},
 	variants: {
 		isModal: {
@@ -46,6 +61,21 @@ export const imageWrapper = recipe({
 						width: '65%',
 						maxWidth: '100%',
 						maxHeight: '75dvh',
+					},
+					'(max-width: 767px)': {
+						height: '65dvh',
+						maxHeight: '65dvh',
+					},
+				},
+			},
+			false: {
+				width: '100%',
+				maxHeight: '80dvh',
+				margin: '20px auto 0',
+				'@media': {
+					'(max-width: 767px)': {
+						maxHeight: '70dvh',
+						margin: '16px auto 0',
 					},
 				},
 			},
@@ -58,8 +88,8 @@ export const content = recipe({
 		display: 'flex',
 		flexDirection: 'column',
 		gap: '24px',
-		padding: '20px 0',
 		backgroundColor: 'white',
+		width: '100%',
 	},
 	variants: {
 		isModal: {
@@ -71,6 +101,23 @@ export const content = recipe({
 						maxHeight: '75dvh',
 						height: '75dvh',
 						padding: '20px',
+						overflowY: 'auto',
+					},
+					'(max-width: 767px)': {
+						height: '35dvh',
+						maxHeight: '35dvh',
+						padding: '12px',
+						gap: '16px',
+						overflowY: 'auto',
+					},
+				},
+			},
+			false: {
+				padding: '24px 0',
+				margin: '0 auto',
+				'@media': {
+					'(max-width: 767px)': {
+						padding: '20px 0',
 					},
 				},
 			},
