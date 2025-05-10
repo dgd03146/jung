@@ -9,7 +9,13 @@ import {
 } from '@/fsd/features/photo';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
+import {
+	// PHOTO_DEFAULTS, // useInitialPhotoDetail 훅 내부에서 사용
+	PhotoTags,
+	usePhotoQuery,
+} from '@/fsd/entities/photo';
+// 새로 만든 커스텀 훅 import (경로 수정)
+import { useInitialPhotoDetail } from '@/fsd/entities/photo/model/useInitialPhotoDetail';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { Flex, Typography } from '@jung/design-system/components';
 
@@ -17,13 +23,27 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { photoDetailVariants } from '../config/animations';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
+
+import { usePhotoFilter } from '@/fsd/views/gallery';
+
 interface PhotoDetailPageProps {
 	photoId: string;
 	isModal?: boolean;
 }
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
-	const { data: currentPhoto } = usePhotoQuery(photoId);
+	const { sort, collectionId } = usePhotoFilter();
+
+	const initialData = useInitialPhotoDetail({
+		photoId,
+		sort,
+		collectionId,
+	});
+
+	const { data: currentPhoto } = usePhotoQuery(photoId, {
+		initialData: initialData,
+	});
+
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
 
@@ -32,8 +52,6 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 		height: currentPhoto?.height || 1,
 		isModal,
 	});
-
-	if (!currentPhoto) return null;
 
 	return (
 		<>
@@ -44,7 +62,9 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					animate='visible'
 					exit='exit'
 				>
-					{isModal && <NavigatePhotoButtons photoId={photoId} isModal />}
+					{isModal && (
+						<NavigatePhotoButtons photoId={photoId} isModal={isModal} />
+					)}
 
 					<motion.div className={styles.container({ isModal })}>
 						<motion.div
