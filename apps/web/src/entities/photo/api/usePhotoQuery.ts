@@ -1,7 +1,7 @@
 import { useTRPC } from '@/fsd/app';
 
 import type { Photo } from '@jung/shared/types';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 type UsePhotoQueryOptions = {
 	initialData?: Photo;
@@ -21,5 +21,5 @@ export function usePhotoQuery(id: string, options?: UsePhotoQueryOptions) {
 		...options,
 	});
 
-	return useSuspenseQuery(queryOptions);
+	return useQuery(queryOptions);
 }
