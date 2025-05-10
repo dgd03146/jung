@@ -24,6 +24,15 @@ export const overlay = style({
 	alignItems: 'center',
 	justifyContent: 'center',
 	zIndex: 1,
+
+	'@media': {
+		'(max-width: 768px)': {
+			touchAction: 'none',
+			overflow: 'hidden',
+			WebkitOverflowScrolling: 'touch',
+			backdropFilter: 'blur(4px)',
+		},
+	},
 });
 
 export const shareOverlay = style([
@@ -38,12 +47,18 @@ export const photoContent = style({
 	maxWidth: '90vw',
 	width: '100%',
 	height: 'auto',
-	maxHeight: '75dvh',
 	overflow: 'hidden',
-
 	backgroundColor: 'transparent',
 
 	'@media': {
+		'screen and (max-width: 768px)': {
+			maxWidth: '100vw',
+			maxHeight: '100dvh',
+			WebkitOverflowScrolling: 'touch',
+			touchAction: 'pan-y pinch-zoom',
+			willChange: 'transform',
+			transition: 'transform 0.3s ease-out',
+		},
 		'screen and (min-width: 1200px)': {
 			maxWidth: 'min(90vw, 1000px)',
 		},
@@ -82,16 +97,16 @@ export const closeButton = style({
 	pointerEvents: 'auto',
 	zIndex: 15,
 
-	':hover': {
-		transform: 'scale(1.1)',
-	},
-
 	'@media': {
 		'(max-width: 768px)': {
-			top: '10px',
-			right: '10px',
+			top: '4px',
+			right: '0px',
 			width: '32px',
 			height: '32px',
+			padding: '8px',
+			WebkitTapHighlightColor: 'transparent',
+			willChange: 'transform',
+			transition: 'transform 0.2s ease-out',
 		},
 	},
 });
