@@ -12,8 +12,10 @@ export default function GalleryLayout({ children, modal }: GalleryLayoutProps) {
 	return (
 		<>
 			<GalleryNavigationWrapper />
-			<PhotoFilterProvider>{children}</PhotoFilterProvider>
-			{modal}
+			<PhotoFilterProvider>
+				{children}
+				{modal}
+			</PhotoFilterProvider>
 		</>
 	);
 }
