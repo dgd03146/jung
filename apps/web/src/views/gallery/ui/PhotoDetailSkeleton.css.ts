@@ -12,7 +12,6 @@ export const pulseKeyframes = keyframes({
 const baseSkeletonStyle = style({
 	animation: `${pulseKeyframes} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
 	backgroundColor: '#e0e0e0',
-	borderRadius: '4px',
 });
 
 export const skeletonImage = style([baseSkeletonStyle, {}]);
