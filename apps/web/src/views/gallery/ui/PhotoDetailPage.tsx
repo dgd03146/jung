@@ -10,7 +10,6 @@ import {
 
 import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
 
-import { useInitialPhotoDetail } from '@/fsd/entities/photo/model/useInitialPhotoDetail';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { Flex, Typography } from '@jung/design-system/components';
 
@@ -18,38 +17,22 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
 
-import { PhotoDetailSkeleton, usePhotoFilter } from '@/fsd/views/gallery';
-
 interface PhotoDetailPageProps {
 	photoId: string;
 	isModal?: boolean;
 }
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
-	const { sort, collectionId } = usePhotoFilter();
+	const { data: currentPhoto } = usePhotoQuery(photoId);
 
-	const initialData = useInitialPhotoDetail({
-		photoId,
-		sort,
-		collectionId,
-	});
-
-	const { data: currentPhoto } = usePhotoQuery(photoId, {
-		initialData: initialData,
+	const { imageSizes, containerRef } = useImageSizes({
+		width: currentPhoto?.width || 0,
+		height: currentPhoto?.height || 0,
+		isModal,
 	});
 
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
-
-	const { imageSizes } = useImageSizes({
-		width: currentPhoto?.width || 1,
-		height: currentPhoto?.height || 1,
-		isModal,
-	});
-
-	if (!currentPhoto) {
-		return <PhotoDetailSkeleton isModal={isModal} />;
-	}
 
 	return (
 		<>
@@ -64,11 +47,12 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 						style={assignInlineVars({
 							[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
 						})}
+						ref={containerRef}
 					>
 						<BlurImage
 							src={currentPhoto.image_url}
 							alt={currentPhoto.alt}
-							style={{ objectFit: 'contain' }}
+							className={styles.image}
 							fill
 							sizes={imageSizes}
 						/>
