@@ -1,6 +1,5 @@
 'use client';
 
-import { useToast } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { useState } from 'react';
 
@@ -21,11 +20,12 @@ export interface KakaoShareOptions {
 }
 
 export const useSharePhoto = () => {
-	const showToast = useToast();
 	const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 	const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
 	const createShareUrl = (photo: Photo) => {
+		if (typeof window === 'undefined') return { url: '', text: '' };
+
 		const url = encodeURIComponent(window.location.href);
 		const text = encodeURIComponent(photo.title || 'Shared Content');
 		return { url, text };
@@ -36,10 +36,11 @@ export const useSharePhoto = () => {
 
 		const handleKakaoShare = async () => {
 			try {
-				if (typeof window === 'undefined') return;
-
-				if (!window.Kakao) {
-					showToast('카카오톡 SDK를 불러오는 중입니다', 'error');
+				if (
+					typeof window === 'undefined' ||
+					!window.Kakao ||
+					!window.Kakao.Link
+				) {
 					return;
 				}
 
@@ -47,11 +48,6 @@ export const useSharePhoto = () => {
 					window.Kakao.init(
 						process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string,
 					);
-				}
-
-				if (!window.Kakao.Link) {
-					showToast('카카오톡 공유 기능을 초기화중입니다', 'error');
-					return;
 				}
 
 				const shareOptions: KakaoShareOptions = {
@@ -67,10 +63,9 @@ export const useSharePhoto = () => {
 					},
 				};
 
-				await window.Kakao.Link.sendDefault(shareOptions);
+				window.Kakao.Link.sendDefault(shareOptions);
 			} catch (error) {
 				console.error('Kakao share error:', error);
-				showToast('카카오톡 공유 중 오류가 발생했습니다', 'error');
 			}
 		};
 
@@ -97,10 +92,6 @@ export const useSharePhoto = () => {
 			setSelectedPhoto(photo);
 			setIsShareModalOpen(true);
 		} catch (error) {
-			if (error instanceof Error && error.name !== 'AbortError') {
-				showToast('Error is occured while sharing', 'error');
-			}
-
 			if (!(error instanceof Error) || error.name !== 'AbortError') {
 				setSelectedPhoto(photo);
 				setIsShareModalOpen(true);
