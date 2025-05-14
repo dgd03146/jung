@@ -10,7 +10,6 @@ interface UseImageSizesProps {
 
 const IMAGE_SIZE_CONFIG = {
 	heightLimitFactor: 0.75,
-
 	fallbackHeight: 768,
 	IMAGE_MAX_ABSOLUTE_WIDTH_PX: 650,
 	GALLERY_MAX_WIDTH_PX: 600,
@@ -26,37 +25,43 @@ export function useImageSizes({
 	const [viewportHeight, setViewportHeight] = useState<number>(
 		IMAGE_SIZE_CONFIG.fallbackHeight,
 	);
+	const rafRef = useRef<number>(0);
+	const [imageSizes, setImageSizes] = useState('100vw');
+
+	const isValidDimensions = width > 1 && height > 1 && actualContainerWidth > 0;
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
 
-		const updateViewportHeight = () => {
-			setViewportHeight(window.innerHeight);
-		};
-
-		updateViewportHeight();
-		window.addEventListener('resize', updateViewportHeight);
-		return () => window.removeEventListener('resize', updateViewportHeight);
+		setViewportHeight(window.innerHeight);
 	}, []);
 
 	useEffect(() => {
 		const currentElement = containerRef.current;
+
 		if (!currentElement) return;
 
 		const observer = new ResizeObserver(([entry]) => {
 			const newWidth = entry?.contentRect.width;
-			if (newWidth) {
-				setActualContainerWidth((prevWidth) => {
-					if (Math.abs(newWidth - prevWidth) > 1) {
-						return newWidth;
-					}
-					return prevWidth;
+			if (newWidth !== undefined) {
+				if (rafRef.current) {
+					cancelAnimationFrame(rafRef.current);
+				}
+
+				rafRef.current = requestAnimationFrame(() => {
+					const roundedNewWidth = Math.round(newWidth);
+					setActualContainerWidth((prev) =>
+						prev !== roundedNewWidth ? roundedNewWidth : prev,
+					);
 				});
 			}
 		});
 
 		observer.observe(currentElement);
 		return () => {
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
+			}
 			if (currentElement) {
 				observer.unobserve(currentElement);
 			}
@@ -64,27 +69,19 @@ export function useImageSizes({
 		};
 	}, []);
 
-	const imageSizes = useMemo(() => {
-		if (
-			!width ||
-			!height ||
-			width <= 1 ||
-			height <= 1 ||
-			!actualContainerWidth ||
-			actualContainerWidth <= 0
-		) {
+	const calculatedSizesString = useMemo(() => {
+		if (!isValidDimensions) {
 			return '100vw';
 		}
 
 		if (!isModal) {
-			return `
-        (max-width: ${IMAGE_SIZE_CONFIG.GALLERY_MAX_WIDTH_PX}px) 100vw,
-        ${IMAGE_SIZE_CONFIG.GALLERY_MAX_WIDTH_PX}px
-      `;
+			const gallerySizes = `(
+        max-width: ${IMAGE_SIZE_CONFIG.GALLERY_MAX_WIDTH_PX}px
+      ) 100vw, ${IMAGE_SIZE_CONFIG.GALLERY_MAX_WIDTH_PX}px`;
+			return gallerySizes.replace(/\s+/g, ' ').trim();
 		}
 
 		const aspectRatio = width / height;
-
 		const heightLimit = viewportHeight * IMAGE_SIZE_CONFIG.heightLimitFactor;
 
 		let calculatedWidth = Math.min(
@@ -98,9 +95,21 @@ export function useImageSizes({
 		);
 
 		const finalCalculatedWidth = Math.max(1, calculatedWidth);
+		const roundedFinalWidth = Math.round(finalCalculatedWidth);
 
-		return `${Math.round(finalCalculatedWidth)}px`;
-	}, [width, height, isModal, actualContainerWidth, viewportHeight]);
+		return `(max-width: 767px) 100vw, ${roundedFinalWidth}px`;
+	}, [
+		width,
+		height,
+		isModal,
+		actualContainerWidth,
+		viewportHeight,
+		isValidDimensions,
+	]);
+
+	useEffect(() => {
+		setImageSizes(calculatedSizesString);
+	}, [calculatedSizesString]);
 
 	return { imageSizes, containerRef };
 }
