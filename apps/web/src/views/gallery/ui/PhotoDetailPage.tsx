@@ -9,8 +9,8 @@ import {
 } from '@/fsd/features/photo';
 
 import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
-
 import { BlurImage, formatDate } from '@/fsd/shared';
+import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
 
 import { assignInlineVars } from '@vanilla-extract/dynamic';
@@ -24,6 +24,7 @@ interface PhotoDetailPageProps {
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
+	const { user } = useSupabaseAuth();
 
 	const { imageSizes, containerRef } = useImageSizes({
 		width: currentPhoto?.width || 0,
@@ -33,6 +34,11 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
+
+	const isInitiallyLiked =
+		user && currentPhoto.liked_by
+			? currentPhoto.liked_by.includes(user.id)
+			: false;
 
 	return (
 		<>
@@ -86,7 +92,10 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							</Typography.Text>
 
 							<Flex gap='4'>
-								<ToggleLikePhotoButton photoId={photoId} />
+								<ToggleLikePhotoButton
+									photoId={photoId}
+									isInitiallyLiked={isInitiallyLiked}
+								/>
 								<SharePhotoButton photo={currentPhoto} onShare={handleShare} />
 							</Flex>
 						</Flex>
