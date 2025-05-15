@@ -83,6 +83,10 @@ export const imageWrapper = recipe({
 	},
 });
 
+export const image = style({
+	objectFit: 'contain',
+});
+
 export const content = recipe({
 	base: {
 		display: 'flex',

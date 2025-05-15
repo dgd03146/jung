@@ -9,16 +9,13 @@ import {
 } from '@/fsd/features/photo';
 
 import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
-
-import { useInitialPhotoDetail } from '@/fsd/entities/photo/model/useInitialPhotoDetail';
 import { BlurImage, formatDate } from '@/fsd/shared';
+import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
 
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
-
-import { PhotoDetailSkeleton, usePhotoFilter } from '@/fsd/views/gallery';
 
 interface PhotoDetailPageProps {
 	photoId: string;
@@ -26,30 +23,22 @@ interface PhotoDetailPageProps {
 }
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
-	const { sort, collectionId } = usePhotoFilter();
+	const { data: currentPhoto } = usePhotoQuery(photoId);
+	const { user } = useSupabaseAuth();
 
-	const initialData = useInitialPhotoDetail({
-		photoId,
-		sort,
-		collectionId,
-	});
-
-	const { data: currentPhoto } = usePhotoQuery(photoId, {
-		initialData: initialData,
+	const { imageSizes, containerRef } = useImageSizes({
+		width: currentPhoto?.width || 0,
+		height: currentPhoto?.height || 0,
+		isModal,
 	});
 
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
 		useSharePhoto();
 
-	const { imageSizes } = useImageSizes({
-		width: currentPhoto?.width || 1,
-		height: currentPhoto?.height || 1,
-		isModal,
-	});
-
-	if (!currentPhoto) {
-		return <PhotoDetailSkeleton isModal={isModal} />;
-	}
+	const isInitiallyLiked =
+		user && currentPhoto.liked_by
+			? currentPhoto.liked_by.includes(user.id)
+			: false;
 
 	return (
 		<>
@@ -64,11 +53,12 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 						style={assignInlineVars({
 							[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
 						})}
+						ref={containerRef}
 					>
 						<BlurImage
 							src={currentPhoto.image_url}
 							alt={currentPhoto.alt}
-							style={{ objectFit: 'contain' }}
+							className={styles.image}
 							fill
 							sizes={imageSizes}
 						/>
@@ -102,7 +92,10 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							</Typography.Text>
 
 							<Flex gap='4'>
-								<ToggleLikePhotoButton photoId={photoId} />
+								<ToggleLikePhotoButton
+									photoId={photoId}
+									isInitiallyLiked={isInitiallyLiked}
+								/>
 								<SharePhotoButton photo={currentPhoto} onShare={handleShare} />
 							</Flex>
 						</Flex>

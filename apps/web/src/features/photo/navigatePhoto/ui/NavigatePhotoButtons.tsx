@@ -23,17 +23,22 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 		collectionId,
 	});
 
-	const { data: adjacentPhotos } = useAdjacentPhotosQuery({
-		id: photoId,
-		sort,
-		collectionId,
-		initialData: initialAdjacentData,
-		enabled: isModal && !initialAdjacentData,
-	});
+	const { data: adjacentPhotos, isFetching: isLoadingAdjacentPhotos } =
+		useAdjacentPhotosQuery({
+			id: photoId,
+			sort,
+			collectionId,
+			initialData: initialAdjacentData,
+			enabled:
+				isModal &&
+				(!initialAdjacentData ||
+					(initialAdjacentData &&
+						!initialAdjacentData.previous &&
+						!initialAdjacentData.next)),
+		});
 
-	const previousPhoto =
-		isModal && adjacentPhotos ? adjacentPhotos.previous : null;
-	const nextPhoto = isModal && adjacentPhotos ? adjacentPhotos.next : null;
+	const previousPhoto = adjacentPhotos?.previous ?? null;
+	const nextPhoto = adjacentPhotos?.next ?? null;
 
 	const { handleNavigation } = useKeyboardNavigation({
 		previousPhotoId: previousPhoto?.id,
@@ -41,34 +46,46 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 		isModal,
 	});
 
-	const containerClassName = `${styles.modalNavigationButtonsContainer} ${
-		!previousPhoto || !nextPhoto ? styles.singleButtonContainer : ''
-	}`;
+	const getContainerClassName = () => {
+		const isLoading = isLoadingAdjacentPhotos;
+		const hasPrevious = !!previousPhoto;
+		const hasNext = !!nextPhoto;
+
+		if (isLoading || (hasPrevious && hasNext)) {
+			return styles.modalNavigationButtonsContainer;
+		}
+		if (hasPrevious || hasNext) {
+			return `${styles.modalNavigationButtonsContainer} ${styles.singleButtonContainer}`;
+		}
+		return styles.modalNavigationButtonsContainer;
+	};
 
 	return (
 		<Box className={styles.modalNavigationWrapper}>
-			<div className={containerClassName}>
-				{previousPhoto ? (
+			<div className={getContainerClassName()}>
+				{isModal && (
 					<Button
-						onClick={() => handleNavigation(previousPhoto.id)}
+						onClick={() => previousPhoto && handleNavigation(previousPhoto.id)}
 						className={styles.modalNavigationButton}
 						aria-label='previous photo (← key)'
+						disabled={isLoadingAdjacentPhotos || !previousPhoto}
 					>
 						<HiChevronLeft className={styles.navigationIcon} />
 					</Button>
-				) : (
-					<div className={styles.placeholderButton} />
 				)}
+				{!isModal && <div />}
 
-				{nextPhoto && (
+				{isModal && (
 					<Button
-						onClick={() => handleNavigation(nextPhoto.id)}
+						onClick={() => nextPhoto && handleNavigation(nextPhoto.id)}
 						className={styles.modalNavigationButton}
 						aria-label='next photo (→ key)'
+						disabled={isLoadingAdjacentPhotos || !nextPhoto}
 					>
 						<HiChevronRight className={styles.navigationIcon} />
 					</Button>
 				)}
+				{!isModal && <div />}
 			</div>
 		</Box>
 	);
