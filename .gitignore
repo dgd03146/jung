@@ -49,7 +49,7 @@ vite.config.*.timestamp-*
 packages/configs/vitest.config.mjs.timestamp-*
 
 # Compiled output
-**/*.js
+**/*workspace.js
 **/*.d.ts
 **/*.map
 
