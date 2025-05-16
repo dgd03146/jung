@@ -12,8 +12,8 @@ import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
-
 import { assignInlineVars } from '@vanilla-extract/dynamic';
+import { useRef } from 'react';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
 
@@ -26,10 +26,16 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
 	const { user } = useSupabaseAuth();
 
-	const { imageSizes, containerRef } = useImageSizes({
-		width: currentPhoto?.width || 0,
-		height: currentPhoto?.height || 0,
+	const containerRef = useRef<HTMLDivElement>(null);
+	const aspectRatio =
+		currentPhoto.width && currentPhoto.height
+			? currentPhoto.width / currentPhoto.height
+			: 1;
+
+	const { imageSizes } = useImageSizes({
+		aspectRatio,
 		isModal,
+		containerRef,
 	});
 
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =

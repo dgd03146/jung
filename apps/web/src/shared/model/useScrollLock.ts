@@ -1,11 +1,24 @@
-import { useCallback, useLayoutEffect, useRef } from 'react';
-import { bodyScrollLock, scrollPosition } from '../ui/Header.css';
+'use client';
 
-const useScrollLock = (isLocked: boolean) => {
+import { useCallback, useLayoutEffect, useRef } from 'react';
+import { bodyScrollLock, scrollPosition } from '../ui/ScrollLock.css';
+
+const getScrollbarWidth = () => {
+	if (typeof window === 'undefined') return 0;
+	return window.innerWidth - document.documentElement.clientWidth;
+};
+
+export const useScrollLock = (isLocked: boolean) => {
 	const scrollYRef = useRef(0);
+	const originalPaddingRightRef = useRef('');
 
 	const lockScroll = useCallback(() => {
 		scrollYRef.current = window.scrollY;
+		originalPaddingRightRef.current = document.body.style.paddingRight;
+
+		const scrollbarWidth = getScrollbarWidth();
+		document.body.style.paddingRight = `${scrollbarWidth}px`;
+
 		document.documentElement.style.setProperty(
 			scrollPosition,
 			`${scrollYRef.current}px`,
@@ -16,10 +29,9 @@ const useScrollLock = (isLocked: boolean) => {
 	const unlockScroll = useCallback(() => {
 		document.body.classList.remove(bodyScrollLock);
 		document.documentElement.style.removeProperty(scrollPosition);
+		document.body.style.paddingRight = originalPaddingRightRef.current;
 		window.scrollTo(0, scrollYRef.current);
 	}, []);
-
-	// TODO: 스크롤 복원 블로그 글 작성 useLayoutEffect로 비교
 
 	useLayoutEffect(() => {
 		if (isLocked) {
@@ -35,5 +47,3 @@ const useScrollLock = (isLocked: boolean) => {
 		};
 	}, [isLocked, lockScroll, unlockScroll]);
 };
-
-export default useScrollLock;

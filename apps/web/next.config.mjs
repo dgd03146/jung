@@ -1,9 +1,14 @@
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true', 
-  openAnalyzer: true,
-})
+import { SHARED_DEVICE_SIZES, SHARED_IMAGE_SIZES } from './src/shared/config/imageSizes.js';
 
+import vanillaExtractPluginPkg from '@vanilla-extract/next-plugin';
+const { createVanillaExtractPlugin } = vanillaExtractPluginPkg;
+
+import nextBundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = nextBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: true,
+});
 
 const withVanillaExtract = createVanillaExtractPlugin(
   { identifiers: 'short'}
@@ -18,14 +23,9 @@ const nextConfig = {
 
   images: {
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [360, 480, 768, 1024, 1280, 1440, 1920],
+    deviceSizes: SHARED_DEVICE_SIZES,
     minimumCacheTTL: 60 * 60 * 24 * 7,
-    imageSizes: [
-      32, 40, 80, 128,
-      180, 200, 256, 300, 360, 400, 450,
-      480, 513, 540, 600, 640, 650, 680,
-      768, 800, 900, 1000
-    ],
+    imageSizes: SHARED_IMAGE_SIZES,
 
     remotePatterns: [
       {
@@ -74,4 +74,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(withVanillaExtract(nextConfig));
+export default withBundleAnalyzer(withVanillaExtract(nextConfig));

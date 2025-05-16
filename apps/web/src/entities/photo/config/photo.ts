@@ -25,9 +25,9 @@ export const PHOTO_DEFAULTS = {
 } as const;
 
 export const PRIORITY_IMAGE = {
-	MOBILE: 2,
-	LAPTOP: 4,
-	DESKTOP: 6,
+	MOBILE: 4,
+	LAPTOP: 6,
+	DESKTOP: 8,
 } as const;
 
 export const COLLECTION_DEFAULTS = {

@@ -24,10 +24,8 @@ export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
 	const { setSort, setCollectionId } = usePhotoFilter();
 
 	useEffect(() => {
-		// 인터셉팅 라우트 감지
-		const isPhotoIntercepting = /\/gallery\/photo\/\d+/.test(pathname);
-
-		if (!isPhotoIntercepting) {
+		const isModalActive = /\/gallery\/photo\/\d+/.test(pathname);
+		if (!isModalActive) {
 			const isTrending = pathname.includes('/trending');
 			if (isTrending) {
 				setSort('popular');
@@ -71,9 +69,9 @@ export const GalleryContent = ({ isTrending }: { isTrending?: boolean }) => {
 			<PhotoList
 				photos={formattedPhotos}
 				renderPhoto={{
-					image: (props, context) => (
-						<PhotoCard imageProps={props} contextProps={context} />
-					),
+					image: (props, context) => {
+						return <PhotoCard imageProps={props} contextProps={context} />;
+					},
 				}}
 			/>
 			<Flex justify='center' align='center' minHeight='10' ref={ref}>

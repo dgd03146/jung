@@ -26,7 +26,7 @@
 
   "include": [
     "next-env.d.ts",
-    "next.config.js",
+    "next.config.mjs",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
@@ -36,8 +36,9 @@
     "app/i18n.js",
     "middleware.js",
     "src/shared/ui/BlockNoteErrorFallback.tsx",
+    "src/shared/config/imageSizes.js",
     "./global.d.ts",
     "../../packages/shared/hooks/useMediaQuery.ts"
-  ],
+ ],
   "exclude": ["node_modules"]
 }
