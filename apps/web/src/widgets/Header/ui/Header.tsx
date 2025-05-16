@@ -1,10 +1,10 @@
 'use client';
 
+import { useScrollLock } from '@/fsd/shared';
 import { AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Menu } from '../../Menu/ui';
-import useScrollLock from '../model/useScrollLock';
 import Navbar from './Navbar';
 
 const Header = () => {

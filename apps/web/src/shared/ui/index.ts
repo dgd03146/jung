@@ -11,5 +11,6 @@ export { default as LoadingSpinner } from './LoadingSpinner';
 export { Modal } from './Modal';
 export { MotionCard } from './MotionCard';
 export { default as NavigationLinks } from './NavigationLinks';
+export { bodyScrollLock, scrollPosition } from './ScrollLock.css';
 export { SearchBar } from './SearchBar';
 export { SearchBarSkeleton } from './SearchBarSkeleton';

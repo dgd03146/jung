@@ -1,5 +1,6 @@
 'use client';
 
+import { useScrollLock } from '@/fsd/shared';
 import { Box } from '@jung/design-system/components';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
@@ -49,14 +50,12 @@ export function Modal({
 
 	useEffect(() => {
 		document.addEventListener('keydown', handleKeyDown);
-		const originalOverflow = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
-
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
-			document.body.style.overflow = originalOverflow;
 		};
 	}, [handleKeyDown]);
+
+	useScrollLock(true);
 
 	const isPhotoModal = variant === 'photo';
 
