@@ -11,6 +11,7 @@ export {
 	locales,
 	SUPPORTED_LANGS,
 } from './i18n/locales';
+export * from './imageSizes';
 export * from './navigation';
 export * from './routes';
 export * from './social';
