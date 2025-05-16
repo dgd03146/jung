@@ -44,7 +44,7 @@ export function ToggleLikePhotoButton({
 			className={styles.toggleLikePhotoButton}
 			onClick={handleClick}
 			aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-			disabled={!user && !isLiked}
+			// disabled={!user && !isLiked}
 		>
 			{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
 		</Button>
