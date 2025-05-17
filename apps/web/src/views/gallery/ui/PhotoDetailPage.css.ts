@@ -50,6 +50,7 @@ export const imageWrapper = recipe({
 		position: 'relative',
 		width: '100%',
 		backgroundColor: 'black',
+		minHeight: '200px',
 		aspectRatio: aspectRatioVar,
 		overflow: 'hidden',
 	},

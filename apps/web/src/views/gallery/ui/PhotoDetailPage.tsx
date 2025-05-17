@@ -13,9 +13,11 @@ import { BlurImage, formatDate } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
+
+const FALLBACK_ASPECT_RATIO = 4 / 3;
 
 interface PhotoDetailPageProps {
 	photoId: string;
@@ -25,17 +27,34 @@ interface PhotoDetailPageProps {
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
 	const { user } = useSupabaseAuth();
-
 	const containerRef = useRef<HTMLDivElement>(null);
-	const aspectRatio =
-		currentPhoto.width && currentPhoto.height
-			? currentPhoto.width / currentPhoto.height
-			: 1;
+
+	const aspectRatio = useMemo(() => {
+		if (
+			currentPhoto.width &&
+			currentPhoto.height &&
+			currentPhoto.height !== 0
+		) {
+			return currentPhoto.width / currentPhoto.height;
+		}
+		return FALLBACK_ASPECT_RATIO;
+	}, [currentPhoto]);
+
+	const aspectRatioForCss = useMemo(() => {
+		if (
+			currentPhoto.width &&
+			currentPhoto.height &&
+			currentPhoto.height !== 0
+		) {
+			return `${currentPhoto.width} / ${currentPhoto.height}`;
+		}
+		return `${Math.round(FALLBACK_ASPECT_RATIO * 100)} / 100`;
+	}, [currentPhoto]);
 
 	const { imageSizes } = useImageSizes({
+		containerRef,
 		aspectRatio,
 		isModal,
-		containerRef,
 	});
 
 	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
@@ -57,7 +76,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					<div
 						className={styles.imageWrapper({ isModal })}
 						style={assignInlineVars({
-							[styles.aspectRatioVar]: `${currentPhoto.width} / ${currentPhoto.height}`,
+							[styles.aspectRatioVar]: aspectRatioForCss,
 						})}
 						ref={containerRef}
 					>
@@ -67,6 +86,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							className={styles.image}
 							fill
 							sizes={imageSizes}
+							priority={isModal}
 						/>
 					</div>
 
