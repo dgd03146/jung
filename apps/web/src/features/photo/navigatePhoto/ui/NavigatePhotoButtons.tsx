@@ -15,6 +15,10 @@ interface Props {
 }
 
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
+	if (!isModal) {
+		return null;
+	}
+
 	const { sort, collectionId } = usePhotoFilter();
 
 	const initialAdjacentData = useInitialAdjacentPhotos({
@@ -29,12 +33,7 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 			sort,
 			collectionId,
 			initialData: initialAdjacentData,
-			enabled:
-				isModal &&
-				(!initialAdjacentData ||
-					(initialAdjacentData &&
-						!initialAdjacentData.previous &&
-						!initialAdjacentData.next)),
+			enabled: isModal && !!photoId,
 		});
 
 	const previousPhoto = adjacentPhotos?.previous ?? null;
@@ -46,46 +45,51 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 		isModal,
 	});
 
-	const getContainerClassName = () => {
-		const isLoading = isLoadingAdjacentPhotos;
-		const hasPrevious = !!previousPhoto;
-		const hasNext = !!nextPhoto;
+	const renderNavButton = (
+		direction: 'prev' | 'next',
+		target: { id: string } | null,
+	) => {
+		const isDisabled = !target;
+		const Icon = direction === 'prev' ? HiChevronLeft : HiChevronRight;
+		const ariaLabel = direction === 'prev' ? 'Previous photo' : 'Next photo';
+		const title =
+			direction === 'prev'
+				? 'Go to previous photo (← key)'
+				: 'Go to next photo (→ key)';
 
-		if (isLoading || (hasPrevious && hasNext)) {
-			return styles.modalNavigationButtonsContainer;
-		}
-		if (hasPrevious || hasNext) {
-			return `${styles.modalNavigationButtonsContainer} ${styles.singleButtonContainer}`;
-		}
-		return styles.modalNavigationButtonsContainer;
+		const onClick = () => {
+			if (!target) {
+				return;
+			}
+			handleNavigation(target.id);
+		};
+
+		return (
+			<Button
+				onClick={onClick}
+				className={styles.modalNavigationButton}
+				aria-label={ariaLabel}
+				title={title}
+				disabled={isDisabled}
+			>
+				<Icon className={styles.navigationIcon} />
+			</Button>
+		);
 	};
 
 	return (
 		<Box className={styles.modalNavigationWrapper}>
-			<div className={getContainerClassName()}>
-				{isModal && (
-					<Button
-						onClick={() => previousPhoto && handleNavigation(previousPhoto.id)}
-						className={styles.modalNavigationButton}
-						aria-label='previous photo (← key)'
-						disabled={isLoadingAdjacentPhotos || !previousPhoto}
-					>
-						<HiChevronLeft className={styles.navigationIcon} />
-					</Button>
+			<div className={styles.modalNavigationButtonsContainer}>
+				{previousPhoto ? (
+					renderNavButton('prev', previousPhoto)
+				) : (
+					<div className={styles.placeholderButton} />
 				)}
-				{!isModal && <div />}
-
-				{isModal && (
-					<Button
-						onClick={() => nextPhoto && handleNavigation(nextPhoto.id)}
-						className={styles.modalNavigationButton}
-						aria-label='next photo (→ key)'
-						disabled={isLoadingAdjacentPhotos || !nextPhoto}
-					>
-						<HiChevronRight className={styles.navigationIcon} />
-					</Button>
+				{nextPhoto ? (
+					renderNavButton('next', nextPhoto)
+				) : (
+					<div className={styles.placeholderButton} />
 				)}
-				{!isModal && <div />}
 			</div>
 		</Box>
 	);

@@ -22,29 +22,23 @@ export const useKeyboardNavigation = ({
 		[router],
 	);
 
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (!isModal) {
-				return;
+	const handleKeyDown = useCallback(
+		(event: KeyboardEvent) => {
+			if (event.key === 'ArrowLeft' && previousPhotoId) {
+				handleNavigation(previousPhotoId);
+			} else if (event.key === 'ArrowRight' && nextPhotoId) {
+				handleNavigation(nextPhotoId);
 			}
+		},
+		[previousPhotoId, nextPhotoId, handleNavigation],
+	);
 
-			switch (event.key) {
-				case 'ArrowLeft':
-					if (previousPhotoId) {
-						handleNavigation(previousPhotoId);
-					}
-					break;
-				case 'ArrowRight':
-					if (nextPhotoId) {
-						handleNavigation(nextPhotoId);
-					}
-					break;
-			}
-		};
+	useEffect(() => {
+		if (!isModal) return;
 
 		window.addEventListener('keydown', handleKeyDown);
 		return () => window.removeEventListener('keydown', handleKeyDown);
-	}, [isModal, previousPhotoId, nextPhotoId, handleNavigation]);
+	}, [isModal, handleKeyDown]);
 
 	return {
 		handleNavigation,

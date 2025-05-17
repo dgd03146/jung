@@ -1,114 +1,141 @@
 'use client';
 
-import {
-	type RefObject,
-	useEffect,
-	useLayoutEffect,
-	useMemo,
-	useState,
-} from 'react';
-
 import { useViewportHeight } from '@/fsd/shared';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { findNearestImageSize } from '../lib/findNearestImageSize';
 
 const CONFIG = {
-	fallbackHeight: 768,
+	fallbackWidth: 600,
+	fallbackAspectRatio: 4 / 3,
 	maxModalWidth: 650,
 	maxGalleryWidth: 600,
 	heightLimitFactor: 0.75,
 	mobileMaxWidth: 767,
 	mobilePercent: 90,
-
 	resizeThreshold: 2,
 };
 
 interface UseImageSizesProps {
-	containerRef: RefObject<HTMLElement>;
-	aspectRatio: number;
+	containerRef: React.RefObject<HTMLElement>;
+	aspectRatio?: number;
 	isModal?: boolean;
 	maxHeightPercent?: number;
 }
 
 export function useImageSizes({
 	containerRef,
-	aspectRatio,
+	aspectRatio = CONFIG.fallbackAspectRatio,
 	isModal = false,
 	maxHeightPercent = 0.8,
 }: UseImageSizesProps): { imageSizes: string } {
-	const [containerWidth, setContainerWidth] = useState<number>(0);
+	const [containerWidth, setContainerWidth] = useState(CONFIG.fallbackWidth);
 	const viewportHeight = useViewportHeight();
-
-	useLayoutEffect(() => {
-		const el = containerRef.current;
-		if (!el) return;
-
-		const initialWidth = Math.round(el.clientWidth);
-		if (initialWidth > 0) {
-			setContainerWidth(initialWidth);
-		}
-	}, [containerRef]);
+	const observerRef = useRef<ResizeObserver | null>(null);
+	const rafRef = useRef<number | null>(null);
+	const isFallback =
+		containerWidth === CONFIG.fallbackWidth && !containerRef.current;
 
 	useEffect(() => {
 		const el = containerRef.current;
-		if (!el || !el.clientWidth) return;
+		if (!el) return;
 
-		const updateContainerWidth = (width: number) => {
-			setContainerWidth((prev) =>
-				prev === 0 || Math.abs(prev - width) >= CONFIG.resizeThreshold
-					? width
-					: prev,
-			);
-		};
+		if (observerRef.current) {
+			observerRef.current.disconnect();
+			observerRef.current = null;
+		}
+		if (rafRef.current) {
+			cancelAnimationFrame(rafRef.current);
+		}
+
+		let delayId: NodeJS.Timeout | null = null;
 
 		const observer = new ResizeObserver(([entry]) => {
 			const newWidth = Math.round(entry?.contentRect.width || 0);
 			if (newWidth > 0) {
-				updateContainerWidth(newWidth);
+				setContainerWidth((prev) => {
+					if (
+						prev === CONFIG.fallbackWidth ||
+						Math.abs(prev - newWidth) >= CONFIG.resizeThreshold
+					) {
+						return newWidth;
+					}
+					return prev;
+				});
 			}
 		});
 
-		observer.observe(el);
-		return () => observer.disconnect();
+		delayId = setTimeout(() => {
+			rafRef.current = requestAnimationFrame(() => {
+				if (el && containerRef.current) {
+					observer.observe(el);
+					observerRef.current = observer;
+				}
+			});
+		}, 20);
+
+		return () => {
+			if (delayId) {
+				clearTimeout(delayId);
+			}
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
+			}
+			if (observerRef.current) {
+				observerRef.current.disconnect();
+				observerRef.current = null;
+			} else {
+				observer.disconnect();
+			}
+		};
 	}, [containerRef]);
 
 	const imageSizes = useMemo(() => {
-		if (aspectRatio <= 0 || containerWidth <= 0 || viewportHeight <= 0) {
-			return '1px';
+		if (!viewportHeight || isFallback) {
+			const initialComparableWidth = CONFIG.fallbackWidth;
+			if (isModal) {
+				return `(max-width: ${CONFIG.mobileMaxWidth}px) ${CONFIG.mobilePercent}vw, ${initialComparableWidth}px`;
+			}
+			return `(max-width: ${initialComparableWidth}px) 100vw, ${initialComparableWidth}px`;
 		}
 
-		if (!isModal) {
-			const galleryImageMaxHeight = viewportHeight * maxHeightPercent;
-			const calculatedWidthFromGalleryHeight =
-				galleryImageMaxHeight * aspectRatio;
+		const calculateWidthFromHeight = (height: number): number =>
+			height * aspectRatio;
 
-			const galleryImageWidth = Math.min(
+		if (isModal) {
+			const maxModalHeight = viewportHeight * CONFIG.heightLimitFactor;
+			const widthFromMaxHeight = calculateWidthFromHeight(maxModalHeight);
+			const modalLayoutWidth = Math.min(
 				containerWidth,
-				calculatedWidthFromGalleryHeight,
-				CONFIG.maxGalleryWidth,
+				widthFromMaxHeight,
+				CONFIG.maxModalWidth,
 			);
-			const snappedGalleryWidth = findNearestImageSize(galleryImageWidth);
-
-			return `(max-width: ${snappedGalleryWidth}px) 100vw, ${snappedGalleryWidth}px`;
+			const snappedModalWidth = findNearestImageSize(
+				Math.round(Math.max(1, modalLayoutWidth)),
+			);
+			return `(max-width: ${CONFIG.mobileMaxWidth}px) ${CONFIG.mobilePercent}vw, ${snappedModalWidth}px`;
 		}
 
-		const modalImageMaxHeight = viewportHeight * CONFIG.heightLimitFactor;
-
-		const calculatedWidthFromHeight = modalImageMaxHeight * aspectRatio;
-
-		let targetLayoutWidth = Math.min(
-			containerWidth,
-			calculatedWidthFromHeight,
-			CONFIG.maxModalWidth,
+		const maxGalleryImageHeight = viewportHeight * maxHeightPercent;
+		const widthFromMaxGalleryHeight = calculateWidthFromHeight(
+			maxGalleryImageHeight,
 		);
-
-		targetLayoutWidth = Math.max(1, Math.round(targetLayoutWidth));
-		const snappedModalWidth = findNearestImageSize(targetLayoutWidth);
-
-		return [
-			`(max-width: ${CONFIG.mobileMaxWidth}px) ${CONFIG.mobilePercent}vw`,
-			`${snappedModalWidth}px`,
-		].join(', ');
-	}, [aspectRatio, containerWidth, viewportHeight, isModal, maxHeightPercent]);
+		const galleryLayoutWidth = Math.min(
+			containerWidth,
+			widthFromMaxGalleryHeight,
+			CONFIG.maxGalleryWidth,
+		);
+		const snappedGalleryWidth = findNearestImageSize(
+			Math.round(Math.max(1, galleryLayoutWidth)),
+		);
+		return `(max-width: ${snappedGalleryWidth}px) 100vw, ${snappedGalleryWidth}px`;
+	}, [
+		aspectRatio,
+		containerWidth,
+		viewportHeight,
+		isModal,
+		maxHeightPercent,
+		isFallback,
+	]);
 
 	return { imageSizes };
 }
