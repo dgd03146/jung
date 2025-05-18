@@ -6,23 +6,26 @@ interface SpotListWithLikesProps {
 	spots: Spot[];
 	variant?: 'grid' | 'slideUp';
 	cardVariant?: 'default' | 'compact';
+	priorityCount?: number;
 }
 
 export const SpotListWithLikes = ({
 	spots,
 	variant,
 	cardVariant,
+	priorityCount = 3,
 }: SpotListWithLikesProps) => {
 	return (
 		<SpotList
 			spots={spots}
 			variant={variant}
-			renderSpot={(spot) => (
+			renderSpot={(spot, index) => (
 				<SpotCard
 					key={spot.id}
 					spot={spot}
 					variant={cardVariant}
 					renderTopRight={() => <ToggleSpotLikeButton spotId={spot.id} />}
+					priority={index < priorityCount}
 				/>
 			)}
 		/>
