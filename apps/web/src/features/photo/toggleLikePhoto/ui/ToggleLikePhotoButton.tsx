@@ -1,7 +1,9 @@
 'use client';
 
+import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
+import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useTogglePhotoLike } from '../model/useTogglePhotoLike';
 import * as styles from './ToggleLikePhotoButton.css';
@@ -18,12 +20,13 @@ export function ToggleLikePhotoButton({
 	const { toggleLike } = useTogglePhotoLike();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
+	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 	const isLiked = isInitiallyLiked;
 
 	const handleClick = () => {
 		if (!user) {
-			showToast('Login is required to like a photo.', 'warning');
+			setIsLoginModalOpen(true);
 			return;
 		}
 
@@ -38,15 +41,23 @@ export function ToggleLikePhotoButton({
 	};
 
 	return (
-		<Button
-			variant='ghost'
-			color='primary'
-			className={styles.toggleLikePhotoButton}
-			onClick={handleClick}
-			aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-			// disabled={!user && !isLiked}
-		>
-			{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
-		</Button>
+		<>
+			<Button
+				variant='ghost'
+				color='primary'
+				className={styles.toggleLikePhotoButton}
+				onClick={handleClick}
+				aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
+			>
+				{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
+			</Button>
+
+			{isLoginModalOpen && (
+				<LoginModal
+					isOpen={isLoginModalOpen}
+					onClose={() => setIsLoginModalOpen(false)}
+				/>
+			)}
+		</>
 	);
 }
