@@ -2,6 +2,8 @@ import { useRef } from 'react';
 
 import { useEffect, useState } from 'react';
 
+const SCROLL_LOCK_ACTIVE_MARKER_CLASS = 'js-scroll-lock-active'; // useScrollLock과 동일한 마커 클래스명 사용
+
 export const useScrollDetection = ({
 	threshold,
 	hysteresis = 20,
@@ -11,6 +13,11 @@ export const useScrollDetection = ({
 
 	useEffect(() => {
 		const handleScroll = () => {
+			// 스크롤 잠금 마커 클래스가 body에 있다면, isScrolled 상태를 업데이트하지 않음
+			if (document.body.classList.contains(SCROLL_LOCK_ACTIVE_MARKER_CLASS)) {
+				return;
+			}
+
 			if (!ticking.current) {
 				ticking.current = true;
 				requestAnimationFrame(() => {
