@@ -19,7 +19,7 @@ export function Modal({
 	children,
 	showCloseButton = true,
 	onClose,
-	useRouterBack = true,
+	useRouterBack = false,
 	variant = 'photo',
 }: ModalProps) {
 	const router = useRouter();
@@ -29,6 +29,7 @@ export function Modal({
 		if (useRouterBack) {
 			router.back();
 		}
+
 		onClose?.();
 	}, [router, onClose, useRouterBack]);
 
