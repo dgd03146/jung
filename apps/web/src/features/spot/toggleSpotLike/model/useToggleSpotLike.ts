@@ -2,10 +2,11 @@
 
 import { useTRPC } from '@/fsd/app';
 import { SPOT_DEFAULTS } from '@/fsd/entities/spot';
-import { useSupabaseAuth } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
-import { useQueryClient } from '@tanstack/react-query';
-import { usePathname, useRouter } from 'next/navigation';
+import type { Spot, SpotQueryResult } from '@jung/shared/types';
+import type { InfiniteData } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { usePathname } from 'next/navigation';
 import { toggleLikeSpotAction } from '../api/toggleLikeSpotAction';
 
 const spotQueryParams = {
@@ -15,136 +16,162 @@ const spotQueryParams = {
 	sort: SPOT_DEFAULTS.SORT,
 } as const;
 
+type InfiniteSpotPages = InfiniteData<SpotQueryResult>;
+
 export const useToggleSpotLike = () => {
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
-	const { user } = useSupabaseAuth();
 	const showToast = useToast();
-	const userId = user?.id || '';
 	const pathname = usePathname();
-	const router = useRouter();
 
 	const isDetailPage = pathname.includes('/spots/');
 
-	const toggleLike = async (spotId: string) => {
-		if (!user) {
-			const confirmed = window.confirm(
-				'Please log in to like photos, Would you like to go to login page?',
-			);
-
-			if (confirmed) {
-				const currentPath = pathname;
-				const locale = pathname.split('/')[1];
-				router.push(`/${locale}/login?next=${encodeURIComponent(currentPath)}`);
-			}
-			return false;
+	const mutation = useMutation<
+		Spot,
+		Error,
+		{ spotId: string; userId: string },
+		{
+			previousSpotData: Spot | undefined;
+			previousAllSpotsData: InfiniteSpotPages | undefined;
+			spotQueryKey: unknown[];
+			allSpotsQueryKey: unknown[];
 		}
+	>({
+		mutationFn: ({ spotId, userId }: { spotId: string; userId: string }) =>
+			toggleLikeSpotAction({ spotId, userId }),
 
-		const spotData = isDetailPage
-			? queryClient.getQueryData(
-					trpc.spot.getSpotById.queryOptions(spotId).queryKey,
-			  )
-			: null;
+		onMutate: async ({ spotId, userId }) => {
+			const spotQueryKey = trpc.spot.getSpotById.queryOptions(spotId).queryKey;
+			const allSpotsQueryKey =
+				trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey;
 
-		const allSpots = !isDetailPage
-			? queryClient.getQueryData(
-					trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
-			  )
-			: null;
+			await queryClient.cancelQueries({ queryKey: spotQueryKey });
+			await queryClient.cancelQueries({ queryKey: allSpotsQueryKey });
 
-		const previousData =
-			spotData ||
-			allSpots?.pages
-				.flatMap((page) => page.items)
-				.find((s) => s.id === spotId);
+			const previousSpotData = queryClient.getQueryData<Spot>(spotQueryKey);
+			const previousAllSpotsData =
+				queryClient.getQueryData<InfiniteSpotPages>(allSpotsQueryKey);
 
-		if (!previousData) {
-			throw new Error(`Can't find previous data`);
-		}
+			let isInitiallyLiked: boolean | undefined;
 
-		const isLiked = previousData?.liked_by?.includes(user.id) || false;
-
-		// 상세 페이지에서 좋아요 누를 때
-		if (spotData && isDetailPage) {
-			queryClient.setQueryData(
-				trpc.spot.getSpotById.queryOptions(spotId).queryKey,
-				(old) => {
-					if (!old) return old;
-
+			if (isDetailPage && previousSpotData) {
+				isInitiallyLiked = previousSpotData.liked_by?.includes(userId);
+				queryClient.setQueryData<Spot>(spotQueryKey, (oldData) => {
+					if (!oldData) return undefined;
 					return {
-						...old,
-						likes: isLiked ? old.likes - 1 : old.likes + 1,
-						liked_by: isLiked
-							? old.liked_by.filter((id) => id !== user.id)
-							: [...(old.liked_by || []), user.id],
+						...oldData,
+						likes: isInitiallyLiked ? oldData.likes - 1 : oldData.likes + 1,
+						liked_by: isInitiallyLiked
+							? oldData.liked_by.filter((id) => id !== userId)
+							: [...(oldData.liked_by || []), userId],
 					};
-				},
-			);
-		}
+				});
+			} else if (!isDetailPage && previousAllSpotsData) {
+				const spotInList = previousAllSpotsData.pages
+					.flatMap((p: SpotQueryResult) => p.items)
+					.find((s: Spot) => s.id === spotId);
 
-		//  리스트 페이지에서 좋아요 누를 때
-		if (allSpots && !isDetailPage) {
-			queryClient.setQueryData(
-				trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
-				(old) => {
-					if (!old) return old;
+				if (spotInList) {
+					isInitiallyLiked = spotInList.liked_by?.includes(userId);
 
-					return {
-						...old,
-						pages: old.pages.map((page) => ({
+					const newAllSpotsData: InfiniteSpotPages = {
+						...previousAllSpotsData,
+						pages: previousAllSpotsData.pages.map((page: SpotQueryResult) => ({
 							...page,
-							items: page.items.map((s) => {
-								if (s.id === spotId) {
+							items: page.items.map((item: Spot) => {
+								if (item.id === spotId) {
 									return {
-										...s,
-										likes: isLiked ? s.likes - 1 : s.likes + 1,
-										liked_by: isLiked
-											? s.liked_by.filter((id) => id !== user.id)
-											: [...(s.liked_by || []), user.id],
+										...item,
+										likes: isInitiallyLiked ? item.likes - 1 : item.likes + 1,
+										liked_by: isInitiallyLiked
+											? item.liked_by.filter((id) => id !== userId)
+											: [...(item.liked_by || []), userId],
 									};
 								}
-								return s;
+								return item;
 							}),
 						})),
 					};
-				},
-			);
+					queryClient.setQueryData<InfiniteSpotPages>(
+						allSpotsQueryKey,
+						newAllSpotsData,
+					);
+				}
+			}
+
+			if (typeof isInitiallyLiked === 'undefined') {
+				console.warn(
+					'Could not determine initial like state for optimistic update on spot:',
+					spotId,
+				);
+				return {
+					previousSpotData,
+					previousAllSpotsData,
+					spotQueryKey,
+					allSpotsQueryKey,
+				};
+			}
+
+			return {
+				previousSpotData,
+				previousAllSpotsData,
+				spotQueryKey,
+				allSpotsQueryKey,
+			};
+		},
+
+		onError: (_error, _variables, context) => {
+			showToast('Failed to update like. Reverting changes.', 'error');
+			if (context?.previousSpotData) {
+				queryClient.setQueryData<Spot>(
+					context.spotQueryKey,
+					context.previousSpotData,
+				);
+			}
+			if (context?.previousAllSpotsData) {
+				queryClient.setQueryData<InfiniteSpotPages>(
+					context.allSpotsQueryKey,
+					context.previousAllSpotsData,
+				);
+			}
+		},
+
+		onSettled: (data, _error, variables) => {
+			const { spotId } = variables;
+			const spotQueryKey = trpc.spot.getSpotById.queryOptions(spotId).queryKey;
+			const allSpotsQueryKey =
+				trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey;
+
+			queryClient.invalidateQueries({ queryKey: spotQueryKey });
+			queryClient.invalidateQueries({ queryKey: allSpotsQueryKey });
+		},
+	});
+
+	const getIsLiked = (spotId: string, userId: string | undefined) => {
+		if (!userId) return false;
+
+		const spotQueryKey = trpc.spot.getSpotById.queryOptions(spotId).queryKey;
+		const allSpotsQueryKey =
+			trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey;
+
+		if (isDetailPage) {
+			const spotData = queryClient.getQueryData<Spot>(spotQueryKey);
+			return !!spotData?.liked_by?.includes(userId);
 		}
 
-		try {
-			await toggleLikeSpotAction({ spotId, userId });
-			return true;
-		} catch (error) {
-			// Rollback on error
-			queryClient.setQueryData(
-				trpc.spot.getSpotById.queryOptions(spotId).queryKey,
-				previousData,
-			);
-			showToast('Failed to update like', 'error');
-			return false;
-		}
-	};
-
-	const getIsLiked = (spotId: string) => {
-		const spotData = queryClient.getQueryData(
-			trpc.spot.getSpotById.queryOptions(spotId).queryKey,
-		);
-		if (spotData && isDetailPage) {
-			return !!spotData.liked_by?.includes(user?.id ?? '');
-		}
-
-		const allSpots = queryClient.getQueryData(
-			trpc.spot.getAllSpots.infiniteQueryOptions(spotQueryParams).queryKey,
-		);
-		const spot = allSpots?.pages
-			.flatMap((page) => page.items)
-			.find((s) => s.id === spotId);
-
-		return !!spot?.liked_by?.includes(user?.id ?? '');
+		const allSpotsData =
+			queryClient.getQueryData<InfiniteSpotPages>(allSpotsQueryKey);
+		const spotInList = allSpotsData?.pages
+			.flatMap((page: SpotQueryResult) => page.items)
+			.find((s: Spot) => s.id === spotId);
+		return !!spotInList?.liked_by?.includes(userId);
 	};
 
 	return {
-		toggleLike,
+		toggleLike: mutation.mutate,
+		isPending: mutation.isPending,
+		isError: mutation.isError,
+		error: mutation.error,
 		getIsLiked,
 	};
 };
