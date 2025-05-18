@@ -9,18 +9,18 @@ const shimmer = keyframes({
 
 export const imageOverlay = style({
 	position: 'absolute',
-	top: 0,
-	left: 0,
-	right: 0,
-	padding: '8px',
+	top: '8px',
+	right: '8px',
 	display: 'flex',
 	justifyContent: 'flex-end',
 	alignItems: 'flex-start',
-	zIndex: 1,
+	zIndex: 2,
+	pointerEvents: 'auto',
 });
 
 export const cardWrapper = recipe({
 	base: {
+		position: 'relative',
 		display: 'block',
 		width: '100%',
 		textDecoration: 'none',
@@ -35,9 +35,6 @@ export const cardWrapper = recipe({
 			},
 			compact: {
 				width: '300px',
-				':hover': {
-					transform: 'none',
-				},
 			},
 		},
 	},
@@ -53,7 +50,7 @@ export const imageWrapper = recipe({
 		overflow: 'hidden',
 		flexShrink: '0',
 		backgroundColor: palette.gray100,
-		borderRadius: '12px 12px 0 0',
+		borderRadius: '8px 8px 0 0',
 		minHeight: '200px',
 		'::before': {
 			content: '""',

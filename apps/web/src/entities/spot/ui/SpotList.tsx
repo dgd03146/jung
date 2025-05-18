@@ -8,7 +8,7 @@ import * as styles from './SpotList.css';
 interface SpotListProps {
 	spots: Spot[];
 	variant?: 'grid' | 'slideUp';
-	renderSpot?: (spot: Spot) => React.ReactNode;
+	renderSpot?: (spot: Spot, index: number) => React.ReactNode;
 }
 
 export function SpotList({
@@ -22,9 +22,13 @@ export function SpotList({
 
 	return (
 		<Box className={styles.spotList({ variant })}>
-			{spots.map((spot) => (
+			{spots.map((spot, index) => (
 				<Fragment key={spot.id}>
-					{renderSpot ? renderSpot(spot) : <SpotCard spot={spot} />}
+					{renderSpot ? (
+						renderSpot(spot, index)
+					) : (
+						<SpotCard spot={spot} priority={index === 0} />
+					)}
 				</Fragment>
 			))}
 		</Box>
