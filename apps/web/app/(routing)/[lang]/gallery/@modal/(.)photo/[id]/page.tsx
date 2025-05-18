@@ -13,7 +13,7 @@ export default async function PhotoModal({
 	queryClient.prefetchQuery(trpc.photos.getPhotoById.queryOptions(photoId));
 
 	return (
-		<Modal>
+		<Modal useRouterBack>
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Suspense fallback={<PhotoDetailSkeleton isModal />}>
 					<PhotoDetailPage photoId={photoId} isModal />
