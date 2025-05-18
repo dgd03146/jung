@@ -7,11 +7,6 @@ const fadeIn = keyframes({
 	to: { opacity: 1, transform: 'translateY(0)' },
 });
 
-const slideIn = keyframes({
-	from: { transform: 'scaleX(0)', opacity: 0 },
-	to: { transform: 'scaleX(1)', opacity: 1 },
-});
-
 export const headerContainer = recipe({
 	base: style({
 		height: '4.5rem',
