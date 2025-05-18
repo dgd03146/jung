@@ -2,10 +2,8 @@
 
 import {
 	NavigatePhotoButtons,
-	ShareModal,
 	SharePhotoButton,
 	ToggleLikePhotoButton,
-	useSharePhoto,
 } from '@/fsd/features/photo';
 
 import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
@@ -56,9 +54,6 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 		aspectRatio,
 		isModal,
 	});
-
-	const { handleShare, isShareModalOpen, setIsShareModalOpen, getShareLinks } =
-		useSharePhoto();
 
 	const isInitiallyLiked =
 		user && currentPhoto.liked_by
@@ -122,20 +117,12 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 									photoId={photoId}
 									isInitiallyLiked={isInitiallyLiked}
 								/>
-								<SharePhotoButton photo={currentPhoto} onShare={handleShare} />
+								<SharePhotoButton photo={currentPhoto} />
 							</Flex>
 						</Flex>
 					</div>
 				</div>
 			</div>
-
-			{isShareModalOpen && (
-				<ShareModal
-					isOpen={isShareModalOpen}
-					onClose={() => setIsShareModalOpen(false)}
-					links={getShareLinks(currentPhoto)}
-				/>
-			)}
 		</>
 	);
 };
