@@ -2,6 +2,7 @@ import { PostListSkeleton } from '@/fsd/entities/post';
 import {
 	FilterPostCategoryAccordion,
 	FilterPostCategoryAccordionSkeleton,
+	ViewModeProvider,
 	ViewPosts,
 } from '@/fsd/features/post';
 import { SearchBarSkeleton } from '@/fsd/shared';
@@ -20,14 +21,16 @@ export const BlogLayout = ({ currentCategory }: BlogLayoutProps) => {
 				<FilterPostCategoryAccordion currentCategory={currentCategory} />
 			</Suspense>
 
-			<Box as='main' minWidth='0' flex={1}>
-				<Suspense fallback={<SearchBarSkeleton />}>
-					<BlogPageControls />
-				</Suspense>
-				<Suspense fallback={<PostListSkeleton count={6} />}>
-					<ViewPosts />
-				</Suspense>
-			</Box>
+			<ViewModeProvider>
+				<Box as='main' minWidth='0' flex={1}>
+					<Suspense fallback={<SearchBarSkeleton />}>
+						<BlogPageControls />
+					</Suspense>
+					<Suspense fallback={<PostListSkeleton count={6} />}>
+						<ViewPosts />
+					</Suspense>
+				</Box>
+			</ViewModeProvider>
 		</Flex>
 	);
 };

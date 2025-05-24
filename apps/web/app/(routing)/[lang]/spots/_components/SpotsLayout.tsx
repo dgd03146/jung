@@ -2,6 +2,8 @@ import { SpotListSkeleton } from '@/fsd/entities/spot';
 import {
 	FilterSpotCategory,
 	FilterSpotCategorySkeleton,
+	MarkerProvider,
+	SpotViewProvider,
 	ToggleSpotViewButton,
 } from '@/fsd/features/spot';
 import { SearchBar, SearchBarSkeleton } from '@/fsd/shared';
@@ -17,19 +19,21 @@ interface SpotsLayoutProps {
 
 export const SpotsLayout = ({ currentCategory }: SpotsLayoutProps) => {
 	return (
-		<>
-			<Flex gap='3' align='center'>
-				<Suspense fallback={<SearchBarSkeleton />}>
-					<SearchBar />
+		<SpotViewProvider>
+			<MarkerProvider>
+				<Flex gap='3' align='center'>
+					<Suspense fallback={<SearchBarSkeleton />}>
+						<SearchBar />
+					</Suspense>
+					<ToggleSpotViewButton />
+				</Flex>
+				<Suspense fallback={<FilterSpotCategorySkeleton length={6} />}>
+					<FilterSpotCategory currentCategory={currentCategory} />
 				</Suspense>
-				<ToggleSpotViewButton />
-			</Flex>
-			<Suspense fallback={<FilterSpotCategorySkeleton length={6} />}>
-				<FilterSpotCategory currentCategory={currentCategory} />
-			</Suspense>
-			<Suspense fallback={<SpotListSkeleton count={6} />}>
-				<SpotsContent />
-			</Suspense>
-		</>
+				<Suspense fallback={<SpotListSkeleton count={6} />}>
+					<SpotsContent />
+				</Suspense>
+			</MarkerProvider>
+		</SpotViewProvider>
 	);
 };

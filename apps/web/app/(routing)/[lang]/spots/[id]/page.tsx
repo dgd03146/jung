@@ -1,4 +1,5 @@
 import { SpotDetailSkeleton } from '@/fsd/entities/spot';
+import { SpotViewProvider } from '@/fsd/features/spot';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,
@@ -124,9 +125,11 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense fallback={<SpotDetailSkeleton />}>
-				<SpotDetailContent spotId={spotId} />
-			</Suspense>
+			<SpotViewProvider>
+				<Suspense fallback={<SpotDetailSkeleton />}>
+					<SpotDetailContent spotId={spotId} />
+				</Suspense>
+			</SpotViewProvider>
 		</HydrationBoundary>
 	);
 }
