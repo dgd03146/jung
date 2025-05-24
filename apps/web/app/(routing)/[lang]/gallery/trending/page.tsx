@@ -1,4 +1,5 @@
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
+import { FilteredPhotoList } from '@/fsd/features/photo';
 import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
@@ -6,7 +7,6 @@ import {
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { GalleryContent } from '@/fsd/views/gallery';
 import { Flex } from '@jung/design-system/components';
 
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
@@ -90,7 +90,7 @@ export default function TrendingPage() {
 					</Flex>
 				}
 			>
-				<GalleryContent isTrending />
+				<FilteredPhotoList isTrending />
 			</Suspense>
 		</HydrationBoundary>
 	);
