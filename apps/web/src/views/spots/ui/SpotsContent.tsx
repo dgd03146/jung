@@ -5,7 +5,7 @@ import {
 	SpotListWithLikes,
 	ToggleSpotListButton,
 	ViewMap,
-	useSpotStore,
+	useSpotView,
 } from '@/fsd/features/spot';
 import {
 	LoadingSpinner,
@@ -16,7 +16,7 @@ import { Box, Flex, Stack } from '@jung/design-system/components';
 import { useParams } from 'next/navigation';
 
 export const SpotsContent = () => {
-	const { isListView, isSlidListVisible } = useSpotStore();
+	const { isListView, isSlidListVisible } = useSpotView();
 	const params = useParams();
 	const categoryName =
 		typeof params.categoryName === 'string'

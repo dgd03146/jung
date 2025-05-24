@@ -1,7 +1,8 @@
 'use client';
 
 import { BLOG_DEFAULTS, usePostsQuery } from '@/fsd/entities';
-import { PostList, useViewModeStore } from '@/fsd/entities/post';
+import { PostList } from '@/fsd/entities/post';
+import { useViewMode } from '@/fsd/features/post';
 import {
 	LoadingSpinner,
 	useInfiniteScroll,
@@ -11,7 +12,7 @@ import { Flex } from '@jung/design-system/components';
 import { useParams } from 'next/navigation';
 
 export const ViewPosts = () => {
-	const { viewMode } = useViewModeStore();
+	const { viewMode } = useViewMode();
 	const params = useParams();
 	const categoryName =
 		typeof params.categoryName === 'string'

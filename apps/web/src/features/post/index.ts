@@ -3,4 +3,8 @@ export { FilterPostCategoryAccordionSkeleton } from './filterPostCategoryAccordi
 export { SelectViewMode } from './selectViewMode/ui';
 export { useTogglePostLike } from './togglePostLike/model/useTogglePostLike';
 export { TogglePostLike } from './togglePostLike/ui/TogglePostLike';
+export {
+	ViewModeProvider,
+	useViewMode,
+} from './viewPosts/model/ViewModeContext';
 export { ViewPosts } from './viewPosts/ui/ViewPosts';

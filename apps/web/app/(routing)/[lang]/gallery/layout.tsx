@@ -1,7 +1,5 @@
-import {
-	GalleryNavigationWrapper,
-	PhotoFilterProvider,
-} from '@/fsd/views/gallery';
+import { PhotoFilterProvider } from '@/fsd/features/photo';
+import { GalleryNavigationWrapper } from '@/fsd/views/gallery';
 
 interface GalleryLayoutProps {
 	children: React.ReactNode;
