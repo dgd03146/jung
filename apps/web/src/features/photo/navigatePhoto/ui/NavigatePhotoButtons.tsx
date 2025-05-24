@@ -4,7 +4,7 @@ import { Box, Button } from '@jung/design-system/components';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 import { useAdjacentPhotosQuery } from '@/fsd/entities/photo';
-import { usePhotoFilter } from '@/fsd/views/gallery';
+import { usePhotoFilter } from '@/fsd/features/photo';
 import { useInitialAdjacentPhotos } from '../model/useInitialAdjacentPhotos';
 import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
 import * as styles from './NavigatePhotoButton.css';
