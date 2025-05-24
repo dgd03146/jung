@@ -5,12 +5,12 @@ import {
 	ShareSpotButton,
 	ToggleSpotViewButton,
 	ViewMap,
-	useSpotStore,
+	useSpotView,
 } from '@/fsd/features/spot';
 
 export const SpotDetailContent = ({ spotId }: { spotId: string }) => {
 	const { data: spot } = useSpotQuery(spotId);
-	const { isListView } = useSpotStore();
+	const { isListView } = useSpotView();
 
 	return (
 		<SpotDetailCard
