@@ -5,7 +5,7 @@ import {
 	SelectMarker,
 	useMapLoad,
 	useMapState,
-	useMarkerStore,
+	useMarker,
 } from '@/fsd/features/spot';
 import { LoadingSpinner } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
@@ -40,7 +40,7 @@ export const ViewMap = ({ spots, spot, initialCenter }: ViewMapProps) => {
 	);
 	const { onLoad, onUnmount } = useMapLoad(center);
 
-	const { selectedMarker, setSelectedMarker } = useMarkerStore();
+	const { selectedMarker, setSelectedMarker } = useMarker();
 
 	useEffect(() => {
 		setSelectedMarker(null);

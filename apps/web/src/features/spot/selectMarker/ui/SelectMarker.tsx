@@ -1,7 +1,7 @@
 'use client';
 
 import { CategoryIcon } from '@/fsd/entities/spot';
-import { useMarkerStore } from '@/fsd/features/spot';
+import { useMarker } from '@/fsd/features/spot';
 import { capitalizeFirstLetter } from '@/fsd/shared';
 import { Tag, Typography } from '@jung/design-system/components';
 import type { Spot, SpotCategory } from '@jung/shared/types';
@@ -21,7 +21,7 @@ export const SelectMarker = ({ spot, clusterer }: SelectMarkerProps) => {
 
 	const isVisible = useMarkerVisibility(clusterer, spot.coordinates);
 
-	const { selectedMarker, handleMarkerClick } = useMarkerStore();
+	const { selectedMarker, handleMarkerClick } = useMarker();
 
 	const isSelected = selectedMarker?.id === spot.id;
 
