@@ -9,6 +9,7 @@ export const useTogglePhotoLike = () => {
 	const trpc = useTRPC();
 
 	const mutation = useMutation({
+		mutationKey: ['togglePhotoLike'],
 		mutationFn: async ({
 			photoId,
 			userId,
@@ -28,13 +29,13 @@ export const useTogglePhotoLike = () => {
 		},
 
 		onMutate: async ({ photoId, userId, isCurrentlyLiked }) => {
+			const queryKey = trpc.photos.getPhotoById.queryOptions(photoId).queryKey;
+
 			await queryClient.cancelQueries({
-				queryKey: trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
+				queryKey,
 			});
 
-			const previousData = queryClient.getQueryData<Photo>(
-				trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
-			);
+			const previousData = queryClient.getQueryData<Photo>(queryKey);
 
 			const isLiked =
 				isCurrentlyLiked !== undefined
@@ -43,16 +44,16 @@ export const useTogglePhotoLike = () => {
 
 			const likeDelta = isLiked ? -1 : 1;
 
-			queryClient.setQueryData(
-				trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
-				(old) => {
-					const updated = updatePhotoLikes(old, likeDelta, userId);
+			queryClient.setQueryData(queryKey, (old) => {
+				if (!old) {
+					return old;
+				}
+				const updated = updatePhotoLikes(old, likeDelta, userId);
 
-					return updated;
-				},
-			);
+				return updated;
+			});
 
-			return { previousData, photoId };
+			return { previousData, photoId, isLiked };
 		},
 
 		onError: (_err, variables, context) => {
@@ -64,24 +65,28 @@ export const useTogglePhotoLike = () => {
 			}
 		},
 
+		onSuccess: (updatedPhoto, variables) => {
+			const queryKey = trpc.photos.getPhotoById.queryOptions(
+				variables.photoId,
+			).queryKey;
+
+			queryClient.setQueryData(queryKey, updatedPhoto);
+		},
+
 		onSettled: (_data, _error, variables) => {
 			if (variables?.photoId) {
-				queryClient.invalidateQueries({
-					queryKey: trpc.photos.getPhotoById.queryOptions(variables.photoId)
-						.queryKey,
+				const activeMutationsCount = queryClient.isMutating({
+					mutationKey: ['togglePhotoLike'],
 				});
 
-				queryClient.invalidateQueries({
-					queryKey: [trpc.photos._def.pathRoot],
-					exact: false,
-				});
-
-				queryClient.invalidateQueries({
-					queryKey: trpc.photos.getAdjacentPhotos.queryOptions({
-						id: variables.photoId,
-					}).queryKey,
-					exact: false,
-				});
+				if (activeMutationsCount === 1) {
+					queryClient.invalidateQueries({
+						queryKey: trpc.photos.getPhotoById.queryOptions(variables.photoId)
+							.queryKey,
+					});
+				} else {
+					// 쿼리 무효화 건너뜀
+				}
 			}
 		},
 	});
