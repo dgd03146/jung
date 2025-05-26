@@ -3,7 +3,7 @@
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useTogglePhotoLike } from '../model/useTogglePhotoLike';
 import * as styles from './ToggleLikePhotoButton.css';
@@ -24,9 +24,7 @@ export function ToggleLikePhotoButton({
 	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-	const isLiked = useMemo(() => {
-		return user && likedBy ? likedBy.includes(user.id) : false;
-	}, [user, likedBy]);
+	const isLiked = !!(user && likedBy?.includes(user.id));
 
 	const handleClick = () => {
 		if (!user) {
@@ -41,7 +39,7 @@ export function ToggleLikePhotoButton({
 				isCurrentlyLiked: isLiked,
 			},
 			{
-				onError: (error) => {
+				onError: () => {
 					showToast('Failed to update like status. Please try again.', 'error');
 				},
 			},
