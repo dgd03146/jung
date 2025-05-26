@@ -23,7 +23,10 @@ interface PhotoDetailPageProps {
 }
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
-	const { data: currentPhoto } = usePhotoQuery(photoId);
+	const { data: currentPhoto } = usePhotoQuery(photoId, {
+		staleTime: Number.POSITIVE_INFINITY,
+		gcTime: 24 * 60 * 60 * 1000,
+	});
 	const { user } = useSupabaseAuth();
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,11 +57,6 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 		aspectRatio,
 		isModal,
 	});
-
-	const isInitiallyLiked =
-		user && currentPhoto.liked_by
-			? currentPhoto.liked_by.includes(user.id)
-			: false;
 
 	return (
 		<>
@@ -115,7 +113,8 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							<Flex gap='4'>
 								<ToggleLikePhotoButton
 									photoId={photoId}
-									isInitiallyLiked={isInitiallyLiked}
+									likedBy={currentPhoto.liked_by}
+									likesCount={currentPhoto.likes}
 								/>
 								<SharePhotoButton photo={currentPhoto} />
 							</Flex>
