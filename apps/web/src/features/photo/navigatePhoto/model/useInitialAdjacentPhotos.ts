@@ -16,6 +16,13 @@ interface UseInitialAdjacentPhotosParams {
 	collectionId?: string;
 }
 
+/**
+ * 이미 갤러리에서 로드된 데이터를 활용하여 인접 사진 정보를 제공하는 훅
+ *
+ * 이 훅은 네트워크 요청을 하지 않고 캐시된 데이터만 활용하므로 매우 빠르게 동작합니다.
+ * NavigatePhotoButtons 컴포넌트가 처음 렌더링될 때 이 데이터를 initialData로 사용하여
+ * 사용자가 버튼을 즉시 볼 수 있게 합니다.
+ */
 export function useInitialAdjacentPhotos({
 	photoId,
 	sort,
@@ -45,6 +52,7 @@ export function useInitialAdjacentPhotos({
 		const allPhotos: Photo[] = cachedPhotosListData.pages.flatMap(
 			(page) => page.items,
 		);
+
 		const currentIndex = allPhotos.findIndex((p) => p.id === photoId);
 
 		if (currentIndex !== -1) {
@@ -53,5 +61,6 @@ export function useInitialAdjacentPhotos({
 			return { previous, next };
 		}
 	}
+
 	return undefined;
 }
