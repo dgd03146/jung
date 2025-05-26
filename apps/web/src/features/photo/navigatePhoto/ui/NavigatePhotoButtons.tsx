@@ -5,14 +5,22 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 import { useAdjacentPhotosQuery } from '@/fsd/entities/photo';
 import { usePhotoFilter } from '@/fsd/features/photo';
-import { useInitialAdjacentPhotos } from '../model/useInitialAdjacentPhotos';
-import { useKeyboardNavigation } from '../model/useKeyboardNavigation';
+import {
+	useAdjacentPhotosPrefetch,
+	useInitialAdjacentPhotos,
+	usePhotoNavigationActions,
+} from '../model';
 import * as styles from './NavigatePhotoButton.css';
 
 interface Props {
 	photoId: string;
 	isModal: boolean;
 }
+
+const ButtonIcon = {
+	prev: HiChevronLeft,
+	next: HiChevronRight,
+};
 
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 	if (!isModal) {
@@ -21,75 +29,60 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 
 	const { sort, collectionId } = usePhotoFilter();
 
+	// 훅은 항상 컴포넌트 최상위 레벨에서 직접 호출
 	const initialAdjacentData = useInitialAdjacentPhotos({
 		photoId,
 		sort,
 		collectionId,
 	});
 
-	const { data: adjacentPhotos, isFetching: isLoadingAdjacentPhotos } =
-		useAdjacentPhotosQuery({
-			id: photoId,
-			sort,
-			collectionId,
-			initialData: initialAdjacentData,
-			enabled: isModal && !!photoId,
-		});
+	const { data: adjacentPhotos, isLoading } = useAdjacentPhotosQuery({
+		id: photoId,
+		sort,
+		collectionId,
+		initialData: initialAdjacentData,
+		enabled: isModal && !!photoId,
+	});
 
 	const previousPhoto = adjacentPhotos?.previous ?? null;
 	const nextPhoto = adjacentPhotos?.next ?? null;
 
-	const { handleNavigation } = useKeyboardNavigation({
-		previousPhotoId: previousPhoto?.id,
-		nextPhotoId: nextPhoto?.id,
-		isModal,
+	useAdjacentPhotosPrefetch({
+		photoId,
+		previousPhoto,
+		nextPhoto,
+		sort,
+		collectionId,
 	});
 
-	const renderNavButton = (
-		direction: 'prev' | 'next',
-		target: { id: string } | null,
-	) => {
-		const isDisabled = !target;
-		const Icon = direction === 'prev' ? HiChevronLeft : HiChevronRight;
-		const ariaLabel = direction === 'prev' ? 'Previous photo' : 'Next photo';
-		const title =
-			direction === 'prev'
-				? 'Go to previous photo (← key)'
-				: 'Go to next photo (→ key)';
-
-		const onClick = () => {
-			if (!target) {
-				return;
-			}
-			handleNavigation(target.id);
-		};
-
-		return (
-			<Button
-				onClick={onClick}
-				className={styles.modalNavigationButton}
-				aria-label={ariaLabel}
-				title={title}
-				disabled={isDisabled}
-			>
-				<Icon className={styles.navigationIcon} />
-			</Button>
-		);
-	};
+	const { handlePrevClick, handleNextClick, canNavigatePrev, canNavigateNext } =
+		usePhotoNavigationActions({
+			previousPhoto,
+			nextPhoto,
+			isModal,
+		});
 
 	return (
 		<Box className={styles.modalNavigationWrapper}>
 			<div className={styles.modalNavigationButtonsContainer}>
-				{previousPhoto ? (
-					renderNavButton('prev', previousPhoto)
-				) : (
-					<div className={styles.placeholderButton} />
-				)}
-				{nextPhoto ? (
-					renderNavButton('next', nextPhoto)
-				) : (
-					<div className={styles.placeholderButton} />
-				)}
+				<Button
+					onClick={handlePrevClick}
+					className={styles.modalNavigationButton}
+					aria-label='Previous photo'
+					title='Go to previous photo (← key)'
+					disabled={isLoading || !canNavigatePrev}
+				>
+					<ButtonIcon.prev className={styles.navigationIcon} />
+				</Button>
+				<Button
+					onClick={handleNextClick}
+					className={styles.modalNavigationButton}
+					aria-label='Next photo'
+					title='Go to next photo (→ key)'
+					disabled={isLoading || !canNavigateNext}
+				>
+					<ButtonIcon.next className={styles.navigationIcon} />
+				</Button>
 			</div>
 		</Box>
 	);

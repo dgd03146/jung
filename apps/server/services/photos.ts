@@ -22,6 +22,122 @@ export const photosService = {
 		q,
 	}: QueryParams): Promise<QueryResult> {
 		try {
+			// popular 정렬이면서 커서가 있을 때는 다른 방식으로 처리
+			if (sort === 'popular' && cursor) {
+				// 먼저 커서 위치의 photo 정보를 가져옴
+				const { data: cursorPhoto, error: cursorError } = await supabase
+					.from('photos')
+					.select('created_at, likes, id')
+					.eq('id', cursor)
+					.single();
+
+				if (cursorError) {
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'Invalid cursor provided',
+						cause: cursorError,
+					});
+				}
+
+				if (!cursorPhoto) {
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'Cursor photo not found',
+					});
+				}
+
+				// 두 개의 별도 쿼리 실행
+
+				// 1. 좋아요 수가 더 적은 항목 쿼리
+				let lessLikesQuery = supabase
+					.from('photos')
+					.select('*')
+					.lt('likes', cursorPhoto.likes)
+					.order('likes', { ascending: false })
+					.order('created_at', { ascending: false });
+
+				// 2. 좋아요 수가 같고 날짜가 더 이전인 항목 쿼리
+				let sameLikesQuery = supabase
+					.from('photos')
+					.select('*')
+					.eq('likes', cursorPhoto.likes)
+					.lt('created_at', cursorPhoto.created_at)
+					.order('created_at', { ascending: false });
+
+				// 검색어 필터가 있다면 적용
+				if (q) {
+					lessLikesQuery = lessLikesQuery.or(
+						`description.ilike.%${q}%,tags.cs.{${q}}`,
+					);
+					sameLikesQuery = sameLikesQuery.or(
+						`description.ilike.%${q}%,tags.cs.{${q}}`,
+					);
+				}
+
+				// 각 쿼리에 제한 적용 (더 많은 결과를 가져와 병합 후 제한)
+				lessLikesQuery = lessLikesQuery.limit(limit);
+				sameLikesQuery = sameLikesQuery.limit(limit);
+
+				// 병렬로 쿼리 실행
+				const [lessLikesResult, sameLikesResult] = await Promise.all([
+					lessLikesQuery,
+					sameLikesQuery,
+				]);
+
+				// 에러 처리
+				if (lessLikesResult.error) {
+					console.error(
+						'Error fetching photos with less likes:',
+						lessLikesResult.error,
+					);
+					throw new TRPCError({
+						code: 'INTERNAL_SERVER_ERROR',
+						message: 'Failed to fetch photos. Please try again later.',
+						cause: lessLikesResult.error,
+					});
+				}
+
+				if (sameLikesResult.error) {
+					console.error(
+						'Error fetching photos with same likes:',
+						sameLikesResult.error,
+					);
+					throw new TRPCError({
+						code: 'INTERNAL_SERVER_ERROR',
+						message: 'Failed to fetch photos. Please try again later.',
+						cause: sameLikesResult.error,
+					});
+				}
+
+				// 두 결과 병합 및 정렬
+				const items = [
+					...(lessLikesResult.data || []),
+					...(sameLikesResult.data || []),
+				]
+					.sort((a, b) => {
+						// 좋아요 수로 내림차순 정렬
+						if (b.likes !== a.likes) {
+							return b.likes - a.likes;
+						}
+						// 좋아요 수가 같으면 날짜로 내림차순 정렬
+						return (
+							new Date(b.created_at).getTime() -
+							new Date(a.created_at).getTime()
+						);
+					})
+					.slice(0, limit); // 최대 limit 개수만큼만 반환
+
+				// 다음 커서 계산
+				const nextCursor =
+					items.length === limit ? Number(items[items.length - 1]?.id) : null;
+
+				return {
+					items,
+					nextCursor,
+				};
+			}
+
+			// 기본 쿼리 (latest 정렬 또는 cursor 없는 popular 정렬)
 			let query = supabase.from('photos').select('*', { count: 'exact' });
 
 			if (q) {
@@ -44,13 +160,8 @@ export const photosService = {
 				}
 
 				if (cursorPhoto) {
-					if (sort === 'popular') {
-						query = query.or(
-							`likes.lt.${cursorPhoto.likes},likes.eq.${cursorPhoto.likes}.and.created_at.lt.${cursorPhoto.created_at}`,
-						);
-					} else {
-						query = query.lt('created_at', cursorPhoto.created_at);
-					}
+					// 최신순일 경우만 여기서 처리 (popular은 위에서 이미 처리됨)
+					query = query.lt('created_at', cursorPhoto.created_at);
 				}
 			}
 
@@ -64,9 +175,10 @@ export const photosService = {
 
 			query = query.limit(limit);
 
-			const { data, error } = await query.returns<Photo[]>();
+			const { data, error } = await query;
 
 			if (error) {
+				console.error('Error fetching photos:', error);
 				throw new TRPCError({
 					code: 'INTERNAL_SERVER_ERROR',
 					message: 'Failed to fetch photos. Please try again later.',
@@ -81,7 +193,6 @@ export const photosService = {
 				};
 			}
 
-			// 다음 페이지가 있는지 확인 (마지막 페이지 계산)
 			const nextCursor =
 				data.length === limit ? Number(data[data.length - 1]?.id) : null;
 
@@ -90,6 +201,7 @@ export const photosService = {
 				nextCursor,
 			};
 		} catch (error) {
+			console.error('Unexpected error in findMany:', error);
 			if (error instanceof TRPCError) {
 				throw error;
 			}
@@ -153,7 +265,6 @@ export const photosService = {
 			const { sort, collectionId } = options || {};
 
 			const currentPhoto = await this.findById(id);
-			// 컬렉션 ID가 제공된 경우 (무조건 최신순)
 			if (collectionId) {
 				const { data: previousPhoto } = await supabase
 					.from('photos')
@@ -185,7 +296,6 @@ export const photosService = {
 				};
 			}
 
-			// trending page일때 인기순
 			if (sort === 'popular') {
 				const { data: prevMoreLikes } = await supabase
 					.from('photos')
@@ -229,7 +339,6 @@ export const photosService = {
 					next: nextPhoto || null,
 				};
 			}
-			// 최신순 정렬 (기본)
 			const { data: previousPhoto } = await supabase
 				.from('photos')
 				.select('*')
@@ -263,7 +372,6 @@ export const photosService = {
 		}
 	},
 
-	// 좋아요 토글
 	async toggleLike({
 		photoId,
 		userId,
@@ -272,7 +380,6 @@ export const photosService = {
 		userId: string;
 	}): Promise<Photo> {
 		try {
-			// 1. 사진 데이터 가져오기
 			const { data: photo, error: selectError } = await supabase
 				.from('photos')
 				.select('*')
@@ -294,14 +401,12 @@ export const photosService = {
 				});
 			}
 
-			// 2. 좋아요 상태 확인 및 업데이트
 			const hasLiked = photo.liked_by?.includes(userId) ?? false;
 			const newLikes = hasLiked ? photo.likes - 1 : photo.likes + 1;
 			const newLikedBy = hasLiked
 				? photo.liked_by?.filter((id) => id !== userId)
 				: [...(photo.liked_by || []), userId];
 
-			// 3. DB 업데이트
 			const { data: updatedPhoto, error: updateError } = await supabase
 				.from('photos')
 				.update({

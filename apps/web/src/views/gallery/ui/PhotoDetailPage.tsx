@@ -11,11 +11,10 @@ import { BlurImage, formatDate } from '@/fsd/shared';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
+import { useAspectRatio } from '../model/useAspectRatio';
 import { useImageSizes } from '../model/useImageSizes';
 import * as styles from './PhotoDetailPage.css';
-
-const FALLBACK_ASPECT_RATIO = 4 / 3;
 
 interface PhotoDetailPageProps {
 	photoId: string;
@@ -27,38 +26,14 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { user } = useSupabaseAuth();
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const aspectRatio = useMemo(() => {
-		if (
-			currentPhoto.width &&
-			currentPhoto.height &&
-			currentPhoto.height !== 0
-		) {
-			return currentPhoto.width / currentPhoto.height;
-		}
-		return FALLBACK_ASPECT_RATIO;
-	}, [currentPhoto]);
-
-	const aspectRatioForCss = useMemo(() => {
-		if (
-			currentPhoto.width &&
-			currentPhoto.height &&
-			currentPhoto.height !== 0
-		) {
-			return `${currentPhoto.width} / ${currentPhoto.height}`;
-		}
-		return `${Math.round(FALLBACK_ASPECT_RATIO * 100)} / 100`;
-	}, [currentPhoto]);
+	const { ratio: aspectRatio, cssValue: aspectRatioForCss } =
+		useAspectRatio(currentPhoto);
 
 	const { imageSizes } = useImageSizes({
 		containerRef,
 		aspectRatio,
 		isModal,
 	});
-
-	const isInitiallyLiked =
-		user && currentPhoto.liked_by
-			? currentPhoto.liked_by.includes(user.id)
-			: false;
 
 	return (
 		<>
@@ -81,7 +56,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							className={styles.image}
 							fill
 							sizes={imageSizes}
-							priority={isModal}
+							priority
 						/>
 					</div>
 
@@ -115,7 +90,8 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							<Flex gap='4'>
 								<ToggleLikePhotoButton
 									photoId={photoId}
-									isInitiallyLiked={isInitiallyLiked}
+									likedBy={currentPhoto.liked_by}
+									likesCount={currentPhoto.likes}
 								/>
 								<SharePhotoButton photo={currentPhoto} />
 							</Flex>
