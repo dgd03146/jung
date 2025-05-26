@@ -24,59 +24,34 @@ export function useAdjacentPhotosPrefetch({
 
 	const prefetchPhotoData = useCallback(
 		(photo: Photo) => {
-			if (photo.id === photoId) return;
+			if (!photo || photo.id === photoId) return;
 
-			queryClient.prefetchQuery({
-				queryKey: trpc.photos.getPhotoById.queryOptions(photo.id).queryKey,
-				queryFn: trpc.photos.getPhotoById.queryOptions(photo.id).queryFn,
-				staleTime: 5 * 60 * 1000,
-			});
+			try {
+				const photoIdStr = String(photo.id);
+				const collectionIdStr = collectionId ? String(collectionId) : undefined;
 
-			const adjacentQueryKey = trpc.photos.getAdjacentPhotos.queryOptions({
-				id: photo.id,
-				sort,
-				collectionId,
-			}).queryKey;
+				const photoDetailOptions =
+					trpc.photos.getPhotoById.queryOptions(photoIdStr);
+				queryClient.prefetchQuery(photoDetailOptions);
 
-			queryClient.prefetchQuery({
-				queryKey: adjacentQueryKey,
-				queryFn: trpc.photos.getAdjacentPhotos.queryOptions({
-					id: photo.id,
+				const adjacentInput = {
+					id: photoIdStr,
 					sort,
-					collectionId,
-				}).queryFn,
-				staleTime: 5 * 60 * 1000,
-			});
+					collectionId: collectionIdStr,
+				};
 
-			const existingData = queryClient.getQueryData(adjacentQueryKey);
-
-			if (!existingData) {
-				if (photo.id === previousPhoto?.id) {
-					queryClient.setQueryData(adjacentQueryKey, {
-						previous: null,
-						next: { ...photo, id: photoId },
-					});
-				} else if (photo.id === nextPhoto?.id) {
-					queryClient.setQueryData(adjacentQueryKey, {
-						previous: { ...photo, id: photoId },
-						next: null,
-					});
-				}
-			} else {
-				if (photo.id === previousPhoto?.id) {
-					queryClient.setQueryData(adjacentQueryKey, {
-						...existingData,
-						next: { ...photo, id: photoId },
-					});
-				} else if (photo.id === nextPhoto?.id) {
-					queryClient.setQueryData(adjacentQueryKey, {
-						...existingData,
-						previous: { ...photo, id: photoId },
-					});
-				}
+				const adjacentOptions =
+					trpc.photos.getAdjacentPhotos.queryOptions(adjacentInput);
+				queryClient.prefetchQuery(adjacentOptions);
+			} catch (error) {
+				console.error('Failed to prefetch photo data:', error);
+				console.error(
+					'Error details:',
+					error instanceof Error ? error.message : String(error),
+				);
 			}
 		},
-		[queryClient, trpc, photoId, previousPhoto, nextPhoto, sort, collectionId],
+		[queryClient, trpc, photoId, sort, collectionId],
 	);
 
 	useEffect(() => {
