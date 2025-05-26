@@ -3,26 +3,30 @@
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useTogglePhotoLike } from '../model/useTogglePhotoLike';
 import * as styles from './ToggleLikePhotoButton.css';
 
 interface ToggleLikePhotoButtonProps {
 	photoId: string;
-	isInitiallyLiked: boolean;
+	likedBy?: string[];
+	likesCount: number;
 }
 
 export function ToggleLikePhotoButton({
 	photoId,
-	isInitiallyLiked,
+	likedBy = [],
+	likesCount,
 }: ToggleLikePhotoButtonProps) {
-	const { toggleLike } = useTogglePhotoLike();
+	const { toggleLike, isPending } = useTogglePhotoLike();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-	const isLiked = isInitiallyLiked;
+	const isLiked = useMemo(() => {
+		return user && likedBy ? likedBy.includes(user.id) : false;
+	}, [user, likedBy]);
 
 	const handleClick = () => {
 		if (!user) {
@@ -31,9 +35,13 @@ export function ToggleLikePhotoButton({
 		}
 
 		toggleLike(
-			{ photoId, userId: user.id },
 			{
-				onError: (_error) => {
+				photoId,
+				userId: user.id,
+				isCurrentlyLiked: isLiked,
+			},
+			{
+				onError: (error) => {
 					showToast('Failed to update like status. Please try again.', 'error');
 				},
 			},
@@ -48,6 +56,7 @@ export function ToggleLikePhotoButton({
 				className={styles.toggleLikePhotoButton}
 				onClick={handleClick}
 				aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
+				disabled={isPending}
 			>
 				{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
 			</Button>

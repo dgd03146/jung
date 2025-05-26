@@ -9,10 +9,25 @@ export const useTogglePhotoLike = () => {
 	const trpc = useTRPC();
 
 	const mutation = useMutation({
-		mutationFn: ({ photoId, userId }: { photoId: string; userId: string }) =>
-			toggleLikePhotoAction(photoId, userId),
+		mutationFn: async ({
+			photoId,
+			userId,
+			isCurrentlyLiked,
+		}: {
+			photoId: string;
+			userId: string;
+			isCurrentlyLiked?: boolean;
+		}) => {
+			const response = await toggleLikePhotoAction(photoId, userId);
 
-		onMutate: async ({ photoId, userId }) => {
+			if (!response.success) {
+				throw new Error(response.error || 'Failed to toggle like');
+			}
+
+			return response.data;
+		},
+
+		onMutate: async ({ photoId, userId, isCurrentlyLiked }) => {
 			await queryClient.cancelQueries({
 				queryKey: trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
 			});
@@ -21,11 +36,20 @@ export const useTogglePhotoLike = () => {
 				trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
 			);
 
-			const isLiked = !!previousData?.liked_by?.includes(userId);
+			const isLiked =
+				isCurrentlyLiked !== undefined
+					? isCurrentlyLiked
+					: !!previousData?.liked_by?.includes(userId);
+
+			const likeDelta = isLiked ? -1 : 1;
 
 			queryClient.setQueryData(
 				trpc.photos.getPhotoById.queryOptions(photoId).queryKey,
-				(old) => updatePhotoLikes(old, isLiked ? -1 : 1, userId),
+				(old) => {
+					const updated = updatePhotoLikes(old, likeDelta, userId);
+
+					return updated;
+				},
 			);
 
 			return { previousData, photoId };
@@ -45,6 +69,18 @@ export const useTogglePhotoLike = () => {
 				queryClient.invalidateQueries({
 					queryKey: trpc.photos.getPhotoById.queryOptions(variables.photoId)
 						.queryKey,
+				});
+
+				queryClient.invalidateQueries({
+					queryKey: [trpc.photos._def.pathRoot],
+					exact: false,
+				});
+
+				queryClient.invalidateQueries({
+					queryKey: trpc.photos.getAdjacentPhotos.queryOptions({
+						id: variables.photoId,
+					}).queryKey,
+					exact: false,
 				});
 			}
 		},

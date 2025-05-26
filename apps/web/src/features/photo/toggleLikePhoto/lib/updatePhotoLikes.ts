@@ -7,12 +7,22 @@ export const updatePhotoLikes = (
 ) => {
 	if (!photo) return photo;
 
-	return {
+	const newLikes = Math.max(0, photo.likes + likeDelta);
+
+	const likedBy = photo.liked_by || [];
+
+	let newLikedBy: string[];
+	if (likeDelta > 0) {
+		newLikedBy = likedBy.includes(userId) ? likedBy : [...likedBy, userId];
+	} else {
+		newLikedBy = likedBy.filter((id: string) => id !== userId);
+	}
+
+	const updated = {
 		...photo,
-		likes: photo.likes + likeDelta,
-		liked_by:
-			likeDelta > 0
-				? [...(photo.liked_by || []), userId]
-				: photo.liked_by?.filter((id: string) => id !== userId),
+		likes: newLikes,
+		liked_by: newLikedBy,
 	};
+
+	return updated;
 };
