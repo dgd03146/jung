@@ -6,9 +6,12 @@ import {
 	ToggleLikePhotoButton,
 } from '@/fsd/features/photo';
 
-import { PhotoTags, usePhotoQuery } from '@/fsd/entities/photo';
+import {
+	PhotoTags,
+	usePhotoLikeQuery,
+	usePhotoQuery,
+} from '@/fsd/entities/photo';
 import { BlurImage, formatDate } from '@/fsd/shared';
-import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Flex, Typography } from '@jung/design-system/components';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { useRef } from 'react';
@@ -23,7 +26,8 @@ interface PhotoDetailPageProps {
 
 export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
-	const { user } = useSupabaseAuth();
+	const { data: likeInfo } = usePhotoLikeQuery(photoId);
+
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const { ratio: aspectRatio, cssValue: aspectRatioForCss } =
@@ -84,15 +88,11 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 							borderStyle='solid'
 						>
 							<Typography.Text level={4} color='primary'>
-								{currentPhoto.likes} likes
+								{likeInfo?.likes ?? currentPhoto.likes} likes
 							</Typography.Text>
 
 							<Flex gap='4'>
-								<ToggleLikePhotoButton
-									photoId={photoId}
-									likedBy={currentPhoto.liked_by}
-									likesCount={currentPhoto.likes}
-								/>
+								<ToggleLikePhotoButton photoId={photoId} />
 								<SharePhotoButton photo={currentPhoto} />
 							</Flex>
 						</Flex>

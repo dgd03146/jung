@@ -1,22 +1,23 @@
+'use client';
+
+import { usePostLikeQuery } from '@/fsd/entities/post';
 import { useTogglePostLike } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, Flex, useToast } from '@jung/design-system/components';
 import Link from 'next/link';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { isPostLiked } from '../lib/isPostLiked';
 
 interface Props {
 	postId: string;
-	likeCount: number;
-	likedBy: string[];
 }
 
-export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
+export const TogglePostLike = ({ postId }: Props) => {
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
-
-	const { toggleLike } = useTogglePostLike();
+	const { data: likeInfo, isLoading: isLikeInfoLoading } =
+		usePostLikeQuery(postId);
+	const { toggleLike, isPending } = useTogglePostLike();
 
 	const handleLikeClick = () => {
 		if (!user) {
@@ -27,7 +28,8 @@ export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 		toggleLike(postId);
 	};
 
-	const isLiked = isPostLiked(likedBy, user?.id);
+	const isLiked = (user && likeInfo?.liked_by?.includes(user.id)) || false;
+	const likeCount = likeInfo?.likes || 0;
 
 	return (
 		<Flex
@@ -44,7 +46,7 @@ export const TogglePostLike = ({ likeCount, postId, likedBy }: Props) => {
 				fontSize='sm'
 				borderRadius='md'
 				prefix={isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
-				// loading={isPending}
+				disabled={isPending || isLikeInfoLoading}
 			>
 				{likeCount} {likeCount > 1 ? 'Likes' : 'Like'}
 			</Button>

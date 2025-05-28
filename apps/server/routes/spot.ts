@@ -20,6 +20,12 @@ export const spotRouter = router({
 	getSpotById: publicProcedure.input(z.string().uuid()).query(({ input }) => {
 		return spotsService.findById(input);
 	}),
+
+	getLikeInfo: publicProcedure.input(z.string()).query(async (opts) => {
+		const { input } = opts;
+		return spotsService.getLikeInfo(input);
+	}),
+
 	toggleLike: publicProcedure
 		.input(z.object({ spotId: z.string(), userId: z.string() }))
 		.mutation(({ input }) => {

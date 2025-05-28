@@ -1,11 +1,12 @@
 'use client';
 
+import { useSpotLikeQuery } from '@/fsd/entities/spot';
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useToggleSpotLike } from '../model/useToggleSpotLike';
+import { useToggleSpotLike } from '../api/useToggleSpotLike';
 import * as styles from './ToggleSpotLikeButton.css';
 
 interface ToggleSpotLikeButtonProps {
@@ -13,20 +14,24 @@ interface ToggleSpotLikeButtonProps {
 }
 
 export function ToggleSpotLikeButton({ spotId }: ToggleSpotLikeButtonProps) {
-	const { toggleLike, getIsLiked, isPending } = useToggleSpotLike();
+	const { toggleLike, isPending } = useToggleSpotLike();
 	const { user } = useSupabaseAuth();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const { data: likeInfo, isLoading: isLikeInfoLoading } =
+		useSpotLikeQuery(spotId);
 
-	const isLiked = getIsLiked(spotId, user?.id);
+	const isLiked = !!(user && likeInfo?.liked_by?.includes(user.id));
 
 	const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
 		e.preventDefault();
+
 		if (!user || !user.id) {
 			setIsLoginModalOpen(true);
 			return;
 		}
-		toggleLike({ spotId, userId: user.id });
+
+		toggleLike(spotId);
 	};
 
 	return (
@@ -37,7 +42,7 @@ export function ToggleSpotLikeButton({ spotId }: ToggleSpotLikeButtonProps) {
 				type='button'
 				onClick={handleLikeClick}
 				aria-label={isLiked ? '좋아요 취소' : '좋아요'}
-				disabled={isPending}
+				disabled={isPending || isLikeInfoLoading}
 			>
 				{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
 			</Button>

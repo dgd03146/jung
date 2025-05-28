@@ -25,11 +25,7 @@ export const PostDetailContent = ({ postId }: { postId: string }) => {
 	return (
 		<>
 			<BlockNoteEditor initialContent={post.content} />
-			<TogglePostLike
-				postId={postId}
-				likeCount={post.likes}
-				likedBy={post.liked_by}
-			/>
+			<TogglePostLike postId={postId} />
 		</>
 	);
 };
