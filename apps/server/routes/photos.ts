@@ -48,4 +48,9 @@ export const photosRouter = router({
 			const { photoId, userId } = input;
 			return photosService.toggleLike({ photoId, userId });
 		}),
+
+	getLikeInfo: publicProcedure.input(z.string()).query(async (opts) => {
+		const { input } = opts;
+		return photosService.getLikeInfo(input);
+	}),
 });

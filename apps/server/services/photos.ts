@@ -237,7 +237,11 @@ export const photosService = {
 				});
 			}
 
-			return data;
+			return {
+				...data,
+				likes: 0,
+				liked_by: [],
+			};
 		} catch (error) {
 			if (error instanceof TRPCError) {
 				throw error;
@@ -434,6 +438,48 @@ export const photosService = {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
 				message: 'An unexpected error occurred while toggling like',
+				cause: error,
+			});
+		}
+	},
+
+	async getLikeInfo(
+		photoId: string,
+	): Promise<{ likes: number; liked_by: string[] }> {
+		try {
+			const { data, error } = await supabase
+				.from('photos')
+				.select('likes, liked_by')
+				.eq('id', photoId)
+				.single<{ likes: number; liked_by: string[] }>();
+
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: `Failed to fetch like info: ${error.message}`,
+					cause: error,
+				});
+			}
+
+			if (!data) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Photo not found',
+				});
+			}
+
+			return {
+				likes: data.likes,
+				liked_by: data.liked_by || [],
+			};
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'An unexpected error occurred while fetching like info',
 				cause: error,
 			});
 		}
