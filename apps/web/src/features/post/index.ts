@@ -1,7 +1,7 @@
 export { FilterPostCategoryAccordion } from './filterPostCategoryAccordion/ui/FilterPostCategoryAccordion';
 export { FilterPostCategoryAccordionSkeleton } from './filterPostCategoryAccordion/ui/FilterPostCategoryAccordionSkeleton';
 export { SelectViewMode } from './selectViewMode/ui';
-export { useTogglePostLike } from './togglePostLike/model/useTogglePostLike';
+export { useTogglePostLike } from './togglePostLike/api/useTogglePostLike';
 export { TogglePostLike } from './togglePostLike/ui/TogglePostLike';
 export {
 	ViewModeProvider,
