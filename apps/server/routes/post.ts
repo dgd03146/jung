@@ -27,6 +27,11 @@ export const postRouter = router({
 			return postService.findById(input);
 		}),
 
+	getLikeInfo: publicProcedure.input(z.string()).query(async (opts) => {
+		const { input } = opts;
+		return postService.getLikeInfo(input);
+	}),
+
 	createPost: publicProcedure
 		.input(PostSchema.omit({ id: true }))
 		.mutation(({ input }) => {
