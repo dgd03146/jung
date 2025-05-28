@@ -1,32 +1,30 @@
 'use client';
 
+import { usePhotoLikeQuery } from '@/fsd/entities/photo';
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useTogglePhotoLike } from '../model/useTogglePhotoLike';
+import { useTogglePhotoLike } from '../api/useTogglePhotoLike';
 import * as styles from './ToggleLikePhotoButton.css';
 
 interface ToggleLikePhotoButtonProps {
 	photoId: string;
-	likedBy?: string[];
-	likesCount: number;
 }
 
-export function ToggleLikePhotoButton({
-	photoId,
-	likedBy = [],
-	likesCount,
-}: ToggleLikePhotoButtonProps) {
+export function ToggleLikePhotoButton({ photoId }: ToggleLikePhotoButtonProps) {
 	const { toggleLike, isPending } = useTogglePhotoLike();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-	const isLiked = !!(user && likedBy?.includes(user.id));
+	const { data: likeInfo, isLoading: isLikeInfoLoading } =
+		usePhotoLikeQuery(photoId);
 
-	const handleClick = () => {
+	const isLiked = !!(user && likeInfo?.liked_by?.includes(user.id));
+
+	const handleToggleLike = () => {
 		if (!user) {
 			setIsLoginModalOpen(true);
 			return;
@@ -36,7 +34,6 @@ export function ToggleLikePhotoButton({
 			{
 				photoId,
 				userId: user.id,
-				isCurrentlyLiked: isLiked,
 			},
 			{
 				onError: () => {
@@ -52,9 +49,9 @@ export function ToggleLikePhotoButton({
 				variant='ghost'
 				color='primary'
 				className={styles.toggleLikePhotoButton}
-				onClick={handleClick}
+				onClick={handleToggleLike}
 				aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-				disabled={isPending}
+				disabled={isPending || isLikeInfoLoading}
 			>
 				{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
 			</Button>
