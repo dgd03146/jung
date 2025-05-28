@@ -211,4 +211,47 @@ export const spotsService = {
 
 		return data;
 	},
+
+	// 좋아요 정보만 가져오기
+	async getLikeInfo(
+		spotId: string,
+	): Promise<{ likes: number; liked_by: string[] }> {
+		try {
+			const { data, error } = await supabase
+				.from('spots')
+				.select('likes, liked_by')
+				.eq('id', spotId)
+				.single<{ likes: number; liked_by: string[] }>();
+
+			if (error) {
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: `Failed to fetch like info: ${error.message}`,
+					cause: error,
+				});
+			}
+
+			if (!data) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Spot not found',
+				});
+			}
+
+			return {
+				likes: data.likes,
+				liked_by: data.liked_by || [],
+			};
+		} catch (error) {
+			if (error instanceof TRPCError) {
+				throw error;
+			}
+
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'An unexpected error occurred while fetching like info',
+				cause: error,
+			});
+		}
+	},
 };
