@@ -30,6 +30,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'img.notionusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'nfbbfuiostvsiknfaryn.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
