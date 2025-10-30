@@ -53,3 +53,9 @@ packages/configs/vitest.config.mjs.timestamp-*
 **/*.d.ts
 **/*.map
 
+
+/rules
+
+CLAUDE.md
+AGENTS.md
+.claude
