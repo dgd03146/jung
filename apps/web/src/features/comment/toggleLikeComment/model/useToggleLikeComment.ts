@@ -5,18 +5,20 @@ import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
-	useSupabaseAuth,
 } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
 
+type ToggleLikeVariables = {
+	commentId: string;
+	postId: string;
+	userId: string;
+};
+
 export const useToggleLikeComment = () => {
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
-	const { user } = useSupabaseAuth();
-	const showToast = useToast();
 
 	const queryOptions = (postId: string) =>
 		trpc.comment.getCommentsByPostId.infiniteQueryOptions({
@@ -26,14 +28,7 @@ export const useToggleLikeComment = () => {
 		});
 
 	const mutation = useMutation({
-		mutationFn: async ({
-			commentId,
-			postId,
-		}: { commentId: string; postId: string }) => {
-			if (!user) {
-				throw new Error('Please log in to like comments');
-			}
-
+		mutationFn: async ({ commentId, postId, userId }: ToggleLikeVariables) => {
 			const currentQueryOptions = queryOptions(postId);
 			let existingData: CommentData | undefined;
 			try {
@@ -46,7 +41,7 @@ export const useToggleLikeComment = () => {
 			const { comment, isLiked } = findCommentAndCheckLike(
 				existingData,
 				commentId,
-				user.id,
+				userId,
 			);
 
 			if (!comment) {
@@ -55,12 +50,18 @@ export const useToggleLikeComment = () => {
 
 			const originalComment = structuredClone(comment);
 			const likeIncrement = isLiked ? -1 : 1;
+
+			const likedBySet = new Set(comment.liked_by);
+			if (isLiked) {
+				likedBySet.delete(userId);
+			} else {
+				likedBySet.add(userId);
+			}
+
 			const tempComment = {
 				...comment,
 				likes: comment.likes + likeIncrement,
-				liked_by: isLiked
-					? comment.liked_by.filter((id) => id !== user.id)
-					: [...comment.liked_by, user.id],
+				liked_by: Array.from(likedBySet),
 				$optimistic: true,
 			};
 
@@ -72,7 +73,7 @@ export const useToggleLikeComment = () => {
 				const serverComment = await toggleLikeCommentAction({
 					commentId,
 					postId,
-					userId: user.id,
+					userId,
 				});
 				return {
 					serverComment,
@@ -95,20 +96,20 @@ export const useToggleLikeComment = () => {
 				),
 			);
 		},
-		onError: (error, variables) => {
-			const message =
-				error instanceof Error ? error.message : 'Failed to toggle like';
-			if (message !== 'Please log in to like comments') {
-				showToast(message, 'error');
+		onSettled: async (_data, _error, variables) => {
+			if (variables?.commentId) {
+				if (
+					queryClient.isMutating({
+						mutationKey: trpc.comment.toggleLike.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					await queryClient.invalidateQueries({
+						queryKey: queryOptions(variables.postId).queryKey,
+					});
+				}
 			}
-			console.error('Error toggling comment like:', error);
-		},
-		onSettled: async (data, error, variables, context) => {
-			await queryClient.invalidateQueries({
-				queryKey: queryOptions(variables.postId).queryKey,
-			});
 		},
 	});
 
-	return { mutate: mutation.mutate, isPending: mutation.isPending };
+	return { toggleLike: mutation.mutate, isPending: mutation.isPending };
 };

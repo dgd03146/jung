@@ -1,6 +1,7 @@
 'use client';
 
-import { Button } from '@jung/design-system/components';
+import { useSupabaseAuth } from '@/fsd/shared';
+import { Button, useToast } from '@jung/design-system/components';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useToggleLikeComment } from '../model/useToggleLikeComment';
 
@@ -17,10 +18,24 @@ export const ToggleLikeCommentButton = ({
 	isLiked,
 	likesCount,
 }: ToggleLikeCommentButtonProps) => {
-	const { mutate: toggleLikeMutate, isPending } = useToggleLikeComment();
+	const { user } = useSupabaseAuth();
+	const showToast = useToast();
+	const { toggleLike, isPending } = useToggleLikeComment();
 
 	const handleClick = () => {
-		toggleLikeMutate({ commentId, postId: targetId });
+		if (!user) {
+			showToast('Please log in to like comments', 'error');
+			return;
+		}
+
+		toggleLike(
+			{ commentId, postId: targetId, userId: user.id },
+			{
+				onError: () => {
+					showToast('Failed to update like status. Please try again.', 'error');
+				},
+			},
+		);
 	};
 
 	return (
