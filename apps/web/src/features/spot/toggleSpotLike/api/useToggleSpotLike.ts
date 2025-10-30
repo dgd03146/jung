@@ -1,8 +1,6 @@
 'use client';
 
 import { useTRPC } from '@/fsd/app';
-import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type LikeInfo = {
@@ -16,15 +14,18 @@ type MutationContext = {
 	isLiked: boolean;
 };
 
+type ToggleLikeVariables = {
+	spotId: string;
+	userId: string;
+};
+
 export const useToggleSpotLike = () => {
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
-	const { user } = useSupabaseAuth();
-	const showToast = useToast();
 
 	const mutation = useMutation(
 		trpc.spot.toggleLike.mutationOptions({
-			onMutate: async (variables: { spotId: string; userId: string }) => {
+			onMutate: async (variables: ToggleLikeVariables) => {
 				const { spotId, userId } = variables;
 
 				// 좋아요 정보 쿼리키
@@ -41,18 +42,23 @@ export const useToggleSpotLike = () => {
 					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
 
 				// 좋아요 상태 확인
-				const isLiked = !!previousData?.liked_by?.includes(userId);
+				const likedBySet = new Set(previousData?.liked_by ?? []);
+				const isLiked = likedBySet.has(userId);
 				const likeDelta = isLiked ? -1 : 1;
 
 				// Optimistic update
 				queryClient.setQueryData<LikeInfo>(likeInfoQueryKey, (old) => {
 					if (!old) return old;
 
+					if (isLiked) {
+						likedBySet.delete(userId);
+					} else {
+						likedBySet.add(userId);
+					}
+
 					return {
 						likes: old.likes + likeDelta,
-						liked_by: isLiked
-							? old.liked_by.filter((id) => id !== userId)
-							: [...old.liked_by, userId],
+						liked_by: Array.from(likedBySet),
 					};
 				});
 
@@ -61,11 +67,9 @@ export const useToggleSpotLike = () => {
 
 			onError: (
 				_err: unknown,
-				variables: { spotId: string; userId: string },
+				_variables,
 				context: MutationContext | undefined,
 			) => {
-				showToast('Failed to update like status. Please try again.', 'error');
-
 				if (context) {
 					// 에러 시 이전 상태로 롤백
 					queryClient.setQueryData(
@@ -75,20 +79,13 @@ export const useToggleSpotLike = () => {
 				}
 			},
 
-			onSettled: (
-				_data: unknown,
-				_error: unknown,
-				variables: { spotId: string; userId: string },
-			) => {
+			onSettled: (_data, _error, variables) => {
 				if (variables?.spotId) {
-					// 동시 뮤테이션 수 확인
-					const activeMutationsCount = queryClient.isMutating({
-						predicate: (mutation) =>
-							mutation.options.mutationKey?.[0] === 'spot.toggleLike',
-					});
-
-					if (activeMutationsCount === 1) {
-						// 마지막 뮤테이션에서만 쿼리 무효화
+					if (
+						queryClient.isMutating({
+							mutationKey: trpc.spot.toggleLike.mutationOptions().mutationKey,
+						}) === 1
+					) {
 						queryClient.invalidateQueries({
 							queryKey: trpc.spot.getLikeInfo.queryOptions(variables.spotId)
 								.queryKey,
@@ -99,23 +96,8 @@ export const useToggleSpotLike = () => {
 		}),
 	);
 
-	const toggleLike = (spotId: string) => {
-		if (!user) {
-			return false;
-		}
-
-		mutation.mutate({
-			spotId,
-			userId: user.id,
-		});
-
-		return true;
-	};
-
 	return {
-		toggleLike,
+		toggleLike: mutation.mutate,
 		isPending: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
 	};
 };

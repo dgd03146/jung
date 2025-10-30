@@ -3,7 +3,7 @@
 import { useSpotLikeQuery } from '@/fsd/entities/spot';
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { Button } from '@jung/design-system/components';
+import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useToggleSpotLike } from '../api/useToggleSpotLike';
@@ -16,6 +16,7 @@ interface ToggleSpotLikeButtonProps {
 export function ToggleSpotLikeButton({ spotId }: ToggleSpotLikeButtonProps) {
 	const { toggleLike, isPending } = useToggleSpotLike();
 	const { user } = useSupabaseAuth();
+	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 	const { data: likeInfo, isLoading: isLikeInfoLoading } =
 		useSpotLikeQuery(spotId);
@@ -31,7 +32,14 @@ export function ToggleSpotLikeButton({ spotId }: ToggleSpotLikeButtonProps) {
 			return;
 		}
 
-		toggleLike(spotId);
+		toggleLike(
+			{ spotId, userId: user.id },
+			{
+				onError: () => {
+					showToast('Failed to update like status. Please try again.', 'error');
+				},
+			},
+		);
 	};
 
 	return (
