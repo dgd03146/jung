@@ -3,7 +3,7 @@
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, useToast } from '@jung/design-system/components';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useToggleLikeComment } from '../model/useToggleLikeComment';
+import { useToggleLikeCommentMutation } from '../model/useToggleLikeCommentMutation';
 
 interface ToggleLikeCommentButtonProps {
 	commentId: string;
@@ -20,7 +20,7 @@ export const ToggleLikeCommentButton = ({
 }: ToggleLikeCommentButtonProps) => {
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
-	const { toggleLike, isPending } = useToggleLikeComment();
+	const { toggleLike, isPending } = useToggleLikeCommentMutation();
 
 	const handleClick = () => {
 		if (!user) {

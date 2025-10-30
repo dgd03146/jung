@@ -1,7 +1,7 @@
 'use client';
 
 import { usePostLikeQuery } from '@/fsd/entities/post';
-import { useTogglePostLike } from '@/fsd/features/post';
+import { useTogglePostLikeMutation } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, Flex, useToast } from '@jung/design-system/components';
 import Link from 'next/link';
@@ -17,7 +17,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 	const showToast = useToast();
 	const { data: likeInfo, isLoading: isLikeInfoLoading } =
 		usePostLikeQuery(postId);
-	const { toggleLike, isPending } = useTogglePostLike();
+	const { toggleLike, isPending } = useTogglePostLikeMutation();
 
 	const handleToggleLike = () => {
 		if (!user) {

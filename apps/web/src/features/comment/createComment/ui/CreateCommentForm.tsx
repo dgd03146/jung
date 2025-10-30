@@ -12,7 +12,7 @@ import {
 	useToast,
 } from '@jung/design-system/components';
 
-import { useCreateComment } from '../model/useCreateComment';
+import { useCreateCommentMutation } from '../model/useCreateCommentMutation';
 import * as styles from './CreateCommentForm.css';
 
 interface CreateCommentFormProps {
@@ -32,7 +32,8 @@ export const CreateCommentForm = ({
 }: CreateCommentFormProps) => {
 	const showToast = useToast();
 	const { session, user, signOut } = useSupabaseAuth();
-	const { newComment, setNewComment, submitComment } = useCreateComment();
+	const { newComment, setNewComment, submitComment } =
+		useCreateCommentMutation();
 	const userAvatar = user?.user_metadata?.avatar_url || '/default-avatar.png';
 
 	const handleSubmit = () => {

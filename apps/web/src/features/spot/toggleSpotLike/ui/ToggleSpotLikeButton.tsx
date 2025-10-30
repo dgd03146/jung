@@ -6,7 +6,7 @@ import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useToggleSpotLike } from '../api/useToggleSpotLike';
+import { useToggleSpotLikeMutation } from '../api/useToggleSpotLikeMutation';
 import * as styles from './ToggleSpotLikeButton.css';
 
 interface ToggleSpotLikeButtonProps {
@@ -14,7 +14,7 @@ interface ToggleSpotLikeButtonProps {
 }
 
 export function ToggleSpotLikeButton({ spotId }: ToggleSpotLikeButtonProps) {
-	const { toggleLike, isPending } = useToggleSpotLike();
+	const { toggleLike, isPending } = useToggleSpotLikeMutation();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);

@@ -2,7 +2,7 @@
 
 import { Button } from '@jung/design-system/components';
 import { FaTrash } from 'react-icons/fa';
-import { useDeleteComment } from '../model/useDeleteComment';
+import { useDeleteCommentMutation } from '../model/useDeleteCommentMutation';
 
 interface DeleteCommentButtonProps {
 	commentId: string;
@@ -13,7 +13,8 @@ export const DeleteCommentButton = ({
 	commentId,
 	postId,
 }: DeleteCommentButtonProps) => {
-	const { mutate: deleteComment, isPending: isDeleting } = useDeleteComment();
+	const { mutate: deleteComment, isPending: isDeleting } =
+		useDeleteCommentMutation();
 
 	const handleDelete = () => {
 		if (window.confirm('Are you sure you want to delete this comment?')) {
