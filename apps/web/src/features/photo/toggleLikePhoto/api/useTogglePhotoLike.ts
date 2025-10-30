@@ -1,5 +1,4 @@
 import { useTRPC } from '@/fsd/app';
-import type { Photo } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type LikeInfo = {
@@ -28,18 +27,23 @@ export const useTogglePhotoLike = () => {
 				const previousData =
 					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
 
-				const isLiked = !!previousData?.liked_by?.includes(userId);
+				const likedBySet = new Set(previousData?.liked_by ?? []);
+				const isLiked = likedBySet.has(userId);
 				const likeDelta = isLiked ? -1 : 1;
 
 				// optimistic update
 				queryClient.setQueryData<LikeInfo>(likeInfoQueryKey, (old) => {
 					if (!old) return old;
 
+					if (isLiked) {
+						likedBySet.delete(userId);
+					} else {
+						likedBySet.add(userId);
+					}
+
 					return {
 						likes: old.likes + likeDelta,
-						liked_by: isLiked
-							? old.liked_by.filter((id) => id !== userId)
-							: [...old.liked_by, userId],
+						liked_by: Array.from(likedBySet),
 					};
 				});
 
@@ -48,7 +52,7 @@ export const useTogglePhotoLike = () => {
 
 			onError: (
 				_err: unknown,
-				variables: { photoId: string; userId: string },
+				_variables,
 				context: MutationContext | undefined,
 			) => {
 				if (context) {
@@ -60,34 +64,17 @@ export const useTogglePhotoLike = () => {
 				}
 			},
 
-			onSettled: (
-				_data: Photo | undefined,
-				_error: unknown,
-				variables: { photoId: string; userId: string },
-			) => {
+			onSettled: (_data, _error, variables) => {
 				if (variables?.photoId) {
-					const activeMutationsCount = queryClient.isMutating({
-						predicate: (mutation) =>
-							mutation.options.mutationKey?.[0] === 'photos.toggleLike',
-					});
-
-					if (activeMutationsCount === 1) {
-						// 마지막 뮤테이션에서만 쿼리 무효화
-
-						// 좋아요 정보 쿼리 무효화
+					if (
+						queryClient.isMutating({
+							mutationKey: trpc.photos.toggleLike.mutationOptions().mutationKey,
+						}) === 1
+					) {
 						queryClient.invalidateQueries({
 							queryKey: trpc.photos.getLikeInfo.queryOptions(variables.photoId)
 								.queryKey,
 						});
-
-						// // 목록 쿼리 무효화
-						// queryClient.invalidateQueries({
-						// 	queryKey: trpc.photos.getAllPhotos.infiniteQueryOptions({
-						// 		limit: PHOTO_DEFAULTS.LIMIT,
-						// 		sort,
-						// 		q: PHOTO_DEFAULTS.QUERY
-						// 	}).queryKey,
-						// });
 					}
 				}
 			},
@@ -97,7 +84,5 @@ export const useTogglePhotoLike = () => {
 	return {
 		toggleLike: mutation.mutate,
 		isPending: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
 	};
 };
