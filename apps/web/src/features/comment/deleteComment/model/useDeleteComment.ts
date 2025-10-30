@@ -49,7 +49,7 @@ export const useDeleteComment = () => {
 
 			return { previousData, queryKey: currentQueryOptions.queryKey }; // Return context for rollback
 		},
-		onError: (err, variables, context) => {
+		onError: (err, _variables, context) => {
 			// Rollback on error
 			if (context?.previousData) {
 				queryClient.setQueryData(context.queryKey, context.previousData);
@@ -59,11 +59,19 @@ export const useDeleteComment = () => {
 			showToast(message, 'error');
 			console.error('Error deleting comment:', err);
 		},
-		onSettled: (data, error, variables, context) => {
-			// Invalidate the query on success or after rollback
-			queryClient.invalidateQueries({ queryKey: context?.queryKey });
+		onSettled: (_data, _error, variables, context) => {
+			if (variables?.postId && context?.queryKey) {
+				if (
+					queryClient.isMutating({
+						mutationKey:
+							trpc.comment.deleteComment.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					queryClient.invalidateQueries({ queryKey: context.queryKey });
+				}
+			}
 		},
-		onSuccess: (data, variables) => {
+		onSuccess: (_data, _variables) => {
 			showToast('Comment has been deleted', 'success');
 		},
 	});

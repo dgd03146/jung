@@ -103,9 +103,18 @@ export const useCreateComment = () => {
 		},
 		onSuccess: () => {},
 		onSettled: async (data, error, variables, context) => {
-			await queryClient.invalidateQueries({
-				queryKey: getQueryOptions(variables.postId).queryKey,
-			});
+			if (variables?.postId) {
+				if (
+					queryClient.isMutating({
+						mutationKey:
+							trpc.comment.createComment.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					await queryClient.invalidateQueries({
+						queryKey: getQueryOptions(variables.postId).queryKey,
+					});
+				}
+			}
 		},
 	});
 

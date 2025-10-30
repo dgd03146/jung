@@ -79,12 +79,21 @@ export const useUpdateComment = () => {
 			console.error('Error editing comment:', error);
 		},
 
-		onSuccess: (data, variables, context) => {},
+		onSuccess: (_data, _variables, _context) => {},
 
-		onSettled: async (data, error, variables, context) => {
-			await queryClient.invalidateQueries({
-				queryKey: getQueryOptions(variables.postId).queryKey,
-			});
+		onSettled: async (_data, _error, variables, _context) => {
+			if (variables?.postId) {
+				if (
+					queryClient.isMutating({
+						mutationKey:
+							trpc.comment.updateComment.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					await queryClient.invalidateQueries({
+						queryKey: getQueryOptions(variables.postId).queryKey,
+					});
+				}
+			}
 		},
 	});
 
