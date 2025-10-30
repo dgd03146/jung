@@ -19,13 +19,20 @@ export const TogglePostLike = ({ postId }: Props) => {
 		usePostLikeQuery(postId);
 	const { toggleLike, isPending } = useTogglePostLike();
 
-	const handleLikeClick = () => {
+	const handleToggleLike = () => {
 		if (!user) {
-			showToast('Login required', 'error');
+			showToast('Please log in to like posts', 'error');
 			return;
 		}
 
-		toggleLike(postId);
+		toggleLike(
+			{ postId, userId: user.id },
+			{
+				onError: () => {
+					showToast('Failed to update like status. Please try again.', 'error');
+				},
+			},
+		);
 	};
 
 	const isLiked = (user && likeInfo?.liked_by?.includes(user.id)) || false;
@@ -41,7 +48,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 		>
 			<Button
 				variant='outline'
-				onClick={handleLikeClick}
+				onClick={handleToggleLike}
 				aria-label={isLiked ? 'Unlike post' : 'Like post'}
 				fontSize='sm'
 				borderRadius='md'

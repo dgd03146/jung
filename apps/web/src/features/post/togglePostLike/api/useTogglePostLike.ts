@@ -1,6 +1,4 @@
 import { useTRPC } from '@/fsd/app';
-import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type LikeInfo = {
@@ -14,15 +12,18 @@ type MutationContext = {
 	isLiked: boolean;
 };
 
+type ToggleLikeVariables = {
+	postId: string;
+	userId: string;
+};
+
 export const useTogglePostLike = () => {
 	const queryClient = useQueryClient();
 	const trpc = useTRPC();
-	const { user } = useSupabaseAuth();
-	const showToast = useToast();
 
 	const mutation = useMutation(
 		trpc.post.toggleLike.mutationOptions({
-			onMutate: async (variables: { postId: string; userId: string }) => {
+			onMutate: async (variables: ToggleLikeVariables) => {
 				const { postId, userId } = variables;
 
 				// 좋아요 정보 쿼리키
@@ -39,18 +40,23 @@ export const useTogglePostLike = () => {
 					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
 
 				// 좋아요 상태 확인
-				const isLiked = !!previousData?.liked_by?.includes(userId);
+				const likedBySet = new Set(previousData?.liked_by ?? []);
+				const isLiked = likedBySet.has(userId);
 				const likeDelta = isLiked ? -1 : 1;
 
 				// Optimistic update
 				queryClient.setQueryData<LikeInfo>(likeInfoQueryKey, (old) => {
 					if (!old) return old;
 
+					if (isLiked) {
+						likedBySet.delete(userId);
+					} else {
+						likedBySet.add(userId);
+					}
+
 					return {
 						likes: old.likes + likeDelta,
-						liked_by: isLiked
-							? old.liked_by.filter((id) => id !== userId)
-							: [...old.liked_by, userId],
+						liked_by: Array.from(likedBySet),
 					};
 				});
 
@@ -59,7 +65,7 @@ export const useTogglePostLike = () => {
 
 			onError: (
 				_err: unknown,
-				variables: { postId: string; userId: string },
+				_variables: ToggleLikeVariables,
 				context: MutationContext | undefined,
 			) => {
 				if (context) {
@@ -69,24 +75,19 @@ export const useTogglePostLike = () => {
 						context.previousData,
 					);
 				}
-				showToast('Failed to update like status. Please try again.', 'error');
-				console.error('Error toggling post like:', _err);
 			},
 
 			onSettled: (
 				_data: unknown,
 				_error: unknown,
-				variables: { postId: string; userId: string },
+				variables: ToggleLikeVariables,
 			) => {
 				if (variables?.postId) {
-					// 동시 뮤테이션 수 확인
-					const activeMutationsCount = queryClient.isMutating({
-						predicate: (mutation) =>
-							mutation.options.mutationKey?.[0] === 'post.toggleLike',
-					});
-
-					if (activeMutationsCount === 1) {
-						// 마지막 뮤테이션에서만 쿼리 무효화
+					if (
+						queryClient.isMutating({
+							mutationKey: trpc.post.toggleLike.mutationOptions().mutationKey,
+						}) === 1
+					) {
 						queryClient.invalidateQueries({
 							queryKey: trpc.post.getLikeInfo.queryOptions(variables.postId)
 								.queryKey,
@@ -97,20 +98,8 @@ export const useTogglePostLike = () => {
 		}),
 	);
 
-	const toggleLike = (postId: string) => {
-		if (!user) {
-			showToast('Please log in to like posts', 'error');
-			return;
-		}
-
-		mutation.mutate({
-			postId,
-			userId: user.id,
-		});
-	};
-
 	return {
-		toggleLike,
+		toggleLike: mutation.mutate,
 		isPending: mutation.isPending,
 	};
 };
