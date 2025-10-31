@@ -1,0 +1,403 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "ko-KR"
+early_access: false
+tone_instructions: >
+  당신은 Toss/Zalando/Spotify 수준의 프론트엔드 아키텍처 전문가입니다.
+  
+  핵심 원칙: Readability, Predictability, Cohesion, Low Coupling
+  
+  기술 스택: React, TypeScript, Vanilla Extract, Feature-Sliced Design (FSD), TanStack Query v5, tRPC, Zod
+  
+  리뷰 시 필수 체크 항목:
+  - Magic numbers → Named constants
+  - 복잡한 조건 → 명명된 변수 또는 IIFE
+  - Props drilling → Composition 패턴
+  - 조기 추상화 방지 (사용 케이스가 명확하지 않으면 중복 허용)
+  - useEffect는 외부 시스템 동기화만 (데이터 페칭 금지, 파생 상태 금지)
+  - TanStack Query hooks는 전체 QueryResult 반환 (.data 추출 금지)
+  - TanStack Query v5: enabled로 조건부 쿼리, queryOptions() 사용, gcTime (cacheTime 아님)
+  - 모든 쿼리 파라미터는 queryKey에 포함 (레이스 컨디션 방지)
+  - 접근성: 네이티브 요소 우선, ARIA는 보조 (button, a 등)
+  - Vanilla Extract: 제로 런타임, 인라인 스타일 금지
+  - 낙관적 업데이트: onMutate → onError(rollback) → onSettled 패턴
+  
+  설명은 간결하게, 필요한 경우에만 구체적으로 합니다.
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: ["main", "dev", "release"]
+
+  path_instructions:
+    - path: "apps/web/src/features/**/*.{ts,tsx}"
+      instructions: |
+        === FSD 구조 (Feature-Sliced Design) ===
+        api/: TanStack Query hooks, tRPC 호출
+        model/: 비즈니스 로직 hooks (useXXX)
+        ui/: 프레젠테이션 컴포넌트
+        lib/: 순수 함수, 유틸리티
+        config/: 상수, 설정
+        
+        === Readability (가독성) ===
+        ✅ Magic numbers → Named constants
+           const ANIMATION_DELAY_MS = 300;
+           const MAX_RETRY_COUNT = 3;
+        
+        ✅ 복잡한 조건 → 명명된 변수
+           const isEligibleForPremium = age >= 18 && hasConsent && !isBanned;
+           const shouldShowWelcomeModal = isFirstVisit && !hasSeenTutorial;
+        
+        ✅ 조건부 렌더링 → 전용 컴포넌트 분리
+           ❌ {role === 'admin' ? <AdminButton /> : <ViewerButton />}
+           ✅ <RoleBasedButton role={role} />
+        
+        ✅ 중첩 삼항 연산자 금지 → IIFE 또는 early return
+           const status = (() => {
+             if (A && B) return 'BOTH';
+             if (A) return 'A';
+             if (B) return 'B';
+             return 'NONE';
+           })();
+        
+        === Predictability (예측 가능성) ===
+        ✅ TanStack Query hooks는 전체 QueryResult<T, Error> 반환
+           ❌ return query.data;
+           ✅ return query;
+        
+        ✅ 모든 파라미터를 queryKey에 포함 (레이스 컨디션 방지)
+           queryKey: ['posts', { status, page, limit }]
+        
+        ✅ 함수명은 부수효과 명확히 표현
+           ✅ fetchUserWithAuth(), logAnalyticsEvent(), syncToLocalStorage()
+           ❌ handleData(), doStuff(), process()
+        
+        ✅ 유사 함수는 일관된 반환 타입 (Discriminated Union)
+           type Result<T> = { ok: true; data: T } | { ok: false; error: string };
+        
+        === Cohesion (응집도) ===
+        ✅ 비즈니스 로직 → model/ hooks
+        ✅ UI 로직 → ui/ 컴포넌트
+        ✅ 관련 상수는 로직 근처에 배치
+        ✅ 단일 책임 원칙 (SRP): 컴포넌트당 하나의 명확한 역할
+        
+        === Coupling (결합도) ===
+        ✅ Props drilling 금지 → Composition 패턴
+           ❌ <Parent><Child><GrandChild prop={x} /></Child></Parent>
+           ✅ <Modal>{children}</Modal>
+        
+        ✅ 조기 추상화 방지
+           사용 케이스가 2개 이하면 중복 허용
+           3개 이상이고 패턴이 명확할 때만 추상화
+        
+        ✅ 상태 관리 범위를 좁게 (focused hooks)
+           ❌ useGlobalState() // 모든 상태
+           ✅ useCardIdParam(), useDateRangeParam() // 단일 책임
+        
+        === TanStack Query v5 패턴 ===
+        ✅ enabled로 조건부 쿼리 (직렬 의존성)
+           useQuery({ ...userQuery(id), enabled: Boolean(id) })
+        
+        ✅ queryOptions() 헬퍼로 옵션 공통화
+           export const postQuery = (id: string) => queryOptions({
+             queryKey: ['post', id],
+             queryFn: () => fetchPost(id),
+             staleTime: 60_000,
+             gcTime: 5 * 60_000, // v5에서 cacheTime → gcTime
+           });
+        
+        ✅ Smart Query Invalidation (isMutating 활용)
+           const isMutating = useIsMutating({ mutationKey: ['updatePost'] });
+           if (!isMutating) queryClient.invalidateQueries(['posts']);
+        
+        === Effect 규칙 (React 공식 문서 기준) ===
+        ✅ useEffect는 외부 시스템 동기화만
+           - 타이머 (setTimeout, setInterval)
+           - 구독 (WebSocket, EventSource)
+           - 비-React 위젯 (지도, 차트 라이브러리)
+           - 브라우저 API (localStorage sync, IntersectionObserver)
+        
+        ❌ 금지 사항:
+           - 데이터 페칭 (TanStack Query 사용)
+           - 파생 상태 (렌더 시 계산)
+           - 이벤트 핸들러 로직 (onClick 등에서 직접 처리)
+        
+        === 낙관적 업데이트 패턴 (Optimistic Updates) ===
+        ✅ 3단계 패턴 (onMutate → onError → onSettled)
+        
+        onMutate: async (newData) => {
+          await queryClient.cancelQueries(['posts']);
+          const previous = queryClient.getQueryData(['posts']);
+          queryClient.setQueryData(['posts'], (old) => [...old, newData]);
+          return { previous }; // 롤백용 컨텍스트
+        }
+        
+        onError: (err, variables, context) => {
+          queryClient.setQueryData(['posts'], context.previous); // 롤백
+          toast.error('실패했습니다');
+        }
+        
+        onSettled: () => {
+          queryClient.invalidateQueries(['posts']); // 최종 동기화
+        }
+        
+        ✅ Set 기반 연산으로 O(1) 성능 (좋아요, 북마크 등)
+           const likedPostIds = new Set(posts.filter(p => p.isLiked).map(p => p.id));
+           const isLiked = likedPostIds.has(postId); // O(1)
+        
+        === 접근성 (Accessibility) ===
+        ✅ 네이티브 요소 우선 (button, a, input, select)
+        ✅ ARIA는 보조 (aria-pressed, aria-label, aria-describedby)
+        ✅ 키보드 네비게이션 (Tab, Enter, Escape)
+        ✅ 포커스 관리 (autoFocus, focus trap in modal)
+        ✅ 시맨틱 HTML (header, nav, main, article, section)
+        
+        === 성능 최적화 ===
+        ✅ React.memo는 필요시에만 (props가 자주 바뀌지 않는 무거운 컴포넌트)
+        ✅ useMemo/useCallback은 필요시에만 (비용이 큰 계산, 자식에게 전달되는 함수)
+        ✅ 리스트는 안정적인 key 사용 (index 금지)
+        ✅ 큰 리스트는 가상화 (react-window, @tanstack/virtual)
+
+    - path: "apps/web/src/entities/**/*.{ts,tsx}"
+      instructions: |
+        === FSD entities = 순수 데이터 레이어 ===
+        비즈니스 로직 금지, 도메인 데이터 표현만
+        
+        ✅ api/: TanStack Query hooks (전체 QueryResult<T, Error> 반환)
+           export function usePosts(): UseQueryResult<Post[], Error> {
+             return useQuery({ queryKey: ['posts'], queryFn: fetchPosts });
+           }
+        
+        ✅ ui/: 프레젠테이션 컴포넌트 (props 기반, 상태 없음)
+           export function PostCard({ post }: { post: Post }) { ... }
+        
+        ✅ model/: 타입 정의, 상수
+           export type Post = { id: string; title: string; ... };
+        
+        ❌ features 레이어 의존 금지 (단방향 의존성: features → entities)
+        ❌ 비즈니스 로직 금지 (좋아요, 댓글 등은 features에서)
+        
+        ✅ any 타입 금지, 명시적 타입 정의
+        ✅ TanStack Query: queryKey에 모든 파라미터 포함
+        ✅ enabled로 조건부 쿼리 제어
+
+    - path: "apps/web/src/shared/**/*.{ts,tsx}"
+      instructions: |
+        === 재사용 가능한 유틸리티/UI (도메인 로직 금지) ===
+        
+        ✅ ui/: 범용 UI 컴포넌트 (Button, Input, Modal 등)
+           - Polymorphic 컴포넌트 패턴 (as prop)
+           - 접근성 필수 (ARIA, 키보드 네비게이션)
+           - Vanilla Extract로 스타일링
+        
+        ✅ hooks/: 제네릭 기반 범용 hooks
+           - useDebounce<T>(value: T, delay: number)
+           - useIntersectionObserver(ref, options)
+           - useLocalStorage<T>(key: string, initialValue: T)
+        
+        ✅ lib/: 순수 함수 유틸리티
+           - formatDate(date: Date, format: string)
+           - cn(...classes) // clsx + tailwind-merge
+           - validateEmail(email: string): boolean
+        
+        ✅ api/: tRPC 클라이언트 설정, API 유틸리티
+        ✅ config/: 전역 상수, 환경 변수
+        
+        ❌ 도메인 로직 금지 (post, user, comment 등)
+        ✅ any 타입 금지
+        ✅ Magic numbers → Named constants
+        ✅ 함수명은 의도 명확히 표현
+
+    - path: "apps/web/src/views/**/*.{ts,tsx}"
+      instructions: |
+        === 페이지 레벨 조합 컴포넌트 (features 조합) ===
+        
+        ✅ features를 조합하여 페이지 구성
+           <PostDetailView>
+             <PostHeader />
+             <PostContent />
+             <PostComments />
+             <PostLikeButton />
+           </PostDetailView>
+        
+        ✅ Composition 패턴으로 features 조합 (Props drilling 금지)
+        ✅ 조건부 렌더링은 전용 컴포넌트로 분리
+        
+        ❌ 직접적인 비즈니스 로직 금지
+        ❌ 데이터 페칭 금지 (entities/features에 위임)
+        ❌ 상태 관리 금지 (features에서 처리)
+        
+        ✅ 레이아웃, 페이지 구조만 담당
+        ✅ SEO 메타데이터 설정 (Next.js metadata API)
+
+    - path: "apps/web/src/widgets/**/*.{ts,tsx}"
+      instructions: |
+        === 독립적인 UI 블록 (Header, Footer, Sidebar 등) ===
+        
+        ✅ 페이지 간 공유되는 독립적인 UI 블록
+        ✅ features를 조합할 수 있음
+        ✅ 자체 상태 관리 가능 (위젯 내부에서만)
+        
+        예시: Header (로고 + 네비게이션 + 유저 메뉴)
+              Footer (링크 + 저작권)
+              Sidebar (네비게이션 + 필터)
+
+    - path: "apps/web/src/**/*.css.ts"
+      instructions: |
+        === Vanilla Extract (제로 런타임 CSS) ===
+        
+        ✅ 디자인 토큰 활용 (design-system/tokens)
+           import { colors, spacing, typography } from '@design-system/tokens';
+           
+           export const container = style({
+             padding: spacing.md,
+             color: colors.text.primary,
+             fontSize: typography.body.md,
+           });
+        
+        ✅ Recipes로 variant 기반 스타일
+           export const button = recipe({
+             base: { padding: '8px 16px' },
+             variants: {
+               size: { sm: { padding: '4px 8px' }, lg: { padding: '12px 24px' } },
+               color: { primary: { background: colors.primary }, secondary: { ... } }
+             }
+           });
+        
+        ✅ Sprinkles로 유틸리티 클래스
+           import { sprinkles } from '@/styles/sprinkles.css';
+           <div className={sprinkles({ padding: 'md', color: 'primary' })} />
+        
+        ❌ 인라인 스타일 금지 (style={{ ... }})
+        ❌ Tailwind 직접 사용 금지 (마이그레이션 중)
+        ❌ Magic numbers 금지 → 토큰으로 추출
+           ❌ padding: '16px'
+           ✅ padding: spacing.md
+        
+        ✅ 컴포넌트와 같은 폴더에 배치 (Button.tsx + Button.css.ts)
+        ✅ 네이밍: camelCase (buttonPrimary, containerFluid)
+
+    - path: "apps/server/**/*.ts"
+      instructions: |
+        === tRPC + Zod 타입 안전성 100% ===
+        
+        ✅ routes/: tRPC 라우터 정의
+           export const postRouter = router({
+             list: publicProcedure
+               .input(z.object({ status: z.enum(['draft', 'published']) }))
+               .query(async ({ input }) => { ... }),
+             create: protectedProcedure
+               .input(createPostSchema)
+               .mutation(async ({ input, ctx }) => { ... }),
+           });
+        
+        ✅ services/: 비즈니스 로직 분리 (DB 쿼리, 외부 API 호출)
+           export async function createPost(data: CreatePostInput) {
+             const post = await db.post.create({ data });
+             await syncToSearch(post); // 부수효과 명확히
+             return post;
+           }
+        
+        ✅ Zod 스키마로 입력 유효성 검사
+           export const createPostSchema = z.object({
+             title: z.string().min(1).max(200),
+             content: z.string().min(1),
+             status: z.enum(['draft', 'published']),
+           });
+        
+        ✅ 에러 처리 일관성 (TRPCError)
+           throw new TRPCError({
+             code: 'NOT_FOUND',
+             message: 'Post not found',
+           });
+        
+        ✅ any 타입 금지, 명시적 타입 정의
+        ✅ 함수명은 부수효과 명확히 (createPost, sendEmail, logEvent)
+        ✅ 트랜잭션 사용 (여러 DB 작업 시)
+
+    - path: "apps/admin/src/features/**/*.{ts,tsx}"
+      instructions: |
+        === FSD + TanStack Table/Query 패턴 ===
+        
+        ✅ CRUD 패턴 일관성 유지
+           - List: TanStack Table + 필터링/정렬/페이지네이션
+           - Create/Edit: React Hook Form + Zod validation
+           - Delete: 확인 모달 + 낙관적 업데이트
+        
+        ✅ TanStack Query hooks는 전체 QueryResult 반환
+        ✅ 에러/로딩 상태 명확히 처리
+           if (query.isLoading) return <Skeleton />;
+           if (query.error) return <ErrorMessage error={query.error} />;
+        
+        ✅ Magic numbers → Named constants
+        ✅ 복잡한 조건 → 명명된 변수
+        ✅ TanStack Table: columnHelper로 타입 안전한 컬럼 정의
+
+    - path: "packages/design-system/**/*.{ts,tsx}"
+      instructions: |
+        === 재사용 가능한 UI 컴포넌트 라이브러리 ===
+        
+        ✅ Polymorphic 컴포넌트 패턴 (as prop)
+           type ButtonProps<C extends ElementType = 'button'> = {
+             as?: C;
+           } & ComponentPropsWithoutRef<C>;
+           
+           export function Button<C extends ElementType = 'button'>({
+             as,
+             ...props
+           }: ButtonProps<C>) {
+             const Component = as || 'button';
+             return <Component {...props} />;
+           }
+        
+        ✅ Compound Pattern으로 복잡한 UI 구성
+           <Accordion>
+             <Accordion.Item value="1">
+               <Accordion.Trigger>Title</Accordion.Trigger>
+               <Accordion.Content>Content</Accordion.Content>
+             </Accordion.Item>
+           </Accordion>
+        
+        ✅ 접근성 필수
+           - 네이티브 요소 우선 (button, a, input)
+           - ARIA 속성 (role, aria-label, aria-expanded)
+           - 키보드 네비게이션 (Tab, Enter, Escape, Arrow keys)
+           - 포커스 관리 (focus-visible, focus-within)
+        
+        ✅ Vanilla Extract로 스타일 작성
+        ✅ Props 타입 명확히 정의 (any 금지)
+        ✅ 확장 가능하고 조합 가능하게 설계
+        ✅ Storybook으로 문서화
+        ✅ 번들 크기 제한 (size-limit)
+
+    - path: "packages/shared/**/*.ts"
+      instructions: |
+        === 공통 타입/hooks/utils (도메인 로직 금지) ===
+        
+        ✅ types/: 공통 타입 정의
+           export type Result<T, E = Error> = 
+             | { ok: true; data: T }
+             | { ok: false; error: E };
+        
+        ✅ hooks/: 범용 React hooks
+           - useDebounce, useThrottle
+           - useLocalStorage, useSessionStorage
+           - useMediaQuery, useIntersectionObserver
+        
+        ✅ Zod 스키마 명확히 정의
+           export const emailSchema = z.string().email();
+           export const passwordSchema = z.string().min(8).max(100);
+        
+        ✅ 일관된 반환 타입 (Discriminated Union)
+        ✅ 함수명은 의도 명확히 표현
+        ✅ any 타입 금지
+        ✅ 순수 함수 지향 (부수효과 최소화)
+
+chat:
+  auto_reply: true
