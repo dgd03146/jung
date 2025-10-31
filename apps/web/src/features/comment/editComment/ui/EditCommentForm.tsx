@@ -8,7 +8,7 @@ import {
 	useToast,
 } from '@jung/design-system/components';
 import { useState } from 'react';
-import { useUpdateComment } from '../model/useUpdateComment';
+import { useUpdateCommentMutation } from '../model/useUpdateCommentMutation';
 import * as styles from './EditCommentForm.css';
 
 interface EditCommentFormProps {
@@ -28,7 +28,7 @@ export const EditCommentForm = ({
 }: EditCommentFormProps) => {
 	const showToast = useToast();
 	const [content, setContent] = useState(initialContent);
-	const updateComment = useUpdateComment();
+	const updateComment = useUpdateCommentMutation();
 
 	const handleSubmit = () => {
 		if (!content || content.trim() === '') {

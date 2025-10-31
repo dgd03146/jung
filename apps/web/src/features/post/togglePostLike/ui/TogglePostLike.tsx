@@ -1,7 +1,7 @@
 'use client';
 
 import { usePostLikeQuery } from '@/fsd/entities/post';
-import { useTogglePostLike } from '@/fsd/features/post';
+import { useTogglePostLikeMutation } from '@/fsd/features/post';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, Flex, useToast } from '@jung/design-system/components';
 import Link from 'next/link';
@@ -17,15 +17,22 @@ export const TogglePostLike = ({ postId }: Props) => {
 	const showToast = useToast();
 	const { data: likeInfo, isLoading: isLikeInfoLoading } =
 		usePostLikeQuery(postId);
-	const { toggleLike, isPending } = useTogglePostLike();
+	const { toggleLike, isPending } = useTogglePostLikeMutation();
 
-	const handleLikeClick = () => {
+	const handleToggleLike = () => {
 		if (!user) {
-			showToast('Login required', 'error');
+			showToast('Please log in to like posts', 'error');
 			return;
 		}
 
-		toggleLike(postId);
+		toggleLike(
+			{ postId, userId: user.id },
+			{
+				onError: () => {
+					showToast('Failed to update like status. Please try again.', 'error');
+				},
+			},
+		);
 	};
 
 	const isLiked = (user && likeInfo?.liked_by?.includes(user.id)) || false;
@@ -41,7 +48,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 		>
 			<Button
 				variant='outline'
-				onClick={handleLikeClick}
+				onClick={handleToggleLike}
 				aria-label={isLiked ? 'Unlike post' : 'Like post'}
 				fontSize='sm'
 				borderRadius='md'

@@ -13,7 +13,6 @@ import {
 	splitLink,
 } from '@trpc/client';
 import { createTRPCContext } from '@trpc/tanstack-react-query';
-import fetchPonyfill from 'fetch-ponyfill';
 import { useState } from 'react';
 
 export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
@@ -49,13 +48,10 @@ export function TRPCReactProvider(
 					},
 					// when condition is true, use normal request
 					true: httpLink({
-						// vercel issue with fetch undici
-						fetch: fetchPonyfill().fetch,
 						url: `${getUrl()}`,
 					}),
 					// when condition is false, use batching
 					false: httpBatchLink({
-						fetch: fetchPonyfill().fetch,
 						url: `${getUrl()}`,
 					}),
 				}),

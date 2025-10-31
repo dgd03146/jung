@@ -7,7 +7,7 @@ import {
 	type GuestbookEmoji,
 } from '@/fsd/entities/message';
 import { useState } from 'react';
-import { useOptimisticCreateMessage } from './useOptimisticCreateMessage';
+import { useCreateMessageMutation } from './useCreateMessageMutation';
 
 export const useCreateMessage = () => {
 	const [message, setMessage] = useState('');
@@ -17,7 +17,7 @@ export const useCreateMessage = () => {
 		DEFAULT_BACKGROUND_COLOR,
 	);
 
-	const createMessage = useOptimisticCreateMessage();
+	const createMessage = useCreateMessageMutation();
 
 	const handleMessageChange = (value: string) => {
 		setMessage(value);

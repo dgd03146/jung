@@ -6,7 +6,7 @@ import {
 	CreateCommentForm,
 	DeleteCommentButton,
 	EditCommentForm,
-	useToggleLikeComment,
+	useToggleLikeCommentMutation,
 } from '@/fsd/features/comment';
 import { Box, Flex } from '@jung/design-system';
 import type { Comment } from '@jung/shared/types';
@@ -29,7 +29,7 @@ export const CommentItemRenderer = ({
 	const [isEditing, setIsEditing] = useState(false);
 	const [isReplying, setIsReplying] = useState(false);
 
-	const { mutate: toggleLike, isPending: isLiking } = useToggleLikeComment();
+	const { toggleLike, isPending: isLiking } = useToggleLikeCommentMutation();
 
 	const isNested = !!comment.parent_id;
 
@@ -87,7 +87,12 @@ export const CommentItemRenderer = ({
 				<Flex>
 					<CommentItem.LikeButtonUI
 						onClick={() =>
-							currentUser && toggleLike({ commentId: comment.id, postId })
+							currentUser &&
+							toggleLike({
+								commentId: comment.id,
+								postId,
+								userId: currentUser.id,
+							})
 						}
 						isLoading={isLiking}
 						isLiked={isLiked}

@@ -1,2 +1,2 @@
-export { useDeleteComment } from './model/useDeleteComment';
+export { useDeleteCommentMutation } from './model/useDeleteCommentMutation';
 export { DeleteCommentButton } from './ui/DeleteCommentButton';

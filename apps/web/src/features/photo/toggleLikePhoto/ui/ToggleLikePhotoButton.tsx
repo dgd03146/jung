@@ -6,7 +6,7 @@ import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useTogglePhotoLike } from '../api/useTogglePhotoLike';
+import { useTogglePhotoLikeMutation } from '../api/useTogglePhotoLikeMutation';
 import * as styles from './ToggleLikePhotoButton.css';
 
 interface ToggleLikePhotoButtonProps {
@@ -14,7 +14,7 @@ interface ToggleLikePhotoButtonProps {
 }
 
 export function ToggleLikePhotoButton({ photoId }: ToggleLikePhotoButtonProps) {
-	const { toggleLike, isPending } = useTogglePhotoLike();
+	const { toggleLike, isPending } = useTogglePhotoLikeMutation();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
