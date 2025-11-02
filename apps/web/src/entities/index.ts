@@ -4,4 +4,4 @@ export * from './comment';
 export * from './message';
 export * from './photo';
 export * from './post';
-export * from './spot';
+export * from './place';
