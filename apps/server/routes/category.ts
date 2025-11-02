@@ -6,7 +6,7 @@ export const categoryRouter = router({
 	getCategories: publicProcedure
 		.input(
 			z.object({
-				type: z.enum(['blog', 'spots']).default('blog'),
+				type: z.enum(['blog', 'places']).default('blog'),
 			}),
 		)
 		.query(async ({ input }) => {

@@ -1,20 +1,20 @@
 import type {
-	Spot,
-	SpotQueryParams,
-	SpotQueryResult,
-	SpotWithCategory,
+	Place,
+	PlaceQueryParams,
+	PlaceQueryResult,
+	PlaceWithCategory,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import { supabase } from '../lib/supabase';
 
-export const spotsService = {
+export const placesService = {
 	async findMany({
 		limit,
 		cursor,
 		cat,
 		q: search,
 		sort = 'latest',
-	}: SpotQueryParams): Promise<SpotQueryResult> {
+	}: PlaceQueryParams): Promise<PlaceQueryResult> {
 		try {
 			let query = supabase
 				.from('spots')
@@ -70,12 +70,12 @@ export const spotsService = {
 
 			query = query.limit(limit);
 
-			const { data, error } = await query.returns<SpotWithCategory[]>();
+			const { data, error } = await query.returns<PlaceWithCategory[]>();
 
 			if (error) {
 				throw new TRPCError({
 					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Failed to fetch spots. Please try again later.',
+					message: 'Failed to fetch places. Please try again later.',
 					cause: error,
 				});
 			}
@@ -91,8 +91,8 @@ export const spotsService = {
 				data.length === limit ? data[data.length - 1]?.id : undefined;
 
 			return {
-				items: data.map((spot) => {
-					const { categories, category_id, ...rest } = spot;
+				items: data.map((place) => {
+					const { categories, category_id, ...rest } = place;
 					return {
 						...rest,
 						category: categories.name,
@@ -110,7 +110,7 @@ export const spotsService = {
 		}
 	},
 
-	async findById(id: string): Promise<Spot> {
+	async findById(id: string): Promise<Place> {
 		const { data, error } = await supabase
 			.from('spots')
 			.select(`
@@ -118,12 +118,12 @@ export const spotsService = {
 				categories!inner(name)->name as category
 			`)
 			.eq('id', id)
-			.single<SpotWithCategory>();
+			.single<PlaceWithCategory>();
 
 		if (error) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Spot not found. Please try searching again.',
+				message: 'Place not found. Please try searching again.',
 				cause: error,
 			});
 		}
@@ -131,7 +131,7 @@ export const spotsService = {
 		if (!data) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Spot not found. Please try searching again.',
+				message: 'Place not found. Please try searching again.',
 			});
 		}
 
@@ -144,45 +144,45 @@ export const spotsService = {
 		} catch (e) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: 'Invalid spot data format',
+				message: 'Invalid place data format',
 				cause: e,
 			});
 		}
 	},
 
 	async toggleLike({
-		spotId,
+		placeId,
 		userId,
 	}: {
-		spotId: string;
+		placeId: string;
 		userId: string;
-	}): Promise<Spot> {
-		const { data: spot, error: selectError } = await supabase
+	}): Promise<Place> {
+		const { data: place, error: selectError } = await supabase
 			.from('spots')
 			.select('*')
-			.eq('id', spotId)
-			.single<Spot>();
+			.eq('id', placeId)
+			.single<Place>();
 
 		if (selectError) {
 			throw new TRPCError({
 				code: 'INTERNAL_SERVER_ERROR',
-				message: `Failed to fetch spot: ${selectError.message}`,
+				message: `Failed to fetch place: ${selectError.message}`,
 				cause: selectError,
 			});
 		}
 
-		if (!spot) {
+		if (!place) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Spot not found',
+				message: 'Place not found',
 			});
 		}
 
-		const hasLiked = spot.liked_by.includes(userId);
-		const newLikes = hasLiked ? spot.likes - 1 : spot.likes + 1;
+		const hasLiked = place.liked_by.includes(userId);
+		const newLikes = hasLiked ? place.likes - 1 : place.likes + 1;
 		const newLikedBy = hasLiked
-			? spot.liked_by.filter((id) => id !== userId)
-			: [...spot.liked_by, userId];
+			? place.liked_by.filter((id) => id !== userId)
+			: [...place.liked_by, userId];
 
 		const { data, error } = await supabase
 			.from('spots')
@@ -190,9 +190,9 @@ export const spotsService = {
 				likes: newLikes,
 				liked_by: newLikedBy,
 			})
-			.eq('id', spotId)
+			.eq('id', placeId)
 			.select()
-			.single<Spot>();
+			.single<Place>();
 
 		if (error) {
 			throw new TRPCError({
@@ -205,7 +205,7 @@ export const spotsService = {
 		if (!data) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Spot not found or like could not be toggled',
+				message: 'Place not found or like could not be toggled',
 			});
 		}
 
@@ -214,13 +214,13 @@ export const spotsService = {
 
 	// 좋아요 정보만 가져오기
 	async getLikeInfo(
-		spotId: string,
+		placeId: string,
 	): Promise<{ likes: number; liked_by: string[] }> {
 		try {
 			const { data, error } = await supabase
 				.from('spots')
 				.select('likes, liked_by')
-				.eq('id', spotId)
+				.eq('id', placeId)
 				.single<{ likes: number; liked_by: string[] }>();
 
 			if (error) {
@@ -234,7 +234,7 @@ export const spotsService = {
 			if (!data) {
 				throw new TRPCError({
 					code: 'NOT_FOUND',
-					message: 'Spot not found',
+					message: 'Place not found',
 				});
 			}
 
