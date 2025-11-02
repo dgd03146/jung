@@ -24,7 +24,7 @@ export interface CategoriesResponse {
 	subCategories: CategoryCount[];
 }
 
-export type CategoryType = 'blog' | 'spots';
+export type CategoryType = 'blog' | 'places';
 
 export type CategoryPreview = {
 	id: string;
