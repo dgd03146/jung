@@ -4,7 +4,7 @@ import * as styles from './CategoryStats.css';
 
 interface CategoryStatsProps {
 	allCategories: CategoryCount[];
-	type: 'blog' | 'spots';
+	type: 'blog' | 'places';
 }
 
 export const CategoryStats = ({ allCategories, type }: CategoryStatsProps) => {
@@ -17,7 +17,7 @@ export const CategoryStats = ({ allCategories, type }: CategoryStatsProps) => {
 	};
 
 	const getItemLabel = () => {
-		return type === 'blog' ? 'Posts' : 'Spots';
+		return type === 'blog' ? 'Posts' : 'Places';
 	};
 
 	return (

@@ -7,7 +7,7 @@ interface CategoryHeaderProps {
 	view: 'grid' | 'list';
 	onViewChange: (view: 'grid' | 'list') => void;
 	onAddNew: () => void;
-	type: 'blog' | 'spots';
+	type: 'blog' | 'places';
 }
 
 export const CategoryHeader = ({
@@ -17,10 +17,10 @@ export const CategoryHeader = ({
 	type,
 }: CategoryHeaderProps) => {
 	const title =
-		type === 'blog' ? 'Blog Category Management' : 'Spot Category Management';
+		type === 'blog' ? 'Blog Category Management' : 'Place Category Management';
 
 	const buttonText =
-		type === 'blog' ? 'New Blog Category' : 'New Spot Category';
+		type === 'blog' ? 'New Blog Category' : 'New Place Category';
 
 	return (
 		<Flex

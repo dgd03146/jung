@@ -24,7 +24,7 @@ export const CategoryManager = ({ onUpdateOrder }: CategoryManagerProps) => {
 
 	const router = useRouter();
 	const pathname = router.state.location.pathname;
-	const type = pathname.split('/')[1] as 'blog' | 'spots';
+	const type = pathname.split('/')[1] as 'blog' | 'places';
 
 	const { data } = useGetCategories(type);
 

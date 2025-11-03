@@ -14,7 +14,7 @@ interface CategoryCardProps {
 	dragHandleProps?: DraggableProvidedDragHandleProps;
 	subCategories: CategoryCount[];
 	setEditingId: (id: string) => void;
-	type: 'blog' | 'spots';
+	type: 'blog' | 'places';
 }
 
 export const CategoryCard = ({
@@ -32,7 +32,7 @@ export const CategoryCard = ({
 	const handleDelete = () => {
 		if (hasChildren) {
 			alert(
-				`Please delete all sub${type === 'blog' ? 'posts' : 'spots'} first`,
+				`Please delete all sub${type === 'blog' ? 'posts' : 'places'} first`,
 			);
 			return;
 		}
@@ -119,7 +119,7 @@ export const CategoryCard = ({
 				background='white100'
 			>
 				<span className={styles.postCount}>
-					{category.count} {type === 'blog' ? 'posts' : 'spots'}
+					{category.count} {type === 'blog' ? 'posts' : 'places'}
 				</span>
 			</Flex>
 
