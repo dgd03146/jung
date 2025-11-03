@@ -1,0 +1,107 @@
+import { PLACE_DEFAULTS } from '@/fsd/entities/place';
+
+import {
+	SUPPORTED_LANGS,
+	capitalizeFirstLetter,
+	getApiUrl,
+	getGoogleVerificationCode,
+} from '@/fsd/shared';
+import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { PlacesLayout } from '../../_components/PlacesLayout';
+
+export async function generateMetadata({
+	params,
+}: {
+	params: { categoryName: string; lang: string };
+}): Promise<Metadata> {
+	const categoryName = capitalizeFirstLetter(params.categoryName);
+
+	const categoryDescription = `JUNG 여행지의 "${categoryName}" 카테고리 글 모음입니다.`;
+
+	return {
+		title: `${categoryName} • JUNG Place`,
+		description: categoryDescription,
+		openGraph: {
+			title: `${categoryName} • JUNG Place`,
+			description: categoryDescription,
+			type: 'website',
+			siteName: 'JUNG Place',
+			locale: 'ko_KR',
+			images: [
+				{
+					url: '/images/og/place-default.jpg',
+					width: 1200,
+					height: 630,
+					alt: `${categoryName} 카테고리`,
+				},
+			],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: `${categoryName} • JUNG Place`,
+			creator: '@jung',
+			description: categoryDescription,
+			images: ['/images/og/place-default.jpg'],
+		},
+		authors: [{ name: 'JUNG', url: getApiUrl() }],
+		keywords: [categoryName, 'JUNG Place', '여행지 추천'],
+		alternates: {
+			canonical: `${getApiUrl()}/places/categories/${categoryName}`,
+			languages: {
+				en: `${getApiUrl()}/en/places/categories/${categoryName}`,
+				ko: `${getApiUrl()}/ko/places/categories/${categoryName}`,
+			},
+		},
+		verification: {
+			google: getGoogleVerificationCode(),
+		},
+	};
+}
+
+export const revalidate = 21600;
+
+export async function generateStaticParams() {
+	const categories = await caller.category.getCategories({ type: 'places' });
+
+	const params = [];
+	for (const lang of SUPPORTED_LANGS) {
+		for (const category of categories) {
+			params.push({
+				lang,
+				categoryName: category.name,
+			});
+		}
+	}
+
+	return params;
+}
+
+export default async function CategoryPlacesPage({
+	params,
+}: {
+	params: { categoryName: string };
+}) {
+	const queryClient = getQueryClient();
+	const categoryName = params.categoryName;
+
+	queryClient.prefetchInfiniteQuery(
+		trpc.place.getAllPlaces.infiniteQueryOptions({
+			limit: PLACE_DEFAULTS.LIMIT,
+			cat: categoryName,
+			sort: PLACE_DEFAULTS.SORT,
+			q: PLACE_DEFAULTS.QUERY,
+		}),
+	);
+
+	queryClient.prefetchQuery(
+		trpc.category.getCategories.queryOptions({ type: 'places' }),
+	);
+
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<PlacesLayout currentCategory={categoryName} />
+		</HydrationBoundary>
+	);
+}
