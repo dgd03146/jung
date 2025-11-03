@@ -18,9 +18,9 @@ export const ROUTES = {
 		pathById: (id?: string) => `/gallery/collections/${id || ''}`,
 	},
 
-	SPOTS: {
-		label: 'spots',
-		path: '/spots',
+	PLACES: {
+		label: 'places',
+		path: '/places',
 	},
 	GUESTBOOK: {
 		label: 'guestbook',
