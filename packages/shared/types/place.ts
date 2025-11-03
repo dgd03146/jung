@@ -61,3 +61,7 @@ export type PlaceWithCategory = Place & {
 	};
 	category_id: string;
 };
+
+// Deprecated: Use Place instead (legacy support for admin migration)
+export type Spot = Place;
+export type SpotImageUpload = PlaceImageUpload;
