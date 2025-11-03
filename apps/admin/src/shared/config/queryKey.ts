@@ -10,7 +10,7 @@ export const postKeys = {
 };
 
 export const categoryKeys = {
-	all: (type: 'blog' | 'spots') => ['categories', type] as const,
+	all: (type: 'blog' | 'places') => ['categories', type] as const,
 };
 
 export const photoKeys = {
@@ -22,11 +22,11 @@ export const photoKeys = {
 		[...photoKeys.all, 'collection', collectionId, page, limit] as const,
 };
 
-export const spotKeys = {
-	all: ['spots'] as const,
-	lists: () => [...spotKeys.all, 'list'] as const,
-	list: (filters: PostFilters) => [...spotKeys.lists(), filters] as const,
-	detail: (id?: string) => [...spotKeys.all, id] as const,
+export const placeKeys = {
+	all: ['places'] as const,
+	lists: () => [...placeKeys.all, 'list'] as const,
+	list: (filters: PostFilters) => [...placeKeys.lists(), filters] as const,
+	detail: (id?: string) => [...placeKeys.all, id] as const,
 };
 
 export const collectionKeys = {

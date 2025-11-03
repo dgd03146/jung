@@ -23,7 +23,7 @@ export const useUpdateCategory = (type: CategoryType) => {
 				queryKey: categoryKeys.all(type),
 			});
 			showToast(
-				`${type === 'blog' ? 'Blog' : 'Spot'} category updated successfully`,
+				`${type === 'blog' ? 'Blog' : 'Place'} category updated successfully`,
 				'success',
 			);
 		},
