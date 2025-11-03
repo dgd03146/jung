@@ -1,18 +1,14 @@
-import {
-	BLOG_DEFAULTS,
-	PostHeader,
-	PostNavigation,
-	PostNavigationSkeleton,
-} from '@/fsd/entities/post';
+import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
+import { PostNavigation, PostNavigationSkeleton } from '@/fsd/widgets/blog';
 
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
-import { CommentSection } from '@/fsd/widgets/comment';
+import { CommentSection } from '@/fsd/widgets/blog';
 import { Container, Flex } from '@jung/design-system/components';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -25,7 +21,7 @@ export async function generateMetadata({
 	params: { slug: string; lang: string };
 }): Promise<Metadata> {
 	try {
-		const post = await caller.post.getPostById({ postId: params.slug });
+		const post = await caller.blog.getPostById({ postId: params.slug });
 
 		if (!post) {
 			return {
@@ -97,7 +93,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const posts = await caller.post.getAllPosts({
+	const posts = await caller.blog.getAllPosts({
 		limit: BLOG_DEFAULTS.LIMIT,
 		sort: BLOG_DEFAULTS.SORT,
 		cat: BLOG_DEFAULTS.CATEGORY,
@@ -120,10 +116,10 @@ export default function Page({ params }: { params: { slug: string } }) {
 	const postId = params.slug;
 	const queryClient = getQueryClient();
 
-	queryClient.prefetchQuery(trpc.post.getPostById.queryOptions({ postId }));
+	queryClient.prefetchQuery(trpc.blog.getPostById.queryOptions({ postId }));
 
 	queryClient.prefetchQuery(
-		trpc.post.getAdjacentPosts.queryOptions({ postId }),
+		trpc.blog.getAdjacentPosts.queryOptions({ postId }),
 	);
 
 	return (

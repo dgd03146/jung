@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageWallError } from '@/fsd/entities/message';
+import { MessageWallError } from '@/fsd/entities/guestbook';
 
 export default function GuestBookError({
 	error,

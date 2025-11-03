@@ -4,7 +4,7 @@ import {
 	COLLECTION_DEFAULTS,
 	CollectionList,
 	useCollectionsQuery,
-} from '@/fsd/entities/photo';
+} from '@/fsd/entities/gallery';
 import { EmptyState } from '@/fsd/shared';
 
 export const CollectionContent = () => {

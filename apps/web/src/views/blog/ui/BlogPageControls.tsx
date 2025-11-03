@@ -1,6 +1,6 @@
 'use client';
 
-import { SelectViewMode, useViewMode } from '@/fsd/features/post';
+import { SelectViewMode, useViewMode } from '@/fsd/features/blog';
 import { SearchBar } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
 

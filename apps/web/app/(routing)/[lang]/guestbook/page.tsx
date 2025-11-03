@@ -1,5 +1,5 @@
-import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/message';
-import { CreateMessageForm } from '@/fsd/features/message';
+import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/guestbook';
+import { CreateMessageForm } from '@/fsd/features/guestbook';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,

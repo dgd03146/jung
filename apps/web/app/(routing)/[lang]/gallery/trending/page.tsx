@@ -1,5 +1,5 @@
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
-import { FilteredPhotoList } from '@/fsd/features/photo';
+import { FilteredPhotoList } from '@/fsd/features/gallery';
 import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
@@ -74,7 +74,7 @@ export default function TrendingPage() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(
-		trpc.photos.getAllPhotos.infiniteQueryOptions({
+		trpc.gallery.getAllPhotos.infiniteQueryOptions({
 			limit: TRENDING_PHOTO_DEFAULTS.LIMIT,
 			sort: TRENDING_PHOTO_DEFAULTS.SORT,
 			q: TRENDING_PHOTO_DEFAULTS.QUERY,

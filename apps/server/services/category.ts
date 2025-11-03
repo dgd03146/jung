@@ -3,16 +3,22 @@ import { supabase } from '../lib/supabase';
 
 export const categoryService = {
 	async getCategories(type: CategoryType): Promise<CategoryTree[]> {
+		// 'places' 타입으로 요청이 오면 'spots'도 함께 조회 (DB 마이그레이션 전 호환성)
+		const queryType = type === 'places' ? 'spots' : type;
+
 		const { data: categories, error } = await supabase
 			.from('categories')
 			.select('id, name, parent_id')
-			.eq('type', type)
+			.eq('type', queryType)
 			.order('created_at')
 			.returns<Category[]>();
 
 		if (error) throw new Error(error.message);
 
-		if (!categories?.length) throw new Error('No categories found');
+		if (!categories?.length) {
+			// 빈 배열 반환 (에러 대신)
+			return [];
+		}
 
 		const tableName = type === 'blog' ? 'posts' : 'spots';
 		const { data: postCounts, error: countError } = await supabase

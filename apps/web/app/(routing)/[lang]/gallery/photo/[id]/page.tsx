@@ -1,4 +1,4 @@
-import { PHOTO_DEFAULTS } from '@/fsd/entities/photo';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,
@@ -17,7 +17,7 @@ export async function generateMetadata({
 	params: { id: string; lang: string };
 }): Promise<Metadata> {
 	try {
-		const photo = await caller.photos.getPhotoById(params.id);
+		const photo = await caller.gallery.getPhotoById(params.id);
 
 		if (!photo) {
 			return {
@@ -100,7 +100,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const photos = await caller.photos.getAllPhotos({
+	const photos = await caller.gallery.getAllPhotos({
 		limit: PHOTO_DEFAULTS.LIMIT,
 		sort: PHOTO_DEFAULTS.SORT,
 		q: PHOTO_DEFAULTS.QUERY,
@@ -126,7 +126,7 @@ export default function PhotoPage({
 	const photoId = params.id;
 
 	const queryClient = getQueryClient();
-	queryClient.prefetchQuery(trpc.photos.getPhotoById.queryOptions(photoId));
+	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>

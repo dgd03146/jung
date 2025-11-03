@@ -94,7 +94,7 @@ export const useCreateCategory = (type: CategoryType) => {
 			});
 
 			showToast(
-				`${type === 'blog' ? 'Blog' : 'Spot'} category created successfully!`,
+				`${type === 'blog' ? 'Blog' : 'Place'} category created successfully!`,
 				'success',
 			);
 		},

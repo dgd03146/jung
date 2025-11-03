@@ -1,4 +1,4 @@
-import { PhotoFilterProvider } from '@/fsd/features/photo';
+import { PhotoFilterProvider } from '@/fsd/features/gallery';
 import { GalleryNavigationWrapper } from '@/fsd/views/gallery';
 
 interface GalleryLayoutProps {

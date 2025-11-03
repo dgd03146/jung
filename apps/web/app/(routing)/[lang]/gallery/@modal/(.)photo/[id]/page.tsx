@@ -10,7 +10,7 @@ export default async function PhotoModal({
 	const queryClient = getQueryClient();
 	const photoId = params.id;
 
-	queryClient.prefetchQuery(trpc.photos.getPhotoById.queryOptions(photoId));
+	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
 
 	return (
 		<Modal useRouterBack>

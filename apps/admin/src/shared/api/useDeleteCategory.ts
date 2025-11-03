@@ -55,7 +55,7 @@ export const useDeleteCategory = (type: CategoryType) => {
 				switch (error.code) {
 					case 'NOT_FOUND':
 						showToast(
-							`${type === 'blog' ? 'Blog' : 'Spot'} category not found`,
+							`${type === 'blog' ? 'Blog' : 'Place'} category not found`,
 							'error',
 						);
 						break;
@@ -79,7 +79,7 @@ export const useDeleteCategory = (type: CategoryType) => {
 			});
 
 			showToast(
-				`${type === 'blog' ? 'Blog' : 'Spot'} category deleted successfully`,
+				`${type === 'blog' ? 'Blog' : 'Place'} category deleted successfully`,
 				'success',
 			);
 		},

@@ -15,7 +15,7 @@ import * as styles from './CategoryView.css';
 interface CategoryViewProps {
 	categories: CategoryCount[];
 	onEdit: (id: string) => void;
-	type: 'blog' | 'spots';
+	type: 'blog' | 'places';
 }
 
 export const CategoryListView = ({
@@ -23,7 +23,7 @@ export const CategoryListView = ({
 	onEdit,
 	type,
 }: CategoryViewProps) => {
-	const getItemLabel = () => (type === 'blog' ? 'posts' : 'spots');
+	const getItemLabel = () => (type === 'blog' ? 'posts' : 'places');
 
 	return (
 		<Stack gap='3' padding='6'>
@@ -87,7 +87,7 @@ interface CategoryGridViewProps {
 	mainCategories: CategoryCount[];
 	subCategories: CategoryCount[];
 	onEdit: (id: string) => void;
-	type: 'blog' | 'spots';
+	type: 'blog' | 'places';
 }
 
 export const CategoryGridView = ({

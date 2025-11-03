@@ -22,19 +22,19 @@ import { Route as GalleryPhotosNewIndexRouteImport } from './routes/gallery/phot
 import { Route as GuestbookIndexRouteImport } from './routes/guestbook/index';
 import { Route as IndexRouteImport } from './routes/index';
 import { Route as LoginIndexRouteImport } from './routes/login/index';
-import { Route as SpotsSpotIdEditRouteImport } from './routes/spots/$spotId/edit';
-import { Route as SpotsCategoriesIndexRouteImport } from './routes/spots/categories/index';
-import { Route as SpotsIndexRouteImport } from './routes/spots/index';
-import { Route as SpotsNewIndexRouteImport } from './routes/spots/new/index';
+import { Route as PlacesPlaceIdEditRouteImport } from './routes/places/$placeId/edit';
+import { Route as PlacesCategoriesIndexRouteImport } from './routes/places/categories/index';
+import { Route as PlacesIndexRouteImport } from './routes/places/index';
+import { Route as PlacesNewIndexRouteImport } from './routes/places/new/index';
 
 const IndexRoute = IndexRouteImport.update({
 	id: '/',
 	path: '/',
 	getParentRoute: () => rootRouteImport,
 } as any);
-const SpotsIndexRoute = SpotsIndexRouteImport.update({
-	id: '/spots/',
-	path: '/spots/',
+const PlacesIndexRoute = PlacesIndexRouteImport.update({
+	id: '/places/',
+	path: '/places/',
 	getParentRoute: () => rootRouteImport,
 } as any);
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -57,14 +57,14 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 	path: '/blog/',
 	getParentRoute: () => rootRouteImport,
 } as any);
-const SpotsNewIndexRoute = SpotsNewIndexRouteImport.update({
-	id: '/spots/new/',
-	path: '/spots/new/',
+const PlacesNewIndexRoute = PlacesNewIndexRouteImport.update({
+	id: '/places/new/',
+	path: '/places/new/',
 	getParentRoute: () => rootRouteImport,
 } as any);
-const SpotsCategoriesIndexRoute = SpotsCategoriesIndexRouteImport.update({
-	id: '/spots/categories/',
-	path: '/spots/categories/',
+const PlacesCategoriesIndexRoute = PlacesCategoriesIndexRouteImport.update({
+	id: '/places/categories/',
+	path: '/places/categories/',
 	getParentRoute: () => rootRouteImport,
 } as any);
 const GalleryPhotosIndexRoute = GalleryPhotosIndexRouteImport.update({
@@ -87,9 +87,9 @@ const BlogCategoriesIndexRoute = BlogCategoriesIndexRouteImport.update({
 	path: '/blog/categories/',
 	getParentRoute: () => rootRouteImport,
 } as any);
-const SpotsSpotIdEditRoute = SpotsSpotIdEditRouteImport.update({
-	id: '/spots/$spotId/edit',
-	path: '/spots/$spotId/edit',
+const PlacesPlaceIdEditRoute = PlacesPlaceIdEditRouteImport.update({
+	id: '/places/$placeId/edit',
+	path: '/places/$placeId/edit',
 	getParentRoute: () => rootRouteImport,
 } as any);
 const GalleryCollectionsCollectionIdRoute =
@@ -121,16 +121,16 @@ export interface FileRoutesByFullPath {
 	'/community': typeof CommunityIndexRoute;
 	'/guestbook': typeof GuestbookIndexRoute;
 	'/login': typeof LoginIndexRoute;
-	'/spots': typeof SpotsIndexRoute;
+	'/places': typeof PlacesIndexRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
-	'/spots/$spotId/edit': typeof SpotsSpotIdEditRoute;
+	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
 	'/blog/categories': typeof BlogCategoriesIndexRoute;
 	'/blog/new': typeof BlogNewIndexRoute;
 	'/gallery/collections': typeof GalleryCollectionsIndexRoute;
 	'/gallery/photos': typeof GalleryPhotosIndexRoute;
-	'/spots/categories': typeof SpotsCategoriesIndexRoute;
-	'/spots/new': typeof SpotsNewIndexRoute;
+	'/places/categories': typeof PlacesCategoriesIndexRoute;
+	'/places/new': typeof PlacesNewIndexRoute;
 	'/gallery/photos/$photoId/edit': typeof GalleryPhotosPhotoIdEditRoute;
 	'/gallery/photos/new': typeof GalleryPhotosNewIndexRoute;
 }
@@ -140,16 +140,16 @@ export interface FileRoutesByTo {
 	'/community': typeof CommunityIndexRoute;
 	'/guestbook': typeof GuestbookIndexRoute;
 	'/login': typeof LoginIndexRoute;
-	'/spots': typeof SpotsIndexRoute;
+	'/places': typeof PlacesIndexRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
-	'/spots/$spotId/edit': typeof SpotsSpotIdEditRoute;
+	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
 	'/blog/categories': typeof BlogCategoriesIndexRoute;
 	'/blog/new': typeof BlogNewIndexRoute;
 	'/gallery/collections': typeof GalleryCollectionsIndexRoute;
 	'/gallery/photos': typeof GalleryPhotosIndexRoute;
-	'/spots/categories': typeof SpotsCategoriesIndexRoute;
-	'/spots/new': typeof SpotsNewIndexRoute;
+	'/places/categories': typeof PlacesCategoriesIndexRoute;
+	'/places/new': typeof PlacesNewIndexRoute;
 	'/gallery/photos/$photoId/edit': typeof GalleryPhotosPhotoIdEditRoute;
 	'/gallery/photos/new': typeof GalleryPhotosNewIndexRoute;
 }
@@ -160,16 +160,16 @@ export interface FileRoutesById {
 	'/community/': typeof CommunityIndexRoute;
 	'/guestbook/': typeof GuestbookIndexRoute;
 	'/login/': typeof LoginIndexRoute;
-	'/spots/': typeof SpotsIndexRoute;
+	'/places/': typeof PlacesIndexRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
-	'/spots/$spotId/edit': typeof SpotsSpotIdEditRoute;
+	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
 	'/blog/categories/': typeof BlogCategoriesIndexRoute;
 	'/blog/new/': typeof BlogNewIndexRoute;
 	'/gallery/collections/': typeof GalleryCollectionsIndexRoute;
 	'/gallery/photos/': typeof GalleryPhotosIndexRoute;
-	'/spots/categories/': typeof SpotsCategoriesIndexRoute;
-	'/spots/new/': typeof SpotsNewIndexRoute;
+	'/places/categories/': typeof PlacesCategoriesIndexRoute;
+	'/places/new/': typeof PlacesNewIndexRoute;
 	'/gallery/photos/$photoId/edit': typeof GalleryPhotosPhotoIdEditRoute;
 	'/gallery/photos/new/': typeof GalleryPhotosNewIndexRoute;
 }
@@ -181,16 +181,16 @@ export interface FileRouteTypes {
 		| '/community'
 		| '/guestbook'
 		| '/login'
-		| '/spots'
+		| '/places'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
-		| '/spots/$spotId/edit'
+		| '/places/$placeId/edit'
 		| '/blog/categories'
 		| '/blog/new'
 		| '/gallery/collections'
 		| '/gallery/photos'
-		| '/spots/categories'
-		| '/spots/new'
+		| '/places/categories'
+		| '/places/new'
 		| '/gallery/photos/$photoId/edit'
 		| '/gallery/photos/new';
 	fileRoutesByTo: FileRoutesByTo;
@@ -200,16 +200,16 @@ export interface FileRouteTypes {
 		| '/community'
 		| '/guestbook'
 		| '/login'
-		| '/spots'
+		| '/places'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
-		| '/spots/$spotId/edit'
+		| '/places/$placeId/edit'
 		| '/blog/categories'
 		| '/blog/new'
 		| '/gallery/collections'
 		| '/gallery/photos'
-		| '/spots/categories'
-		| '/spots/new'
+		| '/places/categories'
+		| '/places/new'
 		| '/gallery/photos/$photoId/edit'
 		| '/gallery/photos/new';
 	id:
@@ -219,16 +219,16 @@ export interface FileRouteTypes {
 		| '/community/'
 		| '/guestbook/'
 		| '/login/'
-		| '/spots/'
+		| '/places/'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
-		| '/spots/$spotId/edit'
+		| '/places/$placeId/edit'
 		| '/blog/categories/'
 		| '/blog/new/'
 		| '/gallery/collections/'
 		| '/gallery/photos/'
-		| '/spots/categories/'
-		| '/spots/new/'
+		| '/places/categories/'
+		| '/places/new/'
 		| '/gallery/photos/$photoId/edit'
 		| '/gallery/photos/new/';
 	fileRoutesById: FileRoutesById;
@@ -239,16 +239,16 @@ export interface RootRouteChildren {
 	CommunityIndexRoute: typeof CommunityIndexRoute;
 	GuestbookIndexRoute: typeof GuestbookIndexRoute;
 	LoginIndexRoute: typeof LoginIndexRoute;
-	SpotsIndexRoute: typeof SpotsIndexRoute;
+	PlacesIndexRoute: typeof PlacesIndexRoute;
 	BlogEditPostIdRoute: typeof BlogEditPostIdRoute;
 	GalleryCollectionsCollectionIdRoute: typeof GalleryCollectionsCollectionIdRoute;
-	SpotsSpotIdEditRoute: typeof SpotsSpotIdEditRoute;
+	PlacesPlaceIdEditRoute: typeof PlacesPlaceIdEditRoute;
 	BlogCategoriesIndexRoute: typeof BlogCategoriesIndexRoute;
 	BlogNewIndexRoute: typeof BlogNewIndexRoute;
 	GalleryCollectionsIndexRoute: typeof GalleryCollectionsIndexRoute;
 	GalleryPhotosIndexRoute: typeof GalleryPhotosIndexRoute;
-	SpotsCategoriesIndexRoute: typeof SpotsCategoriesIndexRoute;
-	SpotsNewIndexRoute: typeof SpotsNewIndexRoute;
+	PlacesCategoriesIndexRoute: typeof PlacesCategoriesIndexRoute;
+	PlacesNewIndexRoute: typeof PlacesNewIndexRoute;
 	GalleryPhotosPhotoIdEditRoute: typeof GalleryPhotosPhotoIdEditRoute;
 	GalleryPhotosNewIndexRoute: typeof GalleryPhotosNewIndexRoute;
 }
@@ -262,11 +262,11 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof IndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
-		'/spots/': {
-			id: '/spots/';
-			path: '/spots';
-			fullPath: '/spots';
-			preLoaderRoute: typeof SpotsIndexRouteImport;
+		'/places/': {
+			id: '/places/';
+			path: '/places';
+			fullPath: '/places';
+			preLoaderRoute: typeof PlacesIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		'/login/': {
@@ -297,18 +297,18 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
-		'/spots/new/': {
-			id: '/spots/new/';
-			path: '/spots/new';
-			fullPath: '/spots/new';
-			preLoaderRoute: typeof SpotsNewIndexRouteImport;
+		'/places/new/': {
+			id: '/places/new/';
+			path: '/places/new';
+			fullPath: '/places/new';
+			preLoaderRoute: typeof PlacesNewIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
-		'/spots/categories/': {
-			id: '/spots/categories/';
-			path: '/spots/categories';
-			fullPath: '/spots/categories';
-			preLoaderRoute: typeof SpotsCategoriesIndexRouteImport;
+		'/places/categories/': {
+			id: '/places/categories/';
+			path: '/places/categories';
+			fullPath: '/places/categories';
+			preLoaderRoute: typeof PlacesCategoriesIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		'/gallery/photos/': {
@@ -339,11 +339,11 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogCategoriesIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
-		'/spots/$spotId/edit': {
-			id: '/spots/$spotId/edit';
-			path: '/spots/$spotId/edit';
-			fullPath: '/spots/$spotId/edit';
-			preLoaderRoute: typeof SpotsSpotIdEditRouteImport;
+		'/places/$placeId/edit': {
+			id: '/places/$placeId/edit';
+			path: '/places/$placeId/edit';
+			fullPath: '/places/$placeId/edit';
+			preLoaderRoute: typeof PlacesPlaceIdEditRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		'/gallery/collections/$collectionId': {
@@ -383,16 +383,16 @@ const rootRouteChildren: RootRouteChildren = {
 	CommunityIndexRoute: CommunityIndexRoute,
 	GuestbookIndexRoute: GuestbookIndexRoute,
 	LoginIndexRoute: LoginIndexRoute,
-	SpotsIndexRoute: SpotsIndexRoute,
+	PlacesIndexRoute: PlacesIndexRoute,
 	BlogEditPostIdRoute: BlogEditPostIdRoute,
 	GalleryCollectionsCollectionIdRoute: GalleryCollectionsCollectionIdRoute,
-	SpotsSpotIdEditRoute: SpotsSpotIdEditRoute,
+	PlacesPlaceIdEditRoute: PlacesPlaceIdEditRoute,
 	BlogCategoriesIndexRoute: BlogCategoriesIndexRoute,
 	BlogNewIndexRoute: BlogNewIndexRoute,
 	GalleryCollectionsIndexRoute: GalleryCollectionsIndexRoute,
 	GalleryPhotosIndexRoute: GalleryPhotosIndexRoute,
-	SpotsCategoriesIndexRoute: SpotsCategoriesIndexRoute,
-	SpotsNewIndexRoute: SpotsNewIndexRoute,
+	PlacesCategoriesIndexRoute: PlacesCategoriesIndexRoute,
+	PlacesNewIndexRoute: PlacesNewIndexRoute,
 	GalleryPhotosPhotoIdEditRoute: GalleryPhotosPhotoIdEditRoute,
 	GalleryPhotosNewIndexRoute: GalleryPhotosNewIndexRoute,
 };

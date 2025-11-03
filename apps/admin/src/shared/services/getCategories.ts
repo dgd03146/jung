@@ -1,15 +1,17 @@
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { CategoriesResponse, CategoryCount } from '@jung/shared/types';
-
-type CategoryType = 'blog' | 'spots';
+import type {
+	CategoriesResponse,
+	CategoryCount,
+	CategoryType,
+} from '@jung/shared/types';
 
 interface CountData {
 	category_id: string;
 }
 
 const getItemCounts = async (type: CategoryType, categoryIds: string[]) => {
-	const tableName = type === 'blog' ? 'posts' : 'spots';
+	const tableName = type === 'blog' ? 'posts' : 'places';
 
 	const { data: counts, error: countsError } = await supabase
 		.from(tableName)

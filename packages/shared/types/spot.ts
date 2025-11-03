@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
-export const SpotPhotoSchema = z.object({
+export const PlacePhotoSchema = z.object({
 	id: z.string().uuid().optional(),
 	url: z.string().url(),
 	status: z.enum(['existing', 'new', 'deleted']),
 });
 
-export const SpotSchema = z.object({
+export const PlaceSchema = z.object({
 	id: z.string().uuid(),
 	title: z.string(),
 	description: z.string(),
 	address: z.string(),
-	photos: z.array(SpotPhotoSchema),
+	photos: z.array(PlacePhotoSchema),
 
 	coordinates: z.object({
 		lat: z.number(),
@@ -28,7 +28,7 @@ export const SpotSchema = z.object({
 	category_id: z.string().uuid().optional(),
 });
 
-export const SpotQueryParamsSchema = z.object({
+export const PlaceQueryParamsSchema = z.object({
 	limit: z.number().min(1).max(100).default(10),
 	cursor: z.string().optional(),
 	cat: z.string().optional(),
@@ -36,26 +36,26 @@ export const SpotQueryParamsSchema = z.object({
 	sort: z.enum(['latest', 'popular', 'oldest']).optional(),
 });
 
-export const SpotQueryResultSchema = z.object({
-	items: z.array(SpotSchema),
+export const PlaceQueryResultSchema = z.object({
+	items: z.array(PlaceSchema),
 	nextCursor: z.string().nullable().optional(),
 });
 
-export type SpotPhoto = z.infer<typeof SpotPhotoSchema>;
-export type Spot = z.infer<typeof SpotSchema>;
-export type SpotQueryParams = z.infer<typeof SpotQueryParamsSchema>;
-export type SpotQueryResult = z.infer<typeof SpotQueryResultSchema>;
+export type PlacePhoto = z.infer<typeof PlacePhotoSchema>;
+export type Place = z.infer<typeof PlaceSchema>;
+export type PlaceQueryParams = z.infer<typeof PlaceQueryParamsSchema>;
+export type PlaceQueryResult = z.infer<typeof PlaceQueryResultSchema>;
 
 export type { Category } from './category';
 
-export interface SpotImageUpload extends SpotPhoto {
+export interface PlaceImageUpload extends PlacePhoto {
 	file?: File;
 	preview?: string;
 }
 
-export type SpotSort = 'latest' | 'oldest' | 'popular';
+export type PlaceSort = 'latest' | 'oldest' | 'popular';
 
-export type SpotWithCategory = Spot & {
+export type PlaceWithCategory = Place & {
 	categories: {
 		name: string;
 	};

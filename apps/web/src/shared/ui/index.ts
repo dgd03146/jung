@@ -14,3 +14,4 @@ export { default as NavigationLinks } from './NavigationLinks';
 export { bodyScrollLock, scrollPosition } from './ScrollLock.css';
 export { SearchBar } from './SearchBar';
 export { SearchBarSkeleton } from './SearchBarSkeleton';
+export { TagList } from './TagList';
