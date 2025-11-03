@@ -1,8 +1,8 @@
 'use client';
 
-import { TogglePostLike } from '@/fsd/features/post';
+import { TogglePostLike } from '@/fsd/features/blog';
 
-import { usePostQuery } from '@/fsd/entities/post';
+import { usePostQuery } from '@/fsd/entities/blog';
 
 import { EditorSkeleton } from '@/fsd/shared/ui/EditorSkeleton';
 import dynamic from 'next/dynamic';

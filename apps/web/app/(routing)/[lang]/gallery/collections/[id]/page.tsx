@@ -1,4 +1,4 @@
-import { COLLECTION_DEFAULTS } from '@/fsd/entities/photo';
+import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
@@ -22,7 +22,7 @@ export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
 	try {
-		const collection = await caller.photoCollections.getCollectionById(
+		const collection = await caller.galleryCollections.getCollectionById(
 			params.id,
 		);
 
@@ -97,7 +97,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const collections = await caller.photoCollections.getAllCollections({
+	const collections = await caller.galleryCollections.getAllCollections({
 		sort: COLLECTION_DEFAULTS.sort,
 	});
 
@@ -117,7 +117,7 @@ export default async function Page({ params }: PageProps) {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchQuery(
-		trpc.photoCollections.getCollectionById.queryOptions(collectionId),
+		trpc.galleryCollections.getCollectionById.queryOptions(collectionId),
 	);
 
 	return (

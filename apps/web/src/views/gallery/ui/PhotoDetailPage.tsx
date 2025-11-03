@@ -4,13 +4,13 @@ import {
 	NavigatePhotoButtons,
 	SharePhotoButton,
 	ToggleLikePhotoButton,
-} from '@/fsd/features/photo';
+} from '@/fsd/features/gallery';
 
 import {
 	PhotoTags,
 	usePhotoLikeQuery,
 	usePhotoQuery,
-} from '@/fsd/entities/photo';
+} from '@/fsd/entities/gallery';
 import { BlurImage, formatDate } from '@/fsd/shared';
 import { Flex, Typography } from '@jung/design-system/components';
 import { assignInlineVars } from '@vanilla-extract/dynamic';

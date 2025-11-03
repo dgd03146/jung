@@ -1,10 +1,10 @@
-import { PostListSkeleton } from '@/fsd/entities/post';
+import { PostListSkeleton } from '@/fsd/entities/blog';
 import {
 	FilterPostCategoryAccordion,
 	FilterPostCategoryAccordionSkeleton,
 	ViewModeProvider,
 	ViewPosts,
-} from '@/fsd/features/post';
+} from '@/fsd/features/blog';
 import { SearchBarSkeleton } from '@/fsd/shared';
 import { BlogPageControls } from '@/fsd/views';
 import { Box, Flex } from '@jung/design-system/components';

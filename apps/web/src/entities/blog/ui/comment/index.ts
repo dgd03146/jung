@@ -1,4 +1,5 @@
 // Comment UI - Pure presentation components
+export { CommentList } from './CommentList';
 export { CommentListSkeleton } from './CommentListSkeleton';
 export { CommentStats } from './CommentStats';
 export { EmptyComments } from './EmptyComments';

@@ -1,4 +1,4 @@
-import { COLLECTION_DEFAULTS } from '@/fsd/entities/photo';
+import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
@@ -14,7 +14,7 @@ import { Suspense } from 'react';
 
 export async function generateMetadata(): Promise<Metadata> {
 	try {
-		const collections = await caller.photoCollections.getAllCollections({
+		const collections = await caller.galleryCollections.getAllCollections({
 			sort: COLLECTION_DEFAULTS.sort,
 		});
 
@@ -104,7 +104,7 @@ export default function CollectionsPage() {
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchQuery(
-		trpc.photoCollections.getAllCollections.queryOptions({
+		trpc.galleryCollections.getAllCollections.queryOptions({
 			sort: COLLECTION_DEFAULTS.sort,
 		}),
 	);

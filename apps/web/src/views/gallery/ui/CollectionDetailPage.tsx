@@ -1,7 +1,7 @@
 'use client';
 
-import { useCollectionQuery } from '@/fsd/entities/photo';
-import { FilteredCollectionView } from '@/fsd/features/photo';
+import { useCollectionQuery } from '@/fsd/entities/gallery';
+import { FilteredCollectionView } from '@/fsd/features/gallery';
 import { BlurImage } from '@/fsd/shared';
 import { Box, Container, Typography } from '@jung/design-system/components';
 import * as styles from './CollectionDetailPage.css';

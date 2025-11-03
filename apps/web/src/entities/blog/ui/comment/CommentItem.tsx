@@ -8,15 +8,15 @@ import { CommentUserInfo } from './CommentUserInfo';
 
 interface CommentItemProps {
 	comment: Comment;
+	children: React.ReactNode;
 	isNested?: boolean;
-	actions?: React.ReactNode;
 	className?: string;
 }
 
 export const CommentItem = ({
 	comment,
+	children,
 	isNested = false,
-	actions,
 	className = '',
 }: CommentItemProps) => {
 	const containerClassName = `${
@@ -39,7 +39,7 @@ export const CommentItem = ({
 				{comment.content}
 			</Typography.SubText>
 
-			{actions}
+			{children}
 		</Box>
 	);
 };

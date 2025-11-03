@@ -1,4 +1,4 @@
-import { BLOG_DEFAULTS } from '@/fsd/entities/post';
+import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
 import {
 	SUPPORTED_LANGS,
 	getApiUrl,
@@ -46,7 +46,7 @@ export default async function Page() {
 	const queryClient = getQueryClient();
 
 	await queryClient.prefetchInfiniteQuery(
-		trpc.post.getAllPosts.infiniteQueryOptions({
+		trpc.blog.getAllPosts.infiniteQueryOptions({
 			limit: BLOG_DEFAULTS.LIMIT,
 			cat: BLOG_DEFAULTS.CATEGORY,
 			sort: BLOG_DEFAULTS.SORT,

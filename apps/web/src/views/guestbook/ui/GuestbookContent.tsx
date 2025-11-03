@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageList, useMessagesQuery } from '@/fsd/entities/message';
+import { MessageList, useMessagesQuery } from '@/fsd/entities/guestbook';
 
 import { LoadingSpinner, useInfiniteScroll } from '@/fsd/shared';
 import { Box } from '@jung/design-system/components';
