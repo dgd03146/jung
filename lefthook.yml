@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: biome
+      glob: "**/*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}"
+      run: pnpm biome check --apply --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: true
+  jobs:
+    - name: typecheck
+      run: pnpm turbo run typecheck
+    - name: build
+      run: pnpm build
