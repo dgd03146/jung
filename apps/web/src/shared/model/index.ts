@@ -5,6 +5,8 @@ export type { RouteItem, RouteList, RouteMap } from './routes';
 export { useDictionary } from './useDictionary';
 export { useInfiniteScroll } from './useInfiniteScroll';
 export { useInViewAnimation } from './useInviewAnimation';
+export { useOptimisticMutation } from './useOptimisticMutation';
+export type { OptimisticMutationContext } from './useOptimisticMutation';
 export { useScrollLock } from './useScrollLock';
 export { useSearchParamsState } from './useSearchParamsState';
 export { useSupabaseAuth } from './useSupabaseAuth';

@@ -1,18 +1,8 @@
 'use client';
 
 import { useTRPC } from '@/fsd/app';
+import { type LikeInfo, toggleLikeOptimistic } from '@/fsd/shared/lib';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-type LikeInfo = {
-	likes: number;
-	liked_by: string[];
-};
-
-type MutationContext = {
-	previousData: LikeInfo | undefined;
-	placeId: string;
-	isLiked: boolean;
-};
 
 type ToggleLikeVariables = {
 	placeId: string;
@@ -25,53 +15,22 @@ export const useTogglePlaceLikeMutation = () => {
 
 	const mutation = useMutation(
 		trpc.place.toggleLike.mutationOptions({
-			onMutate: async (variables: ToggleLikeVariables) => {
-				const { placeId, userId } = variables;
+			onMutate: async ({ placeId, userId }: ToggleLikeVariables) => {
+				const queryKey = trpc.place.getLikeInfo.queryOptions(placeId).queryKey;
 
-				// 좋아요 정보 쿼리키
-				const likeInfoQueryKey =
-					trpc.place.getLikeInfo.queryOptions(placeId).queryKey;
+				await queryClient.cancelQueries({ queryKey });
 
-				// 진행 중인 쿼리 취소
-				await queryClient.cancelQueries({
-					queryKey: likeInfoQueryKey,
-				});
+				const previousData = queryClient.getQueryData<LikeInfo>(queryKey);
 
-				// 현재 캐시된 좋아요 정보 가져오기
-				const previousData =
-					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
+				queryClient.setQueryData<LikeInfo>(queryKey, (old) =>
+					toggleLikeOptimistic(old, userId),
+				);
 
-				// 좋아요 상태 확인
-				const likedBySet = new Set(previousData?.liked_by ?? []);
-				const isLiked = likedBySet.has(userId);
-				const likeDelta = isLiked ? -1 : 1;
-
-				// Optimistic update
-				queryClient.setQueryData<LikeInfo>(likeInfoQueryKey, (old) => {
-					if (!old) return old;
-
-					if (isLiked) {
-						likedBySet.delete(userId);
-					} else {
-						likedBySet.add(userId);
-					}
-
-					return {
-						likes: old.likes + likeDelta,
-						liked_by: Array.from(likedBySet),
-					};
-				});
-
-				return { previousData, placeId, isLiked } as MutationContext;
+				return { previousData, placeId };
 			},
 
-			onError: (
-				_err: unknown,
-				_variables,
-				context: MutationContext | undefined,
-			) => {
-				if (context) {
-					// 에러 시 이전 상태로 롤백
+			onError: (_err, _variables, context) => {
+				if (context?.previousData) {
 					queryClient.setQueryData(
 						trpc.place.getLikeInfo.queryOptions(context.placeId).queryKey,
 						context.previousData,
@@ -80,17 +39,15 @@ export const useTogglePlaceLikeMutation = () => {
 			},
 
 			onSettled: (_data, _error, variables) => {
-				if (variables?.placeId) {
-					if (
-						queryClient.isMutating({
-							mutationKey: trpc.place.toggleLike.mutationOptions().mutationKey,
-						}) === 1
-					) {
-						queryClient.invalidateQueries({
-							queryKey: trpc.place.getLikeInfo.queryOptions(variables.placeId)
-								.queryKey,
-						});
-					}
+				if (
+					queryClient.isMutating({
+						mutationKey: trpc.place.toggleLike.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					queryClient.invalidateQueries({
+						queryKey: trpc.place.getLikeInfo.queryOptions(variables.placeId)
+							.queryKey,
+					});
 				}
 			},
 		}),
