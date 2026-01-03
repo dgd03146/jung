@@ -1,4 +1,4 @@
-type LikeInfo = {
+export type LikeInfo = {
 	likes: number;
 	liked_by: string[];
 };
