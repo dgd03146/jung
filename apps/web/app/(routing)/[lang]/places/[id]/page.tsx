@@ -2,10 +2,13 @@ import { PlaceDetailSkeleton } from '@/fsd/entities/place';
 import { PlaceViewProvider } from '@/fsd/features/place';
 import {
 	SUPPORTED_LANGS,
+	createBreadcrumbSchema,
+	createPlaceSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { JsonLd } from '@/fsd/shared/ui';
 
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
 
@@ -117,19 +120,62 @@ export async function generateStaticParams() {
 	return params;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+	params,
+}: { params: { id: string; lang: string } }) {
 	const placeId = params.id;
+	const lang = params.lang;
 
 	const queryClient = getQueryClient();
+
+	// Fetch place data for JSON-LD schema
+	const place = await caller.place.getPlaceById(placeId);
+
 	queryClient.prefetchQuery(trpc.place.getPlaceById.queryOptions(placeId));
 
+	// Create JSON-LD schemas
+	const placeSchema = place
+		? createPlaceSchema({
+				name: place.title,
+				description: place.description || undefined,
+				image: place.photos[0]?.url || undefined,
+				// address is a string, so we put it in street field
+				address: place.address
+					? {
+							street: place.address,
+					  }
+					: undefined,
+				coordinates: place.coordinates
+					? {
+							latitude: place.coordinates.lat,
+							longitude: place.coordinates.lng,
+					  }
+					: undefined,
+				id: place.id,
+				lang,
+		  })
+		: null;
+
+	const breadcrumbSchema = createBreadcrumbSchema(
+		[
+			{ name: 'Home', path: '' },
+			{ name: 'Places', path: '/places' },
+			{ name: place?.title || 'Place', path: `/places/${placeId}` },
+		],
+		lang,
+	);
+
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<PlaceViewProvider>
-				<Suspense fallback={<PlaceDetailSkeleton />}>
-					<PlaceDetailContent placeId={placeId} />
-				</Suspense>
-			</PlaceViewProvider>
-		</HydrationBoundary>
+		<>
+			{placeSchema && <JsonLd data={placeSchema} />}
+			<JsonLd data={breadcrumbSchema} />
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<PlaceViewProvider>
+					<Suspense fallback={<PlaceDetailSkeleton />}>
+						<PlaceDetailContent placeId={placeId} />
+					</Suspense>
+				</PlaceViewProvider>
+			</HydrationBoundary>
+		</>
 	);
 }

@@ -1,8 +1,10 @@
 import {
 	SUPPORTED_LANGS,
+	createWebSiteSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
+import { JsonLd } from '@/fsd/shared/ui';
 import { HomePage } from '@/fsd/views';
 import type { Metadata } from 'next';
 
@@ -68,6 +70,13 @@ export async function generateStaticParams() {
 	return SUPPORTED_LANGS.map((lang) => ({ lang }));
 }
 
-export default function Home() {
-	return <HomePage />;
+export default function Home({ params }: { params: { lang: string } }) {
+	const websiteSchema = createWebSiteSchema({ lang: params.lang });
+
+	return (
+		<>
+			<JsonLd data={websiteSchema} />
+			<HomePage />
+		</>
+	);
 }

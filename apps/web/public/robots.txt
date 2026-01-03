@@ -1,5 +1,28 @@
 User-agent: *
 Allow: /
 
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /auth/
+
 # Sitemaps
-Sitemap: https://your-domain.com/sitemap.xml 
+Sitemap: https://www.geojung.com/sitemap.xml
+
+# AI Crawlers - allow for GEO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
