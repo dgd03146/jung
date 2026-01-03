@@ -1,4 +1,5 @@
 import { useTRPC } from '@/fsd/app';
+import { toggleLikeOptimistic } from '@/fsd/shared/lib';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type LikeInfo = {
@@ -6,10 +7,9 @@ type LikeInfo = {
 	liked_by: string[];
 };
 
-type MutationContext = {
-	previousData: LikeInfo | undefined;
+type ToggleLikeVariables = {
 	photoId: string;
-	isLiked: boolean;
+	userId: string;
 };
 
 export const useTogglePhotoLikeMutation = () => {
@@ -18,45 +18,23 @@ export const useTogglePhotoLikeMutation = () => {
 
 	const mutation = useMutation(
 		trpc.gallery.toggleLike.mutationOptions({
-			onMutate: async ({ photoId, userId }) => {
-				const likeInfoQueryKey =
+			onMutate: async ({ photoId, userId }: ToggleLikeVariables) => {
+				const queryKey =
 					trpc.gallery.getLikeInfo.queryOptions(photoId).queryKey;
 
-				await queryClient.cancelQueries({ queryKey: likeInfoQueryKey });
+				await queryClient.cancelQueries({ queryKey });
 
-				const previousData =
-					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
+				const previousData = queryClient.getQueryData<LikeInfo>(queryKey);
 
-				const likedBySet = new Set(previousData?.liked_by ?? []);
-				const isLiked = likedBySet.has(userId);
-				const likeDelta = isLiked ? -1 : 1;
+				queryClient.setQueryData<LikeInfo>(queryKey, (old) =>
+					toggleLikeOptimistic(old, userId),
+				);
 
-				// optimistic update
-				queryClient.setQueryData<LikeInfo>(likeInfoQueryKey, (old) => {
-					if (!old) return old;
-
-					if (isLiked) {
-						likedBySet.delete(userId);
-					} else {
-						likedBySet.add(userId);
-					}
-
-					return {
-						likes: old.likes + likeDelta,
-						liked_by: Array.from(likedBySet),
-					};
-				});
-
-				return { previousData, photoId, isLiked };
+				return { previousData, photoId };
 			},
 
-			onError: (
-				_err: unknown,
-				_variables,
-				context: MutationContext | undefined,
-			) => {
-				if (context) {
-					// 에러 시 이전 상태로 롤백
+			onError: (_err, _variables, context) => {
+				if (context?.previousData) {
 					queryClient.setQueryData(
 						trpc.gallery.getLikeInfo.queryOptions(context.photoId).queryKey,
 						context.previousData,
@@ -65,18 +43,15 @@ export const useTogglePhotoLikeMutation = () => {
 			},
 
 			onSettled: (_data, _error, variables) => {
-				if (variables?.photoId) {
-					if (
-						queryClient.isMutating({
-							mutationKey:
-								trpc.gallery.toggleLike.mutationOptions().mutationKey,
-						}) === 1
-					) {
-						queryClient.invalidateQueries({
-							queryKey: trpc.gallery.getLikeInfo.queryOptions(variables.photoId)
-								.queryKey,
-						});
-					}
+				if (
+					queryClient.isMutating({
+						mutationKey: trpc.gallery.toggleLike.mutationOptions().mutationKey,
+					}) === 1
+				) {
+					queryClient.invalidateQueries({
+						queryKey: trpc.gallery.getLikeInfo.queryOptions(variables.photoId)
+							.queryKey,
+					});
 				}
 			},
 		}),
