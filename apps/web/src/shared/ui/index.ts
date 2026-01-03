@@ -6,6 +6,7 @@ export { default as BlurImage } from './BlurImage';
 export { EditorSkeleton } from './EditorSkeleton';
 export { EmptyState } from './EmptyState';
 export { ErrorBoundary } from './ErrorBoundary';
+export { JsonLd } from './JsonLd';
 export { default as LanguageSwitcher } from './LanguageSwitcher';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { Modal } from './Modal';

@@ -74,6 +74,16 @@
 					}
 				}
 			}
+		},
+		{
+			"include": ["./apps/web/src/shared/ui/JsonLd.tsx"],
+			"linter": {
+				"rules": {
+					"security": {
+						"noDangerouslySetInnerHtml": "off"
+					}
+				}
+			}
 		}
 	]
 }
