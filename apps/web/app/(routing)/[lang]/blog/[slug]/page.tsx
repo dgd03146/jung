@@ -1,9 +1,12 @@
 import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
 	SUPPORTED_LANGS,
+	createArticleSchema,
+	createBreadcrumbSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
+import { JsonLd } from '@/fsd/shared/ui';
 import { PostNavigation, PostNavigationSkeleton } from '@/fsd/widgets/blog';
 
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
@@ -112,9 +115,15 @@ export async function generateStaticParams() {
 	return params;
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+	params,
+}: { params: { slug: string; lang: string } }) {
 	const postId = params.slug;
+	const lang = params.lang;
 	const queryClient = getQueryClient();
+
+	// Fetch post data for JSON-LD schema
+	const post = await caller.blog.getPostById({ postId });
 
 	queryClient.prefetchQuery(trpc.blog.getPostById.queryOptions({ postId }));
 
@@ -122,26 +131,53 @@ export default function Page({ params }: { params: { slug: string } }) {
 		trpc.blog.getAdjacentPosts.queryOptions({ postId }),
 	);
 
+	// Create JSON-LD schemas
+	const articleSchema = post
+		? createArticleSchema({
+				title: post.title,
+				description: post.description || undefined,
+				image: post.imagesrc || undefined,
+				datePublished: new Date(post.date).toISOString(),
+				slug: post.id,
+				tags: post.tags || undefined,
+				category: post.category,
+				lang,
+		  })
+		: null;
+
+	const breadcrumbSchema = createBreadcrumbSchema(
+		[
+			{ name: 'Home', path: '' },
+			{ name: 'Blog', path: '/blog' },
+			{ name: post?.title || 'Post', path: `/blog/${postId}` },
+		],
+		lang,
+	);
+
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Container className={styles.container}>
-				<PostHeader postId={postId} />
-				<Flex
-					flexDirection={{ base: 'column-reverse', laptop: 'row' }}
-					gap={{ base: '0', laptop: '12' }}
-					marginY={{ base: '4', laptop: '10' }}
-				>
-					<Suspense fallback={<PostNavigationSkeleton />}>
-						<PostNavigation postId={postId} />
-					</Suspense>
-					<Container flex={1}>
-						<Suspense fallback={<PostDetailContentSkeleton />}>
-							<PostDetailContent postId={postId} />
+		<>
+			{articleSchema && <JsonLd data={articleSchema} />}
+			<JsonLd data={breadcrumbSchema} />
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<Container className={styles.container}>
+					<PostHeader postId={postId} />
+					<Flex
+						flexDirection={{ base: 'column-reverse', laptop: 'row' }}
+						gap={{ base: '0', laptop: '12' }}
+						marginY={{ base: '4', laptop: '10' }}
+					>
+						<Suspense fallback={<PostNavigationSkeleton />}>
+							<PostNavigation postId={postId} />
 						</Suspense>
-						<CommentSection postId={postId} />
-					</Container>
-				</Flex>
-			</Container>
-		</HydrationBoundary>
+						<Container flex={1}>
+							<Suspense fallback={<PostDetailContentSkeleton />}>
+								<PostDetailContent postId={postId} />
+							</Suspense>
+							<CommentSection postId={postId} />
+						</Container>
+					</Flex>
+				</Container>
+			</HydrationBoundary>
+		</>
 	);
 }

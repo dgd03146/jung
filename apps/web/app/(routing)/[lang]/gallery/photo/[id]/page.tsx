@@ -1,10 +1,13 @@
 import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	SUPPORTED_LANGS,
+	createBreadcrumbSchema,
+	createImageObjectSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { JsonLd } from '@/fsd/shared/ui';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { PhotoDetailSkeleton } from '@/fsd/views/gallery/ui';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
@@ -118,21 +121,54 @@ export async function generateStaticParams() {
 	return params;
 }
 
-export default function PhotoPage({
+export default async function PhotoPage({
 	params,
 }: {
-	params: { id: string };
+	params: { id: string; lang: string };
 }) {
 	const photoId = params.id;
+	const lang = params.lang;
 
 	const queryClient = getQueryClient();
+
+	// Fetch photo data for JSON-LD schema
+	const photo = await caller.gallery.getPhotoById(photoId);
+
 	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
 
+	// Create JSON-LD schemas
+	const imageObjectSchema = photo
+		? createImageObjectSchema({
+				url: photo.image_url,
+				width: photo.width || undefined,
+				height: photo.height || undefined,
+				caption: photo.title || undefined,
+				description: photo.description || undefined,
+				name: photo.title || undefined,
+				datePublished: photo.created_at,
+				id: photo.id,
+				lang,
+		  })
+		: null;
+
+	const breadcrumbSchema = createBreadcrumbSchema(
+		[
+			{ name: 'Home', path: '' },
+			{ name: 'Gallery', path: '/gallery' },
+			{ name: photo?.title || 'Photo', path: `/gallery/photo/${photoId}` },
+		],
+		lang,
+	);
+
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense fallback={<PhotoDetailSkeleton />}>
-				<PhotoDetailPage photoId={params.id} isModal={false} />
-			</Suspense>
-		</HydrationBoundary>
+		<>
+			{imageObjectSchema && <JsonLd data={imageObjectSchema} />}
+			<JsonLd data={breadcrumbSchema} />
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<Suspense fallback={<PhotoDetailSkeleton />}>
+					<PhotoDetailPage photoId={params.id} isModal={false} />
+				</Suspense>
+			</HydrationBoundary>
+		</>
 	);
 }
