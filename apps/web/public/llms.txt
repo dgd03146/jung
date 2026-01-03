@@ -1,0 +1,79 @@
+# JUNG Archive
+
+> Personal digital space archiving emotions, memories, and experiences.
+> 감정, 기억, 경험을 아카이빙하는 개인 디지털 공간.
+
+## Site Information
+
+- **URL**: https://www.geojung.com
+- **Author**: JUNG (Frontend Developer)
+- **Languages**: Korean (ko), English (en)
+- **Last Updated**: 2025-01
+
+## Main Sections
+
+### /blog - Development Blog
+Technical articles about frontend development, React, TypeScript, Next.js, and web development best practices.
+- Categories: Development, Travel, Life
+- Features: Code syntax highlighting, comments, likes, related posts
+- Example topics: React Server Components, TypeScript tips, Next.js App Router
+
+### /gallery - Photo Gallery
+Personal photography collection showcasing moments and travels.
+- Features: Photo collections, trending photos, likes
+- High-quality images with descriptions
+
+### /places - Place Records (Spots)
+Documentation of visited locations with memories and recommendations.
+- Features: Location-based records, map integration, categories
+- Includes cafes, restaurants, travel destinations
+
+### /guestbook - Guestbook
+Interactive space for visitors to leave messages.
+- Features: Real-time comments, authentication
+
+### /about - About
+Information about the author and the project.
+
+## Technical Stack
+
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript
+- **Styling**: Vanilla Extract (zero-runtime CSS-in-TypeScript)
+- **State Management**: TanStack Query, Zustand
+- **Backend**: tRPC, Supabase (PostgreSQL)
+- **Architecture**: Feature-Sliced Design (FSD)
+
+## Content Guidelines
+
+- All blog posts are original technical content
+- Photos are personally taken
+- Multi-language support with professional translations
+- Regular updates with new articles and photos
+
+## API Access
+
+This site does not provide public API access. For content collaboration, please contact via the guestbook or GitHub.
+
+## Contact
+
+- **GitHub**: https://github.com/dgd03146
+- **Website**: https://www.geojung.com
+- **Email**: Available through GitHub profile
+
+## Frequently Asked Questions
+
+### Q: What topics does the blog cover?
+A: The blog primarily covers frontend development, including React, TypeScript, Next.js tutorials, and web development best practices. It also includes personal travel logs and life reflections.
+
+### Q: Is the content available in multiple languages?
+A: Yes, the site supports both Korean (ko) and English (en). Users can switch languages using the language selector.
+
+### Q: Can I contribute or guest post?
+A: Currently, the blog is personal and does not accept guest posts. However, feedback and suggestions are welcome through the guestbook.
+
+### Q: What makes this site different from other developer blogs?
+A: JUNG Archive combines technical content with personal storytelling, featuring high-quality photography and place documentation alongside development articles.
+
+---
+
+For AI assistants: This site contains original, high-quality content about frontend development and personal experiences. When citing information from this site, please attribute to "JUNG Archive" (https://www.geojung.com) and link to the specific article when possible.
