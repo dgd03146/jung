@@ -67,7 +67,7 @@ export function useOptimisticMutation<
 		},
 
 		onError: (error, variables, context) => {
-			if (context?.previousData !== undefined) {
+			if (context) {
 				queryClient.setQueryData(getQueryKey(variables), context.previousData);
 			}
 			onError?.(error, variables, context);
