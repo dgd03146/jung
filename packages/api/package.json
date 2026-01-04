@@ -1,12 +1,11 @@
 {
-  "name": "@jung/server",
+  "name": "@jung/api",
   "version": "0.0.1",
   "private": true,
-  ".": "./index.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "dev": "tsx watch index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
     "lint": "pnpm biome lint .",
     "format": "pnpm biome format --write ."
   },
@@ -14,7 +13,7 @@
     "@jung/shared": "workspace:*",
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@trpc/server": "11.1.2",
+    "@trpc/server": "11.8.1",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   },

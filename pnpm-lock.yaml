@@ -67,12 +67,12 @@ importers:
       '@blocknote/react':
         specifier: ^0.29.1
         version: 0.29.1(react-dom@18.3.1)(react@18.3.1)
+      '@jung/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@jung/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
-      '@jung/server':
-        specifier: workspace:*
-        version: link:../server
       '@jung/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -198,46 +198,6 @@ importers:
         specifier: ^5.2.12
         version: 5.4.21(@types/node@20.19.24)
 
-  apps/server:
-    dependencies:
-      '@jung/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@supabase/auth-js':
-        specifier: ^2.65.0
-        version: 2.77.0
-      '@supabase/supabase-js':
-        specifier: ^2.44.4
-        version: 2.77.0
-      '@trpc/server':
-        specifier: 11.1.2
-        version: 11.1.2(typescript@5.9.3)
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.6.1
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
-    devDependencies:
-      '@jung/configs':
-        specifier: workspace:*
-        version: link:../../packages/configs
-      '@jung/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@types/node':
-        specifier: ^20.14.1
-        version: 20.19.24
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.19.24)(typescript@5.9.3)
-      tsx:
-        specifier: ^4.16.2
-        version: 4.20.6
-      typescript:
-        specifier: ^5.8.3
-        version: 5.9.3
-
   apps/web:
     dependencies:
       '@blocknote/code-block':
@@ -258,12 +218,12 @@ importers:
       '@formatjs/intl-localematcher':
         specifier: ^0.5.4
         version: 0.5.10
+      '@jung/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@jung/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
-      '@jung/server':
-        specifier: workspace:*
-        version: link:../server
       '@jung/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -310,14 +270,14 @@ importers:
         specifier: ^5.67.1
         version: 5.90.2(@tanstack/react-query@5.90.5)(react@18.3.1)
       '@trpc/client':
-        specifier: 11.1.2
-        version: 11.1.2(@trpc/server@11.1.2)(typescript@5.9.3)
+        specifier: 11.8.1
+        version: 11.8.1(@trpc/server@11.8.1)(typescript@5.9.3)
       '@trpc/server':
-        specifier: 11.1.2
-        version: 11.1.2(typescript@5.9.3)
+        specifier: 11.8.1
+        version: 11.8.1(typescript@5.9.3)
       '@trpc/tanstack-react-query':
-        specifier: 11.1.2
-        version: 11.1.2(@tanstack/react-query@5.90.5)(@trpc/client@11.1.2)(@trpc/server@11.1.2)(react-dom@18.3.1)(react@18.3.1)(typescript@5.9.3)
+        specifier: 11.8.1
+        version: 11.8.1(@tanstack/react-query@5.90.5)(@trpc/client@11.8.1)(@trpc/server@11.8.1)(react-dom@18.3.1)(react@18.3.1)(typescript@5.9.3)
       '@vanilla-extract/css':
         specifier: ^1.15.2
         version: 1.17.4
@@ -467,6 +427,46 @@ importers:
       vite:
         specifier: ^5.2.12
         version: 5.4.21(@types/node@20.19.24)
+
+  packages/api:
+    dependencies:
+      '@jung/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@supabase/auth-js':
+        specifier: ^2.65.0
+        version: 2.77.0
+      '@supabase/supabase-js':
+        specifier: ^2.44.4
+        version: 2.77.0
+      '@trpc/server':
+        specifier: 11.8.1
+        version: 11.8.1(typescript@5.9.3)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@jung/configs':
+        specifier: workspace:*
+        version: link:../configs
+      '@jung/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^20.14.1
+        version: 20.19.24
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@20.19.24)(typescript@5.9.3)
+      tsx:
+        specifier: ^4.16.2
+        version: 4.20.6
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
 
   packages/configs:
     devDependencies:
@@ -4088,37 +4088,37 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
-  /@trpc/client@11.1.2(@trpc/server@11.1.2)(typescript@5.9.3):
-    resolution: {integrity: sha512-RpifJOAv+ql9gF3oafa3dLCF01AzWu2DzejvehAPG2IlwHxopKoYXaImJ8zPwRkZokuWiKz5v65HjElmi8TlrQ==}
+  /@trpc/client@11.8.1(@trpc/server@11.8.1)(typescript@5.9.3):
+    resolution: {integrity: sha512-L/SJFGanr9xGABmuDoeXR4xAdHJmsXsiF9OuH+apecJ+8sUITzVT1EPeqp0ebqA6lBhEl5pPfg3rngVhi/h60Q==}
     peerDependencies:
-      '@trpc/server': 11.1.2
+      '@trpc/server': 11.8.1
       typescript: '>=5.7.2'
     dependencies:
-      '@trpc/server': 11.1.2(typescript@5.9.3)
+      '@trpc/server': 11.8.1(typescript@5.9.3)
       typescript: 5.9.3
     dev: false
 
-  /@trpc/server@11.1.2(typescript@5.9.3):
-    resolution: {integrity: sha512-Oi9zWHG0ZDkbDo4sYkduoV7q4sIe6UwjrRLC91vNMYQK+PVgpbTCmK1laRwewAGu0zaayqcGDosANjceOIC3GA==}
+  /@trpc/server@11.8.1(typescript@5.9.3):
+    resolution: {integrity: sha512-P4rzZRpEL7zDFgjxK65IdyH0e41FMFfTkQkuq0BA5tKcr7E6v9/v38DEklCpoDN6sPiB1Sigy/PUEzHENhswDA==}
     peerDependencies:
       typescript: '>=5.7.2'
     dependencies:
       typescript: 5.9.3
     dev: false
 
-  /@trpc/tanstack-react-query@11.1.2(@tanstack/react-query@5.90.5)(@trpc/client@11.1.2)(@trpc/server@11.1.2)(react-dom@18.3.1)(react@18.3.1)(typescript@5.9.3):
-    resolution: {integrity: sha512-c+NupnmIQmwgwYVTaHgDg59BZBtJ6KxqB0cxF9FBhKHPY6PlwGLdU8+mo25C5VIpofZYEII4H7NKE4yKGFSe3w==}
+  /@trpc/tanstack-react-query@11.8.1(@tanstack/react-query@5.90.5)(@trpc/client@11.8.1)(@trpc/server@11.8.1)(react-dom@18.3.1)(react@18.3.1)(typescript@5.9.3):
+    resolution: {integrity: sha512-0gBbRmRuU9/IVZgNFJuzY7k6ktnkmqjyP78PtcUBO7EgPlBu1y2MA2TdI5GT/VtNNOOhzkVeQpJqtt+0xQ8TOQ==}
     peerDependencies:
-      '@tanstack/react-query': ^5.67.1
-      '@trpc/client': 11.1.2
-      '@trpc/server': 11.1.2
+      '@tanstack/react-query': ^5.80.3
+      '@trpc/client': 11.8.1
+      '@trpc/server': 11.8.1
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
       typescript: '>=5.7.2'
     dependencies:
       '@tanstack/react-query': 5.90.5(react@18.3.1)
-      '@trpc/client': 11.1.2(@trpc/server@11.1.2)(typescript@5.9.3)
-      '@trpc/server': 11.1.2(typescript@5.9.3)
+      '@trpc/client': 11.8.1(@trpc/server@11.8.1)(typescript@5.9.3)
+      '@trpc/server': 11.8.1(typescript@5.9.3)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       typescript: 5.9.3

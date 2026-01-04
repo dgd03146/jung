@@ -1,4 +1,4 @@
-import { appRouter, createTRPCContext } from '@jung/server';
+import { appRouter, createTRPCContext } from '@jung/api';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 
 const handler = (req: Request) =>

@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/fsd/*": ["./src/*"],
-      "@jung/server/*": ["../server/*"],
+      "@jung/api/*": ["../../packages/api/*"],
       "@jung/design-system/*": ["../../packages/design-system/*"],
       "@jung/design-system/icons/*": ["../../packages/design-system/icons/*"]
     },

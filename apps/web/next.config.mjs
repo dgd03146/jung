@@ -17,7 +17,7 @@ const withVanillaExtract = createVanillaExtractPlugin(
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ['@jung/design-system', '@jung/server'],
+  transpilePackages: ['@jung/design-system', '@jung/api'],
   
   compress: true,
 

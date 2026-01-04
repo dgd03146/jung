@@ -1,4 +1,4 @@
-import { createCallerFactory, router } from '../lib/trpc';
+import { router } from '../lib/trpc';
 import { blogRouter } from './blog';
 import { categoryRouter } from './category';
 import { galleryRouter } from './gallery';
@@ -21,7 +21,3 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
-
-const createCaller = createCallerFactory(appRouter);
-
-export const caller = createCaller({});
