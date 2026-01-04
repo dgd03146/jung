@@ -36,8 +36,9 @@ export const useStorage = <T>(
 				}
 				return parsed;
 			}
+			return initialValue;
 		} catch (error) {
-			console.error(`Error reading ${storageType} key “${key}”:`, error);
+			console.error(`Error reading ${storageType} key "${key}":`, error);
 			return initialValue;
 		}
 	});
