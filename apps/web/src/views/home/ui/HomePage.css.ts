@@ -69,6 +69,7 @@ export const heroText = style({
 	color: '#FFFFFF',
 	fontSize: 'clamp(100px, 18vw, 280px)',
 	fontFamily: 'var(--font-poppins), sans-serif',
+	userSelect: 'none',
 
 	'@media': {
 		'(max-width: 768px)': {

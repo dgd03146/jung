@@ -17,16 +17,30 @@ const HomePage = () => {
 	};
 
 	const itemAnimation = {
-		hidden: { opacity: 0, y: 30 },
+		hidden: { opacity: 0, y: 20 },
 		visible: {
 			opacity: 1,
 			y: 0,
 			transition: {
-				duration: 0.8,
+				duration: 0.6,
 				ease: [0.25, 0.1, 0.25, 1] as const,
 			},
 		},
 	};
+
+	const letterAnimation = {
+		hidden: { opacity: 0, y: 40 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.5,
+				ease: [0.25, 0.1, 0.25, 1] as const,
+			},
+		},
+	};
+
+	const heroLines = ['Dreamer.', 'Do what', 'you love.'];
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -56,9 +70,38 @@ const HomePage = () => {
 
 				<m.main className={styles.main} variants={itemAnimation}>
 					<h1 className={styles.heroText}>
-						<span className={styles.heroLine}>Dreamer.</span>
-						<span className={styles.heroLine}>Do what</span>
-						<span className={styles.heroLine}>you love.</span>
+						{heroLines.map((line, lineIndex) => (
+							<m.span
+								key={line}
+								className={styles.heroLine}
+								initial='hidden'
+								animate='visible'
+								variants={{
+									hidden: {},
+									visible: {
+										transition: {
+											staggerChildren: 0.04,
+											delayChildren: 0.4 + lineIndex * 0.15,
+										},
+									},
+								}}
+							>
+								{line.split('').map((char, charIndex) => (
+									<m.span
+										key={`${char}-${charIndex}`}
+										variants={letterAnimation}
+										whileHover={{ y: -8 }}
+										transition={{
+											duration: 0.2,
+											ease: [0.25, 0.1, 0.25, 1],
+										}}
+										style={{ display: 'inline-block', cursor: 'default' }}
+									>
+										{char === ' ' ? '\u00A0' : char}
+									</m.span>
+								))}
+							</m.span>
+						))}
 					</h1>
 				</m.main>
 
