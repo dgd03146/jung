@@ -11,6 +11,11 @@ import {
 	useSearchParamsState,
 } from '@/fsd/shared';
 
+const SEARCH_PARAMS_DEFAULTS = {
+	sort: BLOG_DEFAULTS.SORT,
+	q: BLOG_DEFAULTS.QUERY,
+} as const;
+
 export const ViewPosts = () => {
 	const { viewMode } = useViewMode();
 	const params = useParams();
@@ -20,10 +25,7 @@ export const ViewPosts = () => {
 			: BLOG_DEFAULTS.CATEGORY;
 
 	const { sort, q } = useSearchParamsState({
-		defaults: {
-			sort: BLOG_DEFAULTS.SORT,
-			q: BLOG_DEFAULTS.QUERY,
-		} as const,
+		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
