@@ -7,7 +7,7 @@ import {
 } from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { HiCheck, HiTrash, HiXMark } from 'react-icons/hi2';
 import * as styles from './GuestbookMessages.css';

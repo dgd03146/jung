@@ -1,4 +1,4 @@
-import { HiOutlineSelector } from "react-icons/hi";
+import { HiOutlineSelector } from 'react-icons/hi';
 
 export const SelectorIcon = () => {
 	return <HiOutlineSelector />;

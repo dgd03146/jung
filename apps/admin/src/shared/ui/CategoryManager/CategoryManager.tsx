@@ -1,14 +1,10 @@
-import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
+import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd';
 import { Box, Stack } from '@jung/design-system/components';
 import type { CategoryCount } from '@jung/shared/types';
 import { useRouter } from '@tanstack/react-router';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
-import {
-	DragDropContext,
-	type DropResult,
-	Droppable,
-} from 'react-beautiful-dnd';
+import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import { CategoryForm } from './CategoryForm';
 import { CategoryHeader } from './CategoryHeader';
 import { CategoryStats } from './CategoryStats';

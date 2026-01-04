@@ -1,8 +1,7 @@
-import { type HTMLAttributes, forwardRef } from 'react';
-
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as styles from './Progress.css';
 
 export interface ProgressProps

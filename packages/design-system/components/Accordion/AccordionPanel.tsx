@@ -1,9 +1,8 @@
 'use client';
 
-import { type HTMLAttributes, forwardRef, useRef } from 'react';
-
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes, useRef } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as styles from './Accordion.css';
 import { useAccordionItemContext } from './context/AccordionItemContext';
 

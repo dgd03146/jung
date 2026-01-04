@@ -7,7 +7,7 @@ export const useToast = () => {
 
 	const showToast = useCallback(
 		(message: string, type?: ToastType, duration = 3000) => {
-			const id = new Date().getTime();
+			const id = Date.now();
 			const newToast = { id, message, type, duration };
 			setToastList((prev) => {
 				return [...prev, newToast];

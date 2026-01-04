@@ -1,5 +1,5 @@
-import { placeKeys } from '@/fsd/shared';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { placeKeys } from '@/fsd/shared';
 import { fetchPlaces } from '../services/getPlaces';
 
 export interface PlaceFilters {

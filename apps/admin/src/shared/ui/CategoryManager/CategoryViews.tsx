@@ -1,3 +1,4 @@
+import { Draggable } from '@hello-pangea/dnd';
 import {
 	Box,
 	Button,
@@ -6,8 +7,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import type { CategoryCount } from '@jung/shared/types';
-import { motion } from 'framer-motion';
-import { Draggable } from 'react-beautiful-dnd';
+import { motion } from 'motion/react';
 import { HiPencil, HiTrash } from 'react-icons/hi2';
 import { CategoryCard } from './CategoryCard';
 import * as styles from './CategoryView.css';

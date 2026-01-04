@@ -1,10 +1,10 @@
-import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
 import type {
 	Block,
 	DefaultInlineContentSchema,
 	DefaultStyleSchema,
 	InlineContent,
 } from '@blocknote/core';
+import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
 
 /**
  * Checks if inline content is non-empty.

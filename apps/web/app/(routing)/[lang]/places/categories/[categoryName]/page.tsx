@@ -1,22 +1,22 @@
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
-
 import {
-	SUPPORTED_LANGS,
 	capitalizeFirstLetter,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
 import { PlacesLayout } from '../../_components/PlacesLayout';
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { categoryName: string; lang: string };
+	params: Promise<{ categoryName: string; lang: string }>;
 }): Promise<Metadata> {
-	const categoryName = capitalizeFirstLetter(params.categoryName);
+	const { categoryName: rawCategoryName } = await params;
+	const categoryName = capitalizeFirstLetter(rawCategoryName);
 
 	const categoryDescription = `JUNG 여행지의 "${categoryName}" 카테고리 글 모음입니다.`;
 
@@ -81,10 +81,10 @@ export async function generateStaticParams() {
 export default async function CategoryPlacesPage({
 	params,
 }: {
-	params: { categoryName: string };
+	params: Promise<{ categoryName: string }>;
 }) {
+	const { categoryName } = await params;
 	const queryClient = getQueryClient();
-	const categoryName = params.categoryName;
 
 	queryClient.prefetchInfiniteQuery(
 		trpc.place.getAllPlaces.infiniteQueryOptions({

@@ -1,15 +1,12 @@
 'use client';
 
-import { Box } from '..';
-
-import { type LiHTMLAttributes, forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, type LiHTMLAttributes, useEffect, useRef } from 'react';
 import { CheckIcon } from '../../icons';
-
-import * as styles from './SelectItem.css';
-import { useSelectContext } from './context/SelectProvider';
-
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
+import { useSelectContext } from './context/SelectProvider';
 import { useSelect } from './hooks/useSelect';
+import * as styles from './SelectItem.css';
 
 export interface Props
 	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'color'>,

@@ -1,5 +1,5 @@
-import { NewPlace } from '@/fsd/features/places/ui/NewPlace';
 import { createFileRoute } from '@tanstack/react-router';
+import { NewPlace } from '@/fsd/features/places/ui/NewPlace';
 
 interface SearchParams {
 	mode?: 'edit';

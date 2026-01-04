@@ -1,6 +1,6 @@
-import { photoKeys } from '@/fsd/shared/config/queryKey';
 import type { Photo } from '@jung/shared/types';
 import { useQuery } from '@tanstack/react-query';
+import { photoKeys } from '@/fsd/shared/config/queryKey';
 import { getPhotosByCollectionId } from '../services/getPhotosByCollectionId';
 
 interface UseGetPhotosByCollectionIdParams {

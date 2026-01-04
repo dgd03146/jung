@@ -1,5 +1,5 @@
 import { Button, Flex, Tooltip, type TooltipProps } from '@jung/design-system';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type Variant = 'primary' | 'secondary';
 const variantOptions: Variant[] = ['primary', 'secondary'];

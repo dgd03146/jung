@@ -1,7 +1,6 @@
 import { initTRPC } from '@trpc/server';
-import { ZodError } from 'zod';
-
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
+import { ZodError } from 'zod';
 
 export const createTRPCContext = async () => {
 	return {};

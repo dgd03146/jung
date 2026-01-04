@@ -1,7 +1,6 @@
-import * as S from './Card.css';
-
 import { forwardRef } from 'react';
 import { Box } from '..';
+import * as S from './Card.css';
 import type { CardProps } from './types/card';
 
 export interface Props extends CardProps {

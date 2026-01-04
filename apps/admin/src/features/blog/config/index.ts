@@ -1,5 +1,4 @@
-export { STORAGE_KEY } from './storageKey';
+export { IMAGE_BUCKET } from './imageBucket';
 
 export { EMPTY_CONTENT, EMPTY_POST } from './initialPost';
-
-export { IMAGE_BUCKET } from './imageBucket';
+export { STORAGE_KEY } from './storageKey';

@@ -10,7 +10,7 @@ interface CustomDatePickerProps {
 	placeholderText?: string;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: react-datepicker CustomInput prop type
 const CustomInput = forwardRef<HTMLInputElement, any>(
 	({ value, onClick }, ref) => (
 		<div className={styles.inputWrapper}>

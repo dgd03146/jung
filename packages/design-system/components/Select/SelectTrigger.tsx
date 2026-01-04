@@ -1,8 +1,7 @@
 import { type ButtonHTMLAttributes, forwardRef } from 'react';
-
-import { Button } from '..';
 import { SelectorIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
+import { Button } from '..';
 import { useSelectContext } from './context/SelectProvider';
 
 import * as styles from './SelectTrigger.css';
@@ -62,9 +61,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 			>
 				{/* defaultValue가 만약에 있으면???... defaultValue의 label을 보여줘야하잖아?? */}
 
-				<label>
+				<span>
 					{defaultValue ? defaultValue : selectedOption.label || placeholder}
-				</label>
+				</span>
 				{children}
 			</Button>
 		);

@@ -1,7 +1,7 @@
+import type { Collection } from '@jung/shared/types';
 import { uploadGalleryImage } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Collection } from '@jung/shared/types';
 
 interface CreateCollectionData {
 	title: string;

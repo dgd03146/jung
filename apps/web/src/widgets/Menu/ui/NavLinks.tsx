@@ -27,12 +27,12 @@ const NavLink = ({
 							mobile: '4xl', // 36px
 							tablet: '5xl', // 48px
 							laptop: '6xl', // 60px
-					  }
+						}
 					: {
 							mobile: 'xl', // 20px
 							tablet: '2xl', // 24px
 							laptop: '3xl', // 30px
-					  }
+						}
 			}
 			color={isActive ? 'primary400' : 'white'}
 			className={styles.navLinkText}

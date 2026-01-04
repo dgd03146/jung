@@ -1,8 +1,8 @@
-import { BlurImage } from '@/fsd/shared';
 import { Box, Card, Flex, Typography } from '@jung/design-system/components';
 import type { Place } from '@jung/shared/types';
 import Link from 'next/link';
 import { IoLocationOutline } from 'react-icons/io5';
+import { BlurImage } from '@/fsd/shared';
 import * as styles from './PlaceCard.css';
 
 interface PlaceCardProps {
@@ -47,7 +47,7 @@ export const PlaceCard = ({
 											'(max-width: 768px) 50vw',
 											'(max-width: 1200px) 33vw',
 											'25vw',
-									  ].join(', ')
+										].join(', ')
 							}
 						/>
 					</Card.Media>

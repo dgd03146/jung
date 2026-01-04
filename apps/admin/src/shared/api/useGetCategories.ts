@@ -1,6 +1,6 @@
-import { categoryKeys } from '@/fsd/shared/config/queryKey';
 import type { CategoriesResponse, CategoryType } from '@jung/shared/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { categoryKeys } from '@/fsd/shared/config/queryKey';
 import { fetchCategories } from '../services/getCategories';
 
 export function useGetCategories(type: CategoryType) {

@@ -1,9 +1,8 @@
 'use client';
 
 import { Box, Flex, Typography } from '@jung/design-system';
-import { IoDocumentTextOutline } from 'react-icons/io5';
-
 import { usePathname, useSearchParams } from 'next/navigation';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { capitalizeFirstLetter } from '../lib/capitalizeFirstLetter';
 
 export function EmptyState({ content }: { content?: string }) {

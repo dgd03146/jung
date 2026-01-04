@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { FiAlertCircle } from 'react-icons/fi';
 import * as styles from './MessageWallError.css';
 
@@ -21,7 +21,7 @@ export const MessageWallError = ({ error, onReset }: MessageWallErrorProps) => {
 				initial={{ scale: 0.8 }}
 				animate={{ scale: 1 }}
 				transition={{
-					type: 'spring',
+					type: 'spring' as const,
 					stiffness: 260,
 					damping: 20,
 					delay: 0.2,

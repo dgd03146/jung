@@ -1,11 +1,11 @@
+import type { Metadata } from 'next';
 import {
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { createClient } from '@/fsd/shared/index.server';
 import { LoginPage } from '@/fsd/views';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'Login',

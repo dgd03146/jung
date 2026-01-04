@@ -1,7 +1,6 @@
-import { type LabelHTMLAttributes, forwardRef } from 'react';
-
-import { Box } from '..';
+import { forwardRef, type LabelHTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 
 export interface Props
 	extends Omit<LabelHTMLAttributes<HTMLLabelElement>, 'color'>,

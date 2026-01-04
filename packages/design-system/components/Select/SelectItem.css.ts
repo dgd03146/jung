@@ -21,6 +21,7 @@ export const li = style([
 			},
 		},
 		// background: selectedColor,
-		outlineStyle: '1px',
+		outlineStyle: 'solid',
+		outlineWidth: '1px',
 	},
 ]);

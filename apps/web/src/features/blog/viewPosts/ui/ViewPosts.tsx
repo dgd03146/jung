@@ -1,5 +1,7 @@
 'use client';
 
+import { Flex } from '@jung/design-system/components';
+import { useParams } from 'next/navigation';
 import { BLOG_DEFAULTS, usePostsQuery } from '@/fsd/entities';
 import { PostList } from '@/fsd/entities/blog';
 import { useViewMode } from '@/fsd/features/blog';
@@ -8,8 +10,11 @@ import {
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
-import { useParams } from 'next/navigation';
+
+const SEARCH_PARAMS_DEFAULTS = {
+	sort: BLOG_DEFAULTS.SORT,
+	q: BLOG_DEFAULTS.QUERY,
+} as const;
 
 export const ViewPosts = () => {
 	const { viewMode } = useViewMode();
@@ -20,10 +25,7 @@ export const ViewPosts = () => {
 			: BLOG_DEFAULTS.CATEGORY;
 
 	const { sort, q } = useSearchParamsState({
-		defaults: {
-			sort: BLOG_DEFAULTS.SORT,
-			q: BLOG_DEFAULTS.QUERY,
-		} as const,
+		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

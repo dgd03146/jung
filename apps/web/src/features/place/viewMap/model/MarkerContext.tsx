@@ -1,7 +1,7 @@
 'use client';
 
 import type { Place } from '@jung/shared/types';
-import { type ReactNode, createContext, useContext, useState } from 'react';
+import { createContext, type ReactNode, useContext, useState } from 'react';
 
 interface MarkerContextType {
 	selectedMarker: Place | null;

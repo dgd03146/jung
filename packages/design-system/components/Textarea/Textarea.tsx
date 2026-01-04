@@ -1,6 +1,6 @@
-import { type TextareaHTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type TextareaHTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as S from './Textarea.css';
 
 export interface TextareaProps

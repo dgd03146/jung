@@ -1,12 +1,12 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
 } from '@/fsd/shared';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toggleLikeCommentAction } from '../api/toggleLikeCommentAction';
 import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
 
@@ -34,7 +34,7 @@ export const useToggleLikeCommentMutation = () => {
 			try {
 				existingData =
 					await queryClient.ensureInfiniteQueryData(currentQueryOptions);
-			} catch (fetchError) {
+			} catch (_fetchError) {
 				throw new Error('Unable to fetch comments');
 			}
 

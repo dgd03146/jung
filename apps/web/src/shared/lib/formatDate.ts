@@ -1,8 +1,3 @@
-type Interval = {
-	label: string;
-	seconds: number;
-};
-
 export const formatRelativeTime = (dateString: string): string => {
 	const date = new Date(dateString);
 	const now = new Date();
@@ -39,16 +34,21 @@ export const formatRelativeTime = (dateString: string): string => {
 		return `${diffInWeeks}w`;
 	}
 
-	return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+	return new Intl.DateTimeFormat('en-GB', {
+		month: 'short',
+		day: 'numeric',
+		timeZone: 'UTC',
+	}).format(date);
 };
 
 export const getFullDate = (dateString: string): string => {
 	const date = new Date(dateString);
-	return date.toLocaleDateString('en-GB', {
+	return new Intl.DateTimeFormat('en-GB', {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',
-	});
+		timeZone: 'UTC',
+	}).format(date);
 };
 
 export const formatDetailedDate = (dateString: string): string => {
@@ -60,6 +60,7 @@ export const formatDetailedDate = (dateString: string): string => {
 		hour: '2-digit',
 		minute: '2-digit',
 		hour12: false,
+		timeZone: 'UTC',
 	}).format(date);
 };
 
@@ -69,8 +70,6 @@ export const formatDate = (dateString: string) => {
 		day: '2-digit',
 		month: 'short',
 		year: 'numeric',
-		// hour: '2-digit',
-		// minute: '2-digit',
-		hour12: false,
+		timeZone: 'UTC',
 	}).format(date);
 };

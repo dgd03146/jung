@@ -1,10 +1,9 @@
-import * as styles from './ToastContainer.css';
-
 import { usePortal } from '@jung/shared/hooks';
 import ReactDOM from 'react-dom';
 import { Box } from '../Box/Box';
-import { Toast } from './Toast';
 import { useToastContext } from './context/ToastContext';
+import { Toast } from './Toast';
+import * as styles from './ToastContainer.css';
 
 export const ToastContainer = () => {
 	const { toastList } = useToastContext();
@@ -20,6 +19,6 @@ export const ToastContainer = () => {
 					})}
 				</Box>,
 				portalRoot,
-		  )
+			)
 		: null;
 };

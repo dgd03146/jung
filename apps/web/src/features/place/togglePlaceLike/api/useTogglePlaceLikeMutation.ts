@@ -1,8 +1,8 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import { type LikeInfo, toggleLikeOptimistic } from '@/fsd/shared/lib';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type ToggleLikeVariables = {
 	placeId: string;

@@ -20,7 +20,7 @@ const getLocale = (
 	const languages: string[] = negotiator.languages();
 	try {
 		return match(languages, localeCodes, defaultLocale);
-	} catch (e) {
+	} catch (_e) {
 		return defaultLocale;
 	}
 };

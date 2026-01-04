@@ -1,12 +1,15 @@
 'use server';
 
-import { caller } from '@/fsd/shared/api/trpc/server';
 import { revalidatePath } from 'next/cache';
+import { caller } from '@/fsd/shared/api/trpc/server';
 
 export async function deleteCommentAction({
 	commentId,
 	postId,
-}: { commentId: string; postId: string }) {
+}: {
+	commentId: string;
+	postId: string;
+}) {
 	try {
 		await caller.postComment.deleteComment({ commentId });
 

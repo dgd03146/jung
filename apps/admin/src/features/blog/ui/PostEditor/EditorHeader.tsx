@@ -1,8 +1,8 @@
-import { Routes } from '@/fsd/shared';
 import { Box, Button, Flex } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiArrowLeft, HiSave, HiX } from 'react-icons/hi';
 import { HiPaperAirplane } from 'react-icons/hi2';
+import { Routes } from '@/fsd/shared';
 
 type Props = {
 	onSave: () => void;
@@ -71,8 +71,8 @@ const EditorHeader = ({
 								? 'Updating...'
 								: 'Publishing...'
 							: isEditMode
-							  ? 'Update'
-							  : 'Publish'}
+								? 'Update'
+								: 'Publish'}
 					</Button>
 				</Flex>
 			</Flex>

@@ -1,9 +1,9 @@
 'use client';
 
-import { useScrollLock } from '@/fsd/shared';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { useScrollLock } from '@/fsd/shared';
 import { Menu } from '../../Menu/ui';
 import Navbar from './Navbar';
 

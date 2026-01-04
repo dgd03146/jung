@@ -28,16 +28,13 @@ export const FilterPostCategoryAccordionSkeleton = ({
 					/>
 
 					{/* 서브 카테고리 스켈레톤 */}
-					{index % 2 === 0 && (
-						<>
-							{Array.from({ length: 3 }).map((_, subIndex) => (
-								<Box
-									key={`sub-${index}-${subIndex}`}
-									className={`${styles.skeletonBase} ${styles.subCategoryItem}`}
-								/>
-							))}
-						</>
-					)}
+					{index % 2 === 0 &&
+						Array.from({ length: 3 }).map((_, subIndex) => (
+							<Box
+								key={`sub-${index}-${subIndex}`}
+								className={`${styles.skeletonBase} ${styles.subCategoryItem}`}
+							/>
+						))}
 				</Box>
 			))}
 		</Box>

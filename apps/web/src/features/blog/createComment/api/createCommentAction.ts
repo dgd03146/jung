@@ -1,19 +1,18 @@
 'use server';
 
+import type { CreateReplyInput } from '@jung/shared/types';
+import { revalidatePath } from 'next/cache';
+import { Resend } from 'resend';
+
+import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
+import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { caller } from '@/fsd/shared/api/trpc/server';
 import {
 	getApiUrl,
 	getResendApiKey,
 	getResendEmailFrom,
 } from '@/fsd/shared/config';
-import type { CreateReplyInput } from '@jung/shared/types';
-
-import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
-import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { createClient } from '@/fsd/shared/index.server';
-
-import { revalidatePath } from 'next/cache';
-import { Resend } from 'resend';
 import { NO_REPLY_EMAIL } from '../config/constant';
 import { createReplyAction } from './createReplyAction';
 
@@ -76,25 +75,23 @@ export async function createCommentAction({
 					: 'Anonymous';
 				// const commenterAvatarUrl = commenter?.user_metadata?.avatar_url;
 
-				const { data: emailData, error: emailError } = await resend.emails.send(
-					{
-						from: `Jung Archive <${NO_REPLY_EMAIL}>`,
-						to: getResendEmailFrom(),
-						subject: `[JUNG Archive] 새 댓글: ${postTitle || postId}`,
-						react: CommentNotificationEmailTemplateInline({
-							emailTitle: '새 댓글이 달렸습니다!',
-							mainText: `${commenterName}님이 '${
-								postTitle || '게시글'
-							}'에 댓글을 남겼습니다.`,
-							postUrl: `${getApiUrl()}/blog/${postId}`,
-							// commentContent: newComment.content,
-							commenterName: commenterName,
-							// commenterAvatarUrl: commenterAvatarUrl,
-							createdAt: formatDate(newComment.created_at),
-							buttonText: '게시글에서 댓글 확인하기',
-						}),
-					},
-				);
+				const { error: emailError } = await resend.emails.send({
+					from: `Jung Archive <${NO_REPLY_EMAIL}>`,
+					to: getResendEmailFrom(),
+					subject: `[JUNG Archive] 새 댓글: ${postTitle || postId}`,
+					react: CommentNotificationEmailTemplateInline({
+						emailTitle: '새 댓글이 달렸습니다!',
+						mainText: `${commenterName}님이 '${
+							postTitle || '게시글'
+						}'에 댓글을 남겼습니다.`,
+						postUrl: `${getApiUrl()}/blog/${postId}`,
+						// commentContent: newComment.content,
+						commenterName: commenterName,
+						// commenterAvatarUrl: commenterAvatarUrl,
+						createdAt: formatDate(newComment.created_at),
+						buttonText: '게시글에서 댓글 확인하기',
+					}),
+				});
 
 				if (emailError) {
 					return console.error(

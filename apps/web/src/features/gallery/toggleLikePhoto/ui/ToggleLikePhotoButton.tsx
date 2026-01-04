@@ -1,11 +1,11 @@
 'use client';
 
-import { usePhotoLikeQuery } from '@/fsd/entities/gallery';
-import { LoginModal } from '@/fsd/features/auth';
-import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { usePhotoLikeQuery } from '@/fsd/entities/gallery';
+import { LoginModal } from '@/fsd/features/auth';
+import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { useTogglePhotoLikeMutation } from '../api/useTogglePhotoLikeMutation';
 import * as styles from './ToggleLikePhotoButton.css';
 

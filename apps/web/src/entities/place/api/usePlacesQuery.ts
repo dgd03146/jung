@@ -1,5 +1,5 @@
-import { useTRPC } from '@/fsd/app';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/fsd/app';
 
 type QueryParams = {
 	category_id?: string;

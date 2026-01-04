@@ -10,17 +10,17 @@ import '@/fsd/app/styles/global.css';
 import { getDictionary } from '@/fsd/shared/config';
 
 interface Props {
-	params: { lang: string };
-
+	params: Promise<{ lang: string }>;
 	children: React.ReactNode;
 }
 
 export default async function RootLayout({ params, children }: Props) {
+	const { lang } = await params;
 	return (
 		<TRPCReactProvider>
 			<DictionaryProvider
-				lang={params.lang}
-				initialDictionary={await getDictionary(params.lang)}
+				lang={lang}
+				initialDictionary={await getDictionary(lang)}
 			>
 				<ClientToastProvider>
 					<KakaoProvider />

@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@jung/design-system';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
 	title: 'FOUNDATIONS/Typography',

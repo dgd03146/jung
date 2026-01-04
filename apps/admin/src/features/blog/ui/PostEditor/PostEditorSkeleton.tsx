@@ -1,7 +1,7 @@
-import { Routes } from '@/fsd/shared';
 import { Box, Button, Container, Flex } from '@jung/design-system/components';
 import { Link, useMatch } from '@tanstack/react-router';
 import { FaArrowLeft } from 'react-icons/fa';
+import { Routes } from '@/fsd/shared';
 
 const PostEditorSkeleton = () => {
 	const editMatch = useMatch({

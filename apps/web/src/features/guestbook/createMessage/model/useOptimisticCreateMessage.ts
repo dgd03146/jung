@@ -1,3 +1,6 @@
+import { useToast } from '@jung/design-system/components';
+import type { GuestbookMessage } from '@jung/shared/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import {
 	type GuestbookColor,
@@ -5,9 +8,6 @@ import {
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/guestbook';
 import { useSupabaseAuth } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
-import type { GuestbookMessage } from '@jung/shared/types';
-import { useQueryClient } from '@tanstack/react-query';
 import { createMessageAction } from '../api/createMessageAction';
 import { validateGuestbookMessage } from '../lib/validateGuestbookMessage';
 
@@ -98,7 +98,7 @@ export const useCreateMessageMutation = () => {
 			showToast('Message created successfully! ✨', 'success');
 
 			return true;
-		} catch (error) {
+		} catch (_error) {
 			// Rollback on error
 			rollbackOptimisticUpdate(tempId);
 			showToast('Failed to create message', 'error');

@@ -1,7 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, it } from 'vitest';
-
 import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, it } from 'vitest';
 import { Accordion } from './index';
 
 describe('Accordion Component', () => {

@@ -1,5 +1,3 @@
-import { useCreateCategory } from '@/fsd/shared/api/useCreateCategory';
-import { useUpdateCategory } from '@/fsd/shared/api/useUpdateCategory';
 import {
 	Button,
 	Flex,
@@ -9,8 +7,10 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import type { Category, CategoryCount, CategoryType } from '@jung/shared/types';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { memo, useCallback, useState } from 'react';
+import { useCreateCategory } from '@/fsd/shared/api/useCreateCategory';
+import { useUpdateCategory } from '@/fsd/shared/api/useUpdateCategory';
 import * as styles from './CategoryForm.css';
 
 interface CategoryFormProps {
@@ -108,8 +108,8 @@ export const CategoryForm = memo(
 				? 'Creating...'
 				: 'Updating...'
 			: editingId === 'new'
-			  ? 'Create Category'
-			  : 'Update Category';
+				? 'Create Category'
+				: 'Update Category';
 
 		return (
 			<motion.div

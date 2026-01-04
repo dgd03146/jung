@@ -1,5 +1,5 @@
-import { Footer, Header } from '@/fsd/widgets';
 import { Box } from '@jung/design-system/components';
+import { Footer, Header } from '@/fsd/widgets';
 import * as styles from './Layout.css';
 import { SectionTitle } from './SectionTitle';
 

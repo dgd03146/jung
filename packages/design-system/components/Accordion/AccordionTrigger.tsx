@@ -1,10 +1,11 @@
-import * as styles from './Accordion.css';
+'use client';
 
-import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { KeyboardArrowUp } from '../../icons';
+import type { AtomProps } from '../../types';
 
 import { Box, Stack } from '..';
-import type { AtomProps } from '../../types';
+import * as styles from './Accordion.css';
 
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';

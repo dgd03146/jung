@@ -1,10 +1,11 @@
-import * as styles from './Accordion.css';
-
-import { type HTMLAttributes, forwardRef, useId } from 'react';
+'use client';
 
 import clsx from 'clsx';
-import { Box } from '..';
+
+import { forwardRef, type HTMLAttributes, useId } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
+import * as styles from './Accordion.css';
 import { AccordionItemContext } from './context/AccordionItemContext';
 
 export interface AccordionItemProps

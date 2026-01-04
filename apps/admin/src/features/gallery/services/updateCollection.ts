@@ -1,8 +1,8 @@
+import type { Collection } from '@jung/shared/types';
 import { STORAGE } from '@/fsd/features/gallery/config';
 import { uploadGalleryImage } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Collection } from '@jung/shared/types';
 
 interface UpdateCollectionData {
 	id: string;

@@ -1,8 +1,8 @@
 'use client';
 
+import { Flex } from '@jung/design-system/components';
 import { SelectViewMode, useViewMode } from '@/fsd/features/blog';
 import { SearchBar } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
 
 export const BlogPageControls = () => {
 	const { viewMode, setViewMode } = useViewMode();

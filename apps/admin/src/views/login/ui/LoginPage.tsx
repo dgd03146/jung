@@ -1,4 +1,3 @@
-import { useAuth } from '@/fsd/features/auth/api/useAuth';
 import {
 	Box,
 	Button,
@@ -10,6 +9,7 @@ import {
 } from '@jung/design-system/components';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useAuth } from '@/fsd/features/auth/api/useAuth';
 import * as styles from './LoginPage.css';
 
 interface FormErrors {

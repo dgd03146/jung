@@ -1,5 +1,5 @@
-import { MESSAGES } from '@/fsd/shared';
 import { Container, Stack, Typography } from '@jung/design-system/components';
+import { MESSAGES } from '@/fsd/shared';
 
 export function CategoryErrorFallback(error: Error) {
 	return (

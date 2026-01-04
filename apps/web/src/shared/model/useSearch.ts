@@ -27,9 +27,10 @@ export const useSearch = (initialValue = '') => {
 		[pathname, router, searchParams],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: handleSearch in deps causes infinite loop (searchParams change → handleSearch recreated → useEffect re-run)
 	useEffect(() => {
 		handleSearch(debouncedValue);
-	}, [debouncedValue, handleSearch]);
+	}, [debouncedValue]);
 
 	return {
 		value,

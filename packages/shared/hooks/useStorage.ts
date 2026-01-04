@@ -5,6 +5,7 @@ import {
 	type SetStateAction,
 	useCallback,
 	useEffect,
+	useRef,
 	useState,
 } from 'react';
 
@@ -15,37 +16,41 @@ export const useStorage = <T>(
 	initialValue: T,
 	storageType: StorageType = 'sessionStorage',
 ): [T, Dispatch<SetStateAction<T>>] => {
-	const storageObject =
-		typeof window !== 'undefined'
-			? storageType === 'localStorage'
-				? window.localStorage
-				: window.sessionStorage
-			: null;
+	const [storedValue, setStoredValue] = useState<T>(initialValue);
+	const isInitialized = useRef(false);
 
-	const [storedValue, setStoredValue] = useState<T>(() => {
-		if (!storageObject) {
-			return initialValue;
-		}
+	useEffect(() => {
+		if (isInitialized.current) return;
+		isInitialized.current = true;
+
+		const storageObject =
+			storageType === 'localStorage'
+				? window.localStorage
+				: window.sessionStorage;
+
 		try {
 			const item = storageObject.getItem(key);
-
 			if (item) {
 				const parsed = JSON.parse(item);
 				if (initialValue instanceof Set && Array.isArray(parsed)) {
-					return new Set(parsed) as T;
+					setStoredValue(new Set(parsed) as T);
+				} else {
+					setStoredValue(parsed);
 				}
-				return parsed;
 			}
 		} catch (error) {
-			console.error(`Error reading ${storageType} key “${key}”:`, error);
-			return initialValue;
+			console.error(`Error reading ${storageType} key "${key}":`, error);
 		}
-	});
+	}, [key, initialValue, storageType]);
 
 	useEffect(() => {
-		if (!storageObject) {
-			return;
-		}
+		if (!isInitialized.current) return;
+
+		const storageObject =
+			storageType === 'localStorage'
+				? window.localStorage
+				: window.sessionStorage;
+
 		try {
 			const valueToStore =
 				storedValue instanceof Set
@@ -53,9 +58,9 @@ export const useStorage = <T>(
 					: JSON.stringify(storedValue);
 			storageObject.setItem(key, valueToStore);
 		} catch (error) {
-			console.error(`Error setting ${storageType} key “${key}”:`, error);
+			console.error(`Error setting ${storageType} key "${key}":`, error);
 		}
-	}, [key, storedValue, storageObject, storageType]);
+	}, [key, storedValue, storageType]);
 
 	const setValue: Dispatch<SetStateAction<T>> = useCallback((value) => {
 		setStoredValue(value);

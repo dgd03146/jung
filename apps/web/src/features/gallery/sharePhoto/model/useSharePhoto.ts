@@ -1,7 +1,7 @@
 'use client';
 
-import { type ShareContent, useShare } from '@/fsd/shared';
 import type { Photo } from '@jung/shared/types';
+import { type ShareContent, useShare } from '@/fsd/shared';
 
 export const useSharePhoto = () => {
 	const {

@@ -1,8 +1,8 @@
 'use client';
 
-import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, useToast } from '@jung/design-system/components';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useSupabaseAuth } from '@/fsd/shared';
 import { useToggleLikeCommentMutation } from '../model/useToggleLikeCommentMutation';
 
 interface ToggleLikeCommentButtonProps {

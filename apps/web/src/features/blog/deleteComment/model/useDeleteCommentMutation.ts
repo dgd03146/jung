@@ -1,13 +1,13 @@
 'use client';
 
+import { useToast } from '@jung/design-system/components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
 } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCommentAction } from '../api/deleteCommentAction';
 import { removeCommentAndReplies } from '../lib/removeCommentAndReplies';
 
@@ -27,7 +27,10 @@ export const useDeleteCommentMutation = () => {
 		mutationFn: async ({
 			commentId,
 			postId,
-		}: { commentId: string; postId: string }) => {
+		}: {
+			commentId: string;
+			postId: string;
+		}) => {
 			// Temporary comments only exist client-side
 			if (!commentId.startsWith('temp-')) {
 				await deleteCommentAction({ commentId, postId });

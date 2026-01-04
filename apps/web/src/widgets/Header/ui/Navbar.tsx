@@ -1,10 +1,10 @@
 'use client';
 
-import { PRIMARY_NAV_LIST } from '@/fsd/shared/config';
-import { extractFirstMeaningfulSegment } from '@/fsd/shared/lib';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { PRIMARY_NAV_LIST } from '@/fsd/shared/config';
+import { extractFirstMeaningfulSegment } from '@/fsd/shared/lib';
 import { useScrollDetection } from '../model/useScrollDetection';
 import MenuButton from './MenuButton';
 import * as styles from './Navbar.css';

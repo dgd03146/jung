@@ -1,8 +1,8 @@
 'use client';
 
-import { createClient } from '@/fsd/shared';
 import type { Session, Subscription, User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { createClient } from '@/fsd/shared';
 
 export const useSupabaseAuth = () => {
 	const [session, setSession] = useState<Session | null>(null);

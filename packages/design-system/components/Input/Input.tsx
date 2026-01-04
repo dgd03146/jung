@@ -1,6 +1,6 @@
-import { type InputHTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type InputHTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as S from './Input.css';
 
 export interface InputProps

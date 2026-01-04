@@ -1,5 +1,7 @@
 'use client';
 
+import { Box, Flex, Stack } from '@jung/design-system/components';
+import { useParams } from 'next/navigation';
 import {
 	PLACE_DEFAULTS,
 	PlaceList,
@@ -8,16 +10,19 @@ import {
 import {
 	PlaceListWithLikes,
 	TogglePlaceListButton,
-	ViewMap,
 	usePlaceView,
+	ViewMap,
 } from '@/fsd/features/place';
 import {
 	LoadingSpinner,
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
-import { Box, Flex, Stack } from '@jung/design-system/components';
-import { useParams } from 'next/navigation';
+
+const SEARCH_PARAMS_DEFAULTS = {
+	sort: PLACE_DEFAULTS.SORT,
+	q: PLACE_DEFAULTS.QUERY,
+} as const;
 
 export const PlacesContent = () => {
 	const { isListView, isSlidListVisible } = usePlaceView();
@@ -28,10 +33,7 @@ export const PlacesContent = () => {
 			: PLACE_DEFAULTS.CAT;
 
 	const { sort, q } = useSearchParamsState({
-		defaults: {
-			sort: PLACE_DEFAULTS.SORT,
-			q: PLACE_DEFAULTS.QUERY,
-		} as const,
+		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

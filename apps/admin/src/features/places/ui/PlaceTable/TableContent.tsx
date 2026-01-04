@@ -1,5 +1,5 @@
-import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { Box } from '@jung/design-system/components';
+import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { usePlaceTable } from '../../model/usePlaceTable';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';

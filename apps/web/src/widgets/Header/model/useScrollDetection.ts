@@ -1,13 +1,14 @@
-import { useRef } from 'react';
-
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SCROLL_LOCK_ACTIVE_MARKER_CLASS = 'js-scroll-lock-active'; // useScrollLock과 동일한 마커 클래스명 사용
 
 export const useScrollDetection = ({
 	threshold,
 	hysteresis = 20,
-}: { threshold: number; hysteresis?: number }) => {
+}: {
+	threshold: number;
+	hysteresis?: number;
+}) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const ticking = useRef(false);
 

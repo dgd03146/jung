@@ -1,5 +1,5 @@
 import { Accordion, type AccordionProps } from '@jung/design-system';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Accordion> = {
 	title: 'Components/Accordion',

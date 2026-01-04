@@ -1,5 +1,5 @@
-import { useTRPC } from '@/fsd/app';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/fsd/app';
 
 export function usePlaceQuery(id: string) {
 	const trpc = useTRPC();

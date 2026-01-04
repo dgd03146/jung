@@ -1,19 +1,19 @@
-import { photoKeys } from '@/fsd/shared';
 import type { Photo } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
-	type PaginationState,
-	type SortingState,
-	type Updater,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
+	type PaginationState,
+	type SortingState,
+	type Updater,
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
+import { photoKeys } from '@/fsd/shared';
 import { useGetPhotos } from '../api/useGetPhotos';
 import { fetchPhotos } from '../services/getPhotos';
 
@@ -105,9 +105,9 @@ export const usePhotoTable = () => {
 											id: filters.sortField,
 											desc: filters.sortOrder === 'desc',
 										},
-								  ]
+									]
 								: [],
-					  )
+						)
 					: updater;
 			const sort = newSorting[0];
 			updateSearchParams({

@@ -1,6 +1,6 @@
-import { getUserDisplayName } from '@/fsd/shared';
 import type { Comment } from '@jung/shared/types';
 import type { User } from '@supabase/supabase-js';
+import { getUserDisplayName } from '@/fsd/shared';
 
 /**
  * Creates an optimistic comment for immediate UI updates

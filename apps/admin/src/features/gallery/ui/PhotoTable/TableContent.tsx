@@ -1,9 +1,9 @@
+import { Box } from '@jung/design-system/components';
 import ErrorFallback from '@/fsd/features/blog/ui/ErrorFallback';
 import { TableHeader } from '@/fsd/features/blog/ui/PostTable/TableHeader';
 import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { usePhotoTable } from '@/fsd/features/gallery/model';
 import { TableSkeleton } from '@/fsd/shared/ui';
-import { Box } from '@jung/design-system/components';
 import { TableBody } from './TableBody';
 
 export const TableContent = () => {

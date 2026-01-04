@@ -1,6 +1,6 @@
-import { type HTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as S from './Typography.css';
 
 type FootNoteElement = 'p' | 'span' | 'label' | 'time';

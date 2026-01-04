@@ -1,9 +1,9 @@
-export { useDeletePhoto } from './useDeletePhoto';
+export { useCreateCollection } from './useCreateCollection';
 export { useCreatePhoto } from './useCreatePhoto';
-export { useGetPhotos } from './useGetPhotos';
+export { useDeleteCollection } from './useDeleteCollection';
+export { useDeletePhoto } from './useDeletePhoto';
 export { useGetCollections } from './useGetCollections';
 export { useGetPhotoById } from './useGetPhotoById';
-export { useCreateCollection } from './useCreateCollection';
-export { useUpdateCollection } from './useUpdateCollection';
-export { useDeleteCollection } from './useDeleteCollection';
+export { useGetPhotos } from './useGetPhotos';
 export { useGetPhotosByCollectionId } from './useGetPhotosByCollectionId';
+export { useUpdateCollection } from './useUpdateCollection';

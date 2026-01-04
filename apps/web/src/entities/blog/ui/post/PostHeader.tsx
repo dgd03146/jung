@@ -1,8 +1,8 @@
 'use client';
 
+import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import { usePostQuery } from '@/fsd/entities/blog';
 import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
-import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import * as styles from './PostHeader.css';
 
 type Props = {

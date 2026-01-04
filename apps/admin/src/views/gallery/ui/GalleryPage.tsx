@@ -1,5 +1,5 @@
-import { PhotoTable } from '@/fsd/features/gallery';
 import { Flex } from '@jung/design-system/components';
+import { PhotoTable } from '@/fsd/features/gallery';
 
 export default function GalleryPage() {
 	return (

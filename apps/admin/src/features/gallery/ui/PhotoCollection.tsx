@@ -1,4 +1,3 @@
-import { useGetCollections } from '@/fsd/features/gallery/api';
 import {
 	Box,
 	Button,
@@ -10,9 +9,10 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
+import { useGetCollections } from '@/fsd/features/gallery/api';
 import { useCreateCollection } from '../api/useCreateCollection';
 import { useDeleteCollection } from '../api/useDeleteCollection';
 import { useUpdateCollection } from '../api/useUpdateCollection';
@@ -450,8 +450,8 @@ export const PhotoCollection = () => {
 											? 'Creating...'
 											: 'Create'
 										: updateCollectionMutation.isPending
-										  ? 'Updating...'
-										  : 'Update'}
+											? 'Updating...'
+											: 'Update'}
 								</Button>
 							</Flex>
 						</motion.div>

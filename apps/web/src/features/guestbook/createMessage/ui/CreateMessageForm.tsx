@@ -1,10 +1,9 @@
 'use client';
 
-import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, Flex, Stack, Textarea } from '@jung/design-system/components';
-
 import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/guestbook';
 import { SocialLoginButtons } from '@/fsd/features/auth';
+import { useSupabaseAuth } from '@/fsd/shared';
 import { useCreateMessage } from '../model/useCreateMessage';
 import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';

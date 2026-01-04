@@ -1,11 +1,8 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.6.1/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"files": {
-		"include": ["**/*.ts", "**/*.js", "**/*.tsx"],
-		"ignore": ["node_modules", ".next"]
+		"includes": ["**/*.ts", "**/*.js", "**/*.tsx", "!**/node_modules", "!**/.next"]
 	},
 	"vcs": {
 		"enabled": true,
@@ -46,14 +43,14 @@
 			"lineWidth": 80,
 			"lineEnding": "crlf",
 			"quoteStyle": "single",
-			"trailingComma": "all",
+			"trailingCommas": "all",
 			"semicolons": "always",
 			"jsxQuoteStyle": "single"
 		}
 	},
 	"overrides": [
 		{
-			"include": ["./packages/design-system/**"],
+			"includes": ["packages/design-system/**"],
 			"linter": {
 				"rules": {
 					"suspicious": {
@@ -66,7 +63,7 @@
 			}
 		},
 		{
-			"include": ["./apps/admin/src/routeTree.gen.ts"],
+			"includes": ["apps/admin/src/routeTree.gen.ts"],
 			"linter": {
 				"rules": {
 					"suspicious": {
@@ -76,7 +73,7 @@
 			}
 		},
 		{
-			"include": ["./apps/web/src/shared/ui/JsonLd.tsx"],
+			"includes": ["apps/web/src/shared/ui/JsonLd.tsx"],
 			"linter": {
 				"rules": {
 					"security": {

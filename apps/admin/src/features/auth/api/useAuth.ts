@@ -1,7 +1,7 @@
-import { Routes } from '@/fsd/shared/config/routes';
 import { useToast } from '@jung/design-system/components/Toast/hooks/useToast';
 import { createClient } from '@supabase/supabase-js';
 import { useNavigate } from '@tanstack/react-router';
+import { Routes } from '@/fsd/shared/config/routes';
 
 const supabase = createClient(
 	import.meta.env.VITE_SUPABASE_URL,

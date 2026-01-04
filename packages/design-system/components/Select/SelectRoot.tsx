@@ -1,6 +1,6 @@
-import { type HTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import SelectProvider from './context/SelectProvider';
 
 export interface SelectProps

@@ -29,7 +29,7 @@ export const useMapState = (
 	places: Place[],
 ) => {
 	const previousPlaces = useRef<Place[]>([]);
-	const previousPlace = useRef<Place | undefined>();
+	const previousPlace = useRef<Place | undefined>(undefined);
 
 	const markersData = useMemo(() => {
 		if (place === previousPlace.current && places === previousPlaces.current) {

@@ -21,6 +21,12 @@ const nextConfig = {
   
   compress: true,
 
+  /** React Compiler for automatic memoization */
+  reactCompiler: true,
+
+  /** Turbopack configuration (default in Next.js 16) */
+  turbopack: {},
+
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: SHARED_DEVICE_SIZES,

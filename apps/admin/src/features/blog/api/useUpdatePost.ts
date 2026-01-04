@@ -1,9 +1,9 @@
-import type { Post } from '@/fsd/entities';
-import { Routes, postKeys } from '@/fsd/shared';
-import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import type { Post } from '@/fsd/entities';
+import { postKeys, Routes } from '@/fsd/shared';
+import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { updatePost } from './updatePost';
 
 export const useUpdatePost = () => {

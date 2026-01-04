@@ -1,6 +1,6 @@
+import { Box } from '@jung/design-system/components';
 import { usePostTable } from '@/fsd/features/blog/model';
 import { TableSkeleton } from '@/fsd/shared/ui';
-import { Box } from '@jung/design-system/components';
 import ErrorFallback from '../ErrorFallback';
 import { TableBody } from './TableBody';
 import { TableHeader } from './TableHeader';

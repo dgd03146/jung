@@ -1,8 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { FaPlus } from 'react-icons/fa';
-import * as styles from './PlaceTable.css';
-
 import { usePlaceTableFilter } from '../../model/usePlaceTableFilter';
+import * as styles from './PlaceTable.css';
 export const TableAction = () => {
 	const { filter, handleFilterChange } = usePlaceTableFilter();
 

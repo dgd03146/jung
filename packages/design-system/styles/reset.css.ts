@@ -1,4 +1,5 @@
 import { globalStyle, style } from '@vanilla-extract/css';
+import type { JSX } from 'react';
 
 globalStyle('body', {
 	padding: 0,

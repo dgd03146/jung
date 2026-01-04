@@ -1,9 +1,9 @@
 'use client';
 
+import { Box, Container, Typography } from '@jung/design-system/components';
 import { useCollectionQuery } from '@/fsd/entities/gallery';
 import { FilteredCollectionView } from '@/fsd/features/gallery';
 import { BlurImage } from '@/fsd/shared';
-import { Box, Container, Typography } from '@jung/design-system/components';
 import * as styles from './CollectionDetailPage.css';
 
 interface CollectionDetailPageProps {

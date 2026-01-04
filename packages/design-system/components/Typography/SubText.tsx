@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { type ParamHTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type ParamHTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as S from './Typography.css';
 
 type SubTextElement = 'p' | 'span' | 'label' | 'time';

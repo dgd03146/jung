@@ -1,11 +1,11 @@
-import { useDeletePost } from '@/fsd/features/blog/api';
-import { useGetCategories } from '@/fsd/shared';
-import { CategoryCell } from '@/fsd/shared/ui';
 import { Button, Flex } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
-import { type Table, flexRender } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useDeletePost } from '@/fsd/features/blog/api';
+import { useGetCategories } from '@/fsd/shared';
+import { CategoryCell } from '@/fsd/shared/ui';
 import * as styles from './Table.css';
 
 interface TableBodyProps<T> {

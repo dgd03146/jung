@@ -1,7 +1,7 @@
-import { collectionKeys } from '@/fsd/shared';
-import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { collectionKeys } from '@/fsd/shared';
+import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { updateCollection } from '../services/updateCollection';
 
 interface UpdateCollectionData {

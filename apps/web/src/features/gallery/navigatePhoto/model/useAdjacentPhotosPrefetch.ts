@@ -1,8 +1,8 @@
-import { useTRPC } from '@/fsd/app';
-import type { Sort } from '@/fsd/shared';
 import type { Photo } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
+import { useTRPC } from '@/fsd/app';
+import type { Sort } from '@/fsd/shared';
 
 interface UseAdjacentPhotosPrefetchParams {
 	photoId: string;

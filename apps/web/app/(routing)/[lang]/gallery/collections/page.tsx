@@ -1,16 +1,16 @@
+import { Flex } from '@jung/design-system/components';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	LoadingSpinner,
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	LoadingSpinner,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
-import { Flex } from '@jung/design-system/components';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export async function generateMetadata(): Promise<Metadata> {
 	try {

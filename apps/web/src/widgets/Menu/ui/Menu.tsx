@@ -1,7 +1,7 @@
 'use client';
 
-import * as styles from './Menu.css';
-
+import { Flex } from '@jung/design-system/components';
+import { motion } from 'motion/react';
 import {
 	BACKGROUND_ANIMATION,
 	MOUNT_ANIMATION,
@@ -10,9 +10,8 @@ import {
 	SECONDARY_NAV_LIST,
 	SLIDE_LEFT_ANIMATION,
 } from '@/fsd/shared/config';
-import { Flex } from '@jung/design-system/components';
-import { motion } from 'framer-motion';
 import { Navbar } from '../../Header/ui';
+import * as styles from './Menu.css';
 import NavLinks from './NavLinks';
 import Stairs from './Stairs';
 

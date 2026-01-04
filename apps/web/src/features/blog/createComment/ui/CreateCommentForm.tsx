@@ -1,7 +1,5 @@
 'use client';
 
-import { SocialLoginButtons } from '@/fsd/features/auth';
-import { getUserDisplayName, useSupabaseAuth } from '@/fsd/shared';
 import {
 	Box,
 	Button,
@@ -11,6 +9,8 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
+import { SocialLoginButtons } from '@/fsd/features/auth';
+import { getUserDisplayName, useSupabaseAuth } from '@/fsd/shared';
 
 import { useCreateCommentMutation } from '../model/useCreateCommentMutation';
 import * as styles from './CreateCommentForm.css';

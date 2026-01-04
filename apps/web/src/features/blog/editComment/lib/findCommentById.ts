@@ -1,5 +1,5 @@
-import type { CommentData } from '@/fsd/shared';
 import type { Comment } from '@jung/shared/types';
+import type { CommentData } from '@/fsd/shared';
 
 /**
  * Recursively searches for a comment

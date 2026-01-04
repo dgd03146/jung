@@ -1,5 +1,5 @@
-import { NewPhoto } from '@/fsd/features/gallery/ui/NewPhoto';
 import { createFileRoute } from '@tanstack/react-router';
+import { NewPhoto } from '@/fsd/features/gallery/ui/NewPhoto';
 
 interface SearchParams {
 	mode?: 'edit';

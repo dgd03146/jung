@@ -23,13 +23,8 @@ const ButtonIcon = {
 };
 
 export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
-	if (!isModal) {
-		return null;
-	}
-
 	const { sort, collectionId } = usePhotoFilter();
 
-	// 훅은 항상 컴포넌트 최상위 레벨에서 직접 호출
 	const initialAdjacentData = useInitialAdjacentPhotos({
 		photoId,
 		sort,
@@ -61,6 +56,10 @@ export const NavigatePhotoButtons = ({ photoId, isModal }: Props) => {
 			nextPhoto,
 			isModal,
 		});
+
+	if (!isModal) {
+		return null;
+	}
 
 	return (
 		<Box className={styles.modalNavigationWrapper}>

@@ -1,6 +1,6 @@
 import {
-	createSingletonShorthands,
 	createdBundledHighlighter,
+	createSingletonShorthands,
 } from '@shikijs/core';
 import { createJavaScriptRegexEngine } from '@shikijs/engine-javascript';
 /* Generate by @shikijs/codegen */
@@ -49,17 +49,19 @@ const createHighlighter = /* @__PURE__ */ createdBundledHighlighter<
 	engine: () => createJavaScriptRegexEngine(),
 });
 
-const {
-	codeToHtml,
-	codeToHast,
-	codeToTokensBase,
-	codeToTokens,
-	codeToTokensWithThemes,
-	getSingletonHighlighter,
-	getLastGrammarState,
-} = /* @__PURE__ */ createSingletonShorthands<BundledLanguage, BundledTheme>(
-	createHighlighter,
-);
+const shorthands = /* @__PURE__ */ createSingletonShorthands<
+	BundledLanguage,
+	BundledTheme
+>(createHighlighter);
+
+const codeToHtml = shorthands.codeToHtml;
+const codeToHast: typeof shorthands.codeToHast = shorthands.codeToHast;
+const codeToTokensBase = shorthands.codeToTokensBase;
+const codeToTokens = shorthands.codeToTokens;
+const codeToTokensWithThemes = shorthands.codeToTokensWithThemes;
+const getSingletonHighlighter = shorthands.getSingletonHighlighter;
+const getLastGrammarState: typeof shorthands.getLastGrammarState =
+	shorthands.getLastGrammarState;
 
 export {
 	bundledLanguages,

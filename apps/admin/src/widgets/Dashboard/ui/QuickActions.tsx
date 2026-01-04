@@ -1,4 +1,3 @@
-import { Routes } from '@/fsd/shared';
 import {
 	Box,
 	Container,
@@ -8,6 +7,7 @@ import {
 } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { MdAdd, MdLocationOn, MdSettings, MdUpload } from 'react-icons/md';
+import { Routes } from '@/fsd/shared';
 import * as styles from './QuickActions.css';
 
 const QuickActions = () => {

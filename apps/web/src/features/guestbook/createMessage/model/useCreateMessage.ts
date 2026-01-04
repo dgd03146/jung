@@ -1,12 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import {
 	DEFAULT_BACKGROUND_COLOR,
 	DEFAULT_EMOJI,
 	type GuestbookColor,
 	type GuestbookEmoji,
 } from '@/fsd/entities/guestbook';
-import { useState } from 'react';
 import { useCreateMessageMutation } from './useCreateMessageMutation';
 
 export const useCreateMessage = () => {

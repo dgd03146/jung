@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { deserializeContent } from '@/fsd/features/blog/lib';
 import { postKeys } from '@/fsd/shared';
-import { useQuery } from '@tanstack/react-query';
 import { EMPTY_CONTENT } from '../config/initialPost';
 import { fetchPostById } from './getPost';
 

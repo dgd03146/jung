@@ -1,7 +1,7 @@
-import { placeKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { placeKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { deletePlace } from '../services/deletePlace';
 
 export const useDeletePlace = () => {

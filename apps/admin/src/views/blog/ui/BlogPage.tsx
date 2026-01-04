@@ -1,5 +1,5 @@
-import { PostTable } from '@/fsd/features/blog/ui';
 import { Flex } from '@jung/design-system/components';
+import { PostTable } from '@/fsd/features/blog/ui';
 
 const BlogPage = () => {
 	return (

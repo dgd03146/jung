@@ -1,7 +1,9 @@
+// FIXME: Providers로 나중에 바꿔야할듯?
+
 import {
-	QueryClient,
 	defaultShouldDehydrateQuery,
 	isServer,
+	QueryClient,
 } from '@tanstack/react-query';
 
 export function makeQueryClient() {
@@ -19,7 +21,7 @@ export function makeQueryClient() {
 					defaultShouldDehydrateQuery(query) ||
 					query.state.status === 'pending',
 
-				shouldRedactErrors: (error) => {
+				shouldRedactErrors: (_error) => {
 					// We should not catch Next.js server errors
 					// as that's how Next.js detects dynamic pages
 					// so we cannot redact them.
@@ -35,7 +37,7 @@ export function makeQueryClient() {
 	});
 }
 
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 export function getQueryClient() {
 	if (isServer) {

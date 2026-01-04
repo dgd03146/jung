@@ -1,11 +1,10 @@
 import type { Place } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
-import { type Table, flexRender } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { useDeletePlace } from '../../api/useDeletePlace';
-
 import { useGetCategories } from '@/fsd/shared';
 import { CategoryCell, DateCell, ImageCell } from '@/fsd/shared/ui';
+import { useDeletePlace } from '../../api/useDeletePlace';
 import * as styles from './PlaceTable.css';
 
 interface TableBodyProps<T> {
@@ -42,8 +41,8 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 									cell.column.id === 'tips'
 										? styles.textAlignLeft
 										: cell.column.id === 'likes'
-										  ? styles.textAlignRight
-										  : ''
+											? styles.textAlignRight
+											: ''
 								}`}
 							>
 								{cell.column.id === 'photos' ? (

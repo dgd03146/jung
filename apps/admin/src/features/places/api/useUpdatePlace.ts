@@ -1,10 +1,10 @@
-import { placeKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { updatePlace } from '../services/updatePlace';
+import { placeKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { UpdatePlaceInput } from '../services/updatePlace';
+import { updatePlace } from '../services/updatePlace';
 
 export const useUpdatePlace = () => {
 	const queryClient = useQueryClient();

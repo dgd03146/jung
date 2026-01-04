@@ -1,8 +1,8 @@
-import { SocialLoginPrompt } from '@/fsd/entities/auth';
-import { Modal } from '@/fsd/shared';
 import { Box, Typography } from '@jung/design-system/components';
 import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
+import { SocialLoginPrompt } from '@/fsd/entities/auth';
+import { Modal } from '@/fsd/shared';
 import * as styles from './LoginModal.css';
 import { SocialLoginButtons } from './SocialLoginButtons';
 

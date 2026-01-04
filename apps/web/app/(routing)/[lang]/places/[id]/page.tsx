@@ -1,29 +1,27 @@
-import { PlaceDetailSkeleton } from '@/fsd/entities/place';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { PLACE_DEFAULTS, PlaceDetailSkeleton } from '@/fsd/entities/place';
 import { PlaceViewProvider } from '@/fsd/features/place';
 import {
-	SUPPORTED_LANGS,
 	createBreadcrumbSchema,
 	createPlaceSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
-
-import { PLACE_DEFAULTS } from '@/fsd/entities/place';
-
 import { PlaceDetailContent } from '@/fsd/views';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { id: string; lang: string };
+	params: Promise<{ id: string; lang: string }>;
 }): Promise<Metadata> {
+	const { id } = await params;
 	try {
-		const place = await caller.place.getPlaceById(params.id);
+		const place = await caller.place.getPlaceById(id);
 
 		if (!place) {
 			return {
@@ -76,10 +74,10 @@ export async function generateMetadata({
 				...(place.tags || []),
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl()}/places/${params.id}`,
+				canonical: `${getApiUrl()}/places/${id}`,
 				languages: {
-					en: `${getApiUrl()}/en/places/${params.id}`,
-					ko: `${getApiUrl()}/ko/places/${params.id}`,
+					en: `${getApiUrl()}/en/places/${id}`,
+					ko: `${getApiUrl()}/ko/places/${id}`,
 				},
 			},
 			verification: {
@@ -122,9 +120,10 @@ export async function generateStaticParams() {
 
 export default async function Page({
 	params,
-}: { params: { id: string; lang: string } }) {
-	const placeId = params.id;
-	const lang = params.lang;
+}: {
+	params: Promise<{ id: string; lang: string }>;
+}) {
+	const { id: placeId, lang } = await params;
 
 	const queryClient = getQueryClient();
 
@@ -143,17 +142,17 @@ export default async function Page({
 				address: place.address
 					? {
 							street: place.address,
-					  }
+						}
 					: undefined,
 				coordinates: place.coordinates
 					? {
 							latitude: place.coordinates.lat,
 							longitude: place.coordinates.lng,
-					  }
+						}
 					: undefined,
 				id: place.id,
 				lang,
-		  })
+			})
 		: null;
 
 	const breadcrumbSchema = createBreadcrumbSchema(

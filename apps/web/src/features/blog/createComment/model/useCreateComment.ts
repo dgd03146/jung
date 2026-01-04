@@ -1,5 +1,8 @@
 'use client';
 
+import { useToast } from '@jung/design-system/components';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
@@ -7,9 +10,6 @@ import {
 	type CommentData,
 	useSupabaseAuth,
 } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { createCommentAction } from '../api/createCommentAction';
 import { createOptimisticComment, updateOptimisticComment } from '../lib';
 
@@ -102,7 +102,7 @@ export const useCreateCommentMutation = () => {
 			}
 		},
 		onSuccess: () => {},
-		onSettled: async (data, error, variables, context) => {
+		onSettled: async (_data, _error, variables, _context) => {
 			if (variables?.postId) {
 				if (
 					queryClient.isMutating({

@@ -1,12 +1,12 @@
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
 import {
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
 import { PlacesLayout } from './_components/PlacesLayout';
 
 export const metadata: Metadata = {

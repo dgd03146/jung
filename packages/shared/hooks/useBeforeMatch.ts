@@ -3,7 +3,7 @@
 import { type RefObject, useEffect } from 'react';
 
 export const useBeforeMatch = <T extends HTMLElement>(
-	ref: RefObject<T>,
+	ref: RefObject<T | null>,
 	onMatch: (event: Event) => void,
 ) => {
 	useEffect(() => {

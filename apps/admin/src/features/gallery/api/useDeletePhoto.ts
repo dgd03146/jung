@@ -1,7 +1,7 @@
-import { photoKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { photoKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { deletePhoto } from '../services/deletePhoto';
 
 export const useDeletePhoto = () => {

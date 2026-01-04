@@ -1,10 +1,9 @@
-import * as S from './TabsTrigger.css';
-
-import { type LiHTMLAttributes, forwardRef } from 'react';
+import { forwardRef, type LiHTMLAttributes } from 'react';
+import type { AtomProps } from '../../types/atoms';
 
 import { Box } from '..';
-import type { AtomProps } from '../../types/atoms';
 import { useTabHandler } from './hooks/useTabHandle';
+import * as S from './TabsTrigger.css';
 
 export interface TabsTriggerProps
 	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'color'>,

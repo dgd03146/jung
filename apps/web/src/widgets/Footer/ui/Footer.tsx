@@ -1,7 +1,7 @@
-import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { BiLogoGmail } from 'react-icons/bi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
 
 import * as styles from './Footer.css';
 

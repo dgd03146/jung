@@ -1,7 +1,8 @@
 'use client';
 
+import { useStorage } from '@jung/shared/hooks';
+import { createContext, type ReactNode, useContext } from 'react';
 import type { ViewMode } from '@/fsd/entities/blog/model/view';
-import { type ReactNode, createContext, useContext, useState } from 'react';
 
 interface ViewModeContextType {
 	viewMode: ViewMode;
@@ -13,7 +14,11 @@ const ViewModeContext = createContext<ViewModeContextType | undefined>(
 );
 
 export function ViewModeProvider({ children }: { children: ReactNode }) {
-	const [viewMode, setViewMode] = useState<ViewMode>('list');
+	const [viewMode, setViewMode] = useStorage<ViewMode>(
+		'blog-view-mode',
+		'list',
+		'sessionStorage',
+	);
 
 	return (
 		<ViewModeContext.Provider

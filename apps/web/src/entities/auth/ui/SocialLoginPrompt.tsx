@@ -1,6 +1,6 @@
-import { AppLogo } from '@/fsd/shared';
 import { Stack } from '@jung/design-system/components';
 import type { ReactNode } from 'react';
+import { AppLogo } from '@/fsd/shared';
 
 export const SocialLoginPrompt = ({ actions }: { actions: ReactNode }) => {
 	return (

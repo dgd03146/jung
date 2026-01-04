@@ -1,5 +1,5 @@
-import { EditorSkeleton } from '@/fsd/shared';
 import { Box, Container } from '@jung/design-system/components';
+import { EditorSkeleton } from '@/fsd/shared';
 import * as styles from './PostDetailContentSkeleton.css';
 
 export const PostDetailContentSkeleton = () => {

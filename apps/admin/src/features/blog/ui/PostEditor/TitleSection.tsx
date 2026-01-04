@@ -1,14 +1,3 @@
-import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
-
-import { useRef } from 'react';
-import {
-	HiCalendar,
-	HiExclamationCircle,
-	HiFolderOpen,
-	HiTag,
-} from 'react-icons/hi';
-
-import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import {
 	Button,
 	Flex,
@@ -17,6 +6,16 @@ import {
 	Tag,
 	Typography,
 } from '@jung/design-system/components';
+
+import { useRef } from 'react';
+import {
+	HiCalendar,
+	HiExclamationCircle,
+	HiFolderOpen,
+	HiTag,
+} from 'react-icons/hi';
+import type { PostWithBlockContent } from '@/fsd/entities/post/model/post';
+import { useGetCategories } from '@/fsd/shared/api/useGetCategories';
 import { CustomDatePicker } from './CustomDatePicker';
 import * as styles from './TitleSection.css';
 

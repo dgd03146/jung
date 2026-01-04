@@ -1,7 +1,7 @@
 'use client';
 
-import { createHighlighter } from '@/fsd/shared/lib/shiki.bundle';
 import type { PartialBlock } from '@blocknote/core';
+import { createHighlighter } from '@/fsd/shared/lib/shiki.bundle';
 import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';

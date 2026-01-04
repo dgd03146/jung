@@ -1,12 +1,12 @@
 'use client';
 
-import { useAnimation, useInView } from 'framer-motion';
+import { useAnimation, useInView } from 'motion/react';
 import { type RefObject, useEffect } from 'react';
 
 type UseInViewAnimationProps = {
 	once?: boolean;
 	repeatDelay?: number;
-	ref: RefObject<Element>;
+	ref: RefObject<Element | null>;
 };
 
 export const useInViewAnimation = ({

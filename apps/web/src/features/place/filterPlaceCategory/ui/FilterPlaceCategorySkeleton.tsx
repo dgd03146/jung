@@ -3,7 +3,9 @@ import * as styles from './FilterPlaceCategorySkeleton.css';
 
 export const FilterPlaceCategorySkeleton = ({
 	length = 6,
-}: { length: number }) => {
+}: {
+	length: number;
+}) => {
 	return (
 		<Box className={styles.container}>
 			{Array.from({ length: length }, (_, i) => (

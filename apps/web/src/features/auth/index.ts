@@ -1,3 +1,2 @@
-export * from './socialAuth/ui';
-
 export { useSocialLogin } from './socialAuth/model/useSocialLogin';
+export * from './socialAuth/ui';

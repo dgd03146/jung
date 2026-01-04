@@ -1,5 +1,5 @@
 import { Badge, Card, Tag } from '@jung/design-system';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof Card> = {
 	title: 'Components/Card',

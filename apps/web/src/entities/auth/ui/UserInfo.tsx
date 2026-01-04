@@ -1,8 +1,6 @@
-import { Typography } from '@jung/design-system/components';
-
-import { getUserDisplayName } from '@/fsd/shared';
-import { Box, Flex } from '@jung/design-system/components';
+import { Box, Flex, Typography } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
+import { getUserDisplayName } from '@/fsd/shared';
 import * as styles from './UserInfo.css';
 
 export const UserInfo = ({ user }: { user: User }) => {

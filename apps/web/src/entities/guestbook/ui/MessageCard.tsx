@@ -1,9 +1,9 @@
 'use client';
 
-import { formatDate } from '@/fsd/shared';
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
+import { formatDate } from '@/fsd/shared';
 import { DEFAULT_BACKGROUND_COLOR } from '../config/guestbook';
 import type { GuestbookColor } from '../model/guestbook';
 import * as styles from './MessageCard.css';

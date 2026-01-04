@@ -1,13 +1,13 @@
 'use client';
 
-import { CategoryIcon } from '@/fsd/entities/place';
-import { useMarker } from '@/fsd/features/place';
-import { capitalizeFirstLetter } from '@/fsd/shared';
 import { Tag, Typography } from '@jung/design-system/components';
 import type { Place } from '@jung/shared/types';
 import { Marker, OverlayView } from '@react-google-maps/api';
 import type { Clusterer } from '@react-google-maps/marker-clusterer';
 import { useState } from 'react';
+import { CategoryIcon } from '@/fsd/entities/place';
+import { useMarker } from '@/fsd/features/place';
+import { capitalizeFirstLetter } from '@/fsd/shared';
 import { useMarkerVisibility } from '../model/useMarkerVisibility';
 import * as styles from './SelectMarker.css';
 
@@ -47,7 +47,9 @@ export const SelectMarker = ({ place, clusterer }: SelectMarkerProps) => {
 						y: -(height / 2),
 					})}
 				>
+					{/* biome-ignore lint/a11y/noStaticElementInteractions: hover events for tooltip display only */}
 					<div
+						role='presentation'
 						className={styles.markerContainer}
 						onMouseEnter={() => !isSelected && setIsHovered(true)}
 						onMouseLeave={() => setIsHovered(false)}
@@ -69,7 +71,8 @@ export const SelectMarker = ({ place, clusterer }: SelectMarkerProps) => {
 								</Typography.SubText>
 							</div>
 						)}
-						<div
+						<button
+							type='button'
 							className={styles.customMarker({
 								category: (place.category?.toLowerCase() || 'nature') as
 									| 'nature'
@@ -93,9 +96,10 @@ export const SelectMarker = ({ place, clusterer }: SelectMarkerProps) => {
 								selected: isSelected,
 							})}
 							onClick={handleClick}
+							aria-label={`Select ${place.title}`}
 						>
 							<CategoryIcon category={place.category?.toLowerCase() || ''} />
-						</div>
+						</button>
 					</div>
 				</OverlayView>
 			)}

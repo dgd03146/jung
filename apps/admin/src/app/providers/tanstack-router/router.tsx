@@ -3,6 +3,7 @@ import { createRouter as createTanStackRouter } from '@tanstack/react-router';
 
 import { routeTree } from '@/fsd/routeTree.gen';
 import { queryClient } from '../react-query/ReactQueryProvider';
+
 // import { trpcQueryUtils } from '../trpc/TrpcProvider';
 
 // 타입 안전성을 위한 라우터 인스턴스 등록

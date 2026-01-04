@@ -1,6 +1,5 @@
-import { usePathname } from '@/fsd/shared';
-import { useSidebarStore } from '@/fsd/shared';
 import { Box } from '@jung/design-system/components';
+import { usePathname, useSidebarStore } from '@/fsd/shared';
 import { Header } from '../../Header';
 import { Sidebar } from '../../Sidebar';
 import * as styles from './Layout.css';

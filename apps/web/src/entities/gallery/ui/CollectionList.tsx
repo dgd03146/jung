@@ -2,7 +2,7 @@
 
 import { Box } from '@jung/design-system/components';
 import type { Collection } from '@jung/shared/types';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { collectionListVariants } from '../config/animations';
 import { CollectionItem } from './CollectionItem';
 import * as styles from './CollectionList.css';

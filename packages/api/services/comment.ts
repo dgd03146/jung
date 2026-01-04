@@ -4,11 +4,11 @@ import type {
 	CommentQueryResult,
 	CommentUser,
 } from '@jung/shared/types';
+import type { PageParams, User } from '@supabase/supabase-js';
 import { TRPCError } from '@trpc/server';
 import { getUserDisplayName } from '../lib/getUserDisplayName';
 import { supabase } from '../lib/supabase';
 
-import type { PageParams, User } from '@supabase/supabase-js';
 interface ExtendedPageParams extends PageParams {
 	filter?: string;
 }
@@ -52,7 +52,7 @@ export const CommentService = {
 		return {
 			items: itemsToReturn,
 			nextCursor: hasNextPage
-				? itemsToReturn[itemsToReturn.length - 1]?.created_at ?? null
+				? (itemsToReturn[itemsToReturn.length - 1]?.created_at ?? null)
 				: null,
 			hasNextPage,
 			totalCount: totalCount ?? 0,
@@ -296,7 +296,10 @@ export const commentService = {
 	async toggleLike({
 		commentId,
 		userId,
-	}: { commentId: string; userId: string }): Promise<Comment> {
+	}: {
+		commentId: string;
+		userId: string;
+	}): Promise<Comment> {
 		// 댓글 가져오기
 		const { data: comment, error: selectError } = await supabase
 			.from('post_comments')

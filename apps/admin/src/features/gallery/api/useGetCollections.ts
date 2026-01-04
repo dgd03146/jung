@@ -1,5 +1,5 @@
-import { collectionKeys } from '@/fsd/shared';
 import { useQuery } from '@tanstack/react-query';
+import { collectionKeys } from '@/fsd/shared';
 import { getCollections } from '../services/getCollections';
 
 export const useGetCollections = () => {

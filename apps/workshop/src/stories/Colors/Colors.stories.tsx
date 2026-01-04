@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Box, Flex, Stack, Typography } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { colors } from './colors';
 
 const meta = {

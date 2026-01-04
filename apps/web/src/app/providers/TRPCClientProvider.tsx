@@ -1,9 +1,8 @@
 'use client';
+
 // ^-- to make sure we can mount the Provider from a server component
 
-import { getQueryClient } from '@/fsd/shared';
 import type { AppRouter } from '@jung/api';
-
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
@@ -14,6 +13,7 @@ import {
 } from '@trpc/client';
 import { createTRPCContext } from '@trpc/tanstack-react-query';
 import { useState } from 'react';
+import { getQueryClient } from '@/fsd/shared';
 
 export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
 
