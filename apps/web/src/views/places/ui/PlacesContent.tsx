@@ -19,6 +19,11 @@ import {
 	useSearchParamsState,
 } from '@/fsd/shared';
 
+const SEARCH_PARAMS_DEFAULTS = {
+	sort: PLACE_DEFAULTS.SORT,
+	q: PLACE_DEFAULTS.QUERY,
+} as const;
+
 export const PlacesContent = () => {
 	const { isListView, isSlidListVisible } = usePlaceView();
 	const params = useParams();
@@ -28,10 +33,7 @@ export const PlacesContent = () => {
 			: PLACE_DEFAULTS.CAT;
 
 	const { sort, q } = useSearchParamsState({
-		defaults: {
-			sort: PLACE_DEFAULTS.SORT,
-			q: PLACE_DEFAULTS.QUERY,
-		} as const,
+		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
