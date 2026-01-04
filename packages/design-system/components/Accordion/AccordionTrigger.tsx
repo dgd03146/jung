@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { KeyboardArrowUp } from '../../icons';
 import type { AtomProps } from '../../types';
