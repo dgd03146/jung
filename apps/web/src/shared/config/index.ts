@@ -17,4 +17,3 @@ export * from './routes';
 export * from './social';
 export * from './sort';
 export * from './tanstack-query/getQueryClient';
-export { queryKeys } from './tanstack-query/queryKeys';

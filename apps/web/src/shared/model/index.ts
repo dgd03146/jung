@@ -7,5 +7,6 @@ export { useInfiniteScroll } from './useInfiniteScroll';
 export { useInViewAnimation } from './useInviewAnimation';
 export { useScrollLock } from './useScrollLock';
 export { useSearchParamsState } from './useSearchParamsState';
+export { type ShareContent, useShare } from './useShare';
 export { useSupabaseAuth } from './useSupabaseAuth';
 export { useViewportHeight } from './useViewportHeight';

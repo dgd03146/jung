@@ -4,13 +4,13 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import type { SpotImageUpload } from '@jung/shared/types';
+import type { PlaceImageUpload } from '@jung/shared/types';
 import { MdDelete, MdPhoto } from 'react-icons/md';
 import * as styles from './ImageUploader.css';
 
 interface ImageUploaderProps {
-	images: SpotImageUpload[];
-	onChange: (images: SpotImageUpload[]) => void;
+	images: PlaceImageUpload[];
+	onChange: (images: PlaceImageUpload[]) => void;
 	maxImages?: number;
 }
 
@@ -34,7 +34,7 @@ export const ImageUploader = ({
 			return;
 		}
 
-		const newImages: SpotImageUpload[] = Array.from(newFiles).map((file) => ({
+		const newImages: PlaceImageUpload[] = Array.from(newFiles).map((file) => ({
 			url: URL.createObjectURL(file),
 			file,
 			status: 'new',
