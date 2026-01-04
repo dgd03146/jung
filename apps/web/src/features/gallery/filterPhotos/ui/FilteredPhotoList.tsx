@@ -19,6 +19,16 @@ import {
 } from '@/fsd/shared';
 import { usePhotoFilter } from '../model/PhotoFilterContext';
 
+const DEFAULT_SEARCH_PARAMS = {
+	sort: PHOTO_DEFAULTS.SORT,
+	q: PHOTO_DEFAULTS.QUERY,
+} as const;
+
+const TRENDING_SEARCH_PARAMS = {
+	sort: TRENDING_PHOTO_DEFAULTS.SORT,
+	q: PHOTO_DEFAULTS.QUERY,
+} as const;
+
 interface FilteredPhotoListProps {
 	isTrending?: boolean;
 }
@@ -42,11 +52,12 @@ export const FilteredPhotoList = ({ isTrending }: FilteredPhotoListProps) => {
 		}
 	}, [pathname, setSort, setCollectionId]);
 
+	const searchParamsDefaults = isTrending
+		? TRENDING_SEARCH_PARAMS
+		: DEFAULT_SEARCH_PARAMS;
+
 	const { q, sort } = useSearchParamsState({
-		defaults: {
-			sort: isTrending ? TRENDING_PHOTO_DEFAULTS.SORT : PHOTO_DEFAULTS.SORT,
-			q: PHOTO_DEFAULTS.QUERY,
-		} as const,
+		defaults: searchParamsDefaults,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

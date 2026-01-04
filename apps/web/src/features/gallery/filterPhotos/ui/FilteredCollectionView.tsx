@@ -17,6 +17,11 @@ import {
 } from '@/fsd/shared';
 import { usePhotoFilter } from '../model/PhotoFilterContext';
 
+const SEARCH_PARAMS_DEFAULTS = {
+	sort: PHOTO_DEFAULTS.SORT,
+	q: PHOTO_DEFAULTS.QUERY,
+} as const;
+
 interface FilteredCollectionViewProps {
 	collectionId: string;
 }
@@ -31,10 +36,7 @@ export const FilteredCollectionView = ({
 	}, [collectionId, setCollectionId]);
 
 	const { q, sort } = useSearchParamsState({
-		defaults: {
-			sort: PHOTO_DEFAULTS.SORT,
-			q: PHOTO_DEFAULTS.QUERY,
-		} as const,
+		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
