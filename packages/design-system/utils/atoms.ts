@@ -1,6 +1,5 @@
-import { elementResets, sprinkles } from '../styles';
-
 import clsx from 'clsx';
+import { elementResets, sprinkles } from '../styles';
 
 import type { Atoms } from '../types/atoms';
 
@@ -14,7 +13,7 @@ const keys = Array.from(sprinkles.properties.keys());
  * The function returns an array with two elements: the Sprinkles props and the remaining props.
  */
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: required for generic utility function
 export function pick<T extends Record<string, any>, K extends keyof T>(
 	obj: T,
 	keys: readonly K[],
@@ -22,7 +21,7 @@ export function pick<T extends Record<string, any>, K extends keyof T>(
 	const result = {} as Pick<T, K>;
 
 	for (const key of keys) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
+		if (Object.hasOwn(obj, key)) {
 			result[key] = obj[key];
 		}
 	}
@@ -30,7 +29,7 @@ export function pick<T extends Record<string, any>, K extends keyof T>(
 	return result;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: required for generic utility function
 export function omit<T extends Record<string, any>, K extends keyof T>(
 	obj: T,
 	keys: readonly K[],
@@ -45,9 +44,9 @@ export function omit<T extends Record<string, any>, K extends keyof T>(
 }
 
 export const extractAtoms = <P extends object>(props: P) => {
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: required for dynamic sprinkles keys
 	const atomProps = pick(props, keys as any);
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: required for dynamic sprinkles keys
 	const otherProps = omit(props, keys as any);
 
 	return [atomProps, otherProps] as const;

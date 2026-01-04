@@ -1,10 +1,10 @@
 'use client';
 
+import { Box } from '@jung/design-system/components';
+import type { Post } from '@jung/shared/types';
 import type { ViewMode } from '@/fsd/entities/blog';
 import { PostCard } from '@/fsd/entities/blog/ui';
 import { EmptyState } from '@/fsd/shared/ui';
-import { Box } from '@jung/design-system/components';
-import type { Post } from '@jung/shared/types';
 import * as styles from './PostList.css';
 
 interface PostListProps {

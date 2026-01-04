@@ -1,5 +1,7 @@
 'use client';
 
+import { Flex } from '@jung/design-system/components';
+import { useParams } from 'next/navigation';
 import { BLOG_DEFAULTS, usePostsQuery } from '@/fsd/entities';
 import { PostList } from '@/fsd/entities/blog';
 import { useViewMode } from '@/fsd/features/blog';
@@ -8,8 +10,6 @@ import {
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
-import { useParams } from 'next/navigation';
 
 export const ViewPosts = () => {
 	const { viewMode } = useViewMode();

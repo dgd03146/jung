@@ -1,10 +1,9 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import type { GuestbookColor, GuestbookEmoji } from '@/fsd/entities/guestbook';
 import { validateGuestbookMessage } from '@/fsd/features/guestbook/createMessage/lib/validateGuestbookMessage';
-
 import { caller } from '@/fsd/shared/api/trpc/server';
-import { cookies } from 'next/headers';
 
 type CreateMessageState = {
 	success?: boolean;
@@ -14,11 +13,11 @@ type CreateMessageState = {
 const THROTTLE_TIME = 2000;
 
 export async function createMessageAction(
-	prevState: CreateMessageState | null,
+	_prevState: CreateMessageState | null,
 	formData: FormData,
 ): Promise<CreateMessageState> {
 	try {
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 		const lastSubmitTime = cookieStore.get('last-submit-time')?.value;
 		const currentTime = Date.now();
 

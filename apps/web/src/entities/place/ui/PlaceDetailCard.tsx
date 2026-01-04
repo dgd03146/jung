@@ -1,4 +1,3 @@
-import { formatDate } from '@/fsd/shared/lib';
 import {
 	Badge,
 	Box,
@@ -7,10 +6,10 @@ import {
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
-import { IoLocationOutline } from 'react-icons/io5';
-import * as styles from './PlaceDetailCard.css';
-
 import type { Place } from '@jung/shared/types';
+import { IoLocationOutline } from 'react-icons/io5';
+import { formatDate } from '@/fsd/shared/lib';
+import * as styles from './PlaceDetailCard.css';
 import { PlaceTags } from './PlaceTags';
 import { PlaceTips } from './PlaceTips';
 

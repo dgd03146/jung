@@ -2,14 +2,13 @@
 
 import {
 	Children,
-	type HTMLAttributes,
 	forwardRef,
+	type HTMLAttributes,
 	isValidElement,
 	useEffect,
 } from 'react';
-
-import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import { useTabsContext } from './context/TabsContext';
 
 export interface TabsListProps
@@ -23,7 +22,10 @@ export const TabsList = forwardRef<HTMLUListElement, TabsListProps>(
 		useEffect(() => {
 			if (currentTab === undefined) {
 				const firstChild = Children.toArray(children)[0];
-				if (isValidElement(firstChild) && firstChild.props.value) {
+				if (
+					isValidElement<{ value?: string }>(firstChild) &&
+					firstChild.props.value
+				) {
 					setCurrentTab(firstChild.props.value);
 				}
 			}

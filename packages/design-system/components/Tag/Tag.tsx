@@ -1,9 +1,8 @@
-import * as S from './Tag.css';
-
-import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import type { AtomProps } from '../../types/atoms';
 
 import { Box } from '..';
-import type { AtomProps } from '../../types/atoms';
+import * as S from './Tag.css';
 
 export interface TagProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'prefix' | 'color'>,

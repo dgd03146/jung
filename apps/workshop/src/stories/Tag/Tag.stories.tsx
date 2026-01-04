@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Stack, Tag, type TagProps } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { variantOptions } from './options';
 
 const meta = {

@@ -1,5 +1,5 @@
-import { caller } from '@/fsd/shared/index.server';
 import type { MetadataRoute } from 'next';
+import { caller } from '@/fsd/shared/index.server';
 
 const SITE_URL = 'https://www.geojung.com';
 const SUPPORTED_LANGS = ['ko', 'en'] as const;

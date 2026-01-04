@@ -1,10 +1,10 @@
 'use client';
 
-import { useScrollLock } from '@/fsd/shared';
 import { Box } from '@jung/design-system/components';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { IoClose } from 'react-icons/io5';
+import { useScrollLock } from '@/fsd/shared';
 import * as styles from './Modal.css';
 
 interface ModalProps {

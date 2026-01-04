@@ -4,11 +4,19 @@ export const HEIGHT_ANIMATION = {
 	},
 	enter: (i: number) => ({
 		height: '100%',
-		transition: { duration: 0.5, delay: 0.05 * i, ease: [0.33, 1, 0.68, 1] },
+		transition: {
+			duration: 0.5,
+			delay: 0.05 * i,
+			ease: [0.33, 1, 0.68, 1] as const,
+		},
 	}),
 	exit: (i: number) => ({
 		height: 0,
-		transition: { duration: 0.3, delay: 0.07 * i, ease: [0.33, 1, 0.68, 1] },
+		transition: {
+			duration: 0.3,
+			delay: 0.07 * i,
+			ease: [0.33, 1, 0.68, 1] as const,
+		},
 	}),
 };
 
@@ -18,11 +26,11 @@ export const BACKGROUND_ANIMATION = {
 	},
 	enter: {
 		opacity: 1,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 	exit: {
 		opacity: 0,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 };
 
@@ -32,11 +40,11 @@ export const OPACITY_ANIMATION = {
 	},
 	enter: (i: number) => ({
 		opacity: 1,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1], delay: i },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const, delay: i },
 	}),
 	exit: {
 		opacity: 0,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 };
 
@@ -46,11 +54,11 @@ export const SLIDE_LEFT_ANIMATION = {
 	},
 	enter: {
 		x: 0,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 	exit: {
 		x: 150,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 };
 
@@ -64,13 +72,13 @@ export const ROTATE_X_ANIMATION = {
 		opacity: 1,
 		transition: {
 			duration: 0.5,
-			ease: [0.33, 1, 0.68, 1],
+			ease: [0.33, 1, 0.68, 1] as const,
 			delay: 0.3 + i * 0.05,
 		},
 	}),
 	exit: {
 		opacity: 0,
-		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+		transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] as const },
 	},
 };
 

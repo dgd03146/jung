@@ -1,6 +1,5 @@
 'use client';
 
-import { Modal } from '@/fsd/shared';
 import {
 	Box,
 	Button,
@@ -12,6 +11,7 @@ import { FaLink, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { IoClose } from 'react-icons/io5';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import { Modal } from '@/fsd/shared';
 import * as styles from './ShareModal.css';
 
 interface ShareModalProps {
@@ -33,7 +33,7 @@ export function ShareModal({ isOpen, onClose, links }: ShareModalProps) {
 		try {
 			await navigator.clipboard.writeText(window.location.href);
 			showToast('Link copied', 'success');
-		} catch (error) {
+		} catch (_error) {
 			showToast('Link copy failed', 'error');
 		}
 	};

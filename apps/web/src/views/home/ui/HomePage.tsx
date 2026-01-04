@@ -1,9 +1,9 @@
 'use client';
 
-import { AnimatedLine, useInViewAnimation } from '@/fsd/shared';
 import { Stack, Typography } from '@jung/design-system/components';
-import { LazyMotion, domAnimation, m } from 'framer-motion';
+import { domAnimation, LazyMotion, m } from 'motion/react';
 import { useRef } from 'react';
+import { AnimatedLine, useInViewAnimation } from '@/fsd/shared';
 import * as styles from './HomePage.css';
 
 const HomePage = () => {
@@ -36,7 +36,7 @@ const HomePage = () => {
 			y: 0,
 			scale: 1,
 			transition: {
-				type: 'spring',
+				type: 'spring' as const,
 				damping: 20,
 				stiffness: 100,
 			},

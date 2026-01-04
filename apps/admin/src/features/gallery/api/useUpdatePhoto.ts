@@ -1,9 +1,9 @@
-import { photoKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updatePhoto } from '../services/updatePhoto';
+import { photoKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { UpdatePhotoInput } from '../services/updatePhoto';
+import { updatePhoto } from '../services/updatePhoto';
 
 export const useUpdatePhoto = () => {
 	const queryClient = useQueryClient();

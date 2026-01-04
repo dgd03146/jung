@@ -1,7 +1,6 @@
-import { type LiHTMLAttributes, forwardRef } from 'react';
-import { Box } from '..';
-
+import { forwardRef, type LiHTMLAttributes } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import { useSelectContext } from './context/SelectProvider';
 
 export interface Props

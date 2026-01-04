@@ -1,26 +1,27 @@
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	SUPPORTED_LANGS,
 	createBreadcrumbSchema,
 	createImageObjectSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { PhotoDetailSkeleton } from '@/fsd/views/gallery/ui';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { id: string; lang: string };
+	params: Promise<{ id: string; lang: string }>;
 }): Promise<Metadata> {
+	const { id } = await params;
 	try {
-		const photo = await caller.gallery.getPhotoById(params.id);
+		const photo = await caller.gallery.getPhotoById(id);
 
 		if (!photo) {
 			return {
@@ -79,10 +80,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl()}/gallery/photo/${params.id}`,
+				canonical: `${getApiUrl()}/gallery/photo/${id}`,
 				languages: {
-					en: `${getApiUrl()}/en/gallery/photo/${params.id}`,
-					ko: `${getApiUrl()}/ko/gallery/photo/${params.id}`,
+					en: `${getApiUrl()}/en/gallery/photo/${id}`,
+					ko: `${getApiUrl()}/ko/gallery/photo/${id}`,
 				},
 			},
 			verification: {
@@ -124,10 +125,9 @@ export async function generateStaticParams() {
 export default async function PhotoPage({
 	params,
 }: {
-	params: { id: string; lang: string };
+	params: Promise<{ id: string; lang: string }>;
 }) {
-	const photoId = params.id;
-	const lang = params.lang;
+	const { id: photoId, lang } = await params;
 
 	const queryClient = getQueryClient();
 
@@ -148,7 +148,7 @@ export default async function PhotoPage({
 				datePublished: photo.created_at,
 				id: photo.id,
 				lang,
-		  })
+			})
 		: null;
 
 	const breadcrumbSchema = createBreadcrumbSchema(
@@ -166,7 +166,7 @@ export default async function PhotoPage({
 			<JsonLd data={breadcrumbSchema} />
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Suspense fallback={<PhotoDetailSkeleton />}>
-					<PhotoDetailPage photoId={params.id} isModal={false} />
+					<PhotoDetailPage photoId={photoId} isModal={false} />
 				</Suspense>
 			</HydrationBoundary>
 		</>

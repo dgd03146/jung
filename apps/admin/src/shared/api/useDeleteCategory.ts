@@ -1,8 +1,8 @@
-import { categoryKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import type { CategoriesResponse, CategoryType } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { categoryKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { deleteCategory } from '../services/deleteCategory';
 
 export const useDeleteCategory = (type: CategoryType) => {

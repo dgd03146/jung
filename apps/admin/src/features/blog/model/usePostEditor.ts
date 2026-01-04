@@ -1,6 +1,6 @@
-import { storage, useThrottle } from '@/fsd/shared';
 import { useToast } from '@jung/design-system/components';
 import { useCallback, useState } from 'react';
+import type { PostWithBlockContent } from '@/fsd/entities';
 
 import {
 	uploadImage,
@@ -10,10 +10,9 @@ import {
 	usePostState,
 	useUpdatePost,
 } from '@/fsd/features/blog/api';
-
-import type { PostWithBlockContent } from '@/fsd/entities';
 import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
 import { isPostEmpty, serializeContent } from '@/fsd/features/blog/lib';
+import { storage, useThrottle } from '@/fsd/shared';
 import type { Errors } from '../types/errors';
 
 export const usePostEditor = () => {
@@ -44,7 +43,7 @@ export const usePostEditor = () => {
 			try {
 				const publicUrl = await uploadImage(file);
 				return publicUrl;
-			} catch (error: unknown) {
+			} catch (_error: unknown) {
 				showToast('Failed to upload Image');
 			}
 		},
@@ -71,17 +70,20 @@ export const usePostEditor = () => {
 	const throttledSave = useThrottle(handleSave, 3000);
 	useKeyboardShortcut('s', throttledSave);
 
-	const validateForm = (data: PostWithBlockContent): Errors | null => {
-		const errors: Errors = {
-			title: !data.title.trim() ? 'Enter a title' : '',
-			description: !data.description.trim() ? 'Enter a description' : '',
-			category_id: !data.category_id ? 'Select a category' : '',
-			imagesrc: !data.imagesrc ? 'Upload a featured image' : '',
-			date: !data.date ? 'Select a date' : '',
-		};
+	const validateForm = useCallback(
+		(data: PostWithBlockContent): Errors | null => {
+			const errors: Errors = {
+				title: !data.title.trim() ? 'Enter a title' : '',
+				description: !data.description.trim() ? 'Enter a description' : '',
+				category_id: !data.category_id ? 'Select a category' : '',
+				imagesrc: !data.imagesrc ? 'Upload a featured image' : '',
+				date: !data.date ? 'Select a date' : '',
+			};
 
-		return Object.values(errors).some(Boolean) ? errors : null;
-	};
+			return Object.values(errors).some(Boolean) ? errors : null;
+		},
+		[],
+	);
 
 	const preparePostData = useCallback(
 		async (imageFile: File | null) => {

@@ -19,8 +19,6 @@ export const createImageObjectSchema = ({
 	height,
 	caption,
 	description,
-	name,
-	datePublished,
 	id,
 	lang = 'ko',
 }: ImageObjectSchemaInput): WithContext<

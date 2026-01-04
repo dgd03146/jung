@@ -1,5 +1,3 @@
-import type { PostWithBlockContent } from '@/fsd/entities';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import {
 	Box,
 	Button,
@@ -10,6 +8,8 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HiExclamationCircle } from 'react-icons/hi';
 import { HiPhoto, HiTrash } from 'react-icons/hi2';
+import type { PostWithBlockContent } from '@/fsd/entities';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import * as styles from './ImagePreview.css';
 
 interface ImagePreviewProps {

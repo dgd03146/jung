@@ -1,6 +1,6 @@
-import { BlurImage } from '@/fsd/shared/ui';
 import { Box } from '@jung/design-system/components';
 import type { PlacePhoto } from '@jung/shared/types';
+import { BlurImage } from '@/fsd/shared/ui';
 import type { GridVariant } from './PlacePhotoGrid.css';
 import * as styles from './PlacePhotoGrid.css';
 

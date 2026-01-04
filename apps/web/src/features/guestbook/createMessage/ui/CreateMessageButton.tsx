@@ -1,11 +1,9 @@
 'use client';
 
-import type { GuestbookEmoji } from '@/fsd/entities/guestbook/model/guestbook';
 import { Button } from '@jung/design-system/components';
 import { useThrottle } from '@jung/shared/hooks';
-
-// @ts-ignore
 import { useFormStatus } from 'react-dom';
+import type { GuestbookEmoji } from '@/fsd/entities/guestbook/model/guestbook';
 
 interface CreateMessageButtonProps {
 	emoji: GuestbookEmoji;

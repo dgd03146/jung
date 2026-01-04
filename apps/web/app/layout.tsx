@@ -1,6 +1,6 @@
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import type { Metadata } from 'next';
 import { Bebas_Neue, Poppins } from 'next/font/google';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 
 const bebasNeue = Bebas_Neue({
 	weight: ['400'],

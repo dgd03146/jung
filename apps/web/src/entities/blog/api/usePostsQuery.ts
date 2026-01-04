@@ -1,5 +1,5 @@
-import { useTRPC } from '@/fsd/app';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/fsd/app';
 import { BLOG_DEFAULTS, type BlogSort } from '../config/blog';
 
 type QueryParams = {

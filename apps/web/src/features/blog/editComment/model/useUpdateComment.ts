@@ -1,14 +1,14 @@
 'use client';
 
+import { useToast } from '@jung/design-system/components';
+import type { Comment } from '@jung/shared/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
 } from '@/fsd/shared';
-import { useToast } from '@jung/design-system/components';
-import type { Comment } from '@jung/shared/types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateCommentAction } from '../api/updateCommentAction';
 import { findCommentById, replaceUpdatedComment } from '../lib';
 

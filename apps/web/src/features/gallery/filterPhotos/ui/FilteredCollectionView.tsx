@@ -1,5 +1,7 @@
 'use client';
 
+import { Flex } from '@jung/design-system/components';
+import { useEffect } from 'react';
 import {
 	PHOTO_DEFAULTS,
 	PhotoCard,
@@ -13,8 +15,6 @@ import {
 	useInfiniteScroll,
 	useSearchParamsState,
 } from '@/fsd/shared';
-import { Flex } from '@jung/design-system/components';
-import { useEffect } from 'react';
 import { usePhotoFilter } from '../model/PhotoFilterContext';
 
 interface FilteredCollectionViewProps {
@@ -44,17 +44,16 @@ export const FilteredCollectionView = ({
 		});
 
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
-
-	if (photos.length === 0) {
-		return <EmptyState content='photos' />;
-	}
-
 	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
 
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,
 		hasNextPage,
 	});
+
+	if (photos.length === 0) {
+		return <EmptyState content='photos' />;
+	}
 
 	return (
 		<>

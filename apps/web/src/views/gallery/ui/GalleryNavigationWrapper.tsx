@@ -1,7 +1,7 @@
 'use client';
 
-import { PhotoNavigation } from '@/fsd/features/gallery';
 import { usePathname } from 'next/navigation';
+import { PhotoNavigation } from '@/fsd/features/gallery';
 
 export const GalleryNavigationWrapper = () => {
 	const pathname = usePathname();

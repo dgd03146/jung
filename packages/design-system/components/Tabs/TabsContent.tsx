@@ -1,10 +1,9 @@
-import * as styles from './TabsContent.css';
-
-import { type HTMLAttributes, forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
+import type { AtomProps } from '../../types/atoms';
 
 import { Box } from '..';
-import type { AtomProps } from '../../types/atoms';
 import { useTabHandler } from './hooks/useTabHandle';
+import * as styles from './TabsContent.css';
 
 export interface TabsContentProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,

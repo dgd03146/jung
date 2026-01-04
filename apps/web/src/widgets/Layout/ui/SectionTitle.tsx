@@ -17,7 +17,7 @@ export function SectionTitle() {
 	const hasSlash = section.includes('/');
 
 	if (hasSlash) {
-		const [mainSection, subSection] = section.split('/');
+		const [_mainSection, _subSection] = section.split('/');
 		return null;
 	}
 

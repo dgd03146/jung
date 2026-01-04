@@ -1,6 +1,6 @@
-import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as styles from './Badge.css';
 
 export interface BadgeProps

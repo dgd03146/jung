@@ -290,7 +290,9 @@ export const blogService = {
 	// 이전, 이후 포스트 가져오기
 	async getAdjacentPosts({
 		postId,
-	}: { postId: string }): Promise<AdjacentPosts> {
+	}: {
+		postId: string;
+	}): Promise<AdjacentPosts> {
 		const currentPost = await this.findById({ postId });
 
 		if (!currentPost) {

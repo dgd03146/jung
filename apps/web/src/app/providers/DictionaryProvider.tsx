@@ -1,11 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import {
 	DictionaryContext,
 	type DictionaryType,
 	getDictionary,
 } from '@/fsd/shared';
-import { useEffect, useState } from 'react';
 
 interface DictionaryProviderProps {
 	lang: string;

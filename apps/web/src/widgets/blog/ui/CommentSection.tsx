@@ -1,5 +1,7 @@
 'use client';
 
+import { Box, Flex } from '@jung/design-system';
+import type { Comment } from '@jung/shared/types';
 import {
 	CommentItem,
 	CommentList,
@@ -21,8 +23,6 @@ import {
 	useInfiniteScroll,
 	useSupabaseAuth,
 } from '@/fsd/shared';
-import { Box, Flex } from '@jung/design-system';
-import type { Comment } from '@jung/shared/types';
 import * as styles from './CommentSection.css';
 
 interface CommentSectionProps {

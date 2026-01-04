@@ -1,7 +1,6 @@
-import { type LiHTMLAttributes, type ReactNode, forwardRef } from 'react';
-
-import { Box } from '..';
+import { forwardRef, type LiHTMLAttributes, type ReactNode } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 
 interface Props
 	extends Omit<LiHTMLAttributes<HTMLLIElement>, 'prefix' | 'color'>,

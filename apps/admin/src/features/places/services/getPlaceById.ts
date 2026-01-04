@@ -1,6 +1,6 @@
+import type { Place } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Place } from '@jung/shared/types';
 
 export const getPlaceById = async (id: string): Promise<Place> => {
 	const { data: place, error } = await supabase

@@ -1,6 +1,6 @@
+import type { Photo } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Photo } from '@jung/shared/types';
 
 interface PhotoWithCollection extends Photo {
 	collection_id: string;

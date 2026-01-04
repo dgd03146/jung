@@ -1,14 +1,13 @@
 import {
 	Children,
-	type HTMLAttributes,
-	type ReactElement,
 	cloneElement,
 	forwardRef,
+	type HTMLAttributes,
 	isValidElement,
 } from 'react';
-
-import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
+import type { AccordionItemProps } from './AccordionItem';
 import { AccordionContext } from './context/AccordionContext';
 import { useAccordion } from './hooks/useAccordion';
 
@@ -43,8 +42,8 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
 					{...restProps}
 				>
 					{Children.map(children, (child, index) =>
-						isValidElement(child)
-							? cloneElement(child as ReactElement, { index: index + 1 })
+						isValidElement<AccordionItemProps>(child)
+							? cloneElement(child, { index: index + 1 })
 							: child,
 					)}
 				</Box>

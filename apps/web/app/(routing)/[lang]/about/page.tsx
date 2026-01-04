@@ -1,10 +1,10 @@
+import type { Metadata } from 'next';
 import {
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { AboutPage } from '@/fsd/views';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'About',

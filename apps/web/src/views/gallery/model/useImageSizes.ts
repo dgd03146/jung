@@ -1,7 +1,7 @@
 'use client';
 
-import { useViewportHeight } from '@/fsd/shared';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useViewportHeight } from '@/fsd/shared';
 import { findNearestImageSize } from '../lib/findNearestImageSize';
 
 const CONFIG = {
@@ -16,7 +16,7 @@ const CONFIG = {
 };
 
 interface UseImageSizesProps {
-	containerRef: React.RefObject<HTMLElement>;
+	containerRef: React.RefObject<HTMLElement | null>;
 	aspectRatio?: number;
 	isModal?: boolean;
 	maxHeightPercent?: number;

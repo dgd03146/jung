@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Badge, type BadgeProps, Stack } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { variantOptions } from './options';
 
 const meta = {

@@ -1,6 +1,6 @@
 import {
-	createSingletonShorthands,
 	createdBundledHighlighter,
+	createSingletonShorthands,
 } from '@shikijs/core';
 import { createJavaScriptRegexEngine } from '@shikijs/engine-javascript';
 /* Generate by @shikijs/codegen */

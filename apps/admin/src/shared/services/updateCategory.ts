@@ -1,6 +1,6 @@
+import type { Category, CategoryType } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared/api/supabase';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Category, CategoryType } from '@jung/shared/types';
 
 export const updateCategory = async (
 	categoryId: string,

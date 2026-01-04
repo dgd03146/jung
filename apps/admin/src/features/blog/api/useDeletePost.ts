@@ -1,7 +1,7 @@
-import { postKeys } from '@/fsd/shared';
-import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postKeys } from '@/fsd/shared';
+import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 // import { useNavigate } from '@tanstack/react-router';
 import { deletePostById } from './deletePost';
 

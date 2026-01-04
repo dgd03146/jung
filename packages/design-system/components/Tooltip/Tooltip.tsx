@@ -1,22 +1,21 @@
 'use client';
 
-import * as S from './Tooltip.css';
+import { useViewportSize } from '@jung/shared/hooks';
 
 import {
+	forwardRef,
 	type HTMLAttributes,
 	type ReactNode,
-	forwardRef,
 	useId,
 	useRef,
 } from 'react';
-
-import { useViewportSize } from '@jung/shared/hooks';
-import { Box, Typography } from '..';
 import { ArrowDropDownIcon, ArrowDrouUpIcon } from '../../icons';
 import { CloseIcon } from '../../icons/CloseIcon';
 import type { AtomProps } from '../../types/atoms';
+import { Box, Typography } from '..';
 import { useTooltip } from './hooks/useTooltip';
 import { useTooltipPosition } from './hooks/useTooltipPostion';
+import * as S from './Tooltip.css';
 
 export interface TooltipProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color' | 'content'>,

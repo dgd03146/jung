@@ -1,11 +1,11 @@
 'use client';
 
-import { usePlaceLikeQuery } from '@/fsd/entities/place';
-import { LoginModal } from '@/fsd/features/auth';
-import { useSupabaseAuth } from '@/fsd/shared';
 import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { usePlaceLikeQuery } from '@/fsd/entities/place';
+import { LoginModal } from '@/fsd/features/auth';
+import { useSupabaseAuth } from '@/fsd/shared';
 import { useTogglePlaceLikeMutation } from '../api/useTogglePlaceLikeMutation';
 import * as styles from './TogglePlaceLikeButton.css';
 

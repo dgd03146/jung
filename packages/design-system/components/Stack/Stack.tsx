@@ -1,13 +1,13 @@
 import {
 	Children,
+	forwardRef,
 	type HTMLAttributes,
 	type ReactNode,
-	forwardRef,
 } from 'react';
-import { Box } from '..';
 import { mapResponsiveValue } from '../../styles/sprinkles.css';
 import type { space } from '../../tokens/space';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 
 const alignToFlexAlign = {
 	left: 'flex-start',

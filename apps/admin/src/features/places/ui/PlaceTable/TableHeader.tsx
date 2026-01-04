@@ -1,5 +1,5 @@
 import { Box, Typography } from '@jung/design-system/components';
-import { type Table, flexRender } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { GiClick } from 'react-icons/gi';
 import { RxCaretSort } from 'react-icons/rx';

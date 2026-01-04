@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Box, Progress, type ProgressProps, Stack } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 type Variant = 'primary' | 'secondary';
 const variantOptions: Variant[] = ['primary', 'secondary'];

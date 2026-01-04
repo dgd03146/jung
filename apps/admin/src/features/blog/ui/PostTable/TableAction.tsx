@@ -1,7 +1,7 @@
-import { usePostTableFilter } from '@/fsd/features/blog/model';
 import { Button, Flex, Input } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { FaPlus } from 'react-icons/fa';
+import { usePostTableFilter } from '@/fsd/features/blog/model';
 
 const TableAction = () => {
 	const { filter, handleFilterChange } = usePostTableFilter();

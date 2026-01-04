@@ -3,7 +3,7 @@
 import { type RefObject, useEffect, useState } from 'react';
 
 export const useCollapsibleHeight = <T extends HTMLElement>(
-	ref: RefObject<T>,
+	ref: RefObject<T | null>,
 	isExpanded: boolean,
 ) => {
 	const [contentHeight, setContentHeight] = useState(0);

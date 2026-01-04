@@ -148,7 +148,7 @@ export function CommentNotificationEmailTemplateInline({
 						<div style={styles.commentBodyWrapper}>
 							<p
 								style={styles.commentBody}
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+								// biome-ignore lint/security/noDangerouslySetInnerHtml: required to render HTML content from sanitized comment
 								dangerouslySetInnerHTML={{ __html: commentContentHtml }}
 							/>
 						</div>

@@ -1,7 +1,6 @@
-import { type LiHTMLAttributes, type ReactNode, forwardRef } from 'react';
-
-import { Box } from '..';
+import { forwardRef, type LiHTMLAttributes, type ReactNode } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 
 interface Props<T>
 	extends Omit<LiHTMLAttributes<HTMLUListElement>, 'color'>,
@@ -10,7 +9,7 @@ interface Props<T>
 	renderItem: (item: T) => ReactNode;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: generic list component needs any for forwardRef
 export const List = forwardRef<HTMLUListElement, Props<any>>(
 	({ items, renderItem, ...restProps }, ref) => {
 		return (

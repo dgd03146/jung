@@ -1,5 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import {
 	Button,
 	Toast,
@@ -7,6 +5,7 @@ import {
 	ToastProvider,
 	useToast,
 } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
 	title: 'COMPONENTS/Toast',

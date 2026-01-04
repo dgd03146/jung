@@ -1,11 +1,10 @@
-import { type HTMLAttributes, forwardRef } from 'react';
-
-import { Box } from '..';
+import { forwardRef, type HTMLAttributes } from 'react';
 import type {
 	responsiveProperties,
 	unresponsiveProperties,
 } from '../../styles/sprinkles.css';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 
 interface Props
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,

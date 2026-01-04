@@ -1,11 +1,11 @@
 'use client';
 
 import {
-	type MotionValue,
 	animate,
+	type MotionValue,
 	motion,
 	useMotionValue,
-} from 'framer-motion';
+} from 'motion/react';
 import { type ReactNode, useRef } from 'react';
 import * as styles from './MotionCard.css';
 

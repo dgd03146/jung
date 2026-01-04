@@ -1,6 +1,6 @@
+import type { Place, PlaceImageUpload } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Place, PlaceImageUpload } from '@jung/shared/types';
 import { uploadPlaceImage } from '../lib/uploadImage';
 
 export interface UpdatePlaceInput {

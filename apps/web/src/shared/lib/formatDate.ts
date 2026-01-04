@@ -1,8 +1,3 @@
-type Interval = {
-	label: string;
-	seconds: number;
-};
-
 export const formatRelativeTime = (dateString: string): string => {
 	const date = new Date(dateString);
 	const now = new Date();

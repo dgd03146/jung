@@ -1,11 +1,11 @@
-import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
+import type { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import type { CategoryCount } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
-import type { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { HiPencil, HiTrash } from 'react-icons/hi';
+import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
 import * as styles from './CategoryCard.css';
 
 interface CategoryCardProps {

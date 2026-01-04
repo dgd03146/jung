@@ -1,17 +1,16 @@
+import { Flex } from '@jung/design-system/components';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
 import { FilteredPhotoList } from '@/fsd/features/gallery';
 import {
-	LoadingSpinner,
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	LoadingSpinner,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { Flex } from '@jung/design-system/components';
-
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Trending Photos • Gallery',

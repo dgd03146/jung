@@ -1,10 +1,10 @@
+import { Flex } from '@jung/design-system/components';
 import {
 	ActivityChart,
 	DashboardStats,
 	QuickActions,
 	RecentActivities,
 } from '@/fsd/widgets/Dashboard';
-import { Flex } from '@jung/design-system/components';
 
 const DashboardPage = () => {
 	return (

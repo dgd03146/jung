@@ -1,30 +1,29 @@
+import { Flex } from '@jung/design-system/components';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	LoadingSpinner,
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	LoadingSpinner,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
-import { Flex } from '@jung/design-system/components';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 interface PageProps {
-	params: {
+	params: Promise<{
 		id: string;
-	};
+	}>;
 }
 
 export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
+	const { id } = await params;
 	try {
-		const collection = await caller.galleryCollections.getCollectionById(
-			params.id,
-		);
+		const collection = await caller.galleryCollections.getCollectionById(id);
 
 		if (!collection) {
 			return {
@@ -73,10 +72,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl}/gallery/collections/${params.id}`,
+				canonical: `${getApiUrl}/gallery/collections/${id}`,
 				languages: {
-					en: `${getApiUrl}/en/gallery/collections/${params.id}`,
-					ko: `${getApiUrl}/ko/gallery/collections/${params.id}`,
+					en: `${getApiUrl}/en/gallery/collections/${id}`,
+					ko: `${getApiUrl}/ko/gallery/collections/${id}`,
 				},
 			},
 			verification: {
@@ -113,7 +112,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: PageProps) {
-	const { id: collectionId } = params;
+	const { id: collectionId } = await params;
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchQuery(

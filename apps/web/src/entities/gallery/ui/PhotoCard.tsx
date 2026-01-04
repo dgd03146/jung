@@ -1,9 +1,9 @@
-import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
 import { Box, Typography } from '@jung/design-system/components';
 import type { AlbumPhoto } from '@jung/shared/types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import Link from 'next/link';
 import type { RenderImageContext, RenderImageProps } from 'react-photo-album';
+import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
 import { getPriorityImageCount } from '../lib';
 import * as styles from './PhotoCard.css';
 

@@ -1,8 +1,8 @@
 import '@/fsd/app/styles/global.css';
 
-import { ReactQueryProvider, createRouter } from '@/fsd/app';
 import { RouterProvider } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
+import { createRouter, ReactQueryProvider } from '@/fsd/app';
 
 const router = createRouter();
 

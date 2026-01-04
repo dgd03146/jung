@@ -1,13 +1,12 @@
 import {
 	type ChangeEvent,
-	type HTMLAttributes,
 	forwardRef,
+	type HTMLAttributes,
 	useId,
 } from 'react';
-
-import { Box, Typography } from '..';
 import { CheckIcon } from '../../icons';
 import type { AtomProps } from '../../types/atoms';
+import { Box, Typography } from '..';
 import * as styles from './Checkbox.css';
 
 export interface CheckboxProps

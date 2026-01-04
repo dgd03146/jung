@@ -1,7 +1,7 @@
 'use client';
 
+import { createContext, type ReactNode, useContext, useState } from 'react';
 import type { Sort } from '@/fsd/shared';
-import { type ReactNode, createContext, useContext, useState } from 'react';
 
 interface PhotoFilterContextType {
 	sort: Sort;

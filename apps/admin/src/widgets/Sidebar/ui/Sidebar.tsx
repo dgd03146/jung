@@ -1,8 +1,7 @@
-import { usePathname } from '@/fsd/shared';
-import { useSidebarStore } from '@/fsd/shared';
 import { Accordion } from '@jung/design-system';
 import { Link } from '@tanstack/react-router';
 import { HiHome } from 'react-icons/hi';
+import { usePathname, useSidebarStore } from '@/fsd/shared';
 import * as styles from './Sidebar.css';
 
 const menuSections = [

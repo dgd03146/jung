@@ -1,15 +1,13 @@
 'use server';
 
-import { getApiUrl, getResendApiKey } from '@/fsd/shared/config';
+import type { CreateReplyInput } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import { revalidatePath } from 'next/cache';
 import { Resend } from 'resend';
-
-import type { CreateReplyInput } from '@jung/shared/types';
-
 import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { caller } from '@/fsd/shared/api/trpc/server';
+import { getApiUrl, getResendApiKey } from '@/fsd/shared/config';
 import { createClient } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
 

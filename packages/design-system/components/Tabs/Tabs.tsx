@@ -1,15 +1,14 @@
 'use client';
 
 import {
-	type HTMLAttributes,
 	forwardRef,
+	type HTMLAttributes,
 	useCallback,
 	useMemo,
 	useState,
 } from 'react';
-
-import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import { TabsContext } from './context/TabsContext';
 
 export interface TabsProps

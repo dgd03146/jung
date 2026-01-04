@@ -1,6 +1,3 @@
-import { useTRPC } from '@/fsd/app';
-import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
-import type { Sort } from '@/fsd/shared';
 import type {
 	AdjacentPhotosData,
 	Photo,
@@ -9,6 +6,9 @@ import type {
 } from '@jung/shared/types';
 import type { InfiniteData } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTRPC } from '@/fsd/app';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
+import type { Sort } from '@/fsd/shared';
 
 interface UseInitialAdjacentPhotosParams {
 	photoId: string;

@@ -1,5 +1,6 @@
-import type { CommentData } from '@/fsd/shared';
 import type { Comment } from '@jung/shared/types';
+import type { CommentData } from '@/fsd/shared';
+
 interface CommentSearchResult {
 	comment: Comment | undefined;
 	isLiked: boolean;

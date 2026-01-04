@@ -4,8 +4,8 @@ import { PlaceDetailCard, PlacePhotoGrid, usePlaceQuery } from '@/fsd/entities';
 import {
 	SharePlaceButton,
 	TogglePlaceViewButton,
-	ViewMap,
 	usePlaceView,
+	ViewMap,
 } from '@/fsd/features/place';
 
 export const PlaceDetailContent = ({ placeId }: { placeId: string }) => {

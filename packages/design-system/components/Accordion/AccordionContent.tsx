@@ -1,14 +1,11 @@
 'use client';
 
-import * as styles from './Accordion.css';
-
-import { Children, type HTMLAttributes, forwardRef, useRef } from 'react';
-
-import { assignInlineVars } from '@vanilla-extract/dynamic';
-
 import { useBeforeMatch, useCollapsibleHeight } from '@jung/shared/hooks';
-import { Box } from '..';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
+import { Children, forwardRef, type HTMLAttributes, useRef } from 'react';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
+import * as styles from './Accordion.css';
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';
 

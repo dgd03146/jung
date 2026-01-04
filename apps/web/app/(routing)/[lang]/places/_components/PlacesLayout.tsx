@@ -1,3 +1,6 @@
+import { Flex } from '@jung/design-system/components';
+import type { ReactNode } from 'react';
+import { Suspense } from 'react';
 import { PlaceListSkeleton } from '@/fsd/entities/place';
 import {
 	FilterPlaceCategory,
@@ -8,9 +11,6 @@ import {
 } from '@/fsd/features/place';
 import { SearchBar, SearchBarSkeleton } from '@/fsd/shared';
 import { PlacesContent } from '@/fsd/views';
-import { Flex } from '@jung/design-system/components';
-import type { ReactNode } from 'react';
-import { Suspense } from 'react';
 
 interface PlacesLayoutProps {
 	currentCategory?: string;

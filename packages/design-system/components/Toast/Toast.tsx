@@ -1,16 +1,14 @@
-import React, { type HTMLAttributes } from 'react';
-import * as styles from './Toast.css';
-
 import type { ToastType } from '@jung/shared/types';
-
+import React, { type HTMLAttributes } from 'react';
 import {
 	FaCheckCircle,
 	FaExclamationCircle,
 	FaExclamationTriangle,
 	FaInfoCircle,
 } from 'react-icons/fa';
-import { Box, Typography } from '..';
 import type { AtomProps } from '../../types/atoms';
+import { Box, Typography } from '..';
+import * as styles from './Toast.css';
 
 export interface ToastProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
@@ -25,10 +23,10 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
 			type === 'success'
 				? FaCheckCircle
 				: type === 'error'
-				  ? FaExclamationCircle
-				  : type === 'warning'
-					  ? FaExclamationTriangle
-					  : FaInfoCircle;
+					? FaExclamationCircle
+					: type === 'warning'
+						? FaExclamationTriangle
+						: FaInfoCircle;
 
 		return (
 			<Box

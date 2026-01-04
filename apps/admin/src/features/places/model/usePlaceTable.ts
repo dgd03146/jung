@@ -1,17 +1,17 @@
-import { placeKeys } from '@/fsd/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
-	type PaginationState,
-	type SortingState,
-	type Updater,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
+	type PaginationState,
+	type SortingState,
+	type Updater,
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
+import { placeKeys } from '@/fsd/shared';
 import { type PlaceFilters, useGetPlaces } from '../api/useGetPlaces';
 import { fetchPlaces } from '../services/getPlaces';
 
@@ -119,9 +119,9 @@ export const usePlaceTable = () => {
 											id: filters.sortField,
 											desc: filters.sortOrder === 'desc',
 										},
-								  ]
+									]
 								: [],
-					  )
+						)
 					: updater;
 			const sort = newSorting[0];
 			updateSearchParams({

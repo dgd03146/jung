@@ -1,5 +1,5 @@
-import { PlaceCard, PlaceList } from '@/fsd/entities/place';
 import type { Place } from '@jung/shared/types';
+import { PlaceCard, PlaceList } from '@/fsd/entities/place';
 import { TogglePlaceLikeButton } from './TogglePlaceLikeButton';
 
 interface PlaceListWithLikesProps {

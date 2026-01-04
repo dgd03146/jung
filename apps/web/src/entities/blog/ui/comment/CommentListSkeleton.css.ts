@@ -1,6 +1,4 @@
-import { keyframes } from '@vanilla-extract/css';
-
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 
 const shimmer = keyframes({
 	'0%': { backgroundPosition: '-468px 0' },

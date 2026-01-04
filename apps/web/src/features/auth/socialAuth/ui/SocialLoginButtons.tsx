@@ -25,7 +25,7 @@ export function SocialLoginButtons({ onSuccess }: SocialLoginProps) {
 			if (onSuccess) {
 				onSuccess();
 			}
-		} catch (error) {
+		} catch (_error) {
 			showToast('failed to login', 'error');
 		}
 	};

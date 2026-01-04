@@ -1,12 +1,12 @@
 import type { Photo } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
-import { type Table, flexRender } from '@tanstack/react-table';
+import { flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDeletePhoto } from '../../api';
-import * as styles from './PhotoTable.css';
 import { DateCell } from './cells/DateCell';
 import { ImageCell } from './cells/ImageCell';
 import { TagsCell } from './cells/TagsCell';
+import * as styles from './PhotoTable.css';
 
 interface TableBodyProps<T> {
 	table: Table<T>;

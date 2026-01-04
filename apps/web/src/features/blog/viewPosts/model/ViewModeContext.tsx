@@ -1,7 +1,7 @@
 'use client';
 
+import { createContext, type ReactNode, useContext, useState } from 'react';
 import type { ViewMode } from '@/fsd/entities/blog/model/view';
-import { type ReactNode, createContext, useContext, useState } from 'react';
 
 interface ViewModeContextType {
 	viewMode: ViewMode;

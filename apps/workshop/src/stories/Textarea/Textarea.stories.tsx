@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Flex, Textarea, type TextareaProps } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { sizeOptions, variantOptions } from './options';
 
 const meta = {

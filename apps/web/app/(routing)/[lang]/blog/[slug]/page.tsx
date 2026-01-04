@@ -1,30 +1,33 @@
+import { Container, Flex } from '@jung/design-system/components';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
-	SUPPORTED_LANGS,
 	createArticleSchema,
 	createBreadcrumbSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { JsonLd } from '@/fsd/shared/ui';
-import { PostNavigation, PostNavigationSkeleton } from '@/fsd/widgets/blog';
-
 import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { JsonLd } from '@/fsd/shared/ui';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
-import { CommentSection } from '@/fsd/widgets/blog';
-import { Container, Flex } from '@jung/design-system/components';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
+import {
+	CommentSection,
+	PostNavigation,
+	PostNavigationSkeleton,
+} from '@/fsd/widgets/blog';
 import * as styles from './page.css';
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { slug: string; lang: string };
+	params: Promise<{ slug: string; lang: string }>;
 }): Promise<Metadata> {
+	const { slug } = await params;
 	try {
-		const post = await caller.blog.getPostById({ postId: params.slug });
+		const post = await caller.blog.getPostById({ postId: slug });
 
 		if (!post) {
 			return {
@@ -117,9 +120,10 @@ export async function generateStaticParams() {
 
 export default async function Page({
 	params,
-}: { params: { slug: string; lang: string } }) {
-	const postId = params.slug;
-	const lang = params.lang;
+}: {
+	params: Promise<{ slug: string; lang: string }>;
+}) {
+	const { slug: postId, lang } = await params;
 	const queryClient = getQueryClient();
 
 	// Fetch post data for JSON-LD schema
@@ -142,7 +146,7 @@ export default async function Page({
 				tags: post.tags || undefined,
 				category: post.category,
 				lang,
-		  })
+			})
 		: null;
 
 	const breadcrumbSchema = createBreadcrumbSchema(

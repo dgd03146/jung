@@ -1,8 +1,8 @@
-import { placeKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import { placeKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { type CreatePlaceInput, createPlace } from '../services/createPlace';
 
 export function useCreatePlace() {

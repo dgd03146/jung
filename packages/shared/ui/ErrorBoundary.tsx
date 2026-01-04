@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { ComponentType, FC, ReactNode } from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
 interface ErrorBoundaryProps {
@@ -23,13 +23,21 @@ export const ErrorBoundary: FC<ErrorBoundaryProps> = ({
 		onReset?.();
 	};
 
+	// React 19 호환성을 위한 타입 캐스팅
+	const BoundaryComponent = ReactErrorBoundary as unknown as ComponentType<{
+		FallbackComponent: ComponentType<{ error: Error }>;
+		onError: (error: Error) => void;
+		onReset: () => void;
+		children: ReactNode;
+	}>;
+
 	return (
-		<ReactErrorBoundary
-			FallbackComponent={({ error }) => fallback(error)}
+		<BoundaryComponent
+			FallbackComponent={({ error }) => <>{fallback(error)}</>}
 			onError={handleError}
 			onReset={handleReset}
 		>
 			{children}
-		</ReactErrorBoundary>
+		</BoundaryComponent>
 	);
 };

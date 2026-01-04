@@ -1,20 +1,20 @@
-import type { AdminPost } from '@/fsd/entities/post/model/post';
-import { type PostFilters, fetchPosts, usePostsQuery } from '@/fsd/features';
-import { postKeys } from '@/fsd/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
-	type PaginationState,
-	type SortingState,
-	type Updater,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
+	type PaginationState,
+	type SortingState,
+	type Updater,
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
+import type { AdminPost } from '@/fsd/entities/post/model/post';
+import { fetchPosts, type PostFilters, usePostsQuery } from '@/fsd/features';
+import { postKeys } from '@/fsd/shared';
 
 export const postColumns: ColumnDef<AdminPost>[] = [
 	{ header: 'ID', accessorKey: 'id' },
@@ -99,9 +99,9 @@ export const usePostTable = () => {
 											id: filters.sortField,
 											desc: filters.sortOrder === 'desc',
 										},
-								  ]
+									]
 								: [],
-					  )
+						)
 					: updater;
 			const sort = newSorting[0];
 			updateSearchParams({

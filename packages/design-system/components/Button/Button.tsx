@@ -1,7 +1,7 @@
-import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
+import { type ButtonHTMLAttributes, forwardRef, type ReactNode } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { Box } from '..';
 import type { AtomProps } from '../../types/atoms';
+import { Box } from '..';
 import * as styles from './Button.css';
 
 export interface ButtonProps

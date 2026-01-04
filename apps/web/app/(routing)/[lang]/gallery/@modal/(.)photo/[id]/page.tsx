@@ -1,14 +1,16 @@
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { Suspense } from 'react';
 import { Modal } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage, PhotoDetailSkeleton } from '@/fsd/views/gallery';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { Suspense } from 'react';
 
 export default async function PhotoModal({
 	params,
-}: { params: { id: string } }) {
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id: photoId } = await params;
 	const queryClient = getQueryClient();
-	const photoId = params.id;
 
 	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
 

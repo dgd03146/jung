@@ -1,6 +1,6 @@
+import type { Collection } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import type { Collection } from '@jung/shared/types';
 
 export const getCollections = async (): Promise<Collection[]> => {
 	const { data, error } = await supabase

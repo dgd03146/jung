@@ -1,7 +1,6 @@
-import { FaGithub } from 'react-icons/fa';
-
 import { BiLogoGmail } from 'react-icons/bi';
 import { BsLinkedin } from 'react-icons/bs';
+import { FaGithub } from 'react-icons/fa';
 
 export const SOCIAL_NAVIGATION = {
 	LINKEDIN: 'https://www.linkedin.com/in/dgd03146/',

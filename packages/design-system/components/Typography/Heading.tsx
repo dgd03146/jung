@@ -1,9 +1,8 @@
-import { type ElementType, type HTMLAttributes, forwardRef } from 'react';
+import clsx from 'clsx';
+import { type ElementType, forwardRef, type HTMLAttributes } from 'react';
+import type { AtomProps } from '../../types/atoms';
 import { Box } from '..';
 import * as S from './Typography.css';
-
-import clsx from 'clsx';
-import type { AtomProps } from '../../types/atoms';
 
 /**
  * Typography Heading

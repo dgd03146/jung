@@ -1,6 +1,6 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '@/fsd/shared';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useCommentsQuery = (postId: string) => {
 	const trpc = useTRPC();

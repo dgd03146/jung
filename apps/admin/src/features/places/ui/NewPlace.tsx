@@ -1,4 +1,3 @@
-import { useGetCategories } from '@/fsd/shared';
 import {
 	Box,
 	Button,
@@ -15,6 +14,7 @@ import { useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
+import { useGetCategories } from '@/fsd/shared';
 import { useCreatePlace } from '../api/useCreatePlace';
 import { useGetPlaceById } from '../api/useGetPlaceById';
 import { useUpdatePlace } from '../api/useUpdatePlace';

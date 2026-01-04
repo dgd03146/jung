@@ -1,6 +1,6 @@
-import { ROUTES } from '@/fsd/shared';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
+import { ROUTES } from '@/fsd/shared';
 
 interface UseKeyboardNavigationProps {
 	previousPhotoId?: string | null;

@@ -1,8 +1,8 @@
 'use client';
 
-import { usePlaceView } from '@/fsd/features/place';
 import { Button } from '@jung/design-system/components';
 import { IoGridOutline, IoMapOutline } from 'react-icons/io5';
+import { usePlaceView } from '@/fsd/features/place';
 
 export function TogglePlaceViewButton() {
 	const { isListView, toggleView } = usePlaceView();

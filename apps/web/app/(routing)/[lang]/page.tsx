@@ -1,12 +1,12 @@
+import type { Metadata } from 'next';
 import {
-	SUPPORTED_LANGS,
 	createWebSiteSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { JsonLd } from '@/fsd/shared/ui';
 import { HomePage } from '@/fsd/views';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'JUNG',
@@ -70,8 +70,13 @@ export async function generateStaticParams() {
 	return SUPPORTED_LANGS.map((lang) => ({ lang }));
 }
 
-export default function Home({ params }: { params: { lang: string } }) {
-	const websiteSchema = createWebSiteSchema({ lang: params.lang });
+export default async function Home({
+	params,
+}: {
+	params: Promise<{ lang: string }>;
+}) {
+	const { lang } = await params;
+	const websiteSchema = createWebSiteSchema({ lang });
 
 	return (
 		<>

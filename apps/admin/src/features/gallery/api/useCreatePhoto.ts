@@ -1,10 +1,10 @@
-import { photoKeys } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { createPhoto } from '../services/createPhoto';
+import { photoKeys } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { CreatePhotoInput } from '../services/createPhoto';
+import { createPhoto } from '../services/createPhoto';
 
 export const useCreatePhoto = () => {
 	const queryClient = useQueryClient();

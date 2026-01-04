@@ -1,13 +1,5 @@
 'use client';
 
-import { PlaceCard, PlaceEmptyState } from '@/fsd/entities/place';
-import {
-	SelectMarker,
-	useMapLoad,
-	useMapState,
-	useMarker,
-} from '@/fsd/features/place';
-import { LoadingSpinner } from '@/fsd/shared';
 import { Flex } from '@jung/design-system/components';
 import type { Place } from '@jung/shared/types';
 import {
@@ -17,6 +9,14 @@ import {
 	useJsApiLoader,
 } from '@react-google-maps/api';
 import { useEffect } from 'react';
+import { PlaceCard, PlaceEmptyState } from '@/fsd/entities/place';
+import {
+	SelectMarker,
+	useMapLoad,
+	useMapState,
+	useMarker,
+} from '@/fsd/features/place';
+import { LoadingSpinner } from '@/fsd/shared';
 import { mapOptions } from '../config/mapOptions';
 import { markerClusterOptions } from '../config/markerClusterOptions';
 import * as styles from './ViewMap.css';

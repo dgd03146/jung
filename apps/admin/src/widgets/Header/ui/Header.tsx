@@ -1,5 +1,3 @@
-import { useAuth } from '@/fsd/features/auth/api/useAuth';
-import { usePathname, useSidebarStore } from '@/fsd/shared';
 // FIXME: icons들 다 나중에 shared로 빼야할 듯?
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
@@ -9,6 +7,8 @@ import {
 	HiLogout,
 	HiMenuAlt2,
 } from 'react-icons/hi';
+import { useAuth } from '@/fsd/features/auth/api/useAuth';
+import { usePathname, useSidebarStore } from '@/fsd/shared';
 
 import * as styles from './Header.css.ts';
 

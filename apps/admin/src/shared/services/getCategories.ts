@@ -1,10 +1,10 @@
-import { supabase } from '@/fsd/shared';
-import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type {
 	CategoriesResponse,
 	CategoryCount,
 	CategoryType,
 } from '@jung/shared/types';
+import { supabase } from '@/fsd/shared';
+import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
 interface CountData {
 	category_id: string;

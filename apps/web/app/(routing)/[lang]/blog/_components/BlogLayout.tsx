@@ -1,3 +1,5 @@
+import { Box, Flex } from '@jung/design-system/components';
+import { Suspense } from 'react';
 import { PostListSkeleton } from '@/fsd/entities/blog';
 import {
 	FilterPostCategoryAccordion,
@@ -7,8 +9,6 @@ import {
 } from '@/fsd/features/blog';
 import { SearchBarSkeleton } from '@/fsd/shared';
 import { BlogPageControls } from '@/fsd/views';
-import { Box, Flex } from '@jung/design-system/components';
-import { Suspense } from 'react';
 
 interface BlogLayoutProps {
 	currentCategory?: string;

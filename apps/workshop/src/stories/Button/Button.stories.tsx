@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import { Button, type ButtonProps, Flex } from '@jung/design-system';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { sizeOptions, variantOptions } from './options';
 

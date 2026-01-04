@@ -1,7 +1,7 @@
-import type { ViewMode } from '@/fsd/entities/blog';
 import { Button, Flex } from '@jung/design-system/components';
 import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
+import type { ViewMode } from '@/fsd/entities/blog';
 
 interface SelectViewModeProps {
 	selected: ViewMode;

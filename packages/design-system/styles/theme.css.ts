@@ -1,3 +1,4 @@
+import { createGlobalTheme } from '@vanilla-extract/css';
 import {
 	borderRadius,
 	borderWidths,
@@ -9,8 +10,6 @@ import {
 	palette,
 	space,
 } from '../tokens';
-
-import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const vars = createGlobalTheme(':root', {
 	space,

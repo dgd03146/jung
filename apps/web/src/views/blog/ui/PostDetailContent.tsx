@@ -1,11 +1,10 @@
 'use client';
 
-import { TogglePostLike } from '@/fsd/features/blog';
+import dynamic from 'next/dynamic';
 
 import { usePostQuery } from '@/fsd/entities/blog';
-
+import { TogglePostLike } from '@/fsd/features/blog';
 import { EditorSkeleton } from '@/fsd/shared/ui/EditorSkeleton';
-import dynamic from 'next/dynamic';
 
 const BlockNoteEditor = dynamic(
 	() => import('@/fsd/shared/ui/BlockNote').then((mod) => mod.BlockNote),

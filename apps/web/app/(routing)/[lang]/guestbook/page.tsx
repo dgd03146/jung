@@ -1,16 +1,16 @@
+import { Container, Stack, Typography } from '@jung/design-system/components';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/guestbook';
 import { CreateMessageForm } from '@/fsd/features/guestbook';
 import {
-	SUPPORTED_LANGS,
 	getApiUrl,
 	getGoogleVerificationCode,
+	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
-import { Container, Stack, Typography } from '@jung/design-system/components';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Guestbook',
