@@ -6,6 +6,7 @@ export { useDictionary } from './useDictionary';
 export { useInfiniteScroll } from './useInfiniteScroll';
 export { useInViewAnimation } from './useInviewAnimation';
 export { useScrollLock } from './useScrollLock';
+export { useShare, type ShareContent } from './useShare';
 export { useSearchParamsState } from './useSearchParamsState';
 export { useSupabaseAuth } from './useSupabaseAuth';
 export { useViewportHeight } from './useViewportHeight';
