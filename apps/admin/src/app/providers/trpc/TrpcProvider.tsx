@@ -1,4 +1,4 @@
-// import type { AppRouter } from '@jung/server';
+// import type { AppRouter } from '@jung/api';
 // import { httpBatchLink } from '@trpc/client';
 // import { createTRPCQueryUtils, createTRPCReact } from '@trpc/react-query';
 // import type { ReactNode } from 'react';

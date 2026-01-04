@@ -1,7 +1,7 @@
 import 'server-only'; // <-- ensure this file cannot be imported from the client
 
 import { makeQueryClient } from '@/fsd/shared';
-import { appRouter, createTRPCContext } from '@jung/server';
+import { appRouter, createTRPCContext } from '@jung/api';
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query';
 import { cache } from 'react';
 

@@ -21,7 +21,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/fsd': path.resolve(__dirname, './src'),
-      '@jung/server': path.resolve(__dirname, '../server'),
+      '@jung/api': path.resolve(__dirname, '../../packages/api'),
       '@jung/design-system': path.resolve(__dirname, '../../packages/design-system'),
       '@jung/design-system/icons': path.resolve(__dirname, '../../packages/design-system/icons'),
     },

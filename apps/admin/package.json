@@ -22,7 +22,7 @@
     "@shikijs/langs-precompiled": "^3.3.0",
     "@shikijs/themes": "^3.3.0",
     "@jung/design-system": "workspace:*",
-    "@jung/server": "workspace:*",
+    "@jung/api": "workspace:*",
     "@jung/shared": "workspace:*",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.40.0",

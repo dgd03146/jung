@@ -2,7 +2,7 @@
 // ^-- to make sure we can mount the Provider from a server component
 
 import { getQueryClient } from '@/fsd/shared';
-import type { AppRouter } from '@jung/server';
+import type { AppRouter } from '@jung/api';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
