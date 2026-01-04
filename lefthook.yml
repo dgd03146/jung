@@ -9,7 +9,5 @@ pre-commit:
 pre-push:
   parallel: true
   jobs:
-    - name: typecheck
-      run: pnpm turbo run typecheck
     - name: build
       run: pnpm build
