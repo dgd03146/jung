@@ -1,7 +1,6 @@
 'use client';
 
 import { domAnimation, LazyMotion, m } from 'motion/react';
-import Link from 'next/link';
 import * as styles from './HomePage.css';
 
 const HomePage = () => {
@@ -40,7 +39,7 @@ const HomePage = () => {
 		},
 	};
 
-	const heroLines = ['Dreamer.', 'Do what', 'you love.'];
+	const heroLines = ['Dream', 'And', 'Do what', 'you love.'];
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -50,24 +49,6 @@ const HomePage = () => {
 				animate='visible'
 				variants={containerAnimation}
 			>
-				<m.header className={styles.header} variants={itemAnimation}>
-					<span className={styles.logo}>JUNG.</span>
-					<nav className={styles.nav}>
-						<Link href='/blog' className={styles.navLink}>
-							Blog
-						</Link>
-						<Link href='/gallery' className={styles.navLink}>
-							Gallery
-						</Link>
-						<Link href='/places' className={styles.navLink}>
-							Places
-						</Link>
-						<Link href='/guestbook' className={styles.navLink}>
-							Guestbook
-						</Link>
-					</nav>
-				</m.header>
-
 				<m.main className={styles.main} variants={itemAnimation}>
 					<h1 className={styles.heroText}>
 						{heroLines.map((line, lineIndex) => (
