@@ -5,9 +5,10 @@ import * as styles from './MenuButton.css';
 interface Props {
 	isMenuOpen: boolean;
 	toggleMenu: () => void;
+	variant?: 'light' | 'dark';
 }
 
-const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
+const MenuButton = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => (
 	<Button
 		variant='ghost'
 		size='zero'
@@ -18,7 +19,7 @@ const MenuButton = ({ isMenuOpen, toggleMenu }: Props) => (
 	>
 		<Typography.Heading
 			level={4}
-			className={styles.menuButtonText({ isMenuOpen })}
+			className={styles.menuButtonText({ isMenuOpen, variant })}
 		>
 			{isMenuOpen ? 'CLOSE' : 'MENU'}
 		</Typography.Heading>

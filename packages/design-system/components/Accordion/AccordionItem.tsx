@@ -12,11 +12,16 @@ export interface AccordionItemProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
 		AtomProps {
 	index?: number;
+	itemId?: string;
 }
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
-	({ children, index, className, ...restProps }: AccordionItemProps, ref) => {
-		const id = useId();
+	(
+		{ children, index, itemId, className, ...restProps }: AccordionItemProps,
+		ref,
+	) => {
+		const generatedId = useId();
+		const id = itemId ?? generatedId;
 
 		const itemClass = clsx(styles.item, className);
 

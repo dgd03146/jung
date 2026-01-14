@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Bebas_Neue, Poppins } from 'next/font/google';
+import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
 import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 
 const bebasNeue = Bebas_Neue({
@@ -12,6 +12,12 @@ const poppins = Poppins({
 	weight: ['400', '500', '600', '700'],
 	subsets: ['latin'],
 	variable: '--font-poppins',
+});
+
+const nanumMyeongjo = Nanum_Myeongjo({
+	weight: ['400', '700'],
+	subsets: ['latin'],
+	variable: '--font-nanum-myeongjo',
 });
 
 export const metadata: Metadata = {
@@ -76,7 +82,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='ko'>
-			<body className={`${poppins.className}  ${bebasNeue.variable} `}>
+			<body
+				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
+			>
 				{children}
 			</body>
 		</html>

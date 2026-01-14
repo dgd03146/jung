@@ -36,13 +36,13 @@ const Footer = () => {
 			}}
 			marginX='auto'
 		>
-			<Flex justifyContent='space-between' alignItems='center'>
+			<Flex justifyContent='space-between' alignItems='center' height='full'>
 				<Typography.Text
 					level={2}
 					color='primary'
 					className={styles.footerText}
 				>
-					ⓒ 2025. Jung. All rights reserved.
+					© 2026. Jung. All rights reserved.
 				</Typography.Text>
 
 				<Flex columnGap='4'>
@@ -56,7 +56,11 @@ const Footer = () => {
 							role='link'
 							aria-label={ariaLabel}
 						>
-							<Typography.Text level={1} className={styles.socialIconText}>
+							<Typography.Text
+								level={1}
+								color='primary'
+								className={styles.socialIconText}
+							>
 								<Icon />
 							</Typography.Text>
 						</Box>

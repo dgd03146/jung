@@ -1,22 +1,30 @@
-import { palette } from '@jung/design-system/tokens';
+import {
+	fontWeights,
+	mediaQueries,
+	palette,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const sectionTitle = style({
-	fontFamily: 'var(--font-bebas)',
-	marginBottom: '12px',
-	display: 'inline-flex',
+	display: 'block',
+	marginBottom: space['8'],
 	'@media': {
-		'(min-width: 768px)': {
-			marginBottom: '20px',
+		[mediaQueries.tablet]: {
+			marginBottom: space['6'],
 		},
 	},
 });
 
 export const sectionText = style({
-	color: palette.primary,
+	fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+	fontWeight: fontWeights.bold,
+	color: palette.swiss,
+	letterSpacing: '-0.02em',
+	lineHeight: 1,
+	transition: 'opacity 0.2s ease',
 	':hover': {
-		transition: 'color 0.3s ease-in-out',
-		color: palette.primary200,
+		opacity: 0.7,
 	},
 });
 

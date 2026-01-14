@@ -1,4 +1,4 @@
-import { palette } from '@jung/design-system/tokens';
+import { mediaQueries, palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -34,7 +34,7 @@ export const postCard = recipe({
 					transform: 'translateX(8px)',
 				},
 				'@media': {
-					'(max-width: 768px)': {
+					[mediaQueries.tablet]: {
 						gap: '16px',
 						padding: '18px 0',
 						minHeight: '210px',
@@ -98,10 +98,10 @@ export const imageArea = recipe({
 				width: '200px',
 
 				'@media': {
-					'(max-width: 1024px)': {
+					[mediaQueries.laptop]: {
 						width: '200px',
 					},
-					'(max-width: 768px)': {
+					[mediaQueries.tablet]: {
 						width: '180px',
 						maxInlineSize: '100%',
 					},

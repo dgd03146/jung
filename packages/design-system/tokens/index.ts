@@ -1,5 +1,5 @@
 export { borderRadius, borderStyles, borderWidths } from './border';
-export { breakpoints } from './breakPoints';
+export { breakpoints, mediaQueries } from './breakPoints';
 export { opacity } from './opacity';
 export { palette } from './palette';
 export { position } from './position';

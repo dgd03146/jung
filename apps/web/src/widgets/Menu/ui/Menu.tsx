@@ -30,7 +30,11 @@ export default function Menu({ isMenuOpen, toggleMenu }: Props) {
 				className={styles.background}
 			>
 				<motion.div variants={ROTATE_X_ANIMATION} {...MOUNT_ANIMATION}>
-					<Navbar isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+					<Navbar
+						isMenuOpen={isMenuOpen}
+						toggleMenu={toggleMenu}
+						variant='dark'
+					/>
 				</motion.div>
 				<Flex
 					className={styles.container}

@@ -1,6 +1,5 @@
 'use client';
 
-import { Typography } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getSection } from '../lib/getSection';
@@ -17,15 +16,12 @@ export function SectionTitle() {
 	const hasSlash = section.includes('/');
 
 	if (hasSlash) {
-		const [_mainSection, _subSection] = section.split('/');
 		return null;
 	}
 
 	return (
 		<Link href={`/${section.toLowerCase()}`} className={styles.sectionTitle}>
-			<Typography.Heading level={3} color='primary' width='fit'>
-				{section}.
-			</Typography.Heading>
+			<span className={styles.sectionText}>{section}</span>
 		</Link>
 	);
 }

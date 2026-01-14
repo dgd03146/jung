@@ -1,98 +1,105 @@
 'use client';
 
-import { Stack, Typography } from '@jung/design-system/components';
 import { domAnimation, LazyMotion, m } from 'motion/react';
-import { useRef } from 'react';
-import { AnimatedLine, useInViewAnimation } from '@/fsd/shared';
 import * as styles from './HomePage.css';
 
 const HomePage = () => {
-	const spanRef = useRef<HTMLSpanElement>(null);
-
-	const { controls } = useInViewAnimation({
-		once: true,
-		ref: spanRef,
-	});
-
 	const containerAnimation = {
 		hidden: { opacity: 0 },
 		visible: {
 			opacity: 1,
 			transition: {
-				duration: 0.5,
-				staggerChildren: 0.2,
+				duration: 0.6,
+				staggerChildren: 0.15,
 			},
 		},
 	};
 
-	const titleAnimation = {
-		hidden: {
-			opacity: 0,
-			y: 20,
-			scale: 0.95,
-		},
+	const itemAnimation = {
+		hidden: { opacity: 0, y: 20 },
 		visible: {
 			opacity: 1,
 			y: 0,
-			scale: 1,
 			transition: {
-				type: 'spring' as const,
-				damping: 20,
-				stiffness: 100,
+				duration: 0.6,
+				ease: [0.25, 0.1, 0.25, 1] as const,
 			},
 		},
 	};
 
-	const HeroText = ['Hey,', "I'm", 'JUNG'];
+	const letterAnimation = {
+		hidden: { opacity: 0, y: 40 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.5,
+				ease: [0.25, 0.1, 0.25, 1] as const,
+			},
+		},
+	};
+
+	const heroLines = ['Dream', 'And', 'Do what', 'you love.'];
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<m.div initial='hidden' animate='visible' variants={containerAnimation}>
-				<Stack
-					space='0'
-					align='center'
-					justifyContent='center'
-					className={styles.container}
-				>
-					<m.div variants={titleAnimation}>
-						<Typography.Heading variant='hero'>
+			<m.div
+				className={styles.container}
+				initial='hidden'
+				animate='visible'
+				variants={containerAnimation}
+			>
+				<m.main className={styles.main} variants={itemAnimation}>
+					<h1 className={styles.heroText}>
+						{heroLines.map((line, lineIndex) => (
 							<m.span
-								ref={spanRef}
+								key={line}
+								className={styles.heroLine}
 								initial='hidden'
-								animate={controls}
+								animate='visible'
 								variants={{
+									hidden: {},
 									visible: {
 										transition: {
-											staggerChildren: 0.1,
-											delayChildren: 0.2,
+											staggerChildren: 0.04,
+											delayChildren: 0.4 + lineIndex * 0.15,
 										},
 									},
-									hidden: {},
 								}}
-								aria-label={HeroText.join(' ')}
 							>
-								{HeroText.map((line, lineIndex) => (
-									<AnimatedLine
-										key={`${line}-${lineIndex}`}
-										line={line}
-										animation={{
-											hidden: {
-												opacity: 0,
-												y: 20,
-												rotateX: 90,
-											},
-											visible: {
-												opacity: 1,
-												y: 0,
-												rotateX: 0,
-											},
+								{line.split('').map((char, charIndex) => (
+									<m.span
+										key={`${char}-${charIndex}`}
+										variants={letterAnimation}
+										whileHover={{ y: -8 }}
+										transition={{
+											duration: 0.2,
+											ease: [0.25, 0.1, 0.25, 1],
 										}}
-									/>
+										style={{ display: 'inline-block', cursor: 'default' }}
+									>
+										{char === ' ' ? '\u00A0' : char}
+									</m.span>
 								))}
 							</m.span>
-						</Typography.Heading>
-					</m.div>
-				</Stack>
+						))}
+					</h1>
+				</m.main>
+
+				<m.aside className={styles.sidebar} variants={itemAnimation}>
+					<div className={styles.infoBlock}>
+						<span className={styles.label}>Location</span>
+						<span className={styles.value}>Seoul, Korea</span>
+					</div>
+					<div className={styles.infoBlock}>
+						<span className={styles.label}>Role</span>
+						<span className={styles.value}>Product Engineer</span>
+					</div>
+					<div className={styles.infoBlock}>
+						<span className={styles.label}>Contact</span>
+						<span className={styles.value}>ibory1220@gmail.com</span>
+					</div>
+				</m.aside>
 			</m.div>
 		</LazyMotion>
 	);

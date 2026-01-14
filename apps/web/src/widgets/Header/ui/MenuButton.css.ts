@@ -4,21 +4,41 @@ import { recipe } from '@vanilla-extract/recipes';
 export const menuButtonText = recipe({
 	base: {
 		transition: 'color 0.3s ease-in-out',
-		color: palette.primary,
 		fontFamily: 'var(--font-bebas)',
-
-		':hover': {
-			color: palette.primary200,
-		},
 	},
 	variants: {
 		isMenuOpen: {
-			true: {
-				color: palette.white,
-			},
-			false: {
+			true: {},
+			false: {},
+		},
+		variant: {
+			light: {
 				color: palette.primary,
+				':hover': {
+					color: palette.primary200,
+				},
+			},
+			dark: {
+				color: palette.white,
+				':hover': {
+					color: 'rgba(255, 255, 255, 0.7)',
+				},
 			},
 		},
+	},
+	compoundVariants: [
+		{
+			variants: { isMenuOpen: true },
+			style: {
+				color: palette.white,
+				':hover': {
+					color: 'rgba(255, 255, 255, 0.7)',
+				},
+			},
+		},
+	],
+	defaultVariants: {
+		variant: 'light',
+		isMenuOpen: false,
 	},
 });

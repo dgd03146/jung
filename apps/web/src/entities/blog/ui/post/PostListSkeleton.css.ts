@@ -1,4 +1,4 @@
-import { palette } from '@jung/design-system/tokens';
+import { mediaQueries, palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const shimmer = keyframes({
@@ -57,7 +57,7 @@ export const postCard = style({
 	borderBottom: `1px solid ${palette.primary50}`,
 
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			flexDirection: 'column',
 			gap: '16px',
 		},
@@ -74,7 +74,7 @@ export const imageArea = style([
 		backgroundColor: palette.gray,
 
 		'@media': {
-			'(max-width: 768px)': {
+			[mediaQueries.tablet]: {
 				width: '100%',
 				height: '280px',
 				aspectRatio: '16/9',

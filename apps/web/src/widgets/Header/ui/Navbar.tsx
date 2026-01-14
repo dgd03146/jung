@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Box, Flex } from '@jung/design-system/components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PRIMARY_NAV_LIST } from '@/fsd/shared/config';
@@ -12,11 +12,12 @@ import * as styles from './Navbar.css';
 type Props = {
 	isMenuOpen: boolean;
 	toggleMenu: () => void;
+	variant?: 'light' | 'dark';
 };
 
 const SCROLL_THRESHOLD = 50;
 
-const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
+const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
 	const isScrolled = useScrollDetection({ threshold: SCROLL_THRESHOLD });
 	const pathname = usePathname();
 	const currentSegment = extractFirstMeaningfulSegment(pathname);
@@ -26,10 +27,10 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			as='header'
 			position='sticky'
 			width='full'
-			// marginX='auto'
 			className={styles.headerContainer({
 				isScrolled,
 				isMenuOpen,
+				variant,
 			})}
 		>
 			<Flex
@@ -43,13 +44,12 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 				marginX='auto'
 				className={styles.navContent}
 			>
-				<Link href='/' className={styles.logoWrapper}>
-					<Typography.Heading level={4}>JUNG</Typography.Heading>
+				<Link href='/' className={styles.logoWrapper({ variant })}>
+					JUNG.
 				</Link>
 
 				<Flex
 					align='center'
-					gap='2'
 					display={{ base: 'none', tablet: 'flex' }}
 					alignItems='center'
 				>
@@ -59,19 +59,23 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 							<Link
 								href={item.path}
 								key={item.id}
-								className={styles.desktopNavLinkItem}
+								className={styles.desktopNavLinkItem({ variant })}
 								data-active={isActive ? 'true' : undefined}
 							>
-								<Typography.Text level={1} className={styles.navLinkText}>
+								<span className={styles.navLinkText({ variant })}>
 									{item.label}
-								</Typography.Text>
+								</span>
 							</Link>
 						);
 					})}
 				</Flex>
 
 				<Box className={styles.menuButtonWrapper}>
-					<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+					<MenuButton
+						isMenuOpen={isMenuOpen}
+						toggleMenu={toggleMenu}
+						variant={variant}
+					/>
 				</Box>
 			</Flex>
 		</Box>
