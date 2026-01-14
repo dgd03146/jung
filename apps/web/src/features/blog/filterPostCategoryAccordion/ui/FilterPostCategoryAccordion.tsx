@@ -57,7 +57,10 @@ export const FilterPostCategoryAccordion = ({
 					// const isCategoryActive =
 					// currentCategory.toLowerCase() === category.name.toLowerCase();
 					return (
-						<Accordion.Item key={category.id}>
+						<Accordion.Item
+							key={category.id}
+							itemId={`blog-category-${category.id}`}
+						>
 							<Accordion.Trigger
 								hasPanel={category.subCategories.length > 0}
 								// active={isCategoryActive}
