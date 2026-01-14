@@ -1,22 +1,26 @@
-import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
+const BLUE = '#0033CC';
+
 export const sectionTitle = style({
-	fontFamily: 'var(--font-bebas)',
-	marginBottom: '12px',
-	display: 'inline-flex',
+	display: 'block',
+	marginBottom: '2rem',
 	'@media': {
-		'(min-width: 768px)': {
-			marginBottom: '20px',
+		'(max-width: 768px)': {
+			marginBottom: '1.5rem',
 		},
 	},
 });
 
 export const sectionText = style({
-	color: palette.primary,
+	fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+	fontWeight: 700,
+	color: BLUE,
+	letterSpacing: '-0.02em',
+	lineHeight: 1,
+	transition: 'opacity 0.2s ease',
 	':hover': {
-		transition: 'color 0.3s ease-in-out',
-		color: palette.primary200,
+		opacity: 0.7,
 	},
 });
 

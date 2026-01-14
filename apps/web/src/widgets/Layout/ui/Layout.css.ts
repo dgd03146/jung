@@ -18,9 +18,9 @@ export const main = style([
 			laptop: 'laptop',
 		},
 		marginY: {
-			base: '4', // 16px
-			tablet: '8', // 32px
-			laptop: '10', // 40px
+			base: '4',
+			tablet: '8',
+			laptop: '10',
 		},
 	}),
 	{
@@ -42,7 +42,6 @@ export const main = style([
 ]);
 
 export const section = style({
-	// display: 'grid',
 	gridColumn: '1/7',
 
 	'@media': {
