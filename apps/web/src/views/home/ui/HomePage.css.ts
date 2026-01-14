@@ -3,6 +3,7 @@ import {
 	fontFamily,
 	fontSizes,
 	fontWeights,
+	mediaQueries,
 	palette,
 	space,
 } from '@jung/design-system/tokens';
@@ -26,7 +27,7 @@ export const container = style([
 		maxWidth: '92%',
 
 		'@media': {
-			'(max-width: 768px)': {
+			[mediaQueries.tablet]: {
 				gridTemplateColumns: '1fr',
 				gridTemplateRows: '1fr auto',
 			},
@@ -41,7 +42,7 @@ export const main = style({
 
 export const heroText = style({
 	lineHeight: 0.82,
-	fontWeight: 900,
+	fontWeight: fontWeights.black,
 	letterSpacing: '-0.06em',
 	color: palette.white,
 	fontSize: 'clamp(80px, 15vw, 200px)',
@@ -49,7 +50,7 @@ export const heroText = style({
 	userSelect: 'none',
 
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			fontSize: 'clamp(48px, 14vw, 100px)',
 		},
 	},
@@ -68,7 +69,7 @@ export const sidebar = style({
 	paddingBottom: space['4'],
 
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			gridRow: '2',
 			flexDirection: 'row',
 			textAlign: 'left',
