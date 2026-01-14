@@ -1,4 +1,4 @@
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Box, Flex } from '@jung/design-system/components';
 import { BiLogoGmail } from 'react-icons/bi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { SOCIAL_NAVIGATION } from '@/fsd/shared/config';
@@ -37,13 +37,9 @@ const Footer = () => {
 			marginX='auto'
 		>
 			<Flex justifyContent='space-between' alignItems='center'>
-				<Typography.Text
-					level={2}
-					color='primary'
-					className={styles.footerText}
-				>
-					ⓒ 2025. Jung. All rights reserved.
-				</Typography.Text>
+				<span className={styles.footerText}>
+					2025. Jung. All rights reserved.
+				</span>
 
 				<Flex columnGap='4'>
 					{SOCIAL_LINKS.map(({ href, icon: Icon, ariaLabel }) => (
@@ -55,10 +51,9 @@ const Footer = () => {
 							rel='noopener noreferrer'
 							role='link'
 							aria-label={ariaLabel}
+							className={styles.socialIconText}
 						>
-							<Typography.Text level={1} className={styles.socialIconText}>
-								<Icon />
-							</Typography.Text>
+							<Icon size={16} />
 						</Box>
 					))}
 				</Flex>
