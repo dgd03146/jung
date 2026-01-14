@@ -1,6 +1,10 @@
+import {
+	fontSizes,
+	fontWeights,
+	palette,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const BLUE = '#0033CC';
 
 export const imgContainer = style({
 	flexShrink: 0,
@@ -13,13 +17,13 @@ export const imgContainer = style({
 });
 
 export const category = style({
-	fontSize: '0.625rem',
-	fontWeight: 500,
-	color: BLUE,
+	fontSize: fontSizes.xxxs,
+	fontWeight: fontWeights.medium,
+	color: palette.swiss,
 	textTransform: 'uppercase',
 	letterSpacing: '0.1em',
-	padding: '4px 8px',
-	backgroundColor: 'rgba(0, 51, 204, 0.06)',
+	padding: `${space['1']} ${space['2']}`,
+	backgroundColor: palette.swissLight,
 });
 
 export const container = style({

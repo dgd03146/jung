@@ -1,7 +1,11 @@
 import { sprinkles } from '@jung/design-system/styles';
+import {
+	fontFamily,
+	fontSizes,
+	lineHeights,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const _BLUE = '#0033CC';
 
 export const container = style([
 	sprinkles({
@@ -14,13 +18,13 @@ export const container = style([
 	}),
 	{
 		maxWidth: '92%',
-		paddingTop: '2rem',
-		paddingBottom: '2rem',
+		paddingTop: space['8'],
+		paddingBottom: space['8'],
 
 		'@media': {
 			'(max-width: 768px)': {
-				paddingTop: '2rem',
-				paddingBottom: '4rem',
+				paddingTop: space['8'],
+				paddingBottom: space['16'],
 			},
 		},
 	},
@@ -29,7 +33,7 @@ export const container = style([
 export const content = style({
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '1.75rem',
+	gap: space['6'],
 	maxWidth: '640px',
 	marginLeft: 'auto',
 	marginRight: 'auto',
@@ -37,16 +41,16 @@ export const content = style({
 });
 
 export const paragraph = style({
-	fontFamily: 'var(--font-poppins), sans-serif',
-	fontSize: '1rem',
-	lineHeight: 1.9,
+	fontFamily: `${fontFamily.poppins}, sans-serif`,
+	fontSize: fontSizes.base,
+	lineHeight: lineHeights.loose,
 	color: '#1a1a1a',
 	wordBreak: 'keep-all',
 
 	'@media': {
 		'(max-width: 768px)': {
-			fontSize: '0.9375rem',
-			lineHeight: 1.8,
+			fontSize: fontSizes.md,
+			lineHeight: lineHeights.relaxed,
 		},
 	},
 });

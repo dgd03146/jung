@@ -42,7 +42,7 @@ const Footer = () => {
 					color='primary'
 					className={styles.footerText}
 				>
-					2026. Jung. All rights reserved.
+					© 2026. Jung. All rights reserved.
 				</Typography.Text>
 
 				<Flex columnGap='4'>

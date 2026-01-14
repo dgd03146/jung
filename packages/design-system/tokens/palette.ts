@@ -7,6 +7,11 @@ export const palette = {
 	primary300: '#002766',
 	primary400: '#002349',
 
+	// Swiss Design accent blue
+	swiss: '#0033CC',
+	swissLight: 'rgba(0, 51, 204, 0.06)',
+	swissMedium: 'rgba(0, 51, 204, 0.95)',
+
 	// Secondary colors
 	secondary: '#00875A',
 	secondary50: '#E6F6F0',

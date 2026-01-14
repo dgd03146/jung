@@ -1,5 +1,13 @@
 import { sprinkles } from '@jung/design-system/styles';
+import {
+	fontFamily,
+	fontSizes,
+	fontWeights,
+	palette,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+import { HEADER_HEIGHT } from '@/fsd/widgets/Header/ui/Navbar.css';
 
 export const container = style([
 	sprinkles({
@@ -14,7 +22,7 @@ export const container = style([
 		display: 'grid',
 		gridTemplateColumns: '1fr auto',
 		gridTemplateRows: '1fr',
-		minHeight: 'calc(100dvh - 4.5rem)',
+		minHeight: `calc(100dvh - ${HEADER_HEIGHT})`,
 		maxWidth: '92%',
 
 		'@media': {
@@ -35,9 +43,9 @@ export const heroText = style({
 	lineHeight: 0.82,
 	fontWeight: 900,
 	letterSpacing: '-0.06em',
-	color: '#FFFFFF',
+	color: palette.white,
 	fontSize: 'clamp(80px, 15vw, 200px)',
-	fontFamily: 'var(--font-poppins), sans-serif',
+	fontFamily: `${fontFamily.poppins}, sans-serif`,
 	userSelect: 'none',
 
 	'@media': {
@@ -55,17 +63,17 @@ export const sidebar = style({
 	display: 'flex',
 	flexDirection: 'column',
 	justifyContent: 'flex-end',
-	gap: '2rem',
+	gap: space['8'],
 	textAlign: 'right',
-	paddingBottom: '1rem',
+	paddingBottom: space['4'],
 
 	'@media': {
 		'(max-width: 768px)': {
 			gridRow: '2',
 			flexDirection: 'row',
 			textAlign: 'left',
-			gap: '2rem',
-			paddingTop: '2rem',
+			gap: space['8'],
+			paddingTop: space['8'],
 			flexWrap: 'wrap',
 		},
 	},
@@ -74,20 +82,20 @@ export const sidebar = style({
 export const infoBlock = style({
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '0.25rem',
+	gap: space['1'],
 });
 
 export const label = style({
-	fontSize: '0.625rem',
-	fontWeight: 500,
+	fontSize: fontSizes.xxxs,
+	fontWeight: fontWeights.medium,
 	color: 'rgba(255, 255, 255, 0.5)',
 	textTransform: 'uppercase',
 	letterSpacing: '0.1em',
 });
 
 export const value = style({
-	fontSize: '0.75rem',
-	fontWeight: 500,
-	color: '#FFFFFF',
+	fontSize: fontSizes.xxs,
+	fontWeight: fontWeights.medium,
+	color: palette.white,
 	lineHeight: 1.4,
 });
