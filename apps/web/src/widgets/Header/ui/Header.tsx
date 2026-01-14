@@ -7,7 +7,11 @@ import { useScrollLock } from '@/fsd/shared';
 import { Menu } from '../../Menu/ui';
 import Navbar from './Navbar';
 
-const Header = () => {
+type Props = {
+	variant?: 'light' | 'dark';
+};
+
+const Header = ({ variant = 'light' }: Props) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const toggleMenu = useCallback(() => {
@@ -26,7 +30,11 @@ const Header = () => {
 
 	return (
 		<>
-			<Navbar isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+			<Navbar
+				isMenuOpen={isMenuOpen}
+				toggleMenu={toggleMenu}
+				variant={variant}
+			/>
 			<AnimatePresence mode='wait'>
 				{isMenuOpen && <Menu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />}
 			</AnimatePresence>

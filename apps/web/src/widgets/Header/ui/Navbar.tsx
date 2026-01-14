@@ -12,11 +12,12 @@ import * as styles from './Navbar.css';
 type Props = {
 	isMenuOpen: boolean;
 	toggleMenu: () => void;
+	variant?: 'light' | 'dark';
 };
 
 const SCROLL_THRESHOLD = 50;
 
-const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
+const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
 	const isScrolled = useScrollDetection({ threshold: SCROLL_THRESHOLD });
 	const pathname = usePathname();
 	const currentSegment = extractFirstMeaningfulSegment(pathname);
@@ -29,6 +30,7 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 			className={styles.headerContainer({
 				isScrolled,
 				isMenuOpen,
+				variant,
 			})}
 		>
 			<Flex
@@ -42,7 +44,7 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 				marginX='auto'
 				className={styles.navContent}
 			>
-				<Link href='/' className={styles.logoWrapper}>
+				<Link href='/' className={styles.logoWrapper({ variant })}>
 					JUNG.
 				</Link>
 
@@ -57,17 +59,23 @@ const Navbar = ({ isMenuOpen, toggleMenu }: Props) => {
 							<Link
 								href={item.path}
 								key={item.id}
-								className={styles.desktopNavLinkItem}
+								className={styles.desktopNavLinkItem({ variant })}
 								data-active={isActive ? 'true' : undefined}
 							>
-								<span className={styles.navLinkText}>{item.label}</span>
+								<span className={styles.navLinkText({ variant })}>
+									{item.label}
+								</span>
 							</Link>
 						);
 					})}
 				</Flex>
 
 				<Box className={styles.menuButtonWrapper}>
-					<MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+					<MenuButton
+						isMenuOpen={isMenuOpen}
+						toggleMenu={toggleMenu}
+						variant={variant}
+					/>
 				</Box>
 			</Flex>
 		</Box>
