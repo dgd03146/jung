@@ -1,3 +1,4 @@
+import { mediaQueries } from '@jung/design-system/tokens';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const postList = recipe({
@@ -16,11 +17,11 @@ export const postList = recipe({
 				gap: '24px',
 				gridTemplateColumns: 'repeat(3, 1fr)',
 				'@media': {
-					'(max-width: 1024px)': {
+					[mediaQueries.laptop]: {
 						padding: '16px 0',
 						gridTemplateColumns: 'repeat(2, 1fr)',
 					},
-					'(max-width: 768px)': {
+					[mediaQueries.tablet]: {
 						gridTemplateColumns: 'repeat(1, 1fr)',
 					},
 				},
