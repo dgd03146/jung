@@ -25,6 +25,9 @@ export const palette = {
 	black200: '#080808',
 	black300: '#050505',
 
+	// Text colors
+	text: '#1a1a1a',
+
 	white: '#FFFFFF',
 	white100: '#F8FAFC',
 	white200: '#F5F5F5',
