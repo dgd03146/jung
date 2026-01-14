@@ -1,3 +1,4 @@
+import { mediaQueries } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
@@ -26,7 +27,7 @@ export const overlay = style({
 	zIndex: 1,
 
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			touchAction: 'none',
 			overflow: 'hidden',
 			WebkitOverflowScrolling: 'touch',
@@ -98,7 +99,7 @@ export const closeButton = style({
 	zIndex: 15,
 
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			top: '4px',
 			right: '0px',
 			width: '32px',
