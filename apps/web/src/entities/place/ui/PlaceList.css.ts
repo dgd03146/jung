@@ -1,4 +1,4 @@
-import { palette } from '@jung/design-system/tokens';
+import { mediaQueries, palette } from '@jung/design-system/tokens';
 import { keyframes } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -17,7 +17,7 @@ export const placeList = recipe({
 				gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
 				gap: '24px',
 				'@media': {
-					'(max-width: 768px)': {
+					[mediaQueries.tablet]: {
 						gap: '16px',
 						gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
 					},

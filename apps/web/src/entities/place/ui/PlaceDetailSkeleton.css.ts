@@ -1,3 +1,4 @@
+import { mediaQueries } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const shimmer = keyframes({
@@ -25,7 +26,7 @@ export const imageSection = style([
 		borderRadius: '12px',
 
 		'@media': {
-			'screen and (max-width: 768px)': {
+			[mediaQueries.tablet]: {
 				aspectRatio: '4/3',
 				minHeight: '280px',
 			},

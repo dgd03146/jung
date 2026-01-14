@@ -1,3 +1,4 @@
+import { mediaQueries } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -12,7 +13,7 @@ export const imageSection = style({
 	borderRadius: '12px',
 
 	'@media': {
-		'screen and (max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			aspectRatio: '4/3',
 			minHeight: '280px',
 		},
