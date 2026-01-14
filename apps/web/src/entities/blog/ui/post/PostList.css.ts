@@ -13,35 +13,22 @@ export const postList = recipe({
 			grid: {
 				padding: '24px 0',
 				display: 'grid',
-				gap: '20px',
-				gridTemplateColumns: ' repeat(3	, 1fr) ',
+				gap: '24px',
+				gridTemplateColumns: 'repeat(3, 1fr)',
 				'@media': {
 					'(max-width: 1024px)': {
-						padding: '12px 0',
-						gridTemplateColumns: ' repeat(2, 1fr) ',
+						padding: '16px 0',
+						gridTemplateColumns: 'repeat(2, 1fr)',
 					},
 					'(max-width: 768px)': {
-						gridTemplateColumns: ' repeat(1, 1fr) ',
+						gridTemplateColumns: 'repeat(1, 1fr)',
 					},
 				},
 			},
 			table: {
 				display: 'flex',
 				flexDirection: 'column',
-				gap: '2px',
-
-				margin: '0 auto',
-
-				borderRadius: '8px',
-				padding: '12px 0',
-				'@media': {
-					'(max-width: 1024px)': {
-						padding: '8px 0',
-					},
-					'(max-width: 768px)': {
-						padding: '4px 0',
-					},
-				},
+				padding: '16px 0',
 			},
 		},
 	},
