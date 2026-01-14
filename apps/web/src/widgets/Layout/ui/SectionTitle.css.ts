@@ -1,11 +1,16 @@
-import { fontWeights, palette, space } from '@jung/design-system/tokens';
+import {
+	fontWeights,
+	mediaQueries,
+	palette,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const sectionTitle = style({
 	display: 'block',
 	marginBottom: space['8'],
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			marginBottom: space['6'],
 		},
 	},

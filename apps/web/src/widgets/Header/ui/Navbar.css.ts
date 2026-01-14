@@ -1,6 +1,7 @@
 import {
 	fontFamily,
 	fontWeights,
+	mediaQueries,
 	palette,
 	space,
 } from '@jung/design-system/tokens';
@@ -113,7 +114,7 @@ export const menuButtonWrapper = style({
 		},
 	},
 	'@media': {
-		'(max-width: 768px)': {
+		[mediaQueries.tablet]: {
 			display: 'block',
 		},
 	},
