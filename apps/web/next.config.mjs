@@ -18,11 +18,21 @@ const withVanillaExtract = createVanillaExtractPlugin(
 const nextConfig = {
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: ['@jung/design-system', '@jung/api'],
-  
+
   compress: true,
 
   /** React Compiler for automatic memoization */
   reactCompiler: true,
+
+  /** Optimize barrel imports for tree-shaking */
+  experimental: {
+    optimizePackageImports: [
+      '@jung/design-system',
+      '@blocknote/react',
+      '@blocknote/mantine',
+      '@tanstack/react-query',
+    ],
+  },
 
   /** Turbopack configuration (default in Next.js 16) */
   turbopack: {},
