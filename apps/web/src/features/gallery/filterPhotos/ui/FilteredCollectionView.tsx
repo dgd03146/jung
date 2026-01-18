@@ -1,21 +1,10 @@
 'use client';
 
-import { Flex } from '@jung/design-system/components';
 import { useEffect } from 'react';
-import {
-	PHOTO_DEFAULTS,
-	PhotoCard,
-	PhotoList,
-	transformPhoto,
-	usePhotosQuery,
-} from '@/fsd/entities/gallery';
-import {
-	EmptyState,
-	LoadingSpinner,
-	useInfiniteScroll,
-	useSearchParamsState,
-} from '@/fsd/shared';
+import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
+import { useSearchParamsState } from '@/fsd/shared';
 import { usePhotoFilter } from '../model/PhotoFilterContext';
+import { PhotoListRenderer } from './PhotoListRenderer';
 
 const SEARCH_PARAMS_DEFAULTS = {
 	sort: PHOTO_DEFAULTS.SORT,
@@ -39,37 +28,5 @@ export const FilteredCollectionView = ({
 		defaults: SEARCH_PARAMS_DEFAULTS,
 	});
 
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		usePhotosQuery({
-			sort,
-			q,
-		});
-
-	const photos = data.pages.flatMap((page) => page.items) ?? [];
-	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
-
-	const { ref } = useInfiniteScroll({
-		fetchNextPage,
-		hasNextPage,
-	});
-
-	if (photos.length === 0) {
-		return <EmptyState content='photos' />;
-	}
-
-	return (
-		<>
-			<PhotoList
-				photos={formattedPhotos}
-				renderPhoto={{
-					image: (props, context) => {
-						return <PhotoCard imageProps={props} contextProps={context} />;
-					},
-				}}
-			/>
-			<Flex justify='center' align='center' minHeight='10' ref={ref}>
-				{isFetchingNextPage && <LoadingSpinner size='small' />}
-			</Flex>
-		</>
-	);
+	return <PhotoListRenderer sort={sort} q={q} />;
 };

@@ -1,23 +1,17 @@
 'use client';
 
-import { Flex } from '@jung/design-system/components';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import {
 	PHOTO_DEFAULTS,
-	PhotoCard,
-	PhotoList,
 	TRENDING_PHOTO_DEFAULTS,
-	transformPhoto,
-	usePhotosQuery,
 } from '@/fsd/entities/gallery';
-import {
-	EmptyState,
-	LoadingSpinner,
-	useInfiniteScroll,
-	useSearchParamsState,
-} from '@/fsd/shared';
+import { useSearchParamsState } from '@/fsd/shared';
 import { usePhotoFilter } from '../model/PhotoFilterContext';
+import { PhotoListRenderer } from './PhotoListRenderer';
+
+const PHOTO_MODAL_PATTERN = /\/gallery\/photo\/\d+/;
+const COLLECTION_PATH_PATTERN = /\/collections\/([^/]+)/;
 
 const DEFAULT_SEARCH_PARAMS = {
 	sort: PHOTO_DEFAULTS.SORT,
@@ -38,16 +32,12 @@ export const FilteredPhotoList = ({ isTrending }: FilteredPhotoListProps) => {
 	const { setSort, setCollectionId } = usePhotoFilter();
 
 	useEffect(() => {
-		const isModalActive = /\/gallery\/photo\/\d+/.test(pathname);
+		const isModalActive = PHOTO_MODAL_PATTERN.test(pathname);
 		if (!isModalActive) {
-			const isTrending = pathname.includes('/trending');
-			if (isTrending) {
-				setSort('popular');
-			} else {
-				setSort('latest');
-			}
+			const isTrendingPath = pathname.includes('/trending');
+			setSort(isTrendingPath ? 'popular' : 'latest');
 
-			const collectionMatch = pathname.match(/\/collections\/([^/]+)/);
+			const collectionMatch = pathname.match(COLLECTION_PATH_PATTERN);
 			setCollectionId(collectionMatch ? collectionMatch[1] : undefined);
 		}
 	}, [pathname, setSort, setCollectionId]);
@@ -60,37 +50,5 @@ export const FilteredPhotoList = ({ isTrending }: FilteredPhotoListProps) => {
 		defaults: searchParamsDefaults,
 	});
 
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		usePhotosQuery({
-			sort,
-			q,
-		});
-
-	const photos = data.pages.flatMap((page) => page.items) ?? [];
-	const formattedPhotos = photos.map((photo) => transformPhoto(photo));
-
-	const { ref } = useInfiniteScroll({
-		fetchNextPage,
-		hasNextPage,
-	});
-
-	if (photos.length === 0) {
-		return <EmptyState content='photos' />;
-	}
-
-	return (
-		<>
-			<PhotoList
-				photos={formattedPhotos}
-				renderPhoto={{
-					image: (props, context) => {
-						return <PhotoCard imageProps={props} contextProps={context} />;
-					},
-				}}
-			/>
-			<Flex justify='center' align='center' minHeight='10' ref={ref}>
-				{isFetchingNextPage && <LoadingSpinner size='small' />}
-			</Flex>
-		</>
-	);
+	return <PhotoListRenderer sort={sort} q={q} />;
 };
