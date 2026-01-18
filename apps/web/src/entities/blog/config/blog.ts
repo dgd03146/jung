@@ -12,3 +12,8 @@ export const BLOG_SORT_OPTIONS: Array<{ value: BlogSort; label: string }> = [
 	{ value: 'oldest', label: '오래된순' },
 	{ value: 'popular', label: '인기순' },
 ];
+
+export const BLOG_CACHE = {
+	STALE_TIME: 1000 * 60 * 5, // 5분
+	GC_TIME: 1000 * 60 * 10, // 10분
+} as const;

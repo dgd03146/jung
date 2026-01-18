@@ -1,6 +1,6 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
-import { BLOG_DEFAULTS, type BlogSort } from '../config/blog';
+import { BLOG_CACHE, BLOG_DEFAULTS, type BlogSort } from '../config/blog';
 
 type QueryParams = {
 	cat?: string;
@@ -21,6 +21,8 @@ export function usePostsQuery(params: QueryParams = {}) {
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextCursor,
+			staleTime: BLOG_CACHE.STALE_TIME,
+			gcTime: BLOG_CACHE.GC_TIME,
 		},
 	);
 
