@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 
 export async function toggleLikeCommentAction({
 	commentId,
@@ -13,7 +13,7 @@ export async function toggleLikeCommentAction({
 	userId: string;
 }) {
 	try {
-		const updatedComment = await caller.postComment.toggleLike({
+		const updatedComment = await getCaller().postComment.toggleLike({
 			commentId,
 			userId: userId,
 		});

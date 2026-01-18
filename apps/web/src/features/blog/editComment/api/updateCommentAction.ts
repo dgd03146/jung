@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 
 export async function updateCommentAction({
 	commentId,
@@ -13,7 +13,7 @@ export async function updateCommentAction({
 	postId: string;
 }) {
 	try {
-		const updatedComment = await caller.postComment.updateComment({
+		const updatedComment = await getCaller().postComment.updateComment({
 			id: commentId,
 			content,
 		});
