@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
+import { BLOG_CACHE } from '../config/blog';
 
 export function usePostQuery(postId: string) {
 	const trpc = useTRPC();
@@ -9,8 +10,8 @@ export function usePostQuery(postId: string) {
 				postId,
 			},
 			{
-				staleTime: 1000 * 60 * 5, // 5분
-				gcTime: 1000 * 60 * 60, // 1시간
+				staleTime: BLOG_CACHE.DETAIL.STALE_TIME,
+				gcTime: BLOG_CACHE.DETAIL.GC_TIME,
 			},
 		),
 	);

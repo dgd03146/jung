@@ -21,8 +21,8 @@ export function usePostsQuery(params: QueryParams = {}) {
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextCursor,
-			staleTime: BLOG_CACHE.STALE_TIME,
-			gcTime: BLOG_CACHE.GC_TIME,
+			staleTime: BLOG_CACHE.LIST.STALE_TIME,
+			gcTime: BLOG_CACHE.LIST.GC_TIME,
 		},
 	);
 

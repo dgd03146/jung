@@ -14,6 +14,12 @@ export const BLOG_SORT_OPTIONS: Array<{ value: BlogSort; label: string }> = [
 ];
 
 export const BLOG_CACHE = {
-	STALE_TIME: 1000 * 60 * 5, // 5분
-	GC_TIME: 1000 * 60 * 10, // 10분
+	LIST: {
+		STALE_TIME: 1000 * 60 * 5, // 5분
+		GC_TIME: 1000 * 60 * 10, // 10분
+	},
+	DETAIL: {
+		STALE_TIME: 1000 * 60 * 5, // 5분
+		GC_TIME: 1000 * 60 * 60, // 1시간 (상세 페이지는 더 오래 캐시)
+	},
 } as const;
