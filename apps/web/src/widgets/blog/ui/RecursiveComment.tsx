@@ -28,7 +28,6 @@ export const RecursiveComment = ({
 
 	return (
 		<CommentItem
-			key={comment.id}
 			comment={comment}
 			isNested={isNested}
 			className={isNested ? styles.nestedCommentItem : ''}

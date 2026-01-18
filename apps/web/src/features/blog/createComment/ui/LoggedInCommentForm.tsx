@@ -7,7 +7,6 @@ import {
 	Stack,
 	Textarea,
 	Typography,
-	useToast,
 } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
 import { getUserDisplayName } from '@/fsd/shared';
@@ -35,16 +34,11 @@ export const LoggedInCommentForm = ({
 	onCancel,
 	onSignOut,
 }: LoggedInCommentFormProps) => {
-	const showToast = useToast();
 	const { newComment, setNewComment, submitComment } =
 		useCreateCommentMutation(onSuccess);
 	const userAvatar = user.user_metadata?.avatar_url || '/default-avatar.png';
 
 	const handleSubmit = () => {
-		if (!newComment || newComment.trim() === '') {
-			showToast('Please enter a comment.', 'error');
-			return;
-		}
 		submitComment({ postId, parentId, newComment, postTitle });
 	};
 

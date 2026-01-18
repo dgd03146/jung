@@ -34,8 +34,8 @@ export const FilteredPhotoList = ({ isTrending }: FilteredPhotoListProps) => {
 	useEffect(() => {
 		const isModalActive = PHOTO_MODAL_PATTERN.test(pathname);
 		if (!isModalActive) {
-			const isTrending = pathname.includes('/trending');
-			setSort(isTrending ? 'popular' : 'latest');
+			const isTrendingPath = pathname.includes('/trending');
+			setSort(isTrendingPath ? 'popular' : 'latest');
 
 			const collectionMatch = pathname.match(COLLECTION_PATH_PATTERN);
 			setCollectionId(collectionMatch ? collectionMatch[1] : undefined);
