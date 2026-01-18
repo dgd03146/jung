@@ -11,6 +11,8 @@ export const messageCard = recipe({
 		border: '1px solid #F0F0F0',
 		position: 'relative',
 		height: '100%',
+		contentVisibility: 'auto',
+		containIntrinsicSize: '0 150px',
 
 		':hover': {
 			boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',

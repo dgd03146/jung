@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 
 import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 import {
 	getApiUrl,
 	getResendApiKey,
@@ -51,7 +51,7 @@ export async function createCommentAction({
 		}
 
 		// new comment logic
-		const newComment = await caller.postComment.createComment({
+		const newComment = await getCaller().postComment.createComment({
 			postId,
 			content,
 			userId,

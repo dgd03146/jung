@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { Resend } from 'resend';
 import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 import { getApiUrl, getResendApiKey } from '@/fsd/shared/config';
 import { createClient } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
@@ -39,7 +39,7 @@ export async function createReplyAction(input: CreateReplyInput) {
 			throw new Error('로그인이 필요합니다.');
 		}
 
-		const newReply = await caller.postComment.createComment({
+		const newReply = await getCaller().postComment.createComment({
 			postId,
 			content,
 			parentId: parentCommentId,

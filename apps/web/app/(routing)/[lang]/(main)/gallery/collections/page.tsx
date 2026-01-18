@@ -9,12 +9,12 @@ import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
 
 export async function generateMetadata(): Promise<Metadata> {
 	try {
-		const collections = await caller.galleryCollections.getAllCollections({
+		const collections = await getCaller().galleryCollections.getAllCollections({
 			sort: COLLECTION_DEFAULTS.sort,
 		});
 

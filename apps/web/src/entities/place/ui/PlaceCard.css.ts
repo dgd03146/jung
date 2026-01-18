@@ -25,6 +25,8 @@ export const cardWrapper = recipe({
 		width: '100%',
 		textDecoration: 'none',
 		transition: 'all 0.3s ease',
+		contentVisibility: 'auto',
+		containIntrinsicSize: '0 420px',
 	},
 	variants: {
 		variant: {

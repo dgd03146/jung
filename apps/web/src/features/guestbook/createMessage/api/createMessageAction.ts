@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import type { GuestbookColor, GuestbookEmoji } from '@/fsd/entities/guestbook';
 import { validateGuestbookMessage } from '@/fsd/features/guestbook/createMessage/lib/validateGuestbookMessage';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 
 type CreateMessageState = {
 	success?: boolean;
@@ -48,7 +48,7 @@ export async function createMessageAction(
 			};
 		}
 
-		await caller.guestbook.createMessage({
+		await getCaller().guestbook.createMessage({
 			content: content.trim(),
 			emoji,
 			backgroundColor,

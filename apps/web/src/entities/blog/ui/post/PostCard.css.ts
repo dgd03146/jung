@@ -17,6 +17,8 @@ export const postCard = recipe({
 	base: {
 		cursor: 'pointer',
 		transition: 'all 0.3s ease',
+		contentVisibility: 'auto',
+		containIntrinsicSize: '0 300px',
 	},
 	variants: {
 		viewMode: {

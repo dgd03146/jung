@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { caller } from '@/fsd/shared/index.server';
+import { getCaller } from '@/fsd/shared/index.server';
 
 const SITE_URL = 'https://www.geojung.com';
 const SUPPORTED_LANGS = ['ko', 'en'] as const;
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Blog posts
 	try {
-		const posts = await caller.blog.getAllPosts({
+		const posts = await getCaller().blog.getAllPosts({
 			limit: 100,
 			sort: 'latest',
 		});
@@ -77,7 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Gallery photos
 	try {
-		const photos = await caller.photos.getAllPhotos({
+		const photos = await getCaller().photos.getAllPhotos({
 			limit: 100,
 			sort: 'latest',
 		});
@@ -106,7 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Gallery collections
 	try {
-		const collections = await caller.galleryCollections.getAllCollections({
+		const collections = await getCaller().galleryCollections.getAllCollections({
 			sort: 'latest',
 		});
 
@@ -134,7 +134,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Places
 	try {
-		const places = await caller.place.getAllPlaces({
+		const places = await getCaller().place.getAllPlaces({
 			limit: 100,
 			sort: 'latest',
 		});

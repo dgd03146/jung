@@ -7,7 +7,7 @@ import {
 	getGoogleVerificationCode,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PlacesLayout } from '../../_components/PlacesLayout';
 
 export async function generateMetadata({
@@ -63,7 +63,9 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const categories = await caller.category.getCategories({ type: 'places' });
+	const categories = await getCaller().category.getCategories({
+		type: 'places',
+	});
 
 	const params = [];
 	for (const lang of SUPPORTED_LANGS) {

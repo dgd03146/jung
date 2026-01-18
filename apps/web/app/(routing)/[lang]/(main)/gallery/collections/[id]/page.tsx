@@ -9,7 +9,7 @@ import {
 	LoadingSpinner,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
 
 interface PageProps {
@@ -23,7 +23,8 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
 	const { id } = await params;
 	try {
-		const collection = await caller.galleryCollections.getCollectionById(id);
+		const collection =
+			await getCaller().galleryCollections.getCollectionById(id);
 
 		if (!collection) {
 			return {
@@ -96,7 +97,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const collections = await caller.galleryCollections.getAllCollections({
+	const collections = await getCaller().galleryCollections.getAllCollections({
 		sort: COLLECTION_DEFAULTS.sort,
 	});
 

@@ -9,7 +9,7 @@ import {
 	getGoogleVerificationCode,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { PhotoDetailSkeleton } from '@/fsd/views/gallery/ui';
@@ -21,7 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { id } = await params;
 	try {
-		const photo = await caller.gallery.getPhotoById(id);
+		const photo = await getCaller().gallery.getPhotoById(id);
 
 		if (!photo) {
 			return {
@@ -104,7 +104,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const photos = await caller.gallery.getAllPhotos({
+	const photos = await getCaller().gallery.getAllPhotos({
 		limit: PHOTO_DEFAULTS.LIMIT,
 		sort: PHOTO_DEFAULTS.SORT,
 		q: PHOTO_DEFAULTS.QUERY,
@@ -132,7 +132,7 @@ export default async function PhotoPage({
 	const queryClient = getQueryClient();
 
 	// Fetch photo data for JSON-LD schema
-	const photo = await caller.gallery.getPhotoById(photoId);
+	const photo = await getCaller().gallery.getPhotoById(photoId);
 
 	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
 

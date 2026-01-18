@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { caller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/api/trpc/server';
 
 export async function deleteCommentAction({
 	commentId,
@@ -11,7 +11,7 @@ export async function deleteCommentAction({
 	postId: string;
 }) {
 	try {
-		await caller.postComment.deleteComment({ commentId });
+		await getCaller().postComment.deleteComment({ commentId });
 
 		revalidatePath(`/blog/${postId}`);
 

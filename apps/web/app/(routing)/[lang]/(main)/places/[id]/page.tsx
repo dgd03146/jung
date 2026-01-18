@@ -10,7 +10,7 @@ import {
 	getGoogleVerificationCode,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PlaceDetailContent } from '@/fsd/views';
 
@@ -21,7 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { id } = await params;
 	try {
-		const place = await caller.place.getPlaceById(id);
+		const place = await getCaller().place.getPlaceById(id);
 
 		if (!place) {
 			return {
@@ -99,7 +99,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const places = await caller.place.getAllPlaces({
+	const places = await getCaller().place.getAllPlaces({
 		limit: PLACE_DEFAULTS.LIMIT,
 		sort: PLACE_DEFAULTS.SORT,
 		cat: PLACE_DEFAULTS.CAT,
@@ -127,8 +127,7 @@ export default async function Page({
 
 	const queryClient = getQueryClient();
 
-	// Fetch place data for JSON-LD schema
-	const place = await caller.place.getPlaceById(placeId);
+	const place = await getCaller().place.getPlaceById(placeId);
 
 	queryClient.prefetchQuery(trpc.place.getPlaceById.queryOptions(placeId));
 
