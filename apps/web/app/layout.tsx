@@ -6,18 +6,21 @@ const bebasNeue = Bebas_Neue({
 	weight: ['400'],
 	subsets: ['latin'],
 	variable: '--font-bebas',
+	display: 'swap',
 });
 
 const poppins = Poppins({
 	weight: ['400', '500', '600', '700'],
 	subsets: ['latin'],
 	variable: '--font-poppins',
+	display: 'swap',
 });
 
 const nanumMyeongjo = Nanum_Myeongjo({
 	weight: ['400', '700'],
 	subsets: ['latin'],
 	variable: '--font-nanum-myeongjo',
+	display: 'swap',
 });
 
 export const metadata: Metadata = {
