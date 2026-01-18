@@ -31,6 +31,7 @@ const nextConfig = {
       '@blocknote/react',
       '@blocknote/mantine',
       '@tanstack/react-query',
+      'react-icons',
     ],
   },
 
