@@ -10,7 +10,7 @@ import {
 	getGoogleVerificationCode,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
-import { caller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
 import {
@@ -27,7 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { slug } = await params;
 	try {
-		const post = await caller.blog.getPostById({ postId: slug });
+		const post = await getCaller().blog.getPostById({ postId: slug });
 
 		if (!post) {
 			return {
@@ -99,7 +99,7 @@ export async function generateMetadata({
 export const revalidate = 21600;
 
 export async function generateStaticParams() {
-	const posts = await caller.blog.getAllPosts({
+	const posts = await getCaller().blog.getAllPosts({
 		limit: BLOG_DEFAULTS.LIMIT,
 		sort: BLOG_DEFAULTS.SORT,
 		cat: BLOG_DEFAULTS.CATEGORY,
@@ -127,8 +127,9 @@ export default async function Page({
 	const queryClient = getQueryClient();
 
 	// SEO 중요한 데이터: await (HTML에 포함)
+
 	const [post] = await Promise.all([
-		caller.blog.getPostById({ postId }),
+		getCaller().blog.getPostById({ postId }),
 		queryClient.prefetchQuery(trpc.blog.getPostById.queryOptions({ postId })),
 	]);
 
