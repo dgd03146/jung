@@ -11,7 +11,14 @@ import {
 	useSupabaseAuth,
 } from '@/fsd/shared';
 import { createCommentAction } from '../api/createCommentAction';
-import { createOptimisticComment, updateOptimisticComment } from '../lib';
+import {
+	COMMENT_VALIDATION_MESSAGES,
+	createOptimisticComment,
+	TEMP_COMMENT_PREFIX,
+	updateOptimisticComment,
+} from '../lib';
+
+type CommentValidation = { valid: true } | { valid: false; message: string };
 
 export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 	const [newComment, setNewComment] = useState('');
@@ -19,6 +26,25 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
 	const showToast = useToast();
+
+	const validateComment = (
+		content: string,
+		parentId?: string,
+	): CommentValidation => {
+		if (!user || !content.trim()) {
+			return {
+				valid: false,
+				message: COMMENT_VALIDATION_MESSAGES.EMPTY_OR_NOT_LOGGED_IN,
+			};
+		}
+		if (parentId?.startsWith(TEMP_COMMENT_PREFIX)) {
+			return {
+				valid: false,
+				message: COMMENT_VALIDATION_MESSAGES.PARENT_PROCESSING,
+			};
+		}
+		return { valid: true };
+	};
 
 	const getQueryOptions = (postId: string) =>
 		trpc.postComment.getCommentsByPostId.infiniteQueryOptions({
@@ -39,25 +65,12 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 			content: string;
 			postTitle: string;
 		}) => {
-			if (!user || !content.trim()) {
-				showToast('Please enter a comment and log in.', 'warning');
-				return;
-			}
-			const isParentTemporary = parentId?.startsWith('temp-');
-			if (isParentTemporary) {
-				showToast(
-					'Please wait while the previous comment is being processed',
-					'warning',
-				);
-				return;
-			}
-
 			setNewComment('');
 			return createCommentAction({
 				postId,
 				postTitle,
 				content,
-				userId: user.id,
+				userId: user!.id,
 				parentId,
 			});
 		},
@@ -132,16 +145,9 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 		newComment: string;
 		postTitle: string;
 	}) => {
-		if (!user || !newComment.trim()) {
-			showToast('Please enter a comment and log in.', 'warning');
-			return;
-		}
-		const isParentTemporary = parentId?.startsWith('temp-');
-		if (isParentTemporary) {
-			showToast(
-				'Please wait while the previous comment is being processed',
-				'warning',
-			);
+		const validation = validateComment(newComment, parentId);
+		if (!validation.valid) {
+			showToast(validation.message, 'warning');
 			return;
 		}
 		mutation.mutate({ postId, parentId, content: newComment, postTitle });

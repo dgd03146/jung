@@ -1,6 +1,7 @@
 import type { Comment } from '@jung/shared/types';
 import type { User } from '@supabase/supabase-js';
 import { getUserDisplayName } from '@/fsd/shared';
+import { TEMP_COMMENT_PREFIX } from './constants';
 
 /**
  * Creates an optimistic comment for immediate UI updates
@@ -17,7 +18,7 @@ export const createOptimisticComment = (
 ): Comment => {
 	const slightlyInPast = new Date(Date.now() - 1000);
 	return {
-		id: `temp-${postId}-${Date.now()}-${Math.random()
+		id: `${TEMP_COMMENT_PREFIX}${postId}-${Date.now()}-${Math.random()
 			.toString(36)
 			.slice(2, 7)}`,
 		content,
