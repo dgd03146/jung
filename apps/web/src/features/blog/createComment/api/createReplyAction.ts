@@ -80,36 +80,30 @@ export async function createReplyAction(input: CreateReplyInput) {
 					const replierName = getUserDisplayName(user);
 					// const replierAvatarUrl = user.user_metadata?.avatar_url;
 
-					const { data: emailData, error: emailError } =
-						await resend.emails.send({
-							from: `Jung Archive <${NO_REPLY_EMAIL}>`,
-							to: parentAuthor.email,
-							subject: '[JUNG Archive] 회원님의 댓글에 답글이 달렸습니다!',
-							react: CommentNotificationEmailTemplateInline({
-								emailTitle: '새 답글 알림',
-								mainText: `${replierName}님이 회원님의 댓글에 답글을 남겼습니다.`,
-								postUrl: `${getApiUrl()}/blog/${postId}`,
-								// commentContent: newReply.content,
-								commenterName: replierName,
-								// commenterAvatarUrl: replierAvatarUrl,
-								createdAt: formatDate(newReply.created_at),
-								buttonText: '답글 확인하러 가기',
-							}),
-						});
+					const { error: emailError } = await resend.emails.send({
+						from: `Jung Archive <${NO_REPLY_EMAIL}>`,
+						to: parentAuthor.email,
+						subject: '[JUNG Archive] 회원님의 댓글에 답글이 달렸습니다!',
+						react: CommentNotificationEmailTemplateInline({
+							emailTitle: '새 답글 알림',
+							mainText: `${replierName}님이 회원님의 댓글에 답글을 남겼습니다.`,
+							postUrl: `${getApiUrl()}/blog/${postId}`,
+							// commentContent: newReply.content,
+							commenterName: replierName,
+							// commenterAvatarUrl: replierAvatarUrl,
+							createdAt: formatDate(newReply.created_at),
+							buttonText: '답글 확인하러 가기',
+						}),
+					});
 
 					if (emailError) {
 						console.error(
 							`Failed to send reply notification email to ${parentAuthor.email}:`,
 							emailError,
 						);
-					} else {
-						console.log(
-							`Reply notification email sent to ${parentAuthor.email}:`,
-							emailData,
-						);
 					}
 				} else {
-					console.log(
+					console.error(
 						`Parent author (ID: ${parentAuthorId}) email not found. Skipping notification.`,
 					);
 				}

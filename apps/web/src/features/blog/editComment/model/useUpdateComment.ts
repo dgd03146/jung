@@ -68,7 +68,6 @@ export const useUpdateCommentMutation = () => {
 					getQueryOptions(variables.postId).queryKey,
 					context.previousData,
 				);
-				console.log('Rolled back optimistic update due to error.');
 			} else {
 				queryClient.invalidateQueries({
 					queryKey: getQueryOptions(variables.postId).queryKey,
