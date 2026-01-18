@@ -1,9 +1,8 @@
 'use client';
 
-import { Box, Flex } from '@jung/design-system';
+import { Flex } from '@jung/design-system';
 import type { Comment } from '@jung/shared/types';
 import {
-	CommentItem,
 	CommentList,
 	CommentListSkeleton,
 	CommentStats,
@@ -11,19 +10,13 @@ import {
 	useCommentsQuery,
 	usePostQuery,
 } from '@/fsd/entities/blog';
-import {
-	CreateCommentForm,
-	DeleteCommentButton,
-	EditCommentButton,
-	LikeCommentButton,
-	ReplyCommentButton,
-} from '@/fsd/features/blog';
+import { CreateCommentForm } from '@/fsd/features/blog';
 import {
 	LoadingSpinner,
 	useInfiniteScroll,
 	useSupabaseAuth,
 } from '@/fsd/shared';
-import * as styles from './CommentSection.css';
+import { RecursiveComment } from './RecursiveComment';
 
 interface CommentSectionProps {
 	postId: string;
@@ -49,79 +42,34 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 	const { user: currentUser } = useSupabaseAuth();
 	const { ref } = useInfiniteScroll({ hasNextPage, fetchNextPage });
 
-	const renderComment = (comment: Comment): React.ReactNode => {
-		const isNested = !!comment.parent_id;
-		const isOwner = currentUser?.id === comment.user_id;
-		const isLiked = currentUser
-			? comment.liked_by.includes(currentUser.id)
-			: false;
-		const canReply = !isNested && !!currentUser;
-
-		return (
-			<CommentItem
-				key={comment.id}
-				comment={comment}
-				isNested={isNested}
-				className={isNested ? styles.nestedCommentItem : ''}
-			>
-				<Flex justify='space-between' align='center' marginTop='4'>
-					<Flex gap='2'>
-						<LikeCommentButton
-							commentId={comment.id}
-							postId={postId}
-							isLiked={isLiked}
-							likesCount={comment.likes}
-						/>
-						<ReplyCommentButton
-							commentId={comment.id}
-							postId={postId}
-							postTitle={post?.title || ''}
-							canShow={canReply}
-						/>
-					</Flex>
-
-					{isOwner && (
-						<Flex gap='2'>
-							<EditCommentButton
-								commentId={comment.id}
-								initialContent={comment.content}
-								postId={postId}
-								canShow={isOwner}
-							/>
-							<DeleteCommentButton commentId={comment.id} postId={postId} />
-						</Flex>
-					)}
-				</Flex>
-
-				{comment.replies && comment.replies.length > 0 && (
-					<Box className={styles.replyContainer}>
-						{comment.replies.map((reply) => renderComment(reply))}
-					</Box>
-				)}
-			</CommentItem>
-		);
-	};
-
+	const postTitle = post?.title || '';
 	const commentCount = commentsData?.pages[0]?.totalCount ?? 0;
 	const comments =
 		commentsData?.pages.flatMap((page: CommentPage) => page.items) ?? [];
-
+	const topLevelComments = comments.filter((c: Comment) => !c.parent_id);
 	const isEmptyComments = !isLoading && commentCount === 0;
+
+	const renderComment = (comment: Comment) => (
+		<RecursiveComment
+			key={comment.id}
+			comment={comment}
+			postId={postId}
+			postTitle={postTitle}
+			currentUserId={currentUser?.id}
+		/>
+	);
 
 	return (
 		<>
 			<CommentStats commentCount={commentCount} />
-			<CreateCommentForm postId={postId} postTitle={post?.title || ''} />
+			<CreateCommentForm postId={postId} postTitle={postTitle} />
 
 			{isLoading ? (
 				<CommentListSkeleton />
 			) : isEmptyComments ? (
 				<EmptyComments />
 			) : (
-				<CommentList
-					comments={comments.filter((c: Comment) => !c.parent_id)}
-					renderItem={renderComment}
-				/>
+				<CommentList comments={topLevelComments} renderItem={renderComment} />
 			)}
 
 			<Flex justify='center' align='center' ref={ref} minHeight='4'>
