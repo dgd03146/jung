@@ -4,9 +4,10 @@ export const aspectRatioVar = createVar();
 
 export const imageContainer = style({
 	overflow: 'hidden',
-	// borderRadius: '0.5rem',
 	cursor: 'pointer',
 	aspectRatio: aspectRatioVar,
+	contentVisibility: 'auto',
+	containIntrinsicSize: '0 300px',
 });
 
 export const image = style({

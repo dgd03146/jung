@@ -116,8 +116,11 @@ export default async function Page({ params }: PageProps) {
 	const { id: collectionId } = await params;
 	const queryClient = getQueryClient();
 
-	queryClient.prefetchQuery(
-		trpc.galleryCollections.getCollectionById.queryOptions(collectionId),
+	const collection =
+		await getCaller().galleryCollections.getCollectionById(collectionId);
+	queryClient.setQueryData(
+		trpc.galleryCollections.getCollectionById.queryKey(collectionId),
+		collection,
 	);
 
 	return (
