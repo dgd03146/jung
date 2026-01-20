@@ -126,14 +126,10 @@ export default async function Page({
 	const { slug: postId, lang } = await params;
 	const queryClient = getQueryClient();
 
-	// SEO 중요한 데이터: await (HTML에 포함)
+	const post = await getCaller().blog.getPostById({ postId });
+	queryClient.setQueryData(trpc.blog.getPostById.queryKey({ postId }), post);
 
-	const [post] = await Promise.all([
-		getCaller().blog.getPostById({ postId }),
-		queryClient.prefetchQuery(trpc.blog.getPostById.queryOptions({ postId })),
-	]);
-
-	// 덜 중요한 데이터: 스트리밍 (await 없음, pending 상태로 dehydrate)
+	// 덜 중요한 데이터: 스트리밍
 	queryClient.prefetchQuery(
 		trpc.blog.getAdjacentPosts.queryOptions({ postId }),
 	);

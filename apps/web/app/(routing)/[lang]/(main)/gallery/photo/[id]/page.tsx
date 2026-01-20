@@ -131,10 +131,8 @@ export default async function PhotoPage({
 
 	const queryClient = getQueryClient();
 
-	// Fetch photo data for JSON-LD schema
 	const photo = await getCaller().gallery.getPhotoById(photoId);
-
-	queryClient.prefetchQuery(trpc.gallery.getPhotoById.queryOptions(photoId));
+	queryClient.setQueryData(trpc.gallery.getPhotoById.queryKey(photoId), photo);
 
 	// Create JSON-LD schemas
 	const imageObjectSchema = photo

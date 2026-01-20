@@ -128,8 +128,7 @@ export default async function Page({
 	const queryClient = getQueryClient();
 
 	const place = await getCaller().place.getPlaceById(placeId);
-
-	queryClient.prefetchQuery(trpc.place.getPlaceById.queryOptions(placeId));
+	queryClient.setQueryData(trpc.place.getPlaceById.queryKey(placeId), place);
 
 	// Create JSON-LD schemas
 	const placeSchema = place
