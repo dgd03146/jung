@@ -9,13 +9,5 @@ export default function PhotoError({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
-	return (
-		<ErrorBoundary
-			error={error}
-			reset={reset}
-			title='Photo Not Found'
-			description="The photo you're looking for might have been removed or is temporarily unavailable."
-			actionLabel='Try Again'
-		/>
-	);
+	return <ErrorBoundary error={error} reset={reset} />;
 }

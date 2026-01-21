@@ -4,7 +4,9 @@
 		"notFoundDesc": "The page you requested has been deleted or the path is incorrect",
 		"generic": "Something went wrong",
 		"genericDesc": "There was an error loading the page. Please try again.",
-		"postContent": "Failed to load post content"
+		"postContent": "Failed to load post content",
+		"tryAgain": "Try Again",
+		"goHome": "Go to home"
 	},
 	"empty": {
 		"blog": "No posts available",

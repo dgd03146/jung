@@ -1,9 +1,3 @@
-/*
- * Not-Found page should have a layout as well, that's why it is placed directly
- * in the app/ folder together with the main layout.tsx
- * Unfortunately, the useDictionary hook cannot be used on this page
- * because the app/layout.tsx and app/not-found.tsx cannot be placed in app/(routing)/[lang]/ folder
- */
 import {
 	Box,
 	Button,
@@ -12,9 +6,12 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { MdOutlineSearchOff } from 'react-icons/md';
 
-export default function NotFound() {
+export default async function NotFound() {
+	const t = await getTranslations('error');
+
 	return (
 		<Container>
 			<Flex
@@ -40,17 +37,17 @@ export default function NotFound() {
 					</Typography.Heading>
 
 					<Typography.Heading level={2} color='black100'>
-						Can't find the page
+						{t('notFound')}
 					</Typography.Heading>
 
 					<Typography.Text level={1} color='black100'>
-						The page you requested has been deleted or the path is incorrect
+						{t('notFoundDesc')}
 					</Typography.Text>
 				</Flex>
 
 				<Link href='/'>
 					<Button variant='primary' size='lg' borderRadius='lg'>
-						<Typography.Text fontWeight='medium'>Go to home</Typography.Text>
+						<Typography.Text fontWeight='medium'>{t('goHome')}</Typography.Text>
 					</Button>
 				</Link>
 			</Flex>
