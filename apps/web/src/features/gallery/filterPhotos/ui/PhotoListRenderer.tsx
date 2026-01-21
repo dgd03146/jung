@@ -23,7 +23,7 @@ export const PhotoListRenderer = ({ sort, q }: PhotoQueryParams) => {
 	});
 
 	if (photos.length === 0) {
-		return <EmptyState content='photos' />;
+		return <EmptyState type='gallery' />;
 	}
 
 	return (

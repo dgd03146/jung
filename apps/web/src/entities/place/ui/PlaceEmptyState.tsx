@@ -1,17 +1,12 @@
 'use client';
 
 import { Box, Flex, Typography } from '@jung/design-system/components';
+import { useTranslations } from 'next-intl';
 import { MdLocationOff } from 'react-icons/md';
 
-interface EmptyStateProps {
-	title?: string;
-	description?: string;
-}
+export function PlaceEmptyState() {
+	const t = useTranslations('empty');
 
-export function PlaceEmptyState({
-	title = 'There are no places to display',
-	description = 'There are no places to display',
-}: EmptyStateProps) {
 	return (
 		<Flex
 			direction='column'
@@ -32,12 +27,8 @@ export function PlaceEmptyState({
 
 			<Flex direction='column' align='center' gap='6'>
 				<Typography.Heading level={4} color='black100'>
-					{title}
+					{t('places')}
 				</Typography.Heading>
-
-				<Typography.Text level={2} color='primary' fontWeight='medium'>
-					{description}
-				</Typography.Text>
 			</Flex>
 		</Flex>
 	);

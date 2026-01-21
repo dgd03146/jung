@@ -13,7 +13,7 @@ export const CollectionContent = () => {
 	});
 
 	if (collections.length === 0) {
-		return <EmptyState content='collections' />;
+		return <EmptyState type='gallery' />;
 	}
 
 	return <CollectionList collections={collections} />;

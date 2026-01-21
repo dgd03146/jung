@@ -5,6 +5,9 @@ const { createVanillaExtractPlugin } = vanillaExtractPluginPkg;
 
 import nextBundleAnalyzer from '@next/bundle-analyzer';
 
+import createNextIntlPlugin from 'next-intl/plugin';
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+
 const withBundleAnalyzer = nextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
   openAnalyzer: true,
@@ -97,4 +100,4 @@ const nextConfig = {
   },
 };
 
-export default withBundleAnalyzer(withVanillaExtract(nextConfig));
+export default withBundleAnalyzer(withVanillaExtract(withNextIntl(nextConfig)));
