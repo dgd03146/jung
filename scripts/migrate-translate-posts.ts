@@ -1,0 +1,126 @@
+import { resolve } from 'node:path';
+import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
+import { GeminiTranslator } from '../packages/ai-translator/src';
+
+// Load .env from project root
+config({ path: resolve(__dirname, '../.env') });
+
+// Environment validation
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !GEMINI_API_KEY) {
+	console.error('❌ Missing required environment variables:');
+	console.error('   - SUPABASE_URL');
+	console.error('   - SUPABASE_SERVICE_ROLE_KEY');
+	console.error('   - GEMINI_API_KEY');
+	process.exit(1);
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+const translator = new GeminiTranslator(GEMINI_API_KEY);
+
+async function migrateAllPosts() {
+	console.log('🚀 Starting post translation migration...\n');
+
+	// 1. Fetch all posts
+	const { data: posts, error: fetchError } = await supabase
+		.from('posts')
+		.select('id, title, description, content, title_ko, title_en')
+		.order('date', { ascending: false });
+
+	if (fetchError) {
+		console.error('❌ Failed to fetch posts:', fetchError);
+		process.exit(1);
+	}
+
+	if (!posts || posts.length === 0) {
+		console.log('ℹ️  No posts found.');
+		return;
+	}
+
+	console.log(`📊 Found ${posts.length} posts to translate\n`);
+
+	let successCount = 0;
+	let skipCount = 0;
+	let errorCount = 0;
+
+	// 2. Translate each post
+	for (let i = 0; i < posts.length; i++) {
+		const post = posts[i];
+		const progress = `[${i + 1}/${posts.length}]`;
+
+		// Skip if already translated
+		if (post.title_en) {
+			console.log(
+				`⏭️  ${progress} Skipping (already translated): ${post.title}`,
+			);
+			skipCount++;
+			continue;
+		}
+
+		console.log(`🔄 ${progress} Translating: ${post.title || post.id}`);
+
+		try {
+			// Translate title, description, and content
+			const [title_en, description_en, content_en] = await Promise.all([
+				translator.translate(post.title, 'ko', 'en'),
+				translator.translate(post.description, 'ko', 'en'),
+				translator.translateJSON(post.content, 'ko', 'en'),
+			]);
+
+			// Update post
+			const { error: updateError } = await supabase
+				.from('posts')
+				.update({
+					title_ko: post.title_ko || post.title, // Keep original as Korean
+					title_en,
+					description_ko: post.description,
+					description_en,
+					content_ko: post.content,
+					content_en,
+				})
+				.eq('id', post.id);
+
+			if (updateError) {
+				throw updateError;
+			}
+
+			console.log(`   ✅ Success: "${title_en}"\n`);
+			successCount++;
+
+			// Rate limit: Gemini Free tier = 15 RPM = 4 seconds per request
+			if (i < posts.length - 1) {
+				console.log('   ⏳ Waiting 4s (rate limit)...\n');
+				await new Promise((resolve) => setTimeout(resolve, 4000));
+			}
+		} catch (error) {
+			console.error(
+				`   ❌ Error translating post ${post.id}:`,
+				error instanceof Error ? error.message : error,
+			);
+			errorCount++;
+			console.log('   ⏭️  Continuing to next post...\n');
+		}
+	}
+
+	// 3. Summary
+	console.log('═'.repeat(60));
+	console.log('🎉 Migration Complete!\n');
+	console.log(`📈 Summary:`);
+	console.log(`   ✅ Successfully translated: ${successCount}`);
+	console.log(`   ⏭️  Skipped (already done): ${skipCount}`);
+	console.log(`   ❌ Errors: ${errorCount}`);
+	console.log(`   📊 Total: ${posts.length}`);
+	console.log('═'.repeat(60));
+
+	process.exit(errorCount > 0 ? 1 : 0);
+}
+
+// Run migration
+migrateAllPosts().catch((error) => {
+	console.error('💥 Migration failed:', error);
+	process.exit(1);
+});

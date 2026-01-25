@@ -24,6 +24,7 @@
     "@formatjs/intl-localematcher": "^0.5.4",
     "@jung/api": "workspace:*",
     "@jung/design-system": "workspace:*",
+    "@jung/feature-flags": "workspace:^",
     "@jung/shared": "workspace:*",
     "@mantine/core": "^8.3.12",
     "@mantine/hooks": "^8.3.12",
