@@ -15,8 +15,15 @@ export async function proxy(request: NextRequest) {
 			return intlResponse;
 		}
 
-		// Update Supabase session
-		return await updateSession(request);
+		// Update Supabase session, preserving intl headers
+		const supabaseResponse = await updateSession(request);
+
+		// Merge intl headers into supabase response
+		intlResponse.headers.forEach((value, key) => {
+			supabaseResponse.headers.set(key, value);
+		});
+
+		return supabaseResponse;
 	} catch (error) {
 		console.error('Proxy error:', error);
 		return NextResponse.next({ request });
