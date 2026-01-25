@@ -64,12 +64,23 @@ async function migrateAllPosts() {
 		console.log(`🔄 ${progress} Translating: ${post.title || post.id}`);
 
 		try {
-			// Translate title, description, and content
-			const [title_en, description_en, content_en] = await Promise.all([
-				translator.translate(post.title, 'ko', 'en'),
-				translator.translate(post.description, 'ko', 'en'),
-				translator.translateJSON(post.content, 'ko', 'en'),
-			]);
+			// Translate title, description, and content sequentially to respect rate limit
+			// 15 RPM = 1 request per 4 seconds
+			const title_en = await translator.translate(post.title, 'ko', 'en');
+			await new Promise((resolve) => setTimeout(resolve, 4000));
+
+			const description_en = await translator.translate(
+				post.description,
+				'ko',
+				'en',
+			);
+			await new Promise((resolve) => setTimeout(resolve, 4000));
+
+			const content_en = await translator.translateJSON(
+				post.content,
+				'ko',
+				'en',
+			);
 
 			// Update post
 			const { error: updateError } = await supabase

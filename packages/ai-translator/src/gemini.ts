@@ -1,16 +1,12 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { BLOG_TRANSLATION_PROMPT, JSON_TRANSLATION_PROMPT } from './prompts.js';
 import type { Locale, Translator } from './types.js';
 
 export class GeminiTranslator implements Translator {
-	private genAI: GoogleGenerativeAI;
-	private model: ReturnType<GoogleGenerativeAI['getGenerativeModel']>;
+	private ai: GoogleGenAI;
 
 	constructor(apiKey: string) {
-		this.genAI = new GoogleGenerativeAI(apiKey);
-		this.model = this.genAI.getGenerativeModel({
-			model: 'gemini-2.5-flash', // Latest stable model (2026)
-		});
+		this.ai = new GoogleGenAI({ apiKey });
 	}
 
 	async translate(text: string, from: Locale, to: Locale): Promise<string> {
@@ -25,9 +21,12 @@ export class GeminiTranslator implements Translator {
 		try {
 			const prompt = BLOG_TRANSLATION_PROMPT.replace('{text}', text);
 
-			const result = await this.model.generateContent(prompt);
-			const response = result.response;
-			const translated = response.text();
+			const response = await this.ai.models.generateContent({
+				model: 'gemini-2.5-flash',
+				contents: prompt,
+			});
+
+			const translated = response.text || '';
 
 			return translated.trim();
 		} catch (error) {
@@ -45,9 +44,12 @@ export class GeminiTranslator implements Translator {
 			const jsonString = JSON.stringify(json, null, 2);
 			const prompt = JSON_TRANSLATION_PROMPT.replace('{json}', jsonString);
 
-			const result = await this.model.generateContent(prompt);
-			const response = result.response;
-			let translated = response.text().trim();
+			const response = await this.ai.models.generateContent({
+				model: 'gemini-2.5-flash',
+				contents: prompt,
+			});
+
+			let translated = (response.text || '').trim();
 
 			// Remove markdown code blocks if present
 			translated = translated.replace(/^```json\n/, '').replace(/\n```$/, '');

@@ -12,12 +12,13 @@ ALTER TABLE posts
   ADD COLUMN IF NOT EXISTS content_en JSONB;
 
 -- 2. Copy existing data to Korean columns
+-- Use COALESCE to fill missing per-column values
 UPDATE posts
 SET
-  title_ko = title,
-  description_ko = description,
-  content_ko = content
-WHERE title_ko IS NULL;
+  title_ko = COALESCE(title_ko, title),
+  description_ko = COALESCE(description_ko, description),
+  content_ko = COALESCE(content_ko, content)
+WHERE title_ko IS NULL OR description_ko IS NULL OR content_ko IS NULL;
 
 -- 3. Add indexes for performance
 CREATE INDEX IF NOT EXISTS idx_posts_title_ko ON posts(title_ko);

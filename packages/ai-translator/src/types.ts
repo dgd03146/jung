@@ -1,11 +1,5 @@
 export type Locale = 'ko' | 'en';
 
-export interface TranslationResult {
-	text: string;
-	fromLang: Locale;
-	toLang: Locale;
-}
-
 export interface Translator {
 	translate(text: string, from: Locale, to: Locale): Promise<string>;
 }
