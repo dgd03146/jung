@@ -19,8 +19,13 @@ export async function proxy(request: NextRequest) {
 		const supabaseResponse = await updateSession(request);
 
 		// Merge intl headers into supabase response
+		// Use append for Set-Cookie to preserve multiple cookies, set for others
 		intlResponse.headers.forEach((value, key) => {
-			supabaseResponse.headers.set(key, value);
+			if (key.toLowerCase() === 'set-cookie') {
+				supabaseResponse.headers.append(key, value);
+			} else {
+				supabaseResponse.headers.set(key, value);
+			}
 		});
 
 		return supabaseResponse;
