@@ -40,6 +40,11 @@ export class GeminiTranslator implements Translator {
 	async translateJSON(json: object, from: Locale, to: Locale): Promise<object> {
 		if (from === to) return json;
 
+		// Only support ko → en for now
+		if (from !== 'ko' || to !== 'en') {
+			throw new Error(`Translation from ${from} to ${to} not supported yet`);
+		}
+
 		try {
 			const jsonString = JSON.stringify(json, null, 2);
 			const prompt = JSON_TRANSLATION_PROMPT.replace('{json}', jsonString);

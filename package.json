@@ -16,7 +16,6 @@
     "workshop": "pnpm --filter workshop",
     "build-storybook": "turbo run build-storybook --filter=workshop",
     "chromatic": "turbo run chromatic --filter=workshop",
-    "flags": "tsx .claude/skills/flags/script.ts",
     "extract-errors": "pnpm --filter @jung/error-codes extract"
   },
   "devDependencies": {
