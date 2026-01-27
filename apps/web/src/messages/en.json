@@ -1,0 +1,27 @@
+{
+	"error": {
+		"notFound": "Page not found",
+		"notFoundDesc": "The page you requested has been deleted or the path is incorrect",
+		"generic": "Something went wrong",
+		"genericDesc": "There was an error loading the page. Please try again.",
+		"postContent": "Failed to load post content",
+		"tryAgain": "Try Again",
+		"goHome": "Go to home"
+	},
+	"empty": {
+		"blog": "No posts available",
+		"blogSearch": "No results found for \"{query}\"",
+		"blogCategory": "No posts available in the {category} category yet",
+		"comments": "No comments yet",
+		"commentsFirst": "Be the first to comment!",
+		"gallery": "No photos available",
+		"places": "There are no places to display",
+		"guestbook": "Waiting for your first message",
+		"guestbookDesc": "Make it feel special by leaving a message"
+	},
+	"auth": {
+		"signInRequired": "Please sign in to continue",
+		"signInToComment": "Sign in to write a comment",
+		"signInToGuestbook": "Sign in to leave a message"
+	}
+}

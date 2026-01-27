@@ -2,10 +2,13 @@
 
 import { Box, Typography } from '@jung/design-system/components';
 import { motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { containerAnimation, contentAnimation } from '../config/animations';
 import * as styles from './EmptyMessageWall.css';
 
 export const EmptyMessageWall = () => {
+	const t = useTranslations('empty');
+
 	return (
 		<motion.div
 			initial={containerAnimation.initial}
@@ -20,12 +23,8 @@ export const EmptyMessageWall = () => {
 				className={styles.emptyStateContent}
 			>
 				<Box className={styles.emptyStateEmoji}>✨</Box>
-				<Typography.Heading level={4}>
-					Waiting for your first message
-				</Typography.Heading>
-				<Typography.Text>
-					Make it feel special by leaving a message
-				</Typography.Text>
+				<Typography.Heading level={4}>{t('guestbook')}</Typography.Heading>
+				<Typography.Text>{t('guestbookDesc')}</Typography.Text>
 			</motion.div>
 		</motion.div>
 	);

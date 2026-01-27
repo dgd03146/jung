@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Flex, Stack, Textarea } from '@jung/design-system/components';
+import { useTranslations } from 'next-intl';
 import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/guestbook';
 import { SocialLoginButtons } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
@@ -9,6 +10,7 @@ import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
 
 export const CreateMessageForm = () => {
+	const t = useTranslations('auth');
 	const { user } = useSupabaseAuth();
 	const {
 		message,
@@ -75,9 +77,7 @@ export const CreateMessageForm = () => {
 					value={message}
 					onChange={(e) => isLoggedIn && handleMessageChange(e.target.value)}
 					placeholder={
-						isLoggedIn
-							? 'Write your message here!'
-							: 'Sign in to write a message'
+						isLoggedIn ? 'Write your message here!' : t('signInToGuestbook')
 					}
 					maxLength={50}
 					rows={2}

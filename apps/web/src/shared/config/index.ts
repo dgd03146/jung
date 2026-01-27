@@ -1,15 +1,12 @@
 export * from './animations';
 export * from './comment';
 export * from './env';
-export type { DictionaryType } from './i18n/dictionaries/schema';
-export { default as getDictionary } from './i18n/helpers/getDictionary';
-export { default as getLocale } from './i18n/helpers/getLocale';
-export { default as handleLocaleRedirection } from './i18n/helpers/localeRedirection';
 export {
 	defaultLocale,
 	LANG_DISPLAY_NAMES,
 	locales,
 	SUPPORTED_LANGS,
+	SUPPORTED_LOCALES,
 } from './i18n/locales';
 export * from './imageSizes';
 export * from './navigation';

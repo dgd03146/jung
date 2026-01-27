@@ -12,17 +12,23 @@ export const blogRouter = router({
 				cat: z.string().optional(),
 				sort: z.enum(['latest', 'oldest', 'popular']).default('latest'),
 				q: z.string().optional(),
+				locale: z.enum(['ko', 'en']).optional().default('ko'),
 			}),
 		)
 		.query(async (opts) => {
 			const { input } = opts;
 
-			const { limit, cat, sort, q, cursor } = input;
-			return blogService.findMany({ limit, cursor, cat, sort, q });
+			const { limit, cat, sort, q, cursor, locale } = input;
+			return blogService.findMany({ limit, cursor, cat, sort, q, locale });
 		}),
 
 	getPostById: publicProcedure
-		.input(z.object({ postId: z.string() }))
+		.input(
+			z.object({
+				postId: z.string(),
+				locale: z.enum(['ko', 'en']).optional().default('ko'),
+			}),
+		)
 		.query(({ input }) => {
 			return blogService.findById(input);
 		}),

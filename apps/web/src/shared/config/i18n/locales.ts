@@ -5,6 +5,8 @@
  * e.g. en-US: English as spoken in the United States
  */
 
+import { routing } from '@/i18n/routing';
+
 interface ILocale {
 	code: string;
 	name: string;
@@ -20,11 +22,17 @@ export const locales: ILocale[] = [
 	{ code: 'ko', name: '한국어' },
 ];
 
-export const defaultLocale = locales[1]!.code;
+export const defaultLocale = routing.defaultLocale;
 
-export const SUPPORTED_LANGS = locales.map((locale) => locale.code);
+// Re-export from routing for backwards compatibility
+export const SUPPORTED_LOCALES = routing.locales;
 
-export type SupportedLang = (typeof SUPPORTED_LANGS)[number];
+/** @deprecated Use SUPPORTED_LOCALES instead */
+export const SUPPORTED_LANGS = SUPPORTED_LOCALES;
 
-export const LANG_DISPLAY_NAMES: Record<SupportedLang, string> =
-	Object.fromEntries(locales.map((locale) => [locale.code, locale.name]));
+export type SupportedLang = (typeof routing.locales)[number];
+
+export const LANG_DISPLAY_NAMES: Record<SupportedLang, string> = {
+	ko: '한국어',
+	en: 'English',
+};

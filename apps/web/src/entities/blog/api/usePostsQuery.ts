@@ -1,4 +1,5 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 import { useTRPC } from '@/fsd/app';
 import { BLOG_CACHE, BLOG_DEFAULTS, type BlogSort } from '../config/blog';
 
@@ -10,6 +11,7 @@ type QueryParams = {
 
 export function usePostsQuery(params: QueryParams = {}) {
 	const { cat, sort, q } = params;
+	const locale = useLocale() as 'ko' | 'en';
 	const trpc = useTRPC();
 
 	const infiniteOptions = trpc.blog.getAllPosts.infiniteQueryOptions(
@@ -18,6 +20,7 @@ export function usePostsQuery(params: QueryParams = {}) {
 			cat,
 			sort,
 			q,
+			locale,
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextCursor,

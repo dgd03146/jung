@@ -8,6 +8,7 @@ type QueryParams = {
 	cat?: string;
 	sort: 'latest' | 'oldest' | 'popular';
 	q?: string;
+	locale?: 'ko' | 'en';
 };
 
 type PostWithCategory = Post & {
@@ -15,6 +16,12 @@ type PostWithCategory = Post & {
 		name: string;
 	};
 	category_id: string;
+	title_ko?: string;
+	title_en?: string;
+	description_ko?: string;
+	description_en?: string;
+	content_ko?: unknown;
+	content_en?: unknown;
 };
 
 type QueryResult = {
@@ -30,12 +37,28 @@ export const blogService = {
 		cat,
 		sort,
 		q,
+		locale = 'ko',
 	}: QueryParams): Promise<QueryResult> {
 		try {
+			// Select locale-specific columns with fallback to Korean
+			const titleCol = locale === 'en' ? 'title_en' : 'title_ko';
+			const descCol = locale === 'en' ? 'description_en' : 'description_ko';
+			const contentCol = locale === 'en' ? 'content_en' : 'content_ko';
+
 			let query = supabase
 				.from('posts')
 				.select(`
-					*,
+					id,
+					${titleCol},
+					${descCol},
+					${contentCol},
+					date,
+					views,
+					likes,
+					liked_by,
+					category_id,
+					tags,
+					imagesrc,
 					categories!inner(name).name as category
 				`)
 				.eq('categories.type', 'blog');
@@ -140,9 +163,33 @@ export const blogService = {
 
 			return {
 				items: data.map((post) => {
-					const { categories, category_id, ...rest } = post;
+					const {
+						categories,
+						category_id,
+						title_ko,
+						title_en,
+						description_ko,
+						description_en,
+						content_ko,
+						content_en,
+						...rest
+					} = post;
+
+					// Map locale-specific fields to standard field names with fallback
+					const title =
+						(locale === 'en' ? title_en : title_ko) || title_ko || '';
+					const description =
+						(locale === 'en' ? description_en : description_ko) ||
+						description_ko ||
+						'';
+					const content =
+						(locale === 'en' ? content_en : content_ko) || content_ko;
+
 					return {
 						...rest,
+						title,
+						description,
+						content,
 						category: categories.name,
 					};
 				}),
@@ -157,7 +204,13 @@ export const blogService = {
 		}
 	},
 
-	async findById({ postId }: { postId: string }): Promise<Post | null> {
+	async findById({
+		postId,
+		locale = 'ko',
+	}: {
+		postId: string;
+		locale?: 'ko' | 'en';
+	}): Promise<Post | null> {
 		const { data, error } = await supabase
 			.from('posts')
 			.select(`
@@ -182,14 +235,32 @@ export const blogService = {
 		}
 
 		try {
-			const { categories, category_id, ...rest } = data;
+			const {
+				categories,
+				category_id,
+				title_ko,
+				title_en,
+				description_ko,
+				description_en,
+				content_ko,
+				content_en,
+				...rest
+			} = data;
+
+			// Select locale-specific fields with fallback to Korean
+			const title = (locale === 'en' ? title_en : title_ko) || title_ko || '';
+			const description =
+				(locale === 'en' ? description_en : description_ko) ||
+				description_ko ||
+				'';
+			const content = (locale === 'en' ? content_en : content_ko) || content_ko;
+
 			return {
 				...rest,
+				title,
+				description,
 				category: categories.name,
-				content:
-					typeof data.content === 'string'
-						? JSON.parse(data.content)
-						: data.content,
+				content: typeof content === 'string' ? JSON.parse(content) : content,
 			};
 		} catch (e) {
 			throw new TRPCError({
