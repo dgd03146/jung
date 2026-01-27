@@ -45,8 +45,30 @@ export class GeminiTranslator implements Translator {
 			throw new Error(`Translation from ${from} to ${to} not supported yet`);
 		}
 
+		const jsonString = JSON.stringify(json, null, 2);
+		const CHUNK_THRESHOLD = 4000; // Split if JSON > 4000 chars
+
+		// For large Tiptap content, split by nodes
+		if (
+			jsonString.length > CHUNK_THRESHOLD &&
+			json !== null &&
+			typeof json === 'object' &&
+			!Array.isArray(json) &&
+			'content' in json &&
+			Array.isArray(json.content)
+		) {
+			console.log(
+				`   📦 Large JSON detected (${jsonString.length} chars), splitting into chunks...`,
+			);
+			return this.translateJSONChunked(
+				json as { type: string; content: unknown[] },
+				from,
+				to,
+			);
+		}
+
+		// Regular translation for small JSON
 		try {
-			const jsonString = JSON.stringify(json, null, 2);
 			const prompt = JSON_TRANSLATION_PROMPT.replace('{json}', jsonString);
 
 			const response = await this.ai.models.generateContent({
@@ -67,5 +89,42 @@ export class GeminiTranslator implements Translator {
 				`JSON translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
 			);
 		}
+	}
+
+	private async translateJSONChunked(
+		json: { type: string; content: unknown[] },
+		from: Locale,
+		to: Locale,
+	): Promise<object> {
+		const translatedContent: unknown[] = [];
+
+		for (let i = 0; i < json.content.length; i++) {
+			const node = json.content[i];
+			console.log(`   🔄 Translating chunk ${i + 1}/${json.content.length}...`);
+
+			try {
+				const translatedNode = await this.translateJSON(
+					node as object,
+					from,
+					to,
+				);
+				translatedContent.push(translatedNode);
+
+				// Rate limit between chunks
+				if (i < json.content.length - 1) {
+					await new Promise((resolve) => setTimeout(resolve, 4000));
+				}
+			} catch {
+				console.error(
+					`   ⚠️  Failed to translate chunk ${i + 1}, keeping original`,
+				);
+				translatedContent.push(node); // Keep original on error
+			}
+		}
+
+		return {
+			...json,
+			content: translatedContent,
+		};
 	}
 }
