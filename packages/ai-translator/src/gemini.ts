@@ -46,9 +46,17 @@ export class GeminiTranslator implements Translator {
 		}
 
 		const jsonString = JSON.stringify(json, null, 2);
-		const CHUNK_THRESHOLD = 4000; // Split if JSON > 4000 chars
+		const CHUNK_THRESHOLD = 2000; // Split if JSON > 2000 chars (lowered for reliability)
 
-		// For large Tiptap content, split by nodes
+		// Handle array content directly (BlockNote format)
+		if (jsonString.length > CHUNK_THRESHOLD && Array.isArray(json)) {
+			console.log(
+				`   📦 Large array detected (${jsonString.length} chars), splitting into chunks...`,
+			);
+			return this.translateArrayChunked(json, from, to);
+		}
+
+		// For large Tiptap content with wrapper object, split by nodes
 		if (
 			jsonString.length > CHUNK_THRESHOLD &&
 			json !== null &&
@@ -79,16 +87,95 @@ export class GeminiTranslator implements Translator {
 			let translated = (response.text || '').trim();
 
 			// Remove markdown code blocks if present
-			translated = translated.replace(/^```json\n/, '').replace(/\n```$/, '');
+			translated = translated
+				.replace(/^```json\s*\n?/, '')
+				.replace(/\n?```\s*$/, '')
+				.trim();
 
-			const parsed = JSON.parse(translated);
-			return parsed;
+			try {
+				const parsed = JSON.parse(translated);
+
+				// Verify structure is preserved - if input had wrapper, output should too
+				if (
+					json !== null &&
+					typeof json === 'object' &&
+					!Array.isArray(json) &&
+					'type' in json &&
+					'content' in json
+				) {
+					// Input was a Tiptap doc with wrapper
+					if (Array.isArray(parsed)) {
+						// Gemini returned just the content array, reconstruct wrapper
+						console.log('   ⚠️  Reconstructing wrapper object...');
+						return {
+							...(json as object),
+							content: parsed,
+						};
+					}
+				}
+
+				return parsed;
+			} catch (parseError) {
+				// Log the invalid JSON for debugging
+				console.error('❌ Invalid JSON from Gemini:');
+				console.error('First 500 chars:', translated.substring(0, 500));
+				console.error(
+					'Last 500 chars:',
+					translated.substring(translated.length - 500),
+				);
+				throw parseError;
+			}
 		} catch (error) {
 			console.error('Gemini JSON translation error:', error);
 			throw new Error(
 				`JSON translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
 			);
 		}
+	}
+
+	private async translateArrayChunked(
+		nodes: unknown[],
+		from: Locale,
+		to: Locale,
+	): Promise<unknown[]> {
+		const translatedNodes: unknown[] = [];
+
+		for (let i = 0; i < nodes.length; i++) {
+			const node = nodes[i] as Record<string, unknown>;
+			const nodeType = node?.type as string | undefined;
+
+			// Skip code blocks - keep them as-is
+			if (nodeType === 'codeBlock') {
+				console.log(
+					`   ⏭️  Skipping code block (chunk ${i + 1}/${nodes.length})`,
+				);
+				translatedNodes.push(node);
+				continue;
+			}
+
+			console.log(`   🔄 Translating chunk ${i + 1}/${nodes.length}...`);
+
+			try {
+				const translatedNode = await this.translateJSON(
+					node as object,
+					from,
+					to,
+				);
+				translatedNodes.push(translatedNode);
+
+				// Rate limit between chunks
+				if (i < nodes.length - 1) {
+					await new Promise((resolve) => setTimeout(resolve, 4000));
+				}
+			} catch {
+				console.error(
+					`   ⚠️  Failed to translate chunk ${i + 1}, keeping original`,
+				);
+				translatedNodes.push(node);
+			}
+		}
+
+		return translatedNodes;
 	}
 
 	private async translateJSONChunked(
@@ -99,7 +186,18 @@ export class GeminiTranslator implements Translator {
 		const translatedContent: unknown[] = [];
 
 		for (let i = 0; i < json.content.length; i++) {
-			const node = json.content[i];
+			const node = json.content[i] as Record<string, unknown>;
+			const nodeType = node?.type as string | undefined;
+
+			// Skip code blocks - keep them as-is
+			if (nodeType === 'codeBlock') {
+				console.log(
+					`   ⏭️  Skipping code block (chunk ${i + 1}/${json.content.length})`,
+				);
+				translatedContent.push(node);
+				continue;
+			}
+
 			console.log(`   🔄 Translating chunk ${i + 1}/${json.content.length}...`);
 
 			try {

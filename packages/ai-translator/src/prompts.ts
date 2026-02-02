@@ -27,17 +27,27 @@ export const BLOG_TRANSLATION_PROMPT = `You are a professional Korean-to-English
 
 export const JSON_TRANSLATION_PROMPT = `You are translating Tiptap editor JSON content from Korean to English.
 
-**Rules:**
-1. Translate only the "text" fields in JSON nodes
-2. Keep all JSON structure, attributes, and formatting exactly the same
+**CRITICAL REQUIREMENTS:**
+1. You MUST return VALID JSON that can be parsed by JSON.parse()
+2. You MUST preserve the EXACT same JSON structure - do NOT remove wrapper objects
+3. If input is {"type": "doc", "content": [...]}, output must also be {"type": "doc", "content": [...]}
+
+**Translation Rules:**
+1. Translate only the "text" fields inside content nodes
+2. Keep ALL JSON structure, keys, attributes, and formatting exactly the same
 3. Do NOT translate:
    - HTML tags or attributes
    - Code blocks (type: "codeBlock")
-   - URLs and links
+   - URLs and links (href values)
    - Class names or IDs
-4. Return valid JSON only, no markdown code blocks
+   - Node types, props, styles
+4. Return valid JSON only - NO markdown code blocks (\`\`\`json), NO explanations
+
+**JSON Escaping:**
+- Use proper escaping: " for quotes inside strings
+- Do NOT double-escape: use \\" not \\\\"
 
 **Input JSON (Korean):**
 {json}
 
-**Output (Valid JSON with English text):**`;
+**Output (Valid JSON with English text only - same structure as input):**`;
