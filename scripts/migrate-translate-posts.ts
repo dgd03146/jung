@@ -28,7 +28,9 @@ async function migrateAllPosts() {
 	// 1. Fetch all posts
 	const { data: posts, error: fetchError } = await supabase
 		.from('posts')
-		.select('id, title, description, content, title_ko, title_en')
+		.select(
+			'id, title, description, content, title_ko, title_en, description_en, content_en',
+		)
 		.order('date', { ascending: false });
 
 	if (fetchError) {
@@ -52,8 +54,10 @@ async function migrateAllPosts() {
 		const post = posts[i];
 		const progress = `[${i + 1}/${posts.length}]`;
 
-		// Skip if already translated
-		if (post.title_en) {
+		// Skip if already fully translated
+		const isFullyTranslated =
+			post.title_en && post.description_en && post.content_en;
+		if (isFullyTranslated) {
 			console.log(
 				`⏭️  ${progress} Skipping (already translated): ${post.title}`,
 			);
