@@ -2,6 +2,7 @@ export type Locale = 'ko' | 'en';
 
 export interface Translator {
 	translate(text: string, from: Locale, to: Locale): Promise<string>;
+	translateJSON(json: object, from: Locale, to: Locale): Promise<object>;
 }
 
 export interface BlogPost {
