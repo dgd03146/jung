@@ -1,8 +1,7 @@
 'use client';
 
 import { Tabs, Typography } from '@jung/design-system/components';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/routing';
 import { TABS } from '../config/tabs';
 
 export const PhotoNavigation = () => {

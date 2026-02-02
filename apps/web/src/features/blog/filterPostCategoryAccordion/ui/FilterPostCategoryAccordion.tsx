@@ -2,10 +2,10 @@
 
 import { Accordion, Box, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useMemo } from 'react';
 import { useTRPC } from '@/fsd/app';
 import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
+import { Link } from '@/i18n/routing';
 import * as styles from './FilterPostCategoryAccordion.css';
 
 interface Props {

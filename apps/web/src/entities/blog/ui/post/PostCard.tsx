@@ -1,8 +1,8 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
-import Link from 'next/link';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
+import { Link } from '@/i18n/routing';
 import type { ViewMode } from '../../model/view';
 import * as styles from './PostCard.css';
 import { PostTags } from './PostTags';

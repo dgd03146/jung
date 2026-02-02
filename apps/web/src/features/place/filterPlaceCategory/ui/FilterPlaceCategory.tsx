@@ -2,9 +2,9 @@
 
 import { Box, Tag, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useTRPC } from '@/fsd/app';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
+import { Link } from '@/i18n/routing';
 import * as styles from './FilterPlaceCategory.css';
 
 interface Props {

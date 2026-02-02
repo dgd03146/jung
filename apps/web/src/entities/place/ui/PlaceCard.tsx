@@ -1,8 +1,8 @@
 import { Box, Card, Flex, Typography } from '@jung/design-system/components';
 import type { Place } from '@jung/shared/types';
-import Link from 'next/link';
 import { IoLocationOutline } from 'react-icons/io5';
 import { BlurImage } from '@/fsd/shared';
+import { Link } from '@/i18n/routing';
 import * as styles from './PlaceCard.css';
 
 interface PlaceCardProps {

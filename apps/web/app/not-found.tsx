@@ -5,13 +5,12 @@ import {
 	Flex,
 	Typography,
 } from '@jung/design-system/components';
-import Link from 'next/link';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { MdOutlineSearchOff } from 'react-icons/md';
+import { Link } from '@/i18n/routing';
 
 export default async function NotFound() {
 	const t = await getTranslations('error');
-	const locale = await getLocale();
 
 	return (
 		<Container>
@@ -46,7 +45,7 @@ export default async function NotFound() {
 					</Typography.Text>
 				</Flex>
 
-				<Link href={`/${locale}`}>
+				<Link href='/'>
 					<Button variant='primary' size='lg' borderRadius='lg'>
 						<Typography.Text fontWeight='medium'>{t('goHome')}</Typography.Text>
 					</Button>
