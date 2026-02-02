@@ -22,15 +22,15 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !GEMINI_API_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const translator = new GeminiTranslator(GEMINI_API_KEY);
 
-async function migrateAllPosts() {
-	console.log('🚀 Starting post translation migration...\n');
+async function migrateTagsOnly() {
+	console.log('🏷️  Starting tags-only translation migration...\n');
 
-	// 1. Fetch all posts
+	// 1. Fetch posts that have tags but no tags_en
 	const { data: posts, error: fetchError } = await supabase
 		.from('posts')
-		.select(
-			'id, title, description, content, tags, title_ko, title_en, description_en, content_en, tags_en',
-		)
+		.select('id, title, tags, tags_en')
+		.not('tags', 'is', null)
+		.is('tags_en', null)
 		.order('date', { ascending: false });
 
 	if (fetchError) {
@@ -39,25 +39,32 @@ async function migrateAllPosts() {
 	}
 
 	if (!posts || posts.length === 0) {
-		console.log('ℹ️  No posts found.');
+		console.log('✅ All posts already have translated tags!');
 		return;
 	}
 
-	console.log(`📊 Found ${posts.length} posts to translate\n`);
+	console.log(`📊 Found ${posts.length} posts needing tag translation\n`);
+	console.log(
+		`📝 Estimated API requests: ${posts.length} (within 20/day free tier)\n`,
+	);
 
 	let successCount = 0;
 	let skipCount = 0;
 	let errorCount = 0;
 
-	// 2. Translate each post
+	// 2. Translate tags for each post
 	for (let i = 0; i < posts.length; i++) {
 		const post = posts[i];
 		const progress = `[${i + 1}/${posts.length}]`;
 
-		// Skip if already fully translated (including tags)
-		const isFullyTranslated =
-			post.title_en && post.description_en && post.content_en && post.tags_en;
-		if (isFullyTranslated) {
+		// Skip if no tags or already has tags_en
+		if (!post.tags || post.tags.length === 0) {
+			console.log(`⏭️  ${progress} Skipping (no tags): ${post.title}`);
+			skipCount++;
+			continue;
+		}
+
+		if (post.tags_en && post.tags_en.length > 0) {
 			console.log(
 				`⏭️  ${progress} Skipping (already translated): ${post.title}`,
 			);
@@ -65,65 +72,38 @@ async function migrateAllPosts() {
 			continue;
 		}
 
-		console.log(`🔄 ${progress} Translating: ${post.title || post.id}`);
+		console.log(`🔄 ${progress} Translating tags for: ${post.title}`);
+		console.log(`   Korean tags: [${post.tags.join(', ')}]`);
 
 		try {
-			// Translate title, description, content, and tags sequentially to respect rate limit
-			// 15 RPM = 1 request per 4 seconds
-			const title_en = await translator.translate(post.title, 'ko', 'en');
-			await new Promise((resolve) => setTimeout(resolve, 4000));
+			// Translate tags (join as comma-separated, then split back)
+			const tagsText = post.tags.join(', ');
+			const translatedTags = await translator.translate(tagsText, 'ko', 'en');
+			const tags_en = translatedTags
+				.split(', ')
+				.map((tag: string) => tag.trim());
 
-			const description_en = await translator.translate(
-				post.description,
-				'ko',
-				'en',
-			);
-			await new Promise((resolve) => setTimeout(resolve, 4000));
-
-			const content_en = await translator.translateJSON(
-				post.content,
-				'ko',
-				'en',
-			);
-			await new Promise((resolve) => setTimeout(resolve, 4000));
-
-			// Translate tags (array of strings)
-			let tags_en: string[] = [];
-			if (post.tags && post.tags.length > 0) {
-				const tagsText = post.tags.join(', ');
-				const translatedTags = await translator.translate(tagsText, 'ko', 'en');
-				tags_en = translatedTags.split(', ').map((tag: string) => tag.trim());
-			}
-
-			// Update post
+			// Update post with translated tags
 			const { error: updateError } = await supabase
 				.from('posts')
-				.update({
-					title_ko: post.title_ko || post.title, // Keep original as Korean
-					title_en,
-					description_ko: post.description,
-					description_en,
-					content_ko: post.content,
-					content_en,
-					tags_en,
-				})
+				.update({ tags_en })
 				.eq('id', post.id);
 
 			if (updateError) {
 				throw updateError;
 			}
 
-			console.log(`   ✅ Success: "${title_en}"\n`);
+			console.log(`   ✅ English tags: [${tags_en.join(', ')}]\n`);
 			successCount++;
 
-			// Rate limit: Gemini Free tier = 15 RPM = 4 seconds per request
+			// Rate limit: 4 seconds between requests (15 RPM safe)
 			if (i < posts.length - 1) {
 				console.log('   ⏳ Waiting 4s (rate limit)...\n');
 				await new Promise((resolve) => setTimeout(resolve, 4000));
 			}
 		} catch (error) {
 			console.error(
-				`   ❌ Error translating post ${post.id}:`,
+				`   ❌ Error translating tags for post ${post.id}:`,
 				error instanceof Error ? error.message : error,
 			);
 			errorCount++;
@@ -133,10 +113,10 @@ async function migrateAllPosts() {
 
 	// 3. Summary
 	console.log('═'.repeat(60));
-	console.log('🎉 Migration Complete!\n');
+	console.log('🎉 Tags Migration Complete!\n');
 	console.log(`📈 Summary:`);
 	console.log(`   ✅ Successfully translated: ${successCount}`);
-	console.log(`   ⏭️  Skipped (already done): ${skipCount}`);
+	console.log(`   ⏭️  Skipped: ${skipCount}`);
 	console.log(`   ❌ Errors: ${errorCount}`);
 	console.log(`   📊 Total: ${posts.length}`);
 	console.log('═'.repeat(60));
@@ -145,7 +125,7 @@ async function migrateAllPosts() {
 }
 
 // Run migration
-migrateAllPosts().catch((error) => {
+migrateTagsOnly().catch((error) => {
 	console.error('💥 Migration failed:', error);
 	process.exit(1);
 });
