@@ -1,24 +1,17 @@
 'use client';
 
 import { Box, Button, Typography } from '@jung/design-system/components';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import * as styles from './ErrorBoundary.css';
 
 interface ErrorBoundaryProps {
 	error: Error & { digest?: string };
 	reset: () => void;
-	title?: string;
-	description?: string;
-	actionLabel?: string;
 }
 
-export function ErrorBoundary({
-	error,
-	reset,
-	title = 'Oops! Something went wrong',
-	description = "We're sorry, but there was an error loading the page. Please try again or contact support if the problem persists.",
-	actionLabel = 'Try Again',
-}: ErrorBoundaryProps) {
+export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
+	const t = useTranslations('error');
 	useEffect(() => {
 		console.error(error);
 		// TODO: Implement error logging service call (Sentry, LogRocket)
@@ -27,13 +20,13 @@ export function ErrorBoundary({
 	return (
 		<Box className={styles.errorContainer}>
 			<Typography.Heading level={1} className={styles.errorHeading}>
-				{title}
+				{t('generic')}
 			</Typography.Heading>
 			<Typography.Text className={styles.errorText}>
-				{description}
+				{t('genericDesc')}
 			</Typography.Text>
 			<Button className={styles.tryAgainButton} onClick={() => reset()}>
-				{actionLabel}
+				{t('tryAgain')}
 			</Button>
 			{process.env.NODE_ENV === 'development' && (
 				<Box as='details' className={styles.errorDetails}>

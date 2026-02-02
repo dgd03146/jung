@@ -254,6 +254,11 @@ FSD는 폴더 구조가 아니라 경계(boundaries) 설계입니다.
 
 
 
+## Prerequisites
+
+- **Node.js >=20** (see [`.nvmrc`](.nvmrc) for pinned version)
+- **pnpm 8.9.0** (managed via `packageManager` field)
+
 ## Getting Started
 
 ```bash

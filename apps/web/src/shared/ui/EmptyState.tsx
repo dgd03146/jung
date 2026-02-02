@@ -1,32 +1,32 @@
 'use client';
 
 import { Box, Flex, Typography } from '@jung/design-system';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { capitalizeFirstLetter } from '../lib/capitalizeFirstLetter';
 
-export function EmptyState({ content }: { content?: string }) {
+type EmptyType = 'blog' | 'gallery' | 'places';
+
+interface EmptyStateProps {
+	type?: EmptyType;
+}
+
+export function EmptyState({ type = 'blog' }: EmptyStateProps) {
+	const t = useTranslations('empty');
 	const searchParams = useSearchParams();
-	const pathname = usePathname();
 
 	const q = searchParams.get('q');
 	const cat = searchParams.get('cat');
 
-	const segment = pathname.split('/').filter(Boolean)[1];
-	const contentType = capitalizeFirstLetter(segment ?? 'posts');
-
 	const getDescription = () => {
-		if (q) return `We couldn't find any results for "${q}"`;
-		if (cat) {
-			return `No ${content || segment} available in the ${capitalizeFirstLetter(
-				cat,
-			)} category yet`;
+		if (type === 'blog') {
+			if (q) return t('blogSearch', { query: q });
+			if (cat)
+				return t('blogCategory', { category: capitalizeFirstLetter(cat) });
+			return t('blog');
 		}
-		return `No ${content || segment} available at the moment`;
-	};
-
-	const getTitle = () => {
-		return `No ${content || contentType} Found`;
+		return t(type);
 	};
 
 	return (
@@ -47,10 +47,6 @@ export function EmptyState({ content }: { content?: string }) {
 			</Box>
 
 			<Flex direction='column' align='center' gap='10'>
-				<Typography.Heading level={4} color='black100'>
-					{getTitle()}
-				</Typography.Heading>
-
 				<Typography.Text level={1} color='primary' fontWeight='medium'>
 					{getDescription()}
 				</Typography.Text>

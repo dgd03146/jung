@@ -1,33 +1,40 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
 import { updateSession } from '@/fsd/shared/api/supabase/middleware';
-import {
-	defaultLocale,
-	handleLocaleRedirection,
-	locales,
-} from '@/fsd/shared/config';
+import { routing } from './src/i18n/routing';
 
-const localeCodes = locales.map((locale) => locale.code);
+const intlMiddleware = createIntlMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
 	try {
-		const redirectResponse = handleLocaleRedirection(
-			request,
-			localeCodes,
-			defaultLocale,
-		);
+		// Handle i18n routing first
+		const intlResponse = intlMiddleware(request);
 
-		if (redirectResponse) {
-			return redirectResponse;
+		// If intl middleware returns a redirect, return it
+		if (intlResponse.status !== 200) {
+			return intlResponse;
 		}
 
-		return await updateSession(request);
-	} catch (error) {
-		console.error('미들웨어 오류:', error);
+		// Update Supabase session, preserving intl headers
+		const supabaseResponse = await updateSession(request);
 
+		// Merge intl headers into supabase response
+		// Use append for Set-Cookie to preserve multiple cookies, set for others
+		intlResponse.headers.forEach((value, key) => {
+			if (key.toLowerCase() === 'set-cookie') {
+				supabaseResponse.headers.append(key, value);
+			} else {
+				supabaseResponse.headers.set(key, value);
+			}
+		});
+
+		return supabaseResponse;
+	} catch (error) {
+		console.error('Proxy error:', error);
 		return NextResponse.next({ request });
 	}
 }
 
 export const config = {
-	matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+	matcher: ['/', '/(ko|en)/:path*'],
 };
