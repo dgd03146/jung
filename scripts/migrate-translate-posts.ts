@@ -50,8 +50,7 @@ async function migrateAllPosts() {
 	let errorCount = 0;
 
 	// 2. Translate each post
-	for (let i = 0; i < posts.length; i++) {
-		const post = posts[i];
+	for (const [i, post] of posts.entries()) {
 		const progress = `[${i + 1}/${posts.length}]`;
 
 		// Skip if already fully translated (including tags)
