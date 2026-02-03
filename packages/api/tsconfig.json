@@ -12,7 +12,9 @@
     },
     "outDir": "./dist",
     "rootDir": ".",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "include": ["**/*.ts", "**/*.tsx", "lib/trpc.ts"],
   "exclude": ["node_modules", "dist"]
