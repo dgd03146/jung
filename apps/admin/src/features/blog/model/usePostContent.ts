@@ -43,7 +43,7 @@ export const usePostContent = (initialContent: PartialBlock[]) => {
 			},
 			createHighlighter: () =>
 				createHighlighter({
-					themes: ['one-light'],
+					themes: ['light-plus', 'dark-plus'],
 					langs: [
 						'javascript',
 						'typescript',
