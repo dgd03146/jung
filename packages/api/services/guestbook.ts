@@ -144,4 +144,61 @@ export const guestbookService = {
 
 		return data;
 	},
+
+	async createAnonymous({
+		content,
+		backgroundColor,
+		emoji,
+		anonymousId,
+		nickname,
+	}: {
+		content: string;
+		backgroundColor?: string;
+		emoji?: string;
+		anonymousId: string;
+		nickname: string;
+	}): Promise<GuestbookMessage> {
+		const trimmedContent = content.trim();
+		if (trimmedContent.length === 0) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				message: 'Please enter a message.',
+			});
+		}
+
+		if (trimmedContent.length > MAX_CONTENT_LENGTH) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				message: `Message cannot exceed ${MAX_CONTENT_LENGTH} characters.`,
+			});
+		}
+
+		// 익명 사용자용 아바타 생성
+		const anonymousAvatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${anonymousId}`;
+
+		const { data, error } = await supabase
+			.from('guestbook')
+			.insert({
+				content: trimmedContent,
+				author_id: null,
+				author_name: nickname,
+				author_avatar: anonymousAvatar,
+				background_color: backgroundColor,
+				emoji,
+				anonymous_id: anonymousId,
+				is_anonymous: true,
+			})
+			.select()
+			.single<GuestbookMessage>();
+
+		if (error) {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				message: 'Failed to create message. Please try again later.',
+				cause: error,
+			});
+		}
+
+		return data;
+	},
 };

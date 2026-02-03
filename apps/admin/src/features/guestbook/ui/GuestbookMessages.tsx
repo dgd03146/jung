@@ -23,6 +23,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-15T10:00:00Z',
 			background_color: '#E8F5E9',
 			emoji: '👍',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174001',
@@ -33,6 +34,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-15T09:30:00Z',
 			background_color: '#E3F2FD',
 			emoji: '⭐',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174002',
@@ -43,6 +45,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-15T09:00:00Z',
 			background_color: '#F3E5F5',
 			emoji: '🎯',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174003',
@@ -53,6 +56,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T23:45:00Z',
 			background_color: '#FFF3E0',
 			emoji: '🙏',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174004',
@@ -63,6 +67,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T22:15:00Z',
 			background_color: '#E1F5FE',
 			emoji: '🚀',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174005',
@@ -73,6 +78,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T21:30:00Z',
 			background_color: '#F1F8E9',
 			emoji: '💻',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174006',
@@ -83,6 +89,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T20:45:00Z',
 			background_color: '#FCE4EC',
 			emoji: '🎨',
+			is_anonymous: false,
 		},
 		{
 			id: '123e4567-e89b-12d3-a456-426614174007',
@@ -93,8 +100,8 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T19:20:00Z',
 			background_color: '#FFFDE7',
 			emoji: '⚡',
+			is_anonymous: false,
 		},
-
 		{
 			id: '123e4567-e89b-12d3-a456-426614174009',
 			content: 'Loving the new features! Keep innovating! 🎉',
@@ -104,6 +111,7 @@ export const GuestbookMessages = () => {
 			created_at: '2024-03-14T17:30:00Z',
 			background_color: '#F3E5F5',
 			emoji: '🎉',
+			is_anonymous: false,
 		},
 	]);
 
