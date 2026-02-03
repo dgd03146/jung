@@ -44,7 +44,7 @@ importers:
         specifier: ^20.14.1
         version: 20.19.24
       dotenv:
-        specifier: ^16.4.5
+        specifier: ^16.6.1
         version: 16.6.1
       jest:
         specifier: ^30.1.1
