@@ -36,5 +36,12 @@
 		"signInRequired": "로그인이 필요합니다",
 		"signInToComment": "로그인하고 댓글을 작성하세요",
 		"signInToGuestbook": "로그인하고 메시지를 남겨주세요"
+	},
+	"guestbook": {
+		"nickname": "닉네임",
+		"nicknamePlaceholder": "닉네임을 입력하세요",
+		"messagePlaceholder": "메시지를 남겨주세요!",
+		"submit": "남기기",
+		"submitting": "등록 중..."
 	}
 }

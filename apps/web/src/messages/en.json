@@ -36,5 +36,12 @@
 		"signInRequired": "Please sign in to continue",
 		"signInToComment": "Sign in to write a comment",
 		"signInToGuestbook": "Sign in to leave a message"
+	},
+	"guestbook": {
+		"nickname": "Nickname",
+		"nicknamePlaceholder": "Enter your nickname",
+		"messagePlaceholder": "Leave a message!",
+		"submit": "Post",
+		"submitting": "Posting..."
 	}
 }
