@@ -78,4 +78,22 @@ export const blogRouter = router({
 		.query(({ input }) => {
 			return blogService.getAdjacentPosts(input);
 		}),
+
+	/**
+	 * 시맨틱 검색 (Agentic RAG)
+	 *
+	 * Vector + Keyword 하이브리드 검색으로 더 정확한 결과 제공
+	 */
+	semanticSearch: publicProcedure
+		.input(
+			z.object({
+				query: z.string().min(1, '검색어를 입력해주세요'),
+				limit: z.number().min(1).max(20).default(5),
+				mode: z.enum(['vector', 'keyword', 'hybrid']).default('hybrid'),
+				locale: z.enum(['ko', 'en']).default('ko'),
+			}),
+		)
+		.query(({ input }) => {
+			return blogService.semanticSearch(input);
+		}),
 });
