@@ -14,10 +14,12 @@
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",
     "@trpc/server": "11.8.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
     "@types/node": "^20.14.1",
