@@ -29,7 +29,7 @@ async function migrateAllPosts() {
 	const { data: posts, error: fetchError } = await supabase
 		.from('posts')
 		.select(
-			'id, title, description, content, title_ko, title_en, description_en, content_en',
+			'id, title, description, content, tags, title_ko, title_en, description_en, content_en, tags_en',
 		)
 		.order('date', { ascending: false });
 
@@ -50,13 +50,17 @@ async function migrateAllPosts() {
 	let errorCount = 0;
 
 	// 2. Translate each post
-	for (let i = 0; i < posts.length; i++) {
-		const post = posts[i];
+	for (const [i, post] of posts.entries()) {
 		const progress = `[${i + 1}/${posts.length}]`;
 
-		// Skip if already fully translated
+		// Skip if already fully translated (including tags)
+		const hasTranslatedTags =
+			Array.isArray(post.tags_en) && post.tags_en.length > 0;
 		const isFullyTranslated =
-			post.title_en && post.description_en && post.content_en;
+			post.title_en &&
+			post.description_en &&
+			post.content_en &&
+			hasTranslatedTags;
 		if (isFullyTranslated) {
 			console.log(
 				`⏭️  ${progress} Skipping (already translated): ${post.title}`,
@@ -68,7 +72,7 @@ async function migrateAllPosts() {
 		console.log(`🔄 ${progress} Translating: ${post.title || post.id}`);
 
 		try {
-			// Translate title, description, and content sequentially to respect rate limit
+			// Translate title, description, content, and tags sequentially to respect rate limit
 			// 15 RPM = 1 request per 4 seconds
 			const title_en = await translator.translate(post.title, 'ko', 'en');
 			await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -85,6 +89,17 @@ async function migrateAllPosts() {
 				'ko',
 				'en',
 			);
+			await new Promise((resolve) => setTimeout(resolve, 4000));
+
+			// Translate tags individually to preserve one-to-one mapping
+			const tags_en: string[] = [];
+			if (post.tags && post.tags.length > 0) {
+				for (const tag of post.tags) {
+					const translatedTag = await translator.translate(tag, 'ko', 'en');
+					tags_en.push(translatedTag.trim());
+					await new Promise((resolve) => setTimeout(resolve, 4000));
+				}
+			}
 
 			// Update post
 			const { error: updateError } = await supabase
@@ -96,6 +111,7 @@ async function migrateAllPosts() {
 					description_en,
 					content_ko: post.content,
 					content_en,
+					tags_en,
 				})
 				.eq('id', post.id);
 
@@ -112,10 +128,16 @@ async function migrateAllPosts() {
 				await new Promise((resolve) => setTimeout(resolve, 4000));
 			}
 		} catch (error) {
-			console.error(
-				`   ❌ Error translating post ${post.id}:`,
-				error instanceof Error ? error.message : error,
-			);
+			const message = error instanceof Error ? error.message : String(error);
+
+			// Rate limit reached - stop completely to avoid charges
+			if (message.includes('429') || message.includes('Resource Exhausted')) {
+				console.error('🛑 Rate limit reached. Stopping migration.');
+				console.error(`   Last post: ${post.title}`);
+				process.exit(1);
+			}
+
+			console.error(`   ❌ Error translating post ${post.id}:`, message);
 			errorCount++;
 			console.log('   ⏭️  Continuing to next post...\n');
 		}

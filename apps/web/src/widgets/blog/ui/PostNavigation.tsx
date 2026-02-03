@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Flex, Typography } from '@jung/design-system/components';
-import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5';
 import {
 	PostTags,
@@ -9,6 +8,7 @@ import {
 	usePostQuery,
 } from '@/fsd/entities/blog';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
+import { Link } from '@/i18n/routing';
 import * as styles from './PostNavigation.css';
 
 interface Props {

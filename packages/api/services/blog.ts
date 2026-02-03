@@ -22,6 +22,7 @@ type PostWithCategory = Post & {
 	description_en?: string;
 	content_ko?: unknown;
 	content_en?: unknown;
+	tags_en?: string[];
 };
 
 type QueryResult = {
@@ -58,6 +59,7 @@ export const blogService = {
 					liked_by,
 					category_id,
 					tags,
+					tags_en,
 					imagesrc,
 					categories!inner(name).name as category
 				`)
@@ -172,6 +174,8 @@ export const blogService = {
 						description_en,
 						content_ko,
 						content_en,
+						tags,
+						tags_en,
 						...rest
 					} = post;
 
@@ -184,12 +188,15 @@ export const blogService = {
 						'';
 					const content =
 						(locale === 'en' ? content_en : content_ko) || content_ko;
+					const localizedTags =
+						(locale === 'en' ? tags_en : tags) || tags || [];
 
 					return {
 						...rest,
 						title,
 						description,
 						content,
+						tags: localizedTags,
 						category: categories.name,
 					};
 				}),
@@ -244,6 +251,8 @@ export const blogService = {
 				description_en,
 				content_ko,
 				content_en,
+				tags,
+				tags_en,
 				...rest
 			} = data;
 
@@ -254,11 +263,13 @@ export const blogService = {
 				description_ko ||
 				'';
 			const content = (locale === 'en' ? content_en : content_ko) || content_ko;
+			const localizedTags = (locale === 'en' ? tags_en : tags) || tags || [];
 
 			return {
 				...rest,
 				title,
 				description,
+				tags: localizedTags,
 				category: categories.name,
 				content: typeof content === 'string' ? JSON.parse(content) : content,
 			};

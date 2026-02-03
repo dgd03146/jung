@@ -36,5 +36,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/(ko|en)/:path*'],
+	matcher: ['/((?!api|trpc|_next|_vercel|.*\\..*).*)'],
 };

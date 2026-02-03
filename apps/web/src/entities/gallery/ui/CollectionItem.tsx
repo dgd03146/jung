@@ -1,7 +1,7 @@
 import { Box, Typography } from '@jung/design-system/components';
 import type { Collection } from '@jung/shared/types';
-import Link from 'next/link';
 import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
+import { Link } from '@/i18n/routing';
 import * as styles from './CollectionItem.css';
 
 type CollectionItemProps = {

@@ -1,13 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/routing';
 import { getSection } from '../lib/getSection';
 import * as styles from './SectionTitle.css';
 
 export function SectionTitle() {
 	const pathname = usePathname();
-	const isHome = pathname.length === 3;
+	// next-intl의 usePathname()은 locale 제거된 경로 반환: "/" (홈)
+	const isHome = pathname === '/';
 	const isLogin = pathname.includes('/login');
 	const section = isHome || isLogin ? undefined : getSection(pathname);
 

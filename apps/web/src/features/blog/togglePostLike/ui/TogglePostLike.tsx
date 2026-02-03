@@ -1,12 +1,12 @@
 'use client';
 
 import { Button, Flex, useToast } from '@jung/design-system/components';
-import Link from 'next/link';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePostLikeQuery } from '@/fsd/entities/blog';
 import { useTogglePostLikeMutation } from '@/fsd/features/blog';
 import { useSupabaseAuth } from '@/fsd/shared';
+import { Link } from '@/i18n/routing';
 
 interface Props {
 	postId: string;
