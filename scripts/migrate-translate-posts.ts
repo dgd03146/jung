@@ -87,12 +87,14 @@ async function migrateAllPosts() {
 			);
 			await new Promise((resolve) => setTimeout(resolve, 4000));
 
-			// Translate tags (array of strings)
-			let tags_en: string[] = [];
+			// Translate tags individually to preserve one-to-one mapping
+			const tags_en: string[] = [];
 			if (post.tags && post.tags.length > 0) {
-				const tagsText = post.tags.join(', ');
-				const translatedTags = await translator.translate(tagsText, 'ko', 'en');
-				tags_en = translatedTags.split(', ').map((tag: string) => tag.trim());
+				for (const tag of post.tags) {
+					const translatedTag = await translator.translate(tag, 'ko', 'en');
+					tags_en.push(translatedTag.trim());
+					await new Promise((resolve) => setTimeout(resolve, 4000));
+				}
 			}
 
 			// Update post
