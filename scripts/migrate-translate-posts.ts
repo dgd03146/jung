@@ -55,8 +55,13 @@ async function migrateAllPosts() {
 		const progress = `[${i + 1}/${posts.length}]`;
 
 		// Skip if already fully translated (including tags)
+		const hasTranslatedTags =
+			Array.isArray(post.tags_en) && post.tags_en.length > 0;
 		const isFullyTranslated =
-			post.title_en && post.description_en && post.content_en && post.tags_en;
+			post.title_en &&
+			post.description_en &&
+			post.content_en &&
+			hasTranslatedTags;
 		if (isFullyTranslated) {
 			console.log(
 				`⏭️  ${progress} Skipping (already translated): ${post.title}`,
