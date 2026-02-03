@@ -14,6 +14,7 @@ export const RATE_LIMITS = {
 	anonymousLike: { maxRequests: 30, windowMs: 60_000 }, // 분당 30회
 	authenticatedComment: { maxRequests: 20, windowMs: 60_000 }, // 분당 20회
 	authenticatedLike: { maxRequests: 100, windowMs: 60_000 }, // 분당 100회
+	anonymousGuestbook: { maxRequests: 3, windowMs: 60_000 }, // 분당 3회 (방명록)
 } as const;
 
 /**

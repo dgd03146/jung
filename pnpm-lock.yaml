@@ -461,6 +461,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
       '@jung/shared':
         specifier: workspace:*
         version: link:../shared
@@ -2178,6 +2181,11 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /@google/generative-ai@0.24.1:
+    resolution: {integrity: sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@googlemaps/js-api-loader@1.16.8:
