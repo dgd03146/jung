@@ -305,14 +305,14 @@ export const blogService = {
 		return data as Post;
 	},
 
-	// 좋아요
+	// 좋아요 (로그인 사용자 또는 익명 사용자)
 
 	async toggleLike({
 		postId,
-		userId,
+		identifier,
 	}: {
 		postId: string;
-		userId: string;
+		identifier: string; // userId 또는 anonymousId (anon_xxx)
 	}): Promise<Post> {
 		const { data: post, error: selectError } = await supabase
 			.from('posts')
@@ -335,11 +335,11 @@ export const blogService = {
 			});
 		}
 
-		const hasLiked = post.liked_by.includes(userId);
+		const hasLiked = post.liked_by.includes(identifier);
 		const newLikes = hasLiked ? post.likes - 1 : post.likes + 1;
 		const newLikedBy = hasLiked
-			? post.liked_by.filter((id) => id !== userId)
-			: [...post.liked_by, userId];
+			? post.liked_by.filter((id) => id !== identifier)
+			: [...post.liked_by, identifier];
 
 		const { data, error } = await supabase
 			.from('posts')
@@ -362,7 +362,7 @@ export const blogService = {
 		if (!data) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Comment not found or like could not be toggled',
+				message: 'Post not found or like could not be toggled',
 			});
 		}
 

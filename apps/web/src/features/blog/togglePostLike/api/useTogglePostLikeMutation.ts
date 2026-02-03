@@ -4,7 +4,8 @@ import { type LikeInfo, toggleLikeOptimistic } from '@/fsd/shared/lib';
 
 type ToggleLikeVariables = {
 	postId: string;
-	userId: string;
+	userId?: string;
+	anonymousId?: string;
 };
 
 export const useTogglePostLikeMutation = () => {
@@ -13,7 +14,14 @@ export const useTogglePostLikeMutation = () => {
 
 	const mutation = useMutation(
 		trpc.blog.toggleLike.mutationOptions({
-			onMutate: async ({ postId, userId }: ToggleLikeVariables) => {
+			onMutate: async ({
+				postId,
+				userId,
+				anonymousId,
+			}: ToggleLikeVariables) => {
+				const identifier = userId || anonymousId;
+				if (!identifier) return;
+
 				const queryKey = trpc.blog.getLikeInfo.queryOptions(postId).queryKey;
 
 				await queryClient.cancelQueries({ queryKey });
@@ -21,7 +29,7 @@ export const useTogglePostLikeMutation = () => {
 				const previousData = queryClient.getQueryData<LikeInfo>(queryKey);
 
 				queryClient.setQueryData<LikeInfo>(queryKey, (old) =>
-					toggleLikeOptimistic(old, userId),
+					toggleLikeOptimistic(old, identifier),
 				);
 
 				return { previousData, postId };

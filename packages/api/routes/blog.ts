@@ -1,5 +1,6 @@
 import { PostSchema } from '@jung/shared/types';
 import { z } from 'zod';
+import { checkRateLimit } from '../lib/rateLimiter';
 import { publicProcedure, router } from '../lib/trpc';
 import { blogService } from '../services/blog';
 
@@ -45,9 +46,31 @@ export const blogRouter = router({
 		}),
 
 	toggleLike: publicProcedure
-		.input(z.object({ postId: z.string(), userId: z.string() }))
+		.input(
+			z
+				.object({
+					postId: z.string(),
+					userId: z.string().optional(),
+					anonymousId: z
+						.string()
+						.regex(/^anon_/)
+						.optional(),
+				})
+				.refine((data) => data.userId || data.anonymousId, {
+					message: 'userId 또는 anonymousId 중 하나는 필수입니다',
+				}),
+		)
 		.mutation(({ input }) => {
-			return blogService.toggleLike(input);
+			const identifier = input.userId || input.anonymousId!;
+			const isAnonymous = identifier.startsWith('anon_');
+			checkRateLimit(
+				identifier,
+				isAnonymous ? 'anonymousLike' : 'authenticatedLike',
+			);
+			return blogService.toggleLike({
+				postId: input.postId,
+				identifier,
+			});
 		}),
 
 	getAdjacentPosts: publicProcedure

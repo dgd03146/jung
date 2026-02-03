@@ -18,7 +18,13 @@ export const useTogglePhotoLikeMutation = () => {
 
 	const mutation = useMutation(
 		trpc.gallery.toggleLike.mutationOptions({
-			onMutate: async ({ photoId, userId }) => {
+			onMutate: async ({ photoId, userId, anonymousId }) => {
+				const identifier = userId || anonymousId;
+
+				if (!identifier) {
+					return { previousData: undefined, photoId, isLiked: false };
+				}
+
 				const likeInfoQueryKey =
 					trpc.gallery.getLikeInfo.queryOptions(photoId).queryKey;
 
@@ -28,7 +34,7 @@ export const useTogglePhotoLikeMutation = () => {
 					queryClient.getQueryData<LikeInfo>(likeInfoQueryKey);
 
 				const likedBySet = new Set(previousData?.liked_by ?? []);
-				const isLiked = likedBySet.has(userId);
+				const isLiked = likedBySet.has(identifier);
 				const likeDelta = isLiked ? -1 : 1;
 
 				// optimistic update
@@ -36,9 +42,9 @@ export const useTogglePhotoLikeMutation = () => {
 					if (!old) return old;
 
 					if (isLiked) {
-						likedBySet.delete(userId);
+						likedBySet.delete(identifier);
 					} else {
-						likedBySet.add(userId);
+						likedBySet.add(identifier);
 					}
 
 					return {

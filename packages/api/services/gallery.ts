@@ -378,10 +378,10 @@ export const galleryService = {
 
 	async toggleLike({
 		photoId,
-		userId,
+		identifier,
 	}: {
 		photoId: string;
-		userId: string;
+		identifier: string; // userId 또는 anonymousId (anon_xxx)
 	}): Promise<Photo> {
 		try {
 			const { data: photo, error: selectError } = await supabase
@@ -405,11 +405,11 @@ export const galleryService = {
 				});
 			}
 
-			const hasLiked = photo.liked_by?.includes(userId) ?? false;
+			const hasLiked = photo.liked_by?.includes(identifier) ?? false;
 			const newLikes = hasLiked ? photo.likes - 1 : photo.likes + 1;
 			const newLikedBy = hasLiked
-				? photo.liked_by?.filter((id) => id !== userId)
-				: [...(photo.liked_by || []), userId];
+				? photo.liked_by?.filter((id) => id !== identifier)
+				: [...(photo.liked_by || []), identifier];
 
 			const { data: updatedPhoto, error: updateError } = await supabase
 				.from('photos')

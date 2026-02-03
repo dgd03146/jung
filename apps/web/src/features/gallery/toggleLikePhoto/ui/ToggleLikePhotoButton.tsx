@@ -1,10 +1,9 @@
 'use client';
 
 import { Button, useToast } from '@jung/design-system/components';
-import { useState } from 'react';
+import { useAnonymousId } from '@jung/shared/hooks';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePhotoLikeQuery } from '@/fsd/entities/gallery';
-import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { useTogglePhotoLikeMutation } from '../api/useTogglePhotoLikeMutation';
 import * as styles from './ToggleLikePhotoButton.css';
@@ -16,52 +15,45 @@ interface ToggleLikePhotoButtonProps {
 export function ToggleLikePhotoButton({ photoId }: ToggleLikePhotoButtonProps) {
 	const { toggleLike, isPending } = useTogglePhotoLikeMutation();
 	const { user } = useSupabaseAuth();
+	const { anonymousId } = useAnonymousId();
 	const showToast = useToast();
-	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 	const { data: likeInfo, isLoading: isLikeInfoLoading } =
 		usePhotoLikeQuery(photoId);
 
-	const isLiked = !!(user && likeInfo?.liked_by?.includes(user.id));
+	const identifier = user?.id || anonymousId;
+	const isLiked = !!(identifier && likeInfo?.liked_by?.includes(identifier));
 
 	const handleToggleLike = () => {
-		if (!user) {
-			setIsLoginModalOpen(true);
+		if (!identifier) {
+			showToast('잠시 후 다시 시도해주세요.', 'error');
 			return;
 		}
 
 		toggleLike(
 			{
 				photoId,
-				userId: user.id,
+				userId: user?.id,
+				anonymousId: user ? undefined : anonymousId || undefined,
 			},
 			{
 				onError: () => {
-					showToast('Failed to update like status. Please try again.', 'error');
+					showToast('좋아요 처리에 실패했습니다.', 'error');
 				},
 			},
 		);
 	};
 
 	return (
-		<>
-			<Button
-				variant='ghost'
-				color='primary'
-				className={styles.toggleLikePhotoButton}
-				onClick={handleToggleLike}
-				aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
-				disabled={isPending || isLikeInfoLoading}
-			>
-				{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
-			</Button>
-
-			{isLoginModalOpen && (
-				<LoginModal
-					isOpen={isLoginModalOpen}
-					onClose={() => setIsLoginModalOpen(false)}
-				/>
-			)}
-		</>
+		<Button
+			variant='ghost'
+			color='primary'
+			className={styles.toggleLikePhotoButton}
+			onClick={handleToggleLike}
+			aria-label={isLiked ? 'Unlike photo' : 'Like photo'}
+			disabled={isPending || isLikeInfoLoading}
+		>
+			{isLiked ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
+		</Button>
 	);
 }
