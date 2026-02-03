@@ -29,12 +29,48 @@ export const createOptimisticComment = (
 			full_name: getUserDisplayName(user),
 			avatar_url: user.user_metadata.avatar_url,
 			email: user.email || '',
+			is_anonymous: false,
 		},
 		likes: 0,
 		liked_by: [],
 		replies: [],
 		post_id: postId,
 		user_id: user.id,
+		parent_id: parentId || null,
+	};
+};
+
+/**
+ * Creates an optimistic anonymous comment for immediate UI updates
+ */
+export const createOptimisticAnonymousComment = (
+	content: string,
+	anonymousId: string,
+	nickname: string,
+	postId: string,
+	parentId?: string,
+): Comment => {
+	const slightlyInPast = new Date(Date.now() - 1000);
+	return {
+		id: `${TEMP_COMMENT_PREFIX}${postId}-${Date.now()}-${Math.random()
+			.toString(36)
+			.slice(2, 7)}`,
+		content,
+		created_at: slightlyInPast.toISOString(),
+		updated_at: slightlyInPast.toISOString(),
+		user: {
+			id: anonymousId,
+			full_name: nickname,
+			avatar_url: null,
+			is_anonymous: true,
+		},
+		likes: 0,
+		liked_by: [],
+		replies: [],
+		post_id: postId,
+		user_id: null,
+		anonymous_id: anonymousId,
+		anonymous_name: nickname,
 		parent_id: parentId || null,
 	};
 };
