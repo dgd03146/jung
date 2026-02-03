@@ -129,10 +129,16 @@ async function migrateAllPosts() {
 				await new Promise((resolve) => setTimeout(resolve, 4000));
 			}
 		} catch (error) {
-			console.error(
-				`   ❌ Error translating post ${post.id}:`,
-				error instanceof Error ? error.message : error,
-			);
+			const message = error instanceof Error ? error.message : String(error);
+
+			// Rate limit reached - stop completely to avoid charges
+			if (message.includes('429') || message.includes('Resource Exhausted')) {
+				console.error('🛑 Rate limit reached. Stopping migration.');
+				console.error(`   Last post: ${post.title}`);
+				process.exit(1);
+			}
+
+			console.error(`   ❌ Error translating post ${post.id}:`, message);
 			errorCount++;
 			console.log('   ⏭️  Continuing to next post...\n');
 		}
