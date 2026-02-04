@@ -5,6 +5,7 @@ import type { Post } from '@jung/shared/types';
 import { useParams } from 'next/navigation';
 import {
 	BLOG_DEFAULTS,
+	type BlogSort,
 	usePostsQuery,
 	useSemanticSearchQuery,
 } from '@/fsd/entities';
@@ -16,7 +17,7 @@ import {
 	useSearchParamsState,
 } from '@/fsd/shared';
 
-const SEARCH_PARAMS_DEFAULTS: { sort: string; q: string } = {
+const SEARCH_PARAMS_DEFAULTS: { sort: BlogSort; q: string } = {
 	sort: BLOG_DEFAULTS.SORT,
 	q: BLOG_DEFAULTS.QUERY,
 };
@@ -54,14 +55,13 @@ export const ViewPosts = () => {
 			title: item.title,
 			description: item.description,
 			date: item.date || '',
-			views: item.views || 0,
 			likes: item.likes || 0,
-			liked_by: [],
-			category_id: '',
+			liked_by: [] as string[],
 			category: item.category || '',
 			tags: item.tags || [],
-			imagesrc: item.imagesrc || [],
-			content: [],
+			imagesrc: Array.isArray(item.imagesrc)
+				? item.imagesrc[0] || ''
+				: item.imagesrc || '',
 		})) || [];
 
 	const posts = isSearching
