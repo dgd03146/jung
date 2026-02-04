@@ -13,7 +13,7 @@
     "outDir": "./dist",
     "rootDir": ".",
     "types": ["node", "jest"],
-    "module": "ESNext",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext"
   },
   "include": ["**/*.ts", "**/*.tsx", "lib/trpc.ts"],

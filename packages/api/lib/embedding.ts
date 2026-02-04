@@ -1,16 +1,15 @@
 /**
  * Embedding 생성 유틸리티
  *
- * Gemini gemini-embedding-001 모델 사용
- * - 무료 할당량: 1000 RPD (requests per day)
- * - 기본 차원: 3072 (768, 1536, 3072 지원)
+ * Gemini text-embedding-004 모델 사용
+ * - 무료 할당량: 1500 RPM (requests per minute)
+ * - 출력 차원: 768
  * - 텍스트 → 벡터 변환
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, TaskType } from '@google/generative-ai';
 
-const EMBEDDING_MODEL = 'gemini-embedding-001';
-const DEFAULT_DIMENSIONS = 768; // 768, 1536, 3072 지원
+const EMBEDDING_MODEL = 'text-embedding-004';
 
 // Gemini API 클라이언트 초기화
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
@@ -19,17 +18,13 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
  * 텍스트를 임베딩 벡터로 변환
  *
  * @param text - 임베딩할 텍스트
- * @param dimensions - 출력 벡터 차원 (768, 1536, 3072 중 선택, 기본값 768)
- * @returns 지정된 차원의 벡터
+ * @returns 768 차원의 벡터
  *
  * @example
  * const embedding = await generateEmbedding('React 성능 최적화 방법');
  * // [0.123, -0.456, 0.789, ...] (768개)
  */
-export async function generateEmbedding(
-	text: string,
-	dimensions: number = DEFAULT_DIMENSIONS,
-): Promise<number[]> {
+export async function generateEmbedding(text: string): Promise<number[]> {
 	if (!process.env.GEMINI_API_KEY) {
 		throw new Error('GEMINI_API_KEY environment variable is not set');
 	}
@@ -38,8 +33,7 @@ export async function generateEmbedding(
 
 	const result = await model.embedContent({
 		content: { parts: [{ text }], role: 'user' },
-		taskType: 'RETRIEVAL_DOCUMENT',
-		outputDimensionality: dimensions,
+		taskType: TaskType.RETRIEVAL_DOCUMENT,
 	});
 
 	return result.embedding.values;
@@ -52,18 +46,16 @@ export async function generateEmbedding(
  *
  * @param texts - 임베딩할 텍스트 배열
  * @param delayMs - 요청 간 딜레이 (기본 100ms)
- * @param dimensions - 출력 벡터 차원 (기본값 768)
  * @returns 임베딩 벡터 배열
  */
 export async function generateEmbeddingsBatch(
 	texts: string[],
 	delayMs = 100,
-	dimensions: number = DEFAULT_DIMENSIONS,
 ): Promise<number[][]> {
 	const embeddings: number[][] = [];
 
 	for (const text of texts) {
-		const embedding = await generateEmbedding(text, dimensions);
+		const embedding = await generateEmbedding(text);
 		embeddings.push(embedding);
 
 		// Rate limit 방지를 위한 딜레이

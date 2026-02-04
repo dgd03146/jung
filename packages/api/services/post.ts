@@ -225,10 +225,8 @@ export const postService = {
 			});
 		}
 
-		// 비동기로 임베딩 생성 (포스트 생성 응답에 영향 없음)
-		this.generateAndSaveEmbedding(data.id, post).catch((err) => {
-			console.error(`Failed to generate embedding for post ${data.id}:`, err);
-		});
+		// 임베딩 생성은 클라이언트(useCreatePost.ts)에서 tRPC mutation으로 호출
+		// 중복 호출 방지를 위해 서버에서는 생성하지 않음
 
 		return data as Post;
 	},
