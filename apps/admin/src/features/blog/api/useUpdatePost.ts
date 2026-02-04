@@ -15,7 +15,12 @@ export const useUpdatePost = () => {
 
 	// 임베딩 생성 mutation
 	const generateEmbedding = useMutation(
-		trpc.blog.generateEmbedding.mutationOptions(),
+		trpc.blog.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Embedding generation failed:', error);
+				showToast('검색용 임베딩 생성에 실패했습니다.', 'warning');
+			},
+		}),
 	);
 
 	return useMutation({
