@@ -62,6 +62,7 @@ export const PasswordModal = ({
 
 				<form onSubmit={handleSubmit}>
 					<Input
+						aria-label='비밀번호'
 						type='password'
 						placeholder='비밀번호'
 						value={password}

@@ -90,6 +90,7 @@ export const GuestCommentForm = ({
 		>
 			<Flex gap='2' marginBottom='3'>
 				<Input
+					aria-label='닉네임 (필수)'
 					placeholder='닉네임 *'
 					value={nickname}
 					onChange={(e) => setNickname(e.target.value)}
@@ -99,6 +100,7 @@ export const GuestCommentForm = ({
 					disabled={isPending}
 				/>
 				<Input
+					aria-label='비밀번호 (필수, 수정/삭제용)'
 					type='password'
 					placeholder='비밀번호 * (수정/삭제용)'
 					value={password}
@@ -110,6 +112,7 @@ export const GuestCommentForm = ({
 				/>
 			</Flex>
 			<Textarea
+				aria-label='댓글 내용'
 				borderRadius='md'
 				fontSize='sm'
 				placeholder='댓글을 입력하세요...'
