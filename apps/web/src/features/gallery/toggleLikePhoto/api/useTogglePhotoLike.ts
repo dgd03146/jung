@@ -22,7 +22,7 @@ export const useTogglePhotoLikeMutation = () => {
 				const identifier = userId || anonymousId;
 
 				if (!identifier) {
-					return { previousData: undefined, photoId, isLiked: false };
+					throw new Error('Missing identifier for toggle like');
 				}
 
 				const likeInfoQueryKey =

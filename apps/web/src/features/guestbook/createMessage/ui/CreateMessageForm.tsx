@@ -1,6 +1,12 @@
 'use client';
 
-import { Button, Flex, Stack, Textarea } from '@jung/design-system/components';
+import {
+	Button,
+	Flex,
+	Stack,
+	Textarea,
+	useToast,
+} from '@jung/design-system/components';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/guestbook';
@@ -12,6 +18,7 @@ import * as styles from './CreateMessageForm.css';
 
 export const CreateMessageForm = () => {
 	const t = useTranslations('guestbook');
+	const showToast = useToast();
 	const { user } = useSupabaseAuth();
 	const [nickname, setNickname] = useState('');
 	const {
@@ -32,10 +39,12 @@ export const CreateMessageForm = () => {
 		e.preventDefault();
 
 		if (!nickname.trim()) {
+			showToast(t('nicknameRequired'), 'warning');
 			return;
 		}
 
 		if (!message.trim()) {
+			showToast(t('messageRequired'), 'warning');
 			return;
 		}
 
