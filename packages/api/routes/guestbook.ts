@@ -3,6 +3,10 @@ import { checkRateLimit } from '../lib/rateLimiter';
 import { publicProcedure, router } from '../lib/trpc';
 import { guestbookService } from '../services/guestbook';
 
+// Validation 상수
+const MAX_CONTENT_LENGTH = 50;
+const MAX_NICKNAME_LENGTH = 20;
+
 export const guestbookRouter = router({
 	getAllMessages: publicProcedure
 		.input(
@@ -20,7 +24,11 @@ export const guestbookRouter = router({
 	createMessage: publicProcedure
 		.input(
 			z.object({
-				content: z.string().min(1).max(50).trim(),
+				content: z
+					.string()
+					.trim()
+					.min(1, '내용을 입력해주세요')
+					.max(MAX_CONTENT_LENGTH),
 				backgroundColor: z.string().optional(),
 				emoji: z.string().optional(),
 				userId: z.string(),
@@ -33,13 +41,21 @@ export const guestbookRouter = router({
 	createAnonymousMessage: publicProcedure
 		.input(
 			z.object({
-				content: z.string().min(1).max(50).trim(),
+				content: z
+					.string()
+					.trim()
+					.min(1, '내용을 입력해주세요')
+					.max(MAX_CONTENT_LENGTH),
 				backgroundColor: z.string().optional(),
 				emoji: z.string().optional(),
 				anonymousId: z
 					.string()
 					.regex(/^anon_/, '익명 ID는 anon_로 시작해야 합니다'),
-				nickname: z.string().min(1, '닉네임을 입력해주세요').max(20),
+				nickname: z
+					.string()
+					.trim()
+					.min(1, '닉네임을 입력해주세요')
+					.max(MAX_NICKNAME_LENGTH),
 			}),
 		)
 		.mutation(({ input }) => {
