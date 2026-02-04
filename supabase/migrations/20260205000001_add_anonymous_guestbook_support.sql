@@ -10,17 +10,15 @@ ALTER TABLE guestbook
   ADD COLUMN IF NOT EXISTS anonymous_id TEXT,
   ADD COLUMN IF NOT EXISTS is_anonymous BOOLEAN DEFAULT false;
 
--- 3. 최소 하나의 식별자(author_id 또는 anonymous_id) 필수 제약조건
-ALTER TABLE guestbook
-  ADD CONSTRAINT guestbook_author_check
-  CHECK (author_id IS NOT NULL OR anonymous_id IS NOT NULL);
-
--- 4. 익명 메시지는 anonymous_id 필수 제약조건
+-- 3. 인증/익명 상호 배타성 제약조건
+-- is_anonymous = true: author_id는 NULL, anonymous_id는 NOT NULL
+-- is_anonymous = false: author_id는 NOT NULL, anonymous_id는 NULL
 ALTER TABLE guestbook
   ADD CONSTRAINT anonymous_guestbook_check
   CHECK (
-    author_id IS NOT NULL
-    OR (anonymous_id IS NOT NULL AND is_anonymous = true)
+    (is_anonymous = true AND author_id IS NULL AND anonymous_id IS NOT NULL)
+    OR
+    (is_anonymous IS NOT TRUE AND author_id IS NOT NULL AND anonymous_id IS NULL)
   );
 
 -- 5. anonymous_id 인덱스 (조회 성능)

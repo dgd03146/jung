@@ -11,17 +11,23 @@ ALTER TABLE post_comments
   ADD COLUMN IF NOT EXISTS anonymous_name TEXT,
   ADD COLUMN IF NOT EXISTS password_hash TEXT;
 
--- 3. 최소 하나의 식별자(user_id 또는 anonymous_id) 필수 제약조건
-ALTER TABLE post_comments
-  ADD CONSTRAINT comment_author_check
-  CHECK (user_id IS NOT NULL OR anonymous_id IS NOT NULL);
-
--- 4. 익명 댓글은 닉네임과 비밀번호 필수 제약조건
+-- 3. 익명 댓글은 닉네임과 비밀번호 필수 제약조건
 ALTER TABLE post_comments
   ADD CONSTRAINT anonymous_comment_check
   CHECK (
     user_id IS NOT NULL
     OR (anonymous_id IS NOT NULL AND anonymous_name IS NOT NULL AND password_hash IS NOT NULL)
+  );
+
+-- 4. 인증/익명 상호 배타성 제약조건
+-- 인증 사용자: user_id NOT NULL, 익명 필드는 모두 NULL
+-- 익명 사용자: user_id NULL, 익명 필드는 모두 NOT NULL
+ALTER TABLE post_comments
+  ADD CONSTRAINT comment_author_exclusive_check
+  CHECK (
+    (user_id IS NOT NULL AND anonymous_id IS NULL AND anonymous_name IS NULL AND password_hash IS NULL)
+    OR
+    (user_id IS NULL AND anonymous_id IS NOT NULL)
   );
 
 -- 5. anonymous_id 인덱스 (조회 성능)
