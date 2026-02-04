@@ -54,8 +54,8 @@ export const galleryRouter = router({
 				}),
 		)
 		.mutation(async ({ input }) => {
-			const identifier = input.userId || input.anonymousId!;
-			const isAnonymous = identifier.startsWith('anon_');
+			const isAnonymous = Boolean(input.anonymousId);
+			const identifier = input.anonymousId ?? input.userId!;
 			checkRateLimit(
 				identifier,
 				isAnonymous ? 'anonymousLike' : 'authenticatedLike',
