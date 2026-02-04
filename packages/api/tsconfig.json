@@ -14,7 +14,7 @@
     "rootDir": ".",
     "types": ["node", "jest"],
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "NodeNext"
   },
   "include": ["**/*.ts", "**/*.tsx", "lib/trpc.ts"],
   "exclude": ["node_modules", "dist"]
