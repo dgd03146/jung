@@ -608,6 +608,19 @@ export const blogService = {
 
 		const postIds = sortedResults.map(([id]) => id);
 
+		// 검색 결과가 없으면 빈 응답 반환
+		if (postIds.length === 0) {
+			return {
+				items: [],
+				meta: {
+					mode,
+					vectorCount: 0,
+					keywordCount: 0,
+					fusedCount: 0,
+				},
+			};
+		}
+
 		// 전체 Post 정보 조회
 		const titleCol = locale === 'en' ? 'title_en' : 'title_ko';
 		const descCol = locale === 'en' ? 'description_en' : 'description_ko';
