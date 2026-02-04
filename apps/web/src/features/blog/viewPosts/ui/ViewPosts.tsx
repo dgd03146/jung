@@ -22,6 +22,13 @@ const SEARCH_PARAMS_DEFAULTS: { sort: BlogSort; q: string } = {
 	q: BLOG_DEFAULTS.QUERY,
 };
 
+const normalizeImageSrc = (value: string | string[] | undefined): string => {
+	if (Array.isArray(value)) {
+		return value[0] || '';
+	}
+	return value || '';
+};
+
 export const ViewPosts = () => {
 	const { viewMode } = useViewMode();
 	const params = useParams();
@@ -38,7 +45,11 @@ export const ViewPosts = () => {
 	const isSearching = Boolean(q && q.trim().length > 0);
 
 	// 일반 목록
-	const postsQuery = usePostsQuery({ cat: categoryName, sort, q: '' });
+	const postsQuery = usePostsQuery({
+		cat: categoryName,
+		sort: sort as BlogSort,
+		q: '',
+	});
 
 	// 시맨틱 검색 (검색어 있을 때만 실행)
 	const searchQuery = useSemanticSearchQuery({
@@ -59,9 +70,7 @@ export const ViewPosts = () => {
 			liked_by: [] as string[],
 			category: item.category || '',
 			tags: item.tags || [],
-			imagesrc: Array.isArray(item.imagesrc)
-				? item.imagesrc[0] || ''
-				: item.imagesrc || '',
+			imagesrc: normalizeImageSrc(item.imagesrc),
 		})) || [];
 
 	const posts = isSearching
