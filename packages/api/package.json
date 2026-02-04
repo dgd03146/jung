@@ -10,16 +10,19 @@
     "format": "pnpm biome format --write ."
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@jung/shared": "workspace:*",
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",
     "@trpc/server": "11.8.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.14.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.16.2",

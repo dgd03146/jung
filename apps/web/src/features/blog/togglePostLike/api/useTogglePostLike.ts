@@ -14,7 +14,8 @@ type MutationContext = {
 
 type ToggleLikeVariables = {
 	postId: string;
-	userId: string;
+	userId?: string;
+	anonymousId?: string;
 };
 
 export const useTogglePostLikeMutation = () => {
@@ -24,7 +25,12 @@ export const useTogglePostLikeMutation = () => {
 	const mutation = useMutation(
 		trpc.blog.toggleLike.mutationOptions({
 			onMutate: async (variables: ToggleLikeVariables) => {
-				const { postId, userId } = variables;
+				const { postId, userId, anonymousId } = variables;
+				const identifier = userId || anonymousId;
+
+				if (!identifier) {
+					return { previousData: undefined, postId, isLiked: false };
+				}
 
 				// 좋아요 정보 쿼리키
 				const likeInfoQueryKey =
@@ -41,7 +47,7 @@ export const useTogglePostLikeMutation = () => {
 
 				// 좋아요 상태 확인
 				const likedBySet = new Set(previousData?.liked_by ?? []);
-				const isLiked = likedBySet.has(userId);
+				const isLiked = likedBySet.has(identifier);
 				const likeDelta = isLiked ? -1 : 1;
 
 				// Optimistic update
@@ -49,9 +55,9 @@ export const useTogglePostLikeMutation = () => {
 					if (!old) return old;
 
 					if (isLiked) {
-						likedBySet.delete(userId);
+						likedBySet.delete(identifier);
 					} else {
-						likedBySet.add(userId);
+						likedBySet.add(identifier);
 					}
 
 					return {

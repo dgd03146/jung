@@ -1,5 +1,9 @@
 import type { AdjacentPosts, Post, PostPreview } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import {
+	generateEmbedding,
+	preparePostTextForEmbedding,
+} from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -220,7 +224,49 @@ export const postService = {
 				message: 'Failed to create post. Please try again later.',
 			});
 		}
+
+		// 임베딩 생성은 클라이언트(useCreatePost.ts)에서 tRPC mutation으로 호출
+		// 중복 호출 방지를 위해 서버에서는 생성하지 않음
+
 		return data as Post;
+	},
+
+	/**
+	 * 포스트 임베딩 생성 및 저장
+	 * 포스트 생성/수정 시 비동기로 호출됨
+	 */
+	async generateAndSaveEmbedding(
+		postId: string,
+		post: Partial<Post>,
+	): Promise<void> {
+		try {
+			// 임베딩용 텍스트 준비
+			const text = preparePostTextForEmbedding({
+				title_ko: post.title,
+				description_ko: post.description,
+				tags: post.tags,
+			});
+
+			if (!text.trim()) {
+				console.warn(`No text to embed for post ${postId}`);
+				return;
+			}
+
+			// 임베딩 생성
+			const embedding = await generateEmbedding(text);
+
+			// DB에 저장
+			const { error } = await supabase
+				.from('posts')
+				.update({ embedding: JSON.stringify(embedding) })
+				.eq('id', postId);
+
+			if (error) {
+				console.error(`Failed to save embedding for post ${postId}:`, error);
+			}
+		} catch (err) {
+			console.error(`Embedding generation failed for post ${postId}:`, err);
+		}
 	},
 
 	// 좋아요

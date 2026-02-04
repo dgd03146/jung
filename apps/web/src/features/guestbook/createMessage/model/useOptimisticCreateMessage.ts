@@ -65,6 +65,7 @@ export const useCreateMessageMutation = () => {
 			author_name: user.user_metadata.full_name,
 			author_avatar: user.user_metadata.avatar_url,
 			created_at: new Date().toISOString(),
+			is_anonymous: false,
 		};
 
 		try {

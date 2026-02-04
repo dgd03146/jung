@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { checkRateLimit } from '../lib/rateLimiter';
 import { publicProcedure, router } from '../lib/trpc';
 import { galleryService } from '../services/gallery';
 
@@ -39,14 +40,30 @@ export const galleryRouter = router({
 
 	toggleLike: publicProcedure
 		.input(
-			z.object({
-				photoId: z.string(),
-				userId: z.string(),
-			}),
+			z
+				.object({
+					photoId: z.string(),
+					userId: z.string().optional(),
+					anonymousId: z
+						.string()
+						.regex(/^anon_/)
+						.optional(),
+				})
+				.refine((data) => data.userId || data.anonymousId, {
+					message: 'userId 또는 anonymousId 중 하나는 필수입니다',
+				}),
 		)
 		.mutation(async ({ input }) => {
-			const { photoId, userId } = input;
-			return galleryService.toggleLike({ photoId, userId });
+			const isAnonymous = Boolean(input.anonymousId);
+			const identifier = input.anonymousId ?? input.userId!;
+			checkRateLimit(
+				identifier,
+				isAnonymous ? 'anonymousLike' : 'authenticatedLike',
+			);
+			return galleryService.toggleLike({
+				photoId: input.photoId,
+				identifier,
+			});
 		}),
 
 	getLikeInfo: publicProcedure.input(z.string()).query(async (opts) => {

@@ -135,3 +135,35 @@ export const disabled = style({
 	opacity: 0.6,
 	cursor: 'not-allowed',
 });
+
+export const nicknameInput = style({
+	width: '100%',
+	padding: '10px 12px',
+	borderRadius: '8px',
+	border: '1px solid #E2E8F0',
+	fontSize: '14px',
+	backgroundColor: '#F8FAFC',
+	color: '#334155',
+	transition: 'all 0.2s ease-in-out',
+
+	':hover': {
+		borderColor: '#CBD5E1',
+	},
+
+	':focus': {
+		outline: 'none',
+		borderColor: '#94A3B8',
+		boxShadow: '0 2px 8px rgba(148, 163, 184, 0.15)',
+	},
+
+	'::placeholder': {
+		color: '#94A3B8',
+		fontSize: '14px',
+	},
+});
+
+export const anonymousLabel = style({
+	fontSize: '12px',
+	color: '#64748B',
+	fontWeight: 500,
+});

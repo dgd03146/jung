@@ -1,5 +1,9 @@
 import type { AdjacentPosts, Post, PostPreview } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import {
+	generateEmbedding,
+	preparePostTextForEmbedding,
+} from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -305,14 +309,14 @@ export const blogService = {
 		return data as Post;
 	},
 
-	// 좋아요
+	// 좋아요 (로그인 사용자 또는 익명 사용자)
 
 	async toggleLike({
 		postId,
-		userId,
+		identifier,
 	}: {
 		postId: string;
-		userId: string;
+		identifier: string; // userId 또는 anonymousId (anon_xxx)
 	}): Promise<Post> {
 		const { data: post, error: selectError } = await supabase
 			.from('posts')
@@ -335,11 +339,11 @@ export const blogService = {
 			});
 		}
 
-		const hasLiked = post.liked_by.includes(userId);
+		const hasLiked = post.liked_by.includes(identifier);
 		const newLikes = hasLiked ? post.likes - 1 : post.likes + 1;
 		const newLikedBy = hasLiked
-			? post.liked_by.filter((id) => id !== userId)
-			: [...post.liked_by, userId];
+			? post.liked_by.filter((id) => id !== identifier)
+			: [...post.liked_by, identifier];
 
 		const { data, error } = await supabase
 			.from('posts')
@@ -362,7 +366,7 @@ export const blogService = {
 		if (!data) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Comment not found or like could not be toggled',
+				message: 'Post not found or like could not be toggled',
 			});
 		}
 
@@ -448,6 +452,303 @@ export const blogService = {
 				message: 'An unexpected error occurred while fetching like info',
 				cause: error,
 			});
+		}
+	},
+
+	// ===== 시맨틱 검색 (Agentic RAG) =====
+
+	/**
+	 * 시맨틱 검색 - Vector + Keyword 하이브리드
+	 *
+	 * 1. 쿼리 임베딩 생성 (Gemini)
+	 * 2. pgvector 유사도 검색
+	 * 3. 기존 ilike 키워드 검색
+	 * 4. Reciprocal Rank Fusion (RRF)으로 병합
+	 */
+	async semanticSearch({
+		query,
+		limit = 5,
+		mode = 'hybrid',
+		locale = 'ko',
+	}: {
+		query: string;
+		limit?: number;
+		mode?: 'vector' | 'keyword' | 'hybrid';
+		locale?: 'ko' | 'en';
+	}): Promise<{
+		items: Array<{
+			id: string;
+			title: string;
+			description: string;
+			date?: string;
+			views?: number;
+			likes?: number;
+			tags?: string[];
+			imagesrc?: string[];
+			category?: string;
+			similarity?: number;
+			source: 'vector' | 'keyword' | 'both';
+		}>;
+		meta: {
+			mode: string;
+			vectorCount: number;
+			keywordCount: number;
+			fusedCount: number;
+		};
+	}> {
+		// 결과 저장
+		let vectorResults: Array<{
+			id: number;
+			title_ko: string;
+			title_en: string;
+			description_ko: string;
+			similarity: number;
+		}> = [];
+		let keywordResults: Array<{
+			id: number;
+			title_ko: string;
+			title_en: string;
+			description_ko: string;
+			description_en: string;
+		}> = [];
+
+		// 1. Vector 검색 (mode가 vector 또는 hybrid일 때)
+		if (mode === 'vector' || mode === 'hybrid') {
+			try {
+				const embedding = await generateEmbedding(query);
+
+				const { data, error } = await supabase.rpc('match_posts', {
+					query_embedding: embedding,
+					match_threshold: 0.3, // 낮은 임계값으로 더 많은 결과
+					match_count: limit * 2,
+				});
+
+				if (error) {
+					console.error('Vector search error:', error);
+				} else {
+					vectorResults = data || [];
+				}
+			} catch (err) {
+				console.error('Embedding generation error:', err);
+			}
+		}
+
+		// 2. Keyword 검색 (mode가 keyword 또는 hybrid일 때)
+		if (mode === 'keyword' || mode === 'hybrid') {
+			const searchTerm = `%${query}%`;
+
+			const { data, error } = await supabase
+				.from('posts')
+				.select('id, title_ko, title_en, description_ko, description_en')
+				.or(
+					`title_ko.ilike.${searchTerm},title_en.ilike.${searchTerm},description_ko.ilike.${searchTerm},description_en.ilike.${searchTerm}`,
+				)
+				.limit(limit * 2);
+
+			if (error) {
+				console.error('Keyword search error:', error);
+			} else {
+				keywordResults = data || [];
+			}
+		}
+
+		// 3. Reciprocal Rank Fusion (RRF)
+		const k = 60; // RRF 상수
+		const scores = new Map<
+			number,
+			{
+				score: number;
+				source: 'vector' | 'keyword' | 'both';
+				data: {
+					title_ko?: string;
+					title_en?: string;
+					description_ko?: string;
+					description_en?: string;
+					similarity?: number;
+				};
+			}
+		>();
+
+		// Vector 결과에 점수 부여
+		vectorResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'vector',
+				data: {
+					...existing?.data,
+					title_ko: item.title_ko,
+					title_en: item.title_en,
+					description_ko: item.description_ko,
+					similarity: item.similarity,
+				},
+			});
+		});
+
+		// Keyword 결과에 점수 부여
+		keywordResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'keyword',
+				data: {
+					...existing?.data,
+					title_ko: item.title_ko,
+					title_en: item.title_en,
+					description_ko: item.description_ko,
+					description_en: item.description_en,
+				},
+			});
+		});
+
+		// 점수순 정렬 후 상위 N개 ID 추출
+		const sortedResults = [...scores.entries()]
+			.sort((a, b) => b[1].score - a[1].score)
+			.slice(0, limit);
+
+		const postIds = sortedResults.map(([id]) => id);
+
+		// 검색 결과가 없으면 빈 응답 반환
+		if (postIds.length === 0) {
+			return {
+				items: [],
+				meta: {
+					mode,
+					vectorCount: 0,
+					keywordCount: 0,
+					fusedCount: 0,
+				},
+			};
+		}
+
+		// 전체 Post 정보 조회
+		const titleCol = locale === 'en' ? 'title_en' : 'title_ko';
+		const descCol = locale === 'en' ? 'description_en' : 'description_ko';
+
+		const { data: fullPosts, error: postsError } = await supabase
+			.from('posts')
+			.select(
+				`
+				id,
+				${titleCol},
+				${descCol},
+				date,
+				views,
+				likes,
+				tags,
+				tags_en,
+				imagesrc,
+				category_id,
+				categories!inner(name)
+			`,
+			)
+			.in('id', postIds);
+
+		if (postsError) {
+			console.error('Full posts fetch error:', postsError);
+		}
+
+		// 원래 순서 유지하며 매핑
+		const postMap = new Map(
+			(fullPosts || []).map((p) => [
+				p.id,
+				{
+					id: String(p.id),
+					title: (p as Record<string, unknown>)[titleCol] as string,
+					description: (p as Record<string, unknown>)[descCol] as string,
+					date: p.date,
+					views: p.views,
+					likes: p.likes,
+					tags: locale === 'en' ? p.tags_en || p.tags : p.tags,
+					imagesrc: p.imagesrc,
+					category: (p.categories as unknown as { name: string })?.name || '',
+				},
+			]),
+		);
+
+		const fusedResults = sortedResults.map(([id, { source, data }]) => {
+			const fullPost = postMap.get(id);
+			return {
+				id: String(id),
+				title: fullPost?.title || data.title_ko || '',
+				description: fullPost?.description || data.description_ko || '',
+				date: fullPost?.date,
+				views: fullPost?.views,
+				likes: fullPost?.likes,
+				tags: fullPost?.tags,
+				imagesrc: fullPost?.imagesrc,
+				category: fullPost?.category,
+				similarity: data.similarity,
+				source,
+			};
+		});
+
+		return {
+			items: fusedResults,
+			meta: {
+				mode,
+				vectorCount: vectorResults.length,
+				keywordCount: keywordResults.length,
+				fusedCount: fusedResults.length,
+			},
+		};
+	},
+
+	/**
+	 * 포스트 임베딩 생성 및 저장
+	 * 포스트 생성/수정 시 호출
+	 */
+	async generateEmbeddingForPost(
+		postId: string,
+	): Promise<{ success: boolean }> {
+		try {
+			// 포스트 조회
+			const { data: post, error: fetchError } = await supabase
+				.from('posts')
+				.select('title_ko, title_en, description_ko, description_en, tags')
+				.eq('id', postId)
+				.single();
+
+			if (fetchError || !post) {
+				console.error(`Post not found: ${postId}`);
+				return { success: false };
+			}
+
+			// 임베딩용 텍스트 준비
+			const text = preparePostTextForEmbedding({
+				title_ko: post.title_ko,
+				title_en: post.title_en,
+				description_ko: post.description_ko,
+				description_en: post.description_en,
+				tags: post.tags,
+			});
+
+			if (!text.trim()) {
+				console.warn(`No text to embed for post ${postId}`);
+				return { success: false };
+			}
+
+			// 임베딩 생성
+			const embedding = await generateEmbedding(text);
+
+			// DB에 저장
+			const { error: updateError } = await supabase
+				.from('posts')
+				.update({ embedding })
+				.eq('id', postId);
+
+			if (updateError) {
+				console.error(
+					`Failed to save embedding for post ${postId}:`,
+					updateError,
+				);
+				return { success: false };
+			}
+
+			return { success: true };
+		} catch (err) {
+			console.error(`Embedding generation failed for post ${postId}:`, err);
+			return { success: false };
 		}
 	},
 };

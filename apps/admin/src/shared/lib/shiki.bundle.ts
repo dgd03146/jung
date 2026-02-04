@@ -22,7 +22,7 @@ type BundledLanguage =
 	| 'md'
 	| 'jsx' // Added JSX
 	| 'tsx'; // Added TSX
-type BundledTheme = 'one-light';
+type BundledTheme = 'light-plus' | 'dark-plus';
 type Highlighter = HighlighterGeneric<BundledLanguage, BundledTheme>;
 
 const bundledLanguages = {
@@ -37,7 +37,8 @@ const bundledLanguages = {
 } as Record<BundledLanguage, DynamicImportLanguageRegistration>;
 
 const bundledThemes = {
-	'one-light': () => import('@shikijs/themes/one-light'),
+	'light-plus': () => import('@shikijs/themes/light-plus'),
+	'dark-plus': () => import('@shikijs/themes/dark-plus'),
 } as Record<BundledTheme, DynamicImportThemeRegistration>;
 
 const createHighlighter = /* @__PURE__ */ createdBundledHighlighter<

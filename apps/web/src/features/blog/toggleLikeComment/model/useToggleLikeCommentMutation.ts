@@ -13,7 +13,8 @@ import { findCommentAndCheckLike, replaceOptimisticLike } from '../lib';
 type ToggleLikeVariables = {
 	commentId: string;
 	postId: string;
-	userId: string;
+	userId?: string;
+	anonymousId?: string;
 };
 
 export const useToggleLikeCommentMutation = () => {
@@ -28,7 +29,17 @@ export const useToggleLikeCommentMutation = () => {
 		});
 
 	const mutation = useMutation({
-		mutationFn: async ({ commentId, postId, userId }: ToggleLikeVariables) => {
+		mutationFn: async ({
+			commentId,
+			postId,
+			userId,
+			anonymousId,
+		}: ToggleLikeVariables) => {
+			const identifier = userId || anonymousId;
+			if (!identifier) {
+				throw new Error('userId 또는 anonymousId가 필요합니다');
+			}
+
 			const currentQueryOptions = queryOptions(postId);
 			let existingData: CommentData | undefined;
 			try {
@@ -41,7 +52,7 @@ export const useToggleLikeCommentMutation = () => {
 			const { comment, isLiked } = findCommentAndCheckLike(
 				existingData,
 				commentId,
-				userId,
+				identifier,
 			);
 
 			if (!comment) {
@@ -53,9 +64,9 @@ export const useToggleLikeCommentMutation = () => {
 
 			const likedBySet = new Set(comment.liked_by);
 			if (isLiked) {
-				likedBySet.delete(userId);
+				likedBySet.delete(identifier);
 			} else {
-				likedBySet.add(userId);
+				likedBySet.add(identifier);
 			}
 
 			const tempComment = {
@@ -74,6 +85,7 @@ export const useToggleLikeCommentMutation = () => {
 					commentId,
 					postId,
 					userId,
+					anonymousId,
 				});
 				return {
 					serverComment,

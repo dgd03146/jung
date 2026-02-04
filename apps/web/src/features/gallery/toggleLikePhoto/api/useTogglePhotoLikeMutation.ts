@@ -4,7 +4,8 @@ import { type LikeInfo, toggleLikeOptimistic } from '@/fsd/shared/lib';
 
 type ToggleLikeVariables = {
 	photoId: string;
-	userId: string;
+	userId?: string;
+	anonymousId?: string;
 };
 
 export const useTogglePhotoLikeMutation = () => {
@@ -13,7 +14,14 @@ export const useTogglePhotoLikeMutation = () => {
 
 	const mutation = useMutation(
 		trpc.gallery.toggleLike.mutationOptions({
-			onMutate: async ({ photoId, userId }: ToggleLikeVariables) => {
+			onMutate: async ({
+				photoId,
+				userId,
+				anonymousId,
+			}: ToggleLikeVariables) => {
+				const identifier = userId || anonymousId;
+				if (!identifier) return;
+
 				const queryKey =
 					trpc.gallery.getLikeInfo.queryOptions(photoId).queryKey;
 
@@ -22,7 +30,7 @@ export const useTogglePhotoLikeMutation = () => {
 				const previousData = queryClient.getQueryData<LikeInfo>(queryKey);
 
 				queryClient.setQueryData<LikeInfo>(queryKey, (old) =>
-					toggleLikeOptimistic(old, userId),
+					toggleLikeOptimistic(old, identifier),
 				);
 
 				return { previousData, photoId };

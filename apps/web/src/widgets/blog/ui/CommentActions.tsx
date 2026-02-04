@@ -1,7 +1,9 @@
 'use client';
 
 import { Flex } from '@jung/design-system';
+import type { Comment } from '@jung/shared/types';
 import {
+	AnonymousCommentActions,
 	DeleteCommentButton,
 	EditCommentButton,
 	LikeCommentButton,
@@ -9,37 +11,35 @@ import {
 } from '@/fsd/features/blog';
 
 interface CommentActionsProps {
-	commentId: string;
+	comment: Comment;
 	postId: string;
 	postTitle: string;
-	content: string;
 	isLiked: boolean;
-	likesCount: number;
 	canReply: boolean;
 	isOwner: boolean;
+	isAnonymousOwner: boolean;
 }
 
 export const CommentActions = ({
-	commentId,
+	comment,
 	postId,
 	postTitle,
-	content,
 	isLiked,
-	likesCount,
 	canReply,
 	isOwner,
+	isAnonymousOwner,
 }: CommentActionsProps) => {
 	return (
 		<Flex justify='space-between' align='center' marginTop='4'>
 			<Flex gap='2'>
 				<LikeCommentButton
-					commentId={commentId}
+					commentId={comment.id}
 					postId={postId}
 					isLiked={isLiked}
-					likesCount={likesCount}
+					likesCount={comment.likes}
 				/>
 				<ReplyCommentButton
-					commentId={commentId}
+					commentId={comment.id}
 					postId={postId}
 					postTitle={postTitle}
 					canShow={canReply}
@@ -49,12 +49,22 @@ export const CommentActions = ({
 			{isOwner && (
 				<Flex gap='2'>
 					<EditCommentButton
-						commentId={commentId}
-						initialContent={content}
+						commentId={comment.id}
+						initialContent={comment.content}
 						postId={postId}
 						canShow={isOwner}
 					/>
-					<DeleteCommentButton commentId={commentId} postId={postId} />
+					<DeleteCommentButton commentId={comment.id} postId={postId} />
+				</Flex>
+			)}
+
+			{isAnonymousOwner && (
+				<Flex gap='2'>
+					<AnonymousCommentActions
+						comment={comment}
+						postId={postId}
+						canShow={isAnonymousOwner}
+					/>
 				</Flex>
 			)}
 		</Flex>

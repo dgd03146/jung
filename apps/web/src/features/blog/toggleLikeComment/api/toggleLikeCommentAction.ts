@@ -7,15 +7,18 @@ export async function toggleLikeCommentAction({
 	commentId,
 	postId,
 	userId,
+	anonymousId,
 }: {
 	commentId: string;
 	postId: string;
-	userId: string;
+	userId?: string;
+	anonymousId?: string;
 }) {
 	try {
 		const updatedComment = await getCaller().postComment.toggleLike({
 			commentId,
-			userId: userId,
+			userId,
+			anonymousId,
 		});
 
 		revalidatePath(`/blog/${postId}`);

@@ -12,7 +12,9 @@
     },
     "outDir": "./dist",
     "rootDir": ".",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
   "include": ["**/*.ts", "**/*.tsx", "lib/trpc.ts"],
   "exclude": ["node_modules", "dist"]

@@ -24,7 +24,15 @@ export const CreateCommentForm = ({
 	const { session, user, signOut } = useSupabaseAuth();
 
 	if (!session || !user) {
-		return <GuestCommentForm isReply={isReply} />;
+		return (
+			<GuestCommentForm
+				postId={postId}
+				parentId={parentId}
+				isReply={isReply}
+				onSuccess={onSuccess}
+				onCancel={onCancel}
+			/>
+		);
 	}
 
 	return (

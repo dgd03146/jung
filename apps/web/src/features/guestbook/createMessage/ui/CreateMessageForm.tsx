@@ -1,17 +1,26 @@
 'use client';
 
-import { Button, Flex, Stack, Textarea } from '@jung/design-system/components';
+import {
+	Button,
+	Flex,
+	Stack,
+	Textarea,
+	useToast,
+} from '@jung/design-system/components';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/guestbook';
-import { SocialLoginButtons } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
+import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
 import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
 
 export const CreateMessageForm = () => {
-	const t = useTranslations('auth');
+	const t = useTranslations('guestbook');
+	const showToast = useToast();
 	const { user } = useSupabaseAuth();
+	const [nickname, setNickname] = useState('');
 	const {
 		message,
 		selectedEmoji,
@@ -22,11 +31,43 @@ export const CreateMessageForm = () => {
 		handleSubmit,
 	} = useCreateMessage();
 
+	const createAnonymousMutation = useCreateAnonymousMessageMutation();
+
 	const isLoggedIn = !!user;
+
+	const handleAnonymousSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		if (!nickname.trim()) {
+			showToast(t('nicknameRequired'), 'warning');
+			return;
+		}
+
+		if (!message.trim()) {
+			showToast(t('messageRequired'), 'warning');
+			return;
+		}
+
+		createAnonymousMutation.mutate(
+			{
+				content: message,
+				backgroundColor: selectedColor,
+				emoji: selectedEmoji,
+				nickname: nickname.trim(),
+			},
+			{
+				onSuccess: () => {
+					handleMessageChange('');
+					setNickname('');
+				},
+			},
+		);
+	};
 
 	return (
 		<form
 			action={isLoggedIn ? handleSubmit : undefined}
+			onSubmit={!isLoggedIn ? handleAnonymousSubmit : undefined}
 			className={styles.form}
 		>
 			{isLoggedIn && (
@@ -45,9 +86,8 @@ export const CreateMessageForm = () => {
 							type='button'
 							className={`${styles.emojiButton} ${
 								selectedEmoji === emoji ? styles.emojiButtonSelected : ''
-							} ${!isLoggedIn ? styles.disabled : ''}`}
-							onClick={() => isLoggedIn && handleEmojiSelect(emoji)}
-							disabled={!isLoggedIn}
+							}`}
+							onClick={() => handleEmojiSelect(emoji)}
 						>
 							{emoji}
 						</Button>
@@ -61,39 +101,67 @@ export const CreateMessageForm = () => {
 							type='button'
 							className={`${styles.colorButton} ${
 								selectedColor === color ? styles.colorButtonSelected : ''
-							} ${!isLoggedIn ? styles.disabled : ''}`}
+							}`}
 							style={{ backgroundColor: color }}
-							onClick={() => isLoggedIn && handleColorSelect(color)}
+							onClick={() => handleColorSelect(color)}
 							aria-label={`Select color ${color}`}
-							disabled={!isLoggedIn}
 						/>
 					))}
 				</Flex>
 			</Stack>
 
 			<Stack gap='2' marginTop='4'>
+				{!isLoggedIn && (
+					<Stack gap='1'>
+						<label
+							htmlFor='guestbook-nickname'
+							className={styles.anonymousLabel}
+						>
+							{t('nickname')}
+						</label>
+						<input
+							id='guestbook-nickname'
+							type='text'
+							value={nickname}
+							onChange={(e) => setNickname(e.target.value)}
+							placeholder={t('nicknamePlaceholder')}
+							maxLength={20}
+							className={styles.nicknameInput}
+						/>
+					</Stack>
+				)}
+
 				<Textarea
 					name='message'
 					value={message}
-					onChange={(e) => isLoggedIn && handleMessageChange(e.target.value)}
-					placeholder={
-						isLoggedIn ? 'Write your message here!' : t('signInToGuestbook')
-					}
+					onChange={(e) => handleMessageChange(e.target.value)}
+					placeholder={t('messagePlaceholder')}
 					maxLength={50}
 					rows={2}
-					disabled={!isLoggedIn}
 					className={styles.textarea({
-						backgroundColor: isLoggedIn ? selectedColor : '#FFFFFF',
+						backgroundColor: selectedColor,
 					})}
 				/>
 
-				{isLoggedIn ? (
-					<Flex justifyContent='flex-end'>
+				<Flex justifyContent='flex-end'>
+					{isLoggedIn ? (
 						<CreateMessageButton emoji={selectedEmoji} />
-					</Flex>
-				) : (
-					<SocialLoginButtons />
-				)}
+					) : (
+						<Button
+							type='submit'
+							variant='primary'
+							disabled={
+								!nickname.trim() ||
+								!message.trim() ||
+								createAnonymousMutation.isPending
+							}
+						>
+							{createAnonymousMutation.isPending
+								? t('submitting')
+								: `${selectedEmoji} ${t('submit')}`}
+						</Button>
+					)}
+				</Flex>
 			</Stack>
 		</form>
 	);
