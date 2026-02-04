@@ -22,6 +22,14 @@ interface AnonymousCommentActionsProps {
 
 type ModalMode = 'edit' | 'delete' | null;
 
+/**
+ * 비밀번호 검증 타이밍:
+ * - Delete: 모달에서 비밀번호 입력 → 즉시 서버 검증 → 삭제
+ * - Edit: 모달에서 비밀번호 입력 → 임시 저장 → UI 편집 모드 → 수정 완료 시 서버 검증
+ */
+
+const getPasswordStorageKey = (commentId: string) => `comment_pw_${commentId}`;
+
 export const AnonymousCommentActions = ({
 	comment,
 	postId,
@@ -59,12 +67,12 @@ export const AnonymousCommentActions = ({
 
 	const handlePasswordSubmit = (password: string) => {
 		if (modalMode === 'edit') {
-			// 비밀번호 검증 후 편집 모드로 전환
+			// 비밀번호 임시 저장 후 편집 모드 진입 (서버 검증은 handleEditSubmit에서 수행)
+			sessionStorage.setItem(getPasswordStorageKey(comment.id), password);
 			setIsEditing(true);
 			setModalMode(null);
-			// 비밀번호를 임시 저장 (수정 완료 시 사용)
-			sessionStorage.setItem(`comment_pw_${comment.id}`, password);
 		} else if (modalMode === 'delete') {
+			// Delete: 즉시 서버 검증
 			deleteComment(
 				{
 					commentId: comment.id,
@@ -85,7 +93,7 @@ export const AnonymousCommentActions = ({
 	};
 
 	const handleEditSubmit = () => {
-		const password = sessionStorage.getItem(`comment_pw_${comment.id}`);
+		const password = sessionStorage.getItem(getPasswordStorageKey(comment.id));
 		if (!password) {
 			showToast('비밀번호 정보가 없습니다. 다시 시도해주세요.', 'error');
 			setIsEditing(false);
@@ -103,7 +111,7 @@ export const AnonymousCommentActions = ({
 				onSuccess: () => {
 					showToast('댓글이 수정되었습니다.', 'success');
 					setIsEditing(false);
-					sessionStorage.removeItem(`comment_pw_${comment.id}`);
+					sessionStorage.removeItem(getPasswordStorageKey(comment.id));
 				},
 				onError: (err) => {
 					showToast(err.message || '댓글 수정에 실패했습니다.', 'error');
@@ -115,7 +123,7 @@ export const AnonymousCommentActions = ({
 	const handleEditCancel = () => {
 		setIsEditing(false);
 		setEditContent(comment.content);
-		sessionStorage.removeItem(`comment_pw_${comment.id}`);
+		sessionStorage.removeItem(getPasswordStorageKey(comment.id));
 	};
 
 	// 편집 모드일 때

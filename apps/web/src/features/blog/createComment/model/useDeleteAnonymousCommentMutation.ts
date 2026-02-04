@@ -56,19 +56,42 @@ export const useDeleteAnonymousCommentMutation = () => {
 
 					return {
 						...oldData,
-						pages: oldData.pages.map((page) => ({
-							...page,
-							items: page.items
-								.filter((comment) => comment.id !== commentId)
-								.map((comment) => ({
-									...comment,
-									// 답글도 필터링
-									replies: comment.replies
-										? comment.replies.filter((reply) => reply.id !== commentId)
-										: [],
-								})),
-							totalCount: page.totalCount - 1,
-						})),
+						pages: oldData.pages.map((page) => {
+							// 삭제되는 항목 수 계산
+							let deletedCount = 0;
+
+							// 부모 댓글 삭제 수
+							const deletedParentCount = page.items.filter(
+								(comment) => comment.id === commentId,
+							).length;
+							deletedCount += deletedParentCount;
+
+							// 답글 삭제 수 (부모 댓글이 삭제되지 않는 경우에만)
+							for (const comment of page.items) {
+								if (comment.id !== commentId && comment.replies) {
+									const deletedRepliesCount = comment.replies.filter(
+										(reply) => reply.id === commentId,
+									).length;
+									deletedCount += deletedRepliesCount;
+								}
+							}
+
+							return {
+								...page,
+								items: page.items
+									.filter((comment) => comment.id !== commentId)
+									.map((comment) => ({
+										...comment,
+										// 답글도 필터링
+										replies: comment.replies
+											? comment.replies.filter(
+													(reply) => reply.id !== commentId,
+												)
+											: [],
+									})),
+								totalCount: page.totalCount - deletedCount,
+							};
+						}),
 					};
 				},
 			);
