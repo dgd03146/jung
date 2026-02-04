@@ -1,4 +1,5 @@
 // Comment features
+export { AnonymousCommentActions } from './createComment/ui/AnonymousCommentActions';
 export { CreateCommentForm } from './createComment/ui/CreateCommentForm';
 export { DeleteCommentButton } from './deleteComment/ui/DeleteCommentButton';
 export { EditCommentButton } from './editComment/ui/EditCommentButton';

@@ -1,6 +1,7 @@
 'use client';
 
 import { Box } from '@jung/design-system';
+import { useAnonymousId } from '@jung/shared/hooks';
 import type { Comment } from '@jung/shared/types';
 import { CommentItem } from '@/fsd/entities/blog';
 import { CommentActions } from './CommentActions';
@@ -19,12 +20,18 @@ export const RecursiveComment = ({
 	postTitle,
 	currentUserId,
 }: RecursiveCommentProps) => {
+	const { anonymousId } = useAnonymousId();
+
 	const isNested = !!comment.parent_id;
 	const isOwner = currentUserId === comment.user_id;
+	const isAnonymous = comment.user.is_anonymous;
+	const isAnonymousOwner = isAnonymous && comment.anonymous_id === anonymousId;
 	const isLiked = currentUserId
 		? comment.liked_by.includes(currentUserId)
-		: false;
-	const canReply = !isNested && !!currentUserId;
+		: anonymousId
+			? comment.liked_by.includes(anonymousId)
+			: false;
+	const canReply = !isNested && (!!currentUserId || !!anonymousId);
 
 	return (
 		<CommentItem
@@ -33,14 +40,13 @@ export const RecursiveComment = ({
 			className={isNested ? styles.nestedCommentItem : ''}
 		>
 			<CommentActions
-				commentId={comment.id}
+				comment={comment}
 				postId={postId}
 				postTitle={postTitle}
-				content={comment.content}
 				isLiked={isLiked}
-				likesCount={comment.likes}
 				canReply={canReply}
 				isOwner={isOwner}
+				isAnonymousOwner={isAnonymousOwner}
 			/>
 
 			{comment.replies && comment.replies.length > 0 && (
