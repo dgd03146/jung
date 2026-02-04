@@ -1,20 +1,32 @@
 import { TRPCError } from '@trpc/server';
 
+/**
+ * Rate Limiter
+ *
+ * ⚠️ 주의: In-memory 저장소 사용으로 단일 인스턴스 배포에서만 유효합니다.
+ * 다중 인스턴스 환경에서는 Redis/Upstash로 교체 필요.
+ */
+
 interface RateLimitRecord {
 	count: number;
 	resetAt: number;
 }
 
-// In-memory 저장소 (프로덕션에서는 Redis 권장)
+// 시간 상수
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1분
+const CLEANUP_INTERVAL_MS = 5 * 60_000; // 5분
+
+// In-memory 저장소 (단일 인스턴스 전용, 프로덕션 다중 인스턴스는 Redis 권장)
 const rateLimitStore = new Map<string, RateLimitRecord>();
 
 // Rate Limit 설정
 export const RATE_LIMITS = {
-	anonymousComment: { maxRequests: 5, windowMs: 60_000 }, // 분당 5회
-	anonymousLike: { maxRequests: 30, windowMs: 60_000 }, // 분당 30회
-	authenticatedComment: { maxRequests: 20, windowMs: 60_000 }, // 분당 20회
-	authenticatedLike: { maxRequests: 100, windowMs: 60_000 }, // 분당 100회
-	anonymousGuestbook: { maxRequests: 3, windowMs: 60_000 }, // 분당 3회 (방명록)
+	anonymousComment: { maxRequests: 5, windowMs: RATE_LIMIT_WINDOW_MS },
+	anonymousLike: { maxRequests: 30, windowMs: RATE_LIMIT_WINDOW_MS },
+	authenticatedComment: { maxRequests: 20, windowMs: RATE_LIMIT_WINDOW_MS },
+	authenticatedLike: { maxRequests: 100, windowMs: RATE_LIMIT_WINDOW_MS },
+	anonymousGuestbook: { maxRequests: 3, windowMs: RATE_LIMIT_WINDOW_MS },
+	embeddingGeneration: { maxRequests: 10, windowMs: RATE_LIMIT_WINDOW_MS },
 } as const;
 
 /**
@@ -61,4 +73,4 @@ setInterval(() => {
 			rateLimitStore.delete(key);
 		}
 	}
-}, 5 * 60_000); // 5분마다 정리
+}, CLEANUP_INTERVAL_MS);

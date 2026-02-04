@@ -87,7 +87,10 @@ export const blogRouter = router({
 	semanticSearch: publicProcedure
 		.input(
 			z.object({
-				query: z.string().min(1, '검색어를 입력해주세요'),
+				query: z
+					.string()
+					.transform((s) => s.trim())
+					.refine((s) => s.length > 0, { message: '검색어를 입력해주세요' }),
 				limit: z.number().min(1).max(20).default(5),
 				mode: z.enum(['vector', 'keyword', 'hybrid']).default('hybrid'),
 				locale: z.enum(['ko', 'en']).default('ko'),
@@ -101,10 +104,13 @@ export const blogRouter = router({
 	 * 포스트 임베딩 생성
 	 *
 	 * 포스트 생성/수정 시 호출하여 검색용 임베딩 생성
+	 * Rate limiting 적용 (분당 10회)
 	 */
 	generateEmbedding: publicProcedure
 		.input(z.object({ postId: z.string() }))
 		.mutation(({ input }) => {
+			// postId 기반 rate limiting (남용 방지)
+			checkRateLimit(input.postId, 'embeddingGeneration');
 			return blogService.generateEmbeddingForPost(input.postId);
 		}),
 });

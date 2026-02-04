@@ -64,6 +64,8 @@ export const commentRouter = router({
 	updateAnonymousComment: publicProcedure
 		.input(UpdateAnonymousCommentInputSchema)
 		.mutation(({ input }) => {
+			// commentId 기반 rate limiting (비밀번호 brute-force 방지)
+			checkRateLimit(input.commentId, 'anonymousComment');
 			return commentService.updateAnonymous(input);
 		}),
 
@@ -78,6 +80,8 @@ export const commentRouter = router({
 	deleteAnonymousComment: publicProcedure
 		.input(DeleteAnonymousCommentInputSchema)
 		.mutation(({ input }) => {
+			// commentId 기반 rate limiting (비밀번호 brute-force 방지)
+			checkRateLimit(input.commentId, 'anonymousComment');
 			return commentService.deleteAnonymous(input);
 		}),
 
