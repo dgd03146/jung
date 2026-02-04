@@ -96,4 +96,15 @@ export const blogRouter = router({
 		.query(({ input }) => {
 			return blogService.semanticSearch(input);
 		}),
+
+	/**
+	 * 포스트 임베딩 생성
+	 *
+	 * 포스트 생성/수정 시 호출하여 검색용 임베딩 생성
+	 */
+	generateEmbedding: publicProcedure
+		.input(z.object({ postId: z.string() }))
+		.mutation(({ input }) => {
+			return blogService.generateEmbeddingForPost(input.postId);
+		}),
 });

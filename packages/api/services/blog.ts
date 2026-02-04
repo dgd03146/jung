@@ -1,6 +1,9 @@
 import type { AdjacentPosts, Post, PostPreview } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
-import { generateEmbedding } from '../lib/embedding';
+import {
+	generateEmbedding,
+	preparePostTextForEmbedding,
+} from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -676,5 +679,63 @@ export const blogService = {
 				fusedCount: fusedResults.length,
 			},
 		};
+	},
+
+	/**
+	 * 포스트 임베딩 생성 및 저장
+	 * 포스트 생성/수정 시 호출
+	 */
+	async generateEmbeddingForPost(
+		postId: string,
+	): Promise<{ success: boolean }> {
+		try {
+			// 포스트 조회
+			const { data: post, error: fetchError } = await supabase
+				.from('posts')
+				.select('title_ko, title_en, description_ko, description_en, tags')
+				.eq('id', postId)
+				.single();
+
+			if (fetchError || !post) {
+				console.error(`Post not found: ${postId}`);
+				return { success: false };
+			}
+
+			// 임베딩용 텍스트 준비
+			const text = preparePostTextForEmbedding({
+				title_ko: post.title_ko,
+				title_en: post.title_en,
+				description_ko: post.description_ko,
+				description_en: post.description_en,
+				tags: post.tags,
+			});
+
+			if (!text.trim()) {
+				console.warn(`No text to embed for post ${postId}`);
+				return { success: false };
+			}
+
+			// 임베딩 생성
+			const embedding = await generateEmbedding(text);
+
+			// DB에 저장
+			const { error: updateError } = await supabase
+				.from('posts')
+				.update({ embedding })
+				.eq('id', postId);
+
+			if (updateError) {
+				console.error(
+					`Failed to save embedding for post ${postId}:`,
+					updateError,
+				);
+				return { success: false };
+			}
+
+			return { success: true };
+		} catch (err) {
+			console.error(`Embedding generation failed for post ${postId}:`, err);
+			return { success: false };
+		}
 	},
 };
