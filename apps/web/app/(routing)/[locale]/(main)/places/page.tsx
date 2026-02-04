@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 21600;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
 	return SUPPORTED_LANGS.map((lang) => ({ lang }));

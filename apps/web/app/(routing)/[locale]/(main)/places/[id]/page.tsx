@@ -96,7 +96,7 @@ export async function generateMetadata({
 	}
 }
 
-export const revalidate = 21600;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
 	const places = await getCaller().place.getAllPlaces({
