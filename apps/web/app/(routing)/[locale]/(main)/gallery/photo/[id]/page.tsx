@@ -1,3 +1,4 @@
+import { REVALIDATE } from '@jung/shared/config';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -103,7 +104,7 @@ export async function generateMetadata({
 }
 
 // Revalidate every hour for fresh content with ISR
-export const revalidate = 3600;
+export const revalidate = REVALIDATE.ONE_HOUR;
 
 export async function generateStaticParams() {
 	const photos = await getCaller().gallery.getAllPhotos({

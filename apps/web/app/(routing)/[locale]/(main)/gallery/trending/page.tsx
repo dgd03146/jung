@@ -1,4 +1,5 @@
 import { Flex } from '@jung/design-system/components';
+import { REVALIDATE } from '@jung/shared/config';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
 };
 
 // Trending changes frequently - shorter revalidation
-export const revalidate = 300;
+export const revalidate = REVALIDATE.FIVE_MINUTES;
 
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
