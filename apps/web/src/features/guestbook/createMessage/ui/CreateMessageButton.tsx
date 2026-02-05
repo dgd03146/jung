@@ -9,6 +9,12 @@ interface CreateMessageButtonProps {
 	emoji: GuestbookEmoji;
 }
 
+const getButtonText = (pending: boolean, isThrottled: boolean) => {
+	if (pending) return 'Posting...';
+	if (isThrottled) return 'Please wait...';
+	return 'Post';
+};
+
 export const CreateMessageButton = ({ emoji }: CreateMessageButtonProps) => {
 	const { pending } = useFormStatus();
 	const isThrottled = useThrottle(pending);
@@ -26,7 +32,7 @@ export const CreateMessageButton = ({ emoji }: CreateMessageButtonProps) => {
 			disabled={isDisabled}
 			suffix={`${emoji}`}
 		>
-			{isDisabled ? 'Posting...' : isThrottled ? 'Please wait...' : 'Post'}
+			{getButtonText(pending, isThrottled)}
 		</Button>
 	);
 };
