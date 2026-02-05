@@ -9,5 +9,5 @@ pre-commit:
 pre-push:
   parallel: true
   jobs:
-    - name: build
-      run: pnpm build
+    - name: biome
+      run: pnpm biome check .
