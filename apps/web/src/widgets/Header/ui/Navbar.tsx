@@ -3,6 +3,7 @@
 import { Box, Flex } from '@jung/design-system/components';
 import { PRIMARY_NAV_LIST } from '@/fsd/shared/config';
 import { extractFirstMeaningfulSegment } from '@/fsd/shared/lib';
+import { LanguageSwitcher } from '@/fsd/shared/ui';
 import { Link, usePathname } from '@/i18n/routing';
 import { useScrollDetection } from '../model/useScrollDetection';
 import MenuButton from './MenuButton';
@@ -51,6 +52,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
 					align='center'
 					display={{ base: 'none', tablet: 'flex' }}
 					alignItems='center'
+					gap='2'
 				>
 					{PRIMARY_NAV_LIST.map((item) => {
 						const isActive = `/${currentSegment}` === item.path;
@@ -67,6 +69,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
 							</Link>
 						);
 					})}
+					<LanguageSwitcher variant={variant} />
 				</Flex>
 
 				<Box className={styles.menuButtonWrapper}>
