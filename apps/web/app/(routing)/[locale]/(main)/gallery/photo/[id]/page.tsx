@@ -1,5 +1,6 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import {
@@ -7,12 +8,12 @@ import {
 	createImageObjectSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
-	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PhotoDetailPage } from '@/fsd/views/gallery';
 import { PhotoDetailSkeleton } from '@/fsd/views/gallery/ui';
+import { type Locale, routing } from '@/i18n/routing';
 
 export async function generateMetadata({
 	params,
@@ -101,7 +102,8 @@ export async function generateMetadata({
 	}
 }
 
-export const revalidate = 0;
+// Revalidate every hour for fresh content with ISR
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const photos = await getCaller().gallery.getAllPhotos({
@@ -113,7 +115,7 @@ export async function generateStaticParams() {
 	const PhotoIds = photos.items.map((photo) => photo.id);
 
 	const params = [];
-	for (const locale of SUPPORTED_LANGS) {
+	for (const locale of routing.locales) {
 		for (const id of PhotoIds) {
 			params.push({ locale, id: String(id) });
 		}
@@ -125,9 +127,10 @@ export async function generateStaticParams() {
 export default async function PhotoPage({
 	params,
 }: {
-	params: Promise<{ id: string; locale: string }>;
+	params: Promise<{ id: string; locale: Locale }>;
 }) {
 	const { id: photoId, locale } = await params;
+	setRequestLocale(locale);
 
 	const queryClient = getQueryClient();
 

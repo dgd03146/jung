@@ -1,6 +1,7 @@
 import { Container, Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
@@ -8,7 +9,6 @@ import {
 	createBreadcrumbSchema,
 	getApiUrl,
 	getGoogleVerificationCode,
-	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -18,6 +18,7 @@ import {
 	PostNavigation,
 	PostNavigationSkeleton,
 } from '@/fsd/widgets/blog';
+import { type Locale, routing } from '@/i18n/routing';
 import * as styles from './page.css';
 
 export async function generateMetadata({
@@ -96,7 +97,8 @@ export async function generateMetadata({
 	}
 }
 
-export const revalidate = 0;
+// Revalidate every hour for fresh content with ISR
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const posts = await getCaller().blog.getAllPosts({
@@ -109,7 +111,7 @@ export async function generateStaticParams() {
 	const PostIds = posts.items.map((post) => post.id);
 
 	const params = [];
-	for (const locale of SUPPORTED_LANGS) {
+	for (const locale of routing.locales) {
 		for (const id of PostIds) {
 			params.push({ locale, slug: String(id) });
 		}
@@ -121,9 +123,10 @@ export async function generateStaticParams() {
 export default async function Page({
 	params,
 }: {
-	params: Promise<{ slug: string; locale: string }>;
+	params: Promise<{ slug: string; locale: Locale }>;
 }) {
 	const { slug: postId, locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
 	const post = await getCaller().blog.getPostById({ postId });

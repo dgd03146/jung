@@ -1,6 +1,7 @@
 import { Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
 import { FilteredPhotoList } from '@/fsd/features/gallery';
@@ -8,9 +9,9 @@ import {
 	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
-	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { type Locale, routing } from '@/i18n/routing';
 
 export const metadata: Metadata = {
 	title: 'Trending Photos • Gallery',
@@ -63,13 +64,20 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 0;
+// Trending changes frequently - shorter revalidation
+export const revalidate = 300;
 
-export async function generateStaticParams() {
-	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+export function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }));
 }
 
-export default function TrendingPage() {
+interface Props {
+	params: Promise<{ locale: Locale }>;
+}
+
+export default async function TrendingPage({ params }: Props) {
+	const { locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(
