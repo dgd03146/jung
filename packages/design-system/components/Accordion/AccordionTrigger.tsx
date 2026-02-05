@@ -9,6 +9,7 @@ import * as styles from './Accordion.css';
 
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';
+import { isAccordionItemOpen } from './utils';
 
 export interface AccordionTriggerProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
@@ -38,8 +39,7 @@ export const AccordionTrigger = forwardRef<
 		const { index, id } = useAccordionItemContext();
 
 		const isValidIndex = typeof index === 'number';
-		const isOpen =
-			isValidIndex && openIndexes instanceof Set && openIndexes.has(index);
+		const isOpen = isAccordionItemOpen(index, openIndexes);
 
 		const handleClick = () => {
 			if (!isValidIndex) return;
