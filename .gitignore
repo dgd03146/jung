@@ -64,3 +64,4 @@ AGENTS.md
 /career
 /resume
 /lighthouse-reports
+.env*.local

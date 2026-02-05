@@ -1,13 +1,14 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
 import {
 	capitalizeFirstLetter,
 	getApiUrl,
 	getGoogleVerificationCode,
-	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { type Locale, routing } from '@/i18n/routing';
 import { PlacesLayout } from '../../_components/PlacesLayout';
 
 export async function generateMetadata({
@@ -60,7 +61,8 @@ export async function generateMetadata({
 	};
 }
 
-export const revalidate = 21600;
+// Revalidate every hour for fresh content with ISR
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const categories = await getCaller().category.getCategories({
@@ -68,7 +70,7 @@ export async function generateStaticParams() {
 	});
 
 	const params = [];
-	for (const locale of SUPPORTED_LANGS) {
+	for (const locale of routing.locales) {
 		for (const category of categories) {
 			params.push({
 				locale,
@@ -83,9 +85,10 @@ export async function generateStaticParams() {
 export default async function CategoryPlacesPage({
 	params,
 }: {
-	params: Promise<{ categoryName: string }>;
+	params: Promise<{ categoryName: string; locale: Locale }>;
 }) {
-	const { categoryName } = await params;
+	const { categoryName, locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
 	queryClient.prefetchInfiniteQuery(

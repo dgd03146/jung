@@ -1,12 +1,10 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
-import {
-	getApiUrl,
-	getGoogleVerificationCode,
-	SUPPORTED_LANGS,
-} from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
+import { type Locale, routing } from '@/i18n/routing';
 import { PlacesLayout } from './_components/PlacesLayout';
 
 export const metadata: Metadata = {
@@ -61,13 +59,20 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 21600;
+// Revalidate every hour for fresh content with ISR
+export const revalidate = 3600;
 
-export async function generateStaticParams() {
-	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+export function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function Page() {
+interface Props {
+	params: Promise<{ locale: Locale }>;
+}
+
+export default async function Page({ params }: Props) {
+	const { locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
 	await queryClient.prefetchInfiniteQuery(

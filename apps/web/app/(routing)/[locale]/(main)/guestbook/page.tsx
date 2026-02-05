@@ -1,16 +1,14 @@
 import { Container, Stack, Typography } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/guestbook';
 import { CreateMessageForm } from '@/fsd/features/guestbook';
-import {
-	getApiUrl,
-	getGoogleVerificationCode,
-	SUPPORTED_LANGS,
-} from '@/fsd/shared';
+import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
+import type { Locale } from '@/i18n/routing';
 
 export const metadata: Metadata = {
 	title: 'Guestbook',
@@ -53,13 +51,16 @@ export const metadata: Metadata = {
 	},
 };
 
-export const revalidate = 0;
+// Guestbook needs real-time data - use SSR instead of ISR
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-	return SUPPORTED_LANGS.map((lang) => ({ lang }));
+interface Props {
+	params: Promise<{ locale: Locale }>;
 }
 
-export default function Page() {
+export default async function Page({ params }: Props) {
+	const { locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 	queryClient.prefetchInfiniteQuery(
 		trpc.guestbook.getAllMessages.infiniteQueryOptions({

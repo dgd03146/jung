@@ -1,20 +1,22 @@
 import { Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
-	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
+import { type Locale, routing } from '@/i18n/routing';
 
 interface PageProps {
 	params: Promise<{
 		id: string;
+		locale: Locale;
 	}>;
 }
 
@@ -94,7 +96,8 @@ export async function generateMetadata({
 	}
 }
 
-export const revalidate = 21600;
+// Revalidate every hour for fresh content with ISR
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const collections = await getCaller().galleryCollections.getAllCollections({
@@ -104,7 +107,7 @@ export async function generateStaticParams() {
 	const CollectionIds = collections.map((collection) => collection.id);
 
 	const params = [];
-	for (const locale of SUPPORTED_LANGS) {
+	for (const locale of routing.locales) {
 		for (const id of CollectionIds) {
 			params.push({ locale, id });
 		}
@@ -113,7 +116,8 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: PageProps) {
-	const { id: collectionId } = await params;
+	const { id: collectionId, locale } = await params;
+	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
 	const collection =
