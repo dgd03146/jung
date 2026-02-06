@@ -8,6 +8,7 @@ import { Box } from '..';
 import * as styles from './Accordion.css';
 import { useAccordionContext } from './context/AccordionContext';
 import { useAccordionItemContext } from './context/AccordionItemContext';
+import { isAccordionItemOpen } from './utils';
 
 export interface AccordionContentProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
@@ -22,9 +23,7 @@ export const AccordionContent = forwardRef<
 	const { openIndexes, handleToggleIndex, animationEnabled } =
 		useAccordionContext();
 	const { index, id } = useAccordionItemContext();
-	const isValidIndex = typeof index === 'number';
-	const isOpen =
-		isValidIndex && openIndexes instanceof Set && openIndexes.has(index);
+	const isOpen = isAccordionItemOpen(index, openIndexes);
 
 	const contentRef = useRef<HTMLDivElement>(null);
 	useBeforeMatch<HTMLDivElement>(contentRef, () => handleToggleIndex(index!));

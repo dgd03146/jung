@@ -5,6 +5,7 @@
   "exports": {
     "./hooks": "./hooks/index.ts",
     "./constants": "./constants/index.ts",
+    "./config": "./config/index.ts",
     "./utils": "./utils/index.ts",
     "./types": "./types/index.ts",
     "./ui": "./ui/index.ts"
