@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import { Fragment } from 'react';
 import { routing, usePathname, useRouter } from '@/i18n/routing';
 import * as styles from './LanguageSwitcher.css';
 
@@ -20,17 +21,9 @@ const LanguageSwitcher = ({ variant = 'light' }: Props) => {
 	return (
 		<div className={styles.container({ variant })}>
 			{routing.locales.map((loc, index) => (
-				<>
-					{index > 0 && (
-						<span
-							key={`divider-${loc}`}
-							className={styles.divider({ variant })}
-						>
-							/
-						</span>
-					)}
+				<Fragment key={loc}>
+					{index > 0 && <span className={styles.divider({ variant })}>/</span>}
 					<button
-						key={loc}
 						type='button'
 						onClick={() => handleLocaleChange(loc)}
 						className={styles.button({ variant, isActive: locale === loc })}
@@ -39,7 +32,7 @@ const LanguageSwitcher = ({ variant = 'light' }: Props) => {
 					>
 						{loc.toUpperCase()}
 					</button>
-				</>
+				</Fragment>
 			))}
 		</div>
 	);

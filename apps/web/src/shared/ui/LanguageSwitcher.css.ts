@@ -2,6 +2,8 @@ import { fontFamily, fontWeights, palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
+const HOVER_ALPHA = '10';
+
 export const container = recipe({
 	base: style({
 		display: 'flex',
@@ -37,7 +39,7 @@ export const button = recipe({
 				color: palette.primary,
 				selectors: {
 					'&:hover': {
-						backgroundColor: `${palette.primary}10`,
+						backgroundColor: `${palette.primary}${HOVER_ALPHA}`,
 					},
 				},
 			},
