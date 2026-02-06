@@ -14,6 +14,14 @@ export const REVALIDATE = {
 	ONE_DAY: 86_400,
 } as const;
 
+/**
+ * Next.js revalidate config용 리터럴 상수
+ * Note: Next.js는 revalidate에 리터럴 값만 허용 (객체 멤버 접근 불가)
+ * @see https://nextjs.org/docs/messages/invalid-page-config
+ */
+export const REVALIDATE_FIVE_MINUTES = 300 as const;
+export const REVALIDATE_ONE_HOUR = 3_600 as const;
+
 /** UI 관련 시간 상수 */
 export const UI_TIMING = {
 	TOAST_DURATION_MS: 3_000,
