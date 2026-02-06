@@ -1,5 +1,4 @@
 import { Flex } from '@jung/design-system/components';
-import { REVALIDATE_ONE_HOUR } from '@jung/shared/config';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -63,7 +62,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate every hour for fresh content with ISR
-export const revalidate = REVALIDATE_ONE_HOUR;
+export const revalidate = 3600;
 
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));

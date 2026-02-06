@@ -1,4 +1,3 @@
-import { REVALIDATE_ONE_HOUR } from '@jung/shared/config';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -99,7 +98,7 @@ export async function generateMetadata({
 }
 
 // Revalidate every hour for fresh content with ISR
-export const revalidate = REVALIDATE_ONE_HOUR;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const places = await getCaller().place.getAllPlaces({
