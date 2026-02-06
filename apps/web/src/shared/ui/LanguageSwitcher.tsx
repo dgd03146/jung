@@ -1,32 +1,40 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { defaultLocale, locales } from '../config';
+import { useLocale } from 'next-intl';
+import { Fragment } from 'react';
+import { routing, usePathname, useRouter } from '@/i18n/routing';
+import * as styles from './LanguageSwitcher.css';
 
-const LanguageSwitcher = () => {
-	const { push } = useRouter();
-	const pathname = usePathname()!;
+type Props = {
+	variant?: 'light' | 'dark';
+};
 
-	const currentLocale = pathname.split('/')[1];
+const LanguageSwitcher = ({ variant = 'light' }: Props) => {
+	const locale = useLocale();
+	const router = useRouter();
+	const pathname = usePathname();
 
-	const handleLocaleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const newLocale = event.target.value;
-		const newPathname = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
-		push(newPathname);
+	const handleLocaleChange = (newLocale: string) => {
+		router.replace(pathname, { locale: newLocale });
 	};
 
 	return (
-		<select
-			value={currentLocale || defaultLocale}
-			onChange={handleLocaleChange}
-			className='border px-4 py-2 rounded-md shadow-md bg-white text-gray-700 transition-colors duration-200 hover:bg-gray-100 focus:outline-none'
-		>
-			{locales.map(({ code, name }) => (
-				<option key={code} value={code}>
-					{name}
-				</option>
+		<div className={styles.container({ variant })}>
+			{routing.locales.map((loc, index) => (
+				<Fragment key={loc}>
+					{index > 0 && <span className={styles.divider({ variant })}>/</span>}
+					<button
+						type='button'
+						onClick={() => handleLocaleChange(loc)}
+						className={styles.button({ variant, isActive: locale === loc })}
+						aria-label={`Switch to ${loc === 'ko' ? 'Korean' : 'English'}`}
+						aria-current={locale === loc ? 'true' : undefined}
+					>
+						{loc.toUpperCase()}
+					</button>
+				</Fragment>
 			))}
-		</select>
+		</div>
 	);
 };
 
