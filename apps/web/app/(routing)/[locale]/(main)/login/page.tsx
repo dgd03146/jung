@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { createClient } from '@/fsd/shared/index.server';
@@ -28,10 +28,10 @@ export const metadata: Metadata = {
 		description: 'JUNG의 웹사이트에 로그인하여 더 많은 기능을 이용해보세요.',
 	},
 	alternates: {
-		canonical: `${getApiUrl()}/login`,
+		canonical: `${SITE_URL}/login`,
 		languages: {
-			en: `${getApiUrl()}/en/login`,
-			ko: `${getApiUrl()}/ko/login`,
+			en: `${SITE_URL}/en/login`,
+			ko: `${SITE_URL}/ko/login`,
 		},
 	},
 	verification: {

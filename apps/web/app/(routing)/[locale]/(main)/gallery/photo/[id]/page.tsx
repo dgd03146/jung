@@ -6,8 +6,8 @@ import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import {
 	createBreadcrumbSchema,
 	createImageObjectSchema,
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -81,10 +81,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl()}/gallery/photo/${id}`,
+				canonical: `${SITE_URL}/gallery/photo/${id}`,
 				languages: {
-					en: `${getApiUrl()}/en/gallery/photo/${id}`,
-					ko: `${getApiUrl()}/ko/gallery/photo/${id}`,
+					en: `${SITE_URL}/en/gallery/photo/${id}`,
+					ko: `${SITE_URL}/ko/gallery/photo/${id}`,
 				},
 			},
 			verification: {

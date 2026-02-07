@@ -2,7 +2,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
 import { PlacesLayout } from './_components/PlacesLayout';
@@ -38,10 +38,10 @@ export const metadata: Metadata = {
 		'favorite places',
 	],
 	alternates: {
-		canonical: `${getApiUrl()}/places`,
+		canonical: `${SITE_URL}/places`,
 		languages: {
-			en: `${getApiUrl()}/en/places`,
-			ko: `${getApiUrl()}/ko/places`,
+			en: `${SITE_URL}/en/places`,
+			ko: `${SITE_URL}/ko/places`,
 		},
 	},
 	robots: {

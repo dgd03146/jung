@@ -65,6 +65,7 @@ export type Article = {
 	keywords?: string[];
 	articleSection?: string;
 	wordCount?: number;
+	timeRequired?: string;
 	inLanguage?: string;
 };
 

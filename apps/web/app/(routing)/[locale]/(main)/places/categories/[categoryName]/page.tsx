@@ -4,8 +4,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { PLACE_DEFAULTS } from '@/fsd/entities/place';
 import {
 	capitalizeFirstLetter,
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
@@ -46,13 +46,13 @@ export async function generateMetadata({
 			description: categoryDescription,
 			images: ['/images/og/place-default.jpg'],
 		},
-		authors: [{ name: 'JUNG', url: getApiUrl() }],
+		authors: [{ name: 'JUNG', url: SITE_URL }],
 		keywords: [categoryName, 'JUNG Place', '여행지 추천'],
 		alternates: {
-			canonical: `${getApiUrl()}/places/categories/${categoryName}`,
+			canonical: `${SITE_URL}/places/categories/${categoryName}`,
 			languages: {
-				en: `${getApiUrl()}/en/places/categories/${categoryName}`,
-				ko: `${getApiUrl()}/ko/places/categories/${categoryName}`,
+				en: `${SITE_URL}/en/places/categories/${categoryName}`,
+				ko: `${SITE_URL}/ko/places/categories/${categoryName}`,
 			},
 		},
 		verification: {

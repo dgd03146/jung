@@ -7,8 +7,8 @@ import { PlaceViewProvider } from '@/fsd/features/place';
 import {
 	createBreadcrumbSchema,
 	createPlaceSchema,
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -75,16 +75,16 @@ export async function generateMetadata({
 				...(place.tags || []),
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl()}/places/${id}`,
+				canonical: `${SITE_URL}/places/${id}`,
 				languages: {
-					en: `${getApiUrl()}/en/places/${id}`,
-					ko: `${getApiUrl()}/ko/places/${id}`,
+					en: `${SITE_URL}/en/places/${id}`,
+					ko: `${SITE_URL}/ko/places/${id}`,
 				},
 			},
 			verification: {
 				google: getGoogleVerificationCode(),
 			},
-			authors: [{ name: 'JUNG', url: getApiUrl() }],
+			authors: [{ name: 'JUNG', url: SITE_URL }],
 		};
 	} catch (error) {
 		console.error('Error generating metadata:', error);
