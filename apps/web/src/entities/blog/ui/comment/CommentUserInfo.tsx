@@ -1,4 +1,5 @@
-import { Box, Flex, Typography } from '@jung/design-system/components';
+import { Flex, Typography } from '@jung/design-system/components';
+import Image from 'next/image';
 import { formatRelativeTime } from '@/fsd/shared';
 import * as styles from './CommentUserInfo.css';
 
@@ -14,11 +15,11 @@ export const CommentUserInfo = ({
 	createdAt,
 }: CommentUserInfoProps) => (
 	<Flex gap='2' align='center' marginBottom='3'>
-		<Box
-			as='img'
-			loading='lazy'
-			src={avatarUrl || ''}
+		<Image
+			src={avatarUrl || '/images/default-avatar.png'}
 			alt={userName}
+			width={40}
+			height={40}
 			className={styles.userAvatar}
 		/>
 		<Flex direction='column'>
