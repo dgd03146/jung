@@ -2,7 +2,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
 import { BlogLayout } from './_components/BlogLayout';
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 	title: 'Blog',
 
 	keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
-	authors: [{ name: 'JUNG', url: getApiUrl() }],
+	authors: [{ name: 'JUNG', url: SITE_URL }],
 	robots: {
 		index: true,
 		follow: true,
@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${getApiUrl()}/blog`,
+		canonical: `${SITE_URL}/blog`,
 		languages: {
-			en: `${getApiUrl()}/en/blog`,
-			ko: `${getApiUrl()}/ko/blog`,
+			en: `${SITE_URL}/en/blog`,
+			ko: `${SITE_URL}/ko/blog`,
 		},
 	},
 	verification: {

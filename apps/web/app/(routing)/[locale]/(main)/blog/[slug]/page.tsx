@@ -7,8 +7,10 @@ import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
 	createArticleSchema,
 	createBreadcrumbSchema,
-	getApiUrl,
 	getGoogleVerificationCode,
+	getReadingTimeMinutes,
+	getWordCount,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -73,13 +75,13 @@ export async function generateMetadata({
 					`JUNG의 블로그에서 "${post.title}" 포스트를 읽어보세요.`,
 				images: [post.imagesrc || '/images/og/blog-default.jpg'],
 			},
-			authors: [{ name: 'JUNG', url: getApiUrl() }],
+			authors: [{ name: 'JUNG', url: SITE_URL }],
 			keywords: [...(post.tags || []), 'JUNG Blog', '개발 블로그'],
 			alternates: {
-				canonical: `${getApiUrl()}/blog/${post.id}`,
+				canonical: `${SITE_URL}/blog/${post.id}`,
 				languages: {
-					en: `${getApiUrl()}/en/blog/${post.id}`,
-					ko: `${getApiUrl()}/ko/blog/${post.id}`,
+					en: `${SITE_URL}/en/blog/${post.id}`,
+					ko: `${SITE_URL}/ko/blog/${post.id}`,
 				},
 			},
 			verification: {
@@ -147,6 +149,8 @@ export default async function Page({
 				slug: post.id,
 				tags: post.tags || undefined,
 				category: post.category,
+				wordCount: getWordCount(post.content),
+				readingTimeMinutes: getReadingTimeMinutes(post.content),
 				lang: locale,
 			})
 		: null;

@@ -1,4 +1,13 @@
-// JSON-LD Schema Constants
+// Site URL Constants
+// Single source of truth for all URL generation across the app:
+// - Metadata (canonical, alternates, authors)
+// - Sitemap generation
+// - RSS/Atom feeds
+// - JSON-LD schemas
+// - OG images
+//
+// DO NOT use getApiUrl() or hardcode URLs elsewhere.
+// Always import SITE_URL from this file.
 
 export const SITE_URL = 'https://www.geojung.com';
 export const SITE_NAME = 'JUNG Archive';

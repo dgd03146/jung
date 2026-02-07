@@ -11,6 +11,7 @@ type ArticleSchemaInput = {
 	tags?: string[];
 	category?: string;
 	wordCount?: number;
+	readingTimeMinutes?: number;
 	lang?: string;
 };
 
@@ -24,6 +25,7 @@ export const createArticleSchema = ({
 	tags,
 	category,
 	wordCount,
+	readingTimeMinutes,
 	lang = 'ko',
 }: ArticleSchemaInput): WithContext<Article> => {
 	return {
@@ -55,6 +57,7 @@ export const createArticleSchema = ({
 		keywords: tags,
 		articleSection: category,
 		wordCount,
+		timeRequired: readingTimeMinutes ? `PT${readingTimeMinutes}M` : undefined,
 		inLanguage: lang,
 	};
 };

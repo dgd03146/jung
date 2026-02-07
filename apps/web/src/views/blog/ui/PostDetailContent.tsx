@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { usePostQuery } from '@/fsd/entities/blog';
 import { TogglePostLike } from '@/fsd/features/blog';
+import { extractHeadings } from '@/fsd/shared';
 import { EditorSkeleton } from '@/fsd/shared/ui/EditorSkeleton';
 
 const BlockNoteEditor = dynamic(
@@ -21,9 +22,11 @@ export const PostDetailContent = ({ postId }: { postId: string }) => {
 		throw new Error('Post not found');
 	}
 
+	const headings = extractHeadings(post.content);
+
 	return (
 		<>
-			<BlockNoteEditor initialContent={post.content} />
+			<BlockNoteEditor initialContent={post.content} headings={headings} />
 			<TogglePostLike postId={postId} />
 		</>
 	);

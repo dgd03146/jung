@@ -32,13 +32,15 @@ export const useMapState = (
 	const previousPlace = useRef<Place | undefined>(undefined);
 
 	const markersData = useMemo(() => {
-		if (place === previousPlace.current && places === previousPlaces.current) {
-			return place ? [place] : places;
+		const hasNoChanges =
+			place === previousPlace.current && places === previousPlaces.current;
+
+		if (!hasNoChanges) {
+			previousPlace.current = place;
+			previousPlaces.current = places;
 		}
 
-		previousPlace.current = place;
-		previousPlaces.current = places;
-		return place ? [place] : places || [];
+		return place ? [place] : (places ?? []);
 	}, [places, place]);
 
 	const mapConfig = useMemo(() => {
