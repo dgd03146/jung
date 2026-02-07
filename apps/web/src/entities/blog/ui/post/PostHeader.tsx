@@ -2,7 +2,12 @@
 
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import { usePostQuery } from '@/fsd/entities/blog';
-import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
+import {
+	BlurImage,
+	calculateReadingTime,
+	capitalizeFirstLetter,
+	formatDate,
+} from '@/fsd/shared';
 import * as styles from './PostHeader.css';
 
 type Props = {
@@ -37,7 +42,7 @@ const PostHeader = ({ postId }: Props) => {
 				</Box>
 				<Stack align={'left'} rowGap={{ base: '2', laptop: '4' }} flex={1}>
 					<Typography.SubText level={3} color='primary'>
-						{formatDate(post.date)}
+						{formatDate(post.date)} · {calculateReadingTime(post.content)}
 					</Typography.SubText>
 					<Typography.Heading level={3}>{post.title}</Typography.Heading>
 					<Typography.Text
