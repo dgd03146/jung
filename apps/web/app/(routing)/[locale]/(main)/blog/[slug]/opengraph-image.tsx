@@ -1,5 +1,7 @@
+import { createClient } from '@supabase/supabase-js';
 import { ImageResponse } from 'next/og';
-import { getCaller } from '@/fsd/shared/index.server';
+
+export const dynamic = 'force-dynamic';
 
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
@@ -28,14 +30,8 @@ export const alt = 'JUNG Blog';
 export const size = { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT };
 export const contentType = 'image/png';
 
-export default async function Image({
-	params,
-}: {
-	params: Promise<{ slug: string }>;
-}) {
-	const { slug } = await params;
-
-	const defaultImage = new ImageResponse(
+const createDefaultImage = () =>
+	new ImageResponse(
 		<div
 			style={{
 				width: '100%',
@@ -54,88 +50,105 @@ export default async function Image({
 		size,
 	);
 
-	let post:
-		| Awaited<ReturnType<ReturnType<typeof getCaller>['blog']['getPostById']>>
-		| undefined;
-	try {
-		post = await getCaller().blog.getPostById({ postId: slug });
-		if (!post) {
-			return defaultImage;
-		}
-	} catch {
-		return defaultImage;
+export default async function Image({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}) {
+	const { slug } = await params;
+
+	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+	const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+	if (!supabaseUrl || !supabaseKey) {
+		return createDefaultImage();
 	}
 
-	return new ImageResponse(
-		<div
-			style={{
-				width: '100%',
-				height: '100%',
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				padding: CONTAINER_PADDING,
-				backgroundColor: COLORS.POST_BG,
-				backgroundImage: COLORS.GRADIENT,
-			}}
-		>
-			<div
-				style={{
-					fontSize: FONT_SIZE.CATEGORY,
-					color: COLORS.CATEGORY_TEXT,
-					textTransform: 'uppercase',
-					letterSpacing: '0.15em',
-					fontWeight: 500,
-				}}
-			>
-				{post.category}
-			</div>
+	try {
+		const supabase = createClient(supabaseUrl, supabaseKey);
+		const { data: post } = await supabase
+			.from('posts')
+			.select('title, category')
+			.eq('id', slug)
+			.single();
 
-			<div
-				style={{
-					fontSize: FONT_SIZE.POST_TITLE,
-					fontWeight: 700,
-					color: COLORS.WHITE,
-					lineHeight: 1.2,
-					maxWidth: '90%',
-					display: '-webkit-box',
-					WebkitLineClamp: TITLE_MAX_LINES,
-					WebkitBoxOrient: 'vertical',
-					overflow: 'hidden',
-				}}
-			>
-				{post.title}
-			</div>
+		if (!post) {
+			return createDefaultImage();
+		}
 
+		return new ImageResponse(
 			<div
 				style={{
+					width: '100%',
+					height: '100%',
 					display: 'flex',
+					flexDirection: 'column',
 					justifyContent: 'space-between',
-					alignItems: 'center',
+					padding: CONTAINER_PADDING,
+					backgroundColor: COLORS.POST_BG,
+					backgroundImage: COLORS.GRADIENT,
 				}}
 			>
 				<div
 					style={{
-						fontSize: FONT_SIZE.AUTHOR,
-						color: COLORS.WHITE,
-						fontWeight: 700,
-						letterSpacing: '0.05em',
+						fontSize: FONT_SIZE.CATEGORY,
+						color: COLORS.CATEGORY_TEXT,
+						textTransform: 'uppercase',
+						letterSpacing: '0.15em',
+						fontWeight: 500,
 					}}
 				>
-					JUNG.
+					{post.category}
 				</div>
+
 				<div
 					style={{
-						fontSize: FONT_SIZE.SITE_URL,
-						color: COLORS.SITE_URL_TEXT,
+						fontSize: FONT_SIZE.POST_TITLE,
+						fontWeight: 700,
+						color: COLORS.WHITE,
+						lineHeight: 1.2,
+						maxWidth: '90%',
+						display: '-webkit-box',
+						WebkitLineClamp: TITLE_MAX_LINES,
+						WebkitBoxOrient: 'vertical',
+						overflow: 'hidden',
 					}}
 				>
-					geojung.com
+					{post.title}
 				</div>
-			</div>
-		</div>,
-		{
-			...size,
-		},
-	);
+
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+					}}
+				>
+					<div
+						style={{
+							fontSize: FONT_SIZE.AUTHOR,
+							color: COLORS.WHITE,
+							fontWeight: 700,
+							letterSpacing: '0.05em',
+						}}
+					>
+						JUNG.
+					</div>
+					<div
+						style={{
+							fontSize: FONT_SIZE.SITE_URL,
+							color: COLORS.SITE_URL_TEXT,
+						}}
+					>
+						geojung.com
+					</div>
+				</div>
+			</div>,
+			{
+				...size,
+			},
+		);
+	} catch {
+		return createDefaultImage();
+	}
 }
