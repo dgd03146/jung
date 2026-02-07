@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { formatRelativeTime } from '@/fsd/shared';
 import * as styles from './CommentUserInfo.css';
 
+const AVATAR_SIZE = 40;
+
 interface CommentUserInfoProps {
 	avatarUrl: string;
 	userName: string;
@@ -18,8 +20,8 @@ export const CommentUserInfo = ({
 		<Image
 			src={avatarUrl || '/images/default-avatar.png'}
 			alt={userName}
-			width={40}
-			height={40}
+			width={AVATAR_SIZE}
+			height={AVATAR_SIZE}
 			className={styles.userAvatar}
 		/>
 		<Flex direction='column'>

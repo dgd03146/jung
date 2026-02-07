@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { getUserDisplayName } from '@/fsd/shared';
 import * as styles from './UserInfo.css';
 
+const AVATAR_SIZE = 40;
+
 export const UserInfo = ({ user }: { user: User }) => {
 	const displayName = getUserDisplayName(user);
 
@@ -23,8 +25,8 @@ export const UserInfo = ({ user }: { user: User }) => {
 					<Image
 						src={avatarUrl}
 						alt='Profile'
-						width={40}
-						height={40}
+						width={AVATAR_SIZE}
+						height={AVATAR_SIZE}
 						className={styles.avatar}
 					/>
 				</Box>
