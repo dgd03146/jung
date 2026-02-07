@@ -1,4 +1,5 @@
 import { Box } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import type { PlacePhoto } from '@jung/shared/types';
 import { BlurImage } from '@/fsd/shared/ui';
 import type { GridVariant } from './PlacePhotoGrid.css';
@@ -33,7 +34,7 @@ export function PlacePhotoGrid({ photos }: PlacePhotoGridProps) {
 					}`}
 				>
 					<BlurImage
-						src={photo.url}
+						src={getImageUrl(photo.url)}
 						alt={`Photo ${index + 1}`}
 						fill
 						priority={index === 0}

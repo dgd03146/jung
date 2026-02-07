@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import { usePostQuery } from '@/fsd/entities/blog';
 import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
 import * as styles from './PostHeader.css';
@@ -28,7 +29,7 @@ const PostHeader = ({ postId }: Props) => {
 					display={{ base: 'none', laptop: 'block' }}
 				>
 					<BlurImage
-						src={post.imagesrc}
+						src={getImageUrl(post.imagesrc)}
 						alt='Featured Image'
 						fill
 						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'

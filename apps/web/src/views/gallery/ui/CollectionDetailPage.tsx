@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Container, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import { useCollectionQuery } from '@/fsd/entities/gallery';
 import { FilteredCollectionView } from '@/fsd/features/gallery';
 import { BlurImage } from '@/fsd/shared';
@@ -20,7 +21,7 @@ export const CollectionDetailPage = ({
 		<Container>
 			<Box className={styles.headerSection}>
 				<BlurImage
-					src={collection.cover_image}
+					src={getImageUrl(collection.cover_image)}
 					alt={collection.title}
 					fill
 					priority

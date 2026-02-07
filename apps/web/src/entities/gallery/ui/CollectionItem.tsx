@@ -1,4 +1,5 @@
 import { Box, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import type { Collection } from '@jung/shared/types';
 import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
@@ -19,7 +20,7 @@ export const CollectionItem = ({ collection, index }: CollectionItemProps) => {
 				<MotionCard>
 					<Box className={styles.imageWrapper}>
 						<BlurImage
-							src={collection.cover_image}
+							src={getImageUrl(collection.cover_image)}
 							alt={collection.title}
 							fill
 							sizes='(max-width: 768px) 50vw, 33vw'
