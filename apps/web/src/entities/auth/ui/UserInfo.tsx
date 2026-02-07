@@ -24,7 +24,7 @@ export const UserInfo = ({ user }: { user: User }) => {
 				<Box className={styles.avatarWrapper}>
 					<Image
 						src={avatarUrl}
-						alt='Profile'
+						alt={`${displayName}의 프로필 사진`}
 						width={AVATAR_SIZE}
 						height={AVATAR_SIZE}
 						className={styles.avatar}

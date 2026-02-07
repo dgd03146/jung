@@ -7,7 +7,13 @@ interface LoadingSpinnerProps {
 }
 
 const LoadingSpinner = ({ size = 'small' }: LoadingSpinnerProps) => {
-	return <Box className={styles.spinner({ size })} />;
+	return (
+		<Box
+			className={styles.spinner({ size })}
+			role='status'
+			aria-label='로딩 중'
+		/>
+	);
 };
 
 export default LoadingSpinner;
