@@ -18,11 +18,11 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 
 	if (input.file) {
 		const {
-			url: image_url,
+			key: image_url,
 			width,
 			height,
 		} = await uploadGalleryImage(input.file);
-		imageData = { image_url, width, height };
+		imageData = { image_url, width, height }; // R2 key 저장
 	}
 
 	const { data: photo, error: photoError } = await supabase

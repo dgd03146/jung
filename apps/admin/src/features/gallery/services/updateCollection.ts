@@ -1,7 +1,7 @@
 import type { Collection } from '@jung/shared/types';
-import { STORAGE } from '@/fsd/features/gallery/config';
 import { uploadGalleryImage } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
+import { deleteFromR2 } from '@/fsd/shared/lib';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
 interface UpdateCollectionData {
@@ -22,6 +22,7 @@ export const updateCollection = async (
 	};
 
 	if (coverImageFile) {
+		// 기존 이미지 삭제
 		const { data: existingCollection, error: fetchError } = await supabase
 			.from('collections')
 			.select('cover_image')
@@ -33,20 +34,12 @@ export const updateCollection = async (
 		}
 
 		if (existingCollection?.cover_image) {
-			const imagePath = existingCollection.cover_image
-				.split(`${STORAGE.BUCKETS.GALLERY}/`)
-				.pop();
-			const { error: storageError } = await supabase.storage
-				.from(STORAGE.BUCKETS.GALLERY)
-				.remove([imagePath]);
-
-			if (storageError) {
-				throw new ApiError('Failed to delete old image file', 'STORAGE_ERROR');
-			}
+			await deleteFromR2(existingCollection.cover_image);
 		}
 
-		const coverImageUrl = await uploadGalleryImage(coverImageFile);
-		updateData.cover_image = coverImageUrl.url;
+		// 새 이미지 업로드
+		const { key } = await uploadGalleryImage(coverImageFile);
+		updateData.cover_image = key;
 	}
 
 	const { data: updatedCollection, error } = await supabase

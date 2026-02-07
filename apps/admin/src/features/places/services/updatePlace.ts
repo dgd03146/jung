@@ -1,5 +1,6 @@
 import type { Place, PlaceImageUpload } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
+import { deleteFromR2 } from '@/fsd/shared/lib';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadPlaceImage } from '../lib/uploadImage';
 
@@ -20,16 +21,18 @@ export interface UpdatePlaceInput {
 
 export const updatePlace = async (input: UpdatePlaceInput): Promise<Place> => {
 	try {
+		// 새 이미지 업로드
 		const newImages = input.images.filter(
 			(img) => img.status === 'new' && img.file,
 		);
 		const uploadedPhotos = await Promise.all(
 			newImages.map(async (image) => {
-				const { url } = await uploadPlaceImage(image.file!);
-				return { url };
+				const { key } = await uploadPlaceImage(image.file!);
+				return { url: key }; // 기존 스키마 호환
 			}),
 		);
 
+		// 기존 이미지 유지
 		const remainingPhotos = input.images
 			.filter((img) => img.status === 'existing')
 			.map((img) => ({ url: img.url }));
@@ -54,14 +57,10 @@ export const updatePlace = async (input: UpdatePlaceInput): Promise<Place> => {
 			.single();
 
 		if (placeError) {
+			// 실패 시 새로 업로드한 이미지만 삭제
 			await Promise.all(
 				uploadedPhotos.map(async ({ url }) => {
-					const filePath = new URL(url).pathname.split('/').pop();
-					if (filePath) {
-						await supabase.storage
-							.from('places_images')
-							.remove([`uploads/${filePath}`]);
-					}
+					await deleteFromR2(url);
 				}),
 			);
 			throw ApiError.fromPostgrestError(placeError);

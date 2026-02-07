@@ -1,5 +1,6 @@
 import type { Place } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
+import { deleteFromR2 } from '@/fsd/shared/lib';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadPlaceImage } from '../lib/uploadImage';
 
@@ -19,11 +20,11 @@ export interface CreatePlaceInput {
 
 export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 	try {
+		// R2에 업로드하고 key 배열 생성
 		const uploadedPhotos = await Promise.all(
 			input.files.map(async (file) => {
-				const { url } = await uploadPlaceImage(file);
-
-				return { url };
+				const { key } = await uploadPlaceImage(file);
+				return { url: key }; // 기존 스키마 호환을 위해 url 필드에 key 저장
 			}),
 		);
 
@@ -49,14 +50,10 @@ export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 			.single();
 
 		if (placeError) {
+			// 실패 시 업로드된 이미지 삭제
 			await Promise.all(
 				uploadedPhotos.map(async (photo) => {
-					const filePath = new URL(photo.url).pathname.split('/').pop();
-					if (filePath) {
-						await supabase.storage
-							.from('places_images')
-							.remove([`uploads/${filePath}`]);
-					}
+					await deleteFromR2(photo.url);
 				}),
 			);
 			throw ApiError.fromPostgrestError(placeError);
