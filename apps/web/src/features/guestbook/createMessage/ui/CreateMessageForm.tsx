@@ -9,7 +9,12 @@ import {
 } from '@jung/design-system/components';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { GUESTBOOK_COLORS, GUESTBOOK_EMOJIS } from '@/fsd/entities/guestbook';
+import {
+	GUESTBOOK_COLORS,
+	GUESTBOOK_EMOJIS,
+	MESSAGE_MAX_LENGTH,
+	NICKNAME_MAX_LENGTH,
+} from '@/fsd/entities/guestbook';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
@@ -125,7 +130,7 @@ export const CreateMessageForm = () => {
 							value={nickname}
 							onChange={(e) => setNickname(e.target.value)}
 							placeholder={t('nicknamePlaceholder')}
-							maxLength={20}
+							maxLength={NICKNAME_MAX_LENGTH}
 							className={styles.nicknameInput}
 						/>
 					</Stack>
@@ -136,7 +141,7 @@ export const CreateMessageForm = () => {
 					value={message}
 					onChange={(e) => handleMessageChange(e.target.value)}
 					placeholder={t('messagePlaceholder')}
-					maxLength={50}
+					maxLength={MESSAGE_MAX_LENGTH}
 					rows={2}
 					className={styles.textarea({
 						backgroundColor: selectedColor,

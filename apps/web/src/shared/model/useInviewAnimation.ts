@@ -3,6 +3,8 @@
 import { useAnimation, useInView } from 'motion/react';
 import { type RefObject, useEffect } from 'react';
 
+const VISIBILITY_THRESHOLD = 0.5;
+
 type UseInViewAnimationProps = {
 	once?: boolean;
 	repeatDelay?: number;
@@ -15,7 +17,7 @@ export const useInViewAnimation = ({
 	ref,
 }: UseInViewAnimationProps) => {
 	const controls = useAnimation();
-	const isInView = useInView(ref, { amount: 0.5, once });
+	const isInView = useInView(ref, { amount: VISIBILITY_THRESHOLD, once });
 
 	useEffect(() => {
 		let timeout: NodeJS.Timeout;
