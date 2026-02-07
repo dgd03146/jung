@@ -166,7 +166,17 @@ export default async function Page({
 			<JsonLd data={breadcrumbSchema} />
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Container className={styles.container}>
-					<PostHeader postId={postId} />
+					{post && (
+						<PostHeader
+							post={{
+								imagesrc: post.imagesrc,
+								date: post.date,
+								title: post.title,
+								description: post.description,
+								category: post.category,
+							}}
+						/>
+					)}
 					<Flex
 						flexDirection={{ base: 'column-reverse', laptop: 'row' }}
 						gap={{ base: '0', laptop: '12' }}
