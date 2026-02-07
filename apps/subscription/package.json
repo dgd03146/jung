@@ -1,0 +1,27 @@
+{
+  "name": "subscription",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.158.4",
+    "@jung/design-system": "workspace:*",
+    "@jung/shared": "workspace:*",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@tanstack/router-devtools": "^1.144.0",
+    "@tanstack/router-plugin": "^1.145.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.3.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
