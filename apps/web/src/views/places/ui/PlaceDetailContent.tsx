@@ -5,7 +5,7 @@ import {
 	SharePlaceButton,
 	TogglePlaceViewButton,
 	usePlaceView,
-	ViewMap,
+	ViewMapDynamic,
 } from '@/fsd/features/place';
 
 export const PlaceDetailContent = ({ placeId }: { placeId: string }) => {
@@ -19,7 +19,7 @@ export const PlaceDetailContent = ({ placeId }: { placeId: string }) => {
 				isListView ? (
 					<PlacePhotoGrid photos={place.photos} />
 				) : (
-					<ViewMap place={place} />
+					<ViewMapDynamic place={place} />
 				)
 			}
 			renderActions={() => (
