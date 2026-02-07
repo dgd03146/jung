@@ -1,7 +1,5 @@
-'use client';
-
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
-import { usePostQuery } from '@/fsd/entities/blog';
+import type { Post } from '@jung/shared/types';
 import {
 	BlurImage,
 	calculateReadingTime,
@@ -10,16 +8,23 @@ import {
 } from '@/fsd/shared';
 import * as styles from './PostHeader.css';
 
+/**
+ * PostHeader - Server Component
+ *
+ * Receives post data directly from parent instead of fetching via useQuery.
+ * This reduces serialization overhead (only needed fields vs entire post object)
+ * and eliminates client-side hydration for this component.
+ *
+ * @see Vercel Best Practices Rule 3.2: Minimize Serialization at RSC Boundaries
+ */
 type Props = {
-	postId: string;
+	post: Pick<
+		Post,
+		'imagesrc' | 'date' | 'title' | 'description' | 'category' | 'content'
+	>;
 };
 
-const PostHeader = ({ postId }: Props) => {
-	const { data: post } = usePostQuery(postId);
-
-	if (!post) {
-		throw new Error('Post not found');
-	}
+const PostHeader = ({ post }: Props) => {
 	return (
 		<Box
 			className={styles.container}

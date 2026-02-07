@@ -17,3 +17,4 @@ export { MarkerProvider, useMarker } from './viewMap/model/MarkerContext';
 export { useMapLoad } from './viewMap/model/useMapLoad';
 export { useMapState } from './viewMap/model/useMapState';
 export { ViewMap } from './viewMap/ui/ViewMap';
+export { ViewMapDynamic } from './viewMap/ui/ViewMapDynamic';
