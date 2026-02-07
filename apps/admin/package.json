@@ -17,6 +17,7 @@
     "@blocknote/mantine": "^0.46.1",
     "@blocknote/react": "^0.46.1",
     "@hello-pangea/dnd": "^18.0.1",
+    "@jung/ai-translator": "workspace:*",
     "@jung/api": "workspace:*",
     "@jung/design-system": "workspace:*",
     "@jung/shared": "workspace:*",

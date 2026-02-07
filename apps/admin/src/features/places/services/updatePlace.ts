@@ -1,6 +1,7 @@
 import type { Place, PlaceImageUpload } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translatePlace } from '@/fsd/shared/lib/translator';
 import { uploadPlaceImage } from '../lib/uploadImage';
 
 export interface UpdatePlaceInput {
@@ -36,12 +37,26 @@ export const updatePlace = async (input: UpdatePlaceInput): Promise<Place> => {
 
 		const allPhotos = [...remainingPhotos, ...uploadedPhotos];
 
+		// Auto-translate content to English
+		const translations = await translatePlace({
+			title: input.title,
+			description: input.description,
+			address: input.address,
+			tags: input.tags,
+			tips: input.tips,
+		});
+
 		const { data: place, error: placeError } = await supabase
 			.from('places')
 			.update({
 				title: input.title,
 				description: input.description,
 				address: input.address,
+				title_en: translations.title_en,
+				description_en: translations.description_en,
+				address_en: translations.address_en,
+				tags_en: translations.tags_en,
+				tips_en: translations.tips_en,
 				photos: allPhotos,
 				category_id: input.category_id,
 				coordinates: input.coordinates,

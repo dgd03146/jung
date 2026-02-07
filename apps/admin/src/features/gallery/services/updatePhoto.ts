@@ -1,6 +1,7 @@
 import type { Photo } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translatePhoto } from '@/fsd/shared/lib/translator';
 import { uploadGalleryImage } from '../lib/uploadImage';
 
 export interface UpdatePhotoInput {
@@ -25,6 +26,13 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 		imageData = { image_url, width, height };
 	}
 
+	// Auto-translate content to English
+	const translations = await translatePhoto({
+		title: input.title,
+		description: input.description,
+		tags: input.tags,
+	});
+
 	const { data: photo, error: photoError } = await supabase
 		.from('photos')
 		.update({
@@ -32,6 +40,9 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 			description: input.description,
 			alt: input.alt,
 			tags: input.tags || [],
+			title_en: translations.title_en,
+			description_en: translations.description_en,
+			tags_en: translations.tags_en,
 			...imageData,
 			updated_at: new Date().toISOString(),
 		})
