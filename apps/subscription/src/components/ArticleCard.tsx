@@ -1,13 +1,5 @@
 import { Link } from '@tanstack/react-router';
-
-interface Article {
-	id: string;
-	title: string;
-	summary: string;
-	category: string;
-	published_at: string;
-	original_url: string;
-}
+import type { Article } from '../lib';
 
 interface ArticleCardProps {
 	article: Article;

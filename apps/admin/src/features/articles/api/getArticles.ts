@@ -25,20 +25,25 @@ export const fetchArticles = async ({
 	}
 
 	if (filter) {
-		query = query.or(`title.ilike.%${filter}%,summary.ilike.%${filter}%`);
+		const escaped = filter
+			.replace(/[%_]/g, (char) => `\\${char}`)
+			.replace(/[(),.']/g, '');
+		if (/^[\w\s\-가-힣]+$/.test(escaped)) {
+			query = query.or(`title.ilike.%${escaped}%,summary.ilike.%${escaped}%`);
+		}
 	}
 
 	query = query.range(from, to);
 
 	const { data, error, count } = await query;
 
-	const totalCount = count ?? 0;
-	const totalPages = Math.ceil(totalCount / pageSize);
-	const hasMore = page < totalPages - 1;
-
 	if (error) {
 		throw new Error(`Failed to fetch articles: ${error.message}`);
 	}
+
+	const totalCount = count ?? 0;
+	const totalPages = Math.ceil(totalCount / pageSize);
+	const hasMore = page < totalPages - 1;
 
 	return {
 		articles: data ?? [],

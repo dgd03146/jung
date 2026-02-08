@@ -1,6 +1,5 @@
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import { ErrorCodes } from '@/fsd/shared/lib/errors/errorCodes';
 
 export const deleteArticleById = async (
 	articleId: string,
@@ -18,10 +17,7 @@ export const deleteArticleById = async (
 		return true;
 	} catch (error) {
 		if (error instanceof ApiError) {
-			throw new ApiError(
-				'Failed to delete the article',
-				ErrorCodes.INTERNAL_SERVER_ERROR,
-			);
+			throw error;
 		}
 
 		throw new ApiError(

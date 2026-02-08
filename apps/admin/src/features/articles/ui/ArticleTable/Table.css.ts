@@ -1,41 +1,60 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
+const spacing = {
+	sm: '12px',
+	md: '16px',
+	lg: '24px',
+} as const;
+
+const fontSize = {
+	xs: '12px',
+	sm: '13px',
+	md: '14px',
+} as const;
+
+const colors = {
+	border: palette.white100,
+	background: palette.white100,
+	textMuted: palette.gray200,
+	textBody: palette.text,
+} as const;
+
 export const tableAction = style({
 	display: 'flex',
 	justifyContent: 'space-between',
 	alignItems: 'center',
-	marginBottom: '24px',
-	borderBottom: '1px solid #F1F5F9',
-	backgroundColor: '#F8FAFC',
+	marginBottom: spacing.lg,
+	borderBottom: `1px solid ${colors.border}`,
+	backgroundColor: colors.background,
 	flexWrap: 'wrap',
-	gap: '16px',
+	gap: spacing.md,
 });
 
 export const th = style({
-	padding: '16px 24px',
-	backgroundColor: 'white',
-	borderBottom: '1px solid #F1F5F9',
+	padding: `${spacing.md} ${spacing.lg}`,
+	backgroundColor: palette.white,
+	borderBottom: `1px solid ${colors.border}`,
 	textAlign: 'left',
 	whiteSpace: 'nowrap',
-	fontSize: '13px',
+	fontSize: fontSize.sm,
 	fontWeight: '600',
-	color: '#64748B',
+	color: colors.textMuted,
 	transition: 'all 0.2s ease',
 
 	'@media': {
 		'(max-width: 768px)': {
-			padding: '12px 16px',
-			fontSize: '12px',
+			padding: `${spacing.sm} ${spacing.md}`,
+			fontSize: fontSize.xs,
 		},
 	},
 });
 
 export const td = style({
-	padding: '16px 24px',
-	borderBottom: '1px solid #F1F5F9',
-	fontSize: '14px',
-	color: '#334155',
+	padding: `${spacing.md} ${spacing.lg}`,
+	borderBottom: `1px solid ${colors.border}`,
+	fontSize: fontSize.md,
+	color: colors.textBody,
 	transition: 'all 0.2s ease',
 	verticalAlign: 'middle',
 	maxWidth: '300px',
@@ -45,18 +64,18 @@ export const td = style({
 
 	'@media': {
 		'(max-width: 768px)': {
-			padding: '12px 16px',
-			fontSize: '13px',
+			padding: `${spacing.sm} ${spacing.md}`,
+			fontSize: fontSize.sm,
 		},
 	},
 });
 
 export const row = style({
 	transition: 'all 0.2s ease',
-	backgroundColor: 'white',
+	backgroundColor: palette.white,
 
 	':hover': {
-		backgroundColor: '#F8FAFC',
+		backgroundColor: colors.background,
 	},
 });
 
@@ -75,7 +94,7 @@ export const paginationButton = style({
 export const categoryBadge = style({
 	padding: '4px 8px',
 	borderRadius: '4px',
-	fontSize: '12px',
+	fontSize: fontSize.xs,
 	fontWeight: '500',
 	textTransform: 'uppercase',
 });
@@ -83,8 +102,8 @@ export const categoryBadge = style({
 export const frontendBadge = style([
 	categoryBadge,
 	{
-		backgroundColor: '#EEF2FF',
-		color: '#6366F1',
+		backgroundColor: palette.primary50,
+		color: palette.primary,
 	},
 ]);
 

@@ -20,10 +20,6 @@ export const useUpdateArticle = () => {
 				queryKey: articleKeys.detail(updatedArticle.id),
 			});
 
-			queryClient.setQueryData(
-				articleKeys.detail(String(updatedArticle.id)),
-				updatedArticle,
-			);
 			showToast('Article updated successfully!', 'success');
 
 			navigate({ to: '/articles' });
