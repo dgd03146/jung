@@ -1,5 +1,6 @@
 import type { Photo } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { escapePostgrestPattern, RRF_K } from '../lib/constants';
 import { generateEmbedding } from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
@@ -506,13 +507,13 @@ export const photosService = {
 		}>;
 	}> {
 		let vectorResults: Array<{
-			id: number;
+			id: string;
 			description: string;
 			tags: string[];
 			similarity: number;
 		}> = [];
 		let keywordResults: Array<{
-			id: number;
+			id: string;
 			description: string;
 			tags: string[];
 		}> = [];
@@ -537,21 +538,39 @@ export const photosService = {
 
 		// Keyword 검색
 		if (mode === 'keyword' || mode === 'hybrid') {
-			const { data } = await supabase
-				.from('photos')
-				.select('id, description, tags')
-				.or(`description.ilike.%${query}%,tags.cs.{${query}}`)
-				.limit(limit * 2);
+			const escaped = escapePostgrestPattern(query);
+			// Use separate queries to avoid injection via .or() string interpolation
+			const [descResult, tagsResult] = await Promise.all([
+				supabase
+					.from('photos')
+					.select('id, description, tags')
+					.ilike('description', `%${escaped}%`)
+					.limit(limit * 2),
+				supabase
+					.from('photos')
+					.select('id, description, tags')
+					.contains('tags', [query])
+					.limit(limit * 2),
+			]);
 
-			if (data) {
-				keywordResults = data;
+			// Merge and deduplicate results
+			const seen = new Set<string>();
+			const merged: typeof keywordResults = [];
+			for (const item of [
+				...(descResult.data || []),
+				...(tagsResult.data || []),
+			]) {
+				if (!seen.has(item.id)) {
+					seen.add(item.id);
+					merged.push(item);
+				}
 			}
+			keywordResults = merged;
 		}
 
 		// RRF 병합
-		const k = 60;
 		const scores = new Map<
-			number,
+			string,
 			{
 				score: number;
 				source: 'vector' | 'keyword' | 'both';
@@ -566,7 +585,7 @@ export const photosService = {
 		vectorResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'vector',
 				data: {
 					description: item.description,
@@ -579,7 +598,7 @@ export const photosService = {
 		keywordResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'keyword',
 				data: {
 					...existing?.data,
@@ -595,7 +614,7 @@ export const photosService = {
 
 		return {
 			items: sortedResults.map(([id, { source, data }]) => ({
-				id: String(id),
+				id,
 				description: data.description || '',
 				tags: data.tags,
 				similarity: data.similarity,

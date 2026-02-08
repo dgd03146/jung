@@ -33,13 +33,10 @@ const DELAY_MS = 200; // API 요청 간 딜레이 (rate limit 방지)
 
 const supabaseUrl =
 	process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey =
-	process.env.SUPABASE_SERVICE_ROLE_KEY ||
-	process.env.SUPABASE_ANON_KEY ||
-	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-	'';
+// Service role key is REQUIRED for write operations (embedding updates)
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 // ===== 유틸리티 함수 =====
@@ -159,7 +156,7 @@ async function generatePostEmbeddings(): Promise<{
 			const embedding = await generateEmbedding(text);
 			const { error: updateError } = await supabase
 				.from('posts')
-				.update({ embedding: JSON.stringify(embedding) })
+				.update({ embedding })
 				.eq('id', post.id);
 
 			if (updateError) throw updateError;
@@ -219,7 +216,7 @@ async function generatePhotoEmbeddings(): Promise<{
 			const embedding = await generateEmbedding(text);
 			const { error: updateError } = await supabase
 				.from('photos')
-				.update({ embedding: JSON.stringify(embedding) })
+				.update({ embedding })
 				.eq('id', photo.id);
 
 			if (updateError) throw updateError;
@@ -282,7 +279,7 @@ async function generatePlaceEmbeddings(): Promise<{
 			const embedding = await generateEmbedding(text);
 			const { error: updateError } = await supabase
 				.from('places')
-				.update({ embedding: JSON.stringify(embedding) })
+				.update({ embedding })
 				.eq('id', place.id);
 
 			if (updateError) throw updateError;
@@ -314,8 +311,18 @@ async function main() {
 		process.exit(1);
 	}
 
-	if (!supabaseUrl || !supabaseKey) {
-		console.error('❌ Supabase 환경변수가 설정되지 않았습니다.');
+	if (!supabaseUrl) {
+		console.error('❌ SUPABASE_URL 환경변수가 설정되지 않았습니다.');
+		process.exit(1);
+	}
+
+	if (!supabaseServiceRoleKey) {
+		console.error(
+			'❌ SUPABASE_SERVICE_ROLE_KEY 환경변수가 설정되지 않았습니다.',
+		);
+		console.error(
+			'   임베딩 업데이트에는 서비스 역할 키가 필요합니다. anon 키로는 쓰기 권한이 없습니다.',
+		);
 		process.exit(1);
 	}
 

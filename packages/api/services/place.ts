@@ -5,6 +5,7 @@ import type {
 	PlaceWithCategory,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { escapePostgrestPattern, RRF_K } from '../lib/constants';
 import { generateEmbedding } from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
@@ -54,8 +55,9 @@ export const placesService = {
 			}
 
 			if (search) {
+				const escaped = escapePostgrestPattern(search);
 				query = query.or(
-					`title.ilike.%${search}%,description.ilike.%${search}%`,
+					`title.ilike.%${escaped}%,description.ilike.%${escaped}%`,
 				);
 			}
 
@@ -277,14 +279,14 @@ export const placesService = {
 		}>;
 	}> {
 		let vectorResults: Array<{
-			id: number;
+			id: string;
 			title: string;
 			description: string;
 			address: string;
 			similarity: number;
 		}> = [];
 		let keywordResults: Array<{
-			id: number;
+			id: string;
 			title: string;
 			description: string;
 			address: string;
@@ -310,10 +312,11 @@ export const placesService = {
 
 		// Keyword 검색
 		if (mode === 'keyword' || mode === 'hybrid') {
+			const escaped = escapePostgrestPattern(query);
 			const { data } = await supabase
 				.from('places')
 				.select('id, title, description, address')
-				.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
+				.or(`title.ilike.%${escaped}%,description.ilike.%${escaped}%`)
 				.limit(limit * 2);
 
 			if (data) {
@@ -322,9 +325,8 @@ export const placesService = {
 		}
 
 		// RRF 병합
-		const k = 60;
 		const scores = new Map<
-			number,
+			string,
 			{
 				score: number;
 				source: 'vector' | 'keyword' | 'both';
@@ -340,7 +342,7 @@ export const placesService = {
 		vectorResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'vector',
 				data: {
 					title: item.title,
@@ -354,7 +356,7 @@ export const placesService = {
 		keywordResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'keyword',
 				data: {
 					...existing?.data,
@@ -371,7 +373,7 @@ export const placesService = {
 
 		return {
 			items: sortedResults.map(([id, { source, data }]) => ({
-				id: String(id),
+				id,
 				title: data.title || '',
 				description: data.description || '',
 				address: data.address,
