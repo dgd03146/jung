@@ -7,7 +7,7 @@ export const galleryRouter = router({
 	getAllPhotos: publicProcedure
 		.input(
 			z.object({
-				limit: z.number().min(1).max(100).default(20),
+				limit: z.number().min(1).max(500).default(20),
 				cursor: z.number().optional(),
 
 				sort: z.enum(['latest', 'popular']).default('latest'),

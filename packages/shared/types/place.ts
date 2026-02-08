@@ -29,7 +29,7 @@ export const PlaceSchema = z.object({
 });
 
 export const PlaceQueryParamsSchema = z.object({
-	limit: z.number().min(1).max(100).default(10),
+	limit: z.number().min(1).max(500).default(10),
 	cursor: z.string().optional(),
 	cat: z.string().optional(),
 	q: z.string().optional(),
