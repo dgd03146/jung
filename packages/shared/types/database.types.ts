@@ -14,6 +14,42 @@ export type Database = {
 	};
 	public: {
 		Tables: {
+			articles: {
+				Row: {
+					category: string;
+					created_at: string | null;
+					id: string;
+					my_thoughts: string | null;
+					original_url: string;
+					published_at: string | null;
+					summary: string;
+					title: string;
+					updated_at: string | null;
+				};
+				Insert: {
+					category: string;
+					created_at?: string | null;
+					id?: string;
+					my_thoughts?: string | null;
+					original_url: string;
+					published_at?: string | null;
+					summary: string;
+					title: string;
+					updated_at?: string | null;
+				};
+				Update: {
+					category?: string;
+					created_at?: string | null;
+					id?: string;
+					my_thoughts?: string | null;
+					original_url?: string;
+					published_at?: string | null;
+					summary?: string;
+					title?: string;
+					updated_at?: string | null;
+				};
+				Relationships: [];
+			};
 			categories: {
 				Row: {
 					color: string | null;
