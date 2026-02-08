@@ -1,4 +1,4 @@
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
@@ -8,6 +8,10 @@ import { profileData } from '@/fsd/features/chatbot/config/profileData';
 import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
+
+const google = createGoogleGenerativeAI({
+	apiKey: process.env.GEMINI_API_KEY,
+});
 
 // Request validation schema
 const chatMessageSchema = z.object({
@@ -93,7 +97,7 @@ export async function POST(req: Request) {
 	const dynamicPrompt = `${SYSTEM_PROMPT}\n\n## 검색된 관련 정보\n${context}`;
 
 	const result = streamText({
-		model: google('gemini-1.5-pro'),
+		model: google('gemini-2.5-flash'),
 		system: dynamicPrompt,
 		messages,
 		tools: {
