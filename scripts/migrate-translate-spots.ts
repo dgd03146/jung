@@ -54,7 +54,7 @@ async function fetchAllSpots() {
 	let from = 0;
 	while (true) {
 		const { data, error } = await supabase
-			.from('spots')
+			.from('places')
 			.select(
 				'id, title, description, address, tags, tips, title_en, description_en, address_en, tags_en, tips_en',
 			)
@@ -164,7 +164,7 @@ async function migrateAllSpots() {
 
 			// Update spot
 			const { error: updateError } = await supabase
-				.from('spots')
+				.from('places')
 				.update({
 					title_en,
 					description_en,
