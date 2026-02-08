@@ -26,16 +26,19 @@ export const deletePlace = async (id: string): Promise<void> => {
 			throw ApiError.fromPostgrestError(deleteError);
 		}
 
-		await Promise.all(
-			place.photos.map(async (photo: { url: string }) => {
-				const filePath = new URL(photo.url).pathname.split('/').pop();
-				if (filePath) {
-					await supabase.storage
-						.from('places_images')
-						.remove([`uploads/${filePath}`]);
-				}
-			}),
-		);
+		const photos = place.photos as Array<{ url: string }> | null;
+		if (photos) {
+			await Promise.all(
+				photos.map(async (photo) => {
+					const filePath = new URL(photo.url).pathname.split('/').pop();
+					if (filePath) {
+						await supabase.storage
+							.from('places_images')
+							.remove([`uploads/${filePath}`]);
+					}
+				}),
+			);
+		}
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

@@ -1,4 +1,5 @@
 import type { Photo } from '@jung/shared/types';
+import { mapDbPhotoToPhoto } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
@@ -62,7 +63,7 @@ export const getPhotosByCollectionId = async ({
 	}
 
 	return {
-		items: photos,
+		items: photos.map(mapDbPhotoToPhoto),
 		total: count ?? 0,
 		collectionTitle: collection.title,
 	};

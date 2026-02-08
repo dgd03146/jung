@@ -36,6 +36,9 @@ export const updateCollection = async (
 			const imagePath = existingCollection.cover_image
 				.split(`${STORAGE.BUCKETS.GALLERY}/`)
 				.pop();
+			if (!imagePath) {
+				throw new ApiError('Invalid image path', 'STORAGE_ERROR');
+			}
 			const { error: storageError } = await supabase.storage
 				.from(STORAGE.BUCKETS.GALLERY)
 				.remove([imagePath]);
@@ -64,5 +67,10 @@ export const updateCollection = async (
 		throw new ApiError('Failed to update collection', 'UPDATE_FAILED');
 	}
 
-	return updatedCollection;
+	return {
+		...updatedCollection,
+		description: updatedCollection.description ?? '',
+		created_at: updatedCollection.created_at ?? new Date().toISOString(),
+		photo_count: updatedCollection.photo_count ?? 0,
+	};
 };

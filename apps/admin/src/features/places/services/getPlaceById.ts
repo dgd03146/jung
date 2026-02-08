@@ -17,5 +17,18 @@ export const getPlaceById = async (id: string): Promise<Place> => {
 		throw new ApiError('Place not found', 'NOT_FOUND');
 	}
 
-	return place;
+	return {
+		...place,
+		category: place.category_id ?? '',
+		category_id: place.category_id ?? undefined,
+		photos:
+			(place.photos as Array<{ url: string; id?: string }> | null)?.map(
+				(p) => ({ ...p, status: 'existing' as const }),
+			) ?? [],
+		coordinates: place.coordinates as { lat: number; lng: number },
+		likes: place.likes ?? 0,
+		liked_by: place.liked_by ?? [],
+		tags: place.tags ?? undefined,
+		tips: place.tips ?? undefined,
+	};
 };

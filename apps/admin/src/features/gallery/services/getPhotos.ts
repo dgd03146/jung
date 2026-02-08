@@ -1,4 +1,5 @@
 import type { Photo } from '@jung/shared/types';
+import { mapDbPhotoToPhoto } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
@@ -59,7 +60,7 @@ export const fetchPhotos = async ({
 	}
 
 	return {
-		photos: data,
+		photos: data.map(mapDbPhotoToPhoto),
 		totalCount,
 		totalPages,
 		hasMore,

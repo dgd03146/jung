@@ -60,7 +60,7 @@ export const ArticleForm = () => {
 				original_url: article.original_url,
 				summary: article.summary,
 				my_thoughts: article.my_thoughts || '',
-				category: article.category,
+				category: article.category as ArticleCategory,
 				published_at: article.published_at
 					? article.published_at.split('T')[0]
 					: '',

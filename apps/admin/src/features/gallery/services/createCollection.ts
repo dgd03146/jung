@@ -38,5 +38,10 @@ export const createCollection = async (
 		throw new ApiError('Failed to create collection', 'INSERT_FAILED');
 	}
 
-	return newCollection;
+	return {
+		...newCollection,
+		description: newCollection.description ?? '',
+		created_at: newCollection.created_at ?? new Date().toISOString(),
+		photo_count: newCollection.photo_count ?? 0,
+	};
 };

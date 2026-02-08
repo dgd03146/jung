@@ -1,4 +1,5 @@
 import type { Photo } from '@jung/shared/types';
+import { mapDbPhotoToPhoto } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadGalleryImage } from '../lib/uploadImage';
@@ -25,6 +26,8 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 		imageData = { image_url, width, height };
 	}
 
+	const photoId = Number(input.id);
+
 	const { data: photo, error: photoError } = await supabase
 		.from('photos')
 		.update({
@@ -35,7 +38,7 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 			...imageData,
 			updated_at: new Date().toISOString(),
 		})
-		.eq('id', input.id)
+		.eq('id', photoId)
 		.select()
 		.single();
 
@@ -50,14 +53,14 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 	const { data: existingCollection } = await supabase
 		.from('collection_photos')
 		.select('collection_id')
-		.eq('photo_id', input.id)
+		.eq('photo_id', photoId)
 		.single();
 
 	if (existingCollection?.collection_id !== input.collection_id) {
 		const { error: deleteError } = await supabase
 			.from('collection_photos')
 			.delete()
-			.eq('photo_id', input.id);
+			.eq('photo_id', photoId);
 
 		if (deleteError) {
 			throw ApiError.fromPostgrestError(deleteError);
@@ -68,8 +71,7 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 			.insert([
 				{
 					collection_id: input.collection_id,
-					photo_id: input.id,
-					created_at: new Date().toISOString(),
+					photo_id: photoId,
 				},
 			]);
 
@@ -78,5 +80,5 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 		}
 	}
 
-	return photo;
+	return mapDbPhotoToPhoto(photo);
 };

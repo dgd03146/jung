@@ -28,9 +28,9 @@ export const getCollections = async (): Promise<Collection[]> => {
 	return data.map((collection) => ({
 		id: collection.id,
 		title: collection.title,
-		description: collection.description,
+		description: collection.description ?? '',
 		cover_image: collection.cover_image,
-		created_at: collection.created_at,
+		created_at: collection.created_at ?? new Date().toISOString(),
 		photo_count: collection.collection_photos[0].count,
 	}));
 };

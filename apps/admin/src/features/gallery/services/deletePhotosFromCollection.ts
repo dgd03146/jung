@@ -31,11 +31,13 @@ export const deletePhotosFromCollection = async ({
 		}
 	}
 
+	const numericPhotoIds = photoIds.map(Number);
+
 	const { error: relationError } = await supabase
 		.from('collection_photos')
 		.delete()
 		.eq('collection_id', collectionId)
-		.in('photo_id', photoIds);
+		.in('photo_id', numericPhotoIds);
 
 	if (relationError) {
 		throw new ApiError(
@@ -47,7 +49,7 @@ export const deletePhotosFromCollection = async ({
 	const { error: photosError } = await supabase
 		.from('photos')
 		.delete()
-		.in('id', photoIds);
+		.in('id', numericPhotoIds);
 
 	if (photosError) {
 		throw new ApiError('Failed to delete photos', 'DATABASE_ERROR');
