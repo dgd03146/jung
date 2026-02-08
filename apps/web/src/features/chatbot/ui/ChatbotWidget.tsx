@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ChatButton } from './ChatButton';
 import { ChatWindow } from './ChatWindow';
 
@@ -21,8 +21,13 @@ export function ChatbotWidget() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [input, setInput] = useState('');
 
+	const transport = useMemo(
+		() => new DefaultChatTransport({ api: '/api/chat' }),
+		[],
+	);
+
 	const { messages, sendMessage, status } = useChat({
-		transport: new DefaultChatTransport({ api: '/api/chat' }),
+		transport,
 		messages: INITIAL_MESSAGES,
 	});
 

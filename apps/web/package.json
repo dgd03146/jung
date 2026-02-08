@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.22",
-    "@ai-sdk/react": "^3.0.77",
+    "@ai-sdk/react": "^3.0.79",
     "@blocknote/code-block": "^0.46.1",
     "@blocknote/core": "^0.46.1",
     "@blocknote/mantine": "^0.46.1",
@@ -47,7 +47,7 @@
     "@vanilla-extract/css-utils": "^0.1.4",
     "@vanilla-extract/dynamic": "^2.1.1",
     "@vanilla-extract/recipes": "^0.5.3",
-    "ai": "^6.0.75",
+    "ai": "^6.0.77",
     "clsx": "^2.1.1",
     "fetch-ponyfill": "^7.1.0",
     "motion": "^12.23.26",
