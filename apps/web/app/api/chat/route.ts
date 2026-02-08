@@ -97,7 +97,7 @@ export async function POST(req: Request) {
 	const dynamicPrompt = `${SYSTEM_PROMPT}\n\n## 검색된 관련 정보\n${context}`;
 
 	const result = streamText({
-		model: google('gemini-1.5-pro'),
+		model: google('gemini-2.5-flash'),
 		system: dynamicPrompt,
 		messages,
 		tools: {
