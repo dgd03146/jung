@@ -49,15 +49,35 @@ function buildContext(
 		: '관련 데이터를 찾지 못했습니다.';
 }
 
+const VALID_ROLES = ['user', 'assistant', 'system'] as const;
+
+function isValidPart(part: unknown): boolean {
+	if (typeof part !== 'object' || part === null) return false;
+	const p = part as { type?: unknown; text?: unknown };
+	return p.type === 'text' && typeof p.text === 'string';
+}
+
 function isValidMessage(msg: unknown): msg is UIMessage {
-	return (
-		typeof msg === 'object' &&
-		msg !== null &&
-		'role' in msg &&
-		typeof (msg as UIMessage).role === 'string' &&
-		'parts' in msg &&
-		Array.isArray((msg as UIMessage).parts)
-	);
+	if (typeof msg !== 'object' || msg === null) return false;
+
+	const m = msg as Record<string, unknown>;
+
+	// Validate id: non-empty string
+	if (typeof m.id !== 'string' || m.id.trim().length === 0) return false;
+
+	// Validate role: must be one of allowed values
+	if (
+		typeof m.role !== 'string' ||
+		!VALID_ROLES.includes(m.role as (typeof VALID_ROLES)[number])
+	) {
+		return false;
+	}
+
+	// Validate parts: must be array with valid part objects
+	if (!Array.isArray(m.parts) || m.parts.length === 0) return false;
+	if (!m.parts.every(isValidPart)) return false;
+
+	return true;
 }
 
 export async function POST(req: Request) {
@@ -75,9 +95,10 @@ export async function POST(req: Request) {
 	}
 
 	if (!messages.every(isValidMessage)) {
-		return new Response('Each message must have role and parts', {
-			status: 400,
-		});
+		return new Response(
+			'Each message must have id, role (user|assistant|system), and parts',
+			{ status: 400 },
+		);
 	}
 
 	// Extract last user message for RAG search
@@ -86,20 +107,24 @@ export async function POST(req: Request) {
 		lastUserMessage?.parts
 			?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
 			.map((p) => p.text)
-			.join(' ') || '';
+			.join(' ')
+			.trim() || '';
 
-	// RAG: 관련 데이터 병렬 시맨틱 검색
-	const [blogResults, placeResults, photoResults] = await Promise.all([
-		blogService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
-			.catch(() => ({ items: [] })),
-		placesService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid' })
-			.catch(() => ({ items: [] })),
-		galleryService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid' })
-			.catch(() => ({ items: [] })),
-	]);
+	// RAG: Skip semantic search if query is empty
+	const emptyResults = { items: [] };
+	const [blogResults, placeResults, photoResults] = query
+		? await Promise.all([
+				blogService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
+					.catch(() => emptyResults),
+				placesService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.catch(() => emptyResults),
+				galleryService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.catch(() => emptyResults),
+			])
+		: [emptyResults, emptyResults, emptyResults];
 
 	// 컨텍스트 생성 및 동적 프롬프트
 	const context = buildContext(blogResults, placeResults, photoResults);
