@@ -6,13 +6,13 @@
  * 사용법:
  *   pnpm tsx scripts/migrate-to-r2.ts
  *
- * 환경변수:
- *   - SUPABASE_URL: Supabase URL
- *   - SUPABASE_SERVICE_ROLE_KEY: Supabase 서비스 역할 키
- *   - R2_ENDPOINT: Cloudflare R2 엔드포인트
- *   - R2_ACCESS_KEY_ID: R2 액세스 키 ID
- *   - R2_SECRET_ACCESS_KEY: R2 시크릿 액세스 키
- *   - R2_BUCKET: R2 버킷 이름
+ * 환경변수 (.env 파일 또는 환경변수):
+ *   - NEXT_PUBLIC_SUPABASE_URL (또는 SUPABASE_URL)
+ *   - SUPABASE_SERVICE_ROLE_KEY (또는 NEXT_PUBLIC_SUPABASE_ANON_KEY)
+ *   - R2_ENDPOINT
+ *   - R2_ACCESS_KEY_ID
+ *   - R2_SECRET_ACCESS_KEY
+ *   - R2_BUCKET
  *
  * 작업 단계:
  *   1. photos 테이블: image_url (Supabase URL → R2 key)
@@ -21,9 +21,22 @@
  *   4. places 테이블: photos[].url (Supabase URL → R2 key)
  */
 
+import * as path from 'node:path';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createClient } from '@supabase/supabase-js';
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+
+// .env 파일 로드 (현재 프로젝트 + jung 워크트리)
+dotenv.config(); // 현재 디렉토리 .env
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+dotenv.config({
+	path: path.resolve(__dirname, '../../jung/.env'),
+	override: false,
+});
+dotenv.config({
+	path: path.resolve(__dirname, '../../jung/.env.local'),
+	override: false,
+});
 
 // ===== 설정 =====
 
@@ -31,21 +44,24 @@ const DELAY_MS = 500;
 
 // ===== 클라이언트 초기화 =====
 
-const supabase = createClient(
-	process.env.SUPABASE_URL || '',
-	process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-);
+const env = (key: string) => (process.env[key] || '').trim();
+
+const supabaseUrl = env('SUPABASE_URL') || env('NEXT_PUBLIC_SUPABASE_URL');
+const supabaseKey =
+	env('SUPABASE_SERVICE_ROLE_KEY') || env('NEXT_PUBLIC_SUPABASE_ANON_KEY');
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const R2 = new S3Client({
 	region: 'auto',
-	endpoint: process.env.R2_ENDPOINT,
+	endpoint: env('R2_ENDPOINT'),
 	credentials: {
-		accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
-		secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+		accessKeyId: env('R2_ACCESS_KEY_ID'),
+		secretAccessKey: env('R2_SECRET_ACCESS_KEY'),
 	},
 });
 
-const BUCKET = process.env.R2_BUCKET || 'jung-images';
+const BUCKET = env('R2_BUCKET') || 'jung-images';
 
 // ===== 유틸리티 함수 =====
 
@@ -221,7 +237,7 @@ async function migratePlaces(): Promise<void> {
 	console.log('\n📍 places 테이블 마이그레이션 시작...');
 
 	const { data: places, error } = await supabase
-		.from('places')
+		.from('spots')
 		.select('id, photos');
 
 	if (error) {
@@ -257,7 +273,7 @@ async function migratePlaces(): Promise<void> {
 			}
 
 			await supabase
-				.from('places')
+				.from('spots')
 				.update({ photos: newPhotos })
 				.eq('id', place.id);
 
