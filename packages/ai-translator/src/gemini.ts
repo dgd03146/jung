@@ -1,6 +1,12 @@
 import { GoogleGenAI } from '@google/genai';
+import { RateLimitError } from './errors.js';
 import { BLOG_TRANSLATION_PROMPT, JSON_TRANSLATION_PROMPT } from './prompts.js';
 import type { Locale, Translator } from './types.js';
+
+function isRateLimitError(error: unknown): boolean {
+	const message = error instanceof Error ? error.message : String(error);
+	return message.includes('429') || message.includes('Resource Exhausted');
+}
 
 export class GeminiTranslator implements Translator {
 	private ai: GoogleGenAI;
@@ -30,6 +36,9 @@ export class GeminiTranslator implements Translator {
 
 			return translated.trim();
 		} catch (error) {
+			if (isRateLimitError(error)) {
+				throw new RateLimitError();
+			}
 			console.error('Gemini translation error:', error);
 			throw new Error(
 				`Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -126,6 +135,9 @@ export class GeminiTranslator implements Translator {
 				throw parseError;
 			}
 		} catch (error) {
+			if (isRateLimitError(error)) {
+				throw new RateLimitError();
+			}
 			console.error('Gemini JSON translation error:', error);
 			throw new Error(
 				`JSON translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,

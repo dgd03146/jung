@@ -1,17 +1,34 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import { useTRPC } from '@/fsd/app';
 import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import { type CreatePlaceInput, createPlace } from '../services/createPlace';
 
 export function useCreatePlace() {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 	const navigate = useNavigate();
+	const trpc = useTRPC();
+
+	const translatePlace = useMutation(trpc.translate.place.mutationOptions({}));
 
 	return useMutation({
-		mutationFn: (data: CreatePlaceInput) => createPlace(data),
+		mutationFn: async (data: CreatePlaceInput) => {
+			const translations = await translateWithFallback(
+				translatePlace.mutateAsync,
+				{
+					title: data.title,
+					description: data.description,
+					address: data.address,
+					tags: data.tags,
+					tips: data.tips,
+				},
+			);
+			return createPlace({ ...data, translations });
+		},
 
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
