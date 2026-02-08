@@ -9,6 +9,16 @@ import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
 
+// Request validation schema
+const chatMessageSchema = z.object({
+	role: z.enum(['user', 'assistant', 'system']),
+	content: z.string(),
+});
+
+const chatRequestSchema = z.object({
+	messages: z.array(chatMessageSchema).min(1),
+});
+
 // RAG: 관련 컨텍스트 생성
 function buildContext(
 	blogs: { items: Array<{ title: string; description: string }> },
@@ -46,12 +56,23 @@ function buildContext(
 }
 
 export async function POST(req: Request) {
-	const { messages } = await req.json();
+	// Validate request body
+	let messages: z.infer<typeof chatRequestSchema>['messages'];
+	try {
+		const body = await req.json();
+		const parsed = chatRequestSchema.parse(body);
+		messages = parsed.messages;
+	} catch {
+		return new Response(
+			'Invalid request: messages must be an array of {role, content}',
+			{
+				status: 400,
+			},
+		);
+	}
 
 	// 마지막 사용자 메시지 추출
-	const lastUserMessage = messages
-		.filter((m: { role: string }) => m.role === 'user')
-		.pop();
+	const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
 	const query = lastUserMessage?.content || '';
 
 	// RAG: 관련 데이터 병렬 시맨틱 검색
