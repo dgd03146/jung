@@ -15,11 +15,11 @@ export const getApiUrl = (): string => {
  *   3. 'https://www.geojung.com' — production fallback
  */
 export const getSiteUrl = (): string => {
-	return (
+	const url =
 		process.env.NEXT_PUBLIC_SITE_URL ||
 		process.env.NEXT_PUBLIC_API_URL ||
-		'https://www.geojung.com'
-	);
+		'https://www.geojung.com';
+	return url.replace(/\/+$/, '');
 };
 
 export const getEnvironment = (): string => {
