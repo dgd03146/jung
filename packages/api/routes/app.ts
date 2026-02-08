@@ -1,4 +1,5 @@
 import { router } from '../lib/trpc';
+import { articleRouter } from './article';
 import { blogRouter } from './blog';
 import { categoryRouter } from './category';
 import { galleryRouter } from './gallery';
@@ -10,6 +11,7 @@ import { placeRouter } from './place';
 import { commentRouter } from './post_comment';
 import { translateRouter } from './translate';
 export const appRouter = router({
+	article: articleRouter,
 	blog: blogRouter,
 	postComment: commentRouter,
 	gallery: galleryRouter,

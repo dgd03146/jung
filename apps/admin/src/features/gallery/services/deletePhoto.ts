@@ -3,10 +3,12 @@ import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
 export const deletePhoto = async (id: string): Promise<void> => {
+	const numericId = Number(id);
+
 	const { data: photo, error: fetchError } = await supabase
 		.from('photos')
 		.select('image_url')
-		.eq('id', id)
+		.eq('id', numericId)
 		.single();
 
 	if (fetchError) {
@@ -18,6 +20,10 @@ export const deletePhoto = async (id: string): Promise<void> => {
 	}
 
 	const imagePath = photo.image_url.split(`${STORAGE.BUCKETS.GALLERY}/`).pop();
+	if (!imagePath) {
+		throw new ApiError('Invalid image path', 'STORAGE_ERROR');
+	}
+
 	const { error: storageError } = await supabase.storage
 		.from(STORAGE.BUCKETS.GALLERY)
 		.remove([imagePath]);
@@ -29,7 +35,7 @@ export const deletePhoto = async (id: string): Promise<void> => {
 	const { error: collectionPhotoError } = await supabase
 		.from('collection_photos')
 		.delete()
-		.eq('photo_id', id);
+		.eq('photo_id', numericId);
 
 	if (collectionPhotoError) {
 		throw ApiError.fromPostgrestError(collectionPhotoError);
@@ -38,7 +44,7 @@ export const deletePhoto = async (id: string): Promise<void> => {
 	const { error: photoError } = await supabase
 		.from('photos')
 		.delete()
-		.eq('id', id);
+		.eq('id', numericId);
 
 	if (photoError) {
 		throw ApiError.fromPostgrestError(photoError);

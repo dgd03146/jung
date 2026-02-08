@@ -42,10 +42,22 @@ export const fetchPosts = async ({
 		throw new Error('No posts found. Please try searching again.');
 	}
 
-	return {
-		posts: data,
-		totalCount,
+	const posts: AdminPost[] = data.map((post) => ({
+		id: String(post.id),
+		title: post.title ?? '',
+		date: post.date ?? '',
+		tags: post.tags ?? [],
+		category_id: post.category_id ?? '',
+		description: post.description ?? '',
+		content:
+			typeof post.content === 'string'
+				? post.content
+				: JSON.stringify(post.content),
+	}));
 
+	return {
+		posts,
+		totalCount,
 		totalPages,
 		hasMore,
 	};

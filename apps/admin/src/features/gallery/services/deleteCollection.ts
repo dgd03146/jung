@@ -1,12 +1,12 @@
-import type { Collection, CollectionPhoto, Photo } from '@jung/shared/types';
+import type { Collection } from '@jung/shared/types';
 import { STORAGE } from '@/fsd/features/gallery/config';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
 interface CollectionWithPhotos extends Pick<Collection, 'cover_image'> {
 	collection_photos: {
-		photo_id: CollectionPhoto['photo_id'];
-		photos: Pick<Photo, 'id' | 'image_url'>;
+		photo_id: number;
+		photos: { id: number; image_url: string };
 	}[];
 }
 

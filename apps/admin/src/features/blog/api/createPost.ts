@@ -21,7 +21,19 @@ export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
 			);
 		}
 
-		return data;
+		return {
+			id: String(data.id),
+			title: data.title ?? '',
+			imagesrc: data.imagesrc ?? '',
+			date: data.date ?? '',
+			tags: data.tags ?? [],
+			category_id: data.category_id ?? '',
+			description: data.description ?? '',
+			content:
+				typeof data.content === 'string'
+					? data.content
+					: JSON.stringify(data.content),
+		};
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

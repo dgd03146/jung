@@ -7,10 +7,13 @@ export const updatePost = async (
 	post: Partial<Post>,
 ): Promise<Post> => {
 	try {
+		const { id: _id, ...updateData } = post;
+		const numericId = Number(postId);
+
 		const { data, error } = await supabase
 			.from('posts')
-			.update(post)
-			.eq('id', postId)
+			.update(updateData)
+			.eq('id', numericId)
 			.select()
 			.single();
 
@@ -24,7 +27,19 @@ export const updatePost = async (
 			);
 		}
 
-		return data;
+		return {
+			id: String(data.id),
+			title: data.title ?? '',
+			imagesrc: data.imagesrc ?? '',
+			date: data.date ?? '',
+			tags: data.tags ?? [],
+			category_id: data.category_id ?? '',
+			description: data.description ?? '',
+			content:
+				typeof data.content === 'string'
+					? data.content
+					: JSON.stringify(data.content),
+		};
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

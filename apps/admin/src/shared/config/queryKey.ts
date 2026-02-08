@@ -1,6 +1,14 @@
+import type { ArticleFilters } from '../../features/articles/types/article';
 import type { PostFilters } from '../../features/blog/types/postFilters';
 
 // FIXME: 쿼리키 팩토리, PostFilters 수정?
+
+export const articleKeys = {
+	all: ['articles'] as const,
+	lists: () => [...articleKeys.all, 'list'] as const,
+	list: (filters: ArticleFilters) => [...articleKeys.lists(), filters] as const,
+	detail: (id?: string) => [...articleKeys.all, id] as const,
+};
 
 export const postKeys = {
 	all: ['posts'] as const,

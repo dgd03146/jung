@@ -4,7 +4,10 @@ import { ErrorCodes } from '@/fsd/shared/lib/errors/errorCodes';
 
 export const deletePostById = async (postId: string): Promise<boolean> => {
 	try {
-		const { error } = await supabase.from('posts').delete().eq('id', postId);
+		const { error } = await supabase
+			.from('posts')
+			.delete()
+			.eq('id', Number(postId));
 
 		if (error) {
 			throw ApiError.fromPostgrestError(error);

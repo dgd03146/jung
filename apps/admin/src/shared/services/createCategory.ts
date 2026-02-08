@@ -61,5 +61,10 @@ export const createCategory = async (
 		throw new ApiError('NO_DATA', `Failed to create ${type} category`);
 	}
 
-	return data;
+	return {
+		...data,
+		color: data.color ?? '#0142C0',
+		description: data.description ?? '',
+		created_at: data.created_at ?? new Date().toISOString(),
+	};
 };

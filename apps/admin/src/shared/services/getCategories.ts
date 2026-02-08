@@ -81,6 +81,7 @@ export const fetchCategories = async (
 			...category,
 			description: category.description ?? '',
 			color: category.color ?? '#0142C0',
+			created_at: category.created_at ?? new Date().toISOString(),
 			count: directCount + subCount,
 			directCount,
 			subCategoriesCount: subCount,

@@ -57,5 +57,10 @@ export const updateCollection = async (
 		throw new ApiError('Failed to update collection', 'UPDATE_FAILED');
 	}
 
-	return updatedCollection;
+	return {
+		...updatedCollection,
+		description: updatedCollection.description ?? '',
+		created_at: updatedCollection.created_at ?? new Date().toISOString(),
+		photo_count: updatedCollection.photo_count ?? 0,
+	};
 };

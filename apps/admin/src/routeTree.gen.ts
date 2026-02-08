@@ -9,6 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root';
+import { Route as ArticlesEditArticleIdRouteImport } from './routes/articles/edit/$articleId';
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index';
+import { Route as ArticlesNewIndexRouteImport } from './routes/articles/new/index';
 import { Route as BlogCategoriesIndexRouteImport } from './routes/blog/categories/index';
 import { Route as BlogEditPostIdRouteImport } from './routes/blog/edit/$postId';
 import { Route as BlogIndexRouteImport } from './routes/blog/index';
@@ -57,6 +60,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 	path: '/blog/',
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+	id: '/articles/',
+	path: '/articles/',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const PlacesNewIndexRoute = PlacesNewIndexRouteImport.update({
 	id: '/places/new/',
 	path: '/places/new/',
@@ -87,6 +95,11 @@ const BlogCategoriesIndexRoute = BlogCategoriesIndexRouteImport.update({
 	path: '/blog/categories/',
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ArticlesNewIndexRoute = ArticlesNewIndexRouteImport.update({
+	id: '/articles/new/',
+	path: '/articles/new/',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const PlacesPlaceIdEditRoute = PlacesPlaceIdEditRouteImport.update({
 	id: '/places/$placeId/edit',
 	path: '/places/$placeId/edit',
@@ -103,6 +116,11 @@ const BlogEditPostIdRoute = BlogEditPostIdRouteImport.update({
 	path: '/blog/edit/$postId',
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ArticlesEditArticleIdRoute = ArticlesEditArticleIdRouteImport.update({
+	id: '/articles/edit/$articleId',
+	path: '/articles/edit/$articleId',
+	getParentRoute: () => rootRouteImport,
+} as any);
 const GalleryPhotosNewIndexRoute = GalleryPhotosNewIndexRouteImport.update({
 	id: '/gallery/photos/new/',
 	path: '/gallery/photos/new/',
@@ -117,14 +135,17 @@ const GalleryPhotosPhotoIdEditRoute =
 
 export interface FileRoutesByFullPath {
 	'/': typeof IndexRoute;
+	'/articles': typeof ArticlesIndexRoute;
 	'/blog': typeof BlogIndexRoute;
 	'/community': typeof CommunityIndexRoute;
 	'/guestbook': typeof GuestbookIndexRoute;
 	'/login': typeof LoginIndexRoute;
 	'/places': typeof PlacesIndexRoute;
+	'/articles/edit/$articleId': typeof ArticlesEditArticleIdRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
 	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
+	'/articles/new': typeof ArticlesNewIndexRoute;
 	'/blog/categories': typeof BlogCategoriesIndexRoute;
 	'/blog/new': typeof BlogNewIndexRoute;
 	'/gallery/collections': typeof GalleryCollectionsIndexRoute;
@@ -136,14 +157,17 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
 	'/': typeof IndexRoute;
+	'/articles': typeof ArticlesIndexRoute;
 	'/blog': typeof BlogIndexRoute;
 	'/community': typeof CommunityIndexRoute;
 	'/guestbook': typeof GuestbookIndexRoute;
 	'/login': typeof LoginIndexRoute;
 	'/places': typeof PlacesIndexRoute;
+	'/articles/edit/$articleId': typeof ArticlesEditArticleIdRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
 	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
+	'/articles/new': typeof ArticlesNewIndexRoute;
 	'/blog/categories': typeof BlogCategoriesIndexRoute;
 	'/blog/new': typeof BlogNewIndexRoute;
 	'/gallery/collections': typeof GalleryCollectionsIndexRoute;
@@ -156,14 +180,17 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
 	__root__: typeof rootRouteImport;
 	'/': typeof IndexRoute;
+	'/articles/': typeof ArticlesIndexRoute;
 	'/blog/': typeof BlogIndexRoute;
 	'/community/': typeof CommunityIndexRoute;
 	'/guestbook/': typeof GuestbookIndexRoute;
 	'/login/': typeof LoginIndexRoute;
 	'/places/': typeof PlacesIndexRoute;
+	'/articles/edit/$articleId': typeof ArticlesEditArticleIdRoute;
 	'/blog/edit/$postId': typeof BlogEditPostIdRoute;
 	'/gallery/collections/$collectionId': typeof GalleryCollectionsCollectionIdRoute;
 	'/places/$placeId/edit': typeof PlacesPlaceIdEditRoute;
+	'/articles/new/': typeof ArticlesNewIndexRoute;
 	'/blog/categories/': typeof BlogCategoriesIndexRoute;
 	'/blog/new/': typeof BlogNewIndexRoute;
 	'/gallery/collections/': typeof GalleryCollectionsIndexRoute;
@@ -177,14 +204,17 @@ export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath;
 	fullPaths:
 		| '/'
+		| '/articles'
 		| '/blog'
 		| '/community'
 		| '/guestbook'
 		| '/login'
 		| '/places'
+		| '/articles/edit/$articleId'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
 		| '/places/$placeId/edit'
+		| '/articles/new'
 		| '/blog/categories'
 		| '/blog/new'
 		| '/gallery/collections'
@@ -196,14 +226,17 @@ export interface FileRouteTypes {
 	fileRoutesByTo: FileRoutesByTo;
 	to:
 		| '/'
+		| '/articles'
 		| '/blog'
 		| '/community'
 		| '/guestbook'
 		| '/login'
 		| '/places'
+		| '/articles/edit/$articleId'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
 		| '/places/$placeId/edit'
+		| '/articles/new'
 		| '/blog/categories'
 		| '/blog/new'
 		| '/gallery/collections'
@@ -215,14 +248,17 @@ export interface FileRouteTypes {
 	id:
 		| '__root__'
 		| '/'
+		| '/articles/'
 		| '/blog/'
 		| '/community/'
 		| '/guestbook/'
 		| '/login/'
 		| '/places/'
+		| '/articles/edit/$articleId'
 		| '/blog/edit/$postId'
 		| '/gallery/collections/$collectionId'
 		| '/places/$placeId/edit'
+		| '/articles/new/'
 		| '/blog/categories/'
 		| '/blog/new/'
 		| '/gallery/collections/'
@@ -235,14 +271,17 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute;
+	ArticlesIndexRoute: typeof ArticlesIndexRoute;
 	BlogIndexRoute: typeof BlogIndexRoute;
 	CommunityIndexRoute: typeof CommunityIndexRoute;
 	GuestbookIndexRoute: typeof GuestbookIndexRoute;
 	LoginIndexRoute: typeof LoginIndexRoute;
 	PlacesIndexRoute: typeof PlacesIndexRoute;
+	ArticlesEditArticleIdRoute: typeof ArticlesEditArticleIdRoute;
 	BlogEditPostIdRoute: typeof BlogEditPostIdRoute;
 	GalleryCollectionsCollectionIdRoute: typeof GalleryCollectionsCollectionIdRoute;
 	PlacesPlaceIdEditRoute: typeof PlacesPlaceIdEditRoute;
+	ArticlesNewIndexRoute: typeof ArticlesNewIndexRoute;
 	BlogCategoriesIndexRoute: typeof BlogCategoriesIndexRoute;
 	BlogNewIndexRoute: typeof BlogNewIndexRoute;
 	GalleryCollectionsIndexRoute: typeof GalleryCollectionsIndexRoute;
@@ -297,6 +336,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		'/articles/': {
+			id: '/articles/';
+			path: '/articles';
+			fullPath: '/articles';
+			preLoaderRoute: typeof ArticlesIndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		'/places/new/': {
 			id: '/places/new/';
 			path: '/places/new';
@@ -339,6 +385,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogCategoriesIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		'/articles/new/': {
+			id: '/articles/new/';
+			path: '/articles/new';
+			fullPath: '/articles/new';
+			preLoaderRoute: typeof ArticlesNewIndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		'/places/$placeId/edit': {
 			id: '/places/$placeId/edit';
 			path: '/places/$placeId/edit';
@@ -360,6 +413,13 @@ declare module '@tanstack/react-router' {
 			preLoaderRoute: typeof BlogEditPostIdRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		'/articles/edit/$articleId': {
+			id: '/articles/edit/$articleId';
+			path: '/articles/edit/$articleId';
+			fullPath: '/articles/edit/$articleId';
+			preLoaderRoute: typeof ArticlesEditArticleIdRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		'/gallery/photos/new/': {
 			id: '/gallery/photos/new/';
 			path: '/gallery/photos/new';
@@ -379,14 +439,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
+	ArticlesIndexRoute: ArticlesIndexRoute,
 	BlogIndexRoute: BlogIndexRoute,
 	CommunityIndexRoute: CommunityIndexRoute,
 	GuestbookIndexRoute: GuestbookIndexRoute,
 	LoginIndexRoute: LoginIndexRoute,
 	PlacesIndexRoute: PlacesIndexRoute,
+	ArticlesEditArticleIdRoute: ArticlesEditArticleIdRoute,
 	BlogEditPostIdRoute: BlogEditPostIdRoute,
 	GalleryCollectionsCollectionIdRoute: GalleryCollectionsCollectionIdRoute,
 	PlacesPlaceIdEditRoute: PlacesPlaceIdEditRoute,
+	ArticlesNewIndexRoute: ArticlesNewIndexRoute,
 	BlogCategoriesIndexRoute: BlogCategoriesIndexRoute,
 	BlogNewIndexRoute: BlogNewIndexRoute,
 	GalleryCollectionsIndexRoute: GalleryCollectionsIndexRoute,

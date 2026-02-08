@@ -27,7 +27,12 @@ export const updateCategory = async (
 			);
 		}
 
-		return category;
+		return {
+			...category,
+			color: category.color ?? '#0142C0',
+			description: category.description ?? '',
+			created_at: category.created_at ?? new Date().toISOString(),
+		};
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

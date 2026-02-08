@@ -3,6 +3,7 @@ import {
 	MdDashboard,
 	MdForum,
 	MdLogin,
+	MdNewspaper,
 	MdPhotoLibrary,
 	MdRestaurantMenu,
 } from 'react-icons/md';
@@ -11,6 +12,7 @@ import {
 
 export const Routes = {
 	home: { path: '/', icon: <MdDashboard />, label: 'dashboard' },
+	articles: { path: '/articles', icon: <MdNewspaper />, label: 'articles' },
 	blog: { path: '/blog', icon: <MdArticle />, label: 'blog' },
 
 	gallery: { path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
