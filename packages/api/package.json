@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@jung/ai-translator": "workspace:*",
     "@jung/shared": "workspace:*",
     "@supabase/auth-js": "^2.65.0",
     "@supabase/supabase-js": "^2.44.4",

@@ -1,8 +1,13 @@
 import type { Photo } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
-import { translatePhoto } from '@/fsd/shared/lib/translator';
 import { uploadGalleryImage } from '../lib/uploadImage';
+
+export interface PhotoTranslation {
+	title_en: string | null;
+	description_en: string | null;
+	tags_en: string[] | null;
+}
 
 export interface CreatePhotoInput {
 	file: File;
@@ -11,6 +16,7 @@ export interface CreatePhotoInput {
 	alt: string;
 	tags?: string[];
 	collection_id: string;
+	translations?: PhotoTranslation;
 }
 
 export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
@@ -20,13 +26,6 @@ export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
 		height,
 	} = await uploadGalleryImage(input.file);
 
-	// Auto-translate content to English
-	const translations = await translatePhoto({
-		title: input.title,
-		description: input.description,
-		tags: input.tags,
-	});
-
 	const { data: photo, error: photoError } = await supabase
 		.from('photos')
 		.insert([
@@ -35,9 +34,9 @@ export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
 				description: input.description,
 				alt: input.alt,
 				tags: input.tags || [],
-				title_en: translations.title_en,
-				description_en: translations.description_en,
-				tags_en: translations.tags_en,
+				title_en: input.translations?.title_en ?? null,
+				description_en: input.translations?.description_en ?? null,
+				tags_en: input.translations?.tags_en ?? null,
 				image_url,
 				width,
 				height,

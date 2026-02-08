@@ -1,6 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import { useTRPC } from '@/fsd/app';
 import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { UpdatePlaceInput } from '../services/updatePlace';
@@ -10,9 +11,21 @@ export const useUpdatePlace = () => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 	const navigate = useNavigate();
+	const trpc = useTRPC();
+
+	const translatePlace = useMutation(trpc.translate.place.mutationOptions({}));
 
 	return useMutation({
-		mutationFn: (input: UpdatePlaceInput) => updatePlace(input),
+		mutationFn: async (input: UpdatePlaceInput) => {
+			const translations = await translatePlace.mutateAsync({
+				title: input.title,
+				description: input.description,
+				address: input.address,
+				tags: input.tags,
+				tips: input.tips,
+			});
+			return updatePlace({ ...input, translations });
+		},
 
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
