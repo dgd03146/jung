@@ -20,13 +20,34 @@ import {
 	useCreateBlockNote,
 } from '@blocknote/react';
 import { Box } from '@jung/design-system/components';
+import { useEffect } from 'react';
+import type { HeadingItem } from '../lib/extractHeadings';
 import './BlockNote.css';
 
 type Props = {
 	initialContent: PartialBlock[];
+	headings?: HeadingItem[];
 };
 
-export const BlockNote = ({ initialContent }: Props) => {
+export const BlockNote = ({ initialContent, headings = [] }: Props) => {
+	useEffect(() => {
+		if (headings.length === 0) return;
+
+		const timer = setTimeout(() => {
+			const headingElements = document.querySelectorAll(
+				'.bn-block-content[data-content-type="heading"]',
+			);
+
+			headingElements.forEach((el, index) => {
+				if (headings[index]) {
+					el.id = headings[index].id;
+				}
+			});
+		}, 100);
+
+		return () => clearTimeout(timer);
+	}, [headings]);
+
 	const editor = useCreateBlockNote({
 		initialContent,
 		codeBlock: {

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { getUserDisplayName } from '@/fsd/shared';
 import * as styles from './UserInfo.css';
 
-const AVATAR_SIZE = 32;
+const AVATAR_SIZE = 40;
 
 export const UserInfo = ({ user }: { user: User }) => {
 	const displayName = getUserDisplayName(user);
@@ -24,10 +24,10 @@ export const UserInfo = ({ user }: { user: User }) => {
 				<Box className={styles.avatarWrapper}>
 					<Image
 						src={avatarUrl}
-						alt='Profile'
-						className={styles.avatar}
+						alt={`${displayName}의 프로필 사진`}
 						width={AVATAR_SIZE}
 						height={AVATAR_SIZE}
+						className={styles.avatar}
 					/>
 				</Box>
 			)}

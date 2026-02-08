@@ -9,6 +9,16 @@ import {
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/guestbook';
 
+const AVATAR_API = {
+	BASE_URL: 'https://api.dicebear.com',
+	VERSION: '7.x',
+	STYLE: 'avataaars',
+	FORMAT: 'svg',
+} as const;
+
+const generateAvatarUrl = (seed: string): string =>
+	`${AVATAR_API.BASE_URL}/${AVATAR_API.VERSION}/${AVATAR_API.STYLE}/${AVATAR_API.FORMAT}?seed=${seed}`;
+
 interface CreateAnonymousMessageInput {
 	content: string;
 	backgroundColor: GuestbookColor;
@@ -49,7 +59,7 @@ export const useCreateAnonymousMessageMutation = () => {
 					background_color: variables.backgroundColor,
 					author_id: null,
 					author_name: variables.nickname,
-					author_avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${variables.anonymousId}`,
+					author_avatar: generateAvatarUrl(variables.anonymousId),
 					created_at: new Date().toISOString(),
 					anonymous_id: variables.anonymousId,
 					is_anonymous: true,

@@ -11,7 +11,7 @@ import {
 	PlaceListWithLikes,
 	TogglePlaceListButton,
 	usePlaceView,
-	ViewMap,
+	ViewMapDynamic,
 } from '@/fsd/features/place';
 import {
 	LoadingSpinner,
@@ -58,7 +58,7 @@ export const PlacesContent = () => {
 				</Box>
 			) : (
 				<Box width='full' height='full' position='relative' overflow='hidden'>
-					<ViewMap places={places} />
+					<ViewMapDynamic places={places} />
 					{places.length > 0 && <TogglePlaceListButton />}
 					{isSlidListVisible && <PlaceList places={places} variant='slideUp' />}
 				</Box>

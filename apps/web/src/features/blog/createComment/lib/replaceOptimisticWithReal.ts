@@ -1,6 +1,11 @@
 import type { Comment } from '@jung/shared/types';
 import type { CommentData } from '@/fsd/shared';
 
+const OPTIMISTIC_ID_PREFIX = 'temp-';
+
+const isOptimisticComment = (commentId: string): boolean =>
+	commentId.startsWith(OPTIMISTIC_ID_PREFIX);
+
 export const replaceOptimisticWithReal = (
 	oldData: CommentData | undefined,
 	tempId: string,
@@ -20,7 +25,7 @@ export const replaceOptimisticWithReal = (
 					),
 					...(item.id === tempId ? realData : {}),
 				}))
-				.filter((item) => !item.id.startsWith('temp-')), // 임시 ID 제거
+				.filter((item) => !isOptimisticComment(item.id)),
 		})),
 	};
 };

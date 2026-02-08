@@ -7,6 +7,16 @@ import { CommentItem } from '@/fsd/entities/blog';
 import { CommentActions } from './CommentActions';
 import * as styles from './CommentSection.css';
 
+const isCommentLikedByUser = (
+	likedBy: string[],
+	currentUserId?: string,
+	anonymousId?: string | null,
+): boolean => {
+	if (currentUserId) return likedBy.includes(currentUserId);
+	if (anonymousId) return likedBy.includes(anonymousId);
+	return false;
+};
+
 interface RecursiveCommentProps {
 	comment: Comment;
 	postId: string;
@@ -26,11 +36,11 @@ export const RecursiveComment = ({
 	const isOwner = currentUserId === comment.user_id;
 	const isAnonymous = comment.user.is_anonymous;
 	const isAnonymousOwner = isAnonymous && comment.anonymous_id === anonymousId;
-	const isLiked = currentUserId
-		? comment.liked_by.includes(currentUserId)
-		: anonymousId
-			? comment.liked_by.includes(anonymousId)
-			: false;
+	const isLiked = isCommentLikedByUser(
+		comment.liked_by,
+		currentUserId,
+		anonymousId,
+	);
 	const canReply = !isNested && (!!currentUserId || !!anonymousId);
 
 	return (

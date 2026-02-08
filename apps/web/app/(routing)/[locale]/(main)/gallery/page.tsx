@@ -6,9 +6,9 @@ import { Suspense } from 'react';
 import { PHOTO_DEFAULTS } from '@/fsd/entities/gallery';
 import { FilteredPhotoList } from '@/fsd/features/gallery';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
@@ -50,10 +50,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${getApiUrl()}/gallery`,
+		canonical: `${SITE_URL}/gallery`,
 		languages: {
-			en: `${getApiUrl()}/en/gallery`,
-			ko: `${getApiUrl()}/ko/gallery`,
+			en: `${SITE_URL}/en/gallery`,
+			ko: `${SITE_URL}/ko/gallery`,
 		},
 	},
 	verification: {

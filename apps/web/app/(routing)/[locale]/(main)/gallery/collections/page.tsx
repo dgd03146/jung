@@ -5,9 +5,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
@@ -74,10 +74,10 @@ export async function generateMetadata(): Promise<Metadata> {
 				},
 			},
 			alternates: {
-				canonical: `${getApiUrl()}/gallery/collections`,
+				canonical: `${SITE_URL}/gallery/collections`,
 				languages: {
-					en: `${getApiUrl()}/en/gallery/collections`,
-					ko: `${getApiUrl()}/ko/gallery/collections`,
+					en: `${SITE_URL}/en/gallery/collections`,
+					ko: `${SITE_URL}/ko/gallery/collections`,
 				},
 			},
 			verification: {

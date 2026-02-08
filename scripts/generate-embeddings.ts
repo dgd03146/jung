@@ -16,7 +16,6 @@ import 'dotenv/config';
 
 // ===== 설정 =====
 
-const _BATCH_SIZE = 10; // 한 번에 처리할 포스트 수 (향후 배치 처리용)
 const DELAY_MS = 200; // API 요청 간 딜레이 (rate limit 방지)
 
 // ===== 클라이언트 초기화 =====

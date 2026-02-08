@@ -24,3 +24,6 @@ export const DEFAULT_BACKGROUND_COLOR = '#FFFFFF';
 export const DEFAULT_EMOJI = '💙';
 
 export const MESSAGE_LIMIT = 12;
+
+export const NICKNAME_MAX_LENGTH = 20;
+export const MESSAGE_MAX_LENGTH = 50;
