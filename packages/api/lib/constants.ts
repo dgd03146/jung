@@ -8,6 +8,12 @@
 export const RRF_K = 60;
 
 /**
+ * Gemini embedding model for vector search.
+ * gemini-embedding-001: 3072 dimensions (high accuracy semantic search)
+ */
+export const EMBEDDING_MODEL = 'gemini-embedding-001';
+
+/**
  * Escapes special characters for PostgREST ilike/like patterns.
  * Prevents SQL injection via wildcard manipulation.
  */

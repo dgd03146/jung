@@ -20,6 +20,7 @@ import { resolve } from 'node:path';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
+import { EMBEDDING_MODEL } from '../packages/api/lib/constants';
 
 // 환경변수 로드
 config({ path: resolve(process.cwd(), 'apps/web/.env.local') });
@@ -42,8 +43,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 // ===== 유틸리티 함수 =====
 
 async function generateEmbedding(text: string): Promise<number[]> {
-	// gemini-embedding-001: 3072차원 (더 정확한 시맨틱 검색)
-	const model = genAI.getGenerativeModel({ model: 'gemini-embedding-001' });
+	const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
 	const result = await model.embedContent({
 		content: { parts: [{ text }], role: 'user' },
 	});
@@ -129,7 +129,7 @@ async function generatePostEmbeddings(): Promise<{
 
 	if (error) {
 		console.error('❌ 포스트 조회 실패:', error.message);
-		return { success: 0, error: 0 };
+		return { success: 0, error: 1 };
 	}
 
 	if (!posts?.length) {
@@ -189,7 +189,7 @@ async function generatePhotoEmbeddings(): Promise<{
 
 	if (error) {
 		console.error('❌ 사진 조회 실패:', error.message);
-		return { success: 0, error: 0 };
+		return { success: 0, error: 1 };
 	}
 
 	if (!photos?.length) {
@@ -252,7 +252,7 @@ async function generatePlaceEmbeddings(): Promise<{
 
 	if (error) {
 		console.error('❌ 장소 조회 실패:', error.message);
-		return { success: 0, error: 0 };
+		return { success: 0, error: 1 };
 	}
 
 	if (!places?.length) {

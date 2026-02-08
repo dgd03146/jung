@@ -11,6 +11,26 @@ interface MessageItemProps {
 	isLoading?: boolean;
 }
 
+interface ToolOutputItem {
+	id: string;
+	title?: string;
+	description?: string;
+	url: string;
+}
+
+function isToolOutputItem(item: unknown): item is ToolOutputItem {
+	return (
+		typeof item === 'object' &&
+		item !== null &&
+		typeof (item as ToolOutputItem).id === 'string' &&
+		typeof (item as ToolOutputItem).url === 'string'
+	);
+}
+
+function isValidToolOutput(output: unknown): output is ToolOutputItem[] {
+	return Array.isArray(output) && output.every(isToolOutputItem);
+}
+
 // Typing animation hook
 function useTypingAnimation(text: string, isActive: boolean, speed = 20) {
 	const [displayedText, setDisplayedText] = useState('');
@@ -110,16 +130,11 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 					if (!isToolUIPart(part)) return null;
 					if (part.state !== 'output-available') return null;
 
-					const result = part.output as
-						| Array<{
-								id: string;
-								title?: string;
-								description?: string;
-								url: string;
-						  }>
-						| undefined;
-
-					if (!Array.isArray(result) || result.length === 0) return null;
+					// Runtime type guard for tool output
+					if (!isValidToolOutput(part.output) || part.output.length === 0) {
+						return null;
+					}
+					const result = part.output;
 
 					// Extract tool name from part.type (e.g., "tool-searchBlog" -> "searchBlog")
 					const toolName =
