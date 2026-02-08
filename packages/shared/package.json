@@ -8,7 +8,8 @@
     "./config": "./config/index.ts",
     "./utils": "./utils/index.ts",
     "./types": "./types/index.ts",
-    "./ui": "./ui/index.ts"
+    "./ui": "./ui/index.ts",
+    "./lib": "./lib/index.ts"
   },
   "scripts": {
     "dev": "echo 'Add dev script here'",

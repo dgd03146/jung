@@ -1,4 +1,5 @@
 import { Box, Card, Flex, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import type { Place } from '@jung/shared/types';
 import { IoLocationOutline } from 'react-icons/io5';
 import { BlurImage } from '@/fsd/shared';
@@ -35,7 +36,7 @@ export const PlaceCard = ({
 				>
 					<Card.Media className={styles.imageWrapper({ variant })}>
 						<BlurImage
-							src={place.photos[0]?.url ?? ''}
+							src={getImageUrl(place.photos[0]?.url ?? '')}
 							alt={place.title}
 							fill
 							priority={priority}

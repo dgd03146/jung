@@ -20,8 +20,9 @@ export interface CreatePhotoInput {
 }
 
 export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
+	// R2에 업로드하고 key 받기
 	const {
-		url: image_url,
+		key: image_url,
 		width,
 		height,
 	} = await uploadGalleryImage(input.file);

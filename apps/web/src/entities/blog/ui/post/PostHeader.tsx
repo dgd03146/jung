@@ -1,4 +1,5 @@
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import type { Post } from '@jung/shared/types';
 import {
 	BlurImage,
@@ -38,7 +39,7 @@ const PostHeader = ({ post }: Props) => {
 					display={{ base: 'none', laptop: 'block' }}
 				>
 					<BlurImage
-						src={post.imagesrc}
+						src={getImageUrl(post.imagesrc)}
 						alt='Featured Image'
 						fill
 						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'

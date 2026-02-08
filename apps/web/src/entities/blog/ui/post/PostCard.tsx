@@ -1,4 +1,5 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import type { Post } from '@jung/shared/types';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
@@ -19,7 +20,7 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 			<Flex align='center' gap='4'>
 				<TableIndex index={index} />
 				<BlurImage
-					src={post.imagesrc}
+					src={getImageUrl(post.imagesrc)}
 					alt={post.title}
 					width={40}
 					height={40}
@@ -63,7 +64,7 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 		<>
 			<Box className={styles.imageArea({ viewMode })}>
 				<BlurImage
-					src={post.imagesrc}
+					src={getImageUrl(post.imagesrc)}
 					alt={post.title}
 					fill
 					sizes={
