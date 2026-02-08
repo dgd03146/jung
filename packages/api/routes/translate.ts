@@ -1,15 +1,12 @@
 import { GeminiTranslator } from '@jung/ai-translator';
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
 
-function getTranslator(): GeminiTranslator {
+function getTranslator(): GeminiTranslator | null {
 	const apiKey = process.env.GEMINI_API_KEY;
 	if (!apiKey) {
-		throw new TRPCError({
-			code: 'INTERNAL_SERVER_ERROR',
-			message: 'Translation service is not configured',
-		});
+		console.warn('GEMINI_API_KEY not set, translations will be skipped');
+		return null;
 	}
 	return new GeminiTranslator(apiKey);
 }
@@ -36,9 +33,12 @@ export const translateRouter = router({
 			}),
 		)
 		.mutation(async ({ input }) => {
-			const translator = getTranslator();
-
 			try {
+				const translator = getTranslator();
+				if (!translator) {
+					return { title_en: null, description_en: null, tags_en: null };
+				}
+
 				const title_en = await translator.translate(input.title, 'ko', 'en');
 				const description_en = await translator.translate(
 					input.description,
@@ -54,11 +54,7 @@ export const translateRouter = router({
 				return { title_en, description_en, tags_en };
 			} catch (error) {
 				console.error('Photo translation failed:', error);
-				return {
-					title_en: null,
-					description_en: null,
-					tags_en: null,
-				};
+				return { title_en: null, description_en: null, tags_en: null };
 			}
 		}),
 
@@ -73,9 +69,18 @@ export const translateRouter = router({
 			}),
 		)
 		.mutation(async ({ input }) => {
-			const translator = getTranslator();
-
 			try {
+				const translator = getTranslator();
+				if (!translator) {
+					return {
+						title_en: null,
+						description_en: null,
+						address_en: null,
+						tags_en: null,
+						tips_en: null,
+					};
+				}
+
 				const title_en = await translator.translate(input.title, 'ko', 'en');
 				const description_en = await translator.translate(
 					input.description,
@@ -98,13 +103,7 @@ export const translateRouter = router({
 					tips_en = await translateArray(translator, input.tips);
 				}
 
-				return {
-					title_en,
-					description_en,
-					address_en,
-					tags_en,
-					tips_en,
-				};
+				return { title_en, description_en, address_en, tags_en, tips_en };
 			} catch (error) {
 				console.error('Place translation failed:', error);
 				return {

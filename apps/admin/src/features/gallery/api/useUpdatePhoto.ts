@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { UpdatePhotoInput } from '../services/updatePhoto';
 import { updatePhoto } from '../services/updatePhoto';
 
@@ -15,11 +16,14 @@ export const useUpdatePhoto = () => {
 
 	return useMutation({
 		mutationFn: async (input: UpdatePhotoInput) => {
-			const translations = await translatePhoto.mutateAsync({
-				title: input.title,
-				description: input.description,
-				tags: input.tags,
-			});
+			const translations = await translateWithFallback(
+				translatePhoto.mutateAsync,
+				{
+					title: input.title,
+					description: input.description,
+					tags: input.tags,
+				},
+			);
 			return updatePhoto({ ...input, translations });
 		},
 

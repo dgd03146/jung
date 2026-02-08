@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
 import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { UpdatePlaceInput } from '../services/updatePlace';
 import { updatePlace } from '../services/updatePlace';
 
@@ -17,13 +18,16 @@ export const useUpdatePlace = () => {
 
 	return useMutation({
 		mutationFn: async (input: UpdatePlaceInput) => {
-			const translations = await translatePlace.mutateAsync({
-				title: input.title,
-				description: input.description,
-				address: input.address,
-				tags: input.tags,
-				tips: input.tips,
-			});
+			const translations = await translateWithFallback(
+				translatePlace.mutateAsync,
+				{
+					title: input.title,
+					description: input.description,
+					address: input.address,
+					tags: input.tags,
+					tips: input.tips,
+				},
+			);
 			return updatePlace({ ...input, translations });
 		},
 

@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
 import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import { type CreatePlaceInput, createPlace } from '../services/createPlace';
 
 export function useCreatePlace() {
@@ -16,13 +17,16 @@ export function useCreatePlace() {
 
 	return useMutation({
 		mutationFn: async (data: CreatePlaceInput) => {
-			const translations = await translatePlace.mutateAsync({
-				title: data.title,
-				description: data.description,
-				address: data.address,
-				tags: data.tags,
-				tips: data.tips,
-			});
+			const translations = await translateWithFallback(
+				translatePlace.mutateAsync,
+				{
+					title: data.title,
+					description: data.description,
+					address: data.address,
+					tags: data.tags,
+					tips: data.tips,
+				},
+			);
 			return createPlace({ ...data, translations });
 		},
 
