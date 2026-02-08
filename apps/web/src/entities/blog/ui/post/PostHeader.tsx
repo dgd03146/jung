@@ -1,21 +1,31 @@
-'use client';
-
 import { Box, Flex, Stack, Typography } from '@jung/design-system/components';
 import { getImageUrl } from '@jung/shared/lib';
-import { usePostQuery } from '@/fsd/entities/blog';
-import { BlurImage, capitalizeFirstLetter, formatDate } from '@/fsd/shared';
+import type { Post } from '@jung/shared/types';
+import {
+	BlurImage,
+	calculateReadingTime,
+	capitalizeFirstLetter,
+	formatDate,
+} from '@/fsd/shared';
 import * as styles from './PostHeader.css';
 
+/**
+ * PostHeader - Server Component
+ *
+ * Receives post data directly from parent instead of fetching via useQuery.
+ * This reduces serialization overhead (only needed fields vs entire post object)
+ * and eliminates client-side hydration for this component.
+ *
+ * @see Vercel Best Practices Rule 3.2: Minimize Serialization at RSC Boundaries
+ */
 type Props = {
-	postId: string;
+	post: Pick<
+		Post,
+		'imagesrc' | 'date' | 'title' | 'description' | 'category' | 'content'
+	>;
 };
 
-const PostHeader = ({ postId }: Props) => {
-	const { data: post } = usePostQuery(postId);
-
-	if (!post) {
-		throw new Error('Post not found');
-	}
+const PostHeader = ({ post }: Props) => {
 	return (
 		<Box
 			className={styles.container}
@@ -38,7 +48,7 @@ const PostHeader = ({ postId }: Props) => {
 				</Box>
 				<Stack align={'left'} rowGap={{ base: '2', laptop: '4' }} flex={1}>
 					<Typography.SubText level={3} color='primary'>
-						{formatDate(post.date)}
+						{formatDate(post.date)} · {calculateReadingTime(post.content)}
 					</Typography.SubText>
 					<Typography.Heading level={3}>{post.title}</Typography.Heading>
 					<Typography.Text

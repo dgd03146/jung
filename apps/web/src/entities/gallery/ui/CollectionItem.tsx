@@ -5,6 +5,8 @@ import { BlurImage, MotionCard, ROUTES } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
 import * as styles from './CollectionItem.css';
 
+const PRIORITY_LOAD_COUNT = 4;
+
 type CollectionItemProps = {
 	collection: Collection;
 	index: number;
@@ -24,7 +26,7 @@ export const CollectionItem = ({ collection, index }: CollectionItemProps) => {
 							alt={collection.title}
 							fill
 							sizes='(max-width: 768px) 50vw, 33vw'
-							priority={index <= 3}
+							priority={index < PRIORITY_LOAD_COUNT}
 						/>
 						<Box className={styles.overlay}>
 							<Typography.Text level={2} color='white'>

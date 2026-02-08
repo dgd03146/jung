@@ -7,6 +7,8 @@ import {
 	useAdjacentPostsQuery,
 	usePostQuery,
 } from '@/fsd/entities/blog';
+import { TableOfContents } from '@/fsd/features/blog';
+import { extractHeadings } from '@/fsd/shared';
 import { SOCIAL_LINKS } from '@/fsd/shared/config';
 import { Link } from '@/i18n/routing';
 import * as styles from './PostNavigation.css';
@@ -18,6 +20,7 @@ interface Props {
 const PostNavigation = ({ postId }: Props) => {
 	const { data: post } = usePostQuery(postId);
 	const { data: adjacentPosts } = useAdjacentPostsQuery(postId);
+	const headings = post ? extractHeadings(post.content) : [];
 
 	return (
 		<Box className={styles.sidebar}>
@@ -55,6 +58,8 @@ const PostNavigation = ({ postId }: Props) => {
 						</Box>
 					))}
 				</Flex>
+
+				{headings.length > 0 && <TableOfContents headings={headings} />}
 
 				{post?.tags && (
 					<Flex

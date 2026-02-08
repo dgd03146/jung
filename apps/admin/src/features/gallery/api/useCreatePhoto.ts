@@ -1,8 +1,10 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import { useTRPC } from '@/fsd/app';
 import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { CreatePhotoInput } from '../services/createPhoto';
 import { createPhoto } from '../services/createPhoto';
 
@@ -10,9 +12,22 @@ export const useCreatePhoto = () => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
 	const navigate = useNavigate();
+	const trpc = useTRPC();
+
+	const translatePhoto = useMutation(trpc.translate.photo.mutationOptions({}));
 
 	return useMutation({
-		mutationFn: (input: CreatePhotoInput) => createPhoto(input),
+		mutationFn: async (input: CreatePhotoInput) => {
+			const translations = await translateWithFallback(
+				translatePhoto.mutateAsync,
+				{
+					title: input.title,
+					description: input.description,
+					tags: input.tags,
+				},
+			);
+			return createPhoto({ ...input, translations });
+		},
 
 		// FIXME: Image flickering issue
 		// Current behavior: Old image briefly shows before being replaced by the new one

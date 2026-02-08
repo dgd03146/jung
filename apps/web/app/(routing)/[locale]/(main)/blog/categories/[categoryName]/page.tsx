@@ -4,8 +4,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
 import {
 	capitalizeFirstLetter,
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: {
 	params: Promise<{ categoryName: string; locale: string }>;
 }): Promise<Metadata> {
-	const { categoryName: rawCategoryName } = await params;
+	const { categoryName: rawCategoryName, locale } = await params;
 	const categoryName = capitalizeFirstLetter(rawCategoryName);
 
 	const categoryDescription = `JUNG 블로그의 "${categoryName}" 카테고리 글 모음입니다.`;
@@ -46,13 +46,13 @@ export async function generateMetadata({
 			description: categoryDescription,
 			images: ['/images/og/blog-default.jpg'],
 		},
-		authors: [{ name: 'JUNG', url: getApiUrl() }],
+		authors: [{ name: 'JUNG', url: SITE_URL }],
 		keywords: [categoryName, 'JUNG Blog', '개발 블로그'],
 		alternates: {
-			canonical: `${getApiUrl()}/blog/categories/${categoryName}`,
+			canonical: `${SITE_URL}/${locale}/blog/categories/${rawCategoryName}`,
 			languages: {
-				en: `${getApiUrl()}/en/blog/categories/${categoryName}`,
-				ko: `${getApiUrl()}/ko/blog/categories/${categoryName}`,
+				en: `${SITE_URL}/en/blog/categories/${rawCategoryName}`,
+				ko: `${SITE_URL}/ko/blog/categories/${rawCategoryName}`,
 			},
 		},
 		verification: {

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import {
 	createWebSiteSchema,
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 		'developer blog',
 		'coding life',
 	],
-	authors: [{ name: 'JUNG', url: getApiUrl() }],
+	authors: [{ name: 'JUNG', url: SITE_URL }],
 	robots: {
 		index: true,
 		follow: true,
@@ -55,10 +55,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: getApiUrl(),
+		canonical: SITE_URL,
 		languages: {
-			en: `${getApiUrl()}/en`,
-			ko: `${getApiUrl()}/ko`,
+			en: `${SITE_URL}/en`,
+			ko: `${SITE_URL}/ko`,
 		},
 	},
 	verification: {

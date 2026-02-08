@@ -43,9 +43,9 @@ export const TogglePostLike = ({ postId }: Props) => {
 		);
 	};
 
-	const isLiked = identifier
-		? likeInfo?.liked_by?.includes(identifier) || false
-		: false;
+	const isLiked = Boolean(
+		identifier && likeInfo?.liked_by?.includes(identifier),
+	);
 	const likeCount = likeInfo?.likes || 0;
 
 	return (

@@ -4,6 +4,14 @@ import { deleteFromR2 } from '@/fsd/shared/lib';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadPlaceImage } from '../lib/uploadImage';
 
+export interface PlaceTranslation {
+	title_en: string | null;
+	description_en: string | null;
+	address_en: string | null;
+	tags_en: string[] | null;
+	tips_en: string[] | null;
+}
+
 export interface CreatePlaceInput {
 	title: string;
 	description: string;
@@ -16,6 +24,7 @@ export interface CreatePlaceInput {
 	};
 	tags?: string[];
 	tips?: string[];
+	translations?: PlaceTranslation;
 }
 
 export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
@@ -35,6 +44,11 @@ export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 					title: input.title,
 					description: input.description,
 					address: input.address,
+					title_en: input.translations?.title_en ?? null,
+					description_en: input.translations?.description_en ?? null,
+					address_en: input.translations?.address_en ?? null,
+					tags_en: input.translations?.tags_en ?? null,
+					tips_en: input.translations?.tips_en ?? null,
 					photos: uploadedPhotos,
 					category_id: input.category_id,
 					coordinates: input.coordinates,
