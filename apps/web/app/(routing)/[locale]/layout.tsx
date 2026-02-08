@@ -5,6 +5,7 @@ import {
 	KakaoProvider,
 	TRPCReactProvider,
 } from '@/fsd/app/providers';
+import { ChatbotWidget } from '@/fsd/features/chatbot';
 import { routing } from '@/i18n/routing';
 
 import '@/fsd/app/styles/global.css';
@@ -32,6 +33,7 @@ export default async function LocaleLayout({ params, children }: Props) {
 				<ClientToastProvider>
 					<KakaoProvider />
 					{children}
+					<ChatbotWidget />
 				</ClientToastProvider>
 			</NextIntlClientProvider>
 		</TRPCReactProvider>
