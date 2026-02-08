@@ -30,8 +30,8 @@ export const AUTHOR = {
 	image: `${SITE_URL}/images/profile.jpg`,
 	sameAs: [
 		'https://github.com/dgd03146',
-		'https://twitter.com/jung_dev',
-		'https://linkedin.com/in/jung',
+		'https://x.com/jung_dev',
+		'https://www.linkedin.com/in/dgd03146',
 	],
 	// E-E-A-T 최적화 필드 (2026년 강화)
 	jobTitle: 'Frontend Developer',
@@ -77,18 +77,3 @@ export const PUBLISHER = {
 } as const;
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og/default.jpg`;
-
-/**
- * 2026년 GEO 성공 지표 참고용 상수
- * - Citation Frequency: 월 10-20% 성장 목표
- * - AI Brand Visibility: 핵심 토픽에서 15-30% (60-90일)
- * - Share of Voice: 핵심 클러스터에서 Top 3
- * - Context Accuracy: 95% 이상 정확한 설명
- * - Prompt Coverage: 우선순위 쿼리의 50-70%
- */
-export const GEO_METRICS = {
-	citationGrowthTarget: 0.15, // 월 15% 성장
-	brandVisibilityTarget: 0.2, // 20% 가시성
-	contextAccuracyTarget: 0.95, // 95% 정확도
-	promptCoverageTarget: 0.6, // 60% 커버리지
-} as const;

@@ -65,7 +65,7 @@ export const createFAQPageSchema = (
  */
 export const extractFAQFromContent = (content: string): FAQItem[] => {
 	const faqPattern =
-		/(?:Q:|질문:)\s*(.+?)\n(?:A:|답변:)\s*(.+?)(?=(?:Q:|질문:)|$)/gs;
+		/(?:Q:|질문:)\s*(.+?)\r?\n(?:A:|답변:)\s*([\s\S]+?)(?=(?:\r?\n(?:Q:|질문:))|$)/g;
 	const items: FAQItem[] = [];
 
 	for (

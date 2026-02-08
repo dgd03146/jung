@@ -19,7 +19,7 @@ if (!resendApiKey) {
 	);
 }
 
-export async function createReplyAction(input: CreateReplyInput) {
+export async function createReplyAction(input: CreateReplyInput, lang = 'ko') {
 	const { parentCommentId, postId, content } = input;
 
 	if (!parentCommentId || !postId || !content) {
@@ -87,7 +87,7 @@ export async function createReplyAction(input: CreateReplyInput) {
 						react: CommentNotificationEmailTemplateInline({
 							emailTitle: '새 답글 알림',
 							mainText: `${replierName}님이 회원님의 댓글에 답글을 남겼습니다.`,
-							postUrl: `${getSiteUrl()}/blog/${postId}`,
+							postUrl: `${getSiteUrl()}/${lang}/blog/${postId}`,
 							// commentContent: newReply.content,
 							commenterName: replierName,
 							// commenterAvatarUrl: replierAvatarUrl,

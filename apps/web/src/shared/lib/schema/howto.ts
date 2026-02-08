@@ -88,7 +88,7 @@ export const createHowToSchema = ({
 				? `${title} step-by-step guide.`
 				: `${title}에 대한 단계별 가이드입니다.`),
 		image: image || `${SITE_URL}/images/og/blog-default.jpg`,
-		totalTime: totalTimeMinutes ? `PT${totalTimeMinutes}M` : undefined,
+		totalTime: totalTimeMinutes != null ? `PT${totalTimeMinutes}M` : undefined,
 		step: formattedSteps,
 		tool: formattedTools,
 		supply: formattedSupplies,
