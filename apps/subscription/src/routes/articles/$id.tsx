@@ -1,51 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-
-const mockArticles: Record<
-	string,
-	{
-		id: string;
-		title: string;
-		summary: string;
-		my_thoughts: string;
-		category: string;
-		published_at: string;
-		original_url: string;
-	}
-> = {
-	'1': {
-		id: '1',
-		title: "What's New in React 19",
-		summary:
-			'React 19 introduces Server Components, Actions, and new hooks that fundamentally change how we build React applications. This release marks a paradigm shift in React development.',
-		my_thoughts:
-			"Finally, React seamlessly bridges the gap between server and client. The Actions pattern makes form handling so much simpler. Personally, I'm most excited about the use() hook.",
-		category: 'React',
-		published_at: '2026-02-01',
-		original_url: 'https://example.com/react-19',
-	},
-	'2': {
-		id: '2',
-		title: 'Building Fullstack Apps with TanStack Start',
-		summary:
-			'TanStack Start is the new React framework of 2026. It offers a Vite-powered development experience with flexible routing and excellent TypeScript support.',
-		my_thoughts:
-			"If you're tired of Next.js complexity, TanStack Start is a great alternative. It stays close to pure React while providing fullstack capabilities. The type-safe router is impressive.",
-		category: 'Framework',
-		published_at: '2026-01-28',
-		original_url: 'https://example.com/tanstack-start',
-	},
-	'3': {
-		id: '3',
-		title: 'The Future of AI Coding Assistants',
-		summary:
-			'An analysis of how AI coding tools like Claude, GPT-4, and Gemini are transforming developer workflows and what this means for the future of software development.',
-		my_thoughts:
-			"AI doesn't replace developers—it augments them. What matters is learning how to use AI effectively. Problem definition skills remain more important than prompt engineering.",
-		category: 'AI',
-		published_at: '2026-01-25',
-		original_url: 'https://example.com/ai-coding',
-	},
-};
+import { useEffect, useState } from 'react';
+import { type Article, getArticleById } from '../../lib';
 
 export const Route = createFileRoute('/articles/$id')({
 	component: ArticleDetailPage,
@@ -53,7 +8,45 @@ export const Route = createFileRoute('/articles/$id')({
 
 function ArticleDetailPage() {
 	const { id } = Route.useParams();
-	const article = mockArticles[id];
+	const [article, setArticle] = useState<Article | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchArticle = async () => {
+			setIsLoading(true);
+			const data = await getArticleById(id);
+			setArticle(data);
+			setIsLoading(false);
+		};
+		fetchArticle();
+	}, [id]);
+
+	const formatDate = (dateString: string | null) => {
+		if (!dateString) return '';
+		return new Date(dateString).toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+		});
+	};
+
+	if (isLoading) {
+		return (
+			<div
+				style={{
+					minHeight: '100vh',
+					background:
+						'linear-gradient(135deg, #e8efff 0%, #f0e8ff 50%, #e8f4ff 100%)',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					fontFamily: "'Poppins', sans-serif",
+				}}
+			>
+				<span style={{ color: '#64748b' }}>Loading...</span>
+			</div>
+		);
+	}
 
 	if (!article) {
 		return (
@@ -173,7 +166,7 @@ function ArticleDetailPage() {
 						← Back
 					</Link>
 					<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-						{article.published_at}
+						{formatDate(article.published_at)}
 					</span>
 				</header>
 
@@ -186,7 +179,7 @@ function ArticleDetailPage() {
 								display: 'inline-block',
 								fontSize: '0.75rem',
 								fontWeight: 600,
-								color: '#8b5cf6',
+								color: article.category === 'ai' ? '#8b5cf6' : '#6366f1',
 								textTransform: 'uppercase',
 								letterSpacing: '0.1em',
 								marginBottom: '1rem',
@@ -245,39 +238,41 @@ function ArticleDetailPage() {
 					</div>
 
 					{/* My Thoughts Card */}
-					<div
-						style={{
-							padding: '1.5rem',
-							background: 'rgba(255, 255, 255, 0.5)',
-							backdropFilter: 'blur(20px)',
-							borderRadius: '16px',
-							marginBottom: '2.5rem',
-						}}
-					>
-						<h2
+					{article.my_thoughts && (
+						<div
 							style={{
-								fontSize: '0.75rem',
-								color: '#8b5cf6',
-								fontWeight: 600,
-								textTransform: 'uppercase',
-								letterSpacing: '0.1em',
-								margin: 0,
-								marginBottom: '0.75rem',
+								padding: '1.5rem',
+								background: 'rgba(255, 255, 255, 0.5)',
+								backdropFilter: 'blur(20px)',
+								borderRadius: '16px',
+								marginBottom: '2.5rem',
 							}}
 						>
-							My Thoughts
-						</h2>
-						<p
-							style={{
-								fontSize: '1rem',
-								color: '#1e293b',
-								lineHeight: 1.7,
-								margin: 0,
-							}}
-						>
-							{article.my_thoughts}
-						</p>
-					</div>
+							<h2
+								style={{
+									fontSize: '0.75rem',
+									color: '#8b5cf6',
+									fontWeight: 600,
+									textTransform: 'uppercase',
+									letterSpacing: '0.1em',
+									margin: 0,
+									marginBottom: '0.75rem',
+								}}
+							>
+								My Thoughts
+							</h2>
+							<p
+								style={{
+									fontSize: '1rem',
+									color: '#1e293b',
+									lineHeight: 1.7,
+									margin: 0,
+								}}
+							>
+								{article.my_thoughts}
+							</p>
+						</div>
+					)}
 
 					{/* Read Original Button */}
 					<a

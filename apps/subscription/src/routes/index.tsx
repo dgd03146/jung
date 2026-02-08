@@ -12,6 +12,7 @@ function HomePage() {
 	const [subscribeMethod, setSubscribeMethod] = useState<'email' | 'kakao'>(
 		'email',
 	);
+	const [category, setCategory] = useState<'frontend' | 'ai' | 'both'>('both');
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -108,7 +109,7 @@ function HomePage() {
 						paddingBottom: '2rem',
 					}}
 				>
-					<nav style={{ display: 'flex', gap: '2rem' }}>
+					<nav>
 						<Link
 							to='/articles'
 							style={{
@@ -121,17 +122,6 @@ function HomePage() {
 						>
 							Articles
 						</Link>
-						<a
-							href='#subscribe'
-							style={{
-								fontSize: '0.85rem',
-								color: '#6366f1',
-								textDecoration: 'none',
-								fontWeight: 600,
-							}}
-						>
-							Subscribe
-						</a>
 					</nav>
 				</header>
 
@@ -145,7 +135,7 @@ function HomePage() {
 					}}
 				>
 					{/* Hero Section */}
-					<div style={{ maxWidth: '900px' }}>
+					<div style={{ maxWidth: '1100px' }}>
 						<p
 							style={{
 								fontSize: '0.85rem',
@@ -156,19 +146,19 @@ function HomePage() {
 								marginBottom: '1.5rem',
 							}}
 						>
-							Frontend & AI Newsletter
+							Level Up Weekly
 						</p>
 						<h1
 							style={{
 								fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
 								fontWeight: 700,
 								color: '#1e293b',
-								lineHeight: 1,
+								lineHeight: 1.1,
 								margin: 0,
 								letterSpacing: '-0.03em',
 							}}
 						>
-							Articles I
+							Articles That
 							<br />
 							<span
 								style={{
@@ -177,9 +167,11 @@ function HomePage() {
 									WebkitBackgroundClip: 'text',
 									WebkitTextFillColor: 'transparent',
 									backgroundClip: 'text',
+									display: 'inline-block',
+									paddingBottom: '0.1em',
 								}}
 							>
-								Actually Read
+								Actually Help
 							</span>
 						</h1>
 						<p
@@ -188,12 +180,10 @@ function HomePage() {
 								color: '#64748b',
 								lineHeight: 1.6,
 								marginTop: '1.5rem',
-								maxWidth: '500px',
+								maxWidth: '700px',
 							}}
 						>
-							Hand-picked articles on frontend development and AI.
-							<br />
-							Only the ones worth your time.
+							Hand-picked reads for developers who want to grow.
 						</p>
 					</div>
 
@@ -325,6 +315,87 @@ function HomePage() {
 											<path d='M12 3C6.48 3 2 6.58 2 11c0 2.8 1.86 5.25 4.64 6.64-.15.54-.54 1.96-.62 2.27-.1.38.14.38.29.27.12-.08 1.87-1.26 2.63-1.77.7.1 1.4.15 2.06.15 5.52 0 10-3.58 10-8 0-4.42-4.48-8-10-8z' />
 										</svg>
 										KakaoTalk
+									</button>
+								</div>
+
+								{/* Category Toggle */}
+								<div
+									style={{
+										display: 'flex',
+										gap: '0.5rem',
+										padding: '0.25rem',
+										background: 'rgba(255, 255, 255, 0.5)',
+										backdropFilter: 'blur(10px)',
+										borderRadius: '12px',
+										width: 'fit-content',
+									}}
+								>
+									<button
+										type='button'
+										onClick={() => setCategory('frontend')}
+										style={{
+											padding: '0.5rem 1rem',
+											background:
+												category === 'frontend' ? 'white' : 'transparent',
+											border: 'none',
+											borderRadius: '8px',
+											fontSize: '0.8rem',
+											fontWeight: 500,
+											fontFamily: "'Poppins', sans-serif",
+											color: category === 'frontend' ? '#6366f1' : '#64748b',
+											cursor: 'pointer',
+											transition: 'all 0.2s',
+											boxShadow:
+												category === 'frontend'
+													? '0 2px 8px rgba(0,0,0,0.08)'
+													: 'none',
+										}}
+									>
+										Frontend
+									</button>
+									<button
+										type='button'
+										onClick={() => setCategory('ai')}
+										style={{
+											padding: '0.5rem 1rem',
+											background: category === 'ai' ? 'white' : 'transparent',
+											border: 'none',
+											borderRadius: '8px',
+											fontSize: '0.8rem',
+											fontWeight: 500,
+											fontFamily: "'Poppins', sans-serif",
+											color: category === 'ai' ? '#8b5cf6' : '#64748b',
+											cursor: 'pointer',
+											transition: 'all 0.2s',
+											boxShadow:
+												category === 'ai'
+													? '0 2px 8px rgba(0,0,0,0.08)'
+													: 'none',
+										}}
+									>
+										AI
+									</button>
+									<button
+										type='button'
+										onClick={() => setCategory('both')}
+										style={{
+											padding: '0.5rem 1rem',
+											background: category === 'both' ? 'white' : 'transparent',
+											border: 'none',
+											borderRadius: '8px',
+											fontSize: '0.8rem',
+											fontWeight: 500,
+											fontFamily: "'Poppins', sans-serif",
+											color: category === 'both' ? '#6366f1' : '#64748b',
+											cursor: 'pointer',
+											transition: 'all 0.2s',
+											boxShadow:
+												category === 'both'
+													? '0 2px 8px rgba(0,0,0,0.08)'
+													: 'none',
+										}}
+									>
+										Both
 									</button>
 								</div>
 
@@ -476,28 +547,16 @@ function HomePage() {
 					<p style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
 						© 2026 Curated by Jung
 					</p>
-					<div style={{ display: 'flex', gap: '1.5rem' }}>
-						<Link
-							to='/articles'
-							style={{
-								fontSize: '0.8rem',
-								color: '#64748b',
-								textDecoration: 'none',
-							}}
-						>
-							Archive
-						</Link>
-						<Link
-							to='/unsubscribe'
-							style={{
-								fontSize: '0.8rem',
-								color: '#64748b',
-								textDecoration: 'none',
-							}}
-						>
-							Unsubscribe
-						</Link>
-					</div>
+					<Link
+						to='/unsubscribe'
+						style={{
+							fontSize: '0.8rem',
+							color: '#64748b',
+							textDecoration: 'none',
+						}}
+					>
+						Unsubscribe
+					</Link>
 				</footer>
 			</div>
 		</div>

@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-router": "^1.158.4",
     "@jung/design-system": "workspace:*",
     "@jung/shared": "workspace:*",
