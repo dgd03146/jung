@@ -7,8 +7,11 @@ import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
 import {
 	createArticleSchema,
 	createBreadcrumbSchema,
-	getApiUrl,
 	getGoogleVerificationCode,
+	getReadingTimeMinutes,
+	getWordCount,
+	SITE_URL,
+	STATIC_GENERATION_LIMIT,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -26,7 +29,7 @@ export async function generateMetadata({
 }: {
 	params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-	const { slug } = await params;
+	const { slug, locale } = await params;
 	try {
 		const post = await getCaller().blog.getPostById({ postId: slug });
 
@@ -73,13 +76,13 @@ export async function generateMetadata({
 					`JUNG의 블로그에서 "${post.title}" 포스트를 읽어보세요.`,
 				images: [post.imagesrc || '/images/og/blog-default.jpg'],
 			},
-			authors: [{ name: 'JUNG', url: getApiUrl() }],
+			authors: [{ name: 'JUNG', url: SITE_URL }],
 			keywords: [...(post.tags || []), 'JUNG Blog', '개발 블로그'],
 			alternates: {
-				canonical: `${getApiUrl()}/blog/${post.id}`,
+				canonical: `${SITE_URL}/${locale}/blog/${post.id}`,
 				languages: {
-					en: `${getApiUrl()}/en/blog/${post.id}`,
-					ko: `${getApiUrl()}/ko/blog/${post.id}`,
+					en: `${SITE_URL}/en/blog/${post.id}`,
+					ko: `${SITE_URL}/ko/blog/${post.id}`,
 				},
 			},
 			verification: {
@@ -102,7 +105,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const posts = await getCaller().blog.getAllPosts({
-		limit: BLOG_DEFAULTS.LIMIT,
+		limit: STATIC_GENERATION_LIMIT,
 		sort: BLOG_DEFAULTS.SORT,
 		cat: BLOG_DEFAULTS.CATEGORY,
 		q: BLOG_DEFAULTS.QUERY,
@@ -147,6 +150,8 @@ export default async function Page({
 				slug: post.id,
 				tags: post.tags || undefined,
 				category: post.category,
+				wordCount: getWordCount(post.content),
+				readingTimeMinutes: getReadingTimeMinutes(post.content),
 				lang: locale,
 			})
 		: null;
@@ -166,7 +171,17 @@ export default async function Page({
 			<JsonLd data={breadcrumbSchema} />
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Container className={styles.container}>
-					<PostHeader postId={postId} />
+					{post && (
+						<PostHeader
+							post={{
+								imagesrc: post.imagesrc,
+								date: post.date,
+								title: post.title,
+								description: post.description,
+								category: post.category,
+							}}
+						/>
+					)}
 					<Flex
 						flexDirection={{ base: 'column-reverse', laptop: 'row' }}
 						gap={{ base: '0', laptop: '12' }}

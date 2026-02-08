@@ -3,8 +3,7 @@ import { supabase } from '../lib/supabase';
 
 export const categoryService = {
 	async getCategories(type: CategoryType): Promise<CategoryTree[]> {
-		// 'places' 타입으로 요청이 오면 'spots'도 함께 조회 (DB 마이그레이션 전 호환성)
-		const queryType = type === 'places' ? 'spots' : type;
+		const queryType = type;
 
 		const { data: categories, error } = await supabase
 			.from('categories')
@@ -20,7 +19,7 @@ export const categoryService = {
 			return [];
 		}
 
-		const tableName = type === 'blog' ? 'posts' : 'spots';
+		const tableName = type === 'blog' ? 'posts' : 'places';
 		const { data: postCounts, error: countError } = await supabase
 			.from(tableName)
 			.select('category_id, id')

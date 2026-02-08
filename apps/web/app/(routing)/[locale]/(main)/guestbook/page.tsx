@@ -5,7 +5,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { MESSAGE_LIMIT, MessageListSkeleton } from '@/fsd/entities/guestbook';
 import { CreateMessageForm } from '@/fsd/features/guestbook';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
 import type { Locale } from '@/i18n/routing';
@@ -40,10 +40,10 @@ export const metadata: Metadata = {
 		'community',
 	],
 	alternates: {
-		canonical: `${getApiUrl()}/guestbook`,
+		canonical: `${SITE_URL}/guestbook`,
 		languages: {
-			en: `${getApiUrl()}/en/guestbook`,
-			ko: `${getApiUrl()}/ko/guestbook`,
+			en: `${SITE_URL}/en/guestbook`,
+			ko: `${SITE_URL}/ko/guestbook`,
 		},
 	},
 	verification: {

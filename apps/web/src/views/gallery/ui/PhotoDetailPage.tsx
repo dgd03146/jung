@@ -1,6 +1,7 @@
 'use client';
 
 import { Flex, Typography } from '@jung/design-system/components';
+import { getImageUrl } from '@jung/shared/lib';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { useRef } from 'react';
 import {
@@ -51,7 +52,7 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					ref={containerRef}
 				>
 					<BlurImage
-						src={currentPhoto.image_url}
+						src={getImageUrl(currentPhoto.image_url)}
 						alt={currentPhoto.alt}
 						className={styles.image}
 						fill

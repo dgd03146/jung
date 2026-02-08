@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
 import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { UpdatePlaceInput } from '../services/updatePlace';
 import { updatePlace } from '../services/updatePlace';
 
@@ -12,6 +13,8 @@ export const useUpdatePlace = () => {
 	const showToast = useToast();
 	const navigate = useNavigate();
 	const trpc = useTRPC();
+
+	const translatePlace = useMutation(trpc.translate.place.mutationOptions({}));
 
 	// 임베딩 재생성 mutation
 	const generateEmbedding = useMutation(
@@ -23,7 +26,19 @@ export const useUpdatePlace = () => {
 	);
 
 	return useMutation({
-		mutationFn: (input: UpdatePlaceInput) => updatePlace(input),
+		mutationFn: async (input: UpdatePlaceInput) => {
+			const translations = await translateWithFallback(
+				translatePlace.mutateAsync,
+				{
+					title: input.title,
+					description: input.description,
+					address: input.address,
+					tags: input.tags,
+					tips: input.tips,
+				},
+			);
+			return updatePlace({ ...input, translations });
+		},
 
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
@@ -35,7 +50,6 @@ export const useUpdatePlace = () => {
 			showToast(`Place "${variables.title}" has been updated.`, 'success');
 
 			// 임베딩 재생성 시작 후 네비게이션 (fire-and-forget)
-			// mutateAsync를 await 없이 호출하여 mutation이 활성 observer에 연결된 상태 유지
 			generateEmbedding.mutateAsync({ placeId: variables.id }).catch(() => {
 				// 에러는 mutationOptions의 onError에서 처리됨
 			});

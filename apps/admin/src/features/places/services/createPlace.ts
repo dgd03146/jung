@@ -1,7 +1,16 @@
 import type { Place } from '@jung/shared/types';
 import { supabase } from '@/fsd/shared';
+import { deleteFromR2 } from '@/fsd/shared/lib';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadPlaceImage } from '../lib/uploadImage';
+
+export interface PlaceTranslation {
+	title_en: string | null;
+	description_en: string | null;
+	address_en: string | null;
+	tags_en: string[] | null;
+	tips_en: string[] | null;
+}
 
 export interface CreatePlaceInput {
 	title: string;
@@ -15,15 +24,16 @@ export interface CreatePlaceInput {
 	};
 	tags?: string[];
 	tips?: string[];
+	translations?: PlaceTranslation;
 }
 
 export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 	try {
+		// R2에 업로드하고 key 배열 생성
 		const uploadedPhotos = await Promise.all(
 			input.files.map(async (file) => {
-				const { url } = await uploadPlaceImage(file);
-
-				return { url };
+				const { key } = await uploadPlaceImage(file);
+				return { url: key }; // 기존 스키마 호환을 위해 url 필드에 key 저장
 			}),
 		);
 
@@ -34,6 +44,11 @@ export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 					title: input.title,
 					description: input.description,
 					address: input.address,
+					title_en: input.translations?.title_en ?? null,
+					description_en: input.translations?.description_en ?? null,
+					address_en: input.translations?.address_en ?? null,
+					tags_en: input.translations?.tags_en ?? null,
+					tips_en: input.translations?.tips_en ?? null,
 					photos: uploadedPhotos,
 					category_id: input.category_id,
 					coordinates: input.coordinates,
@@ -49,14 +64,10 @@ export const createPlace = async (input: CreatePlaceInput): Promise<Place> => {
 			.single();
 
 		if (placeError) {
+			// 실패 시 업로드된 이미지 삭제
 			await Promise.all(
 				uploadedPhotos.map(async (photo) => {
-					const filePath = new URL(photo.url).pathname.split('/').pop();
-					if (filePath) {
-						await supabase.storage
-							.from('places_images')
-							.remove([`uploads/${filePath}`]);
-					}
+					await deleteFromR2(photo.url);
 				}),
 			);
 			throw ApiError.fromPostgrestError(placeError);

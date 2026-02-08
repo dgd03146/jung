@@ -95,7 +95,13 @@ const nextConfig = {
         hostname: 'source.unsplash.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'pub-9bcb425f9715403f904fe760becda177.r2.dev',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

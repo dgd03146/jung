@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
+	SITE_URL,
 	SUPPORTED_LANGS,
 } from '@/fsd/shared';
 import { AboutPage } from '@/fsd/views';
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
 		'여행',
 		'frontend developer',
 	],
-	authors: [{ name: 'JUNG', url: getApiUrl() }],
+	authors: [{ name: 'JUNG', url: SITE_URL }],
 	alternates: {
-		canonical: `${getApiUrl()}/about`,
+		canonical: `${SITE_URL}/about`,
 		languages: {
-			en: `${getApiUrl()}/en/about`,
-			ko: `${getApiUrl()}/ko/about`,
+			en: `${SITE_URL}/en/about`,
+			ko: `${SITE_URL}/ko/about`,
 		},
 	},
 	verification: {

@@ -1,7 +1,10 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
+import Image from 'next/image';
 import { getUserDisplayName } from '@/fsd/shared';
 import * as styles from './UserInfo.css';
+
+const AVATAR_SIZE = 40;
 
 export const UserInfo = ({ user }: { user: User }) => {
 	const displayName = getUserDisplayName(user);
@@ -19,7 +22,13 @@ export const UserInfo = ({ user }: { user: User }) => {
 		>
 			{avatarUrl && (
 				<Box className={styles.avatarWrapper}>
-					<img src={avatarUrl} alt='Profile' className={styles.avatar} />
+					<Image
+						src={avatarUrl}
+						alt={`${displayName}의 프로필 사진`}
+						width={AVATAR_SIZE}
+						height={AVATAR_SIZE}
+						className={styles.avatar}
+					/>
 				</Box>
 			)}
 			<Typography.Text level={3} color='primary' fontWeight='medium'>
