@@ -55,7 +55,10 @@ export const createArticleSchema = ({
 		'@type': isTechArticle ? 'TechArticle' : 'BlogPosting',
 		headline: title,
 		description:
-			description || `JUNG의 블로그에서 "${title}" 포스트를 읽어보세요.`,
+			description ||
+			(lang === 'ko'
+				? `JUNG의 블로그에서 "${title}" 포스트를 읽어보세요.`
+				: `Read "${title}" on JUNG's blog.`),
 		image: image || `${SITE_URL}/images/og/blog-default.jpg`,
 		// 2026년 강화: 저자 정보에 hasCredential, hasOccupation 포함
 		author: {
@@ -107,9 +110,9 @@ export const createArticleSchema = ({
 					'h2',
 					'p:first-of-type',
 					'.key-takeaway',
-					// 2026년 추가: AI가 자주 추출하는 영역
-					'[aria-label="정의"] p',
-					'[aria-label="요약"] ul',
+					...(lang === 'ko'
+						? ['[aria-label="정의"] p', '[aria-label="요약"] ul']
+						: ['[aria-label="definition"] p', '[aria-label="summary"] ul']),
 					'.definition',
 					'.conclusion',
 				],
