@@ -1,7 +1,10 @@
 import { resolve } from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
-import { GeminiTranslator } from '../packages/ai-translator/src';
+import {
+	GeminiTranslator,
+	RateLimitError,
+} from '../packages/ai-translator/src';
 
 // Load .env from project root
 config({ path: resolve(__dirname, '../.env') });
@@ -41,21 +44,43 @@ async function translateTags(tags: string[] | null): Promise<string[] | null> {
 	return translatedTags;
 }
 
+const BATCH_SIZE = 1000;
+
+async function fetchAllPhotos() {
+	const allPhotos: Record<string, unknown>[] = [];
+
+	let from = 0;
+	while (true) {
+		const { data, error } = await supabase
+			.from('photos')
+			.select('id, title, description, tags, title_en, description_en, tags_en')
+			.order('created_at', { ascending: false })
+			.range(from, from + BATCH_SIZE - 1);
+
+		if (error) {
+			console.error(`❌ Failed to fetch photos (offset ${from}):`, error);
+			process.exit(1);
+		}
+
+		if (!data || data.length === 0) break;
+
+		allPhotos.push(...data);
+		console.log(`   📥 Fetched ${allPhotos.length} photos so far...`);
+
+		if (data.length < BATCH_SIZE) break;
+		from += BATCH_SIZE;
+	}
+
+	return allPhotos;
+}
+
 async function migrateAllPhotos() {
 	console.log('🚀 Starting photo translation migration...\n');
 
-	// 1. Fetch all photos
-	const { data: photos, error: fetchError } = await supabase
-		.from('photos')
-		.select('id, title, description, tags, title_en, description_en, tags_en')
-		.order('created_at', { ascending: false });
+	// 1. Fetch all photos (paginated)
+	const photos = await fetchAllPhotos();
 
-	if (fetchError) {
-		console.error('❌ Failed to fetch photos:', fetchError);
-		process.exit(1);
-	}
-
-	if (!photos || photos.length === 0) {
+	if (photos.length === 0) {
 		console.log('ℹ️  No photos found.');
 		return;
 	}
@@ -135,15 +160,13 @@ async function migrateAllPhotos() {
 				await delay(RATE_LIMIT_DELAY);
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-
-			// Rate limit reached - stop completely
-			if (message.includes('429') || message.includes('Resource Exhausted')) {
+			if (error instanceof RateLimitError) {
 				console.error('🛑 Rate limit reached. Stopping migration.');
 				console.error(`   Last photo: ${photo.title || photo.id}`);
 				process.exit(1);
 			}
 
+			const message = error instanceof Error ? error.message : String(error);
 			console.error(`   ❌ Error translating photo ${photo.id}:`, message);
 			errorCount++;
 			console.log('   ⏭️  Continuing to next photo...\n');

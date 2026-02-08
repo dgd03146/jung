@@ -1,7 +1,10 @@
 import { resolve } from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
-import { GeminiTranslator } from '../packages/ai-translator/src';
+import {
+	GeminiTranslator,
+	RateLimitError,
+} from '../packages/ai-translator/src';
 
 // Load .env from project root
 config({ path: resolve(__dirname, '../.env') });
@@ -43,23 +46,45 @@ async function translateArray(
 	return translated;
 }
 
+const BATCH_SIZE = 1000;
+
+async function fetchAllSpots() {
+	const allSpots: Record<string, unknown>[] = [];
+
+	let from = 0;
+	while (true) {
+		const { data, error } = await supabase
+			.from('spots')
+			.select(
+				'id, title, description, address, tags, tips, title_en, description_en, address_en, tags_en, tips_en',
+			)
+			.order('created_at', { ascending: false })
+			.range(from, from + BATCH_SIZE - 1);
+
+		if (error) {
+			console.error(`❌ Failed to fetch spots (offset ${from}):`, error);
+			process.exit(1);
+		}
+
+		if (!data || data.length === 0) break;
+
+		allSpots.push(...data);
+		console.log(`   📥 Fetched ${allSpots.length} spots so far...`);
+
+		if (data.length < BATCH_SIZE) break;
+		from += BATCH_SIZE;
+	}
+
+	return allSpots;
+}
+
 async function migrateAllSpots() {
 	console.log('🚀 Starting spots translation migration...\n');
 
-	// 1. Fetch all spots
-	const { data: spots, error: fetchError } = await supabase
-		.from('spots')
-		.select(
-			'id, title, description, address, tags, tips, title_en, description_en, address_en, tags_en, tips_en',
-		)
-		.order('created_at', { ascending: false });
+	// 1. Fetch all spots (paginated)
+	const spots = await fetchAllSpots();
 
-	if (fetchError) {
-		console.error('❌ Failed to fetch spots:', fetchError);
-		process.exit(1);
-	}
-
-	if (!spots || spots.length === 0) {
+	if (spots.length === 0) {
 		console.log('ℹ️  No spots found.');
 		return;
 	}
@@ -162,15 +187,13 @@ async function migrateAllSpots() {
 				await delay(RATE_LIMIT_DELAY);
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-
-			// Rate limit reached - stop completely
-			if (message.includes('429') || message.includes('Resource Exhausted')) {
+			if (error instanceof RateLimitError) {
 				console.error('🛑 Rate limit reached. Stopping migration.');
 				console.error(`   Last spot: ${spot.title || spot.id}`);
 				process.exit(1);
 			}
 
+			const message = error instanceof Error ? error.message : String(error);
 			console.error(`   ❌ Error translating spot ${spot.id}:`, message);
 			errorCount++;
 			console.log('   ⏭️  Continuing to next spot...\n');
