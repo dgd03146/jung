@@ -161,10 +161,21 @@ export async function POST(req: Request) {
 			}),
 			getProfile: tool({
 				description:
-					'Get personal information about Jung. Use this when asked about who Jung is, skills, experience, or contact information.',
+					'Get public information about Jung. Use this when asked about who Jung is, skills, experience, or interests.',
 				inputSchema: z.object({}),
 				execute: async () => {
-					return profileData;
+					// Return only public-safe fields, excluding PII like email/linkedin
+					return {
+						personal: {
+							name: profileData.personal.name,
+							title: profileData.personal.title,
+							location: profileData.personal.location,
+							github: profileData.personal.github,
+						},
+						summary: profileData.summary,
+						skills: profileData.skills,
+						interests: profileData.interests,
+					};
 				},
 			}),
 		},
