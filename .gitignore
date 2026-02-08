@@ -68,3 +68,6 @@ AGENTS.md
 /resume
 /lighthouse-reports
 .env*.local
+
+# Supabase
+supabase/.temp/
