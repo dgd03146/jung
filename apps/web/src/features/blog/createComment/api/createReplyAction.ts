@@ -7,7 +7,7 @@ import { Resend } from 'resend';
 import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { getCaller } from '@/fsd/shared/api/trpc/server';
-import { getApiUrl, getResendApiKey } from '@/fsd/shared/config';
+import { getResendApiKey, getSiteUrl } from '@/fsd/shared/config';
 import { createClient } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
 
@@ -87,7 +87,7 @@ export async function createReplyAction(input: CreateReplyInput) {
 						react: CommentNotificationEmailTemplateInline({
 							emailTitle: '새 답글 알림',
 							mainText: `${replierName}님이 회원님의 댓글에 답글을 남겼습니다.`,
-							postUrl: `${getApiUrl()}/blog/${postId}`,
+							postUrl: `${getSiteUrl()}/blog/${postId}`,
 							// commentContent: newReply.content,
 							commenterName: replierName,
 							// commenterAvatarUrl: replierAvatarUrl,

@@ -6,6 +6,22 @@ export const getApiUrl = (): string => {
 	return process.env.NEXT_PUBLIC_API_URL || '';
 };
 
+/**
+ * Returns the public-facing site URL for canonical links, metadata, and schemas.
+ *
+ * Resolution order:
+ *   1. NEXT_PUBLIC_SITE_URL  — dedicated site URL (preferred)
+ *   2. NEXT_PUBLIC_API_URL   — legacy fallback (same value in most setups)
+ *   3. 'https://www.geojung.com' — production fallback
+ */
+export const getSiteUrl = (): string => {
+	return (
+		process.env.NEXT_PUBLIC_SITE_URL ||
+		process.env.NEXT_PUBLIC_API_URL ||
+		'https://www.geojung.com'
+	);
+};
+
 export const getEnvironment = (): string => {
 	return process.env.NODE_ENV || 'development';
 };

@@ -1,8 +1,16 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Modal } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { PhotoDetailPage, PhotoDetailSkeleton } from '@/fsd/views/gallery';
+
+export const metadata: Metadata = {
+	robots: {
+		index: false,
+		follow: false,
+	},
+};
 
 export default async function PhotoModal({
 	params,

@@ -1,5 +1,5 @@
 import { AUTHOR, SITE_URL } from './constants';
-import type { ImageObject, WithContext } from './types';
+import type { ImageObject, Person, WithContext } from './types';
 
 type ImageObjectSchemaInput = {
 	url: string;
@@ -23,7 +23,7 @@ export const createImageObjectSchema = ({
 	lang = 'ko',
 }: ImageObjectSchemaInput): WithContext<
 	ImageObject & {
-		author: typeof AUTHOR & { '@type': 'Person' };
+		author: Person;
 		mainEntityOfPage: { '@type': 'WebPage'; '@id': string };
 	}
 > => {
@@ -41,6 +41,10 @@ export const createImageObjectSchema = ({
 			url: AUTHOR.url,
 			image: AUTHOR.image,
 			sameAs: [...AUTHOR.sameAs],
+			// AEO 최적화: 저자 전문성 정보 추가
+			jobTitle: AUTHOR.jobTitle,
+			description: AUTHOR.description,
+			knowsAbout: [...AUTHOR.knowsAbout],
 		},
 		mainEntityOfPage: {
 			'@type': 'WebPage',

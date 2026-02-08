@@ -8,6 +8,7 @@ import {
 	createImageObjectSchema,
 	getGoogleVerificationCode,
 	SITE_URL,
+	STATIC_GENERATION_LIMIT,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -107,7 +108,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const photos = await getCaller().gallery.getAllPhotos({
-		limit: PHOTO_DEFAULTS.LIMIT,
+		limit: STATIC_GENERATION_LIMIT,
 		sort: PHOTO_DEFAULTS.SORT,
 		q: PHOTO_DEFAULTS.QUERY,
 	});

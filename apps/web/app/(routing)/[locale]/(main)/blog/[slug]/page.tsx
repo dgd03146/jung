@@ -11,6 +11,7 @@ import {
 	getReadingTimeMinutes,
 	getWordCount,
 	SITE_URL,
+	STATIC_GENERATION_LIMIT,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -28,7 +29,7 @@ export async function generateMetadata({
 }: {
 	params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-	const { slug } = await params;
+	const { slug, locale } = await params;
 	try {
 		const post = await getCaller().blog.getPostById({ postId: slug });
 
@@ -78,7 +79,7 @@ export async function generateMetadata({
 			authors: [{ name: 'JUNG', url: SITE_URL }],
 			keywords: [...(post.tags || []), 'JUNG Blog', '개발 블로그'],
 			alternates: {
-				canonical: `${SITE_URL}/blog/${post.id}`,
+				canonical: `${SITE_URL}/${locale}/blog/${post.id}`,
 				languages: {
 					en: `${SITE_URL}/en/blog/${post.id}`,
 					ko: `${SITE_URL}/ko/blog/${post.id}`,
@@ -104,7 +105,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const posts = await getCaller().blog.getAllPosts({
-		limit: BLOG_DEFAULTS.LIMIT,
+		limit: STATIC_GENERATION_LIMIT,
 		sort: BLOG_DEFAULTS.SORT,
 		cat: BLOG_DEFAULTS.CATEGORY,
 		q: BLOG_DEFAULTS.QUERY,

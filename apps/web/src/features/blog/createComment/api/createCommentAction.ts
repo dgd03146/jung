@@ -8,9 +8,9 @@ import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { getCaller } from '@/fsd/shared/api/trpc/server';
 import {
-	getApiUrl,
 	getResendApiKey,
 	getResendEmailFrom,
+	getSiteUrl,
 } from '@/fsd/shared/config';
 import { createClient } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
@@ -84,7 +84,7 @@ export async function createCommentAction({
 						mainText: `${commenterName}님이 '${
 							postTitle || '게시글'
 						}'에 댓글을 남겼습니다.`,
-						postUrl: `${getApiUrl()}/blog/${postId}`,
+						postUrl: `${getSiteUrl()}/blog/${postId}`,
 						// commentContent: newComment.content,
 						commenterName: commenterName,
 						// commenterAvatarUrl: commenterAvatarUrl,

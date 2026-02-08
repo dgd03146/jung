@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
-import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
+import {
+	createOrganizationSchema,
+	getGoogleVerificationCode,
+	SITE_URL,
+} from '@/fsd/shared';
+import { JsonLd } from '@/fsd/shared/ui';
 
 const bebasNeue = Bebas_Neue({
 	weight: ['400'],
@@ -92,6 +97,7 @@ export default function RootLayout({
 			<body
 				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
 			>
+				<JsonLd data={createOrganizationSchema()} />
 				{children}
 			</body>
 		</html>
