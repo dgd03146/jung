@@ -17,19 +17,19 @@ export const placesService = {
 	}: PlaceQueryParams): Promise<PlaceQueryResult> {
 		try {
 			let query = supabase
-				.from('spots')
+				.from('places')
 				.select(`
 				*,
 				categories!inner(name).name as category
 			`)
-				.eq('categories.type', 'spots');
+				.eq('categories.type', 'places');
 
 			if (cat && cat !== 'all') {
 				const { data: categoryIds, error: categoryError } = await supabase
 					.from('categories')
 					.select('id')
 					.ilike('name', cat)
-					.eq('type', 'spots');
+					.eq('type', 'places');
 
 				if (categoryError) {
 					throw new TRPCError({
@@ -112,7 +112,7 @@ export const placesService = {
 
 	async findById(id: string): Promise<Place> {
 		const { data, error } = await supabase
-			.from('spots')
+			.from('places')
 			.select(`
 				*,
 				categories!inner(name)->name as category
@@ -158,7 +158,7 @@ export const placesService = {
 		userId: string;
 	}): Promise<Place> {
 		const { data: place, error: selectError } = await supabase
-			.from('spots')
+			.from('places')
 			.select('*')
 			.eq('id', placeId)
 			.single<Place>();
@@ -185,7 +185,7 @@ export const placesService = {
 			: [...place.liked_by, userId];
 
 		const { data, error } = await supabase
-			.from('spots')
+			.from('places')
 			.update({
 				likes: newLikes,
 				liked_by: newLikedBy,
@@ -218,7 +218,7 @@ export const placesService = {
 	): Promise<{ likes: number; liked_by: string[] }> {
 		try {
 			const { data, error } = await supabase
-				.from('spots')
+				.from('places')
 				.select('likes, liked_by')
 				.eq('id', placeId)
 				.single<{ likes: number; liked_by: string[] }>();
