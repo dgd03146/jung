@@ -8,10 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.4",
-    "@tanstack/react-router": "^1.158.4",
     "@jung/design-system": "workspace:*",
     "@jung/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.49.4",
+    "@tanstack/react-router": "^1.158.4",
+    "@vanilla-extract/css": "^1.15.2",
+    "@vanilla-extract/vite-plugin": "^5.1.4",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
