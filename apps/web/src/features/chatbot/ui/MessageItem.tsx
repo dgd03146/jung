@@ -2,7 +2,7 @@
 
 import { isToolUIPart, type UIMessage } from 'ai';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoChatbubble, IoPerson } from 'react-icons/io5';
 import * as styles from './MessageItem.css';
 
@@ -45,7 +45,7 @@ function useTypingAnimation(text: string, isActive: boolean, speed = 20) {
 
 export function MessageItem({ message, isLoading }: MessageItemProps) {
 	const isUser = message.role === 'user';
-	const [shouldAnimate, setShouldAnimate] = useState(false);
+	const hasAnimatedRef = useRef(false);
 
 	// Extract text content from parts
 	const textContent = message.parts
@@ -53,16 +53,18 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 		.map((part) => (part as { type: 'text'; text: string }).text)
 		.join('');
 
-	// Enable animation only for new assistant messages
-	useEffect(() => {
-		if (!isUser && textContent && !isLoading) {
-			setShouldAnimate(true);
-		}
-	}, [isUser, textContent, isLoading]);
+	// Determine if animation should run (only once per message)
+	const shouldAnimate =
+		!isUser && !!textContent && !isLoading && !hasAnimatedRef.current;
+
+	// Mark as animated after first render with content
+	if (shouldAnimate) {
+		hasAnimatedRef.current = true;
+	}
 
 	const { displayedText, isComplete } = useTypingAnimation(
 		textContent || '',
-		shouldAnimate && !isUser,
+		shouldAnimate,
 	);
 
 	if (isLoading) {
