@@ -26,9 +26,9 @@ const QuickActions = () => {
 		},
 		{
 			title: 'Add Location',
-			description: 'Register new spot',
+			description: 'Register new place',
 			icon: <MdLocationOn size={20} />,
-			to: `${Routes.spots.path}/create`,
+			to: `${Routes.places.path}/create`,
 		},
 		{
 			title: 'Settings',
