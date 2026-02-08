@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { SITE_URL } from '@/fsd/shared/lib/schema/constants';
 import { getCaller } from '@/fsd/shared/index.server';
+import { SITE_URL } from '@/fsd/shared/lib/schema/constants';
 
 const SUPPORTED_LANGS = ['ko', 'en'] as const;
 const PAGINATION_LIMIT = 100;
