@@ -2,7 +2,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
-import { streamText, tool } from 'ai';
+import { convertToModelMessages, streamText, tool, type UIMessage } from 'ai';
 import { z } from 'zod';
 import { profileData } from '@/fsd/features/chatbot/config/profileData';
 import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
@@ -11,16 +11,6 @@ export const maxDuration = 30;
 
 const google = createGoogleGenerativeAI({
 	apiKey: process.env.GEMINI_API_KEY,
-});
-
-// Request validation schema
-const chatMessageSchema = z.object({
-	role: z.enum(['user', 'assistant', 'system']),
-	content: z.string(),
-});
-
-const chatRequestSchema = z.object({
-	messages: z.array(chatMessageSchema).min(1),
 });
 
 // RAG: 관련 컨텍스트 생성
@@ -59,38 +49,82 @@ function buildContext(
 		: '관련 데이터를 찾지 못했습니다.';
 }
 
+const VALID_ROLES = ['user', 'assistant', 'system'] as const;
+
+function isValidPart(part: unknown): boolean {
+	if (typeof part !== 'object' || part === null) return false;
+	const p = part as { type?: unknown; text?: unknown };
+	return p.type === 'text' && typeof p.text === 'string';
+}
+
+function isValidMessage(msg: unknown): msg is UIMessage {
+	if (typeof msg !== 'object' || msg === null) return false;
+
+	const m = msg as Record<string, unknown>;
+
+	// Validate id: non-empty string
+	if (typeof m.id !== 'string' || m.id.trim().length === 0) return false;
+
+	// Validate role: must be one of allowed values
+	if (
+		typeof m.role !== 'string' ||
+		!VALID_ROLES.includes(m.role as (typeof VALID_ROLES)[number])
+	) {
+		return false;
+	}
+
+	// Validate parts: must be array with valid part objects
+	if (!Array.isArray(m.parts) || m.parts.length === 0) return false;
+	if (!m.parts.every(isValidPart)) return false;
+
+	return true;
+}
+
 export async function POST(req: Request) {
-	// Validate request body
-	let messages: z.infer<typeof chatRequestSchema>['messages'];
+	let body: unknown;
 	try {
-		const body = await req.json();
-		const parsed = chatRequestSchema.parse(body);
-		messages = parsed.messages;
+		body = await req.json();
 	} catch {
+		return new Response('Invalid JSON', { status: 400 });
+	}
+
+	const messages = (body as { messages?: unknown })?.messages;
+
+	if (!Array.isArray(messages) || messages.length === 0) {
+		return new Response('messages must be a non-empty array', { status: 400 });
+	}
+
+	if (!messages.every(isValidMessage)) {
 		return new Response(
-			'Invalid request: messages must be an array of {role, content}',
-			{
-				status: 400,
-			},
+			'Each message must have id, role (user|assistant|system), and parts',
+			{ status: 400 },
 		);
 	}
 
-	// 마지막 사용자 메시지 추출
+	// Extract last user message for RAG search
 	const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
-	const query = lastUserMessage?.content || '';
+	const query =
+		lastUserMessage?.parts
+			?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+			.map((p) => p.text)
+			.join(' ')
+			.trim() || '';
 
-	// RAG: 관련 데이터 병렬 시맨틱 검색
-	const [blogResults, placeResults, photoResults] = await Promise.all([
-		blogService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
-			.catch(() => ({ items: [] })),
-		placesService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid' })
-			.catch(() => ({ items: [] })),
-		galleryService
-			.semanticSearch({ query, limit: 3, mode: 'hybrid' })
-			.catch(() => ({ items: [] })),
-	]);
+	// RAG: Skip semantic search if query is empty
+	const emptyResults = { items: [] };
+	const [blogResults, placeResults, photoResults] = query
+		? await Promise.all([
+				blogService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
+					.catch(() => emptyResults),
+				placesService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.catch(() => emptyResults),
+				galleryService
+					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.catch(() => emptyResults),
+			])
+		: [emptyResults, emptyResults, emptyResults];
 
 	// 컨텍스트 생성 및 동적 프롬프트
 	const context = buildContext(blogResults, placeResults, photoResults);
@@ -99,7 +133,7 @@ export async function POST(req: Request) {
 	const result = streamText({
 		model: google('gemini-2.5-flash'),
 		system: dynamicPrompt,
-		messages,
+		messages: await convertToModelMessages(messages),
 		tools: {
 			searchBlog: tool({
 				description:
