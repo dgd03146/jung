@@ -27,6 +27,9 @@ out/
 build
 dist
 
+# Next.js auto-generated
+next-env.d.ts
+
 
 # Debug
 npm-debug.log*
@@ -65,3 +68,6 @@ AGENTS.md
 /resume
 /lighthouse-reports
 .env*.local
+
+# Supabase
+supabase/.temp/

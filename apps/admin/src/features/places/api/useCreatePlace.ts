@@ -15,6 +15,16 @@ export function useCreatePlace() {
 
 	const translatePlace = useMutation(trpc.translate.place.mutationOptions({}));
 
+	// 임베딩 생성 mutation
+	const generateEmbedding = useMutation(
+		trpc.place.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Place embedding generation failed:', error);
+				showToast('검색용 임베딩 생성에 실패했습니다.', 'warning');
+			},
+		}),
+	);
+
 	return useMutation({
 		mutationFn: async (data: CreatePlaceInput) => {
 			const translations = await translateWithFallback(
@@ -30,11 +40,16 @@ export function useCreatePlace() {
 			return createPlace({ ...data, translations });
 		},
 
-		onSuccess: (_, variables) => {
+		onSuccess: (newPlace, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: placeKeys.lists(),
 			});
 			showToast(`Place "${variables.title}" created successfully!`, 'success');
+
+			// 임베딩 생성 시작 후 네비게이션 (fire-and-forget)
+			generateEmbedding.mutateAsync({ placeId: newPlace.id }).catch(() => {
+				// 에러는 mutationOptions의 onError에서 처리됨
+			});
 			navigate({ to: '/places' });
 		},
 

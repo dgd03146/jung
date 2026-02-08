@@ -16,6 +16,15 @@ export const useUpdatePlace = () => {
 
 	const translatePlace = useMutation(trpc.translate.place.mutationOptions({}));
 
+	// 임베딩 재생성 mutation
+	const generateEmbedding = useMutation(
+		trpc.place.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Place embedding generation failed:', error);
+			},
+		}),
+	);
+
 	return useMutation({
 		mutationFn: async (input: UpdatePlaceInput) => {
 			const translations = await translateWithFallback(
@@ -39,6 +48,11 @@ export const useUpdatePlace = () => {
 				queryKey: placeKeys.lists(),
 			});
 			showToast(`Place "${variables.title}" has been updated.`, 'success');
+
+			// 임베딩 재생성 시작 후 네비게이션 (fire-and-forget)
+			generateEmbedding.mutateAsync({ placeId: variables.id }).catch(() => {
+				// 에러는 mutationOptions의 onError에서 처리됨
+			});
 			navigate({ to: '/places' });
 		},
 

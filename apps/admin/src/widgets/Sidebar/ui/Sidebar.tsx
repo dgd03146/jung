@@ -28,11 +28,11 @@ const menuSections = [
 		],
 	},
 	{
-		title: 'Spots',
+		title: 'Places',
 		items: [
-			{ path: '/spots', label: 'Spots' },
-			{ path: '/spots/new', label: 'New Spot' },
-			{ path: '/spots/categories', label: 'Categories' },
+			{ path: '/places', label: 'Places' },
+			{ path: '/places/new', label: 'New Place' },
+			{ path: '/places/categories', label: 'Categories' },
 		],
 	},
 	{

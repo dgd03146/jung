@@ -14,6 +14,15 @@ export const useUpdatePhoto = () => {
 
 	const translatePhoto = useMutation(trpc.translate.photo.mutationOptions({}));
 
+	// 임베딩 재생성 mutation
+	const generateEmbedding = useMutation(
+		trpc.photos.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Photo embedding generation failed:', error);
+			},
+		}),
+	);
+
 	return useMutation({
 		mutationFn: async (input: UpdatePhotoInput) => {
 			const translations = await translateWithFallback(
@@ -40,6 +49,13 @@ export const useUpdatePhoto = () => {
 				}),
 			});
 			showToast('Photo updated successfully!', 'success');
+
+			// 임베딩 재생성 (fire-and-forget)
+			generateEmbedding
+				.mutateAsync({ photoId: String(variables.id) })
+				.catch(() => {
+					// 에러는 mutationOptions의 onError에서 처리됨
+				});
 		},
 
 		onError: (error: unknown) => {

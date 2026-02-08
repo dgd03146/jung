@@ -14,7 +14,7 @@ export const Routes = {
 	blog: { path: '/blog', icon: <MdArticle />, label: 'blog' },
 
 	gallery: { path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
-	spots: { path: '/spots', icon: <MdRestaurantMenu />, label: 'spots' },
+	places: { path: '/places', icon: <MdRestaurantMenu />, label: 'places' },
 	community: { path: '/community', icon: <MdForum />, label: 'community' },
 	login: { path: '/login', icon: <MdLogin />, label: 'login' },
 };

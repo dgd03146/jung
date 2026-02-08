@@ -16,6 +16,16 @@ export const useCreatePhoto = () => {
 
 	const translatePhoto = useMutation(trpc.translate.photo.mutationOptions({}));
 
+	// 임베딩 생성 mutation
+	const generateEmbedding = useMutation(
+		trpc.photos.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Photo embedding generation failed:', error);
+				showToast('검색용 임베딩 생성에 실패했습니다.', 'warning');
+			},
+		}),
+	);
+
 	return useMutation({
 		mutationFn: async (input: CreatePhotoInput) => {
 			const translations = await translateWithFallback(
@@ -33,11 +43,18 @@ export const useCreatePhoto = () => {
 		// Current behavior: Old image briefly shows before being replaced by the new one
 		// Potential fix: Implement optimistic updates or move invalidation after
 
-		onSuccess: () => {
+		onSuccess: (newPhoto) => {
 			queryClient.invalidateQueries({
 				queryKey: photoKeys.lists(),
 			});
 			showToast('Photo uploaded successfully!', 'success');
+
+			// 임베딩 생성 시작 후 네비게이션 (fire-and-forget)
+			generateEmbedding
+				.mutateAsync({ photoId: String(newPhoto.id) })
+				.catch(() => {
+					// 에러는 mutationOptions의 onError에서 처리됨
+				});
 			navigate({ to: '/gallery/photos' });
 		},
 
