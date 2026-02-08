@@ -129,7 +129,7 @@ async function main() {
 			// Supabase 업데이트
 			const { error: updateError } = await supabase
 				.from('posts')
-				.update({ embedding: JSON.stringify(embedding) })
+				.update({ embedding })
 				.eq('id', post.id);
 
 			if (updateError) {
