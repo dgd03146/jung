@@ -2,7 +2,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
-import { streamText, tool } from 'ai';
+import { convertToModelMessages, streamText, tool, type UIMessage } from 'ai';
 import { z } from 'zod';
 import { profileData } from '@/fsd/features/chatbot/config/profileData';
 import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
@@ -11,16 +11,6 @@ export const maxDuration = 30;
 
 const google = createGoogleGenerativeAI({
 	apiKey: process.env.GEMINI_API_KEY,
-});
-
-// Request validation schema
-const chatMessageSchema = z.object({
-	role: z.enum(['user', 'assistant', 'system']),
-	content: z.string(),
-});
-
-const chatRequestSchema = z.object({
-	messages: z.array(chatMessageSchema).min(1),
 });
 
 // RAG: 관련 컨텍스트 생성
@@ -60,24 +50,15 @@ function buildContext(
 }
 
 export async function POST(req: Request) {
-	// Validate request body
-	let messages: z.infer<typeof chatRequestSchema>['messages'];
-	try {
-		const body = await req.json();
-		const parsed = chatRequestSchema.parse(body);
-		messages = parsed.messages;
-	} catch {
-		return new Response(
-			'Invalid request: messages must be an array of {role, content}',
-			{
-				status: 400,
-			},
-		);
-	}
+	const { messages }: { messages: UIMessage[] } = await req.json();
 
-	// 마지막 사용자 메시지 추출
+	// Extract last user message for RAG search
 	const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
-	const query = lastUserMessage?.content || '';
+	const query =
+		lastUserMessage?.parts
+			?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+			.map((p) => p.text)
+			.join(' ') || '';
 
 	// RAG: 관련 데이터 병렬 시맨틱 검색
 	const [blogResults, placeResults, photoResults] = await Promise.all([
@@ -99,7 +80,7 @@ export async function POST(req: Request) {
 	const result = streamText({
 		model: google('gemini-2.5-flash'),
 		system: dynamicPrompt,
-		messages,
+		messages: await convertToModelMessages(messages),
 		tools: {
 			searchBlog: tool({
 				description:
