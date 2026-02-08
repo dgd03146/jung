@@ -3,12 +3,10 @@ import { supabase } from '../lib/supabase';
 
 export const categoryService = {
 	async getCategories(type: CategoryType): Promise<CategoryTree[]> {
-		const queryType = type;
-
 		const { data: categories, error } = await supabase
 			.from('categories')
 			.select('id, name, parent_id')
-			.eq('type', queryType)
+			.eq('type', type)
 			.order('created_at')
 			.returns<Category[]>();
 
