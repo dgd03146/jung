@@ -20,7 +20,7 @@ export const placesService = {
 				.from('places')
 				.select(`
 				*,
-				categories:categories!category_id(name)
+				categories:categories!category_id!inner(name)
 			`)
 				.eq('categories.type', 'places');
 
@@ -115,7 +115,7 @@ export const placesService = {
 			.from('places')
 			.select(`
 				*,
-				categories:categories!category_id(name)
+				categories:categories!category_id!inner(name)
 			`)
 			.eq('id', id)
 			.single<PlaceWithCategory>();
