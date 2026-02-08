@@ -1,5 +1,6 @@
 import type { Photo } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { generateEmbedding } from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -483,5 +484,120 @@ export const galleryService = {
 				cause: error,
 			});
 		}
+	},
+
+	// ===== 시맨틱 검색 =====
+
+	async semanticSearch({
+		query,
+		limit = 5,
+		mode = 'hybrid',
+	}: {
+		query: string;
+		limit?: number;
+		mode?: 'vector' | 'keyword' | 'hybrid';
+	}): Promise<{
+		items: Array<{
+			id: string;
+			description: string;
+			tags: string[];
+			image_url?: string;
+			similarity?: number;
+			source: 'vector' | 'keyword' | 'both';
+		}>;
+	}> {
+		let vectorResults: Array<{
+			id: number;
+			description: string;
+			tags: string[];
+			similarity: number;
+		}> = [];
+		let keywordResults: Array<{
+			id: number;
+			description: string;
+			tags: string[];
+		}> = [];
+
+		// Vector 검색
+		if (mode === 'vector' || mode === 'hybrid') {
+			try {
+				const embedding = await generateEmbedding(query);
+				const { data, error } = await supabase.rpc('match_photos', {
+					query_embedding: embedding,
+					match_threshold: 0.3,
+					match_count: limit * 2,
+				});
+
+				if (!error && data) {
+					vectorResults = data;
+				}
+			} catch (err) {
+				console.error('Photo vector search error:', err);
+			}
+		}
+
+		// Keyword 검색
+		if (mode === 'keyword' || mode === 'hybrid') {
+			const { data } = await supabase
+				.from('photos')
+				.select('id, description, tags')
+				.or(`description.ilike.%${query}%,tags.cs.{${query}}`)
+				.limit(limit * 2);
+
+			if (data) {
+				keywordResults = data;
+			}
+		}
+
+		// RRF 병합
+		const k = 60;
+		const scores = new Map<
+			number,
+			{
+				score: number;
+				source: 'vector' | 'keyword' | 'both';
+				data: { description: string; tags: string[]; similarity?: number };
+			}
+		>();
+
+		vectorResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'vector',
+				data: {
+					description: item.description,
+					tags: item.tags,
+					similarity: item.similarity,
+				},
+			});
+		});
+
+		keywordResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'keyword',
+				data: {
+					...existing?.data,
+					description: item.description,
+					tags: item.tags,
+				},
+			});
+		});
+
+		const sortedResults = [...scores.entries()]
+			.sort((a, b) => b[1].score - a[1].score)
+			.slice(0, limit);
+
+		return {
+			items: sortedResults.map(([id, { source, data }]) => ({
+				id: String(id),
+				description: data.description || '',
+				tags: data.tags || [],
+				similarity: data.similarity,
+				source,
+			})),
+		};
 	},
 };

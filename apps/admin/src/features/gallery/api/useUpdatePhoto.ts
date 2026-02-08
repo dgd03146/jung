@@ -1,5 +1,6 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTRPC } from '@/fsd/app';
 import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { UpdatePhotoInput } from '../services/updatePhoto';
@@ -8,6 +9,16 @@ import { updatePhoto } from '../services/updatePhoto';
 export const useUpdatePhoto = () => {
 	const queryClient = useQueryClient();
 	const showToast = useToast();
+	const trpc = useTRPC();
+
+	// 임베딩 재생성 mutation
+	const generateEmbedding = useMutation(
+		trpc.photos.generateEmbedding.mutationOptions({
+			onError: (error) => {
+				console.error('Photo embedding generation failed:', error);
+			},
+		}),
+	);
 
 	return useMutation({
 		mutationFn: (input: UpdatePhotoInput) => updatePhoto(input),
@@ -25,6 +36,9 @@ export const useUpdatePhoto = () => {
 				}),
 			});
 			showToast('Photo updated successfully!', 'success');
+
+			// 비동기로 임베딩 재생성 (설명/태그가 바뀌었을 수 있음)
+			generateEmbedding.mutate({ photoId: String(variables.id) });
 		},
 
 		onError: (error: unknown) => {

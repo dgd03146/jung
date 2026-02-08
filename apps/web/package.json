@@ -16,6 +16,8 @@
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.22",
+    "@ai-sdk/react": "^3.0.77",
     "@blocknote/code-block": "^0.46.1",
     "@blocknote/core": "^0.46.1",
     "@blocknote/mantine": "^0.46.1",
@@ -45,6 +47,7 @@
     "@vanilla-extract/css-utils": "^0.1.4",
     "@vanilla-extract/dynamic": "^2.1.1",
     "@vanilla-extract/recipes": "^0.5.3",
+    "ai": "^6.0.75",
     "clsx": "^2.1.1",
     "fetch-ponyfill": "^7.1.0",
     "motion": "^12.23.26",
@@ -59,7 +62,8 @@
     "react-photo-album": "^3.4.0",
     "resend": "^4.3.0",
     "server-only": "^0.0.1",
-    "sharp": "^0.34.1"
+    "sharp": "^0.34.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@jung/configs": "workspace:*",

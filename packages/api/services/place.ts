@@ -5,6 +5,7 @@ import type {
 	PlaceWithCategory,
 } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { generateEmbedding } from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 export const placesService = {
@@ -17,19 +18,19 @@ export const placesService = {
 	}: PlaceQueryParams): Promise<PlaceQueryResult> {
 		try {
 			let query = supabase
-				.from('spots')
+				.from('places')
 				.select(`
 				*,
 				categories!inner(name).name as category
 			`)
-				.eq('categories.type', 'spots');
+				.eq('categories.type', 'places');
 
 			if (cat && cat !== 'all') {
 				const { data: categoryIds, error: categoryError } = await supabase
 					.from('categories')
 					.select('id')
 					.ilike('name', cat)
-					.eq('type', 'spots');
+					.eq('type', 'places');
 
 				if (categoryError) {
 					throw new TRPCError({
@@ -112,7 +113,7 @@ export const placesService = {
 
 	async findById(id: string): Promise<Place> {
 		const { data, error } = await supabase
-			.from('spots')
+			.from('places')
 			.select(`
 				*,
 				categories!inner(name)->name as category
@@ -158,7 +159,7 @@ export const placesService = {
 		userId: string;
 	}): Promise<Place> {
 		const { data: place, error: selectError } = await supabase
-			.from('spots')
+			.from('places')
 			.select('*')
 			.eq('id', placeId)
 			.single<Place>();
@@ -185,7 +186,7 @@ export const placesService = {
 			: [...place.liked_by, userId];
 
 		const { data, error } = await supabase
-			.from('spots')
+			.from('places')
 			.update({
 				likes: newLikes,
 				liked_by: newLikedBy,
@@ -218,7 +219,7 @@ export const placesService = {
 	): Promise<{ likes: number; liked_by: string[] }> {
 		try {
 			const { data, error } = await supabase
-				.from('spots')
+				.from('places')
 				.select('likes, liked_by')
 				.eq('id', placeId)
 				.single<{ likes: number; liked_by: string[] }>();
@@ -252,6 +253,197 @@ export const placesService = {
 				message: 'An unexpected error occurred while fetching like info',
 				cause: error,
 			});
+		}
+	},
+
+	// ===== 시맨틱 검색 =====
+
+	async semanticSearch({
+		query,
+		limit = 5,
+		mode = 'hybrid',
+	}: {
+		query: string;
+		limit?: number;
+		mode?: 'vector' | 'keyword' | 'hybrid';
+	}): Promise<{
+		items: Array<{
+			id: string;
+			title: string;
+			description: string;
+			address?: string;
+			similarity?: number;
+			source: 'vector' | 'keyword' | 'both';
+		}>;
+	}> {
+		let vectorResults: Array<{
+			id: number;
+			title: string;
+			description: string;
+			address: string;
+			similarity: number;
+		}> = [];
+		let keywordResults: Array<{
+			id: number;
+			title: string;
+			description: string;
+			address: string;
+		}> = [];
+
+		// Vector 검색
+		if (mode === 'vector' || mode === 'hybrid') {
+			try {
+				const embedding = await generateEmbedding(query);
+				const { data, error } = await supabase.rpc('match_places', {
+					query_embedding: embedding,
+					match_threshold: 0.3,
+					match_count: limit * 2,
+				});
+
+				if (!error && data) {
+					vectorResults = data;
+				}
+			} catch (err) {
+				console.error('Place vector search error:', err);
+			}
+		}
+
+		// Keyword 검색
+		if (mode === 'keyword' || mode === 'hybrid') {
+			const { data } = await supabase
+				.from('places')
+				.select('id, title, description, address')
+				.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
+				.limit(limit * 2);
+
+			if (data) {
+				keywordResults = data;
+			}
+		}
+
+		// RRF 병합
+		const k = 60;
+		const scores = new Map<
+			number,
+			{
+				score: number;
+				source: 'vector' | 'keyword' | 'both';
+				data: {
+					title: string;
+					description: string;
+					address?: string;
+					similarity?: number;
+				};
+			}
+		>();
+
+		vectorResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'vector',
+				data: {
+					title: item.title,
+					description: item.description,
+					address: item.address,
+					similarity: item.similarity,
+				},
+			});
+		});
+
+		keywordResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'keyword',
+				data: {
+					...existing?.data,
+					title: item.title,
+					description: item.description,
+					address: item.address,
+				},
+			});
+		});
+
+		const sortedResults = [...scores.entries()]
+			.sort((a, b) => b[1].score - a[1].score)
+			.slice(0, limit);
+
+		return {
+			items: sortedResults.map(([id, { source, data }]) => ({
+				id: String(id),
+				title: data.title || '',
+				description: data.description || '',
+				address: data.address,
+				similarity: data.similarity,
+				source,
+			})),
+		};
+	},
+
+	/**
+	 * 장소 임베딩 생성 및 저장
+	 * 장소 생성/수정 시 호출
+	 */
+	async generateEmbeddingForPlace(
+		placeId: string,
+	): Promise<{ success: boolean }> {
+		try {
+			// 장소 조회
+			const { data: place, error: fetchError } = await supabase
+				.from('places')
+				.select(
+					'title, title_en, description, description_en, address, address_en, tags, tags_en',
+				)
+				.eq('id', placeId)
+				.single();
+
+			if (fetchError || !place) {
+				console.error(`Place not found: ${placeId}`);
+				return { success: false };
+			}
+
+			// 임베딩용 텍스트 준비
+			const parts: string[] = [];
+			if (place.title) parts.push(place.title);
+			if (place.title_en && place.title_en !== place.title) {
+				parts.push(place.title_en);
+			}
+			if (place.description) parts.push(place.description);
+			if (place.description_en && place.description_en !== place.description) {
+				parts.push(place.description_en);
+			}
+			if (place.address) parts.push(place.address);
+			if (place.tags?.length) parts.push(place.tags.join(' '));
+
+			const text = parts.join('\n');
+
+			if (!text.trim()) {
+				console.warn(`No text to embed for place ${placeId}`);
+				return { success: false };
+			}
+
+			// 임베딩 생성
+			const embedding = await generateEmbedding(text);
+
+			// DB에 저장
+			const { error: updateError } = await supabase
+				.from('places')
+				.update({ embedding })
+				.eq('id', placeId);
+
+			if (updateError) {
+				console.error(
+					`Failed to save embedding for place ${placeId}:`,
+					updateError,
+				);
+				return { success: false };
+			}
+
+			return { success: true };
+		} catch (err) {
+			console.error(`Embedding generation failed for place ${placeId}:`, err);
+			return { success: false };
 		}
 	},
 };

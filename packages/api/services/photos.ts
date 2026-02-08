@@ -1,5 +1,6 @@
 import type { Photo } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
+import { generateEmbedding } from '../lib/embedding';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -482,6 +483,184 @@ export const photosService = {
 				message: 'An unexpected error occurred while fetching like info',
 				cause: error,
 			});
+		}
+	},
+
+	// ===== 시맨틱 검색 =====
+
+	async semanticSearch({
+		query,
+		limit = 5,
+		mode = 'hybrid',
+	}: {
+		query: string;
+		limit?: number;
+		mode?: 'vector' | 'keyword' | 'hybrid';
+	}): Promise<{
+		items: Array<{
+			id: string;
+			description: string;
+			tags?: string[];
+			similarity?: number;
+			source: 'vector' | 'keyword' | 'both';
+		}>;
+	}> {
+		let vectorResults: Array<{
+			id: number;
+			description: string;
+			tags: string[];
+			similarity: number;
+		}> = [];
+		let keywordResults: Array<{
+			id: number;
+			description: string;
+			tags: string[];
+		}> = [];
+
+		// Vector 검색
+		if (mode === 'vector' || mode === 'hybrid') {
+			try {
+				const embedding = await generateEmbedding(query);
+				const { data, error } = await supabase.rpc('match_photos', {
+					query_embedding: embedding,
+					match_threshold: 0.3,
+					match_count: limit * 2,
+				});
+
+				if (!error && data) {
+					vectorResults = data;
+				}
+			} catch (err) {
+				console.error('Photo vector search error:', err);
+			}
+		}
+
+		// Keyword 검색
+		if (mode === 'keyword' || mode === 'hybrid') {
+			const { data } = await supabase
+				.from('photos')
+				.select('id, description, tags')
+				.or(`description.ilike.%${query}%,tags.cs.{${query}}`)
+				.limit(limit * 2);
+
+			if (data) {
+				keywordResults = data;
+			}
+		}
+
+		// RRF 병합
+		const k = 60;
+		const scores = new Map<
+			number,
+			{
+				score: number;
+				source: 'vector' | 'keyword' | 'both';
+				data: {
+					description: string;
+					tags?: string[];
+					similarity?: number;
+				};
+			}
+		>();
+
+		vectorResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'vector',
+				data: {
+					description: item.description,
+					tags: item.tags,
+					similarity: item.similarity,
+				},
+			});
+		});
+
+		keywordResults.forEach((item, rank) => {
+			const existing = scores.get(item.id);
+			scores.set(item.id, {
+				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				source: existing ? 'both' : 'keyword',
+				data: {
+					...existing?.data,
+					description: item.description,
+					tags: item.tags,
+				},
+			});
+		});
+
+		const sortedResults = [...scores.entries()]
+			.sort((a, b) => b[1].score - a[1].score)
+			.slice(0, limit);
+
+		return {
+			items: sortedResults.map(([id, { source, data }]) => ({
+				id: String(id),
+				description: data.description || '',
+				tags: data.tags,
+				similarity: data.similarity,
+				source,
+			})),
+		};
+	},
+
+	/**
+	 * 사진 임베딩 생성 및 저장
+	 * 사진 생성/수정 시 호출
+	 */
+	async generateEmbeddingForPhoto(
+		photoId: string,
+	): Promise<{ success: boolean }> {
+		try {
+			// 사진 조회
+			const { data: photo, error: fetchError } = await supabase
+				.from('photos')
+				.select('description, description_en, tags, tags_en')
+				.eq('id', photoId)
+				.single();
+
+			if (fetchError || !photo) {
+				console.error(`Photo not found: ${photoId}`);
+				return { success: false };
+			}
+
+			// 임베딩용 텍스트 준비
+			const parts: string[] = [];
+			if (photo.description) parts.push(photo.description);
+			if (photo.description_en && photo.description_en !== photo.description) {
+				parts.push(photo.description_en);
+			}
+			if (photo.tags?.length) parts.push(photo.tags.join(' '));
+			if (photo.tags_en?.length) parts.push(photo.tags_en.join(' '));
+
+			const text = parts.join('\n');
+
+			if (!text.trim()) {
+				console.warn(`No text to embed for photo ${photoId}`);
+				return { success: false };
+			}
+
+			// 임베딩 생성
+			const embedding = await generateEmbedding(text);
+
+			// DB에 저장
+			const { error: updateError } = await supabase
+				.from('photos')
+				.update({ embedding })
+				.eq('id', photoId);
+
+			if (updateError) {
+				console.error(
+					`Failed to save embedding for photo ${photoId}:`,
+					updateError,
+				);
+				return { success: false };
+			}
+
+			return { success: true };
+		} catch (err) {
+			console.error(`Embedding generation failed for photo ${photoId}:`, err);
+			return { success: false };
 		}
 	},
 };
