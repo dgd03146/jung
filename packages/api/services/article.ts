@@ -1,3 +1,4 @@
+import type { GenerateContentResult } from '@google/generative-ai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { z } from 'zod';
 
@@ -53,7 +54,24 @@ export const articleService = {
 }`;
 
 		const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-		const result = await model.generateContent(prompt);
+
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+		let result: GenerateContentResult;
+		try {
+			result = await model.generateContent(prompt, {
+				signal: controller.signal,
+			} as Parameters<typeof model.generateContent>[1]);
+		} catch (error) {
+			if (error instanceof Error && error.name === 'AbortError') {
+				throw new Error('AI 요청 시간이 초과되었습니다 (30초)');
+			}
+			throw error;
+		} finally {
+			clearTimeout(timeoutId);
+		}
+
 		const text = result.response.text();
 
 		const jsonMatch = text.match(/\{[\s\S]*?\}/);
