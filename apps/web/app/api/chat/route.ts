@@ -135,7 +135,7 @@ export async function POST(req: Request) {
 						title: item.title,
 						description: item.description,
 						address: item.address,
-						url: `/spots/${item.id}`,
+						url: `/places/${item.id}`,
 					}));
 				},
 			}),
