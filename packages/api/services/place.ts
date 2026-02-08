@@ -416,7 +416,11 @@ export const placesService = {
 				parts.push(place.description_en);
 			}
 			if (place.address) parts.push(place.address);
+			if (place.address_en && place.address_en !== place.address) {
+				parts.push(place.address_en);
+			}
 			if (place.tags?.length) parts.push(place.tags.join(' '));
+			if (place.tags_en?.length) parts.push(place.tags_en.join(' '));
 
 			const text = parts.join('\n');
 
