@@ -1,3 +1,4 @@
+import { MAX_QUERY_LIMIT } from '@jung/shared/constants';
 import { z } from 'zod';
 import { checkRateLimit } from '../lib/rateLimiter';
 import { publicProcedure, router } from '../lib/trpc';
@@ -7,7 +8,7 @@ export const galleryRouter = router({
 	getAllPhotos: publicProcedure
 		.input(
 			z.object({
-				limit: z.number().min(1).max(500).default(20),
+				limit: z.number().min(1).max(MAX_QUERY_LIMIT).default(20),
 				cursor: z.number().optional(),
 
 				sort: z.enum(['latest', 'popular']).default('latest'),
