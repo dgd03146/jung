@@ -49,8 +49,36 @@ function buildContext(
 		: '관련 데이터를 찾지 못했습니다.';
 }
 
+function isValidMessage(msg: unknown): msg is UIMessage {
+	return (
+		typeof msg === 'object' &&
+		msg !== null &&
+		'role' in msg &&
+		typeof (msg as UIMessage).role === 'string' &&
+		'parts' in msg &&
+		Array.isArray((msg as UIMessage).parts)
+	);
+}
+
 export async function POST(req: Request) {
-	const { messages }: { messages: UIMessage[] } = await req.json();
+	let body: unknown;
+	try {
+		body = await req.json();
+	} catch {
+		return new Response('Invalid JSON', { status: 400 });
+	}
+
+	const messages = (body as { messages?: unknown })?.messages;
+
+	if (!Array.isArray(messages) || messages.length === 0) {
+		return new Response('messages must be a non-empty array', { status: 400 });
+	}
+
+	if (!messages.every(isValidMessage)) {
+		return new Response('Each message must have role and parts', {
+			status: 400,
+		});
+	}
 
 	// Extract last user message for RAG search
 	const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
