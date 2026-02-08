@@ -35,10 +35,14 @@ export const useCreatePhoto = () => {
 				queryKey: photoKeys.lists(),
 			});
 			showToast('Photo uploaded successfully!', 'success');
-			navigate({ to: '/gallery/photos' });
 
-			// 비동기로 임베딩 생성 (UI 블로킹 없음)
-			generateEmbedding.mutate({ photoId: String(newPhoto.id) });
+			// 임베딩 생성 시작 후 네비게이션 (fire-and-forget)
+			generateEmbedding
+				.mutateAsync({ photoId: String(newPhoto.id) })
+				.catch(() => {
+					// 에러는 mutationOptions의 onError에서 처리됨
+				});
+			navigate({ to: '/gallery/photos' });
 		},
 
 		onError: (error: unknown) => {

@@ -33,10 +33,13 @@ export const useUpdatePlace = () => {
 				queryKey: placeKeys.lists(),
 			});
 			showToast(`Place "${variables.title}" has been updated.`, 'success');
-			navigate({ to: '/places' });
 
-			// 비동기로 임베딩 재생성 (설명/태그가 바뀌었을 수 있음)
-			generateEmbedding.mutate({ placeId: variables.id });
+			// 임베딩 재생성 시작 후 네비게이션 (fire-and-forget)
+			// mutateAsync를 await 없이 호출하여 mutation이 활성 observer에 연결된 상태 유지
+			generateEmbedding.mutateAsync({ placeId: variables.id }).catch(() => {
+				// 에러는 mutationOptions의 onError에서 처리됨
+			});
+			navigate({ to: '/places' });
 		},
 
 		onError: (error: unknown) => {

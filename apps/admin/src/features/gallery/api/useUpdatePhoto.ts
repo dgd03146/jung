@@ -37,8 +37,12 @@ export const useUpdatePhoto = () => {
 			});
 			showToast('Photo updated successfully!', 'success');
 
-			// 비동기로 임베딩 재생성 (설명/태그가 바뀌었을 수 있음)
-			generateEmbedding.mutate({ photoId: String(variables.id) });
+			// 임베딩 재생성 (fire-and-forget)
+			generateEmbedding
+				.mutateAsync({ photoId: String(variables.id) })
+				.catch(() => {
+					// 에러는 mutationOptions의 onError에서 처리됨
+				});
 		},
 
 		onError: (error: unknown) => {
