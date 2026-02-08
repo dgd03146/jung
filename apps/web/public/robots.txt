@@ -1,28 +1,107 @@
+# robots.txt - Updated 2026-02
+# GEO (Generative Engine Optimization) Best Practices Applied
+# Reference: https://www.seo.com/blog/geo-trends/
+
 User-agent: *
 Allow: /
-
-# Crawl-delay for polite crawling
 Crawl-delay: 1
 
-# Disallow admin and API routes
+# Disallow admin, API, and modal routes
 Disallow: /api/
 Disallow: /auth/
+Disallow: /*/@modal/
 
 # Sitemaps
 Sitemap: https://www.geojung.com/sitemap.xml
 
-# AI Crawlers - allow for GEO
+# ============================================
+# Traditional Search Engine Crawlers
+# ============================================
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# ============================================
+# AI Search Engine Crawlers (GEO Optimization)
+# 2026년 핵심: AI 검색 엔진이 콘텐츠를 수집하도록 허용
+# Share of Model (SoM) 지표 향상을 위해 필수
+# ============================================
+
+# OpenAI Crawlers
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic Crawlers
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Google AI Crawlers
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Googlebot-Extended
+Allow: /
+
+# Perplexity Crawler
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: ClaudeBot
+# Apple AI Crawlers
+User-agent: Applebot
 Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere AI Crawler
+User-agent: cohere-ai
+Allow: /
+
+# Meta AI Crawler
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Microsoft AI Crawler
+User-agent: MicrosoftPreview
+Allow: /
+
+# Amazon AI Crawler
+User-agent: Amazonbot
+Allow: /
+
+# You.com AI Crawler
+User-agent: YouBot
+Allow: /
+
+# Brave Search Crawler
+User-agent: BraveSearch
+Allow: /
+
+# ============================================
+# Additional Notes (2026-02 Best Practices)
+# ============================================
+# 1. AI 크롤러를 허용하면 GEO 성과에 직접적 영향
+# 2. Share of Model (SoM) 지표: AI 답변에서 브랜드 언급 비율
+# 3. Citation Frequency: AI가 콘텐츠를 인용하는 빈도
+# 4. 토픽 권위(Topical Authority) 구축이 핵심
+# 5. 백링크보다 브랜드 멘션이 중요해진 시대

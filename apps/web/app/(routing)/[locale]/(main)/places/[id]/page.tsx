@@ -9,6 +9,7 @@ import {
 	createPlaceSchema,
 	getGoogleVerificationCode,
 	SITE_URL,
+	STATIC_GENERATION_LIMIT,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -102,7 +103,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
 	const places = await getCaller().place.getAllPlaces({
-		limit: PLACE_DEFAULTS.LIMIT,
+		limit: STATIC_GENERATION_LIMIT,
 		sort: PLACE_DEFAULTS.SORT,
 		cat: PLACE_DEFAULTS.CAT,
 		q: PLACE_DEFAULTS.QUERY,

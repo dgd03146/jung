@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: {
 	params: Promise<{ categoryName: string; locale: string }>;
 }): Promise<Metadata> {
-	const { categoryName: rawCategoryName } = await params;
+	const { categoryName: rawCategoryName, locale } = await params;
 	const categoryName = capitalizeFirstLetter(rawCategoryName);
 
 	const categoryDescription = `JUNG 블로그의 "${categoryName}" 카테고리 글 모음입니다.`;
@@ -49,10 +49,10 @@ export async function generateMetadata({
 		authors: [{ name: 'JUNG', url: SITE_URL }],
 		keywords: [categoryName, 'JUNG Blog', '개발 블로그'],
 		alternates: {
-			canonical: `${SITE_URL}/blog/categories/${categoryName}`,
+			canonical: `${SITE_URL}/${locale}/blog/categories/${rawCategoryName}`,
 			languages: {
-				en: `${SITE_URL}/en/blog/categories/${categoryName}`,
-				ko: `${SITE_URL}/ko/blog/categories/${categoryName}`,
+				en: `${SITE_URL}/en/blog/categories/${rawCategoryName}`,
+				ko: `${SITE_URL}/ko/blog/categories/${rawCategoryName}`,
 			},
 		},
 		verification: {

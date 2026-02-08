@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { MAX_QUERY_LIMIT } from '../constants';
 
 export const PlacePhotoSchema = z.object({
 	id: z.string().uuid().optional(),
@@ -29,7 +30,7 @@ export const PlaceSchema = z.object({
 });
 
 export const PlaceQueryParamsSchema = z.object({
-	limit: z.number().min(1).max(100).default(10),
+	limit: z.number().min(1).max(MAX_QUERY_LIMIT).default(10),
 	cursor: z.string().optional(),
 	cat: z.string().optional(),
 	q: z.string().optional(),

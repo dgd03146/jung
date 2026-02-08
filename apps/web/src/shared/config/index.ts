@@ -11,6 +11,7 @@ export {
 export * from './imageSizes';
 export * from './navigation';
 export * from './routes';
+export * from './seo';
 export * from './social';
 export * from './sort';
 export * from './tanstack-query/getQueryClient';
