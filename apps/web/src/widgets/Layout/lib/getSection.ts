@@ -1,11 +1,18 @@
+const DETAIL_PAGES = ['blog', 'places'] as const;
+
+const isDetailPagePath = (firstPath: string, secondPath?: string): boolean => {
+	const isDetailablePage = DETAIL_PAGES.includes(
+		firstPath as (typeof DETAIL_PAGES)[number],
+	);
+	const hasSubPath = Boolean(secondPath);
+	const isNotCategoryPage = secondPath !== 'categories';
+	return isDetailablePage && hasSubPath && isNotCategoryPage;
+};
+
 export const getSection = (pathname: string) => {
 	const paths = pathname.split('/').filter(Boolean);
 
-	// blog/[id] 숨기기
-	if (
-		(paths[0] === 'blog' && paths.length > 1 && paths[1] !== 'categories') ||
-		(paths[0] === 'places' && paths.length > 1 && paths[1] !== 'categories')
-	) {
+	if (paths[0] && isDetailPagePath(paths[0], paths[1])) {
 		return '';
 	}
 

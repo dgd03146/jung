@@ -6,9 +6,9 @@ import { Suspense } from 'react';
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
 import { FilteredPhotoList } from '@/fsd/features/gallery';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
@@ -53,10 +53,10 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${getApiUrl()}/gallery/trending`,
+		canonical: `${SITE_URL}/gallery/trending`,
 		languages: {
-			en: `${getApiUrl()}/en/gallery/trending`,
-			ko: `${getApiUrl()}/ko/gallery/trending`,
+			en: `${SITE_URL}/en/gallery/trending`,
+			ko: `${SITE_URL}/ko/gallery/trending`,
 		},
 	},
 	verification: {

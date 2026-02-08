@@ -18,6 +18,7 @@
     "chromatic": "turbo run chromatic --filter=workshop"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.985.0",
     "@biomejs/biome": "2.3.11",
     "@jung/configs": "workspace:*",
     "@jung/typescript-config": "workspace:*",

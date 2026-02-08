@@ -1,3 +1,4 @@
+import { MAX_QUERY_LIMIT } from '@jung/shared/constants';
 import { PostSchema } from '@jung/shared/types';
 import { z } from 'zod';
 import { checkRateLimit } from '../lib/rateLimiter';
@@ -8,7 +9,7 @@ export const blogRouter = router({
 	getAllPosts: publicProcedure
 		.input(
 			z.object({
-				limit: z.number().min(1).max(100),
+				limit: z.number().min(1).max(MAX_QUERY_LIMIT),
 				cursor: z.number().optional(),
 				cat: z.string().optional(),
 				sort: z.enum(['latest', 'oldest', 'popular']).default('latest'),

@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
-import { getApiUrl, getGoogleVerificationCode } from '@/fsd/shared';
+import {
+	createOrganizationSchema,
+	getGoogleVerificationCode,
+	SITE_URL,
+} from '@/fsd/shared';
+import { JsonLd } from '@/fsd/shared/ui';
 
 const bebasNeue = Bebas_Neue({
 	weight: ['400'],
@@ -24,7 +29,7 @@ const nanumMyeongjo = Nanum_Myeongjo({
 });
 
 export const metadata: Metadata = {
-	metadataBase: new URL(getApiUrl()),
+	metadataBase: new URL(SITE_URL),
 	title: {
 		template: '%s',
 		default: 'JUNG',
@@ -37,7 +42,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
-		url: getApiUrl(),
+		url: SITE_URL,
 		siteName: 'JUNG',
 		images: [
 			{
@@ -67,10 +72,14 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: `${getApiUrl()}`,
+		canonical: SITE_URL,
 		languages: {
-			en: `${getApiUrl()}/en`,
-			ko: `${getApiUrl()}/ko`,
+			en: `${SITE_URL}/en`,
+			ko: `${SITE_URL}/ko`,
+		},
+		types: {
+			'application/rss+xml': `${SITE_URL}/feed.xml`,
+			'application/atom+xml': `${SITE_URL}/atom.xml`,
 		},
 	},
 	verification: {
@@ -88,6 +97,7 @@ export default function RootLayout({
 			<body
 				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
 			>
+				<JsonLd data={createOrganizationSchema()} />
 				{children}
 			</body>
 		</html>

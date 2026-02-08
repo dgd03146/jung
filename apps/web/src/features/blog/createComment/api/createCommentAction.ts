@@ -8,9 +8,9 @@ import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
 import { getCaller } from '@/fsd/shared/api/trpc/server';
 import {
-	getApiUrl,
 	getResendApiKey,
 	getResendEmailFrom,
+	getSiteUrl,
 } from '@/fsd/shared/config';
 import { createClient } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
@@ -30,12 +30,14 @@ export async function createCommentAction({
 	content,
 	userId,
 	parentId,
+	lang = 'ko',
 }: {
 	postId: string;
 	content: string;
 	userId: string;
 	postTitle: string;
 	parentId?: string;
+	lang?: string;
 }) {
 	const supabase = await createClient();
 	try {
@@ -46,7 +48,7 @@ export async function createCommentAction({
 				content,
 				parentCommentId: parentId,
 			};
-			const replyResult = await createReplyAction(replyInput);
+			const replyResult = await createReplyAction(replyInput, lang);
 			return replyResult;
 		}
 
@@ -84,7 +86,7 @@ export async function createCommentAction({
 						mainText: `${commenterName}님이 '${
 							postTitle || '게시글'
 						}'에 댓글을 남겼습니다.`,
-						postUrl: `${getApiUrl()}/blog/${postId}`,
+						postUrl: `${getSiteUrl()}/${lang}/blog/${postId}`,
 						// commentContent: newComment.content,
 						commenterName: commenterName,
 						// commenterAvatarUrl: commenterAvatarUrl,

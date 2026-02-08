@@ -3,6 +3,7 @@ import { mapDbPhotoToPhoto } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadGalleryImage } from '../lib/uploadImage';
+import type { PhotoTranslation } from './createPhoto';
 
 export interface UpdatePhotoInput {
 	id: string;
@@ -12,6 +13,7 @@ export interface UpdatePhotoInput {
 	alt: string;
 	tags?: string[];
 	collection_id: string;
+	translations?: PhotoTranslation;
 }
 
 export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
@@ -19,11 +21,11 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 
 	if (input.file) {
 		const {
-			url: image_url,
+			key: image_url,
 			width,
 			height,
 		} = await uploadGalleryImage(input.file);
-		imageData = { image_url, width, height };
+		imageData = { image_url, width, height }; // R2 key 저장
 	}
 
 	const photoId = Number(input.id);
@@ -35,6 +37,9 @@ export const updatePhoto = async (input: UpdatePhotoInput): Promise<Photo> => {
 			description: input.description,
 			alt: input.alt,
 			tags: input.tags || [],
+			title_en: input.translations?.title_en ?? null,
+			description_en: input.translations?.description_en ?? null,
+			tags_en: input.translations?.tags_en ?? null,
 			...imageData,
 			updated_at: new Date().toISOString(),
 		})

@@ -5,9 +5,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	getApiUrl,
 	getGoogleVerificationCode,
 	LoadingSpinner,
+	SITE_URL,
 } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionDetailPage } from '@/fsd/views/gallery';
@@ -75,10 +75,10 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${getApiUrl}/gallery/collections/${id}`,
+				canonical: `${SITE_URL}/gallery/collections/${id}`,
 				languages: {
-					en: `${getApiUrl}/en/gallery/collections/${id}`,
-					ko: `${getApiUrl}/ko/gallery/collections/${id}`,
+					en: `${SITE_URL}/en/gallery/collections/${id}`,
+					ko: `${SITE_URL}/ko/gallery/collections/${id}`,
 				},
 			},
 			verification: {

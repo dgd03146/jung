@@ -14,8 +14,7 @@ export const createCollection = async (
 ): Promise<Collection> => {
 	const { title, description, coverImageFile } = data;
 
-	const coverImageUrl = await uploadGalleryImage(coverImageFile);
-	const { url } = coverImageUrl;
+	const { key } = await uploadGalleryImage(coverImageFile);
 
 	const { data: newCollection, error } = await supabase
 		.from('collections')
@@ -23,7 +22,7 @@ export const createCollection = async (
 			{
 				title,
 				description,
-				cover_image: url,
+				cover_image: key, // R2 key 저장
 				photo_count: 0,
 			},
 		])

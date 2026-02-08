@@ -8,6 +8,11 @@ import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
 import { Link } from '@/i18n/routing';
 import * as styles from './FilterPostCategoryAccordion.css';
 
+const CACHE_TIME = {
+	STALE_TIME_24H: 1000 * 60 * 60 * 24,
+	GC_TIME_7D: 1000 * 60 * 60 * 24 * 7,
+} as const;
+
 interface Props {
 	currentCategory?: string;
 }
@@ -21,8 +26,8 @@ export const FilterPostCategoryAccordion = ({
 		trpc.category.getCategories.queryOptions(
 			{ type: 'blog' },
 			{
-				staleTime: 1000 * 60 * 60 * 24, // 24시간
-				gcTime: 1000 * 60 * 60 * 24 * 7, // 7일
+				staleTime: CACHE_TIME.STALE_TIME_24H,
+				gcTime: CACHE_TIME.GC_TIME_7D,
 			},
 		),
 	);

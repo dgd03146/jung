@@ -1,15 +1,15 @@
 /**
  * Embedding 생성 유틸리티
  *
- * Gemini text-embedding-004 모델 사용
+ * Gemini gemini-embedding-001 모델 사용
  * - 무료 할당량: 1500 RPM (requests per minute)
- * - 출력 차원: 768
+ * - 출력 차원: 3072 (고정밀 시맨틱 검색)
  * - 텍스트 → 벡터 변환
  */
 
-import { GoogleGenerativeAI, TaskType } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const EMBEDDING_MODEL = 'text-embedding-004';
+const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 // Gemini API 클라이언트 초기화
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
@@ -18,11 +18,11 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
  * 텍스트를 임베딩 벡터로 변환
  *
  * @param text - 임베딩할 텍스트
- * @returns 768 차원의 벡터
+ * @returns 3072 차원의 벡터
  *
  * @example
  * const embedding = await generateEmbedding('React 성능 최적화 방법');
- * // [0.123, -0.456, 0.789, ...] (768개)
+ * // [0.123, -0.456, 0.789, ...] (3072개)
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
 	if (!process.env.GEMINI_API_KEY) {
@@ -33,7 +33,6 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
 	const result = await model.embedContent({
 		content: { parts: [{ text }], role: 'user' },
-		taskType: TaskType.RETRIEVAL_DOCUMENT,
 	});
 
 	return result.embedding.values;

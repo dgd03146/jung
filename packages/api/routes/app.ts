@@ -9,6 +9,7 @@ import { photoCollectionsRouter } from './photo_collections';
 import { photosRouter } from './photos';
 import { placeRouter } from './place';
 import { commentRouter } from './post_comment';
+import { translateRouter } from './translate';
 export const appRouter = router({
 	article: articleRouter,
 	blog: blogRouter,
@@ -20,6 +21,7 @@ export const appRouter = router({
 	place: placeRouter,
 	guestbook: guestbookRouter,
 	category: categoryRouter,
+	translate: translateRouter,
 });
 
 export type AppRouter = typeof appRouter;

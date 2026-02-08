@@ -4,6 +4,12 @@ import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { uploadGalleryImage } from '../lib/uploadImage';
 
+export interface PhotoTranslation {
+	title_en: string | null;
+	description_en: string | null;
+	tags_en: string[] | null;
+}
+
 export interface CreatePhotoInput {
 	file: File;
 	title: string;
@@ -11,11 +17,13 @@ export interface CreatePhotoInput {
 	alt: string;
 	tags?: string[];
 	collection_id: string;
+	translations?: PhotoTranslation;
 }
 
 export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
+	// R2에 업로드하고 key 받기
 	const {
-		url: image_url,
+		key: image_url,
 		width,
 		height,
 	} = await uploadGalleryImage(input.file);
@@ -28,6 +36,9 @@ export const createPhoto = async (input: CreatePhotoInput): Promise<Photo> => {
 				description: input.description,
 				alt: input.alt,
 				tags: input.tags || [],
+				title_en: input.translations?.title_en ?? null,
+				description_en: input.translations?.description_en ?? null,
+				tags_en: input.translations?.tags_en ?? null,
 				image_url,
 				width,
 				height,
