@@ -1,0 +1,50 @@
+:root {
+  --color-primary: #1a4fd8;
+  --color-text: #1a3a6e;
+  --color-text-light: #5a7aa8;
+  --bg-base: #e8f0fa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-base);
+  color: var(--color-text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

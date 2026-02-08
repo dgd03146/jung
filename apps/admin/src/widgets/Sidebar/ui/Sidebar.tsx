@@ -12,6 +12,13 @@ const menuSections = [
 		icon: HiHome,
 	},
 	{
+		title: 'Newsletter',
+		items: [
+			{ path: '/articles', label: 'Articles' },
+			{ path: '/articles/new', label: 'New Article' },
+		],
+	},
+	{
 		title: 'Blog',
 		items: [
 			{ path: '/blog', label: 'Posts' },
