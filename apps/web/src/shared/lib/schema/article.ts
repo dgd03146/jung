@@ -30,8 +30,6 @@ type ArticleSchemaInput = {
 	enableSpeakable?: boolean;
 	// 2026년 추가: 기술 문서 여부 (TechArticle 타입 사용)
 	isTechArticle?: boolean;
-	// 2026년 추가: 읽기 시간 (분)
-	readingTimeMinutes?: number;
 };
 
 export const createArticleSchema = ({
@@ -48,7 +46,6 @@ export const createArticleSchema = ({
 	lang = 'ko',
 	enableSpeakable = false,
 	isTechArticle = false,
-	readingTimeMinutes,
 }: ArticleSchemaInput):
 	| WithContext<Article>
 	| WithContext<ArticleWithSpeakable> => {
@@ -91,7 +88,6 @@ export const createArticleSchema = ({
 		keywords: tags,
 		articleSection: category,
 		wordCount,
-		timeRequired: readingTimeMinutes ? `PT${readingTimeMinutes}M` : undefined,
 		inLanguage: lang,
 		// 2026년 추가: 읽기 시간 (ISO 8601 duration)
 		...(readingTimeMinutes != null && {
