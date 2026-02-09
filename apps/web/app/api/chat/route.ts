@@ -2,7 +2,13 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
-import { convertToModelMessages, streamText, tool, type UIMessage } from 'ai';
+import {
+	convertToModelMessages,
+	stepCountIs,
+	streamText,
+	tool,
+	type UIMessage,
+} from 'ai';
 import { z } from 'zod';
 import { profileData } from '@/fsd/features/chatbot/config/profileData';
 import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
@@ -51,8 +57,8 @@ const VALID_ROLES = ['user', 'assistant', 'system'] as const;
 
 function isValidPart(part: unknown): boolean {
 	if (typeof part !== 'object' || part === null) return false;
-	const p = part as { type?: unknown; text?: unknown };
-	return p.type === 'text' && typeof p.text === 'string';
+	const p = part as { type?: unknown };
+	return typeof p.type === 'string';
 }
 
 function isValidMessage(msg: unknown): msg is UIMessage {
@@ -72,8 +78,8 @@ function isValidMessage(msg: unknown): msg is UIMessage {
 	}
 
 	// Validate parts: must be array with valid part objects
-	if (!Array.isArray(m.parts) || m.parts.length === 0) return false;
-	if (!m.parts.every(isValidPart)) return false;
+	if (!Array.isArray(m.parts)) return false;
+	if (m.parts.length > 0 && !m.parts.every(isValidPart)) return false;
 
 	return true;
 }
@@ -132,6 +138,7 @@ export async function POST(req: Request) {
 		model: google('gemini-2.5-flash'),
 		system: dynamicPrompt,
 		messages: await convertToModelMessages(messages),
+		stopWhen: stepCountIs(3),
 		tools: {
 			searchBlog: tool({
 				description:
