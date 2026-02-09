@@ -116,6 +116,33 @@ export const dot = style({
 	},
 });
 
+const pulse = keyframes({
+	'0%, 100%': { opacity: 0.4 },
+	'50%': { opacity: 1 },
+});
+
+export const toolSearching = style({
+	display: 'flex',
+	alignItems: 'center',
+	gap: '8px',
+	marginTop: '8px',
+	padding: '8px 12px',
+	fontSize: '13px',
+	color: '#6B7280',
+	backgroundColor: 'rgba(77, 102, 229, 0.04)',
+	borderRadius: '8px',
+	animation: `${fadeIn} 0.2s ease-out`,
+});
+
+export const toolSearchingDot = style({
+	width: '6px',
+	height: '6px',
+	borderRadius: '50%',
+	backgroundColor: '#4D66E5',
+	animation: `${pulse} 1.2s infinite`,
+	flexShrink: 0,
+});
+
 export const toolResult = style({
 	marginTop: '10px',
 	padding: '10px 12px',

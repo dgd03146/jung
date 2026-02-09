@@ -31,6 +31,21 @@ function isValidToolOutput(output: unknown): output is ToolOutputItem[] {
 	return Array.isArray(output) && output.every(isToolOutputItem);
 }
 
+function getToolLabel(toolName: string): string {
+	switch (toolName) {
+		case 'searchBlog':
+			return '📝 관련 블로그';
+		case 'searchPlaces':
+			return '📍 관련 장소';
+		case 'searchPhotos':
+			return '📸 관련 사진';
+		case 'getProfile':
+			return '👤 프로필';
+		default:
+			return '🔍 검색';
+	}
+}
+
 // Typing animation hook
 function useTypingAnimation(text: string, isActive: boolean, speed = 20) {
 	const [displayedText, setDisplayedText] = useState('');
@@ -128,7 +143,21 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 
 				{toolParts?.map((part) => {
 					if (!isToolUIPart(part)) return null;
-					if (part.state !== 'output-available') return null;
+
+					const toolName =
+						'toolName' in part
+							? (part.toolName as string)
+							: part.type.replace('tool-', '');
+					const label = getToolLabel(toolName);
+
+					if (part.state !== 'output-available') {
+						return (
+							<div key={part.toolCallId} className={styles.toolSearching}>
+								<div className={styles.toolSearchingDot} />
+								<span>{label} 검색 중...</span>
+							</div>
+						);
+					}
 
 					// Runtime type guard for tool output
 					if (!isValidToolOutput(part.output) || part.output.length === 0) {
@@ -136,19 +165,9 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 					}
 					const result = part.output;
 
-					// Extract tool name from part.type (e.g., "tool-searchBlog" -> "searchBlog")
-					const toolName =
-						'toolName' in part
-							? (part.toolName as string)
-							: part.type.replace('tool-', '');
-
 					return (
 						<div key={part.toolCallId} className={styles.toolResult}>
-							<div className={styles.toolResultTitle}>
-								{toolName === 'searchBlog' && '📝 관련 블로그'}
-								{toolName === 'searchPlaces' && '📍 관련 장소'}
-								{toolName === 'searchPhotos' && '📸 관련 사진'}
-							</div>
+							<div className={styles.toolResultTitle}>{label}</div>
 							{result.slice(0, 3).map((item) => (
 								<div key={item.id} className={styles.toolResultItem}>
 									<Link href={item.url} className={styles.toolResultLink}>
