@@ -7,32 +7,39 @@ import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
 import { BlogLayout } from './_components/BlogLayout';
 
-export const metadata: Metadata = {
-	title: 'Blog',
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+	const { locale } = await params;
 
-	keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
-	authors: [{ name: 'JUNG', url: SITE_URL }],
-	robots: {
-		index: true,
-		follow: true,
-		googleBot: {
+	return {
+		title: 'Blog',
+		keywords: ['블로그', '개발', '여행', '사진', 'JUNG', '프로그래밍'],
+		authors: [{ name: 'JUNG', url: SITE_URL }],
+		robots: {
 			index: true,
 			follow: true,
-			'max-image-preview': 'large',
-			'max-snippet': -1,
+			googleBot: {
+				index: true,
+				follow: true,
+				'max-image-preview': 'large',
+				'max-snippet': -1,
+			},
 		},
-	},
-	alternates: {
-		canonical: `${SITE_URL}/blog`,
-		languages: {
-			en: `${SITE_URL}/en/blog`,
-			ko: `${SITE_URL}/ko/blog`,
+		alternates: {
+			canonical: `${SITE_URL}/${locale}/blog`,
+			languages: {
+				en: `${SITE_URL}/en/blog`,
+				ko: `${SITE_URL}/ko/blog`,
+			},
 		},
-	},
-	verification: {
-		google: getGoogleVerificationCode(),
-	},
-};
+		verification: {
+			google: getGoogleVerificationCode(),
+		},
+	};
+}
 
 // Revalidate every hour for fresh content with ISR
 export const revalidate = 3600;

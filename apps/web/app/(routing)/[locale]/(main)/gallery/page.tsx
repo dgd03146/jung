@@ -13,53 +13,61 @@ import {
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
 
-export const metadata: Metadata = {
-	title: 'Gallery',
-	description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
-	openGraph: {
-		title: 'JUNG (@jung) • Photo Gallery',
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+	const { locale } = await params;
+
+	return {
+		title: 'Gallery',
 		description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
-		type: 'website',
-		siteName: 'JUNG Gallery',
-		locale: 'ko_KR',
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: 'Gallery • JUNG',
-		creator: '@jung',
-		description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
-	},
-	keywords: [
-		'JUNG',
-		'갤러리',
-		'사진',
-		'여행',
-		'일상',
-		'포토',
-		'travel photos',
-		'daily life',
-	],
-	robots: {
-		index: true,
-		follow: true,
-		googleBot: {
+		openGraph: {
+			title: 'JUNG (@jung) • Photo Gallery',
+			description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
+			type: 'website',
+			siteName: 'JUNG Gallery',
+			locale: locale === 'ko' ? 'ko_KR' : 'en_US',
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: 'Gallery • JUNG',
+			creator: '@jung',
+			description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
+		},
+		keywords: [
+			'JUNG',
+			'갤러리',
+			'사진',
+			'여행',
+			'일상',
+			'포토',
+			'travel photos',
+			'daily life',
+		],
+		robots: {
 			index: true,
 			follow: true,
-			'max-image-preview': 'large',
-			'max-snippet': -1,
+			googleBot: {
+				index: true,
+				follow: true,
+				'max-image-preview': 'large',
+				'max-snippet': -1,
+			},
 		},
-	},
-	alternates: {
-		canonical: `${SITE_URL}/gallery`,
-		languages: {
-			en: `${SITE_URL}/en/gallery`,
-			ko: `${SITE_URL}/ko/gallery`,
+		alternates: {
+			canonical: `${SITE_URL}/${locale}/gallery`,
+			languages: {
+				en: `${SITE_URL}/en/gallery`,
+				ko: `${SITE_URL}/ko/gallery`,
+			},
 		},
-	},
-	verification: {
-		google: getGoogleVerificationCode(),
-	},
-};
+		verification: {
+			google: getGoogleVerificationCode(),
+		},
+	};
+}
 
 // Revalidate every hour for fresh content with ISR
 export const revalidate = 3600;
