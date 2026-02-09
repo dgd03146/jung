@@ -9,9 +9,7 @@ import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
 
-const google = createGoogleGenerativeAI({
-	apiKey: process.env.GEMINI_API_KEY,
-});
+const google = createGoogleGenerativeAI();
 
 // RAG: 관련 컨텍스트 생성
 function buildContext(
