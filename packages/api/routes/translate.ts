@@ -3,9 +3,11 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
 
 function getTranslator(): GeminiTranslator | null {
-	const apiKey = process.env.GEMINI_API_KEY;
+	const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 	if (!apiKey) {
-		console.warn('GEMINI_API_KEY not set, translations will be skipped');
+		console.warn(
+			'GOOGLE_GENERATIVE_AI_API_KEY not set, translations will be skipped',
+		);
 		return null;
 	}
 	return new GeminiTranslator(apiKey);

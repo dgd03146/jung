@@ -12,7 +12,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 // Gemini API 클라이언트 초기화
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const genAI = new GoogleGenerativeAI(
+	process.env.GOOGLE_GENERATIVE_AI_API_KEY || '',
+);
 
 /**
  * 텍스트를 임베딩 벡터로 변환
@@ -25,8 +27,10 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
  * // [0.123, -0.456, 0.789, ...] (3072개)
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
-	if (!process.env.GEMINI_API_KEY) {
-		throw new Error('GEMINI_API_KEY environment variable is not set');
+	if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+		throw new Error(
+			'GOOGLE_GENERATIVE_AI_API_KEY environment variable is not set',
+		);
 	}
 
 	const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
