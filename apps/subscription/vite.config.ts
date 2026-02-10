@@ -14,4 +14,7 @@ export default defineConfig({
 		vanillaExtractPlugin(),
 		tsConfigPaths(),
 	],
+	resolve: {
+		dedupe: ['react', 'react-dom'],
+	},
 });

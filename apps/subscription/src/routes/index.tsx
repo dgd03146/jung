@@ -1,3 +1,4 @@
+import { useToast } from '@jung/design-system/components';
 import { palette } from '@jung/design-system/tokens';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -9,17 +10,23 @@ export const Route = createFileRoute('/')({
 function HomePage() {
 	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [isSuccess, setIsSuccess] = useState(false);
 	// TODO: 카카오 채널 준비되면 주석 해제
 	// const [subscribeMethod, setSubscribeMethod] = useState<'email' | 'kakao'>('email');
 	const [category, setCategory] = useState<'frontend' | 'ai' | 'both'>('both');
+	const showToast = useToast();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		setIsSuccess(true);
-		setIsSubmitting(false);
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			showToast('Successfully subscribed!', 'success');
+			setEmail('');
+		} catch {
+			showToast('Something went wrong. Please try again.', 'error');
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	// TODO: 카카오 채널 준비되면 주석 해제
@@ -186,253 +193,203 @@ function HomePage() {
 
 					{/* Subscribe Form - Glassmorphism */}
 					<div id='subscribe' style={{ maxWidth: '480px' }}>
-						{isSuccess ? (
-							<div
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								gap: '1rem',
+							}}
+						>
+							{/* TODO: 카카오 채널 준비되면 Method Toggle 주석 해제 */}
+							{/* <div
 								style={{
-									padding: '1.25rem 1.75rem',
-									background: 'rgba(255, 255, 255, 0.7)',
-									backdropFilter: 'blur(20px)',
-									borderRadius: '16px',
-									border: '1px solid rgba(1, 66, 192, 0.2)',
-									boxShadow: '0 8px 32px rgba(1, 66, 192, 0.1)',
+									display: 'flex',
+									gap: '0.5rem',
+									padding: '0.25rem',
+									background: 'rgba(255, 255, 255, 0.5)',
+									backdropFilter: 'blur(10px)',
+									borderRadius: '12px',
+									width: 'fit-content',
 								}}
 							>
+								<button type='button' onClick={() => setSubscribeMethod('email')} style={{ ... }}>
+									Email
+								</button>
+								<button type='button' onClick={() => setSubscribeMethod('kakao')} style={{ ... }}>
+									KakaoTalk
+								</button>
+							</div> */}
+
+							{/* Category Toggle */}
+							<div
+								style={{
+									display: 'flex',
+									gap: '0.5rem',
+									padding: '0.25rem',
+									background: 'rgba(255, 255, 255, 0.5)',
+									backdropFilter: 'blur(10px)',
+									borderRadius: '12px',
+									width: 'fit-content',
+								}}
+							>
+								<button
+									type='button'
+									onClick={() => setCategory('frontend')}
+									style={{
+										padding: '0.5rem 1rem',
+										background:
+											category === 'frontend' ? 'white' : 'transparent',
+										border: 'none',
+										borderRadius: '8px',
+										fontSize: '0.8rem',
+										fontWeight: 500,
+										fontFamily: "'Poppins', sans-serif",
+										color:
+											category === 'frontend'
+												? palette.primary
+												: palette.gray300,
+										cursor: 'pointer',
+										transition: 'all 0.2s',
+										boxShadow:
+											category === 'frontend'
+												? '0 2px 8px rgba(0,0,0,0.08)'
+												: 'none',
+									}}
+								>
+									Frontend
+								</button>
+								<button
+									type='button'
+									onClick={() => setCategory('ai')}
+									style={{
+										padding: '0.5rem 1rem',
+										background: category === 'ai' ? 'white' : 'transparent',
+										border: 'none',
+										borderRadius: '8px',
+										fontSize: '0.8rem',
+										fontWeight: 500,
+										fontFamily: "'Poppins', sans-serif",
+										color:
+											category === 'ai' ? palette.primary200 : palette.gray300,
+										cursor: 'pointer',
+										transition: 'all 0.2s',
+										boxShadow:
+											category === 'ai' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+									}}
+								>
+									AI
+								</button>
+								<button
+									type='button'
+									onClick={() => setCategory('both')}
+									style={{
+										padding: '0.5rem 1rem',
+										background: category === 'both' ? 'white' : 'transparent',
+										border: 'none',
+										borderRadius: '8px',
+										fontSize: '0.8rem',
+										fontWeight: 500,
+										fontFamily: "'Poppins', sans-serif",
+										color:
+											category === 'both' ? palette.primary : palette.gray300,
+										cursor: 'pointer',
+										transition: 'all 0.2s',
+										boxShadow:
+											category === 'both'
+												? '0 2px 8px rgba(0,0,0,0.08)'
+												: 'none',
+									}}
+								>
+									Both
+								</button>
+							</div>
+
+							{/* Email Form */}
+							<form onSubmit={handleSubmit}>
 								<div
 									style={{
 										display: 'flex',
 										alignItems: 'center',
-										gap: '0.75rem',
+										gap: '0.5rem',
+										padding: '0.5rem 0.5rem 0.5rem 1.5rem',
+										background: 'rgba(255, 255, 255, 0.7)',
+										backdropFilter: 'blur(20px)',
+										borderRadius: '16px',
+										border: '1px solid rgba(1, 66, 192, 0.15)',
+										boxShadow: '0 8px 32px rgba(1, 66, 192, 0.08)',
+										transition: 'all 0.3s ease',
 									}}
 								>
-									<div
+									<input
+										type='email'
+										placeholder='your@email.com'
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+										required
 										style={{
-											width: '24px',
-											height: '24px',
-											borderRadius: '50%',
-											background: `linear-gradient(135deg, ${palette.primary}, ${palette.primary200})`,
-											display: 'flex',
-											alignItems: 'center',
-											justifyContent: 'center',
-											color: 'white',
-											fontSize: '0.75rem',
-										}}
-									>
-										✓
-									</div>
-									<span
-										style={{
+											flex: 1,
+											border: 'none',
+											background: 'transparent',
 											fontSize: '0.95rem',
 											color: palette.text,
-											fontWeight: 500,
+											outline: 'none',
+											minWidth: '180px',
+											fontFamily: "'Poppins', sans-serif",
+										}}
+									/>
+									<button
+										type='submit'
+										disabled={isSubmitting}
+										style={{
+											padding: '0.875rem 1.5rem',
+											background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary200} 100%)`,
+											color: 'white',
+											border: 'none',
+											borderRadius: '12px',
+											fontSize: '0.9rem',
+											fontWeight: 600,
+											fontFamily: "'Poppins', sans-serif",
+											cursor: isSubmitting ? 'not-allowed' : 'pointer',
+											opacity: isSubmitting ? 0.7 : 1,
+											whiteSpace: 'nowrap',
+											transition: 'transform 0.2s, box-shadow 0.2s',
+											boxShadow: '0 4px 14px rgba(1, 66, 192, 0.25)',
+										}}
+										onMouseEnter={(e) => {
+											if (!isSubmitting) {
+												e.currentTarget.style.transform = 'translateY(-1px)';
+												e.currentTarget.style.boxShadow =
+													'0 6px 20px rgba(1, 66, 192, 0.35)';
+											}
+										}}
+										onMouseLeave={(e) => {
+											e.currentTarget.style.transform = 'translateY(0)';
+											e.currentTarget.style.boxShadow =
+												'0 4px 14px rgba(1, 66, 192, 0.25)';
 										}}
 									>
-										Thanks for subscribing!
-									</span>
+										{isSubmitting ? 'Subscribing...' : 'Subscribe'}
+									</button>
 								</div>
-							</div>
-						) : (
-							<div
+							</form>
+
+							{/* TODO: 카카오 채널 준비되면 카카오 버튼 주석 해제 */}
+							{/* {subscribeMethod === 'kakao' && (
+								<button type='button' onClick={handleKakaoSubscribe} ...>
+									Subscribe via KakaoTalk
+								</button>
+							)} */}
+
+							<p
 								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									gap: '1rem',
+									fontSize: '0.8rem',
+									color: palette.gray100,
+									paddingLeft: '0.25rem',
 								}}
 							>
-								{/* TODO: 카카오 채널 준비되면 Method Toggle 주석 해제 */}
-								{/* <div
-									style={{
-										display: 'flex',
-										gap: '0.5rem',
-										padding: '0.25rem',
-										background: 'rgba(255, 255, 255, 0.5)',
-										backdropFilter: 'blur(10px)',
-										borderRadius: '12px',
-										width: 'fit-content',
-									}}
-								>
-									<button type='button' onClick={() => setSubscribeMethod('email')} style={{ ... }}>
-										Email
-									</button>
-									<button type='button' onClick={() => setSubscribeMethod('kakao')} style={{ ... }}>
-										KakaoTalk
-									</button>
-								</div> */}
-
-								{/* Category Toggle */}
-								<div
-									style={{
-										display: 'flex',
-										gap: '0.5rem',
-										padding: '0.25rem',
-										background: 'rgba(255, 255, 255, 0.5)',
-										backdropFilter: 'blur(10px)',
-										borderRadius: '12px',
-										width: 'fit-content',
-									}}
-								>
-									<button
-										type='button'
-										onClick={() => setCategory('frontend')}
-										style={{
-											padding: '0.5rem 1rem',
-											background:
-												category === 'frontend' ? 'white' : 'transparent',
-											border: 'none',
-											borderRadius: '8px',
-											fontSize: '0.8rem',
-											fontWeight: 500,
-											fontFamily: "'Poppins', sans-serif",
-											color:
-												category === 'frontend'
-													? palette.primary
-													: palette.gray300,
-											cursor: 'pointer',
-											transition: 'all 0.2s',
-											boxShadow:
-												category === 'frontend'
-													? '0 2px 8px rgba(0,0,0,0.08)'
-													: 'none',
-										}}
-									>
-										Frontend
-									</button>
-									<button
-										type='button'
-										onClick={() => setCategory('ai')}
-										style={{
-											padding: '0.5rem 1rem',
-											background: category === 'ai' ? 'white' : 'transparent',
-											border: 'none',
-											borderRadius: '8px',
-											fontSize: '0.8rem',
-											fontWeight: 500,
-											fontFamily: "'Poppins', sans-serif",
-											color:
-												category === 'ai'
-													? palette.primary200
-													: palette.gray300,
-											cursor: 'pointer',
-											transition: 'all 0.2s',
-											boxShadow:
-												category === 'ai'
-													? '0 2px 8px rgba(0,0,0,0.08)'
-													: 'none',
-										}}
-									>
-										AI
-									</button>
-									<button
-										type='button'
-										onClick={() => setCategory('both')}
-										style={{
-											padding: '0.5rem 1rem',
-											background: category === 'both' ? 'white' : 'transparent',
-											border: 'none',
-											borderRadius: '8px',
-											fontSize: '0.8rem',
-											fontWeight: 500,
-											fontFamily: "'Poppins', sans-serif",
-											color:
-												category === 'both' ? palette.primary : palette.gray300,
-											cursor: 'pointer',
-											transition: 'all 0.2s',
-											boxShadow:
-												category === 'both'
-													? '0 2px 8px rgba(0,0,0,0.08)'
-													: 'none',
-										}}
-									>
-										Both
-									</button>
-								</div>
-
-								{/* Email Form */}
-								<form onSubmit={handleSubmit}>
-									<div
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-											gap: '0.5rem',
-											padding: '0.5rem 0.5rem 0.5rem 1.5rem',
-											background: 'rgba(255, 255, 255, 0.7)',
-											backdropFilter: 'blur(20px)',
-											borderRadius: '16px',
-											border: '1px solid rgba(1, 66, 192, 0.15)',
-											boxShadow: '0 8px 32px rgba(1, 66, 192, 0.08)',
-											transition: 'all 0.3s ease',
-										}}
-									>
-										<input
-											type='email'
-											placeholder='your@email.com'
-											value={email}
-											onChange={(e) => setEmail(e.target.value)}
-											required
-											style={{
-												flex: 1,
-												border: 'none',
-												background: 'transparent',
-												fontSize: '0.95rem',
-												color: palette.text,
-												outline: 'none',
-												minWidth: '180px',
-												fontFamily: "'Poppins', sans-serif",
-											}}
-										/>
-										<button
-											type='submit'
-											disabled={isSubmitting}
-											style={{
-												padding: '0.875rem 1.5rem',
-												background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary200} 100%)`,
-												color: 'white',
-												border: 'none',
-												borderRadius: '12px',
-												fontSize: '0.9rem',
-												fontWeight: 600,
-												fontFamily: "'Poppins', sans-serif",
-												cursor: isSubmitting ? 'not-allowed' : 'pointer',
-												opacity: isSubmitting ? 0.7 : 1,
-												whiteSpace: 'nowrap',
-												transition: 'transform 0.2s, box-shadow 0.2s',
-												boxShadow: '0 4px 14px rgba(1, 66, 192, 0.25)',
-											}}
-											onMouseEnter={(e) => {
-												if (!isSubmitting) {
-													e.currentTarget.style.transform = 'translateY(-1px)';
-													e.currentTarget.style.boxShadow =
-														'0 6px 20px rgba(1, 66, 192, 0.35)';
-												}
-											}}
-											onMouseLeave={(e) => {
-												e.currentTarget.style.transform = 'translateY(0)';
-												e.currentTarget.style.boxShadow =
-													'0 4px 14px rgba(1, 66, 192, 0.25)';
-											}}
-										>
-											{isSubmitting ? 'Subscribing...' : 'Subscribe'}
-										</button>
-									</div>
-								</form>
-
-								{/* TODO: 카카오 채널 준비되면 카카오 버튼 주석 해제 */}
-								{/* {subscribeMethod === 'kakao' && (
-									<button type='button' onClick={handleKakaoSubscribe} ...>
-										Subscribe via KakaoTalk
-									</button>
-								)} */}
-
-								<p
-									style={{
-										fontSize: '0.8rem',
-										color: palette.gray100,
-										paddingLeft: '0.25rem',
-									}}
-								>
-									No spam · Unsubscribe anytime
-								</p>
-							</div>
-						)}
+								No spam · Unsubscribe anytime
+							</p>
+						</div>
 					</div>
 				</main>
 

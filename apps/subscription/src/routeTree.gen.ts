@@ -9,10 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ArticlesIdRouteImport } from './routes/articles/$id'
-import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
+import { Route as ArticlesIdRouteImport } from './routes/articles/$id'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
