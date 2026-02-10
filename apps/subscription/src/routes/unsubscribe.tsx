@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { unsubscribe } from '../server/subscribers';
 
 export const Route = createFileRoute('/unsubscribe')({
 	component: UnsubscribePage,
@@ -8,11 +9,21 @@ export const Route = createFileRoute('/unsubscribe')({
 function UnsubscribePage() {
 	const [isUnsubscribed, setIsUnsubscribed] = useState(false);
 	const [email, setEmail] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleUnsubscribe = (e: React.FormEvent) => {
+	const handleUnsubscribe = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// Will be replaced with actual API call in Phase 2
-		setIsUnsubscribed(true);
+		setIsSubmitting(true);
+		try {
+			const result = await unsubscribe({ data: { email } });
+			if (result.success) {
+				setIsUnsubscribed(true);
+			}
+		} catch {
+			// silently handle
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -192,6 +203,7 @@ function UnsubscribePage() {
 									/>
 									<button
 										type='submit'
+										disabled={isSubmitting}
 										style={{
 											width: '100%',
 											padding: '0.875rem 1.5rem',
@@ -202,19 +214,22 @@ function UnsubscribePage() {
 											fontSize: '0.9rem',
 											fontWeight: 600,
 											fontFamily: "'Poppins', sans-serif",
-											cursor: 'pointer',
+											cursor: isSubmitting ? 'not-allowed' : 'pointer',
+											opacity: isSubmitting ? 0.7 : 1,
 											transition: 'all 0.2s',
 										}}
 										onMouseEnter={(e) => {
-											e.currentTarget.style.background = '#dc2626';
-											e.currentTarget.style.transform = 'translateY(-1px)';
+											if (!isSubmitting) {
+												e.currentTarget.style.background = '#dc2626';
+												e.currentTarget.style.transform = 'translateY(-1px)';
+											}
 										}}
 										onMouseLeave={(e) => {
 											e.currentTarget.style.background = '#ef4444';
 											e.currentTarget.style.transform = 'translateY(0)';
 										}}
 									>
-										Unsubscribe
+										{isSubmitting ? 'Processing...' : 'Unsubscribe'}
 									</button>
 								</div>
 							</form>

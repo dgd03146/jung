@@ -2,6 +2,13 @@ import { useToast } from '@jung/design-system/components';
 import { palette } from '@jung/design-system/tokens';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { subscribe } from '../server/subscribers';
+
+const CATEGORY_OPTIONS = [
+	{ value: 'frontend', label: 'Frontend', activeColor: palette.primary },
+	{ value: 'ai', label: 'AI', activeColor: palette.primary200 },
+	{ value: 'both', label: 'Both', activeColor: palette.primary },
+] as const;
 
 export const Route = createFileRoute('/')({
 	component: HomePage,
@@ -10,8 +17,6 @@ export const Route = createFileRoute('/')({
 function HomePage() {
 	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	// TODO: 카카오 채널 준비되면 주석 해제
-	// const [subscribeMethod, setSubscribeMethod] = useState<'email' | 'kakao'>('email');
 	const [category, setCategory] = useState<'frontend' | 'ai' | 'both'>('both');
 	const showToast = useToast();
 
@@ -19,22 +24,19 @@ function HomePage() {
 		e.preventDefault();
 		setIsSubmitting(true);
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			showToast('Successfully subscribed!', 'success');
-			setEmail('');
+			const result = await subscribe({ data: { email, category } });
+			if (result.success) {
+				showToast(result.message, 'success');
+				setEmail('');
+			} else {
+				showToast(result.message, 'error');
+			}
 		} catch {
 			showToast('Something went wrong. Please try again.', 'error');
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
-
-	// TODO: 카카오 채널 준비되면 주석 해제
-	// const handleKakaoSubscribe = async () => {
-	// 	setIsSubmitting(true);
-	// 	window.open('https://pf.kakao.com/_xxxxx', '_blank');
-	// 	setIsSubmitting(false);
-	// };
 
 	return (
 		<div
@@ -191,7 +193,7 @@ function HomePage() {
 						</p>
 					</div>
 
-					{/* Subscribe Form - Glassmorphism */}
+					{/* Subscribe Form */}
 					<div id='subscribe' style={{ maxWidth: '480px' }}>
 						<div
 							style={{
@@ -200,26 +202,6 @@ function HomePage() {
 								gap: '1rem',
 							}}
 						>
-							{/* TODO: 카카오 채널 준비되면 Method Toggle 주석 해제 */}
-							{/* <div
-								style={{
-									display: 'flex',
-									gap: '0.5rem',
-									padding: '0.25rem',
-									background: 'rgba(255, 255, 255, 0.5)',
-									backdropFilter: 'blur(10px)',
-									borderRadius: '12px',
-									width: 'fit-content',
-								}}
-							>
-								<button type='button' onClick={() => setSubscribeMethod('email')} style={{ ... }}>
-									Email
-								</button>
-								<button type='button' onClick={() => setSubscribeMethod('kakao')} style={{ ... }}>
-									KakaoTalk
-								</button>
-							</div> */}
-
 							{/* Category Toggle */}
 							<div
 								style={{
@@ -232,76 +214,36 @@ function HomePage() {
 									width: 'fit-content',
 								}}
 							>
-								<button
-									type='button'
-									onClick={() => setCategory('frontend')}
-									style={{
-										padding: '0.5rem 1rem',
-										background:
-											category === 'frontend' ? 'white' : 'transparent',
-										border: 'none',
-										borderRadius: '8px',
-										fontSize: '0.8rem',
-										fontWeight: 500,
-										fontFamily: "'Poppins', sans-serif",
-										color:
-											category === 'frontend'
-												? palette.primary
-												: palette.gray300,
-										cursor: 'pointer',
-										transition: 'all 0.2s',
-										boxShadow:
-											category === 'frontend'
-												? '0 2px 8px rgba(0,0,0,0.08)'
-												: 'none',
-									}}
-								>
-									Frontend
-								</button>
-								<button
-									type='button'
-									onClick={() => setCategory('ai')}
-									style={{
-										padding: '0.5rem 1rem',
-										background: category === 'ai' ? 'white' : 'transparent',
-										border: 'none',
-										borderRadius: '8px',
-										fontSize: '0.8rem',
-										fontWeight: 500,
-										fontFamily: "'Poppins', sans-serif",
-										color:
-											category === 'ai' ? palette.primary200 : palette.gray300,
-										cursor: 'pointer',
-										transition: 'all 0.2s',
-										boxShadow:
-											category === 'ai' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
-									}}
-								>
-									AI
-								</button>
-								<button
-									type='button'
-									onClick={() => setCategory('both')}
-									style={{
-										padding: '0.5rem 1rem',
-										background: category === 'both' ? 'white' : 'transparent',
-										border: 'none',
-										borderRadius: '8px',
-										fontSize: '0.8rem',
-										fontWeight: 500,
-										fontFamily: "'Poppins', sans-serif",
-										color:
-											category === 'both' ? palette.primary : palette.gray300,
-										cursor: 'pointer',
-										transition: 'all 0.2s',
-										boxShadow:
-											category === 'both'
-												? '0 2px 8px rgba(0,0,0,0.08)'
-												: 'none',
-									}}
-								>
-									Both
-								</button>
+								{CATEGORY_OPTIONS.map((opt) => (
+									<button
+										key={opt.value}
+										type='button'
+										onClick={() => setCategory(opt.value)}
+										aria-pressed={category === opt.value}
+										style={{
+											padding: '0.5rem 1rem',
+											background:
+												category === opt.value ? 'white' : 'transparent',
+											border: 'none',
+											borderRadius: '8px',
+											fontSize: '0.8rem',
+											fontWeight: 500,
+											fontFamily: "'Poppins', sans-serif",
+											color:
+												category === opt.value
+													? opt.activeColor
+													: palette.gray300,
+											cursor: 'pointer',
+											transition: 'all 0.2s',
+											boxShadow:
+												category === opt.value
+													? '0 2px 8px rgba(0,0,0,0.08)'
+													: 'none',
+										}}
+									>
+										{opt.label}
+									</button>
+								))}
 							</div>
 
 							{/* Email Form */}
@@ -372,13 +314,6 @@ function HomePage() {
 									</button>
 								</div>
 							</form>
-
-							{/* TODO: 카카오 채널 준비되면 카카오 버튼 주석 해제 */}
-							{/* {subscribeMethod === 'kakao' && (
-								<button type='button' onClick={handleKakaoSubscribe} ...>
-									Subscribe via KakaoTalk
-								</button>
-							)} */}
 
 							<p
 								style={{

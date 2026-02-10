@@ -1,34 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { type Article, getArticles } from '../../lib';
+import { fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/')({
+	loader: () => fetchArticles(),
 	component: ArticlesPage,
 });
 
 function ArticlesPage() {
-	const [filter, setFilter] = useState<'all' | 'frontend' | 'ai'>('all');
-	const [articles, setArticles] = useState<Article[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		let isActive = true;
-
-		const fetchArticles = async () => {
-			setIsLoading(true);
-			const data = await getArticles(filter === 'all' ? undefined : filter);
-			if (isActive) {
-				setArticles(data);
-				setIsLoading(false);
-			}
-		};
-		fetchArticles();
-
-		return () => {
-			isActive = false;
-		};
-	}, [filter]);
+	const articles = Route.useLoaderData();
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -59,39 +39,10 @@ function ArticlesPage() {
 						<p className={styles.subtitle}>
 							A collection of articles I've read and recommend
 						</p>
-
-						<div className={styles.filterContainer}>
-							<button
-								type='button'
-								onClick={() => setFilter('all')}
-								className={`${styles.filterButton} ${filter === 'all' ? styles.filterButtonActive : ''}`}
-							>
-								All
-							</button>
-							<button
-								type='button'
-								onClick={() => setFilter('frontend')}
-								className={`${styles.filterButton} ${filter === 'frontend' ? styles.filterButtonActive : ''}`}
-							>
-								Frontend
-							</button>
-							<button
-								type='button'
-								onClick={() => setFilter('ai')}
-								className={`${styles.filterButton} ${filter === 'ai' ? styles.filterButtonActiveAi : ''}`}
-							>
-								AI
-							</button>
-						</div>
 					</div>
 
 					<div className={styles.articleList}>
-						{isLoading ? (
-							<div className={styles.loadingContainer}>
-								<div className={styles.spinner} />
-								<span className={styles.loadingText}>Loading articles...</span>
-							</div>
-						) : articles.length === 0 ? (
+						{articles.length === 0 ? (
 							<div className={styles.loadingContainer}>
 								<span className={styles.emptyStateIcon}>📭</span>
 								<h3 className={styles.emptyStateHeading}>No articles yet</h3>

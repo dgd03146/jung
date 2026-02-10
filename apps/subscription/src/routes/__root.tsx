@@ -1,11 +1,64 @@
 import { ToastContainer, ToastProvider } from '@jung/design-system/components';
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import {
+	createRootRoute,
+	HeadContent,
+	Outlet,
+	Scripts,
+} from '@tanstack/react-router';
+import { lazy } from 'react';
 import '../styles/global.css';
 
+const TanStackRouterDevtools =
+	process.env.NODE_ENV === 'production'
+		? () => null
+		: lazy(() =>
+				import('@tanstack/react-router-devtools').then((res) => ({
+					default: res.TanStackRouterDevtools,
+				})),
+			);
+
 export const Route = createRootRoute({
+	head: () => ({
+		meta: [
+			{ charSet: 'utf-8' },
+			{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+			{
+				name: 'description',
+				content: 'Frontend & AI Articles I Actually Read',
+			},
+			{ title: 'Curated by Jung - Frontend & AI Articles' },
+		],
+		links: [
+			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+			{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+			{
+				rel: 'preconnect',
+				href: 'https://fonts.gstatic.com',
+				crossOrigin: 'anonymous',
+			},
+			{
+				rel: 'stylesheet',
+				href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
+			},
+		],
+	}),
 	component: RootComponent,
+	shellComponent: RootDocument,
 });
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+	return (
+		<html lang='en'>
+			<head>
+				<HeadContent />
+			</head>
+			<body>
+				{children}
+				<Scripts />
+			</body>
+		</html>
+	);
+}
 
 function RootComponent() {
 	return (

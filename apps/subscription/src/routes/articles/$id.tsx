@@ -1,34 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { type Article, getArticleById } from '../../lib';
+import { fetchArticleById } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/$id')({
+	loader: ({ params }) => fetchArticleById({ data: params.id }),
 	component: ArticleDetailPage,
 });
 
 function ArticleDetailPage() {
-	const { id } = Route.useParams();
-	const [article, setArticle] = useState<Article | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		let isActive = true;
-
-		const fetchArticle = async () => {
-			setIsLoading(true);
-			const data = await getArticleById(id);
-			if (isActive) {
-				setArticle(data);
-				setIsLoading(false);
-			}
-		};
-		fetchArticle();
-
-		return () => {
-			isActive = false;
-		};
-	}, [id]);
+	const article = Route.useLoaderData();
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -38,17 +18,6 @@ function ArticleDetailPage() {
 			day: 'numeric',
 		});
 	};
-
-	if (isLoading) {
-		return (
-			<div className={styles.centeredPage}>
-				<div className={styles.loadingContainer}>
-					<div className={styles.spinner} />
-					<span className={styles.loadingText}>Loading...</span>
-				</div>
-			</div>
-		);
-	}
 
 	if (!article) {
 		return (

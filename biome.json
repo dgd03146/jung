@@ -68,6 +68,9 @@
 				"rules": {
 					"suspicious": {
 						"noExplicitAny": "off"
+					},
+					"correctness": {
+						"noUnusedImports": "off"
 					}
 				}
 			},

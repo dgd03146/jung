@@ -1,6 +1,6 @@
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import react from '@vitejs/plugin-react-swc';
+import viteReact from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsConfigPaths from 'vite-tsconfig-paths';
 
@@ -9,10 +9,10 @@ export default defineConfig({
 		port: 3001,
 	},
 	plugins: [
-		TanStackRouterVite(),
-		react(),
-		vanillaExtractPlugin(),
 		tsConfigPaths(),
+		vanillaExtractPlugin(),
+		tanstackStart(),
+		viteReact(),
 	],
 	resolve: {
 		dedupe: ['react', 'react-dom'],
