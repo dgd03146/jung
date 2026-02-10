@@ -71,18 +71,27 @@ export const unsubscribe = createServerFn({ method: 'POST' })
 	.handler(async ({ data }) => {
 		const supabase = getServerSupabase();
 
-		const { error } = await supabase
+		const { data: rows, error } = await supabase
 			.from('subscribers')
 			.update({
 				is_active: false,
 				unsubscribed_at: new Date().toISOString(),
 				updated_at: new Date().toISOString(),
 			})
-			.eq('email', data.email);
+			.eq('email', data.email)
+			.eq('is_active', true)
+			.select('id');
 
 		if (error) {
 			console.error('Unsubscribe error:', error);
 			return { success: false, message: 'Failed to unsubscribe.' };
+		}
+
+		if (!rows || rows.length === 0) {
+			return {
+				success: false,
+				message: 'Email not found or already unsubscribed.',
+			};
 		}
 
 		return { success: true, message: 'Successfully unsubscribed.' };

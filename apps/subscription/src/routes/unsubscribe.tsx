@@ -10,17 +10,22 @@ function UnsubscribePage() {
 	const [isUnsubscribed, setIsUnsubscribed] = useState(false);
 	const [email, setEmail] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const handleUnsubscribe = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsSubmitting(true);
+		setError(null);
 		try {
 			const result = await unsubscribe({ data: { email } });
 			if (result.success) {
 				setIsUnsubscribed(true);
+			} else {
+				setError(result.message);
 			}
-		} catch {
-			// silently handle
+		} catch (err) {
+			console.error('Unsubscribe error:', err);
+			setError('Something went wrong. Please try again.');
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -232,6 +237,17 @@ function UnsubscribePage() {
 										{isSubmitting ? 'Processing...' : 'Unsubscribe'}
 									</button>
 								</div>
+								{error && (
+									<p
+										style={{
+											color: '#ef4444',
+											fontSize: '0.85rem',
+											marginTop: '0.5rem',
+										}}
+									>
+										{error}
+									</p>
+								)}
 							</form>
 
 							<Link

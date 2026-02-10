@@ -22,17 +22,45 @@ CREATE INDEX IF NOT EXISTS subscribers_active_category_idx
 -- Enable RLS
 ALTER TABLE public.subscribers ENABLE ROW LEVEL SECURITY;
 
--- Allow anonymous subscribe (insert)
+-- Allow anonymous subscribe (insert) with restricted column values
 CREATE POLICY "Allow anonymous subscribe"
   ON public.subscribers FOR INSERT TO anon
-  WITH CHECK (true);
+  WITH CHECK (
+    is_active = true
+    AND created_at = now()
+    AND updated_at = now()
+    AND unsubscribed_at IS NULL
+  );
 
--- Allow anonymous unsubscribe (update)
+-- Allow anonymous unsubscribe (update): only permit setting is_active = false
 CREATE POLICY "Allow anonymous unsubscribe"
   ON public.subscribers FOR UPDATE TO anon
-  USING (true) WITH CHECK (true);
+  USING (is_active = true)
+  WITH CHECK (is_active = false);
 
--- Allow anonymous select (check existing email)
-CREATE POLICY "Allow anonymous select"
-  ON public.subscribers FOR SELECT TO anon
-  USING (true);
+-- Prevent anon from modifying immutable columns (email, category, created_at)
+-- RLS WITH CHECK cannot compare OLD vs NEW, so we use a trigger instead.
+CREATE OR REPLACE FUNCTION public.subscribers_immutable_columns()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.email IS DISTINCT FROM OLD.email THEN
+    RAISE EXCEPTION 'Cannot modify email';
+  END IF;
+  IF NEW.category IS DISTINCT FROM OLD.category THEN
+    RAISE EXCEPTION 'Cannot modify category';
+  END IF;
+  IF NEW.created_at IS DISTINCT FROM OLD.created_at THEN
+    RAISE EXCEPTION 'Cannot modify created_at';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER subscribers_protect_columns
+  BEFORE UPDATE ON public.subscribers
+  FOR EACH ROW
+  WHEN (current_setting('request.jwt.claim.role', true) = 'anon')
+  EXECUTE FUNCTION public.subscribers_immutable_columns();
+
+-- Server functions use service_role key which bypasses RLS.
+-- No SELECT policy for anon to prevent email enumeration.

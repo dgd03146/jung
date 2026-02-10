@@ -1,11 +1,61 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { fetchArticleById } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/$id')({
 	loader: ({ params }) => fetchArticleById({ data: params.id }),
 	component: ArticleDetailPage,
+	pendingComponent: ArticleLoading,
+	errorComponent: ArticleError,
 });
+
+function ArticleLoading() {
+	return (
+		<div className={styles.centeredPage}>
+			<div className={styles.centeredContent}>
+				<p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+					Loading article...
+				</p>
+			</div>
+		</div>
+	);
+}
+
+function ArticleError() {
+	const router = useRouter();
+
+	return (
+		<div className={styles.centeredPage}>
+			<div className={styles.centeredContent}>
+				<span className={styles.emptyStateIcon}>⚠️</span>
+				<h3 className={styles.emptyStateHeading}>Failed to load article</h3>
+				<p className={styles.emptyStateText}>
+					This article could not be loaded.
+					<br />
+					It may have been removed or the link is incorrect.
+				</p>
+				<div
+					style={{
+						display: 'flex',
+						gap: '1rem',
+						justifyContent: 'center',
+					}}
+				>
+					<button
+						type='button'
+						onClick={() => router.invalidate()}
+						className={styles.backLink}
+					>
+						Retry
+					</button>
+					<Link to='/articles' className={styles.backLink}>
+						← Back to Articles
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
+}
 
 function ArticleDetailPage() {
 	const article = Route.useLoaderData();

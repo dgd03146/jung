@@ -21,8 +21,7 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 		const { data, error } = await query;
 
 		if (error) {
-			console.error('Error fetching articles:', error);
-			return [];
+			throw new Error(`Failed to fetch articles: ${error.message}`);
 		}
 
 		return data ?? [];
@@ -40,8 +39,7 @@ export const fetchArticleById = createServerFn({ method: 'GET' })
 			.single();
 
 		if (error) {
-			console.error('Error fetching article:', error);
-			return null;
+			throw new Error(`Failed to fetch article: ${error.message}`);
 		}
 
 		return data;
