@@ -19,9 +19,9 @@ import { type Locale, routing } from '@/i18n/routing';
 export async function generateMetadata({
 	params,
 }: {
-	params: Promise<{ id: string; locale: string }>;
+	params: Promise<{ id: string; locale: Locale }>;
 }): Promise<Metadata> {
-	const { id } = await params;
+	const { id, locale } = await params;
 	try {
 		const photo = await getCaller().gallery.getPhotoById(id);
 
@@ -82,7 +82,7 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${SITE_URL}/gallery/photo/${id}`,
+				canonical: `${SITE_URL}/${locale}/gallery/photo/${id}`,
 				languages: {
 					en: `${SITE_URL}/en/gallery/photo/${id}`,
 					ko: `${SITE_URL}/ko/gallery/photo/${id}`,

@@ -23,7 +23,7 @@ interface PageProps {
 export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
-	const { id } = await params;
+	const { id, locale } = await params;
 	try {
 		const collection =
 			await getCaller().galleryCollections.getCollectionById(id);
@@ -75,7 +75,7 @@ export async function generateMetadata({
 				'일상',
 			].filter(Boolean),
 			alternates: {
-				canonical: `${SITE_URL}/gallery/collections/${id}`,
+				canonical: `${SITE_URL}/${locale}/gallery/collections/${id}`,
 				languages: {
 					en: `${SITE_URL}/en/gallery/collections/${id}`,
 					ko: `${SITE_URL}/ko/gallery/collections/${id}`,
