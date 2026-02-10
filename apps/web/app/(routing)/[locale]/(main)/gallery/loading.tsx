@@ -1,10 +1,5 @@
-import { Flex } from '@jung/design-system/components';
-import { LoadingSpinner } from '@/fsd/shared';
+import { GalleryListSkeleton } from '@/fsd/entities/gallery';
 
 export default function Loading() {
-	return (
-		<Flex justify='center' align='center' height='1/4'>
-			<LoadingSpinner size='medium' />
-		</Flex>
-	);
+	return <GalleryListSkeleton count={12} />;
 }

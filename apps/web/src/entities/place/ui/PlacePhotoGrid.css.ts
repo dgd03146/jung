@@ -54,6 +54,7 @@ export const imageWrapper = style({
 	width: '100%',
 	height: '100%',
 	overflow: 'hidden',
+	cursor: 'pointer',
 });
 
 export const mainImage = style({

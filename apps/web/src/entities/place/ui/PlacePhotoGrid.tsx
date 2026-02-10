@@ -7,6 +7,7 @@ import * as styles from './PlacePhotoGrid.css';
 
 interface PlacePhotoGridProps {
 	photos: PlacePhoto[];
+	onPhotoClick?: (index: number) => void;
 }
 
 const GRID_VARIANTS: Record<number, GridVariant> = {
@@ -16,7 +17,7 @@ const GRID_VARIANTS: Record<number, GridVariant> = {
 	4: 'four',
 } as const;
 
-export function PlacePhotoGrid({ photos }: PlacePhotoGridProps) {
+export function PlacePhotoGrid({ photos, onPhotoClick }: PlacePhotoGridProps) {
 	const count = photos.length > 4 ? 4 : photos.length;
 	const variant = GRID_VARIANTS[count];
 
@@ -32,6 +33,7 @@ export function PlacePhotoGrid({ photos }: PlacePhotoGridProps) {
 					className={`${styles.imageWrapper} ${
 						index === 0 ? styles.mainImage : ''
 					}`}
+					onClick={() => onPhotoClick?.(index)}
 				>
 					<BlurImage
 						src={getImageUrl(photo.url)}
