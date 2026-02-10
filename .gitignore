@@ -55,6 +55,9 @@ packages/configs/vitest.config.mjs.timestamp-*
 **/*workspace.js
 **/*.d.ts
 **/*.map
+packages/design-system/tokens/*.js
+packages/shared/types/*.js
+packages/shared/constants/*.js
 
 
 /rules
@@ -71,3 +74,12 @@ AGENTS.md
 
 # Supabase
 supabase/.temp/
+
+# MCP config (contains API tokens)
+.mcp.json
+
+# Playwright MCP screenshots
+.playwright-mcp/
+
+# RAG evaluation
+scripts/rag-evaluation/
