@@ -7,7 +7,8 @@
  * - 텍스트 → 벡터 변환
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, TaskType } from '@google/generative-ai';
+import { extractTextFromBlockNote, truncateText } from './extractText';
 
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 
@@ -19,14 +20,23 @@ const genAI = new GoogleGenerativeAI(
 /**
  * 텍스트를 임베딩 벡터로 변환
  *
+ * Google 공식 문서 권장: 문서 인덱싱 시 RETRIEVAL_DOCUMENT,
+ * 검색 쿼리 시 RETRIEVAL_QUERY task type 사용
+ *
  * @param text - 임베딩할 텍스트
+ * @param taskType - 임베딩 용도 (기본: RETRIEVAL_QUERY)
  * @returns 3072 차원의 벡터
  *
  * @example
- * const embedding = await generateEmbedding('React 성능 최적화 방법');
- * // [0.123, -0.456, 0.789, ...] (3072개)
+ * // 검색 쿼리용
+ * const queryEmbed = await generateEmbedding('React 성능 최적화', TaskType.RETRIEVAL_QUERY);
+ * // 문서 인덱싱용
+ * const docEmbed = await generateEmbedding(docText, TaskType.RETRIEVAL_DOCUMENT);
  */
-export async function generateEmbedding(text: string): Promise<number[]> {
+export async function generateEmbedding(
+	text: string,
+	taskType: TaskType = TaskType.RETRIEVAL_QUERY,
+): Promise<number[]> {
 	if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
 		throw new Error(
 			'GOOGLE_GENERATIVE_AI_API_KEY environment variable is not set',
@@ -37,10 +47,13 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
 	const result = await model.embedContent({
 		content: { parts: [{ text }], role: 'user' },
+		taskType,
 	});
 
 	return result.embedding.values;
 }
+
+export { TaskType };
 
 /**
  * 여러 텍스트를 배치로 임베딩
@@ -73,13 +86,21 @@ export async function generateEmbeddingsBatch(
 /**
  * 포스트 콘텐츠를 임베딩용 텍스트로 변환
  *
- * title + description을 조합하여 검색에 적합한 텍스트 생성
+ * title + description + content 본문을 조합하여 검색에 적합한 텍스트 생성
+ * content는 BlockNote JSON에서 순수 텍스트를 추출하여 포함
+ *
+ * 구조: [제목] [설명] [본문 (truncated)] [태그]
+ * - 제목/설명은 검색 매칭의 핵심 시그널
+ * - 본문은 의미적 차별화를 위한 컨텍스트
+ * - 태그는 키워드 보강
  */
 export function preparePostTextForEmbedding(post: {
 	title_ko?: string;
 	title_en?: string;
 	description_ko?: string;
 	description_en?: string;
+	content_ko?: unknown;
+	content_en?: unknown;
 	tags?: string[];
 }): string {
 	const parts: string[] = [];
@@ -95,6 +116,13 @@ export function preparePostTextForEmbedding(post: {
 	if (post.description_en && post.description_en !== post.description_ko) {
 		parts.push(post.description_en);
 	}
+
+	// 본문 텍스트 (BlockNote JSON → 순수 텍스트, truncate)
+	const bodyKo = extractTextFromBlockNote(post.content_ko);
+	const bodyEn = extractTextFromBlockNote(post.content_en);
+
+	if (bodyKo) parts.push(truncateText(bodyKo, 2000));
+	if (bodyEn && bodyEn !== bodyKo) parts.push(truncateText(bodyEn, 1000));
 
 	// 태그
 	if (post.tags && post.tags.length > 0) {

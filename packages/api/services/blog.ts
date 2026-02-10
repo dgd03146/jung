@@ -1,9 +1,18 @@
 import type { AdjacentPosts, Post, PostPreview } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
 import {
+	KEYWORD_WEIGHT,
+	MATCH_THRESHOLD,
+	RRF_K,
+	SIMILARITY_GAP_THRESHOLD,
+	VECTOR_WEIGHT,
+} from '../lib/constants';
+import {
 	generateEmbedding,
 	preparePostTextForEmbedding,
+	TaskType,
 } from '../lib/embedding';
+import { generateHypotheticalDocument } from '../lib/queryExpansion';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -515,11 +524,17 @@ export const blogService = {
 		// 1. Vector 검색 (mode가 vector 또는 hybrid일 때)
 		if (mode === 'vector' || mode === 'hybrid') {
 			try {
-				const embedding = await generateEmbedding(query);
+				// HyDE: 짧은 쿼리는 가상 문서 생성 후 RETRIEVAL_DOCUMENT로 임베딩
+				const hydeText = await generateHypotheticalDocument(query);
+				const isHyDE = hydeText !== query;
+				const embedding = await generateEmbedding(
+					hydeText,
+					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
+				);
 
 				const { data, error } = await supabase.rpc('match_posts', {
 					query_embedding: embedding,
-					match_threshold: 0.3, // 낮은 임계값으로 더 많은 결과
+					match_threshold: MATCH_THRESHOLD,
 					match_count: limit * 2,
 				});
 
@@ -552,8 +567,17 @@ export const blogService = {
 			}
 		}
 
-		// 3. Reciprocal Rank Fusion (RRF)
-		const k = 60; // RRF 상수
+		// 2.5. Similarity gap 필터링 (관련 없는 결과 제거)
+		if (vectorResults.length > 1) {
+			const topSimilarity = vectorResults[0]?.similarity ?? 0;
+			const minSimilarity = topSimilarity - SIMILARITY_GAP_THRESHOLD;
+			vectorResults = vectorResults.filter(
+				(item) => item.similarity >= minSimilarity,
+			);
+		}
+
+		// 3. Weighted Reciprocal Rank Fusion (RRF)
+		const k = RRF_K;
 		const scores = new Map<
 			number,
 			{
@@ -573,7 +597,7 @@ export const blogService = {
 		vectorResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + VECTOR_WEIGHT / (k + rank + 1),
 				source: existing ? 'both' : 'vector',
 				data: {
 					...existing?.data,
@@ -589,7 +613,7 @@ export const blogService = {
 		keywordResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (k + rank + 1),
+				score: (existing?.score || 0) + KEYWORD_WEIGHT / (k + rank + 1),
 				source: existing ? 'both' : 'keyword',
 				data: {
 					...existing?.data,
@@ -705,7 +729,9 @@ export const blogService = {
 			// 포스트 조회
 			const { data: post, error: fetchError } = await supabase
 				.from('posts')
-				.select('title_ko, title_en, description_ko, description_en, tags')
+				.select(
+					'title_ko, title_en, description_ko, description_en, content_ko, content_en, tags',
+				)
 				.eq('id', postId)
 				.single();
 
@@ -720,6 +746,8 @@ export const blogService = {
 				title_en: post.title_en,
 				description_ko: post.description_ko,
 				description_en: post.description_en,
+				content_ko: post.content_ko,
+				content_en: post.content_en,
 				tags: post.tags,
 			});
 
@@ -728,8 +756,11 @@ export const blogService = {
 				return { success: false };
 			}
 
-			// 임베딩 생성
-			const embedding = await generateEmbedding(text);
+			// 임베딩 생성 (문서 인덱싱이므로 RETRIEVAL_DOCUMENT)
+			const embedding = await generateEmbedding(
+				text,
+				TaskType.RETRIEVAL_DOCUMENT,
+			);
 
 			// DB에 저장
 			const { error: updateError } = await supabase

@@ -9,6 +9,7 @@
  *   --photos 갤러리 사진만
  *   --places  장소만
  *   --all    전체 (기본값)
+ *   --force  기존 임베딩이 있는 항목도 재생성
  *
  * 환경변수:
  *   - GEMINI_API_KEY: Gemini API 키
@@ -21,10 +22,16 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
 import { EMBEDDING_MODEL } from '../packages/api/lib/constants';
+import {
+	extractTextFromBlockNote,
+	truncateText,
+} from '../packages/api/lib/extractText';
 
-// 환경변수 로드
+// 환경변수 로드 (.local이 우선, dotenv는 이미 설정된 값을 덮어쓰지 않음)
 config({ path: resolve(process.cwd(), 'apps/web/.env.local') });
 config({ path: resolve(process.cwd(), '.env.local') });
+config({ path: resolve(process.cwd(), 'apps/web/.env') });
+config({ path: resolve(process.cwd(), '.env') });
 
 // ===== 설정 =====
 
@@ -38,7 +45,9 @@ const supabaseUrl =
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const genAI = new GoogleGenerativeAI(
+	process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY || '',
+);
 
 // ===== 유틸리티 함수 =====
 
@@ -46,6 +55,7 @@ async function generateEmbedding(text: string): Promise<number[]> {
 	const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
 	const result = await model.embedContent({
 		content: { parts: [{ text }], role: 'user' },
+		taskType: 'RETRIEVAL_DOCUMENT',
 	});
 	return result.embedding.values;
 }
@@ -61,6 +71,8 @@ function preparePostText(post: {
 	title_en?: string;
 	description_ko?: string;
 	description_en?: string;
+	content_ko?: unknown;
+	content_en?: unknown;
 	tags?: string[];
 }): string {
 	const parts: string[] = [];
@@ -71,6 +83,13 @@ function preparePostText(post: {
 	if (post.description_en && post.description_en !== post.description_ko) {
 		parts.push(post.description_en);
 	}
+
+	// 본문 텍스트 (BlockNote JSON → 순수 텍스트, truncate)
+	const bodyKo = extractTextFromBlockNote(post.content_ko);
+	const bodyEn = extractTextFromBlockNote(post.content_en);
+	if (bodyKo) parts.push(truncateText(bodyKo, 2000));
+	if (bodyEn && bodyEn !== bodyKo) parts.push(truncateText(bodyEn, 1000));
+
 	if (post.tags?.length) parts.push(post.tags.join(' '));
 	return parts.join('\n');
 }
@@ -116,16 +135,23 @@ function preparePlaceText(place: {
 
 // ===== 임베딩 생성 함수 =====
 
-async function generatePostEmbeddings(): Promise<{
+async function generatePostEmbeddings(force = false): Promise<{
 	success: number;
 	error: number;
 }> {
 	console.log('\n📝 Posts 임베딩 생성 시작...\n');
 
-	const { data: posts, error } = await supabase
+	let query = supabase
 		.from('posts')
-		.select('id, title_ko, title_en, description_ko, description_en, tags')
-		.is('embedding', null);
+		.select(
+			'id, title_ko, title_en, description_ko, description_en, content_ko, content_en, tags',
+		);
+
+	if (!force) {
+		query = query.is('embedding', null);
+	}
+
+	const { data: posts, error } = await query;
 
 	if (error) {
 		console.error('❌ 포스트 조회 실패:', error.message);
@@ -144,6 +170,7 @@ async function generatePostEmbeddings(): Promise<{
 
 	for (let i = 0; i < posts.length; i++) {
 		const post = posts[i];
+		if (!post) continue;
 		const progress = `[${i + 1}/${posts.length}]`;
 
 		try {
@@ -306,8 +333,13 @@ async function main() {
 	console.log('='.repeat(50));
 
 	// 환경변수 확인
-	if (!process.env.GEMINI_API_KEY) {
-		console.error('❌ GEMINI_API_KEY 환경변수가 설정되지 않았습니다.');
+	if (
+		!process.env.GOOGLE_GENERATIVE_AI_API_KEY &&
+		!process.env.GEMINI_API_KEY
+	) {
+		console.error(
+			'❌ GOOGLE_GENERATIVE_AI_API_KEY 환경변수가 설정되지 않았습니다.',
+		);
 		process.exit(1);
 	}
 
@@ -328,12 +360,22 @@ async function main() {
 
 	// 옵션 파싱
 	const args = process.argv.slice(2);
+	const force = args.includes('--force');
+	const noFlags =
+		!args.includes('--posts') &&
+		!args.includes('--photos') &&
+		!args.includes('--places') &&
+		!args.includes('--all');
 	const runPosts =
-		args.includes('--posts') || args.includes('--all') || args.length === 0;
+		args.includes('--posts') || args.includes('--all') || noFlags;
 	const runPhotos =
-		args.includes('--photos') || args.includes('--all') || args.length === 0;
+		args.includes('--photos') || args.includes('--all') || noFlags;
 	const runPlaces =
-		args.includes('--places') || args.includes('--all') || args.length === 0;
+		args.includes('--places') || args.includes('--all') || noFlags;
+
+	if (force) {
+		console.log('⚡ --force 모드: 기존 임베딩도 재생성합니다.\n');
+	}
 
 	const results = {
 		posts: { success: 0, error: 0 },
@@ -342,7 +384,7 @@ async function main() {
 	};
 
 	// 실행
-	if (runPosts) results.posts = await generatePostEmbeddings();
+	if (runPosts) results.posts = await generatePostEmbeddings(force);
 	if (runPhotos) results.photos = await generatePhotoEmbeddings();
 	if (runPlaces) results.places = await generatePlaceEmbeddings();
 

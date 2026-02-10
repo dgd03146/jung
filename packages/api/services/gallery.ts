@@ -1,7 +1,15 @@
 import type { Photo } from '@jung/shared/types';
 import { TRPCError } from '@trpc/server';
-import { escapePostgrestPattern, RRF_K } from '../lib/constants';
-import { generateEmbedding } from '../lib/embedding';
+import {
+	escapePostgrestPattern,
+	KEYWORD_WEIGHT,
+	MATCH_THRESHOLD,
+	RRF_K,
+	SIMILARITY_GAP_THRESHOLD,
+	VECTOR_WEIGHT,
+} from '../lib/constants';
+import { generateEmbedding, TaskType } from '../lib/embedding';
+import { generateHypotheticalDocument } from '../lib/queryExpansion';
 import { supabase } from '../lib/supabase';
 
 type QueryParams = {
@@ -522,10 +530,15 @@ export const galleryService = {
 		// Vector 검색
 		if (mode === 'vector' || mode === 'hybrid') {
 			try {
-				const embedding = await generateEmbedding(query);
+				const hydeText = await generateHypotheticalDocument(query);
+				const isHyDE = hydeText !== query;
+				const embedding = await generateEmbedding(
+					hydeText,
+					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
+				);
 				const { data, error } = await supabase.rpc('match_photos', {
 					query_embedding: embedding,
-					match_threshold: 0.3,
+					match_threshold: MATCH_THRESHOLD,
 					match_count: limit * 2,
 				});
 
@@ -535,6 +548,15 @@ export const galleryService = {
 			} catch (err) {
 				console.error('Photo vector search error:', err);
 			}
+		}
+
+		// Similarity gap 필터링
+		if (vectorResults.length > 1) {
+			const topSimilarity = vectorResults[0]?.similarity ?? 0;
+			const minSimilarity = topSimilarity - SIMILARITY_GAP_THRESHOLD;
+			vectorResults = vectorResults.filter(
+				(item) => item.similarity >= minSimilarity,
+			);
 		}
 
 		// Keyword 검색
@@ -582,7 +604,7 @@ export const galleryService = {
 		vectorResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
+				score: (existing?.score || 0) + VECTOR_WEIGHT / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'vector',
 				data: {
 					description: item.description,
@@ -595,7 +617,7 @@ export const galleryService = {
 		keywordResults.forEach((item, rank) => {
 			const existing = scores.get(item.id);
 			scores.set(item.id, {
-				score: (existing?.score || 0) + 1 / (RRF_K + rank + 1),
+				score: (existing?.score || 0) + KEYWORD_WEIGHT / (RRF_K + rank + 1),
 				source: existing ? 'both' : 'keyword',
 				data: {
 					...existing?.data,
