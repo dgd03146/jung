@@ -10,53 +10,55 @@ import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { GuestbookContent } from '@/fsd/views';
 import type { Locale } from '@/i18n/routing';
 
-export const metadata: Metadata = {
-	title: 'Guestbook',
-	description:
-		'방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
-	openGraph: {
-		title: 'Guestbook',
-		description:
-			'방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
-		type: 'website',
-		siteName: 'JUNG',
-		locale: 'ko_KR',
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: 'Guestbook',
-		creator: '@jung',
-		description:
-			'방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.',
-	},
-	keywords: [
-		'JUNG',
-		'방명록',
-		'게스트북',
-		'메시지',
-		'소통',
-		'guestbook',
-		'messages',
-		'community',
-	],
-	alternates: {
-		canonical: `${SITE_URL}/guestbook`,
-		languages: {
-			en: `${SITE_URL}/en/guestbook`,
-			ko: `${SITE_URL}/ko/guestbook`,
-		},
-	},
-	verification: {
-		google: getGoogleVerificationCode(),
-	},
-};
-
-// Guestbook needs real-time data - use SSR instead of ISR
-export const dynamic = 'force-dynamic';
-
 interface Props {
 	params: Promise<{ locale: Locale }>;
 }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { locale } = await params;
+	const description =
+		'방명록에 여러분의 이야기를 남겨주세요. 소중한 방문의 흔적이 됩니다.';
+	return {
+		title: 'Guestbook',
+		description,
+		openGraph: {
+			title: 'Guestbook',
+			description,
+			type: 'website',
+			siteName: 'JUNG',
+			locale: 'ko_KR',
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: 'Guestbook',
+			creator: '@jung',
+			description,
+		},
+		keywords: [
+			'JUNG',
+			'방명록',
+			'게스트북',
+			'메시지',
+			'소통',
+			'guestbook',
+			'messages',
+			'community',
+		],
+		alternates: {
+			canonical: `${SITE_URL}/${locale}/guestbook`,
+			languages: {
+				en: `${SITE_URL}/en/guestbook`,
+				ko: `${SITE_URL}/ko/guestbook`,
+			},
+		},
+		verification: {
+			google: getGoogleVerificationCode(),
+		},
+	};
+}
+
+// Guestbook needs real-time data - use SSR instead of ISR
+export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: Props) {
 	const { locale } = await params;

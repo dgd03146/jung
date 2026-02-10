@@ -17,7 +17,8 @@ export const createBreadcrumbSchema = (
 			'@type': 'ListItem' as const,
 			position: index + 1,
 			name: item.name,
-			item: item.path ? `${SITE_URL}/${lang}${item.path}` : undefined,
+			item:
+				item.path !== undefined ? `${SITE_URL}/${lang}${item.path}` : undefined,
 		})),
 	};
 };

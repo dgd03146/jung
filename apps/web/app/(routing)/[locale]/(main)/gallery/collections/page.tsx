@@ -13,7 +13,12 @@ import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
 import { type Locale, routing } from '@/i18n/routing';
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+	params: Promise<{ locale: Locale }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { locale } = await params;
 	try {
 		const collections = await getCaller().galleryCollections.getAllCollections({
 			sort: COLLECTION_DEFAULTS.sort,
@@ -74,7 +79,7 @@ export async function generateMetadata(): Promise<Metadata> {
 				},
 			},
 			alternates: {
-				canonical: `${SITE_URL}/gallery/collections`,
+				canonical: `${SITE_URL}/${locale}/gallery/collections`,
 				languages: {
 					en: `${SITE_URL}/en/gallery/collections`,
 					ko: `${SITE_URL}/ko/gallery/collections`,
@@ -100,10 +105,6 @@ export const revalidate = 3600;
 
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
-}
-
-interface Props {
-	params: Promise<{ locale: Locale }>;
 }
 
 export default async function CollectionsPage({ params }: Props) {
