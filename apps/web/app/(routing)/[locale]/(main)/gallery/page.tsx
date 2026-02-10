@@ -14,12 +14,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
+	const description = '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.';
 	return {
 		title: 'Gallery',
-		description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
+		description,
 		openGraph: {
 			title: 'JUNG (@jung) • Photo Gallery',
-			description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
+			description,
 			type: 'website',
 			siteName: 'JUNG Gallery',
 			locale: 'ko_KR',
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			card: 'summary_large_image',
 			title: 'Gallery • JUNG',
 			creator: '@jung',
-			description: '여행하면서 담아온 순간들과 일상의 기록들을 공유합니다.',
+			description,
 		},
 		keywords: [
 			'JUNG',
