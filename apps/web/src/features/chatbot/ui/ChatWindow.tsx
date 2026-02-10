@@ -16,6 +16,7 @@ interface ChatWindowProps {
 	handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 	isLoading: boolean;
+	isCooldown?: boolean;
 	onQuickAction?: (text: string) => void;
 }
 
@@ -34,6 +35,7 @@ export function ChatWindow({
 	handleInputChange,
 	handleSubmit,
 	isLoading,
+	isCooldown,
 	onQuickAction,
 }: ChatWindowProps) {
 	const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -44,9 +46,11 @@ export function ChatWindow({
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, []);
 
-	useEffect(() => {
-		scrollToBottom();
-	}, [scrollToBottom]);
+	const prevMessagesRef = useRef(messages);
+	if (prevMessagesRef.current !== messages) {
+		prevMessagesRef.current = messages;
+		queueMicrotask(scrollToBottom);
+	}
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
@@ -100,6 +104,15 @@ export function ChatWindow({
 			onQuickAction(action);
 		}
 	};
+
+	const lastMessage = messages[messages.length - 1];
+	const lastHasText = lastMessage?.parts?.some(
+		(p) => p.type === 'text' && 'text' in p && (p as { text: string }).text,
+	);
+	const showLoadingDots =
+		isLoading &&
+		(lastMessage?.role === 'user' ||
+			(lastMessage?.role === 'assistant' && !lastHasText));
 
 	if (typeof window === 'undefined') return null;
 
@@ -162,17 +175,16 @@ export function ChatWindow({
 									{messages.map((message) => (
 										<MessageItem key={message.id} message={message} />
 									))}
-									{isLoading &&
-										messages[messages.length - 1]?.role === 'user' && (
-											<MessageItem
-												message={{
-													id: 'loading',
-													role: 'assistant',
-													parts: [],
-												}}
-												isLoading
-											/>
-										)}
+									{showLoadingDots && (
+										<MessageItem
+											message={{
+												id: 'loading',
+												role: 'assistant',
+												parts: [],
+											}}
+											isLoading
+										/>
+									)}
 									<div ref={messagesEndRef} />
 								</div>
 
@@ -183,6 +195,7 @@ export function ChatWindow({
 												key={action.label}
 												className={styles.quickActionButton}
 												onClick={() => handleQuickActionClick(action.action)}
+												disabled={isCooldown}
 											>
 												<span className={styles.quickActionIcon}>
 													{action.icon}
@@ -208,7 +221,7 @@ export function ChatWindow({
 										<button
 											type='submit'
 											className={styles.sendButton}
-											disabled={!input.trim() || isLoading}
+											disabled={!input.trim() || isLoading || isCooldown}
 											aria-label='Send message'
 										>
 											<IoSend size={16} />

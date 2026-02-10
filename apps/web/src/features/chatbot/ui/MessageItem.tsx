@@ -2,8 +2,8 @@
 
 import { isToolUIPart, type UIMessage } from 'ai';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
 import { IoChatbubble, IoPerson } from 'react-icons/io5';
+import { MemoizedMarkdown } from './MemoizedMarkdown';
 import * as styles from './MessageItem.css';
 
 interface MessageItemProps {
@@ -46,61 +46,14 @@ function getToolLabel(toolName: string): string {
 	}
 }
 
-// Typing animation hook
-function useTypingAnimation(text: string, isActive: boolean, speed = 20) {
-	const [displayedText, setDisplayedText] = useState('');
-	const [isComplete, setIsComplete] = useState(false);
-
-	useEffect(() => {
-		if (!isActive || !text) {
-			setDisplayedText(text);
-			setIsComplete(true);
-			return;
-		}
-
-		setDisplayedText('');
-		setIsComplete(false);
-		let index = 0;
-
-		const interval = setInterval(() => {
-			if (index < text.length) {
-				setDisplayedText(text.slice(0, index + 1));
-				index++;
-			} else {
-				setIsComplete(true);
-				clearInterval(interval);
-			}
-		}, speed);
-
-		return () => clearInterval(interval);
-	}, [text, isActive, speed]);
-
-	return { displayedText, isComplete };
-}
-
 export function MessageItem({ message, isLoading }: MessageItemProps) {
 	const isUser = message.role === 'user';
-	const hasAnimatedRef = useRef(false);
 
 	// Extract text content from parts
 	const textContent = message.parts
 		?.filter((part) => part.type === 'text')
 		.map((part) => (part as { type: 'text'; text: string }).text)
 		.join('');
-
-	// Determine if animation should run (only once per message)
-	const shouldAnimate =
-		!isUser && !!textContent && !isLoading && !hasAnimatedRef.current;
-
-	// Mark as animated after first render with content
-	if (shouldAnimate) {
-		hasAnimatedRef.current = true;
-	}
-
-	const { displayedText, isComplete } = useTypingAnimation(
-		textContent || '',
-		shouldAnimate,
-	);
 
 	if (isLoading) {
 		return (
@@ -122,24 +75,23 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 	// Extract tool parts using isToolUIPart
 	const toolParts = message.parts?.filter((part) => isToolUIPart(part));
 
+	// 텍스트도 tool part도 없는 assistant 메시지는 렌더링 스킵
+	if (!isUser && !textContent && (!toolParts || toolParts.length === 0)) {
+		return null;
+	}
+
 	return (
 		<div className={isUser ? styles.userMessage : styles.assistantMessage}>
 			<div className={isUser ? styles.userAvatar : styles.avatar}>
 				{isUser ? <IoPerson size={16} /> : <IoChatbubble size={14} />}
 			</div>
 			<div className={isUser ? styles.userBubble : styles.assistantBubble}>
-				{textContent && (
-					<div>
-						{isUser ? (
-							textContent
-						) : (
-							<>
-								<span className={styles.typingText}>{displayedText}</span>
-								{!isComplete && <span className={styles.typingCursor} />}
-							</>
-						)}
-					</div>
-				)}
+				{textContent &&
+					(isUser ? (
+						<div>{textContent}</div>
+					) : (
+						<MemoizedMarkdown content={textContent} id={message.id} />
+					))}
 
 				{toolParts?.map((part) => {
 					if (!isToolUIPart(part)) return null;

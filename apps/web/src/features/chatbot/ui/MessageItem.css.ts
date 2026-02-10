@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css';
+import { globalStyle, keyframes, style } from '@vanilla-extract/css';
 
 const fadeIn = keyframes({
 	'0%': { opacity: 0, transform: 'translateY(4px)' },
@@ -183,22 +183,79 @@ export const toolResultLink = style({
 	},
 });
 
-// Typing Animation
-const cursor = keyframes({
-	'0%, 100%': { opacity: 1 },
-	'50%': { opacity: 0 },
+// Markdown Content
+export const markdownContent = style({
+	fontSize: '14px',
+	lineHeight: 1.6,
 });
 
-export const typingText = style({
-	display: 'inline',
+globalStyle(`${markdownContent} p`, {
+	margin: '0 0 8px',
 });
 
-export const typingCursor = style({
-	display: 'inline-block',
-	width: '2px',
-	height: '1em',
-	backgroundColor: '#4D66E5',
-	marginLeft: '1px',
-	animation: `${cursor} 1s infinite`,
-	verticalAlign: 'text-bottom',
+globalStyle(`${markdownContent} p:last-child`, {
+	marginBottom: 0,
 });
+
+globalStyle(`${markdownContent} strong`, {
+	fontWeight: 600,
+});
+
+globalStyle(`${markdownContent} a`, {
+	color: '#4D66E5',
+	textDecoration: 'none',
+});
+
+globalStyle(`${markdownContent} a:hover`, {
+	textDecoration: 'underline',
+});
+
+globalStyle(`${markdownContent} code`, {
+	backgroundColor: 'rgba(77, 102, 229, 0.08)',
+	padding: '1px 5px',
+	borderRadius: '4px',
+	fontSize: '12.5px',
+	fontFamily: "'SF Mono', Menlo, monospace",
+});
+
+globalStyle(`${markdownContent} pre`, {
+	backgroundColor: 'rgba(0, 0, 0, 0.04)',
+	padding: '10px 12px',
+	borderRadius: '8px',
+	overflow: 'auto',
+	margin: '8px 0',
+});
+
+globalStyle(`${markdownContent} pre code`, {
+	backgroundColor: 'transparent',
+	padding: 0,
+	fontSize: '12px',
+});
+
+globalStyle(`${markdownContent} ul, ${markdownContent} ol`, {
+	margin: '4px 0 8px',
+	paddingLeft: '20px',
+});
+
+globalStyle(`${markdownContent} li`, {
+	marginBottom: '2px',
+});
+
+globalStyle(`${markdownContent} blockquote`, {
+	borderLeft: '3px solid rgba(77, 102, 229, 0.3)',
+	margin: '8px 0',
+	paddingLeft: '12px',
+	color: '#6B7280',
+});
+
+globalStyle(
+	`${markdownContent} h1, ${markdownContent} h2, ${markdownContent} h3`,
+	{
+		margin: '12px 0 6px',
+		fontWeight: 600,
+	},
+);
+
+globalStyle(`${markdownContent} h1`, { fontSize: '18px' });
+globalStyle(`${markdownContent} h2`, { fontSize: '16px' });
+globalStyle(`${markdownContent} h3`, { fontSize: '15px' });

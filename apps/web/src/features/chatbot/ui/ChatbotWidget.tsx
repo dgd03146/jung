@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { ChatButton } from './ChatButton';
 import { ChatWindow } from './ChatWindow';
 
@@ -33,11 +33,26 @@ export function ChatbotWidget() {
 
 	const isLoading = status === 'submitted' || status === 'streaming';
 
+	const COOLDOWN_MS = 3000;
+	const lastSentRef = useRef(0);
+	const [isCooldown, setIsCooldown] = useState(false);
+
+	const canSend = useCallback(() => {
+		return Date.now() - lastSentRef.current >= COOLDOWN_MS;
+	}, []);
+
+	const startCooldown = useCallback(() => {
+		setIsCooldown(true);
+		setTimeout(() => setIsCooldown(false), COOLDOWN_MS);
+	}, []);
+
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (input.trim()) {
+		if (input.trim() && canSend()) {
+			lastSentRef.current = Date.now();
 			sendMessage({ text: input });
 			setInput('');
+			startCooldown();
 		}
 	};
 
@@ -46,7 +61,11 @@ export function ChatbotWidget() {
 	};
 
 	const handleQuickAction = (text: string) => {
-		sendMessage({ text });
+		if (canSend()) {
+			lastSentRef.current = Date.now();
+			sendMessage({ text });
+			startCooldown();
+		}
 	};
 
 	const toggle = () => setIsOpen((prev) => !prev);
@@ -63,6 +82,7 @@ export function ChatbotWidget() {
 				handleInputChange={handleInputChange}
 				handleSubmit={handleSubmit}
 				isLoading={isLoading}
+				isCooldown={isCooldown}
 				onQuickAction={handleQuickAction}
 			/>
 		</>
