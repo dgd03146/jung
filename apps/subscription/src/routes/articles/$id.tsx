@@ -42,7 +42,10 @@ function ArticleDetailPage() {
 	if (isLoading) {
 		return (
 			<div className={styles.centeredPage}>
-				<span className={styles.loadingText}>Loading...</span>
+				<div className={styles.loadingContainer}>
+					<div className={styles.spinner} />
+					<span className={styles.loadingText}>Loading...</span>
+				</div>
 			</div>
 		);
 	}
@@ -51,7 +54,11 @@ function ArticleDetailPage() {
 		return (
 			<div className={styles.centeredPage}>
 				<div className={styles.centeredContent}>
-					<h1 className={styles.notFoundHeading}>Article not found</h1>
+					<span className={styles.emptyStateIcon}>🔍</span>
+					<h1 className={styles.emptyStateHeading}>Article not found</h1>
+					<p className={styles.emptyStateText}>
+						This article may have been removed or the link is incorrect.
+					</p>
 					<Link to='/articles' className={styles.backLink}>
 						← Back to Articles
 					</Link>

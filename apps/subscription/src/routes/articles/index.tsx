@@ -88,11 +88,18 @@ function ArticlesPage() {
 					<div className={styles.articleList}>
 						{isLoading ? (
 							<div className={styles.loadingContainer}>
+								<div className={styles.spinner} />
 								<span className={styles.loadingText}>Loading articles...</span>
 							</div>
 						) : articles.length === 0 ? (
 							<div className={styles.loadingContainer}>
-								<span className={styles.loadingText}>No articles found.</span>
+								<span className={styles.emptyStateIcon}>📭</span>
+								<h3 className={styles.emptyStateHeading}>No articles yet</h3>
+								<p className={styles.emptyStateText}>
+									New articles will appear here soon.
+									<br />
+									Check back later!
+								</p>
 							</div>
 						) : (
 							articles.map((article, index) => (
