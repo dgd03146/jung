@@ -1,34 +1,53 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { type Article, getArticles } from '../../lib';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
+import { fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/')({
+	loader: () => fetchArticles(),
 	component: ArticlesPage,
+	pendingComponent: ArticlesLoading,
+	errorComponent: ArticlesError,
 });
 
+function ArticlesLoading() {
+	return (
+		<div className={styles.centeredPage}>
+			<div className={styles.centeredContent}>
+				<p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+					Loading articles...
+				</p>
+			</div>
+		</div>
+	);
+}
+
+function ArticlesError() {
+	const router = useRouter();
+
+	return (
+		<div className={styles.centeredPage}>
+			<div className={styles.centeredContent}>
+				<span className={styles.emptyStateIcon}>⚠️</span>
+				<h3 className={styles.emptyStateHeading}>Failed to load articles</h3>
+				<p className={styles.emptyStateText}>
+					Something went wrong while fetching articles.
+					<br />
+					Please try again later.
+				</p>
+				<button
+					type='button'
+					onClick={() => router.invalidate()}
+					className={styles.backLink}
+				>
+					Retry
+				</button>
+			</div>
+		</div>
+	);
+}
+
 function ArticlesPage() {
-	const [filter, setFilter] = useState<'all' | 'frontend' | 'ai'>('all');
-	const [articles, setArticles] = useState<Article[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		let isActive = true;
-
-		const fetchArticles = async () => {
-			setIsLoading(true);
-			const data = await getArticles(filter === 'all' ? undefined : filter);
-			if (isActive) {
-				setArticles(data);
-				setIsLoading(false);
-			}
-		};
-		fetchArticles();
-
-		return () => {
-			isActive = false;
-		};
-	}, [filter]);
+	const articles = Route.useLoaderData();
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -59,40 +78,18 @@ function ArticlesPage() {
 						<p className={styles.subtitle}>
 							A collection of articles I've read and recommend
 						</p>
-
-						<div className={styles.filterContainer}>
-							<button
-								type='button'
-								onClick={() => setFilter('all')}
-								className={`${styles.filterButton} ${filter === 'all' ? styles.filterButtonActive : ''}`}
-							>
-								All
-							</button>
-							<button
-								type='button'
-								onClick={() => setFilter('frontend')}
-								className={`${styles.filterButton} ${filter === 'frontend' ? styles.filterButtonActive : ''}`}
-							>
-								Frontend
-							</button>
-							<button
-								type='button'
-								onClick={() => setFilter('ai')}
-								className={`${styles.filterButton} ${filter === 'ai' ? styles.filterButtonActiveAi : ''}`}
-							>
-								AI
-							</button>
-						</div>
 					</div>
 
 					<div className={styles.articleList}>
-						{isLoading ? (
+						{articles.length === 0 ? (
 							<div className={styles.loadingContainer}>
-								<span className={styles.loadingText}>Loading articles...</span>
-							</div>
-						) : articles.length === 0 ? (
-							<div className={styles.loadingContainer}>
-								<span className={styles.loadingText}>No articles found.</span>
+								<span className={styles.emptyStateIcon}>📭</span>
+								<h3 className={styles.emptyStateHeading}>No articles yet</h3>
+								<p className={styles.emptyStateText}>
+									New articles will appear here soon.
+									<br />
+									Check back later!
+								</p>
 							</div>
 						) : (
 							articles.map((article, index) => (

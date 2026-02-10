@@ -63,11 +63,24 @@
 			}
 		},
 		{
-			"includes": ["apps/admin/src/routeTree.gen.ts"],
+			"includes": ["apps/admin/src/routeTree.gen.ts", "apps/subscription/src/routeTree.gen.ts"],
 			"linter": {
 				"rules": {
 					"suspicious": {
 						"noExplicitAny": "off"
+					},
+					"correctness": {
+						"noUnusedImports": "off"
+					}
+				}
+			},
+			"formatter": {
+				"enabled": false
+			},
+			"assist": {
+				"actions": {
+					"source": {
+						"organizeImports": "off"
 					}
 				}
 			}

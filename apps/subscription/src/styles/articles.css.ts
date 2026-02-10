@@ -1,13 +1,14 @@
-import { style } from '@vanilla-extract/css';
+import { palette } from '@jung/design-system/tokens';
+import { keyframes, style } from '@vanilla-extract/css';
 
 const colors = {
-	primary: '#6366f1',
-	primaryAlt: '#8b5cf6',
-	textDark: '#1e293b',
-	textMuted: '#64748b',
-	textLight: '#94a3b8',
-	border: 'rgba(139, 92, 246, 0.08)',
-	borderHover: 'rgba(139, 92, 246, 0.15)',
+	primary: palette.primary,
+	primaryAlt: palette.primary200,
+	textDark: palette.text,
+	textMuted: palette.gray300,
+	textLight: palette.gray100,
+	border: 'rgba(1, 66, 192, 0.08)',
+	borderHover: 'rgba(1, 66, 192, 0.15)',
 	cardBg: 'rgba(255, 255, 255, 0.6)',
 	cardBgHover: 'rgba(255, 255, 255, 0.85)',
 	filterBg: 'rgba(255, 255, 255, 0.5)',
@@ -15,7 +16,7 @@ const colors = {
 
 export const page = style({
 	minHeight: '100vh',
-	background: 'linear-gradient(135deg, #e8efff 0%, #f0e8ff 50%, #e8f4ff 100%)',
+	background: `linear-gradient(135deg, ${palette.primary50} 0%, #edf2ff 50%, ${palette.primary50} 100%)`,
 	position: 'relative',
 	overflow: 'hidden',
 	fontFamily: "'Poppins', sans-serif",
@@ -41,7 +42,7 @@ export const orb = style({
 	maxWidth: '600px',
 	maxHeight: '600px',
 	background:
-		'radial-gradient(circle, rgba(147, 112, 219, 0.12) 0%, transparent 70%)',
+		'radial-gradient(circle, rgba(1, 66, 192, 0.12) 0%, transparent 70%)',
 	filter: 'blur(80px)',
 	borderRadius: '50%',
 });
@@ -55,7 +56,7 @@ export const orbSmall = style({
 	maxWidth: '500px',
 	maxHeight: '500px',
 	background:
-		'radial-gradient(circle, rgba(147, 112, 219, 0.1) 0%, transparent 70%)',
+		'radial-gradient(circle, rgba(1, 66, 192, 0.1) 0%, transparent 70%)',
 	filter: 'blur(60px)',
 	borderRadius: '50%',
 });
@@ -212,7 +213,7 @@ export const articleCard = style({
 	':hover': {
 		background: colors.cardBgHover,
 		transform: 'translateY(-2px)',
-		boxShadow: '0 12px 40px rgba(99, 102, 241, 0.1)',
+		boxShadow: '0 12px 40px rgba(1, 66, 192, 0.1)',
 		borderColor: colors.borderHover,
 	},
 });
@@ -271,13 +272,32 @@ export const articleArrow = style({
 	transition: 'transform 0.2s, color 0.2s',
 });
 
+const spin = keyframes({
+	'0%': { transform: 'rotate(0deg)' },
+	'100%': { transform: 'rotate(360deg)' },
+});
+
 export const loadingContainer = style({
-	textAlign: 'center',
-	padding: '2rem',
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'center',
+	justifyContent: 'center',
+	gap: '1.25rem',
+	padding: '4rem 2rem',
+});
+
+export const spinner = style({
+	width: '32px',
+	height: '32px',
+	borderRadius: '50%',
+	border: '3px solid rgba(1, 66, 192, 0.15)',
+	borderTopColor: colors.primary,
+	animation: `${spin} 0.8s linear infinite`,
 });
 
 export const loadingText = style({
-	color: colors.textMuted,
+	fontSize: '0.85rem',
+	color: colors.textLight,
 });
 
 export const footer = style({
@@ -304,7 +324,7 @@ export const footerText = style({
 
 export const centeredPage = style({
 	minHeight: '100vh',
-	background: 'linear-gradient(135deg, #e8efff 0%, #f0e8ff 50%, #e8f4ff 100%)',
+	background: `linear-gradient(135deg, ${palette.primary50} 0%, #edf2ff 50%, ${palette.primary50} 100%)`,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
@@ -313,6 +333,29 @@ export const centeredPage = style({
 
 export const centeredContent = style({
 	textAlign: 'center',
+});
+
+export const emptyStateIcon = style({
+	fontSize: '3rem',
+	lineHeight: 1,
+	marginBottom: '1rem',
+	opacity: 0.6,
+});
+
+export const emptyStateHeading = style({
+	fontSize: '1.25rem',
+	fontWeight: 600,
+	color: colors.textDark,
+	margin: 0,
+	marginBottom: '0.5rem',
+});
+
+export const emptyStateText = style({
+	fontSize: '0.9rem',
+	color: colors.textMuted,
+	margin: 0,
+	marginBottom: '1.5rem',
+	lineHeight: 1.5,
 });
 
 export const notFoundHeading = style({
@@ -358,7 +401,7 @@ export const cardLabelAlt = style({
 
 export const cardText = style({
 	fontSize: '1rem',
-	color: '#475569',
+	color: palette.gray300,
 	lineHeight: 1.7,
 	margin: 0,
 });
@@ -383,10 +426,10 @@ export const primaryButton = style({
 	textDecoration: 'none',
 	fontFamily: "'Poppins', sans-serif",
 	transition: 'all 0.2s',
-	boxShadow: '0 4px 14px rgba(99, 102, 241, 0.25)',
+	boxShadow: '0 4px 14px rgba(1, 66, 192, 0.25)',
 	':hover': {
 		transform: 'translateY(-1px)',
-		boxShadow: '0 6px 20px rgba(99, 102, 241, 0.35)',
+		boxShadow: '0 6px 20px rgba(1, 66, 192, 0.35)',
 	},
 });
 
