@@ -1,4 +1,6 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { escapePostgrestPattern } from '@jung/api/lib/constants';
+import { supabase } from '@jung/api/lib/supabase';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
@@ -218,6 +220,109 @@ export async function POST(req: Request) {
 						summary: profileData.summary,
 						skills: profileData.skills,
 						interests: profileData.interests,
+					};
+				},
+			}),
+			searchAll: tool({
+				description:
+					'Search across all content (blog, places, photos) at once. Use when the question spans multiple domains or asks about overall content.',
+				inputSchema: z.object({
+					query: z.string().describe('Search query across all content'),
+				}),
+				execute: async ({ query }) => {
+					const [blogs, places, photos] = await Promise.all([
+						blogService
+							.semanticSearch({
+								query,
+								limit: 3,
+								mode: 'hybrid',
+								locale: 'ko',
+							})
+							.catch(() => emptyResults),
+						placesService
+							.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+							.catch(() => emptyResults),
+						galleryService
+							.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+							.catch(() => emptyResults),
+					]);
+					return {
+						blogs: blogs.items.map((b) => ({
+							id: b.id,
+							title: b.title,
+							url: `/blog/${b.id}`,
+						})),
+						places: places.items.map((p) => ({
+							id: p.id,
+							title: p.title,
+							url: `/places/${p.id}`,
+						})),
+						photos: photos.items.map((p) => ({
+							id: p.id,
+							description: p.description,
+							url: `/gallery/photo/${p.id}`,
+						})),
+					};
+				},
+			}),
+			getPlacesByLocation: tool({
+				description:
+					'Get places and related photos in a specific city or area. Use when asked about locations like "London", "Seoul", "Jeju".',
+				inputSchema: z.object({
+					location: z.string().describe('City or area name to search'),
+				}),
+				execute: async ({ location }) => {
+					const escaped = escapePostgrestPattern(location);
+					const { data: places } = await supabase
+						.from('places')
+						.select('id, title, description, address, tags')
+						.or(`address.ilike.%${escaped}%,title.ilike.%${escaped}%`)
+						.limit(5);
+
+					const allTags = [
+						...new Set((places || []).flatMap((p) => p.tags || [])),
+					];
+					let photos: { id: string; description: string; tags: string[] }[] =
+						[];
+					if (allTags.length > 0) {
+						const { data } = await supabase
+							.from('photos')
+							.select('id, description, tags')
+							.overlaps('tags', allTags)
+							.limit(5);
+						photos = (data as typeof photos) || [];
+					}
+
+					return {
+						places: (places || []).map((p) => ({
+							...p,
+							url: `/places/${p.id}`,
+						})),
+						photos: photos.map((p) => ({
+							...p,
+							url: `/gallery/photo/${p.id}`,
+						})),
+					};
+				},
+			}),
+			getContentStats: tool({
+				description:
+					'Get overall content statistics. Use when asked about how much content exists on the site.',
+				inputSchema: z.object({}),
+				execute: async () => {
+					const [posts, photos, places] = await Promise.all([
+						supabase.from('posts').select('id', { count: 'exact', head: true }),
+						supabase
+							.from('photos')
+							.select('id', { count: 'exact', head: true }),
+						supabase
+							.from('places')
+							.select('id', { count: 'exact', head: true }),
+					]);
+					return {
+						blogPosts: posts.count ?? 0,
+						photos: photos.count ?? 0,
+						places: places.count ?? 0,
 					};
 				},
 			}),
