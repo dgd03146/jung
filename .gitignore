@@ -81,5 +81,3 @@ supabase/.temp/
 # Playwright MCP screenshots
 .playwright-mcp/
 
-# RAG evaluation
-scripts/rag-evaluation/
