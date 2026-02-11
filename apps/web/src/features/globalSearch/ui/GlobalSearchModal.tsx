@@ -11,6 +11,10 @@ import { useDebounceValue } from '../lib/useDebounceValue';
 import * as styles from './GlobalSearchModal.css';
 import { SearchResultItem } from './SearchResultItem';
 
+const DEBOUNCE_DELAY_MS = 300;
+const SEARCH_RESULT_LIMIT = 5;
+const FOCUS_DELAY_MS = 50;
+
 type Tab = 'all' | 'blog' | 'place' | 'photo';
 
 const TABS: { key: Tab; label: string }[] = [
@@ -42,18 +46,27 @@ export function GlobalSearchModal({
 	const [query, setQuery] = useState('');
 	const [activeTab, setActiveTab] = useState<Tab>('all');
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [mounted, setMounted] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const selectedRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
 	const trpc = useTRPC();
 
-	const debouncedQuery = useDebounceValue(query, 300);
+	const debouncedQuery = useDebounceValue(query, DEBOUNCE_DELAY_MS);
 
 	useScrollLock(isOpen);
 
+	// SSR guard
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
 	// tRPC query
 	const { data, isFetching } = useQuery({
-		...trpc.search.global.queryOptions({ query: debouncedQuery, limit: 5 }),
+		...trpc.search.global.queryOptions({
+			query: debouncedQuery,
+			limit: SEARCH_RESULT_LIMIT,
+		}),
 		enabled: isOpen && debouncedQuery.length > 0,
 	});
 
@@ -149,7 +162,18 @@ export function GlobalSearchModal({
 					if (item) navigateToResult(item);
 					break;
 				}
-				case 'Tab': {
+				case 'ArrowLeft': {
+					e.preventDefault();
+					const curIdx = TABS.findIndex((t) => t.key === activeTab);
+					const prevTabIdx = curIdx <= 0 ? TABS.length - 1 : curIdx - 1;
+					const prevTab = TABS[prevTabIdx];
+					if (prevTab) {
+						setActiveTab(prevTab.key);
+						setSelectedIndex(0);
+					}
+					break;
+				}
+				case 'ArrowRight': {
 					e.preventDefault();
 					const currentTabIndex = TABS.findIndex((t) => t.key === activeTab);
 					const nextTabIndex = (currentTabIndex + 1) % TABS.length;
@@ -183,7 +207,7 @@ export function GlobalSearchModal({
 			setQuery('');
 			setActiveTab('all');
 			setSelectedIndex(0);
-			setTimeout(() => inputRef.current?.focus(), 50);
+			setTimeout(() => inputRef.current?.focus(), FOCUS_DELAY_MS);
 		}
 	}, [isOpen]);
 
@@ -208,7 +232,7 @@ export function GlobalSearchModal({
 		return () => document.removeEventListener('keydown', handler);
 	}, [isOpen, onClose]);
 
-	if (!isOpen) return null;
+	if (!mounted || !isOpen) return null;
 
 	const hasQuery = debouncedQuery.length > 0;
 	const hasResults = filteredResults.length > 0;
@@ -259,7 +283,12 @@ export function GlobalSearchModal({
 				{/* Results */}
 				<div className={styles.results} role='listbox'>
 					{isFetching && hasQuery && (
-						<div className={styles.loading}>Searching...</div>
+						<div className={styles.loading}>
+							Searching
+							<span className={styles.dot}>.</span>
+							<span className={styles.dot}>.</span>
+							<span className={styles.dot}>.</span>
+						</div>
 					)}
 
 					{!isFetching && hasQuery && !hasResults && (
@@ -294,6 +323,8 @@ export function GlobalSearchModal({
 					<div className={styles.footerKeys}>
 						<kbd className={styles.kbd}>↑↓</kbd>
 						<span>navigate</span>
+						<kbd className={styles.kbd}>←→</kbd>
+						<span>tab</span>
 						<kbd className={styles.kbd}>↵</kbd>
 						<span>open</span>
 						<kbd className={styles.kbd}>esc</kbd>

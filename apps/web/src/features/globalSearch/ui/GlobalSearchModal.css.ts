@@ -167,5 +167,13 @@ export const loading = style({
 	textAlign: 'center',
 	color: palette.primary200,
 	fontSize: '14px',
+});
+
+export const dot = style({
+	display: 'inline-block',
 	animation: `${loadingDot} 1.4s infinite ease-in-out`,
+	selectors: {
+		'&:nth-child(2)': { animationDelay: '0.2s' },
+		'&:nth-child(3)': { animationDelay: '0.4s' },
+	},
 });
