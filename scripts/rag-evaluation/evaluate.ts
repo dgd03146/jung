@@ -13,6 +13,7 @@ config({ path: resolve(process.cwd(), 'apps/web/.env') });
 config({ path: resolve(process.cwd(), '.env') });
 
 import {
+	escapePostgrestPattern,
 	KEYWORD_WEIGHT,
 	MATCH_THRESHOLD,
 	RRF_K,
@@ -62,6 +63,9 @@ function calculateP95(latencies: number[]): number {
 	return sorted[index] ?? 0;
 }
 
+const avg = (arr: number[]) =>
+	arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+
 // DCG = sum(rel_i / log2(i+1)), NDCG = DCG / IDCG
 function calculateNDCG(
 	results: string[],
@@ -106,10 +110,11 @@ interface SearchResult {
 async function searchBaseline(query: string): Promise<SearchResult> {
 	const start = performance.now();
 
+	const escaped = escapePostgrestPattern(query);
 	const { data, error } = await supabase
 		.from('posts')
 		.select('id')
-		.or(`title_ko.ilike.%${query}%,description_ko.ilike.%${query}%`)
+		.or(`title_ko.ilike.%${escaped}%,description_ko.ilike.%${escaped}%`)
 		.limit(10);
 
 	if (error) {
@@ -184,10 +189,13 @@ async function searchHybrid(query: string): Promise<SearchResult> {
 			},
 		);
 
+		const escapedQuery = escapePostgrestPattern(query);
 		const { data: keywordData } = await supabase
 			.from('posts')
 			.select('id')
-			.or(`title_ko.ilike.%${query}%,description_ko.ilike.%${query}%`)
+			.or(
+				`title_ko.ilike.%${escapedQuery}%,description_ko.ilike.%${escapedQuery}%`,
+			)
 			.limit(10);
 
 		const scores = new Map<string, number>();
@@ -288,9 +296,6 @@ async function evaluateSearchMethod(
 		await new Promise((resolve) => setTimeout(resolve, 100));
 	}
 
-	const avg = (arr: number[]) =>
-		arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
-
 	return {
 		method: methodName,
 		recallAt5: avg(recallAt5List),
@@ -387,8 +392,6 @@ async function runEvaluation() {
 			cat.mrr.push(qr.mrr);
 			cat.ndcg.push(qr.ndcgAt5);
 		}
-
-		const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
 
 		console.log('| Category     | Queries | Recall@5 | MRR    | NDCG@5 |');
 		console.log('|--------------|---------|----------|--------|--------|');
