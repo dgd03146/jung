@@ -288,37 +288,45 @@ export async function POST(req: Request) {
 					location: z.string().describe('City or area name to search'),
 				}),
 				execute: async ({ location }) => {
-					const escaped = escapePostgrestPattern(location);
-					const { data: places } = await supabase
-						.from('places')
-						.select('id, title, description, address, tags')
-						.or(`address.ilike.%${escaped}%,title.ilike.%${escaped}%`)
-						.limit(TOOL_SEARCH_LIMIT);
-
-					const allTags = [
-						...new Set((places || []).flatMap((p) => p.tags || [])),
-					];
-					let photos: { id: string; description: string; tags: string[] }[] =
-						[];
-					if (allTags.length > 0) {
-						const { data } = await supabase
-							.from('photos')
-							.select('id, description, tags')
-							.overlaps('tags', allTags)
+					try {
+						const escaped = escapePostgrestPattern(location);
+						const { data: places } = await supabase
+							.from('places')
+							.select('id, title, description, address, tags')
+							.or(`address.ilike.%${escaped}%,title.ilike.%${escaped}%`)
 							.limit(TOOL_SEARCH_LIMIT);
-						photos = (data as typeof photos) || [];
-					}
 
-					return {
-						places: (places || []).map((p) => ({
-							...p,
-							url: `/places/${p.id}`,
-						})),
-						photos: photos.map((p) => ({
-							...p,
-							url: `/gallery/photo/${p.id}`,
-						})),
-					};
+						const allTags = [
+							...new Set((places || []).flatMap((p) => p.tags || [])),
+						];
+						let photos: {
+							id: string;
+							description: string;
+							tags: string[];
+						}[] = [];
+						if (allTags.length > 0) {
+							const { data } = await supabase
+								.from('photos')
+								.select('id, description, tags')
+								.overlaps('tags', allTags)
+								.limit(TOOL_SEARCH_LIMIT);
+							photos = (data as typeof photos) || [];
+						}
+
+						return {
+							places: (places || []).map((p) => ({
+								...p,
+								url: `/places/${p.id}`,
+							})),
+							photos: photos.map((p) => ({
+								...p,
+								url: `/gallery/photo/${p.id}`,
+							})),
+						};
+					} catch (error) {
+						console.error('getPlacesByLocation error:', error);
+						return { places: [], photos: [] };
+					}
 				},
 			}),
 			getContentStats: tool({
@@ -326,20 +334,27 @@ export async function POST(req: Request) {
 					'Get overall content statistics. Use when asked about how much content exists on the site.',
 				inputSchema: z.object({}),
 				execute: async () => {
-					const [posts, photos, places] = await Promise.all([
-						supabase.from('posts').select('id', { count: 'exact', head: true }),
-						supabase
-							.from('photos')
-							.select('id', { count: 'exact', head: true }),
-						supabase
-							.from('places')
-							.select('id', { count: 'exact', head: true }),
-					]);
-					return {
-						blogPosts: posts.count ?? 0,
-						photos: photos.count ?? 0,
-						places: places.count ?? 0,
-					};
+					try {
+						const [posts, photos, places] = await Promise.all([
+							supabase
+								.from('posts')
+								.select('id', { count: 'exact', head: true }),
+							supabase
+								.from('photos')
+								.select('id', { count: 'exact', head: true }),
+							supabase
+								.from('places')
+								.select('id', { count: 'exact', head: true }),
+						]);
+						return {
+							blogPosts: posts.count ?? 0,
+							photos: photos.count ?? 0,
+							places: places.count ?? 0,
+						};
+					} catch (error) {
+						console.error('getContentStats error:', error);
+						return { blogPosts: 0, photos: 0, places: 0 };
+					}
 				},
 			}),
 		},

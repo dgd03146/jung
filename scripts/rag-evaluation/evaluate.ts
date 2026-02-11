@@ -322,6 +322,13 @@ async function runEvaluation() {
 		process.exit(1);
 	}
 
+	if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+		console.error(
+			'❌ SUPABASE_URL 또는 SUPABASE_SERVICE_ROLE_KEY 환경변수가 설정되지 않았습니다.',
+		);
+		process.exit(1);
+	}
+
 	const taggedQueries = testQueries.filter(
 		(q) => q.expectedPostIds.length > 0,
 	).length;

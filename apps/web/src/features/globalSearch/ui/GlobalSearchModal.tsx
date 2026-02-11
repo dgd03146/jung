@@ -163,6 +163,7 @@ export function GlobalSearchModal({
 					break;
 				}
 				case 'ArrowLeft': {
+					if (e.target instanceof HTMLInputElement) break;
 					e.preventDefault();
 					const curIdx = TABS.findIndex((t) => t.key === activeTab);
 					const prevTabIdx = curIdx <= 0 ? TABS.length - 1 : curIdx - 1;
@@ -174,6 +175,7 @@ export function GlobalSearchModal({
 					break;
 				}
 				case 'ArrowRight': {
+					if (e.target instanceof HTMLInputElement) break;
 					e.preventDefault();
 					const currentTabIndex = TABS.findIndex((t) => t.key === activeTab);
 					const nextTabIndex = (currentTabIndex + 1) % TABS.length;
