@@ -532,16 +532,18 @@ export const blogService = {
 					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
 				);
 
-				const { data, error } = await supabase.rpc('match_posts', {
-					query_embedding: embedding,
-					match_threshold: MATCH_THRESHOLD,
-					match_count: limit * 2,
-				});
+				if (embedding.length > 0) {
+					const { data, error } = await supabase.rpc('match_posts', {
+						query_embedding: embedding,
+						match_threshold: MATCH_THRESHOLD,
+						match_count: limit * 2,
+					});
 
-				if (error) {
-					console.error('Vector search error:', error);
-				} else {
-					vectorResults = data || [];
+					if (error) {
+						console.error('Vector search error:', error);
+					} else {
+						vectorResults = data || [];
+					}
 				}
 			} catch (err) {
 				console.error('Embedding generation error:', err);

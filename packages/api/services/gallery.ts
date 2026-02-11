@@ -536,14 +536,16 @@ export const galleryService = {
 					hydeText,
 					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
 				);
-				const { data, error } = await supabase.rpc('match_photos', {
-					query_embedding: embedding,
-					match_threshold: MATCH_THRESHOLD,
-					match_count: limit * 2,
-				});
+				if (embedding.length > 0) {
+					const { data, error } = await supabase.rpc('match_photos', {
+						query_embedding: embedding,
+						match_threshold: MATCH_THRESHOLD,
+						match_count: limit * 2,
+					});
 
-				if (!error && data) {
-					vectorResults = data;
+					if (!error && data) {
+						vectorResults = data;
+					}
 				}
 			} catch (err) {
 				console.error('Photo vector search error:', err);

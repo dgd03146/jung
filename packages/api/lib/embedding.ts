@@ -44,14 +44,22 @@ export async function generateEmbedding(
 		return [];
 	}
 
-	const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
+	try {
+		const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
 
-	const result = await model.embedContent({
-		content: { parts: [{ text }], role: 'user' },
-		taskType,
-	});
+		const result = await model.embedContent({
+			content: { parts: [{ text }], role: 'user' },
+			taskType,
+		});
 
-	return result.embedding.values;
+		return result.embedding.values;
+	} catch (error) {
+		console.warn(
+			'[embedding] Failed to generate embedding:',
+			error instanceof Error ? error.message : error,
+		);
+		return [];
+	}
 }
 
 export { TaskType };
