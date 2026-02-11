@@ -17,6 +17,9 @@ import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
 
+const RAG_SEARCH_LIMIT = 3;
+const TOOL_SEARCH_LIMIT = 5;
+
 const google = createGoogleGenerativeAI();
 
 // RAG: 관련 컨텍스트 생성
@@ -121,13 +124,18 @@ export async function POST(req: Request) {
 	const [blogResults, placeResults, photoResults] = query
 		? await Promise.all([
 				blogService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
+					.semanticSearch({
+						query,
+						limit: RAG_SEARCH_LIMIT,
+						mode: 'hybrid',
+						locale: 'ko',
+					})
 					.catch(() => emptyResults),
 				placesService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.semanticSearch({ query, limit: RAG_SEARCH_LIMIT, mode: 'hybrid' })
 					.catch(() => emptyResults),
 				galleryService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.semanticSearch({ query, limit: RAG_SEARCH_LIMIT, mode: 'hybrid' })
 					.catch(() => emptyResults),
 			])
 		: [emptyResults, emptyResults, emptyResults];
@@ -151,7 +159,7 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await blogService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
 						locale: 'ko',
 					});
@@ -172,7 +180,7 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await placesService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
 					});
 					return result.items.map((item) => ({
@@ -193,14 +201,14 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await galleryService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
 					});
 					return result.items.map((item) => ({
 						id: item.id,
 						description: item.description,
 						tags: item.tags,
-						url: `/gallery/${item.id}`,
+						url: `/gallery/photo/${item.id}`,
 					}));
 				},
 			}),
@@ -234,16 +242,24 @@ export async function POST(req: Request) {
 						blogService
 							.semanticSearch({
 								query,
-								limit: 3,
+								limit: RAG_SEARCH_LIMIT,
 								mode: 'hybrid',
 								locale: 'ko',
 							})
 							.catch(() => emptyResults),
 						placesService
-							.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+							.semanticSearch({
+								query,
+								limit: RAG_SEARCH_LIMIT,
+								mode: 'hybrid',
+							})
 							.catch(() => emptyResults),
 						galleryService
-							.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+							.semanticSearch({
+								query,
+								limit: RAG_SEARCH_LIMIT,
+								mode: 'hybrid',
+							})
 							.catch(() => emptyResults),
 					]);
 					return {
@@ -277,7 +293,7 @@ export async function POST(req: Request) {
 						.from('places')
 						.select('id, title, description, address, tags')
 						.or(`address.ilike.%${escaped}%,title.ilike.%${escaped}%`)
-						.limit(5);
+						.limit(TOOL_SEARCH_LIMIT);
 
 					const allTags = [
 						...new Set((places || []).flatMap((p) => p.tags || [])),
@@ -289,7 +305,7 @@ export async function POST(req: Request) {
 							.from('photos')
 							.select('id, description, tags')
 							.overlaps('tags', allTags)
-							.limit(5);
+							.limit(TOOL_SEARCH_LIMIT);
 						photos = (data as typeof photos) || [];
 					}
 
