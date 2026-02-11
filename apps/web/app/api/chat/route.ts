@@ -19,6 +19,34 @@ export const maxDuration = 30;
 
 const RAG_SEARCH_LIMIT = 3;
 const TOOL_SEARCH_LIMIT = 5;
+const SUPPORTED_LOCALES = ['ko', 'en'] as const;
+type Locale = (typeof SUPPORTED_LOCALES)[number];
+
+function extractLocale(req: Request): Locale {
+	// 1. Referer URL의 /[locale]/ 세그먼트에서 추출
+	const referer = req.headers.get('referer');
+	if (referer) {
+		try {
+			const { pathname } = new URL(referer);
+			const segment = pathname.split('/')[1];
+			if (segment && SUPPORTED_LOCALES.includes(segment as Locale)) {
+				return segment as Locale;
+			}
+		} catch {
+			// invalid URL — fall through
+		}
+	}
+
+	// 2. Accept-Language 헤더에서 추출
+	const acceptLang = req.headers.get('accept-language') ?? '';
+	for (const locale of SUPPORTED_LOCALES) {
+		if (acceptLang.includes(locale)) {
+			return locale;
+		}
+	}
+
+	return 'ko';
+}
 
 const google = createGoogleGenerativeAI();
 
@@ -97,6 +125,7 @@ export async function POST(req: Request) {
 		return new Response('Invalid JSON', { status: 400 });
 	}
 
+	const locale = extractLocale(req);
 	const messages = (body as { messages?: unknown })?.messages;
 
 	if (!Array.isArray(messages) || messages.length === 0) {
@@ -128,7 +157,7 @@ export async function POST(req: Request) {
 						query,
 						limit: RAG_SEARCH_LIMIT,
 						mode: 'hybrid',
-						locale: 'ko',
+						locale,
 					})
 					.catch(() => emptyResults),
 				placesService
@@ -161,7 +190,7 @@ export async function POST(req: Request) {
 						query,
 						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
-						locale: 'ko',
+						locale,
 					});
 					return result.items.map((item) => ({
 						id: item.id,
@@ -244,7 +273,7 @@ export async function POST(req: Request) {
 								query,
 								limit: RAG_SEARCH_LIMIT,
 								mode: 'hybrid',
-								locale: 'ko',
+								locale,
 							})
 							.catch(() => emptyResults),
 						placesService
