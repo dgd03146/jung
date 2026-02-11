@@ -457,6 +457,11 @@ export const placesService = {
 				TaskType.RETRIEVAL_DOCUMENT,
 			);
 
+			if (embedding.length === 0) {
+				console.warn(`Embedding generation skipped for place ${placeId}`);
+				return { success: false };
+			}
+
 			// DB에 저장
 			const { error: updateError } = await supabase
 				.from('places')

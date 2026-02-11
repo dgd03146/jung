@@ -762,6 +762,11 @@ export const blogService = {
 				TaskType.RETRIEVAL_DOCUMENT,
 			);
 
+			if (embedding.length === 0) {
+				console.warn(`Embedding generation skipped for post ${postId}`);
+				return { success: false };
+			}
+
 			// DB에 저장
 			const { error: updateError } = await supabase
 				.from('posts')

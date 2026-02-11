@@ -38,9 +38,10 @@ export async function generateEmbedding(
 	taskType: TaskType = TaskType.RETRIEVAL_QUERY,
 ): Promise<number[]> {
 	if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-		throw new Error(
-			'GOOGLE_GENERATIVE_AI_API_KEY environment variable is not set',
+		console.warn(
+			'[embedding] GOOGLE_GENERATIVE_AI_API_KEY is not set, skipping embedding generation',
 		);
+		return [];
 	}
 
 	const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });

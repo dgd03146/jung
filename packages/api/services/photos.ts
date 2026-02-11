@@ -684,6 +684,11 @@ export const photosService = {
 			// 임베딩 생성
 			const embedding = await generateEmbedding(text);
 
+			if (embedding.length === 0) {
+				console.warn(`Embedding generation skipped for photo ${photoId}`);
+				return { success: false };
+			}
+
 			// DB에 저장
 			const { error: updateError } = await supabase
 				.from('photos')
