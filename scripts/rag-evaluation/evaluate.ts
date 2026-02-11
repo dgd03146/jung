@@ -22,6 +22,10 @@ import {
 } from '../../packages/api/lib/constants';
 import { type TestQuery, testQueries } from './test-queries';
 
+const EVAL_SEARCH_LIMIT = 10;
+const SIMILARITY_BOOST_FACTOR = 0.1;
+const QUERY_DELAY_MS = 100;
+
 const supabase = createClient(
 	process.env.SUPABASE_URL || '',
 	process.env.SUPABASE_SERVICE_ROLE_KEY || '',
@@ -115,7 +119,7 @@ async function searchBaseline(query: string): Promise<SearchResult> {
 		.from('posts')
 		.select('id')
 		.or(`title_ko.ilike.%${escaped}%,description_ko.ilike.%${escaped}%`)
-		.limit(10);
+		.limit(EVAL_SEARCH_LIMIT);
 
 	if (error) {
 		console.error('Baseline 검색 에러:', error.message);
@@ -136,7 +140,7 @@ async function searchVector(query: string): Promise<SearchResult> {
 		const { data, error } = await supabase.rpc('match_posts', {
 			query_embedding: JSON.stringify(embedding),
 			match_threshold: MATCH_THRESHOLD,
-			match_count: 10,
+			match_count: EVAL_SEARCH_LIMIT,
 		});
 
 		if (error) {
@@ -174,7 +178,7 @@ async function searchHybrid(query: string): Promise<SearchResult> {
 		const { data: vectorData } = await supabase.rpc('match_posts', {
 			query_embedding: JSON.stringify(embedding),
 			match_threshold: MATCH_THRESHOLD,
-			match_count: 10,
+			match_count: EVAL_SEARCH_LIMIT,
 		});
 
 		const filteredVector = (vectorData || []).filter(
@@ -196,7 +200,7 @@ async function searchHybrid(query: string): Promise<SearchResult> {
 			.or(
 				`title_ko.ilike.%${escapedQuery}%,description_ko.ilike.%${escapedQuery}%`,
 			)
-			.limit(10);
+			.limit(EVAL_SEARCH_LIMIT);
 
 		const scores = new Map<string, number>();
 
@@ -204,7 +208,9 @@ async function searchHybrid(query: string): Promise<SearchResult> {
 			(item: { id: number; similarity: number }, rank: number) => {
 				const id = String(item.id);
 				const rrfScore = VECTOR_WEIGHT / (RRF_K + rank + 1);
-				const similarityBoost = item.similarity ? item.similarity * 0.1 : 0;
+				const similarityBoost = item.similarity
+					? item.similarity * SIMILARITY_BOOST_FACTOR
+					: 0;
 				scores.set(id, (scores.get(id) || 0) + rrfScore + similarityBoost);
 			},
 		);
@@ -217,7 +223,7 @@ async function searchHybrid(query: string): Promise<SearchResult> {
 
 		const ids = [...scores.entries()]
 			.sort((a, b) => b[1] - a[1])
-			.slice(0, 10)
+			.slice(0, EVAL_SEARCH_LIMIT)
 			.map(([id]) => id);
 
 		const latencyMs = performance.now() - start;
@@ -293,7 +299,7 @@ async function evaluateSearchMethod(
 			expectedIds: expectedPostIds,
 		});
 
-		await new Promise((resolve) => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, QUERY_DELAY_MS));
 	}
 
 	return {
