@@ -71,4 +71,21 @@ export const galleryRouter = router({
 		const { input } = opts;
 		return galleryService.getLikeInfo(input);
 	}),
+
+	semanticSearch: publicProcedure
+		.input(
+			z.object({
+				query: z
+					.string()
+					.transform((s) => s.trim())
+					.refine((s) => s.length > 0, {
+						message: '검색어를 입력해주세요',
+					}),
+				limit: z.number().min(1).max(20).default(5),
+				mode: z.enum(['vector', 'keyword', 'hybrid']).default('hybrid'),
+			}),
+		)
+		.query(({ input }) => {
+			return galleryService.semanticSearch(input);
+		}),
 });

@@ -16,10 +16,10 @@ const ImprovedArticleSchema = z.object({
 
 type ImprovedArticle = z.infer<typeof ImprovedArticleSchema>;
 
-const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
+const GOOGLE_AI_API_KEY = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 if (!GOOGLE_AI_API_KEY) {
 	console.warn(
-		'Warning: GOOGLE_AI_API_KEY is not set. AI features will not work.',
+		'[article] GOOGLE_GENERATIVE_AI_API_KEY is not set. AI features will not work.',
 	);
 }
 
@@ -34,7 +34,7 @@ export const articleService = {
 	async improveArticle(input: ImproveArticleInput): Promise<ImprovedArticle> {
 		if (!genAI) {
 			throw new Error(
-				'AI service is not available. GOOGLE_AI_API_KEY is not configured.',
+				'AI service is not available. GOOGLE_GENERATIVE_AI_API_KEY is not configured.',
 			);
 		}
 

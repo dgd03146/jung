@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Flex } from '@jung/design-system/components';
+import { IoSearchOutline } from 'react-icons/io5';
 import { PRIMARY_NAV_LIST } from '@/fsd/shared/config';
 import { extractFirstMeaningfulSegment } from '@/fsd/shared/lib';
 import { LanguageSwitcher } from '@/fsd/shared/ui';
@@ -12,12 +13,18 @@ import * as styles from './Navbar.css';
 type Props = {
 	isMenuOpen: boolean;
 	toggleMenu: () => void;
+	onSearchClick?: () => void;
 	variant?: 'light' | 'dark';
 };
 
 const SCROLL_THRESHOLD = 50;
 
-const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
+const Navbar = ({
+	isMenuOpen,
+	toggleMenu,
+	onSearchClick,
+	variant = 'light',
+}: Props) => {
 	const isScrolled = useScrollDetection({ threshold: SCROLL_THRESHOLD });
 	const pathname = usePathname();
 	const currentSegment = extractFirstMeaningfulSegment(pathname);
@@ -69,6 +76,14 @@ const Navbar = ({ isMenuOpen, toggleMenu, variant = 'light' }: Props) => {
 							</Link>
 						);
 					})}
+					<button
+						type='button'
+						className={styles.searchButton({ variant })}
+						onClick={onSearchClick}
+						aria-label='Search (⌘K)'
+					>
+						<IoSearchOutline />
+					</button>
 					<LanguageSwitcher variant={variant} />
 				</Flex>
 

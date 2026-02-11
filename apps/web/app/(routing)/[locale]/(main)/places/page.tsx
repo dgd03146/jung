@@ -75,7 +75,7 @@ export default async function Page({ params }: Props) {
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
-	await queryClient.prefetchInfiniteQuery(
+	void queryClient.prefetchInfiniteQuery(
 		trpc.place.getAllPlaces.infiniteQueryOptions({
 			limit: PLACE_DEFAULTS.LIMIT,
 			sort: PLACE_DEFAULTS.SORT,

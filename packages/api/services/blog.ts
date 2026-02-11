@@ -57,7 +57,6 @@ export const blogService = {
 			// Select locale-specific columns with fallback to Korean
 			const titleCol = locale === 'en' ? 'title_en' : 'title_ko';
 			const descCol = locale === 'en' ? 'description_en' : 'description_ko';
-			const contentCol = locale === 'en' ? 'content_en' : 'content_ko';
 
 			let query = supabase
 				.from('posts')
@@ -65,7 +64,6 @@ export const blogService = {
 					id,
 					${titleCol},
 					${descCol},
-					${contentCol},
 					date,
 					views,
 					likes,
@@ -78,22 +76,32 @@ export const blogService = {
 				`)
 				.eq('categories.type', 'blog');
 
-			if (cat && cat !== 'all') {
-				const { data: selectedCategory, error: categoryError } = await supabase
-					.from('categories')
-					.select('id')
-					.ilike('name', cat)
-					.eq('type', 'blog')
-					.single();
+			// Parallel: category lookup + cursor date lookup
+			const needsCategoryFilter = cat && cat !== 'all';
+			const [categoryResult, cursorResult] = await Promise.all([
+				needsCategoryFilter
+					? supabase
+							.from('categories')
+							.select('id')
+							.ilike('name', cat)
+							.eq('type', 'blog')
+							.single()
+					: null,
+				cursor
+					? supabase.from('posts').select('date').eq('id', cursor).single()
+					: null,
+			]);
 
-				if (categoryError) {
+			if (needsCategoryFilter) {
+				if (categoryResult?.error) {
 					throw new TRPCError({
 						code: 'INTERNAL_SERVER_ERROR',
 						message: 'Failed to fetch categories. Please try again later.',
-						cause: categoryError,
+						cause: categoryResult.error,
 					});
 				}
 
+				const selectedCategory = categoryResult?.data;
 				if (selectedCategory) {
 					const { data: childCategories, error: childError } = await supabase
 						.from('categories')
@@ -134,17 +142,9 @@ export const blogService = {
 				);
 			}
 
-			if (cursor) {
-				const { data: cursorPost } = await supabase
-					.from('posts')
-					.select('date')
-					.eq('id', cursor)
-					.single();
-
-				if (cursorPost) {
-					const operator = sort === 'oldest' ? 'gt' : 'lt';
-					query = query[operator]('date', cursorPost.date);
-				}
+			if (cursorResult?.data) {
+				const operator = sort === 'oldest' ? 'gt' : 'lt';
+				query = query[operator]('date', cursorResult.data.date);
 			}
 
 			if (sort === 'popular') {
@@ -185,8 +185,6 @@ export const blogService = {
 						title_en,
 						description_ko,
 						description_en,
-						content_ko,
-						content_en,
 						tags,
 						tags_en,
 						...rest
@@ -199,8 +197,6 @@ export const blogService = {
 						(locale === 'en' ? description_en : description_ko) ||
 						description_ko ||
 						'';
-					const content =
-						(locale === 'en' ? content_en : content_ko) || content_ko;
 					const localizedTags =
 						(locale === 'en' ? tags_en : tags) || tags || [];
 
@@ -208,7 +204,6 @@ export const blogService = {
 						...rest,
 						title,
 						description,
-						content,
 						tags: localizedTags,
 						category: categories.name,
 					};
@@ -532,16 +527,18 @@ export const blogService = {
 					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
 				);
 
-				const { data, error } = await supabase.rpc('match_posts', {
-					query_embedding: embedding,
-					match_threshold: MATCH_THRESHOLD,
-					match_count: limit * 2,
-				});
+				if (embedding.length > 0) {
+					const { data, error } = await supabase.rpc('match_posts', {
+						query_embedding: embedding,
+						match_threshold: MATCH_THRESHOLD,
+						match_count: limit * 2,
+					});
 
-				if (error) {
-					console.error('Vector search error:', error);
-				} else {
-					vectorResults = data || [];
+					if (error) {
+						console.error('Vector search error:', error);
+					} else {
+						vectorResults = data || [];
+					}
 				}
 			} catch (err) {
 				console.error('Embedding generation error:', err);
@@ -761,6 +758,11 @@ export const blogService = {
 				text,
 				TaskType.RETRIEVAL_DOCUMENT,
 			);
+
+			if (embedding.length === 0) {
+				console.warn(`Embedding generation skipped for post ${postId}`);
+				return { success: false };
+			}
 
 			// DB에 저장
 			const { error: updateError } = await supabase

@@ -1,4 +1,6 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { escapePostgrestPattern } from '@jung/api/lib/constants';
+import { supabase } from '@jung/api/lib/supabase';
 import { blogService } from '@jung/api/services/blog';
 import { galleryService } from '@jung/api/services/gallery';
 import { placesService } from '@jung/api/services/place';
@@ -14,6 +16,37 @@ import { profileData } from '@/fsd/features/chatbot/config/profileData';
 import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
+
+const RAG_SEARCH_LIMIT = 3;
+const TOOL_SEARCH_LIMIT = 5;
+const SUPPORTED_LOCALES = ['ko', 'en'] as const;
+type Locale = (typeof SUPPORTED_LOCALES)[number];
+
+function extractLocale(req: Request): Locale {
+	// 1. Referer URL의 /[locale]/ 세그먼트에서 추출
+	const referer = req.headers.get('referer');
+	if (referer) {
+		try {
+			const { pathname } = new URL(referer);
+			const segment = pathname.split('/')[1];
+			if (segment && SUPPORTED_LOCALES.includes(segment as Locale)) {
+				return segment as Locale;
+			}
+		} catch {
+			// invalid URL — fall through
+		}
+	}
+
+	// 2. Accept-Language 헤더에서 추출
+	const acceptLang = req.headers.get('accept-language') ?? '';
+	for (const locale of SUPPORTED_LOCALES) {
+		if (acceptLang.includes(locale)) {
+			return locale;
+		}
+	}
+
+	return 'ko';
+}
 
 const google = createGoogleGenerativeAI();
 
@@ -92,6 +125,7 @@ export async function POST(req: Request) {
 		return new Response('Invalid JSON', { status: 400 });
 	}
 
+	const locale = extractLocale(req);
 	const messages = (body as { messages?: unknown })?.messages;
 
 	if (!Array.isArray(messages) || messages.length === 0) {
@@ -119,13 +153,18 @@ export async function POST(req: Request) {
 	const [blogResults, placeResults, photoResults] = query
 		? await Promise.all([
 				blogService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid', locale: 'ko' })
+					.semanticSearch({
+						query,
+						limit: RAG_SEARCH_LIMIT,
+						mode: 'hybrid',
+						locale,
+					})
 					.catch(() => emptyResults),
 				placesService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.semanticSearch({ query, limit: RAG_SEARCH_LIMIT, mode: 'hybrid' })
 					.catch(() => emptyResults),
 				galleryService
-					.semanticSearch({ query, limit: 3, mode: 'hybrid' })
+					.semanticSearch({ query, limit: RAG_SEARCH_LIMIT, mode: 'hybrid' })
 					.catch(() => emptyResults),
 			])
 		: [emptyResults, emptyResults, emptyResults];
@@ -149,9 +188,9 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await blogService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
-						locale: 'ko',
+						locale,
 					});
 					return result.items.map((item) => ({
 						id: item.id,
@@ -170,7 +209,7 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await placesService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
 					});
 					return result.items.map((item) => ({
@@ -191,14 +230,14 @@ export async function POST(req: Request) {
 				execute: async ({ query }) => {
 					const result = await galleryService.semanticSearch({
 						query,
-						limit: 5,
+						limit: TOOL_SEARCH_LIMIT,
 						mode: 'hybrid',
 					});
 					return result.items.map((item) => ({
 						id: item.id,
 						description: item.description,
 						tags: item.tags,
-						url: `/gallery/${item.id}`,
+						url: `/gallery/photo/${item.id}`,
 					}));
 				},
 			}),
@@ -219,6 +258,132 @@ export async function POST(req: Request) {
 						skills: profileData.skills,
 						interests: profileData.interests,
 					};
+				},
+			}),
+			searchAll: tool({
+				description:
+					'Search across all content (blog, places, photos) at once. Use when the question spans multiple domains or asks about overall content.',
+				inputSchema: z.object({
+					query: z.string().describe('Search query across all content'),
+				}),
+				execute: async ({ query }) => {
+					const [blogs, places, photos] = await Promise.all([
+						blogService
+							.semanticSearch({
+								query,
+								limit: RAG_SEARCH_LIMIT,
+								mode: 'hybrid',
+								locale,
+							})
+							.catch(() => emptyResults),
+						placesService
+							.semanticSearch({
+								query,
+								limit: RAG_SEARCH_LIMIT,
+								mode: 'hybrid',
+							})
+							.catch(() => emptyResults),
+						galleryService
+							.semanticSearch({
+								query,
+								limit: RAG_SEARCH_LIMIT,
+								mode: 'hybrid',
+							})
+							.catch(() => emptyResults),
+					]);
+					return {
+						blogs: blogs.items.map((b) => ({
+							id: b.id,
+							title: b.title,
+							url: `/blog/${b.id}`,
+						})),
+						places: places.items.map((p) => ({
+							id: p.id,
+							title: p.title,
+							url: `/places/${p.id}`,
+						})),
+						photos: photos.items.map((p) => ({
+							id: p.id,
+							description: p.description,
+							url: `/gallery/photo/${p.id}`,
+						})),
+					};
+				},
+			}),
+			getPlacesByLocation: tool({
+				description:
+					'Get places and related photos in a specific city or area. Use when asked about locations like "London", "Seoul", "Jeju".',
+				inputSchema: z.object({
+					location: z.string().describe('City or area name to search'),
+				}),
+				execute: async ({ location }) => {
+					try {
+						const escaped = escapePostgrestPattern(location);
+						const { data: places } = await supabase
+							.from('places')
+							.select('id, title, description, address, tags')
+							.or(`address.ilike.%${escaped}%,title.ilike.%${escaped}%`)
+							.limit(TOOL_SEARCH_LIMIT);
+
+						const allTags = [
+							...new Set((places || []).flatMap((p) => p.tags || [])),
+						];
+						let photos: {
+							id: string;
+							description: string;
+							tags: string[];
+						}[] = [];
+						if (allTags.length > 0) {
+							const { data } = await supabase
+								.from('photos')
+								.select('id, description, tags')
+								.overlaps('tags', allTags)
+								.limit(TOOL_SEARCH_LIMIT);
+							photos = (data as typeof photos) || [];
+						}
+
+						return {
+							places: (places || []).map((p) => ({
+								...p,
+								url: `/places/${p.id}`,
+							})),
+							photos: photos.map((p) => ({
+								...p,
+								url: `/gallery/photo/${p.id}`,
+							})),
+						};
+					} catch (error) {
+						console.error('getPlacesByLocation error:', error);
+						return { places: [], photos: [] };
+					}
+				},
+			}),
+			getContentStats: tool({
+				description:
+					'Get overall content statistics. Use when asked about how much content exists on the site.',
+				inputSchema: z.object({}),
+				execute: async () => {
+					try {
+						const [posts, photos, places] = await Promise.all([
+							supabase
+								.from('posts')
+								.select('id', { count: 'exact', head: true }),
+							supabase
+								.from('photos')
+								.select('id', { count: 'exact', head: true }),
+							supabase
+								.from('places')
+								.select('id', { count: 'exact', head: true }),
+						]);
+						return {
+							blogPosts: posts.count ?? 0,
+							photos: photos.count ?? 0,
+							places: places.count ?? 0,
+						};
+					} catch (error) {
+						console.error('getContentStats error:', error);
+						return { blogPosts: 0, photos: 0, places: 0 };
+					}
 				},
 			}),
 		},

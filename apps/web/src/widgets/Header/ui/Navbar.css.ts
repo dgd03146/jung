@@ -105,6 +105,51 @@ export const logoWrapper = recipe({
 	},
 });
 
+export const searchButton = recipe({
+	base: style({
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '32px',
+		height: '32px',
+		borderRadius: '6px',
+		border: 'none',
+		background: 'transparent',
+		cursor: 'pointer',
+		transition: 'all 0.2s ease',
+		fontSize: '18px',
+		selectors: {
+			'&:hover': {
+				transform: 'scale(1.1)',
+			},
+		},
+	}),
+	variants: {
+		variant: {
+			light: {
+				color: palette.primary,
+				selectors: {
+					'&:hover': {
+						backgroundColor: `${palette.primary}08`,
+					},
+				},
+			},
+			dark: {
+				color: 'rgba(255, 255, 255, 0.85)',
+				selectors: {
+					'&:hover': {
+						color: palette.white,
+						backgroundColor: 'rgba(255, 255, 255, 0.1)',
+					},
+				},
+			},
+		},
+	},
+	defaultVariants: {
+		variant: 'light',
+	},
+});
+
 export const menuButtonWrapper = style({
 	display: 'none',
 	transition: 'transform 0.2s ease',

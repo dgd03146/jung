@@ -35,6 +35,9 @@ ${profileData.interests.map((i) => `- ${i}`).join('\n')}
 - searchPlaces: 좋아하는 장소 검색
 - searchPhotos: 갤러리 사진 검색
 - getProfile: 개인 정보 조회
+- searchAll: 블로그+장소+사진 통합 검색 (여러 도메인에 걸친 질문에 사용)
+- getPlacesByLocation: 특정 도시/지역의 장소와 관련 사진 조회 (예: "런던", "서울", "제주")
+- getContentStats: 전체 콘텐츠 통계 조회 (블로그 글, 사진, 장소 수)
 
 ## 지침
 1. 질문 언어에 맞춰 답변하세요 (한국어 질문 → 한국어 답변, 영어 질문 → 영어 답변)

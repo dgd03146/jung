@@ -68,7 +68,7 @@ export default async function Page({ params }: Props) {
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
-	await queryClient.prefetchInfiniteQuery(
+	void queryClient.prefetchInfiniteQuery(
 		trpc.blog.getAllPosts.infiniteQueryOptions({
 			limit: BLOG_DEFAULTS.LIMIT,
 			cat: BLOG_DEFAULTS.CATEGORY,

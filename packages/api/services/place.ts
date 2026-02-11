@@ -309,14 +309,16 @@ export const placesService = {
 					hydeText,
 					isHyDE ? TaskType.RETRIEVAL_DOCUMENT : TaskType.RETRIEVAL_QUERY,
 				);
-				const { data, error } = await supabase.rpc('match_places', {
-					query_embedding: embedding,
-					match_threshold: MATCH_THRESHOLD,
-					match_count: limit * 2,
-				});
+				if (embedding.length > 0) {
+					const { data, error } = await supabase.rpc('match_places', {
+						query_embedding: embedding,
+						match_threshold: MATCH_THRESHOLD,
+						match_count: limit * 2,
+					});
 
-				if (!error && data) {
-					vectorResults = data;
+					if (!error && data) {
+						vectorResults = data;
+					}
 				}
 			} catch (err) {
 				console.error('Place vector search error:', err);
@@ -456,6 +458,11 @@ export const placesService = {
 				text,
 				TaskType.RETRIEVAL_DOCUMENT,
 			);
+
+			if (embedding.length === 0) {
+				console.warn(`Embedding generation skipped for place ${placeId}`);
+				return { success: false };
+			}
 
 			// DB에 저장
 			const { error: updateError } = await supabase

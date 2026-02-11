@@ -1,0 +1,1075 @@
+{
+  "date": "2026-02-03",
+  "totalQueries": 20,
+  "taggedQueries": 20,
+  "results": [
+    {
+      "method": "baseline",
+      "recallAt5": 0.275,
+      "recallAt10": 0.275,
+      "mrr": 0.35,
+      "p95LatencyMs": 395.47770800000035
+    },
+    {
+      "method": "vector",
+      "recallAt5": 0.55,
+      "recallAt10": 0.9,
+      "mrr": 0.5431150793650793,
+      "p95LatencyMs": 610.2309170000008
+    },
+    {
+      "method": "hybrid",
+      "recallAt5": 0.6,
+      "recallAt10": 0.9,
+      "mrr": 0.687281746031746,
+      "p95LatencyMs": 813.0950000000012
+    }
+  ],
+  "details": [
+    {
+      "method": "baseline",
+      "recallAt5": 0.275,
+      "recallAt10": 0.275,
+      "mrr": 0.35,
+      "p95LatencyMs": 395.47770800000035,
+      "queryResults": [
+        {
+          "query": "성능 최적화",
+          "recallAt5": 0.5,
+          "mrr": 1,
+          "latencyMs": 862.7406669999999,
+          "resultIds": [
+            "122"
+          ],
+          "expectedIds": [
+            "122",
+            "118"
+          ]
+        },
+        {
+          "query": "Next.js 렌더링",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 306.687375,
+          "resultIds": [],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "페이지 로딩 속도 개선",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 334.753334,
+          "resultIds": [],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "스크롤 이벤트 처리",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 341.9957079999999,
+          "resultIds": [],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "RequestAnimationFrame",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 287.3665839999999,
+          "resultIds": [
+            "118"
+          ],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "vanilla-extract",
+          "recallAt5": 0.5,
+          "mrr": 1,
+          "latencyMs": 302.13554200000044,
+          "resultIds": [
+            "120"
+          ],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "CSS-in-JS",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 281.71150000000034,
+          "resultIds": [
+            "120"
+          ],
+          "expectedIds": [
+            "120"
+          ]
+        },
+        {
+          "query": "Polymorphic 컴포넌트",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 297.642292,
+          "resultIds": [],
+          "expectedIds": [
+            "115"
+          ]
+        },
+        {
+          "query": "타입 안전한 스타일링",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 308.1084579999997,
+          "resultIds": [],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "코드 품질 향상",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 270.7380000000003,
+          "resultIds": [],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Clean Code",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 284.81624999999985,
+          "resultIds": [],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "변경하기 쉬운 코드",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 278.99566700000014,
+          "resultIds": [],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Product Engineer",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 395.47770800000035,
+          "resultIds": [],
+          "expectedIds": [
+            "123",
+            "124"
+          ]
+        },
+        {
+          "query": "사이드 프로젝트",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 272.0740420000002,
+          "resultIds": [
+            "116"
+          ],
+          "expectedIds": [
+            "116"
+          ]
+        },
+        {
+          "query": "인턴십 회고",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 274.1996249999993,
+          "resultIds": [
+            "124"
+          ],
+          "expectedIds": [
+            "124"
+          ]
+        },
+        {
+          "query": "개발자 성장",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 377.425166,
+          "resultIds": [],
+          "expectedIds": [
+            "123",
+            "114"
+          ]
+        },
+        {
+          "query": "2024년 회고",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 277.7005829999998,
+          "resultIds": [],
+          "expectedIds": [
+            "114"
+          ]
+        },
+        {
+          "query": "영국 워홀",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 271.88979199999994,
+          "resultIds": [],
+          "expectedIds": [
+            "113"
+          ]
+        },
+        {
+          "query": "런던 생활",
+          "recallAt5": 0.5,
+          "mrr": 1,
+          "latencyMs": 376.6926250000006,
+          "resultIds": [
+            "117"
+          ],
+          "expectedIds": [
+            "117",
+            "113"
+          ]
+        },
+        {
+          "query": "노팅힐 여행",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 266.8311670000003,
+          "resultIds": [],
+          "expectedIds": [
+            "119"
+          ]
+        }
+      ]
+    },
+    {
+      "method": "vector",
+      "recallAt5": 0.55,
+      "recallAt10": 0.9,
+      "mrr": 0.5431150793650793,
+      "p95LatencyMs": 610.2309170000008,
+      "queryResults": [
+        {
+          "query": "성능 최적화",
+          "recallAt5": 0.5,
+          "mrr": 0.2,
+          "latencyMs": 673.1438749999998,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "122",
+            "118"
+          ]
+        },
+        {
+          "query": "Next.js 렌더링",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 530.542042000001,
+          "resultIds": [
+            "122",
+            "121",
+            "120",
+            "116",
+            "115",
+            "123",
+            "124",
+            "118",
+            "114",
+            "119"
+          ],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "페이지 로딩 속도 개선",
+          "recallAt5": 0,
+          "mrr": 0.16666666666666666,
+          "latencyMs": 541.6649160000015,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "스크롤 이벤트 처리",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 536.760624999999,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "RequestAnimationFrame",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 539.054791999999,
+          "resultIds": [
+            "118",
+            "122",
+            "121",
+            "120",
+            "114"
+          ],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "vanilla-extract",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 528.9343329999992,
+          "resultIds": [
+            "115",
+            "120"
+          ],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "CSS-in-JS",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 530.8007080000007,
+          "resultIds": [
+            "120",
+            "121",
+            "122",
+            "118",
+            "115"
+          ],
+          "expectedIds": [
+            "120"
+          ]
+        },
+        {
+          "query": "Polymorphic 컴포넌트",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 537.1605,
+          "resultIds": [
+            "115",
+            "114",
+            "123",
+            "116",
+            "124",
+            "120"
+          ],
+          "expectedIds": [
+            "115"
+          ]
+        },
+        {
+          "query": "타입 안전한 스타일링",
+          "recallAt5": 0,
+          "mrr": 0.1111111111111111,
+          "latencyMs": 520.8176249999997,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "코드 품질 향상",
+          "recallAt5": 0,
+          "mrr": 0.1,
+          "latencyMs": 522.6412920000002,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Clean Code",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 539.6302500000002,
+          "resultIds": [
+            "121",
+            "123",
+            "120",
+            "115",
+            "122",
+            "114",
+            "124",
+            "116",
+            "118"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "변경하기 쉬운 코드",
+          "recallAt5": 0,
+          "mrr": 0.1,
+          "latencyMs": 533.7374999999993,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Product Engineer",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 589.9650419999998,
+          "resultIds": [
+            "123",
+            "124",
+            "115",
+            "113",
+            "116",
+            "120",
+            "121",
+            "114"
+          ],
+          "expectedIds": [
+            "123",
+            "124"
+          ]
+        },
+        {
+          "query": "사이드 프로젝트",
+          "recallAt5": 1,
+          "mrr": 0.5,
+          "latencyMs": 559.7518330000021,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "116"
+          ]
+        },
+        {
+          "query": "인턴십 회고",
+          "recallAt5": 0,
+          "mrr": 0.16666666666666666,
+          "latencyMs": 553.6472910000011,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "124"
+          ]
+        },
+        {
+          "query": "개발자 성장",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 550.5821660000001,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "123",
+            "114"
+          ]
+        },
+        {
+          "query": "2024년 회고",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 542.6542910000026,
+          "resultIds": [
+            "114",
+            "123",
+            "113",
+            "124",
+            "119",
+            "116",
+            "117",
+            "122"
+          ],
+          "expectedIds": [
+            "114"
+          ]
+        },
+        {
+          "query": "영국 워홀",
+          "recallAt5": 0,
+          "mrr": 0.125,
+          "latencyMs": 610.2309170000008,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "113"
+          ]
+        },
+        {
+          "query": "런던 생활",
+          "recallAt5": 0.5,
+          "mrr": 0.25,
+          "latencyMs": 532.5041250000031,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "117",
+            "113"
+          ]
+        },
+        {
+          "query": "노팅힐 여행",
+          "recallAt5": 0,
+          "mrr": 0.14285714285714285,
+          "latencyMs": 531.5095419999998,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "119"
+          ]
+        }
+      ]
+    },
+    {
+      "method": "hybrid",
+      "recallAt5": 0.6,
+      "recallAt10": 0.9,
+      "mrr": 0.687281746031746,
+      "p95LatencyMs": 813.0950000000012,
+      "queryResults": [
+        {
+          "query": "성능 최적화",
+          "recallAt5": 0.5,
+          "mrr": 1,
+          "latencyMs": 843.7433340000025,
+          "resultIds": [
+            "122",
+            "114",
+            "116",
+            "123",
+            "117",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "122",
+            "118"
+          ]
+        },
+        {
+          "query": "Next.js 렌더링",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 794.3993330000012,
+          "resultIds": [
+            "122",
+            "121",
+            "120",
+            "116",
+            "115",
+            "123",
+            "124",
+            "118",
+            "114",
+            "119"
+          ],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "페이지 로딩 속도 개선",
+          "recallAt5": 0,
+          "mrr": 0.16666666666666666,
+          "latencyMs": 792.8001250000016,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "122"
+          ]
+        },
+        {
+          "query": "스크롤 이벤트 처리",
+          "recallAt5": 0,
+          "mrr": 0,
+          "latencyMs": 805.7160000000003,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "RequestAnimationFrame",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 786.6865829999988,
+          "resultIds": [
+            "118",
+            "122",
+            "121",
+            "120",
+            "114"
+          ],
+          "expectedIds": [
+            "118"
+          ]
+        },
+        {
+          "query": "vanilla-extract",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 786.569875000001,
+          "resultIds": [
+            "120",
+            "115"
+          ],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "CSS-in-JS",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 796.5728750000017,
+          "resultIds": [
+            "120",
+            "121",
+            "122",
+            "118",
+            "115"
+          ],
+          "expectedIds": [
+            "120"
+          ]
+        },
+        {
+          "query": "Polymorphic 컴포넌트",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 792.5974170000009,
+          "resultIds": [
+            "115",
+            "114",
+            "123",
+            "116",
+            "124",
+            "120"
+          ],
+          "expectedIds": [
+            "115"
+          ]
+        },
+        {
+          "query": "타입 안전한 스타일링",
+          "recallAt5": 0,
+          "mrr": 0.1111111111111111,
+          "latencyMs": 808.6080829999992,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "120",
+            "115"
+          ]
+        },
+        {
+          "query": "코드 품질 향상",
+          "recallAt5": 0,
+          "mrr": 0.1,
+          "latencyMs": 789.732,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Clean Code",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 796.7125410000008,
+          "resultIds": [
+            "121",
+            "123",
+            "120",
+            "115",
+            "122",
+            "114",
+            "124",
+            "116",
+            "118"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "변경하기 쉬운 코드",
+          "recallAt5": 0,
+          "mrr": 0.1,
+          "latencyMs": 813.0950000000012,
+          "resultIds": [
+            "114",
+            "117",
+            "123",
+            "116",
+            "119",
+            "122",
+            "124",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "121"
+          ]
+        },
+        {
+          "query": "Product Engineer",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 806.3683750000018,
+          "resultIds": [
+            "123",
+            "124",
+            "115",
+            "113",
+            "116",
+            "120",
+            "121",
+            "114"
+          ],
+          "expectedIds": [
+            "123",
+            "124"
+          ]
+        },
+        {
+          "query": "사이드 프로젝트",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 790.9528750000027,
+          "resultIds": [
+            "116",
+            "114",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "116"
+          ]
+        },
+        {
+          "query": "인턴십 회고",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 794.2090000000026,
+          "resultIds": [
+            "124",
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "124"
+          ]
+        },
+        {
+          "query": "개발자 성장",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 801.6142499999987,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "123",
+            "114"
+          ]
+        },
+        {
+          "query": "2024년 회고",
+          "recallAt5": 1,
+          "mrr": 1,
+          "latencyMs": 802.6939590000038,
+          "resultIds": [
+            "114",
+            "123",
+            "113",
+            "124",
+            "119",
+            "116",
+            "117",
+            "122"
+          ],
+          "expectedIds": [
+            "114"
+          ]
+        },
+        {
+          "query": "영국 워홀",
+          "recallAt5": 0,
+          "mrr": 0.125,
+          "latencyMs": 796.6281250000029,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "113"
+          ]
+        },
+        {
+          "query": "런던 생활",
+          "recallAt5": 0.5,
+          "mrr": 1,
+          "latencyMs": 789.7681250000023,
+          "resultIds": [
+            "117",
+            "114",
+            "116",
+            "123",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "117",
+            "113"
+          ]
+        },
+        {
+          "query": "노팅힐 여행",
+          "recallAt5": 0,
+          "mrr": 0.14285714285714285,
+          "latencyMs": 799.8207919999986,
+          "resultIds": [
+            "114",
+            "116",
+            "123",
+            "117",
+            "122",
+            "124",
+            "119",
+            "113",
+            "115",
+            "121"
+          ],
+          "expectedIds": [
+            "119"
+          ]
+        }
+      ]
+    }
+  ]
+}
