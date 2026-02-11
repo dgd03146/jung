@@ -17,10 +17,11 @@ export const searchRouter = router({
 						message: '검색어를 입력해주세요',
 					}),
 				limit: z.number().min(1).max(10).default(3),
+				locale: z.enum(['ko', 'en']).default('ko'),
 			}),
 		)
 		.query(async ({ input }) => {
-			const { query, limit } = input;
+			const { query, limit, locale } = input;
 
 			const [blogs, places, photos] = await Promise.all([
 				blogService
@@ -28,7 +29,7 @@ export const searchRouter = router({
 						query,
 						limit,
 						mode: 'hybrid',
-						locale: 'ko',
+						locale,
 					})
 					.catch(() => emptyItems),
 				placesService
