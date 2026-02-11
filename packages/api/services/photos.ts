@@ -681,8 +681,11 @@ export const photosService = {
 				return { success: false };
 			}
 
-			// 임베딩 생성
-			const embedding = await generateEmbedding(text);
+			// 임베딩 생성 (문서 인덱싱이므로 RETRIEVAL_DOCUMENT)
+			const embedding = await generateEmbedding(
+				text,
+				TaskType.RETRIEVAL_DOCUMENT,
+			);
 
 			if (embedding.length === 0) {
 				console.warn(`Embedding generation skipped for photo ${photoId}`);
