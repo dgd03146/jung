@@ -1,17 +1,18 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const inputBorder = 'rgba(0, 0, 0, 0.1)';
-const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
-const darkText = 'rgba(0, 0, 0, 0.85)';
+import {
+	darkText,
+	inputBorder,
+	inputBorderHover,
+	mutedText,
+} from '@/fsd/shared/styles/tokens';
 
 export const flexBasis = style({
-	flexBasis: '2/5',
+	flexBasis: '40%',
 });
 
 export const inputError = style({
-	borderColor: 'red',
+	borderColor: '#ef4444',
 });
 
 export const selectWrapper = style({
@@ -57,7 +58,7 @@ export const select = style({
 });
 
 export const required = style({
-	color: 'red',
+	color: '#ef4444',
 });
 
 export const imagePreviewContainer = style({

@@ -1,11 +1,12 @@
 import { createVar, style } from '@vanilla-extract/css';
+import {
+	border,
+	borderHover,
+	hoverBg,
+	subtleText,
+} from '@/fsd/shared/styles/tokens';
 
 export const backgroundColor = createVar();
-
-const border = 'rgba(0, 0, 0, 0.06)';
-const borderHover = 'rgba(0, 0, 0, 0.1)';
-const subtleText = 'rgba(0, 0, 0, 0.35)';
-const hoverBg = 'rgba(0, 0, 0, 0.02)';
 
 export const statsSection = style({
 	display: 'grid',

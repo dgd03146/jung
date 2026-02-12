@@ -1,9 +1,6 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const inputBorder = 'rgba(0, 0, 0, 0.1)';
-const hoverBg = 'rgba(0, 0, 0, 0.02)';
-const mutedText = 'rgba(0, 0, 0, 0.35)';
+import { hoverBg, inputBorder, subtleText } from '@/fsd/shared/styles/tokens';
 
 export const imageGrid = style({
 	display: 'grid',
@@ -97,7 +94,7 @@ export const uploadButton = style({
 
 export const uploadIcon = style({
 	fontSize: '32px',
-	color: mutedText,
+	color: subtleText,
 	marginBottom: '4px',
 });
 

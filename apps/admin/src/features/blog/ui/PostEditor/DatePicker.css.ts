@@ -1,12 +1,13 @@
 import { palette } from '@jung/design-system/tokens';
 import { globalStyle, style } from '@vanilla-extract/css';
-
-const bodyText = 'rgba(0, 0, 0, 0.8)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
-const border = 'rgba(0, 0, 0, 0.06)';
-const hoverBg = 'rgba(0, 0, 0, 0.02)';
-const disabledText = 'rgba(0, 0, 0, 0.25)';
-const primaryTint = 'rgba(1, 66, 192, 0.06)';
+import {
+	bodyText,
+	border,
+	disabledText,
+	hoverBg,
+	mutedText,
+	primaryTint,
+} from '@/fsd/shared/styles/tokens';
 
 export const inputWrapper = style({
 	position: 'relative',

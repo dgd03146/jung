@@ -1,9 +1,7 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+import { border, mutedText } from '@/fsd/shared/styles/tokens';
 import { actionButton, dragHandle, postCount } from './CategoryCard.css';
-
-const border = 'rgba(0, 0, 0, 0.06)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
 
 export const listViewItem = style({
 	display: 'flex',

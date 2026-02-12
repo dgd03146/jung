@@ -1,8 +1,7 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-
-const SIDEBAR_WIDTH = '240px';
+import { SIDEBAR_WIDTH } from '@/fsd/shared/styles/layout';
 
 export const sidebar = recipe({
 	base: {

@@ -1,9 +1,10 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const inputBorder = 'rgba(0, 0, 0, 0.1)';
-const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
-const darkText = 'rgba(0, 0, 0, 0.85)';
+import {
+	darkText,
+	inputBorder,
+	inputBorderHover,
+} from '@/fsd/shared/styles/tokens';
 
 export const colorInput = style({
 	width: '100%',

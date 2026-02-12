@@ -10,8 +10,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	const isLoginPage = pathname === '/login';
 	const isPostEditPage = /^\/blog\/(new|edit\/\d+)$/.test(pathname);
-	const isDashboardPage = pathname === '/dashboard' || pathname === '/';
-
 	if (isLoginPage) {
 		return <>{children}</>;
 	}
@@ -29,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				{!isPostEditPage && <Header />}
 				<Box
 					paddingX={{
-						mobile: isDashboardPage ? '4' : '4',
+						mobile: '4',
 						tablet: '6',
 						laptop: '8',
 					}}

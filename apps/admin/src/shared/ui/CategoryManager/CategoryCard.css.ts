@@ -1,12 +1,9 @@
 import { palette } from '@jung/design-system/tokens';
 import { createVar, style } from '@vanilla-extract/css';
+import { border, mutedText, subtleText } from '@/fsd/shared/styles/tokens';
 
 export const levelIndent = createVar();
 export const borderColor = createVar();
-
-const border = 'rgba(0, 0, 0, 0.06)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
-const subtleText = 'rgba(0, 0, 0, 0.35)';
 
 export const categoryCard = style({
 	background: 'white',
