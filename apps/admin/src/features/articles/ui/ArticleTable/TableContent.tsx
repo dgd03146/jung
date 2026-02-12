@@ -62,7 +62,7 @@ export const TableContent = ({
 		);
 	}
 
-	const allIds = table.getRowModel().rows.map((row) => row.original.id);
+	const allIds = table.getRowModel().rows.map((row) => String(row.original.id));
 
 	const handleBulkDelete = async () => {
 		const currentPageIdSet = new Set(allIds);

@@ -15,16 +15,17 @@ interface TableHeaderProps<T> {
 export const TableHeader = <T extends {}>({
 	table,
 	isAllSelected,
-	isIndeterminate: _isIndeterminate,
+	isIndeterminate,
 	onToggleAll,
 }: TableHeaderProps<T>) => (
 	<Box as='thead'>
 		{table.getHeaderGroups().map((headerGroup) => (
 			<Box as='tr' key={headerGroup.id}>
 				{onToggleAll && (
-					<Box as='th' className={styles.th} style={{ width: '40px' }}>
+					<Box as='th' className={styles.th}>
 						<Checkbox
 							checked={isAllSelected}
+							indeterminate={isIndeterminate}
 							onChange={onToggleAll}
 							aria-label='Select all'
 						/>
