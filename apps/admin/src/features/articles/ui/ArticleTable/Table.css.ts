@@ -10,11 +10,20 @@ export {
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { categoryBadge } from '@/fsd/shared/ui/Table/Table.css';
+import {
+	primaryTint,
+	purpleText,
+	purpleTint,
+	successText,
+	successTint,
+	warningText,
+	warningTint,
+} from '@/fsd/shared/styles/tokens';
 
 export const frontendBadge = style([
 	categoryBadge,
 	{
-		backgroundColor: 'rgba(1, 66, 192, 0.06)',
+		backgroundColor: primaryTint,
 		color: palette.primary,
 	},
 ]);
@@ -22,8 +31,8 @@ export const frontendBadge = style([
 export const aiBadge = style([
 	categoryBadge,
 	{
-		backgroundColor: 'rgba(147, 51, 234, 0.06)',
-		color: '#9333EA',
+		backgroundColor: purpleTint,
+		color: purpleText,
 	},
 ]);
 
@@ -41,15 +50,15 @@ export const statusBadge = style({
 export const publishedBadge = style([
 	statusBadge,
 	{
-		backgroundColor: 'rgba(34, 197, 94, 0.08)',
-		color: '#16a34a',
+		backgroundColor: successTint,
+		color: successText,
 	},
 ]);
 
 export const draftBadge = style([
 	statusBadge,
 	{
-		backgroundColor: 'rgba(234, 179, 8, 0.08)',
-		color: '#ca8a04',
+		backgroundColor: warningTint,
+		color: warningText,
 	},
 ]);

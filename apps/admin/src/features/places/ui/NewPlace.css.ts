@@ -5,6 +5,7 @@ import {
 	inputBorder,
 	inputBorderHover,
 	mutedText,
+	primaryRing,
 } from '@/fsd/shared/styles/tokens';
 
 export const selectWrapper = style({
@@ -40,7 +41,7 @@ export const select = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
+		boxShadow: `0 0 0 2px ${primaryRing}`,
 	},
 
 	':hover': {

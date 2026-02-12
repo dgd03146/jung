@@ -1,6 +1,13 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import { border, mutedText } from '@/fsd/shared/styles/tokens';
+import {
+	border,
+	hoverText,
+	mutedText,
+	shadowMd,
+	shadowSm,
+	shadowXs,
+} from '@/fsd/shared/styles/tokens';
 
 export const header = style({
 	padding: '20px 24px',
@@ -37,14 +44,14 @@ export const viewToggleButton = style({
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		color: 'rgba(0, 0, 0, 0.6)',
+		color: hoverText,
 	},
 
 	selectors: {
 		'&[data-active="true"]': {
 			background: 'white',
 			color: palette.primary,
-			boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+			boxShadow: shadowXs,
 		},
 	},
 });
@@ -63,12 +70,12 @@ export const addButton = style({
 	fontWeight: '600',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
-	boxShadow: '0 2px 4px rgba(0, 0, 0, 0.06)',
+	boxShadow: shadowSm,
 
 	':hover': {
 		background: palette.primary200,
 		transform: 'translateY(-1px)',
-		boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+		boxShadow: shadowMd,
 	},
 });
 
