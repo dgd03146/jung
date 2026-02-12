@@ -8,6 +8,7 @@ export { Card } from './Card';
 export { Checkbox, type CheckboxProps } from './Checkbox/Checkbox';
 // Layout
 export { Container } from './Container/Container';
+export { Dialog } from './Dialog';
 export { Flex } from './Flex/Flex';
 export { Input, type InputProps } from './Input/Input';
 export { List } from './List/List';
