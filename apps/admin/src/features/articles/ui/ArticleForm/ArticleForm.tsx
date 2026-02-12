@@ -308,6 +308,7 @@ export const ArticleForm = () => {
 											type='button'
 											className={styles.imageRemoveButton}
 											onClick={() => handleRemoveImage(index)}
+											aria-label={`Remove image ${index + 1}`}
 										>
 											<HiX size={14} />
 										</button>
@@ -423,7 +424,7 @@ export const ArticleForm = () => {
 							variant='outline'
 							borderRadius='md'
 							onClick={() => handleSubmit('draft')}
-							disabled={isMutating}
+							disabled={isMutating || isUploading}
 						>
 							Save as Draft
 						</Button>
@@ -432,7 +433,7 @@ export const ArticleForm = () => {
 							borderRadius='md'
 							className={styles.publishButton}
 							onClick={() => handleSubmit('published')}
-							disabled={isMutating}
+							disabled={isMutating || isUploading}
 						>
 							{isEditMode ? 'Update & Publish' : 'Publish'}
 						</Button>
