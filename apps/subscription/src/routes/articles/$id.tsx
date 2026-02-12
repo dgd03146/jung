@@ -1,34 +1,10 @@
+import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { ShareButtons } from '../../components/ShareButtons';
-import { SITE_CONFIG } from '../../config/site';
 import { fetchArticleById } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/$id')({
 	loader: ({ params }) => fetchArticleById({ data: params.id }),
-	head: ({ loaderData }) => {
-		const title = loaderData?.title || 'Article';
-		const summary = loaderData?.summary || SITE_CONFIG.description;
-		const category = loaderData?.category || '';
-		const id = loaderData?.id || '';
-		const ogImage = `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent(title)}&category=${encodeURIComponent(category)}`;
-
-		return {
-			meta: [
-				{ title: `${title} - ${SITE_CONFIG.name}` },
-				{ name: 'description', content: summary },
-				{ property: 'og:title', content: title },
-				{ property: 'og:description', content: summary },
-				{ property: 'og:url', content: `${SITE_CONFIG.url}/articles/${id}` },
-				{ property: 'og:image', content: ogImage },
-				{ property: 'og:type', content: 'article' },
-				{ name: 'twitter:card', content: 'summary_large_image' },
-				{ name: 'twitter:title', content: title },
-				{ name: 'twitter:description', content: summary },
-				{ name: 'twitter:image', content: ogImage },
-			],
-		};
-	},
 	component: ArticleDetailPage,
 	pendingComponent: ArticleLoading,
 	errorComponent: ArticleError,
@@ -111,6 +87,8 @@ function ArticleDetailPage() {
 		);
 	}
 
+	const images = article.images ?? [];
+
 	return (
 		<div className={styles.page}>
 			<div className={styles.gridOverlay} />
@@ -140,10 +118,18 @@ function ArticleDetailPage() {
 						<h1 className={styles.titleDetail}>{article.title}</h1>
 					</div>
 
-					<ShareButtons
-						title={article.title}
-						url={`${SITE_CONFIG.url}/articles/${article.id}`}
-					/>
+					{images.length > 0 && (
+						<div className={styles.imageGallery}>
+							{images.map((key, index) => (
+								<img
+									key={key}
+									src={getImageUrl(key)}
+									alt={`${article.title} - ${index + 1}`}
+									className={styles.galleryImage}
+								/>
+							))}
+						</div>
+					)}
 
 					<div className={styles.card}>
 						<h2 className={`${styles.cardLabel} ${styles.cardLabelPrimary}`}>
@@ -155,7 +141,7 @@ function ArticleDetailPage() {
 					{article.my_thoughts && (
 						<div className={styles.cardAlt}>
 							<h2 className={`${styles.cardLabel} ${styles.cardLabelAlt}`}>
-								My Thoughts
+								Why This Article
 							</h2>
 							<p className={styles.cardTextDark}>{article.my_thoughts}</p>
 						</div>

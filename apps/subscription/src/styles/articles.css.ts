@@ -436,3 +436,25 @@ export const primaryButton = style({
 export const linkUnstyled = style({
 	textDecoration: 'none',
 });
+
+export const articleThumbnail = style({
+	width: '64px',
+	height: '64px',
+	borderRadius: '10px',
+	objectFit: 'cover',
+	flexShrink: 0,
+});
+
+export const imageGallery = style({
+	display: 'flex',
+	flexDirection: 'column',
+	gap: '1rem',
+	marginBottom: '2rem',
+});
+
+export const galleryImage = style({
+	width: '100%',
+	borderRadius: '12px',
+	objectFit: 'cover',
+	maxHeight: '400px',
+});

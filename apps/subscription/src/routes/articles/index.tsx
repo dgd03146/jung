@@ -1,53 +1,10 @@
+import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { useState } from 'react';
-import { SITE_CONFIG } from '../../config/site';
-import type { Article } from '../../server/articles';
 import { fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
-const CATEGORIES = ['all', 'frontend', 'ai'] as const;
-type Category = (typeof CATEGORIES)[number];
-
-const CATEGORY_LABELS: Record<Category, string> = {
-	all: 'All',
-	frontend: 'Frontend',
-	ai: 'AI',
-};
-
 export const Route = createFileRoute('/articles/')({
 	loader: () => fetchArticles(),
-	head: () => ({
-		meta: [
-			{ title: `All Articles - ${SITE_CONFIG.name}` },
-			{
-				name: 'description',
-				content:
-					"A collection of curated Frontend & AI articles I've read and recommend.",
-			},
-			{ property: 'og:title', content: `All Articles - ${SITE_CONFIG.name}` },
-			{
-				property: 'og:description',
-				content:
-					"A collection of curated Frontend & AI articles I've read and recommend.",
-			},
-			{ property: 'og:url', content: `${SITE_CONFIG.url}/articles` },
-			{
-				property: 'og:image',
-				content: `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent('All Articles')}`,
-			},
-			{ name: 'twitter:card', content: 'summary_large_image' },
-			{ name: 'twitter:title', content: `All Articles - ${SITE_CONFIG.name}` },
-			{
-				name: 'twitter:description',
-				content:
-					"A collection of curated Frontend & AI articles I've read and recommend.",
-			},
-			{
-				name: 'twitter:image',
-				content: `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent('All Articles')}`,
-			},
-		],
-	}),
 	component: ArticlesPage,
 	pendingComponent: ArticlesLoading,
 	errorComponent: ArticlesError,
@@ -92,12 +49,6 @@ function ArticlesError() {
 
 function ArticlesPage() {
 	const articles = Route.useLoaderData();
-	const [activeCategory, setActiveCategory] = useState<Category>('all');
-
-	const filteredArticles =
-		activeCategory === 'all'
-			? articles
-			: articles.filter((a: Article) => a.category === activeCategory);
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -118,9 +69,7 @@ function ArticlesPage() {
 					<Link to='/' className={styles.backLink}>
 						← Home
 					</Link>
-					<span className={styles.headerMeta}>
-						{filteredArticles.length} articles
-					</span>
+					<span className={styles.headerMeta}>{articles.length} articles</span>
 				</header>
 
 				<main>
@@ -130,79 +79,69 @@ function ArticlesPage() {
 						<p className={styles.subtitle}>
 							A collection of articles I've read and recommend
 						</p>
-
-						<div className={styles.filterContainer}>
-							{CATEGORIES.map((cat) => {
-								const isActive = activeCategory === cat;
-								const activeClass = isActive
-									? cat === 'ai'
-										? styles.filterButtonActiveAi
-										: styles.filterButtonActive
-									: '';
-
-								return (
-									<button
-										key={cat}
-										type='button'
-										className={`${styles.filterButton} ${activeClass}`}
-										onClick={() => setActiveCategory(cat)}
-									>
-										{CATEGORY_LABELS[cat]}
-									</button>
-								);
-							})}
-						</div>
 					</div>
 
 					<div className={styles.articleList}>
-						{filteredArticles.length === 0 ? (
+						{articles.length === 0 ? (
 							<div className={styles.loadingContainer}>
 								<span className={styles.emptyStateIcon}>📭</span>
 								<h3 className={styles.emptyStateHeading}>No articles yet</h3>
 								<p className={styles.emptyStateText}>
-									{activeCategory === 'all'
-										? 'New articles will appear here soon.'
-										: `No ${CATEGORY_LABELS[activeCategory]} articles yet.`}
+									New articles will appear here soon.
 									<br />
 									Check back later!
 								</p>
 							</div>
 						) : (
-							filteredArticles.map((article: Article, index: number) => (
-								<Link
-									key={article.id}
-									to='/articles/$id'
-									params={{ id: article.id }}
-									className={styles.linkUnstyled}
-								>
-									<article className={styles.articleCard}>
-										<span className={styles.articleNumber}>
-											{String(index + 1).padStart(2, '0')}
-										</span>
+							articles.map((article, index) => {
+								const thumbnail = article.images?.[0];
 
-										<div>
-											<div className={styles.articleMeta}>
-												<span
-													className={`${styles.categoryBadge} ${
-														article.category === 'ai'
-															? styles.categoryAi
-															: styles.categoryFrontend
-													}`}
-												>
-													{article.category}
-												</span>
-												<span className={styles.articleDate}>
-													{formatDate(article.published_at)}
-												</span>
+								return (
+									<Link
+										key={article.id}
+										to='/articles/$id'
+										params={{ id: article.id }}
+										className={styles.linkUnstyled}
+									>
+										<article className={styles.articleCard}>
+											<span className={styles.articleNumber}>
+												{String(index + 1).padStart(2, '0')}
+											</span>
+
+											<div>
+												<div className={styles.articleMeta}>
+													<span
+														className={`${styles.categoryBadge} ${
+															article.category === 'ai'
+																? styles.categoryAi
+																: styles.categoryFrontend
+														}`}
+													>
+														{article.category}
+													</span>
+													<span className={styles.articleDate}>
+														{formatDate(article.published_at)}
+													</span>
+												</div>
+												<h3 className={styles.articleTitle}>{article.title}</h3>
+												<p className={styles.articleSummary}>
+													{article.summary}
+												</p>
 											</div>
-											<h3 className={styles.articleTitle}>{article.title}</h3>
-											<p className={styles.articleSummary}>{article.summary}</p>
-										</div>
 
-										<span className={styles.articleArrow}>→</span>
-									</article>
-								</Link>
-							))
+											{thumbnail ? (
+												<img
+													src={getImageUrl(thumbnail)}
+													alt={article.title}
+													className={styles.articleThumbnail}
+												/>
+											) : (
+												<span className={styles.articleArrow}>→</span>
+											)}
+										</article>
+									</Link>
+								);
+							})
 						)}
 					</div>
 				</main>
