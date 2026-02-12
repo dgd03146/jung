@@ -636,7 +636,10 @@ export default function Page() {
 ### 1. 컴포넌트 레벨
 
 ```typescript
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 export function PostList() {
+  const queryClient = useQueryClient();
   const { data, error, isError } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
