@@ -2,6 +2,11 @@ import { createVar, style } from '@vanilla-extract/css';
 
 export const backgroundColor = createVar();
 
+const border = 'rgba(0, 0, 0, 0.06)';
+const borderHover = 'rgba(0, 0, 0, 0.1)';
+const subtleText = 'rgba(0, 0, 0, 0.35)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+
 export const statsSection = style({
 	display: 'grid',
 	gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -15,14 +20,14 @@ export const statCard = style({
 	display: 'flex',
 	flexDirection: 'column',
 	gap: '0.5rem',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
 });
 
 export const mainSection = style({
 	background: 'white',
 	borderRadius: '16px',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
 	overflow: 'hidden',
 });
@@ -30,13 +35,13 @@ export const mainSection = style({
 export const listViewItem = style({
 	backgroundColor: backgroundColor,
 	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	marginBottom: '12px',
 	overflow: 'hidden',
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		borderColor: '#e2e8f0',
+		borderColor: borderHover,
 		transform: 'translateY(-1px)',
 		boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
 	},
@@ -54,28 +59,28 @@ export const actionButton = style({
 	justifyContent: 'center',
 	width: '32px',
 	height: '32px',
-	color: '#94a3b8',
+	color: subtleText,
 
 	':hover': {
-		background: '#f8fafc',
-		borderColor: '#e2e8f0',
+		background: hoverBg,
+		borderColor: borderHover,
 	},
 
 	selectors: {
 		'&[data-variant="approve"]:hover': {
-			background: '#f0fdf4',
-			borderColor: '#86efac',
+			background: 'rgba(34, 197, 94, 0.06)',
+			borderColor: 'rgba(34, 197, 94, 0.3)',
 			color: '#22c55e',
 		},
 		'&[data-variant="reject"]:hover': {
-			background: '#fef2f2',
-			borderColor: '#fca5a5',
+			background: 'rgba(239, 68, 68, 0.06)',
+			borderColor: 'rgba(239, 68, 68, 0.3)',
 			color: '#ef4444',
 		},
 		'&[data-variant="delete"]:hover': {
-			background: '#f8fafc',
-			borderColor: '#e2e8f0',
-			color: '#64748b',
+			background: hoverBg,
+			borderColor: borderHover,
+			color: 'rgba(0, 0, 0, 0.45)',
 		},
 	},
 });
@@ -96,12 +101,12 @@ export const gridView = style({
 export const gridViewItem = style({
 	background: 'white',
 	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	overflow: 'hidden',
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		borderColor: '#e2e8f0',
+		borderColor: borderHover,
 		transform: 'translateY(-2px)',
 		boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
 	},

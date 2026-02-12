@@ -1,5 +1,10 @@
 import { style } from '@vanilla-extract/css';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+const darkText = 'rgba(0, 0, 0, 0.85)';
+
 export const table = style({
 	width: '100%',
 	borderCollapse: 'collapse',
@@ -9,15 +14,15 @@ export const table = style({
 		'th, td': {
 			padding: '12px 16px',
 			textAlign: 'left',
-			borderBottom: '1px solid #f1f5f9',
+			borderBottom: `1px solid ${border}`,
 		},
 		th: {
 			fontWeight: '500',
-			color: '#64748b',
-			background: '#f8fafc',
+			color: mutedText,
+			background: hoverBg,
 		},
 		td: {
-			color: '#1e293b',
+			color: darkText,
 		},
 	},
 });

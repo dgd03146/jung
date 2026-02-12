@@ -14,10 +14,13 @@ export {
 
 import { style } from '@vanilla-extract/css';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+
 export const tableWrapper = style({
 	background: 'white',
-	borderRadius: '12px',
-	boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+	borderRadius: '8px',
+	border: `1px solid ${border}`,
 	overflow: 'hidden',
 });
 
@@ -29,13 +32,13 @@ export const table = style({
 export const footer = style({
 	display: 'flex',
 	justifyContent: 'center',
-	padding: '16px',
-	borderTop: '1px solid #e2e8f0',
+	padding: '12px',
+	borderTop: `1px solid ${border}`,
 });
 
 export const thumbnail = style({
-	width: '60px',
-	height: '40px',
+	width: '56px',
+	height: '38px',
 	objectFit: 'cover',
 	borderRadius: '4px',
 });
@@ -43,10 +46,9 @@ export const thumbnail = style({
 export const tipItem = style({
 	padding: '2px 4px',
 	borderRadius: '4px',
-	background: '#f8fafc',
 
 	':hover': {
-		background: '#f1f5f9',
+		background: hoverBg,
 	},
 });
 

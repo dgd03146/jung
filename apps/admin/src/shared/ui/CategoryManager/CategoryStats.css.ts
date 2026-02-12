@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+
 export const statCard = style({
 	background: 'white',
 	borderRadius: '16px',
@@ -7,7 +9,7 @@ export const statCard = style({
 	display: 'flex',
 	flexDirection: 'column',
 	gap: '8px',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.02)',
 	transition: 'transform 0.2s ease',
 

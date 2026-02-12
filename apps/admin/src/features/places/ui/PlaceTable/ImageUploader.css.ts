@@ -1,4 +1,9 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+const mutedText = 'rgba(0, 0, 0, 0.35)';
 
 export const imageGrid = style({
 	display: 'grid',
@@ -57,7 +62,7 @@ export const deleteButton = style({
 	borderRadius: '50%',
 	padding: '8px',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'all 0.15s ease',
 	opacity: 0,
 	transform: 'scale(0.9)',
 	selectors: {
@@ -78,21 +83,21 @@ export const uploadButton = style({
 	justifyContent: 'center',
 	gap: '8px',
 	aspectRatio: '16/9',
-	border: '2px dashed #dee2e6',
-	borderRadius: '12px',
+	border: `2px dashed ${inputBorder}`,
+	borderRadius: '8px',
 	cursor: 'pointer',
 	background: 'white',
-	transition: 'all 0.2s ease',
+	transition: 'all 0.15s ease',
 	padding: '24px',
 	':hover': {
-		borderColor: '#228be6',
-		background: '#f8f9fa',
+		borderColor: palette.primary,
+		background: hoverBg,
 	},
 });
 
 export const uploadIcon = style({
 	fontSize: '32px',
-	color: '#adb5bd',
+	color: mutedText,
 	marginBottom: '4px',
 });
 

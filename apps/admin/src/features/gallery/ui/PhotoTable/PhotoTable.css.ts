@@ -10,11 +10,12 @@ export {
 
 import { style } from '@vanilla-extract/css';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+
 export const container = style({
 	backgroundColor: 'white',
-	borderRadius: '12px',
-	boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-	border: '1px solid #F1F5F9',
+	borderRadius: '8px',
+	border: `1px solid ${border}`,
 	overflow: 'hidden',
 	width: '100%',
 });

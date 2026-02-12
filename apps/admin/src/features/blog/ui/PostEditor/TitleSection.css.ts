@@ -1,4 +1,10 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+
+const notionText = 'rgba(55, 53, 47, 1)';
+const notionSecondary = 'rgba(55, 53, 47, 0.65)';
+const placeholderText = 'rgba(0, 0, 0, 0.35)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
 
 export const titleSection = style({
 	borderBottomWidth: '1px',
@@ -8,17 +14,17 @@ export const titleInput = style({
 	width: '100%',
 	fontSize: '28px',
 	fontWeight: '700',
-	color: '#37352F',
+	color: notionText,
 	border: 'none',
 	outline: 'none',
 
 	background: 'transparent',
-	caretColor: '#0142C0',
+	caretColor: palette.primary,
 	fontFamily: 'inherit',
 	lineHeight: '1.2',
 
 	'::placeholder': {
-		color: '#9BA1A6',
+		color: placeholderText,
 	},
 
 	'@media': {
@@ -31,18 +37,17 @@ export const titleInput = style({
 export const descriptionInput = style({
 	width: '100%',
 	fontSize: '16px',
-	color: '#787774',
+	color: notionSecondary,
 	border: 'none',
 	outline: 'none',
-	// padding: '8px 0',
 
 	background: 'transparent',
-	caretColor: '#0142C0',
+	caretColor: palette.primary,
 	fontFamily: 'inherit',
 	lineHeight: '1.5',
 
 	'::placeholder': {
-		color: '#9BA1A6',
+		color: placeholderText,
 	},
 
 	'@media': {
@@ -70,12 +75,12 @@ export const tagInputContainer = style({
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		borderColor: '#0142C0',
-		backgroundColor: '#F8FAFC',
+		borderColor: palette.primary,
+		backgroundColor: hoverBg,
 	},
 
 	':focus-within': {
-		borderColor: '#0142C0',
+		borderColor: palette.primary,
 		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 });
@@ -87,12 +92,12 @@ export const inlineTagInput = style({
 	margin: '0',
 	fontSize: '14px',
 	backgroundColor: 'transparent',
-	color: '#37352F',
+	color: notionText,
 	flex: '1',
 	minWidth: '60px',
 
 	'::placeholder': {
-		color: '#94A3B8',
+		color: placeholderText,
 	},
 });
 
@@ -102,7 +107,7 @@ export const removeTag = style({
 	justifyContent: 'center',
 	border: 'none',
 	background: 'none',
-	color: '#0142C0',
+	color: palette.primary,
 	cursor: 'pointer',
 	padding: '0 2px',
 	fontSize: '14px',
@@ -127,9 +132,8 @@ export const select = style({
 	height: '40px',
 	padding: '0 12px',
 	fontSize: '14px',
-	color: '#37352F',
+	color: notionText,
 	backgroundColor: 'white',
-	// border: '1px solid #E6EDFF',
 	borderRadius: '6px',
 	outline: 'none',
 	cursor: 'pointer',
@@ -137,16 +141,16 @@ export const select = style({
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		borderColor: '#0142C0',
-		backgroundColor: '#F8FAFC',
+		borderColor: palette.primary,
+		backgroundColor: hoverBg,
 	},
 
 	':focus': {
-		borderColor: '#0142C0',
+		borderColor: palette.primary,
 		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	'::placeholder': {
-		color: '#94A3B8',
+		color: placeholderText,
 	},
 });

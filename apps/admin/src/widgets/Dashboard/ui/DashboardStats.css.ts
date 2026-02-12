@@ -6,6 +6,8 @@ export const borderBottomStyle = style({
 });
 
 export const gridContainer = style({
+	display: 'grid',
+	gap: '1rem',
 	gridTemplateColumns: 'minmax(0px, 1fr)',
 	'@media': {
 		'(min-width: 768px)': {

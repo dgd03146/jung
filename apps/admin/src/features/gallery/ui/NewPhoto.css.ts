@@ -1,6 +1,11 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const darkText = 'rgba(0, 0, 0, 0.85)';
+
 export const flexBasis = style({
 	flexBasis: '2/5',
 });
@@ -20,8 +25,8 @@ export const selectWrapper = style({
 
 		width: '10px',
 		height: '10px',
-		borderRight: '2px solid #64748b',
-		borderBottom: '2px solid #64748b',
+		borderRight: `2px solid ${mutedText}`,
+		borderBottom: `2px solid ${mutedText}`,
 		transform: 'translateY(-50%) rotate(45deg)',
 		pointerEvents: 'none',
 	},
@@ -31,23 +36,23 @@ export const select = style({
 	width: '100%',
 	height: '40px',
 	padding: '0 32px 0 12px',
-	border: '1px solid #e2e8f0',
+	border: `1px solid ${inputBorder}`,
 	borderRadius: '8px',
 	fontSize: '14px',
-	color: '#1e293b',
+	color: darkText,
 	backgroundColor: 'white',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'border-color 0.15s ease',
 	appearance: 'none',
 
 	':focus': {
 		outline: 'none',
-		borderColor: '#0142C0',
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.1)',
+		borderColor: palette.primary,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	':hover': {
-		borderColor: '#cbd5e1',
+		borderColor: inputBorderHover,
 	},
 });
 

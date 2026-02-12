@@ -62,6 +62,16 @@ export const TableBody = ({ table, isSelected, onToggle }: TableBodyProps) => {
 									>
 										{article.category}
 									</span>
+								) : cell.column.id === 'status' ? (
+									<span
+										className={
+											article.status === 'published'
+												? styles.publishedBadge
+												: styles.draftBadge
+										}
+									>
+										{article.status}
+									</span>
 								) : cell.column.id === 'published_at' ||
 									cell.column.id === 'created_at' ? (
 									formatDate(cell.getValue() as string | null)

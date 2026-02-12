@@ -15,7 +15,7 @@ export const collectionGrid = style({
 export const collectionCard = style({
 	background: 'white',
 	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
+	border: '1px solid rgba(0, 0, 0, 0.06)',
 	overflow: 'hidden',
 	transition: 'all 0.2s ease',
 

@@ -1,14 +1,18 @@
 import { style } from '@vanilla-extract/css';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const bodyText = 'rgba(0, 0, 0, 0.8)';
+
 export const th = style({
 	padding: '16px 24px',
 	backgroundColor: 'white',
-	borderBottom: '1px solid #F1F5F9',
+	borderBottom: `1px solid ${border}`,
 	textAlign: 'left',
 	whiteSpace: 'nowrap',
 	fontSize: '13px',
 	fontWeight: '600',
-	color: '#64748B',
+	color: mutedText,
 	transition: 'all 0.2s ease',
 
 	'@media': {
@@ -21,9 +25,9 @@ export const th = style({
 
 export const td = style({
 	padding: '16px 24px',
-	borderBottom: '1px solid #F1F5F9',
+	borderBottom: `1px solid ${border}`,
 	fontSize: '14px',
-	color: '#334155',
+	color: bodyText,
 	transition: 'all 0.2s ease',
 	verticalAlign: 'middle',
 

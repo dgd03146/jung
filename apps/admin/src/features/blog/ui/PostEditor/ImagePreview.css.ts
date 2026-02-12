@@ -6,7 +6,7 @@ export const imagePreviewContainer = style({
 	height: '200px',
 
 	overflow: 'hidden',
-	backgroundColor: '#fff',
+	backgroundColor: 'white',
 	border: '1px solid rgba(0, 0, 0, 0.08)',
 
 	transition: 'all 0.2s ease',
