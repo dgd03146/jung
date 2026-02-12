@@ -266,7 +266,7 @@ export function usePosts(filters: { status?: string }) {
 
 ### Next.js 15 App Router에서의 전략
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │ Server Component (RSC)                  │
 │ - 초기 데이터 페칭 (SSR/SSG)            │
@@ -596,17 +596,8 @@ export function AutoInfiniteList() {
 ### 5. Suspense 모드
 
 ```typescript
-// providers.tsx
-const [queryClient] = useState(
-  () =>
-    new QueryClient({
-      defaultOptions: {
-        queries: {
-          suspense: true, // 전역 활성화
-        },
-      },
-    })
-);
+// ⚠️ TanStack Query v5에서는 전역 suspense 옵션이 제거됨
+// useSuspenseQuery를 직접 사용해야 함
 
 // Component
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -710,24 +701,25 @@ export default function Page() {
 
 ```typescript
 // providers.tsx
+// ⚠️ TanStack Query v5에서는 defaultOptions.queries.onError가 제거됨
+// QueryCache/MutationCache의 onError 콜백을 사용해야 함
+import { QueryCache, MutationCache, QueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 const [queryClient] = useState(
   () =>
     new QueryClient({
-      defaultOptions: {
-        queries: {
-          onError: (error) => {
-            console.error('Query error:', error);
-            // Sentry 등에 로깅
-          },
+      queryCache: new QueryCache({
+        onError: (error) => {
+          console.error('Query error:', error);
+          // Sentry 등에 로깅
         },
-        mutations: {
-          onError: (error) => {
-            toast.error(error.message || '작업 실패');
-          },
+      }),
+      mutationCache: new MutationCache({
+        onError: (error) => {
+          toast.error(error.message || '작업 실패');
         },
-      },
+      }),
     })
 );
 ```
