@@ -35,6 +35,7 @@ export const usePostState = () => {
 
 	useEffect(() => {
 		if (draftChecked.current) return;
+		if (isEditPage || fetchedPost) return;
 		draftChecked.current = true;
 
 		const savedPost: DraftPost | null = storage.get(STORAGE_KEY);
@@ -57,7 +58,7 @@ export const usePostState = () => {
 				storage.remove(STORAGE_KEY);
 			}
 		});
-	}, [confirm]);
+	}, [confirm, isEditPage, fetchedPost]);
 
 	useEffect(() => {
 		if (fetchedPost) setLocalPost(fetchedPost);
