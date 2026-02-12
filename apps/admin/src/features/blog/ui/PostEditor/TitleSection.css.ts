@@ -1,11 +1,11 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const notionText = 'rgba(55, 53, 47, 1)';
-const notionSecondary = 'rgba(55, 53, 47, 0.65)';
-const placeholderText = 'rgba(0, 0, 0, 0.35)';
-const hoverBg = 'rgba(0, 0, 0, 0.02)';
-const primaryRing = 'rgba(1, 66, 192, 0.08)';
+import {
+	hoverBg,
+	notionSecondary,
+	notionText,
+	subtleText,
+} from '@/fsd/shared/styles/tokens';
 
 export const titleSection = style({
 	borderBottomWidth: '1px',
@@ -25,12 +25,12 @@ export const titleInput = style({
 	lineHeight: '1.2',
 
 	'::placeholder': {
-		color: placeholderText,
+		color: subtleText,
 	},
 
 	'@media': {
 		'screen and (max-width: 768px)': {
-			fontSize: '24px',
+			fontSize: '32px',
 		},
 	},
 });
@@ -48,7 +48,7 @@ export const descriptionInput = style({
 	lineHeight: '1.5',
 
 	'::placeholder': {
-		color: placeholderText,
+		color: subtleText,
 	},
 
 	'@media': {
@@ -82,7 +82,7 @@ export const tagInputContainer = style({
 
 	':focus-within': {
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 });
 
@@ -98,7 +98,7 @@ export const inlineTagInput = style({
 	minWidth: '60px',
 
 	'::placeholder': {
-		color: placeholderText,
+		color: subtleText,
 	},
 });
 
@@ -119,7 +119,7 @@ export const removeTag = style({
 
 	':hover': {
 		opacity: 1,
-		backgroundColor: primaryRing,
+		backgroundColor: 'rgba(1, 66, 192, 0.08)',
 	},
 });
 
@@ -148,10 +148,10 @@ export const select = style({
 
 	':focus': {
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	'::placeholder': {
-		color: placeholderText,
+		color: subtleText,
 	},
 });

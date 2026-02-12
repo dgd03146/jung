@@ -1,6 +1,9 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { PlaceTable } from '@/fsd/features/places/ui';
 
+const PLACEHOLDER_TOTAL_PLACES = 42;
+const PLACEHOLDER_CATEGORIES = 8;
+
 export const PlacePage = () => {
 	return (
 		<Flex direction='column' gap='4'>
@@ -18,7 +21,7 @@ export const PlacePage = () => {
 					boxShadow='primary'
 				>
 					<Typography.SubText level={1} color='primary'>
-						42
+						{PLACEHOLDER_TOTAL_PLACES}
 					</Typography.SubText>
 					<Typography.FootNote level={2} color='gray200'>
 						Total Places
@@ -33,7 +36,7 @@ export const PlacePage = () => {
 					boxShadow='primary'
 				>
 					<Typography.SubText level={1} color='primary'>
-						8
+						{PLACEHOLDER_CATEGORIES}
 					</Typography.SubText>
 					<Typography.FootNote level={2} color='gray200'>
 						Categories

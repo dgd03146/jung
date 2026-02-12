@@ -1,9 +1,6 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const border = 'rgba(0, 0, 0, 0.06)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
-const bodyText = 'rgba(0, 0, 0, 0.8)';
+import { bodyText, border, mutedText } from '@/fsd/shared/styles/tokens';
 
 export const toggleSortingButton = style({
 	color: palette.primary,

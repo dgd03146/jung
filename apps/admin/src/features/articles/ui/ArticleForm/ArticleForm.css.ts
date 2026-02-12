@@ -1,10 +1,12 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const inputBorder = 'rgba(0, 0, 0, 0.1)';
-const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
-const mutedText = 'rgba(0, 0, 0, 0.45)';
-const darkText = 'rgba(0, 0, 0, 0.85)';
+import {
+	darkText,
+	inputBorder,
+	inputBorderHover,
+	mutedText,
+	primaryRing,
+} from '@/fsd/shared/styles/tokens';
 
 export const selectWrapper = style({
 	position: 'relative',
@@ -39,7 +41,7 @@ export const select = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
+		boxShadow: `0 0 0 2px ${primaryRing}`,
 	},
 
 	':hover': {
@@ -52,7 +54,7 @@ export const formContainer = style({
 	margin: '0 auto',
 });
 
-export const improveButton = style({
+const primaryButton = style({
 	backgroundColor: palette.primary,
 	border: 'none',
 	color: 'white',
@@ -68,26 +70,18 @@ export const improveButton = style({
 	},
 });
 
-export const publishButton = style({
-	backgroundColor: palette.primary,
-	border: 'none',
-	color: 'white',
-	transition: 'opacity 0.15s ease',
-
-	':hover': {
-		opacity: 0.85,
-	},
-
-	':disabled': {
-		opacity: 0.5,
-		cursor: 'not-allowed',
-	},
-});
+export const improveButton = primaryButton;
+export const publishButton = primaryButton;
 
 export const imageGrid = style({
 	display: 'grid',
-	gridTemplateColumns: 'repeat(3, 1fr)',
+	gridTemplateColumns: 'repeat(2, 1fr)',
 	gap: '12px',
+	'@media': {
+		'(min-width: 768px)': {
+			gridTemplateColumns: 'repeat(3, 1fr)',
+		},
+	},
 });
 
 export const imagePreview = style({

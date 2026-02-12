@@ -52,6 +52,9 @@ const INITIAL_FORM_DATA: ArticleFormData = {
 	images: [],
 };
 
+const isValidStatus = (s: unknown): s is 'draft' | 'published' =>
+	s === 'draft' || s === 'published';
+
 export const ArticleForm = () => {
 	const showToast = useToast();
 	const createArticleMutation = useCreateArticle();
@@ -79,7 +82,7 @@ export const ArticleForm = () => {
 				published_at: article.published_at
 					? article.published_at.split('T')[0]
 					: '',
-				status: (article.status as 'draft' | 'published') || 'draft',
+				status: isValidStatus(article.status) ? article.status : 'draft',
 				images: article.images || [],
 			});
 		}
@@ -134,20 +137,19 @@ export const ArticleForm = () => {
 
 		const now = new Date().toISOString();
 
+		const getPublishedAt = () => {
+			if (formData.published_at)
+				return new Date(formData.published_at).toISOString();
+			return status === 'published' ? now : null;
+		};
+
 		const articleData: ArticleInput = {
 			title: formData.title.trim(),
 			original_url: formData.original_url.trim(),
 			summary: formData.summary.trim(),
 			my_thoughts: formData.my_thoughts.trim() || null,
 			category: formData.category,
-			published_at:
-				status === 'published'
-					? formData.published_at
-						? new Date(formData.published_at).toISOString()
-						: now
-					: formData.published_at
-						? new Date(formData.published_at).toISOString()
-						: null,
+			published_at: getPublishedAt(),
 			status,
 			images: formData.images,
 		};
@@ -160,10 +162,6 @@ export const ArticleForm = () => {
 		} else {
 			createArticleMutation.mutate(articleData);
 		}
-	};
-
-	const handleFormSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
 	};
 
 	const handleImprove = async () => {
@@ -206,7 +204,7 @@ export const ArticleForm = () => {
 				borderRadius='lg'
 				padding='6'
 				boxShadow='primary'
-				onSubmit={handleFormSubmit}
+				onSubmit={(e: React.FormEvent) => e.preventDefault()}
 				className={styles.formContainer}
 			>
 				<Flex align='center' gap='2' color='primary' marginBottom='6'>
@@ -236,7 +234,6 @@ export const ArticleForm = () => {
 								setFormData((prev) => ({ ...prev, title: e.target.value }))
 							}
 							placeholder='Enter article title'
-							required
 						/>
 					</Stack>
 
@@ -262,7 +259,6 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='https://example.com/article'
-							required
 						/>
 					</Stack>
 
@@ -287,7 +283,6 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='Write a brief summary (2-3 sentences)'
-							required
 						/>
 					</Stack>
 
@@ -380,7 +375,6 @@ export const ArticleForm = () => {
 								}))
 							}
 							className={styles.select}
-							required
 						>
 							<option value='frontend'>Frontend</option>
 							<option value='ai'>AI</option>
