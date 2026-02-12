@@ -65,7 +65,6 @@ packages/shared/constants/*.js
 CLAUDE.md
 AGENTS.md
 .claude
-/docs
 /writing
 /career
 /resume
