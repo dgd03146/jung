@@ -9,7 +9,7 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import { getImageUrl } from '@jung/shared/lib/getImageUrl';
+import { getImageUrl } from '@jung/shared/lib';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -130,7 +130,10 @@ export const ArticleForm = () => {
 	};
 
 	const handleSubmit = (status: 'draft' | 'published') => {
-		if (!formData.title || !formData.original_url || !formData.summary) {
+		const hasRequiredFields =
+			formData.title && formData.original_url && formData.summary;
+
+		if (!hasRequiredFields) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
