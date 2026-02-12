@@ -1,12 +1,21 @@
+'use client';
+
 import {
+	createContext,
 	type ReactNode,
 	useCallback,
+	useContext,
 	useEffect,
+	useId,
 	useRef,
 	useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 import * as styles from './Dialog.css';
+
+const DialogIdContext = createContext({ titleId: '', descriptionId: '' });
+
+const ANIMATION_DURATION_MS = 150;
 
 interface DialogProps {
 	open: boolean;
@@ -19,19 +28,37 @@ const DialogRoot = ({ open, onClose, children }: DialogProps) => {
 	const [closing, setClosing] = useState(false);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const previousFocusRef = useRef<HTMLElement | null>(null);
+	const closingRef = useRef(false);
+	const id = useId();
+	const titleId = `${id}-title`;
+	const descriptionId = `${id}-description`;
+
+	const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
 	const handleClose = useCallback(() => {
+		if (closingRef.current) return;
+		closingRef.current = true;
 		setClosing(true);
-		setTimeout(() => {
+		closeTimerRef.current = setTimeout(() => {
+			closingRef.current = false;
 			setClosing(false);
 			onClose();
-		}, 150);
+		}, ANIMATION_DURATION_MS);
 	}, [onClose]);
+
+	useEffect(() => {
+		return () => {
+			if (closeTimerRef.current) {
+				clearTimeout(closeTimerRef.current);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		if (open) {
 			previousFocusRef.current = document.activeElement as HTMLElement;
 			setMounted(true);
+			closingRef.current = false;
 
 			requestAnimationFrame(() => {
 				contentRef.current?.focus();
@@ -97,22 +124,36 @@ const DialogRoot = ({ open, onClose, children }: DialogProps) => {
 				data-closing={closing}
 				role='dialog'
 				aria-modal='true'
+				aria-labelledby={titleId}
+				aria-describedby={descriptionId}
 				tabIndex={-1}
 			>
-				{children}
+				<DialogIdContext.Provider value={{ titleId, descriptionId }}>
+					{children}
+				</DialogIdContext.Provider>
 			</div>
 		</>,
 		document.body,
 	);
 };
 
-const Title = ({ children }: { children: ReactNode }) => (
-	<h2 className={styles.title}>{children}</h2>
-);
+const Title = ({ children }: { children: ReactNode }) => {
+	const { titleId } = useContext(DialogIdContext);
+	return (
+		<h2 id={titleId} className={styles.title}>
+			{children}
+		</h2>
+	);
+};
 
-const Description = ({ children }: { children: ReactNode }) => (
-	<p className={styles.description}>{children}</p>
-);
+const Description = ({ children }: { children: ReactNode }) => {
+	const { descriptionId } = useContext(DialogIdContext);
+	return (
+		<p id={descriptionId} className={styles.description}>
+			{children}
+		</p>
+	);
+};
 
 const Actions = ({ children }: { children: ReactNode }) => (
 	<div className={styles.actions}>{children}</div>
