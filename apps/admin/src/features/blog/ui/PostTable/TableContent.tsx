@@ -53,12 +53,14 @@ export const TableContent = ({
 		);
 	}
 
-	const allIds = table
-		.getRowModel()
-		.rows.map((row) => row.original.id.toString());
+	const allIds = table.getRowModel().rows.map((row) => String(row.original.id));
 
 	const handleBulkDelete = async () => {
-		const ids = Array.from(bulk.selectedIds);
+		const currentPageIdSet = new Set(allIds);
+		const ids = Array.from(bulk.selectedIds).filter((id) =>
+			currentPageIdSet.has(id),
+		);
+		if (ids.length === 0) return;
 		const ok = await confirm({
 			title: 'Delete Posts',
 			description: `Are you sure you want to delete ${ids.length} posts? This action cannot be undone.`,
