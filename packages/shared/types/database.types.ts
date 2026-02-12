@@ -19,9 +19,11 @@ export type Database = {
 					category: string;
 					created_at: string | null;
 					id: string;
+					images: string[];
 					my_thoughts: string | null;
 					original_url: string;
 					published_at: string | null;
+					status: string;
 					summary: string;
 					title: string;
 					updated_at: string | null;
@@ -30,9 +32,11 @@ export type Database = {
 					category: string;
 					created_at?: string | null;
 					id?: string;
+					images?: string[];
 					my_thoughts?: string | null;
 					original_url: string;
 					published_at?: string | null;
+					status?: string;
 					summary: string;
 					title: string;
 					updated_at?: string | null;
@@ -41,9 +45,11 @@ export type Database = {
 					category?: string;
 					created_at?: string | null;
 					id?: string;
+					images?: string[];
 					my_thoughts?: string | null;
 					original_url?: string;
 					published_at?: string | null;
+					status?: string;
 					summary?: string;
 					title?: string;
 					updated_at?: string | null;
