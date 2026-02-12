@@ -2,6 +2,7 @@ export { useCreateCollection } from './useCreateCollection';
 export { useCreatePhoto } from './useCreatePhoto';
 export { useDeleteCollection } from './useDeleteCollection';
 export { useDeletePhoto } from './useDeletePhoto';
+export { useDeletePhotos } from './useDeletePhotos';
 export { useGetCollections } from './useGetCollections';
 export { useGetPhotoById } from './useGetPhotoById';
 export { useGetPhotos } from './useGetPhotos';

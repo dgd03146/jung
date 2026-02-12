@@ -1,4 +1,4 @@
-import { Box, Typography } from '@jung/design-system/components';
+import { Box, Checkbox, Typography } from '@jung/design-system/components';
 import { flexRender, type Table } from '@tanstack/react-table';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { GiClick } from 'react-icons/gi';
@@ -7,12 +7,29 @@ import * as styles from './Table.css';
 
 interface TableHeaderProps<T> {
 	table: Table<T>;
+	isAllSelected?: boolean;
+	isIndeterminate?: boolean;
+	onToggleAll?: () => void;
 }
 
-export const TableHeader = <T extends {}>({ table }: TableHeaderProps<T>) => (
+export const TableHeader = <T extends {}>({
+	table,
+	isAllSelected,
+	isIndeterminate: _isIndeterminate,
+	onToggleAll,
+}: TableHeaderProps<T>) => (
 	<Box as='thead'>
 		{table.getHeaderGroups().map((headerGroup) => (
 			<Box as='tr' key={headerGroup.id}>
+				{onToggleAll && (
+					<Box as='th' className={styles.th} style={{ width: '40px' }}>
+						<Checkbox
+							checked={isAllSelected}
+							onChange={onToggleAll}
+							aria-label='Select all'
+						/>
+					</Box>
+				)}
 				{headerGroup.headers.map((header) => (
 					<Box as='th' key={header.id} className={styles.th}>
 						<Box
