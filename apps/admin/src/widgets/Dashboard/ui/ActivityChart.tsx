@@ -154,6 +154,8 @@ const MOCK_DATA: Record<PeriodType, PageData> = {
 	},
 };
 
+const PAGE_COUNT = 4;
+
 const CHART_COLORS = {
 	visitors: '#6366F1',
 	pageViews: '#10B981',
@@ -212,7 +214,7 @@ const ActivityChart = () => {
 					Object.values(MOCK_DATA[selectedPeriod]).reduce(
 						(sum, pageData) => sum + pageData[index].avgDuration,
 						0,
-					) / 4,
+					) / PAGE_COUNT,
 			}));
 		}
 

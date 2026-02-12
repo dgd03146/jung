@@ -24,6 +24,10 @@ interface CategoryFormProps {
 type FormData = Omit<Category, 'id'>;
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
+const MIN_NAME_LENGTH = 2;
+const MIN_DESCRIPTION_LENGTH = 5;
+const MAX_DESCRIPTION_LENGTH = 50;
+
 export const CategoryForm = memo(
 	({
 		editingId,
@@ -51,16 +55,16 @@ export const CategoryForm = memo(
 
 			if (!formData.name.trim()) {
 				newErrors.name = 'Category name is required';
-			} else if (formData.name.length < 2) {
-				newErrors.name = 'Category name must be at least 2 characters';
+			} else if (formData.name.length < MIN_NAME_LENGTH) {
+				newErrors.name = `Category name must be at least ${MIN_NAME_LENGTH} characters`;
 			}
 
 			if (!formData.description.trim()) {
 				newErrors.description = 'Description is required';
-			} else if (formData.description.length > 50) {
-				newErrors.description = 'Description must be less than 50 characters';
-			} else if (formData.description.length < 5) {
-				newErrors.description = 'Description must be at least 5 characters';
+			} else if (formData.description.length > MAX_DESCRIPTION_LENGTH) {
+				newErrors.description = `Description must be less than ${MAX_DESCRIPTION_LENGTH} characters`;
+			} else if (formData.description.length < MIN_DESCRIPTION_LENGTH) {
+				newErrors.description = `Description must be at least ${MIN_DESCRIPTION_LENGTH} characters`;
 			}
 
 			setErrors(newErrors);
@@ -103,11 +107,12 @@ export const CategoryForm = memo(
 		]);
 
 		const isLoading = createCategory.isPending || updateCategory.isPending;
+		const isNewCategory = editingId === 'new';
 		const buttonText = isLoading
-			? editingId === 'new'
+			? isNewCategory
 				? 'Creating...'
 				: 'Updating...'
-			: editingId === 'new'
+			: isNewCategory
 				? 'Create Category'
 				: 'Update Category';
 

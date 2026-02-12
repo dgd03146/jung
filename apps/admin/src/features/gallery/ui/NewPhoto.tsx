@@ -28,6 +28,8 @@ interface PhotoFormData {
 	collection_id: string;
 }
 
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
 const INITIAL_FORM_DATA: PhotoFormData = {
 	title: '',
 	description: '',
@@ -117,7 +119,7 @@ export const NewPhoto = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
-			if (file.size > 5 * 1024 * 1024) {
+			if (file.size > MAX_FILE_SIZE_BYTES) {
 				showToast('File size should be less than 5MB', 'error');
 				return;
 			}
