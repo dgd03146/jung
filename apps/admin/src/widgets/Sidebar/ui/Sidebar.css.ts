@@ -2,12 +2,13 @@ import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { SIDEBAR_WIDTH } from '@/fsd/shared/styles/layout';
+import { border } from '@/fsd/shared/styles/tokens';
 
 export const sidebar = recipe({
 	base: {
 		width: SIDEBAR_WIDTH,
 		backgroundColor: palette.white,
-		borderRight: '1px solid rgba(0, 0, 0, 0.06)',
+		borderRight: `1px solid ${border}`,
 		height: '100dvh',
 		transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 		position: 'fixed',
