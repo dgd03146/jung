@@ -9,8 +9,7 @@ export {
 } from '@/fsd/shared/ui/Table/Table.css';
 
 import { style } from '@vanilla-extract/css';
-
-const border = 'rgba(0, 0, 0, 0.06)';
+import { border } from '@/fsd/shared/styles/tokens';
 
 export const container = style({
 	backgroundColor: 'white',

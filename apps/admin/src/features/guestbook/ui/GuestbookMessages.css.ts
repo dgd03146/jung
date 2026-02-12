@@ -2,8 +2,15 @@ import { createVar, style } from '@vanilla-extract/css';
 import {
 	border,
 	borderHover,
+	dangerActionBg,
+	dangerActionBorder,
+	dangerText,
 	hoverBg,
+	mutedText,
 	subtleText,
+	successActionBg,
+	successActionBorder,
+	successText,
 } from '@/fsd/shared/styles/tokens';
 
 export const backgroundColor = createVar();
@@ -69,19 +76,19 @@ export const actionButton = style({
 
 	selectors: {
 		'&[data-variant="approve"]:hover': {
-			background: 'rgba(34, 197, 94, 0.06)',
-			borderColor: 'rgba(34, 197, 94, 0.3)',
-			color: '#22c55e',
+			background: successActionBg,
+			borderColor: successActionBorder,
+			color: successText,
 		},
 		'&[data-variant="reject"]:hover': {
-			background: 'rgba(239, 68, 68, 0.06)',
-			borderColor: 'rgba(239, 68, 68, 0.3)',
-			color: '#ef4444',
+			background: dangerActionBg,
+			borderColor: dangerActionBorder,
+			color: dangerText,
 		},
 		'&[data-variant="delete"]:hover': {
 			background: hoverBg,
 			borderColor: borderHover,
-			color: 'rgba(0, 0, 0, 0.45)',
+			color: mutedText,
 		},
 	},
 });

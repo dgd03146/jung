@@ -4,6 +4,8 @@ import {
 	darkText,
 	inputBorder,
 	inputBorderHover,
+	overlay,
+	primaryRing,
 } from '@/fsd/shared/styles/tokens';
 
 export const colorInput = style({
@@ -23,7 +25,7 @@ export const colorInput = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
+		boxShadow: `0 0 0 2px ${primaryRing}`,
 	},
 });
 
@@ -40,7 +42,7 @@ export const input = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
+		boxShadow: `0 0 0 2px ${primaryRing}`,
 	},
 });
 
@@ -50,7 +52,7 @@ export const modalOverlay = style({
 	left: 0,
 	right: 0,
 	bottom: 0,
-	background: 'rgba(0, 0, 0, 0.5)',
+	background: overlay,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',

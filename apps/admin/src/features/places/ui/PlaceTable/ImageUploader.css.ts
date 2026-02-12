@@ -1,6 +1,11 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import { hoverBg, inputBorder, subtleText } from '@/fsd/shared/styles/tokens';
+import {
+	hoverBg,
+	inputBorder,
+	overlay,
+	subtleText,
+} from '@/fsd/shared/styles/tokens';
 
 export const imageGrid = style({
 	display: 'grid',
@@ -53,7 +58,7 @@ export const deleteButton = style({
 	position: 'absolute',
 	top: '12px',
 	right: '12px',
-	background: 'rgba(0, 0, 0, 0.6)',
+	background: overlay,
 	color: 'white',
 	border: 'none',
 	borderRadius: '50%',
@@ -69,7 +74,7 @@ export const deleteButton = style({
 		},
 	},
 	':hover': {
-		background: 'rgba(0, 0, 0, 0.8)',
+		background: 'rgba(0, 0, 0, 0.8)', // intentionally darker than overlay for hover emphasis
 	},
 });
 

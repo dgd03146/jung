@@ -31,7 +31,7 @@ export const titleInput = style({
 
 	'@media': {
 		'screen and (max-width: 768px)': {
-			fontSize: '32px',
+			fontSize: '24px',
 		},
 	},
 });

@@ -9,7 +9,6 @@ export {
 
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import { categoryBadge } from '@/fsd/shared/ui/Table/Table.css';
 import {
 	primaryTint,
 	purpleText,
@@ -19,6 +18,7 @@ import {
 	warningText,
 	warningTint,
 } from '@/fsd/shared/styles/tokens';
+import { categoryBadge } from '@/fsd/shared/ui/Table/Table.css';
 
 export const frontendBadge = style([
 	categoryBadge,

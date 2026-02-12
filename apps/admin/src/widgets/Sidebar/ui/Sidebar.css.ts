@@ -2,7 +2,7 @@ import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { SIDEBAR_WIDTH } from '@/fsd/shared/styles/layout';
-import { border } from '@/fsd/shared/styles/tokens';
+import { activeBg, border, hoverBg } from '@/fsd/shared/styles/tokens';
 
 export const sidebar = recipe({
 	base: {
@@ -48,18 +48,18 @@ export const dashboardItem = recipe({
 		border: 'none',
 
 		':hover': {
-			background: 'rgba(0, 0, 0, 0.03)',
+			background: hoverBg,
 		},
 	},
 	variants: {
 		active: {
 			true: {
-				background: 'rgba(0, 0, 0, 0.04)',
+				background: activeBg,
 				color: palette.text,
 				fontWeight: 600,
 
 				':hover': {
-					background: 'rgba(0, 0, 0, 0.05)',
+					background: activeBg,
 				},
 			},
 		},
