@@ -38,6 +38,8 @@ export const useArticleTable = () => {
 			sortField: searchParams.sortField || 'created_at',
 			sortOrder: searchParams.sortOrder || 'desc',
 			filter: searchParams.filter,
+			status: searchParams.status,
+			category: searchParams.category,
 		}),
 		[searchParams],
 	);
@@ -116,5 +118,11 @@ export const useArticleTable = () => {
 		pageCount: data?.totalPages ?? -1,
 	});
 
-	return { table, isLoading, error, refetch };
+	return {
+		table,
+		isLoading,
+		error,
+		refetch,
+		totalCount: data?.totalCount ?? 0,
+	};
 };

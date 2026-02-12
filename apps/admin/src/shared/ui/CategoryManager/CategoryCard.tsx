@@ -5,6 +5,7 @@ import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { HiPencil, HiTrash } from 'react-icons/hi';
+import { useConfirmDialog } from '@/fsd/shared';
 import { useDeleteCategory } from '@/fsd/shared/api/useDeleteCategory';
 import * as styles from './CategoryCard.css';
 
@@ -27,19 +28,26 @@ export const CategoryCard = ({
 }: CategoryCardProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const deleteCategory = useDeleteCategory(type);
+	const { confirm } = useConfirmDialog();
 	const hasChildren = category.subCategoriesCount > 0;
 
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		if (hasChildren) {
-			alert(
-				`Please delete all sub${type === 'blog' ? 'posts' : 'places'} first`,
-			);
+			await confirm({
+				title: 'Cannot Delete',
+				description: `Please delete all sub-${type === 'blog' ? 'posts' : 'places'} first.`,
+				confirmText: 'OK',
+			});
 			return;
 		}
 
-		if (
-			window.confirm(`Are you sure you want to delete this ${type} category?`)
-		) {
+		const ok = await confirm({
+			title: 'Delete Category',
+			description: `Are you sure you want to delete this ${type} category? This action cannot be undone.`,
+			confirmText: 'Delete',
+			variant: 'destructive',
+		});
+		if (ok) {
 			deleteCategory.mutate(category.id);
 		}
 	};

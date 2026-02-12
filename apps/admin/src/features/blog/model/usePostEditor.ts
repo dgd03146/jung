@@ -12,7 +12,7 @@ import {
 } from '@/fsd/features/blog/api';
 import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
 import { isPostEmpty, serializeContent } from '@/fsd/features/blog/lib';
-import { storage, useThrottle } from '@/fsd/shared';
+import { storage, useConfirmDialog, useThrottle } from '@/fsd/shared';
 import type { Errors } from '../types/errors';
 
 export const usePostEditor = () => {
@@ -31,6 +31,7 @@ export const usePostEditor = () => {
 
 	const { editor, getContent } = usePostContent(localPost.content);
 	const showToast = useToast();
+	const { confirm } = useConfirmDialog();
 	const createPostMutation = useCreatePost();
 	const updatePostMutation = useUpdatePost();
 
@@ -144,14 +145,21 @@ export const usePostEditor = () => {
 		[preparePostData, updatePostMutation, localPost.id, localPost.date],
 	);
 
-	const handleDiscard = useCallback(() => {
-		if (window.confirm('Are you sure you want to discard this draft?')) {
+	const handleDiscard = useCallback(async () => {
+		const ok = await confirm({
+			title: 'Discard Draft',
+			description:
+				'Are you sure you want to discard this draft? All unsaved changes will be lost.',
+			confirmText: 'Discard',
+			variant: 'destructive',
+		});
+		if (ok) {
 			resetForm();
 			editor.replaceBlocks(editor.document, EMPTY_POST.content);
 			setFormErrors(null);
 			showToast('Draft discarded');
 		}
-	}, [editor, resetForm, showToast]);
+	}, [editor, resetForm, showToast, confirm]);
 
 	const handleSubmit = useCallback(() => {
 		if (fetchedPost) {

@@ -42,8 +42,8 @@ export const usePostTable = () => {
 			pageSize: Number(searchParams.pageSize) || PAGE_SIZE,
 			sortField: searchParams.sortField || 'date',
 			sortOrder: searchParams.sortOrder || 'desc',
-
 			filter: searchParams.filter,
+			category: searchParams.category,
 		}),
 		[searchParams],
 	);
@@ -122,5 +122,11 @@ export const usePostTable = () => {
 		pageCount: data?.totalPages ?? -1,
 	});
 
-	return { table, isLoading, error, refetch };
+	return {
+		table,
+		isLoading,
+		error,
+		refetch,
+		totalCount: data?.totalCount ?? 0,
+	};
 };

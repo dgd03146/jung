@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query';
+import { MutationCache, QueryClient } from '@tanstack/react-query';
 
 export function makeQueryClient() {
 	return new QueryClient({
@@ -10,7 +10,10 @@ export function makeQueryClient() {
 				retry: 2,
 			},
 		},
+		mutationCache: new MutationCache({
+			onError: (error) => {
+				console.error('[Mutation Error]', error);
+			},
+		}),
 	});
 }
-
-// TODO: Error handling 추가

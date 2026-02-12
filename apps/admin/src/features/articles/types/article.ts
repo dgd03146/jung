@@ -12,4 +12,6 @@ export interface ArticleFilters {
 	sortField?: string;
 	sortOrder?: 'asc' | 'desc';
 	filter?: string;
+	status?: 'draft' | 'published';
+	category?: string;
 }

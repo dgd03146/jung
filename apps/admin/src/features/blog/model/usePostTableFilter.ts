@@ -22,8 +22,39 @@ export const usePostTableFilter = () => {
 		[debouncedNavigate],
 	);
 
+	const handleCategoryChange = useCallback(
+		(value: string) => {
+			navigate({
+				search: (prev) => ({
+					...prev,
+					category: value || undefined,
+					page: 0,
+				}),
+			});
+		},
+		[navigate],
+	);
+
+	const clearFilters = useCallback(() => {
+		setFilter('');
+		navigate({
+			search: (prev) => ({
+				...prev,
+				filter: undefined,
+				category: undefined,
+				page: 0,
+			}),
+		});
+	}, [navigate]);
+
+	const hasActiveFilters = !!(searchParams.filter || searchParams.category);
+
 	return {
 		filter,
+		category: searchParams.category ?? '',
 		handleFilterChange,
+		handleCategoryChange,
+		clearFilters,
+		hasActiveFilters,
 	};
 };

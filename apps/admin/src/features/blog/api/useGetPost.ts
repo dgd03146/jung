@@ -17,6 +17,5 @@ export function useGetPost(postId?: string) {
 					: deserializeContent(data.content),
 		}),
 		enabled: !!postId,
-		// TODO: onError?
 	});
 }

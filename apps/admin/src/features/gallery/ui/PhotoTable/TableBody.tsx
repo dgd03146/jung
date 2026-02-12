@@ -1,7 +1,9 @@
+import { Checkbox } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useConfirmDialog } from '@/fsd/shared';
 import { useDeletePhoto } from '../../api';
 import { DateCell } from './cells/DateCell';
 import { ImageCell } from './cells/ImageCell';
@@ -10,13 +12,27 @@ import * as styles from './PhotoTable.css';
 
 interface TableBodyProps<T> {
 	table: Table<T>;
+	isSelected?: (id: string) => boolean;
+	onToggle?: (id: string) => void;
 }
 
-export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
+export const TableBody = <T,>({
+	table,
+	isSelected,
+	onToggle,
+}: TableBodyProps<T>) => {
 	const deletePhotoMutation = useDeletePhoto();
+	const { confirm } = useConfirmDialog();
 
-	const handleDelete = (id: string) => {
-		if (window.confirm('Are you sure you want to delete this photo?')) {
+	const handleDelete = async (id: string) => {
+		const ok = await confirm({
+			title: 'Delete Photo',
+			description:
+				'Are you sure you want to delete this photo? This action cannot be undone.',
+			confirmText: 'Delete',
+			variant: 'destructive',
+		});
+		if (ok) {
 			deletePhotoMutation.mutate(id);
 		}
 	};
@@ -28,6 +44,14 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 
 				return (
 					<tr key={row.id} className={styles.row}>
+						{onToggle && (
+							<td className={styles.td} style={{ width: '40px' }}>
+								<Checkbox
+									checked={isSelected?.(photo.id)}
+									onChange={() => onToggle(photo.id)}
+								/>
+							</td>
+						)}
 						{row.getVisibleCells().map((cell) => (
 							<td key={cell.id} className={styles.td}>
 								{cell.column.id === 'image_url' ? (

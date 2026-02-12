@@ -8,6 +8,7 @@ export const fetchPosts = async ({
 	sortField,
 	sortOrder,
 	filter,
+	category,
 }: PostFilters): Promise<{
 	posts: AdminPost[];
 	totalCount: number;
@@ -21,6 +22,10 @@ export const fetchPosts = async ({
 
 	if (sortField) {
 		query = query.order(sortField, { ascending: sortOrder === 'asc' });
+	}
+
+	if (category) {
+		query = query.eq('category_id', category);
 	}
 
 	if (filter) {
@@ -39,7 +44,7 @@ export const fetchPosts = async ({
 		throw new Error(`Failed to fetch posts: ${error.message}`);
 	}
 	if (!data || data.length === 0) {
-		throw new Error('No posts found. Please try searching again.');
+		return { posts: [], totalCount: 0, totalPages: 0, hasMore: false };
 	}
 
 	const posts: AdminPost[] = data.map((post) => ({

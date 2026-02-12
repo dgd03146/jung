@@ -57,6 +57,13 @@ export const iconWrapper = recipe({
 	},
 });
 
+export const indeterminateIcon = style({
+	display: 'block',
+	width: '10px',
+	height: '2px',
+	backgroundColor: 'currentColor',
+});
+
 export const input = style({
 	overflow: 'hidden',
 	position: 'absolute',

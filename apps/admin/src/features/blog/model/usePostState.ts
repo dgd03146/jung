@@ -1,5 +1,5 @@
 import { useMatch } from '@tanstack/react-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
 	DraftPost,
 	PostWithBlockContent,
@@ -10,8 +10,7 @@ import {
 	EMPTY_POST,
 	STORAGE_KEY,
 } from '@/fsd/features/blog/config';
-import { confirmLoadDraft } from '@/fsd/features/blog/lib';
-import { storage } from '@/fsd/shared';
+import { storage, useConfirmDialog } from '@/fsd/shared';
 
 export const usePostState = () => {
 	const editMatch = useMatch({
@@ -29,16 +28,37 @@ export const usePostState = () => {
 		refetch,
 	} = useGetPost(postId);
 
-	const [localPost, setLocalPost] = useState<DraftPost>(() => {
+	const { confirm } = useConfirmDialog();
+	const draftChecked = useRef(false);
+
+	const [localPost, setLocalPost] = useState<DraftPost>(EMPTY_POST);
+
+	useEffect(() => {
+		if (draftChecked.current) return;
+		if (isEditPage || fetchedPost) return;
+		draftChecked.current = true;
+
 		const savedPost: DraftPost | null = storage.get(STORAGE_KEY);
-		if (savedPost && confirmLoadDraft(savedPost.lastSaved)) {
-			const content =
-				savedPost.content.length > 0 ? savedPost.content : [EMPTY_CONTENT];
-			return { ...savedPost, content };
+		if (!savedPost?.lastSaved) {
+			storage.remove(STORAGE_KEY);
+			return;
 		}
-		storage.remove(STORAGE_KEY);
-		return EMPTY_POST;
-	});
+
+		confirm({
+			title: 'Load Draft',
+			description: `There is a saved draft from ${savedPost.lastSaved}. Would you like to load it?`,
+			confirmText: 'Load',
+			cancelText: 'Discard',
+		}).then((ok) => {
+			if (ok) {
+				const content =
+					savedPost.content.length > 0 ? savedPost.content : [EMPTY_CONTENT];
+				setLocalPost({ ...savedPost, content });
+			} else {
+				storage.remove(STORAGE_KEY);
+			}
+		});
+	}, [confirm, isEditPage, fetchedPost]);
 
 	useEffect(() => {
 		if (fetchedPost) setLocalPost(fetchedPost);

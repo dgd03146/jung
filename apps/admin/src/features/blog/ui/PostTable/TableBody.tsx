@@ -1,28 +1,41 @@
-import { Button, Flex } from '@jung/design-system/components';
+import { Button, Checkbox, Flex } from '@jung/design-system/components';
 import type { Post } from '@jung/shared/types';
 import { Link } from '@tanstack/react-router';
 import { flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDeletePost } from '@/fsd/features/blog/api';
-import { useGetCategories } from '@/fsd/shared';
+import { useConfirmDialog, useGetCategories } from '@/fsd/shared';
 import { CategoryCell } from '@/fsd/shared/ui';
 import * as styles from './Table.css';
 
 interface TableBodyProps<T> {
 	table: Table<T>;
+	isSelected?: (id: string) => boolean;
+	onToggle?: (id: string) => void;
 }
 
-export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
+export const TableBody = <T,>({
+	table,
+	isSelected,
+	onToggle,
+}: TableBodyProps<T>) => {
 	const deletePostMutation = useDeletePost();
 	const { data: categoriesData } = useGetCategories('blog');
+	const { confirm } = useConfirmDialog();
 
-	const handleDelete = (id: string) => {
-		if (window.confirm('Are you sure you want to delete this post?')) {
+	const handleDelete = async (id: string) => {
+		const ok = await confirm({
+			title: 'Delete Post',
+			description:
+				'Are you sure you want to delete this post? This action cannot be undone.',
+			confirmText: 'Delete',
+			variant: 'destructive',
+		});
+		if (ok) {
 			deletePostMutation.mutate(id);
 		}
 	};
 
-	// TODO: 테이블 디자인 시스템 만들기
 	return (
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
@@ -35,6 +48,14 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 
 				return (
 					<tr key={row.id} className={styles.row}>
+						{onToggle && (
+							<td className={styles.td} style={{ width: '40px' }}>
+								<Checkbox
+									checked={isSelected?.(postId)}
+									onChange={() => onToggle(postId)}
+								/>
+							</td>
+						)}
 						{row.getVisibleCells().map((cell) => (
 							<td key={cell.id} className={styles.td}>
 								{cell.column.id === 'category' ? (
@@ -51,7 +72,11 @@ export const TableBody = <T,>({ table }: TableBodyProps<T>) => {
 										<FaEdit size={16} />
 									</Button>
 								</Link>
-								<Button variant='ghost' onClick={() => handleDelete(postId)}>
+								<Button
+									variant='ghost'
+									onClick={() => handleDelete(postId)}
+									disabled={deletePostMutation.isPending}
+								>
 									<FaTrash size={16} />
 								</Button>
 							</Flex>

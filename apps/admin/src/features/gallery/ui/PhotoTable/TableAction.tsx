@@ -1,34 +1,43 @@
-import { Button, Flex, Input } from '@jung/design-system/components';
+import { Button, Input, Typography } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiPlus } from 'react-icons/hi';
+import { FilterBar } from '@/fsd/shared/ui';
 import { usePhotoTableFilter } from '../../model/usePhotoTableFilter';
 
-export const TableAction = () => {
+interface TableActionProps {
+	totalCount?: number;
+}
+
+export const TableAction = ({ totalCount }: TableActionProps) => {
 	const { filter, handleFilterChange } = usePhotoTableFilter();
 
 	return (
-		<Flex
-			justify='space-between'
-			align='center'
-			background='white'
-			borderRadius='lg'
-			padding='4'
-			marginBottom='4'
-		>
-			<Input
-				type='text'
-				value={filter ?? ''}
-				onChange={handleFilterChange}
-				placeholder='Search photos...'
-				borderRadius='md'
-				fontSize='md'
-			/>
+		<FilterBar>
+			<FilterBar.Group>
+				<Input
+					type='text'
+					value={filter ?? ''}
+					onChange={handleFilterChange}
+					placeholder='Search photos...'
+					borderRadius='md'
+					fontSize='md'
+				/>
+				{totalCount != null && (
+					<Typography.SubText
+						level={1}
+						color='primary300'
+						style={{ whiteSpace: 'nowrap' }}
+					>
+						{totalCount} photos
+					</Typography.SubText>
+				)}
+			</FilterBar.Group>
 			<Link to='/gallery/photos/new'>
 				<Button borderRadius='md' size='md'>
 					<HiPlus size={14} />
 					New Photos
 				</Button>
 			</Link>
-		</Flex>
+		</FilterBar>
 	);
 };

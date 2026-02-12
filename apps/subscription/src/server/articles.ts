@@ -12,6 +12,7 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 		let query = supabase
 			.from('articles')
 			.select('*')
+			.eq('status', 'published')
 			.order('published_at', { ascending: false, nullsFirst: false });
 
 		if (category && category !== 'all') {

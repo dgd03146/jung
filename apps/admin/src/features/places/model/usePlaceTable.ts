@@ -1,6 +1,8 @@
+import type { Place } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
+	type ColumnDef,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
@@ -29,13 +31,14 @@ export const usePlaceTable = () => {
 			sortField: searchParams.sortField || 'created_at',
 			sortOrder: searchParams.sortOrder || 'desc',
 			filter: searchParams.filter,
+			category: searchParams.category,
 		}),
 		[searchParams],
 	);
 
 	const { data, isLoading, error, refetch } = useGetPlaces(filters);
 
-	const columns = useMemo(
+	const columns: ColumnDef<Place>[] = useMemo(
 		() => [
 			{
 				header: 'Thumbnails',
@@ -147,5 +150,6 @@ export const usePlaceTable = () => {
 		isLoading,
 		error,
 		refetch,
+		totalCount: data?.totalCount ?? 0,
 	};
 };

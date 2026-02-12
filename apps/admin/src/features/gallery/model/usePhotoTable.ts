@@ -128,5 +128,11 @@ export const usePhotoTable = () => {
 		pageCount: data?.totalPages ?? -1,
 	});
 
-	return { table, isLoading, error, refetch };
+	return {
+		table,
+		isLoading,
+		error,
+		refetch,
+		totalCount: data?.totalCount ?? 0,
+	};
 };

@@ -1,6 +1,17 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
+import { useState } from 'react';
+import type { Article } from '../../server/articles';
 import { fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
+
+const CATEGORIES = ['all', 'frontend', 'ai'] as const;
+type Category = (typeof CATEGORIES)[number];
+
+const CATEGORY_LABELS: Record<Category, string> = {
+	all: 'All',
+	frontend: 'Frontend',
+	ai: 'AI',
+};
 
 export const Route = createFileRoute('/articles/')({
 	loader: () => fetchArticles(),
@@ -48,6 +59,12 @@ function ArticlesError() {
 
 function ArticlesPage() {
 	const articles = Route.useLoaderData();
+	const [activeCategory, setActiveCategory] = useState<Category>('all');
+
+	const filteredArticles =
+		activeCategory === 'all'
+			? articles
+			: articles.filter((a: Article) => a.category === activeCategory);
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -68,7 +85,9 @@ function ArticlesPage() {
 					<Link to='/' className={styles.backLink}>
 						← Home
 					</Link>
-					<span className={styles.headerMeta}>{articles.length} articles</span>
+					<span className={styles.headerMeta}>
+						{filteredArticles.length} articles
+					</span>
 				</header>
 
 				<main>
@@ -78,21 +97,45 @@ function ArticlesPage() {
 						<p className={styles.subtitle}>
 							A collection of articles I've read and recommend
 						</p>
+
+						<div className={styles.filterContainer}>
+							{CATEGORIES.map((cat) => {
+								const isActive = activeCategory === cat;
+								const activeClass = isActive
+									? cat === 'ai'
+										? styles.filterButtonActiveAi
+										: styles.filterButtonActive
+									: '';
+
+								return (
+									<button
+										key={cat}
+										type='button'
+										className={`${styles.filterButton} ${activeClass}`}
+										onClick={() => setActiveCategory(cat)}
+									>
+										{CATEGORY_LABELS[cat]}
+									</button>
+								);
+							})}
+						</div>
 					</div>
 
 					<div className={styles.articleList}>
-						{articles.length === 0 ? (
+						{filteredArticles.length === 0 ? (
 							<div className={styles.loadingContainer}>
 								<span className={styles.emptyStateIcon}>📭</span>
 								<h3 className={styles.emptyStateHeading}>No articles yet</h3>
 								<p className={styles.emptyStateText}>
-									New articles will appear here soon.
+									{activeCategory === 'all'
+										? 'New articles will appear here soon.'
+										: `No ${CATEGORY_LABELS[activeCategory]} articles yet.`}
 									<br />
 									Check back later!
 								</p>
 							</div>
 						) : (
-							articles.map((article, index) => (
+							filteredArticles.map((article: Article, index: number) => (
 								<Link
 									key={article.id}
 									to='/articles/$id'

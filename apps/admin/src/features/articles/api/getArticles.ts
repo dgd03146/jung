@@ -7,6 +7,8 @@ export const fetchArticles = async ({
 	sortField,
 	sortOrder,
 	filter,
+	status,
+	category,
 }: ArticleFilters): Promise<{
 	articles: Article[];
 	totalCount: number;
@@ -22,6 +24,14 @@ export const fetchArticles = async ({
 		query = query.order(sortField, { ascending: sortOrder === 'asc' });
 	} else {
 		query = query.order('created_at', { ascending: false });
+	}
+
+	if (status) {
+		query = query.eq('status', status);
+	}
+
+	if (category) {
+		query = query.eq('category', category);
 	}
 
 	if (filter) {
