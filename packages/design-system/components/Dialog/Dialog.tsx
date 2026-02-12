@@ -56,9 +56,15 @@ const DialogRoot = ({ open, onClose, children }: DialogProps) => {
 
 	useEffect(() => {
 		if (open) {
+			if (closeTimerRef.current) {
+				clearTimeout(closeTimerRef.current);
+				closeTimerRef.current = null;
+			}
+			closingRef.current = false;
+			setClosing(false);
+
 			previousFocusRef.current = document.activeElement as HTMLElement;
 			setMounted(true);
-			closingRef.current = false;
 
 			requestAnimationFrame(() => {
 				contentRef.current?.focus();
