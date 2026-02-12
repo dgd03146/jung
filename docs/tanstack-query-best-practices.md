@@ -910,12 +910,12 @@ export const createPostMutation = () => ({
     }).then(res => res.json()),
   
   onSuccess: (data, variables, context) => {
-    const queryClient = useQueryClient();
-    
-    // 1. 목록 무효화
+    // ⚠️ useQueryClient()는 React hook이므로 여기서 호출 불가
+    // 컴포넌트/hook 내에서 queryClient를 받아 클로저로 전달해야 함
+    // 예: const queryClient = useQueryClient(); 를 컴포넌트 최상위에서 호출 후 사용
     queryClient.invalidateQueries({ queryKey: postQueries.lists() });
     
-    // 2. 새 포스트 캐시에 추가 (refetch 스킵)
+    // 새 포스트 캐시에 추가 (refetch 스킵)
     queryClient.setQueryData(
       postQueries.detail(data.id).queryKey, 
       data

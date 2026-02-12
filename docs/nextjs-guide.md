@@ -1144,11 +1144,12 @@ export default function NewPostPage() {
 ```typescript
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { createPost } from '@/app/actions/post';
 
 export default function PostForm() {
-  const [state, formAction] = useFormState(createPost, { error: null });
+  const [state, formAction] = useActionState(createPost, { error: null });
   
   return (
     <form action={formAction}>

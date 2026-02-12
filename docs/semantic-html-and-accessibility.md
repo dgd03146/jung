@@ -1735,7 +1735,6 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            role="status"
             className={`p-4 rounded ${
               toast.type === 'error' ? 'bg-red-600' : 'bg-green-600'
             } text-white`}
