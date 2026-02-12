@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { photoKeys, supabase } from '@/fsd/shared';
 
 const deletePhotosByIds = async (ids: string[]) => {
+	if (ids.length === 0) return [];
 	const numericIds = ids.map(Number);
 	if (numericIds.some((n) => !Number.isFinite(n))) {
 		throw new Error('Invalid photo ID: all IDs must be numeric');

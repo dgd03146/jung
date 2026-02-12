@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postKeys, supabase } from '@/fsd/shared';
 
 const deletePostsByIds = async (ids: string[]) => {
+	if (ids.length === 0) return [];
 	const numericIds = ids.map(Number);
 	if (numericIds.some((n) => !Number.isFinite(n))) {
 		throw new Error('Invalid post ID: all IDs must be numeric');
