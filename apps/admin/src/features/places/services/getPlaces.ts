@@ -8,6 +8,7 @@ export interface PlaceFilters {
 	sortField?: string;
 	sortOrder?: 'asc' | 'desc';
 	filter?: string;
+	category?: string;
 }
 
 export const fetchPlaces = async ({
@@ -16,6 +17,7 @@ export const fetchPlaces = async ({
 	sortField = 'created_at',
 	sortOrder = 'desc',
 	filter,
+	category,
 }: PlaceFilters): Promise<{
 	places: Place[];
 	totalCount: number;
@@ -29,6 +31,10 @@ export const fetchPlaces = async ({
 
 	if (sortField) {
 		query = query.order(sortField, { ascending: sortOrder === 'asc' });
+	}
+
+	if (category) {
+		query = query.eq('category_id', category);
 	}
 
 	if (filter) {

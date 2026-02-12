@@ -22,8 +22,59 @@ export const useArticleTableFilter = () => {
 		[debouncedNavigate],
 	);
 
+	const handleStatusChange = useCallback(
+		(value: string) => {
+			navigate({
+				search: (prev) => ({
+					...prev,
+					status: value || undefined,
+					page: 0,
+				}),
+			});
+		},
+		[navigate],
+	);
+
+	const handleCategoryChange = useCallback(
+		(value: string) => {
+			navigate({
+				search: (prev) => ({
+					...prev,
+					category: value || undefined,
+					page: 0,
+				}),
+			});
+		},
+		[navigate],
+	);
+
+	const clearFilters = useCallback(() => {
+		setFilter('');
+		navigate({
+			search: (prev) => ({
+				...prev,
+				filter: undefined,
+				status: undefined,
+				category: undefined,
+				page: 0,
+			}),
+		});
+	}, [navigate]);
+
+	const hasActiveFilters = !!(
+		searchParams.filter ||
+		searchParams.status ||
+		searchParams.category
+	);
+
 	return {
 		filter,
+		status: searchParams.status ?? '',
+		category: searchParams.category ?? '',
 		handleFilterChange,
+		handleStatusChange,
+		handleCategoryChange,
+		clearFilters,
+		hasActiveFilters,
 	};
 };

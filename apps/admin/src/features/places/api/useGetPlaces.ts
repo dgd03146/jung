@@ -8,6 +8,7 @@ export interface PlaceFilters {
 	sortField?: string;
 	sortOrder?: 'asc' | 'desc';
 	filter?: string;
+	category?: string;
 }
 
 export function useGetPlaces(filters: PlaceFilters) {

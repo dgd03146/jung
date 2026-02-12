@@ -8,6 +8,7 @@ export const fetchPosts = async ({
 	sortField,
 	sortOrder,
 	filter,
+	category,
 }: PostFilters): Promise<{
 	posts: AdminPost[];
 	totalCount: number;
@@ -21,6 +22,10 @@ export const fetchPosts = async ({
 
 	if (sortField) {
 		query = query.order(sortField, { ascending: sortOrder === 'asc' });
+	}
+
+	if (category) {
+		query = query.eq('category_id', category);
 	}
 
 	if (filter) {

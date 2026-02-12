@@ -4,4 +4,5 @@ export type PostFilters = {
 	sortField?: string;
 	sortOrder?: 'asc' | 'desc';
 	filter?: string;
+	category?: string;
 };

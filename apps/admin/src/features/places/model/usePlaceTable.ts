@@ -29,6 +29,7 @@ export const usePlaceTable = () => {
 			sortField: searchParams.sortField || 'created_at',
 			sortOrder: searchParams.sortOrder || 'desc',
 			filter: searchParams.filter,
+			category: searchParams.category,
 		}),
 		[searchParams],
 	);
@@ -147,5 +148,6 @@ export const usePlaceTable = () => {
 		isLoading,
 		error,
 		refetch,
+		totalCount: data?.totalCount ?? 0,
 	};
 };
