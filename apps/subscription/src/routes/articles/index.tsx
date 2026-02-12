@@ -99,22 +99,25 @@ function ArticlesPage() {
 						</p>
 
 						<div className={styles.filterContainer}>
-							{CATEGORIES.map((cat) => (
-								<button
-									key={cat}
-									type='button'
-									className={`${styles.filterButton} ${
-										activeCategory === cat
-											? cat === 'ai'
-												? styles.filterButtonActiveAi
-												: styles.filterButtonActive
-											: ''
-									}`}
-									onClick={() => setActiveCategory(cat)}
-								>
-									{CATEGORY_LABELS[cat]}
-								</button>
-							))}
+							{CATEGORIES.map((cat) => {
+								const isActive = activeCategory === cat;
+								const activeClass = isActive
+									? cat === 'ai'
+										? styles.filterButtonActiveAi
+										: styles.filterButtonActive
+									: '';
+
+								return (
+									<button
+										key={cat}
+										type='button'
+										className={`${styles.filterButton} ${activeClass}`}
+										onClick={() => setActiveCategory(cat)}
+									>
+										{CATEGORY_LABELS[cat]}
+									</button>
+								);
+							})}
 						</div>
 					</div>
 
