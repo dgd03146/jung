@@ -9,6 +9,7 @@ import {
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
 import { HiPlus, HiTrash } from 'react-icons/hi';
+import { useConfirmDialog } from '@/fsd/shared';
 import { useDeletePhotosFromCollection } from '../api/useDeletePhotosFromCollection';
 import { useGetPhotosByCollectionId } from '../api/useGetPhotosByCollectionId';
 import * as styles from './PhotoCollectionDetail.css';
@@ -28,6 +29,7 @@ export const PhotoCollectionDetail = () => {
 		});
 
 	const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+	const { confirm } = useConfirmDialog();
 
 	const deletePhotosMutation = useDeletePhotosFromCollection({
 		collectionId,
@@ -59,7 +61,13 @@ export const PhotoCollectionDetail = () => {
 	const handleDeleteSelected = async () => {
 		if (selectedPhotos.length === 0) return;
 
-		if (window.confirm(`Delete ${selectedPhotos.length} selected photos?`)) {
+		const ok = await confirm({
+			title: 'Delete Photos',
+			description: `Are you sure you want to delete ${selectedPhotos.length} selected photos? This action cannot be undone.`,
+			confirmText: 'Delete',
+			variant: 'destructive',
+		});
+		if (ok) {
 			const selectedPhotoUrls = photos
 				.filter((photo) => selectedPhotos.includes(photo.id))
 				.map((photo) => photo.image_url);

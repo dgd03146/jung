@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
 import { useGetCollections } from '@/fsd/features/gallery/api';
+import { useConfirmDialog } from '@/fsd/shared';
 import { useCreateCollection } from '../api/useCreateCollection';
 import { useDeleteCollection } from '../api/useDeleteCollection';
 import { useUpdateCollection } from '../api/useUpdateCollection';
@@ -37,6 +38,7 @@ export const PhotoCollection = () => {
 	const createCollectionMutation = useCreateCollection();
 	const updateCollectionMutation = useUpdateCollection();
 	const deleteCollectionMutation = useDeleteCollection();
+	const { confirm } = useConfirmDialog();
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>({
 		title: '',
@@ -188,10 +190,17 @@ export const PhotoCollection = () => {
 		setEditingId(id);
 	};
 
-	const handleDelete = (e: React.MouseEvent, id: string) => {
+	const handleDelete = async (e: React.MouseEvent, id: string) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (window.confirm('컬렉션을 삭제하시겠습니까?')) {
+		const ok = await confirm({
+			title: 'Delete Collection',
+			description:
+				'Are you sure you want to delete this collection? This action cannot be undone.',
+			confirmText: 'Delete',
+			variant: 'destructive',
+		});
+		if (ok) {
 			deleteCollectionMutation.mutate(id);
 		}
 	};
