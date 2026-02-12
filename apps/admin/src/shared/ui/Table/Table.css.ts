@@ -179,22 +179,6 @@ export const categoryBadge = style({
 	textTransform: 'uppercase',
 });
 
-export const frontendBadge = style([
-	categoryBadge,
-	{
-		backgroundColor: palette.primary50,
-		color: palette.primary,
-	},
-]);
-
-export const aiBadge = style([
-	categoryBadge,
-	{
-		backgroundColor: '#F3E8FF',
-		color: '#9333EA',
-	},
-]);
-
 export const pagination = style({
 	display: 'flex',
 	justifyContent: 'space-between',
