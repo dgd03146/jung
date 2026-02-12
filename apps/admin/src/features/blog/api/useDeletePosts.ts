@@ -3,10 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postKeys, supabase } from '@/fsd/shared';
 
 const deletePostsByIds = async (ids: string[]) => {
-	const { error } = await supabase
-		.from('posts')
-		.delete()
-		.in('id', ids.map(Number));
+	const { error } = await supabase.from('posts').delete().in('id', ids);
 
 	if (error) throw error;
 	return ids;

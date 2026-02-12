@@ -44,7 +44,7 @@ export const fetchPosts = async ({
 		throw new Error(`Failed to fetch posts: ${error.message}`);
 	}
 	if (!data || data.length === 0) {
-		throw new Error('No posts found. Please try searching again.');
+		return { posts: [], totalCount: 0, totalPages: 0, hasMore: false };
 	}
 
 	const posts: AdminPost[] = data.map((post) => ({
