@@ -11,8 +11,12 @@ export const useDeletePhoto = () => {
 	return useMutation({
 		mutationFn: deletePhoto,
 
+		onMutate: async (photoId) => {
+			await queryClient.cancelQueries({ queryKey: photoKeys.lists() });
+			return { photoId };
+		},
+
 		onSuccess: () => {
-			// FIXME: Image flickering issue - Consider moving invalidation after UI update
 			queryClient.invalidateQueries({
 				queryKey: photoKeys.lists(),
 			});

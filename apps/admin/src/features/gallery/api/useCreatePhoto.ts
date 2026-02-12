@@ -39,9 +39,9 @@ export const useCreatePhoto = () => {
 			return createPhoto({ ...input, translations });
 		},
 
-		// FIXME: Image flickering issue
-		// Current behavior: Old image briefly shows before being replaced by the new one
-		// Potential fix: Implement optimistic updates or move invalidation after
+		onMutate: async () => {
+			await queryClient.cancelQueries({ queryKey: photoKeys.lists() });
+		},
 
 		onSuccess: (newPhoto) => {
 			queryClient.invalidateQueries({

@@ -6,7 +6,6 @@ const storage = {
 			const item = localStorage.getItem(key);
 			return item ? JSON.parse(item) : null;
 		} catch (error) {
-			// FIXME: 에러처리 Toast 보여주는 식으로?
 			console.error('Error getting data from localStorage:', error);
 			return null;
 		}
