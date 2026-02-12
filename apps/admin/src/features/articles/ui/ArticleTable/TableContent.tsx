@@ -1,16 +1,30 @@
 import { Box, Button, Typography } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
+import type { Table } from '@tanstack/react-table';
 import { HiDocumentText } from 'react-icons/hi';
 import { useBulkSelection, useConfirmDialog } from '@/fsd/shared';
-import { BulkActionBar, EmptyState, TableSkeleton } from '@/fsd/shared/ui';
+import {
+	BulkActionBar,
+	EmptyState,
+	TableHeader,
+	TablePagination,
+	TableSkeleton,
+} from '@/fsd/shared/ui';
 import { useDeleteArticles } from '../../api/useDeleteArticles';
-import { useArticleTable } from '../../model';
+import type { Article } from '../../types';
 import { TableBody } from './TableBody';
-import { TableHeader } from './TableHeader';
-import { TablePagination } from './TablePagination';
 
-export const TableContent = () => {
-	const { table, isLoading, error } = useArticleTable();
+interface TableContentProps {
+	table: Table<Article>;
+	isLoading: boolean;
+	error: Error | null;
+}
+
+export const TableContent = ({
+	table,
+	isLoading,
+	error,
+}: TableContentProps) => {
 	const bulk = useBulkSelection();
 	const { confirm } = useConfirmDialog();
 	const deleteArticlesMutation = useDeleteArticles();

@@ -1,17 +1,33 @@
 import { Box, Button } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
+import type { Table } from '@tanstack/react-table';
 import { HiDocumentText } from 'react-icons/hi';
-import { usePostTable } from '@/fsd/features/blog/model';
+import type { AdminPost } from '@/fsd/entities/post/model/post';
 import { useBulkSelection, useConfirmDialog } from '@/fsd/shared';
-import { BulkActionBar, EmptyState, TableSkeleton } from '@/fsd/shared/ui';
+import {
+	BulkActionBar,
+	EmptyState,
+	TableHeader,
+	TablePagination,
+	TableSkeleton,
+} from '@/fsd/shared/ui';
 import { useDeletePosts } from '../../api/useDeletePosts';
 import ErrorFallback from '../ErrorFallback';
 import { TableBody } from './TableBody';
-import { TableHeader } from './TableHeader';
-import { TablePagination } from './TablePagination';
 
-export const TableContent = () => {
-	const { table, isLoading, error, refetch } = usePostTable();
+interface TableContentProps {
+	table: Table<AdminPost>;
+	isLoading: boolean;
+	error: Error | null;
+	refetch: () => void;
+}
+
+export const TableContent = ({
+	table,
+	isLoading,
+	error,
+	refetch,
+}: TableContentProps) => {
 	const bulk = useBulkSelection();
 	const { confirm } = useConfirmDialog();
 	const deletePostsMutation = useDeletePosts();
@@ -39,7 +55,7 @@ export const TableContent = () => {
 
 	const allIds = table
 		.getRowModel()
-		.rows.map((row) => (row.original as { id: string }).id);
+		.rows.map((row) => row.original.id.toString());
 
 	const handleBulkDelete = async () => {
 		const ids = Array.from(bulk.selectedIds);

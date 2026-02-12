@@ -4,12 +4,17 @@ import TableAction from './TableAction';
 import { TableContent } from './TableContent';
 
 const PostTable = () => {
-	const { totalCount } = usePostTable();
+	const { table, totalCount, isLoading, error, refetch } = usePostTable();
 
 	return (
 		<Container marginTop='1'>
 			<TableAction totalCount={totalCount} />
-			<TableContent />
+			<TableContent
+				table={table}
+				isLoading={isLoading}
+				error={error}
+				refetch={refetch}
+			/>
 		</Container>
 	);
 };

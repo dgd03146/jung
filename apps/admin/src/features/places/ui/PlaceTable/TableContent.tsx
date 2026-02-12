@@ -1,13 +1,17 @@
 import { Box, Button, Typography } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiLocationMarker } from 'react-icons/hi';
-import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { useBulkSelection, useConfirmDialog } from '@/fsd/shared';
-import { BulkActionBar, EmptyState, TableSkeleton } from '@/fsd/shared/ui';
+import {
+	BulkActionBar,
+	EmptyState,
+	TableHeader,
+	TablePagination,
+	TableSkeleton,
+} from '@/fsd/shared/ui';
 import { useDeletePlaces } from '../../api/useDeletePlaces';
 import { usePlaceTable } from '../../model/usePlaceTable';
 import { TableBody } from './TableBody';
-import { TableHeader } from './TableHeader';
 
 export const TableContent = () => {
 	const { table, isLoading, error } = usePlaceTable();

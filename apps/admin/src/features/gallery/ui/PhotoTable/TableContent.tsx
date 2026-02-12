@@ -1,24 +1,32 @@
 import { Box, Button } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
 import { HiPhotograph } from 'react-icons/hi';
-import ErrorFallback from '@/fsd/features/blog/ui/ErrorFallback';
-import { TableHeader } from '@/fsd/features/blog/ui/PostTable/TableHeader';
-import { TablePagination } from '@/fsd/features/blog/ui/PostTable/TablePagination';
 import { usePhotoTable } from '@/fsd/features/gallery/model';
 import { useBulkSelection, useConfirmDialog } from '@/fsd/shared';
-import { BulkActionBar, EmptyState, TableSkeleton } from '@/fsd/shared/ui';
+import {
+	BulkActionBar,
+	EmptyState,
+	TableHeader,
+	TablePagination,
+	TableSkeleton,
+} from '@/fsd/shared/ui';
 import { useDeletePhotos } from '../../api/useDeletePhotos';
 import { TableBody } from './TableBody';
 
 export const TableContent = () => {
-	const { table, isLoading, error, refetch } = usePhotoTable();
+	const { table, isLoading, error } = usePhotoTable();
 	const bulk = useBulkSelection();
 	const { confirm } = useConfirmDialog();
 	const deletePhotosMutation = useDeletePhotos();
 
 	if (isLoading) return <TableSkeleton />;
-	if (error)
-		return <ErrorFallback error={error} resetErrorBoundary={refetch} />;
+	if (error) {
+		return (
+			<Box padding='6' textAlign='center'>
+				Failed to load photos. Please try again.
+			</Box>
+		);
+	}
 
 	if (table.getRowModel().rows.length === 0) {
 		return (
@@ -37,9 +45,7 @@ export const TableContent = () => {
 		);
 	}
 
-	const allIds = table
-		.getRowModel()
-		.rows.map((row) => (row.original as { id: string }).id);
+	const allIds = table.getRowModel().rows.map((row) => row.original.id);
 
 	const handleBulkDelete = async () => {
 		const ids = Array.from(bulk.selectedIds);

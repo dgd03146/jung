@@ -4,12 +4,12 @@ import TableAction from './TableAction';
 import { TableContent } from './TableContent';
 
 const ArticleTable = () => {
-	const { totalCount } = useArticleTable();
+	const { table, totalCount, isLoading, error } = useArticleTable();
 
 	return (
 		<Container marginTop='1'>
 			<TableAction totalCount={totalCount} />
-			<TableContent />
+			<TableContent table={table} isLoading={isLoading} error={error} />
 		</Container>
 	);
 };
