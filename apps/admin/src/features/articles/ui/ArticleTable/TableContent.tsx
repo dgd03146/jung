@@ -18,12 +18,14 @@ interface TableContentProps {
 	table: Table<Article>;
 	isLoading: boolean;
 	error: Error | null;
+	refetch: () => void;
 }
 
 export const TableContent = ({
 	table,
 	isLoading,
 	error,
+	refetch,
 }: TableContentProps) => {
 	const bulk = useBulkSelection();
 	const { confirm } = useConfirmDialog();
@@ -33,9 +35,12 @@ export const TableContent = ({
 	if (error) {
 		return (
 			<Box padding='6' textAlign='center'>
-				<Typography.Text color='secondary'>
+				<Typography.Text color='secondary' marginBottom='4'>
 					Failed to load articles. Please try again.
 				</Typography.Text>
+				<Button onClick={refetch} size='sm' borderRadius='md'>
+					Try again
+				</Button>
 			</Box>
 		);
 	}
