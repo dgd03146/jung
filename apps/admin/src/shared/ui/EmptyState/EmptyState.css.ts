@@ -1,3 +1,9 @@
+import {
+	fontSizes,
+	fontWeights,
+	palette,
+	space,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
@@ -5,27 +11,27 @@ export const container = style({
 	flexDirection: 'column',
 	alignItems: 'center',
 	justifyContent: 'center',
-	padding: '48px 24px',
-	gap: '16px',
-	borderRadius: '12px',
-	border: '1px dashed rgba(0, 0, 0, 0.12)',
-	backgroundColor: 'rgba(0, 0, 0, 0.02)',
+	padding: `${space['12']} ${space['6']}`,
+	gap: space['4'],
+	borderRadius: space['3'],
+	border: `1px dashed ${palette.gray}`,
+	backgroundColor: palette.white100,
 });
 
 export const icon = style({
-	color: 'rgba(0, 0, 0, 0.25)',
-	marginBottom: '4px',
+	color: palette.gray200,
+	marginBottom: space['1'],
 });
 
 export const title = style({
-	fontSize: '16px',
-	fontWeight: 600,
-	color: 'rgba(0, 0, 0, 0.65)',
+	fontSize: fontSizes.base,
+	fontWeight: fontWeights.semibold,
+	color: palette.gray300,
 	margin: 0,
 });
 
 export const description = style({
-	fontSize: '14px',
-	color: 'rgba(0, 0, 0, 0.45)',
+	fontSize: fontSizes.sm,
+	color: palette.gray200,
 	margin: 0,
 });
