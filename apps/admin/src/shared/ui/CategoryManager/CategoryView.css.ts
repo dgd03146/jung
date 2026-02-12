@@ -1,7 +1,9 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import { border, mutedText, primaryTint } from '@/fsd/shared/styles/tokens';
 import { actionButton, dragHandle, postCount } from './CategoryCard.css';
+
+const border = 'rgba(0, 0, 0, 0.06)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
 
 export const listViewItem = style({
 	display: 'flex',
@@ -41,7 +43,7 @@ export const categoryBadge = style({
 	borderRadius: '4px',
 	fontSize: '12px',
 	fontWeight: '500',
-	background: primaryTint,
+	background: 'rgba(1, 66, 192, 0.06)',
 	color: palette.primary,
 });
 

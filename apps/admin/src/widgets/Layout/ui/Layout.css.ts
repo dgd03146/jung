@@ -1,7 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 import { recipe } from '@vanilla-extract/recipes';
-import { SIDEBAR_WIDTH } from '@/fsd/shared/styles/layout';
+
+const SIDEBAR_WIDTH = '240px';
 
 export const mainContent = recipe({
 	base: {

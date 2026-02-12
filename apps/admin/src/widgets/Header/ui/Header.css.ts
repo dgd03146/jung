@@ -1,5 +1,4 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { border } from '@/fsd/shared/styles/tokens';
 
 export const header = recipe({
 	base: {
@@ -9,7 +8,7 @@ export const header = recipe({
 		top: 0,
 		transition: 'all 0.2s ease',
 		backgroundColor: 'white',
-		borderBottom: `1px solid ${border}`,
+		borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
 	},
 	variants: {
 		isScrolled: {

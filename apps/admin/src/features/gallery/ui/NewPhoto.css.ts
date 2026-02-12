@@ -1,13 +1,11 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import {
-	dangerText,
-	darkText,
-	inputBorder,
-	inputBorderHover,
-	mutedText,
-	primaryRing,
-} from '@/fsd/shared/styles/tokens';
+
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const darkText = 'rgba(0, 0, 0, 0.85)';
+const dangerText = 'rgba(239, 68, 68, 1)';
 
 export const flexBasis = style({
 	flexBasis: '40%',
@@ -51,7 +49,7 @@ export const select = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	':hover': {

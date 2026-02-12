@@ -9,7 +9,7 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import { getImageUrl } from '@jung/shared/lib';
+import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -52,9 +52,6 @@ const INITIAL_FORM_DATA: ArticleFormData = {
 	images: [],
 };
 
-const isValidStatus = (s: unknown): s is 'draft' | 'published' =>
-	s === 'draft' || s === 'published';
-
 export const ArticleForm = () => {
 	const showToast = useToast();
 	const createArticleMutation = useCreateArticle();
@@ -82,7 +79,7 @@ export const ArticleForm = () => {
 				published_at: article.published_at
 					? article.published_at.split('T')[0]
 					: '',
-				status: isValidStatus(article.status) ? article.status : 'draft',
+				status: (article.status as 'draft' | 'published') || 'draft',
 				images: article.images || [],
 			});
 		}
@@ -130,21 +127,12 @@ export const ArticleForm = () => {
 	};
 
 	const handleSubmit = (status: 'draft' | 'published') => {
-		const hasRequiredFields =
-			formData.title && formData.original_url && formData.summary;
-
-		if (!hasRequiredFields) {
+		if (!formData.title || !formData.original_url || !formData.summary) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
 
 		const now = new Date().toISOString();
-
-		const getPublishedAt = () => {
-			if (formData.published_at)
-				return new Date(formData.published_at).toISOString();
-			return status === 'published' ? now : null;
-		};
 
 		const articleData: ArticleInput = {
 			title: formData.title.trim(),
@@ -152,7 +140,14 @@ export const ArticleForm = () => {
 			summary: formData.summary.trim(),
 			my_thoughts: formData.my_thoughts.trim() || null,
 			category: formData.category,
-			published_at: getPublishedAt(),
+			published_at:
+				status === 'published'
+					? formData.published_at
+						? new Date(formData.published_at).toISOString()
+						: now
+					: formData.published_at
+						? new Date(formData.published_at).toISOString()
+						: null,
 			status,
 			images: formData.images,
 		};
@@ -165,6 +160,10 @@ export const ArticleForm = () => {
 		} else {
 			createArticleMutation.mutate(articleData);
 		}
+	};
+
+	const handleFormSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
 	};
 
 	const handleImprove = async () => {
@@ -207,7 +206,7 @@ export const ArticleForm = () => {
 				borderRadius='lg'
 				padding='6'
 				boxShadow='primary'
-				onSubmit={(e: React.FormEvent) => e.preventDefault()}
+				onSubmit={handleFormSubmit}
 				className={styles.formContainer}
 			>
 				<Flex align='center' gap='2' color='primary' marginBottom='6'>
@@ -237,6 +236,7 @@ export const ArticleForm = () => {
 								setFormData((prev) => ({ ...prev, title: e.target.value }))
 							}
 							placeholder='Enter article title'
+							required
 						/>
 					</Stack>
 
@@ -262,6 +262,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='https://example.com/article'
+							required
 						/>
 					</Stack>
 
@@ -286,6 +287,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='Write a brief summary (2-3 sentences)'
+							required
 						/>
 					</Stack>
 
@@ -308,7 +310,6 @@ export const ArticleForm = () => {
 											type='button'
 											className={styles.imageRemoveButton}
 											onClick={() => handleRemoveImage(index)}
-											aria-label={`Remove image ${index + 1}`}
 										>
 											<HiX size={14} />
 										</button>
@@ -379,6 +380,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							className={styles.select}
+							required
 						>
 							<option value='frontend'>Frontend</option>
 							<option value='ai'>AI</option>
@@ -424,7 +426,7 @@ export const ArticleForm = () => {
 							variant='outline'
 							borderRadius='md'
 							onClick={() => handleSubmit('draft')}
-							disabled={isMutating || isUploading}
+							disabled={isMutating}
 						>
 							Save as Draft
 						</Button>
@@ -433,7 +435,7 @@ export const ArticleForm = () => {
 							borderRadius='md'
 							className={styles.publishButton}
 							onClick={() => handleSubmit('published')}
-							disabled={isMutating || isUploading}
+							disabled={isMutating}
 						>
 							{isEditMode ? 'Update & Publish' : 'Publish'}
 						</Button>

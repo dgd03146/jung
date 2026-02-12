@@ -1,14 +1,12 @@
 import { palette } from '@jung/design-system/tokens';
 import { globalStyle, style } from '@vanilla-extract/css';
-import {
-	bodyText,
-	border,
-	disabledText,
-	hoverBg,
-	mutedText,
-	primaryRing,
-	primaryTint,
-} from '@/fsd/shared/styles/tokens';
+
+const bodyText = 'rgba(0, 0, 0, 0.8)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const border = 'rgba(0, 0, 0, 0.06)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+const disabledText = 'rgba(0, 0, 0, 0.25)';
+const primaryTint = 'rgba(1, 66, 192, 0.06)';
 
 export const inputWrapper = style({
 	position: 'relative',
@@ -35,7 +33,7 @@ export const input = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 });
 

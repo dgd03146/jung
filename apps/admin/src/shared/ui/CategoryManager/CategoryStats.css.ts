@@ -1,6 +1,8 @@
 import { style } from '@vanilla-extract/css';
 import { border } from '@/fsd/shared/styles/tokens';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+
 export const statCard = style({
 	background: 'white',
 	borderRadius: '16px',

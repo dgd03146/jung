@@ -1,11 +1,9 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import {
-	hoverBg,
-	inputBorder,
-	overlay,
-	subtleText,
-} from '@/fsd/shared/styles/tokens';
+
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+const mutedText = 'rgba(0, 0, 0, 0.35)';
 
 export const imageGrid = style({
 	display: 'grid',
@@ -14,6 +12,29 @@ export const imageGrid = style({
 	'@media': {
 		'screen and (min-width: 768px)': {
 			gridTemplateColumns: 'repeat(2, 1fr)',
+		},
+	},
+	selectors: {
+		'&[data-count="0"]': {
+			gridTemplateColumns: '1fr',
+		},
+		'&[data-count="1"]': {
+			gridTemplateColumns: '1fr 1fr',
+		},
+		'&[data-count="2"]': {
+			gridTemplateColumns: 'repeat(2, 1fr)',
+		},
+		'&[data-count="3"]': {
+			gridTemplateAreas: `
+				"img1 img2"
+				"img3 img4"
+			`,
+		},
+		'&[data-count="4"]': {
+			gridTemplateAreas: `
+				"img1 img2"
+				"img3 img4"
+			`,
 		},
 	},
 });
@@ -35,7 +56,7 @@ export const deleteButton = style({
 	position: 'absolute',
 	top: '12px',
 	right: '12px',
-	background: overlay,
+	background: 'rgba(0, 0, 0, 0.6)',
 	color: 'white',
 	border: 'none',
 	borderRadius: '50%',
@@ -51,7 +72,7 @@ export const deleteButton = style({
 		},
 	},
 	':hover': {
-		background: 'rgba(0, 0, 0, 0.8)', // intentionally darker than overlay for hover emphasis
+		background: 'rgba(0, 0, 0, 0.8)',
 	},
 });
 
@@ -76,7 +97,7 @@ export const uploadButton = style({
 
 export const uploadIcon = style({
 	fontSize: '32px',
-	color: subtleText,
+	color: mutedText,
 	marginBottom: '4px',
 });
 

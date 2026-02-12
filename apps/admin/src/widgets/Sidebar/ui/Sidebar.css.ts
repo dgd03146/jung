@@ -1,14 +1,14 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { SIDEBAR_WIDTH } from '@/fsd/shared/styles/layout';
-import { activeBg, border, hoverBg } from '@/fsd/shared/styles/tokens';
+
+const SIDEBAR_WIDTH = '240px';
 
 export const sidebar = recipe({
 	base: {
 		width: SIDEBAR_WIDTH,
 		backgroundColor: palette.white,
-		borderRight: `1px solid ${border}`,
+		borderRight: '1px solid rgba(0, 0, 0, 0.06)',
 		height: '100dvh',
 		transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
 		position: 'fixed',
@@ -48,18 +48,18 @@ export const dashboardItem = recipe({
 		border: 'none',
 
 		':hover': {
-			background: hoverBg,
+			background: 'rgba(0, 0, 0, 0.03)',
 		},
 	},
 	variants: {
 		active: {
 			true: {
-				background: activeBg,
+				background: 'rgba(0, 0, 0, 0.04)',
 				color: palette.text,
 				fontWeight: 600,
 
 				':hover': {
-					background: activeBg,
+					background: 'rgba(0, 0, 0, 0.05)',
 				},
 			},
 		},

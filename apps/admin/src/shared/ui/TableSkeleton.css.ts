@@ -1,6 +1,10 @@
 import { style } from '@vanilla-extract/css';
 import { bodyText, border, mutedText } from '@/fsd/shared/styles/tokens';
 
+const border = 'rgba(0, 0, 0, 0.06)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const bodyText = 'rgba(0, 0, 0, 0.8)';
+
 export const th = style({
 	padding: '16px 24px',
 	backgroundColor: 'white',

@@ -1,31 +1,30 @@
-import { globalStyle, style } from '@vanilla-extract/css';
-import {
-	border,
-	darkText,
-	hoverBg,
-	mutedText,
-} from '@/fsd/shared/styles/tokens';
+import { style } from '@vanilla-extract/css';
+
+const border = 'rgba(0, 0, 0, 0.06)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const hoverBg = 'rgba(0, 0, 0, 0.02)';
+const darkText = 'rgba(0, 0, 0, 0.85)';
 
 export const table = style({
 	width: '100%',
 	borderCollapse: 'collapse',
 	fontSize: '14px',
-});
 
-globalStyle(`${table} th, ${table} td`, {
-	padding: '12px 16px',
-	textAlign: 'left',
-	borderBottom: `1px solid ${border}`,
-});
-
-globalStyle(`${table} th`, {
-	fontWeight: '500',
-	color: mutedText,
-	background: hoverBg,
-});
-
-globalStyle(`${table} td`, {
-	color: darkText,
+	selectors: {
+		'th, td': {
+			padding: '12px 16px',
+			textAlign: 'left',
+			borderBottom: `1px solid ${border}`,
+		},
+		th: {
+			fontWeight: '500',
+			color: mutedText,
+			background: hoverBg,
+		},
+		td: {
+			color: darkText,
+		},
+	},
 });
 
 export const chart = style({

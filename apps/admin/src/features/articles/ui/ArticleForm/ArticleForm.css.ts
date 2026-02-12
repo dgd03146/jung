@@ -1,14 +1,10 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-import {
-	dangerHover,
-	darkText,
-	inputBorder,
-	inputBorderHover,
-	mutedText,
-	overlay,
-	primaryRing,
-} from '@/fsd/shared/styles/tokens';
+
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const inputBorderHover = 'rgba(0, 0, 0, 0.15)';
+const mutedText = 'rgba(0, 0, 0, 0.45)';
+const darkText = 'rgba(0, 0, 0, 0.85)';
 
 export const selectWrapper = style({
 	position: 'relative',
@@ -43,7 +39,7 @@ export const select = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	':hover': {
@@ -56,7 +52,7 @@ export const formContainer = style({
 	margin: '0 auto',
 });
 
-const primaryButton = style({
+export const improveButton = style({
 	backgroundColor: palette.primary,
 	border: 'none',
 	color: 'white',
@@ -72,21 +68,26 @@ const primaryButton = style({
 	},
 });
 
-export const improveButton = primaryButton;
-export const publishButton = primaryButton;
+export const publishButton = style({
+	backgroundColor: palette.primary,
+	border: 'none',
+	color: 'white',
+	transition: 'opacity 0.15s ease',
+
+	':hover': {
+		opacity: 0.85,
+	},
+
+	':disabled': {
+		opacity: 0.5,
+		cursor: 'not-allowed',
+	},
+});
 
 export const imageGrid = style({
 	display: 'grid',
-	gridTemplateColumns: '1fr',
+	gridTemplateColumns: 'repeat(3, 1fr)',
 	gap: '12px',
-	'@media': {
-		'(min-width: 768px)': {
-			gridTemplateColumns: 'repeat(2, 1fr)',
-		},
-		'(min-width: 1024px)': {
-			gridTemplateColumns: 'repeat(3, 1fr)',
-		},
-	},
 });
 
 export const imagePreview = style({
@@ -111,7 +112,7 @@ export const imageRemoveButton = style({
 	height: '24px',
 	borderRadius: '50%',
 	border: 'none',
-	background: overlay,
+	background: 'rgba(0, 0, 0, 0.6)',
 	color: 'white',
 	cursor: 'pointer',
 	display: 'flex',
@@ -120,7 +121,7 @@ export const imageRemoveButton = style({
 	transition: 'background 0.15s ease',
 
 	':hover': {
-		background: dangerHover,
+		background: 'rgba(239, 68, 68, 0.9)',
 	},
 });
 
