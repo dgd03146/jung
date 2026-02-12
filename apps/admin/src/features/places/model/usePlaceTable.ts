@@ -1,6 +1,8 @@
+import type { Place } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
+	type ColumnDef,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
@@ -36,7 +38,7 @@ export const usePlaceTable = () => {
 
 	const { data, isLoading, error, refetch } = useGetPlaces(filters);
 
-	const columns = useMemo(
+	const columns: ColumnDef<Place>[] = useMemo(
 		() => [
 			{
 				header: 'Thumbnails',
