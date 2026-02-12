@@ -62,15 +62,7 @@ export const Checkbox = forwardRef<HTMLDivElement, CheckboxProps>(
 						})}
 					>
 						{indeterminate ? (
-							<Box
-								as='span'
-								display='block'
-								style={{
-									width: '10px',
-									height: '2px',
-									backgroundColor: 'currentColor',
-								}}
-							/>
+							<span className={styles.indeterminateIcon} />
 						) : checked ? (
 							<CheckIcon />
 						) : null}
