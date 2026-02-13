@@ -3,9 +3,6 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
 	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
 	type PaginationState,
 	type SortingState,
 	type Updater,
@@ -14,9 +11,10 @@ import {
 import { useCallback, useEffect, useMemo } from 'react';
 import type { Subscriber } from '@/fsd/entities/subscriber';
 import type { SubscriberFilters } from '@/fsd/features/subscribers/types/subscriberFilters';
-import { subscriberKeys } from '@/fsd/shared';
-import { fetchSubscribers } from '../api/getSubscribers';
-import { useGetSubscribers } from '../api/useGetSubscribers';
+import {
+	subscriberListQueryOptions,
+	useGetSubscribers,
+} from '../api/useGetSubscribers';
 
 export const subscriberColumns: ColumnDef<Subscriber>[] = [
 	{ header: 'Email', accessorKey: 'email' },
@@ -49,15 +47,14 @@ export const useSubscriberTable = () => {
 
 	const { data, isLoading, error, refetch } = useGetSubscribers(filters);
 
-	const columns = useMemo(() => subscriberColumns, []);
+	const columns = subscriberColumns;
 
 	useEffect(() => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
-			queryClient.prefetchQuery({
-				queryKey: subscriberKeys.list({ ...filters, page: nextPage }),
-				queryFn: () => fetchSubscribers({ ...filters, page: nextPage }),
-			});
+			queryClient.prefetchQuery(
+				subscriberListQueryOptions({ ...filters, page: nextPage }),
+			);
 		}
 	}, [data?.hasMore, filters, queryClient]);
 
@@ -112,9 +109,6 @@ export const useSubscriberTable = () => {
 			updateSearchParams({ filter });
 		},
 		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
 		manualPagination: true,
 		manualSorting: true,
 		manualFiltering: true,

@@ -1,9 +1,7 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
-export const borderBottomStyle = style({
-	borderBottomWidth: '1px',
-});
+export { borderBottomStyle } from './SubscriberDashboard.css';
 
 export const gridContainer = style({
 	display: 'grid',

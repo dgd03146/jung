@@ -14,6 +14,7 @@ const COLORS = {
 	frontend: '#3B82F6',
 	ai: '#8B5CF6',
 	both: '#10B981',
+	fallback: '#6B7280',
 };
 
 const LABELS: Record<string, string> = {
@@ -22,26 +23,36 @@ const LABELS: Record<string, string> = {
 	both: 'Both',
 };
 
+const CHART_HEIGHT = 220;
+const PIE_INNER_RADIUS = 55;
+const PIE_OUTER_RADIUS = 85;
+const PIE_PADDING_ANGLE = 3;
+
+const formatPercentage = (value: number, total: number) =>
+	total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+
 const CategoryDistributionChart = () => {
 	const { data: stats } = useGetSubscriberStats();
 
-	const chartData = useMemo(() => {
-		if (!stats?.categoryDistribution) return [];
-		return Object.entries(stats.categoryDistribution).map(([name, value]) => ({
-			name: LABELS[name] ?? name,
-			value,
-			color: COLORS[name as keyof typeof COLORS] ?? '#6B7280',
-		}));
+	const { chartData, total } = useMemo(() => {
+		if (!stats?.categoryDistribution) return { chartData: [], total: 0 };
+		const chartData = Object.entries(stats.categoryDistribution).map(
+			([name, value]) => ({
+				name: LABELS[name] ?? name,
+				value,
+				color: COLORS[name as keyof typeof COLORS] ?? COLORS.fallback,
+			}),
+		);
+		const total = chartData.reduce((sum, d) => sum + d.value, 0);
+		return { chartData, total };
 	}, [stats?.categoryDistribution]);
-
-	const total = chartData.reduce((sum, d) => sum + d.value, 0);
 
 	return (
 		<Container
 			boxShadow='primary'
 			background='white'
 			borderRadius='2xl'
-			style={{ flex: 2 }}
+			className={styles.distributionChartContainer}
 		>
 			<Box
 				className={styles.borderBottomStyle}
@@ -54,15 +65,15 @@ const CategoryDistributionChart = () => {
 				</Typography.Text>
 			</Box>
 			<Box padding='4' background='white'>
-				<ResponsiveContainer width='100%' height={220}>
+				<ResponsiveContainer width='100%' height={CHART_HEIGHT}>
 					<PieChart>
 						<Pie
 							data={chartData}
 							cx='50%'
 							cy='50%'
-							innerRadius={55}
-							outerRadius={85}
-							paddingAngle={3}
+							innerRadius={PIE_INNER_RADIUS}
+							outerRadius={PIE_OUTER_RADIUS}
+							paddingAngle={PIE_PADDING_ANGLE}
 							dataKey='value'
 						>
 							{chartData.map((entry) => (
@@ -71,7 +82,7 @@ const CategoryDistributionChart = () => {
 						</Pie>
 						<Tooltip
 							formatter={(value: number, name: string) => [
-								`${value} (${total > 0 ? ((value / total) * 100).toFixed(1) : 0}%)`,
+								`${value} (${formatPercentage(value, total)}%)`,
 								name,
 							]}
 						/>
@@ -92,7 +103,7 @@ const CategoryDistributionChart = () => {
 							<Typography.Text level={3} fontWeight='medium'>
 								{entry.value}{' '}
 								<Typography.SubText level={2} color='gray300'>
-									({total > 0 ? ((entry.value / total) * 100).toFixed(1) : 0}%)
+									({formatPercentage(entry.value, total)}%)
 								</Typography.SubText>
 							</Typography.Text>
 						</Flex>

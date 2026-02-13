@@ -1,4 +1,4 @@
-import { Box } from '@jung/design-system/components';
+import { Box, Button } from '@jung/design-system/components';
 import type { Table } from '@tanstack/react-table';
 import { HiMail } from 'react-icons/hi';
 import type { Subscriber } from '@/fsd/entities/subscriber';
@@ -32,9 +32,9 @@ export const TableContent = ({
 				title='Failed to load subscribers'
 				description={error.message}
 				action={
-					<button type='button' onClick={() => refetch()}>
+					<Button variant='outline' size='sm' onClick={() => refetch()}>
 						Retry
-					</button>
+					</Button>
 				}
 			/>
 		);

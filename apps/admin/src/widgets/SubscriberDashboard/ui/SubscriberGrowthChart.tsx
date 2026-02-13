@@ -22,15 +22,8 @@ import * as styles from './SubscriberGrowthChart.css';
 
 type PeriodType = '6m' | '1y';
 
-interface CustomTooltipProps extends TooltipProps<number, string> {
-	active?: boolean;
-	payload?: {
-		name: string;
-		value: number;
-		color: string;
-	}[];
-	label?: string;
-}
+const isPeriodType = (value: string): value is PeriodType =>
+	value === '6m' || value === '1y';
 
 const periods = [
 	{ value: '6m' as const, label: 'Last 6 months' },
@@ -40,9 +33,19 @@ const periods = [
 const CHART_COLORS = {
 	newSubscribers: '#3B82F6',
 	unsubscribed: '#EF4444',
+	grid: '#F1F3F9',
+	axis: '#9CA3AF',
+	cursor: '#E5E7EB',
 };
 
-const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+const CHART_MARGIN = { top: 5, right: 5, bottom: 5, left: 0 };
+const AXIS_FONT_SIZE = 12;
+
+const CustomTooltip = ({
+	active,
+	payload,
+	label,
+}: TooltipProps<number, string>) => {
 	if (active && payload && payload.length) {
 		return (
 			<Box background='white' borderRadius='xl' padding='4' boxShadow='primary'>
@@ -84,7 +87,7 @@ const SubscriberGrowthChart = () => {
 			boxShadow='primary'
 			background='white'
 			borderRadius='2xl'
-			style={{ flex: 3 }}
+			className={styles.growthChartContainer}
 		>
 			<Flex
 				className={styles.borderBottomStyle}
@@ -100,7 +103,9 @@ const SubscriberGrowthChart = () => {
 				</Typography.Text>
 				<Select
 					defaultValue={selectedPeriod}
-					onValueChange={(value) => setSelectedPeriod(value as PeriodType)}
+					onValueChange={(value) => {
+						if (isPeriodType(value)) setSelectedPeriod(value);
+					}}
 				>
 					<Select.Label>Period</Select.Label>
 					<Select.Trigger placeholder='Select Period' />
@@ -115,48 +120,37 @@ const SubscriberGrowthChart = () => {
 			</Flex>
 			<Box padding='4' height='80' background='white'>
 				<ResponsiveContainer width='100%' height='100%'>
-					<LineChart
-						data={chartData}
-						margin={{ top: 5, right: 5, bottom: 5, left: 0 }}
-					>
+					<LineChart data={chartData} margin={CHART_MARGIN}>
 						<CartesianGrid
 							strokeDasharray='3 3'
-							stroke='#F1F3F9'
+							stroke={CHART_COLORS.grid}
 							vertical={false}
 						/>
 						<XAxis
 							dataKey='month'
-							stroke='#9CA3AF'
-							fontSize={12}
+							stroke={CHART_COLORS.axis}
+							fontSize={AXIS_FONT_SIZE}
 							axisLine={false}
 							tickLine={false}
 							padding={{ left: 10, right: 10 }}
 							tickMargin={12}
 						/>
 						<YAxis
-							stroke='#9CA3AF'
-							fontSize={12}
+							stroke={CHART_COLORS.axis}
+							fontSize={AXIS_FONT_SIZE}
 							axisLine={false}
 							tickLine={false}
 							tickMargin={16}
 						/>
 						<Tooltip
 							content={<CustomTooltip />}
-							cursor={{ stroke: '#E5E7EB' }}
+							cursor={{ stroke: CHART_COLORS.cursor }}
 						/>
 						<Legend
 							iconType='circle'
 							wrapperStyle={{ paddingTop: '1.5rem' }}
 							formatter={(value) => (
-								<span
-									style={{
-										color: '#4B5563',
-										fontSize: '0.875rem',
-										fontWeight: '500',
-									}}
-								>
-									{value}
-								</span>
+								<span className={styles.legendText}>{value}</span>
 							)}
 						/>
 						<Line

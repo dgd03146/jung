@@ -29,12 +29,14 @@ export const useToggleSubscriber = () => {
 	return useMutation({
 		mutationFn: toggleSubscriber,
 		onSuccess: async (_, { is_active }) => {
-			await queryClient.invalidateQueries({
-				queryKey: subscriberKeys.lists(),
-			});
-			await queryClient.invalidateQueries({
-				queryKey: subscriberKeys.stats(),
-			});
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: subscriberKeys.lists(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: subscriberKeys.stats(),
+				}),
+			]);
 			showToast(
 				is_active ? 'Subscriber activated' : 'Subscriber deactivated',
 				'success',

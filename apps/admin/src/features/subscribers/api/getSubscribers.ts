@@ -2,18 +2,6 @@ import type { Subscriber } from '@/fsd/entities/subscriber';
 import type { SubscriberFilters } from '@/fsd/features/subscribers/types/subscriberFilters';
 import { supabase } from '@/fsd/shared';
 
-const ALLOWED_SORT_FIELDS = [
-	'email',
-	'category',
-	'is_active',
-	'created_at',
-] as const;
-
-type AllowedSortField = (typeof ALLOWED_SORT_FIELDS)[number];
-
-const isAllowedSortField = (field: string): field is AllowedSortField =>
-	(ALLOWED_SORT_FIELDS as readonly string[]).includes(field);
-
 export const fetchSubscribers = async ({
 	page,
 	pageSize,
@@ -33,7 +21,7 @@ export const fetchSubscribers = async ({
 
 	let query = supabase.from('subscribers').select('*', { count: 'exact' });
 
-	if (sortField && isAllowedSortField(sortField)) {
+	if (sortField) {
 		query = query.order(sortField, { ascending: sortOrder === 'asc' });
 	} else {
 		query = query.order('created_at', { ascending: false });
@@ -57,13 +45,13 @@ export const fetchSubscribers = async ({
 
 	const { data, error, count } = await query;
 
-	const totalCount = count ?? 0;
-	const totalPages = Math.ceil(totalCount / pageSize);
-	const hasMore = page < totalPages - 1;
-
 	if (error) {
 		throw new Error(`Failed to fetch subscribers: ${error.message}`);
 	}
+
+	const totalCount = count ?? 0;
+	const totalPages = Math.ceil(totalCount / pageSize);
+	const hasMore = page < totalPages - 1;
 
 	if (!data || data.length === 0) {
 		return { subscribers: [], totalCount, totalPages, hasMore };

@@ -1,11 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { subscriberKeys } from '@/fsd/shared';
 import { fetchSubscriberStats } from './getSubscriberStats';
 
-export function useGetSubscriberStats() {
-	return useQuery({
+const STATS_STALE_TIME_MS = 5 * 60_000;
+
+export const subscriberStatsQueryOptions = () =>
+	queryOptions({
 		queryKey: subscriberKeys.stats(),
 		queryFn: fetchSubscriberStats,
-		staleTime: 5 * 60 * 1000,
+		staleTime: STATS_STALE_TIME_MS,
 	});
+
+export function useGetSubscriberStats() {
+	return useQuery(subscriberStatsQueryOptions());
 }

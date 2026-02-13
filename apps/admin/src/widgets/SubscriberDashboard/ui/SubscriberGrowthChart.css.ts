@@ -1,5 +1,5 @@
-import { style } from '@vanilla-extract/css';
-
-export const borderBottomStyle = style({
-	borderBottomWidth: '1px',
-});
+export {
+	borderBottomStyle,
+	growthChartContainer,
+	legendText,
+} from './SubscriberDashboard.css';

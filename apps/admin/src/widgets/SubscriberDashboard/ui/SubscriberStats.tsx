@@ -12,6 +12,12 @@ import * as styles from './SubscriberStats.css';
 const SubscriberStats = () => {
 	const { data: stats } = useGetSubscriberStats();
 
+	const activeRate = stats?.total
+		? ((stats.active / stats.total) * 100).toFixed(1)
+		: '0';
+	const churnRateDisplay = `${(stats?.churnRate ?? 0).toFixed(1)}%`;
+	const hasChurn = (stats?.churnRate ?? 0) > 0;
+
 	const statCards = [
 		{
 			title: 'Total Subscribers',
@@ -22,9 +28,7 @@ const SubscriberStats = () => {
 			title: 'Active',
 			count: stats?.active ?? 0,
 			description: 'Currently subscribed',
-			trend: stats?.total
-				? ((stats.active / stats.total) * 100).toFixed(1)
-				: '0',
+			trend: activeRate,
 		},
 		{
 			title: 'New This Month',
@@ -33,9 +37,9 @@ const SubscriberStats = () => {
 		},
 		{
 			title: 'Churn Rate',
-			count: `${(stats?.churnRate ?? 0).toFixed(1)}%`,
+			count: churnRateDisplay,
 			description: 'Inactive / Total',
-			isChurn: true,
+			isChurn: hasChurn,
 		},
 	];
 
@@ -86,15 +90,15 @@ const SubscriberStats = () => {
 								{stat.trend && (
 									<Flex align='center' gap='1.5' paddingY='1.5' paddingX='2.5'>
 										<Typography.Text level={2} color='success'>
-											<HiTrendingUp size={16} />
+											<HiTrendingUp size={16} aria-hidden='true' />
 											{stat.trend}%
 										</Typography.Text>
 									</Flex>
 								)}
-								{stat.isChurn && (stats?.churnRate ?? 0) > 0 && (
+								{stat.isChurn && (
 									<Flex align='center' gap='1.5' paddingY='1.5' paddingX='2.5'>
 										<Typography.Text level={2} color='error'>
-											<HiTrendingDown size={16} />
+											<HiTrendingDown size={16} aria-hidden='true' />
 										</Typography.Text>
 									</Flex>
 								)}
