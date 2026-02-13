@@ -14,7 +14,7 @@ const SubscriberStats = () => {
 
 	const activeRate = stats?.total
 		? ((stats.active / stats.total) * 100).toFixed(1)
-		: '0';
+		: null;
 	const churnRateDisplay = `${(stats?.churnRate ?? 0).toFixed(1)}%`;
 	const hasChurn = (stats?.churnRate ?? 0) > 0;
 

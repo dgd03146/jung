@@ -99,8 +99,8 @@ export const useSubscriberTable = () => {
 				typeof updater === 'function' ? updater(currentSorting) : updater;
 			const sort = next[0];
 			updateSearchParams({
-				sortField: sort?.id as SubscriberSortField,
-				sortOrder: sort?.desc ? 'desc' : 'asc',
+				sortField: sort ? (sort.id as SubscriberSortField) : undefined,
+				sortOrder: sort ? (sort.desc ? 'desc' : 'asc') : undefined,
 			});
 		},
 		[currentSorting, updateSearchParams],

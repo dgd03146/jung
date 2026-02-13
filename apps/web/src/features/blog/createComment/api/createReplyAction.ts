@@ -98,7 +98,7 @@ export async function createReplyAction(input: CreateReplyInput, lang = 'ko') {
 
 					if (emailError) {
 						console.error(
-							`Failed to send reply notification email to ${parentAuthor.email}:`,
+							`Failed to send reply notification email to author (ID: ${parentAuthorId}):`,
 							emailError,
 						);
 					}
