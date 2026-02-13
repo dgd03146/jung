@@ -79,8 +79,8 @@ export const row = style({
 
 export const toggleSortingButton = style({
 	color: palette.primary,
+	transition: 'color 0.3s ease-in-out',
 	':hover': {
-		transition: 'color 0.3s ease-in-out',
 		color: palette.primary200,
 	},
 });
