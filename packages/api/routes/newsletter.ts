@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../lib/trpc';
+import { protectedProcedure, router } from '../lib/trpc';
 import { newsletterService } from '../services/newsletter';
 
 export const newsletterRouter = router({
-	sendNewsletter: publicProcedure
+	sendNewsletter: protectedProcedure
 		.input(
 			z.object({
 				articleId: z.string().uuid(),
@@ -14,13 +14,13 @@ export const newsletterRouter = router({
 			return newsletterService.sendNewsletter(input);
 		}),
 
-	getNewsletterLogs: publicProcedure
+	getNewsletterLogs: protectedProcedure
 		.input(z.string().uuid())
 		.query(({ input }) => {
 			return newsletterService.getNewsletterLogs(input);
 		}),
 
-	getSubscriberStats: publicProcedure.query(() => {
+	getSubscriberStats: protectedProcedure.query(() => {
 		return newsletterService.getSubscriberStats();
 	}),
 });

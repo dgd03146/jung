@@ -1,7 +1,10 @@
 import { TRPCError } from '@trpc/server';
 import { Resend } from 'resend';
+import { z } from 'zod';
 import { NewsletterEmailTemplate } from '../emails/NewsletterEmailTemplate';
 import { supabase } from '../lib/supabase';
+
+const categorySchema = z.enum(['frontend', 'ai', 'both']);
 
 const BATCH_SIZE = 50;
 const BATCH_DELAY_MS = 1000;
@@ -78,7 +81,9 @@ export const newsletterService = {
 				.from('subscribers')
 				.select('email, category')
 				.eq('is_active', true)
-				.or(`category.eq.${article.category},category.eq.both`);
+				.or(
+					`category.eq.${categorySchema.parse(article.category)},category.eq.both`,
+				);
 
 			if (subscriberError) {
 				throw new TRPCError({

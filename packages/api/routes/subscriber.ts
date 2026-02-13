@@ -1,10 +1,10 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { supabase } from '../lib/supabase';
-import { publicProcedure, router } from '../lib/trpc';
+import { protectedProcedure, router } from '../lib/trpc';
 
 export const subscriberRouter = router({
-	getSubscribers: publicProcedure
+	getSubscribers: protectedProcedure
 		.input(
 			z.object({
 				page: z.number().default(0),
@@ -61,7 +61,7 @@ export const subscriberRouter = router({
 			};
 		}),
 
-	deleteSubscriber: publicProcedure
+	deleteSubscriber: protectedProcedure
 		.input(z.string().uuid())
 		.mutation(async ({ input: id }) => {
 			const { error } = await supabase

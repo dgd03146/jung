@@ -1,12 +1,39 @@
-import { initTRPC } from '@trpc/server';
+import { createClient } from '@supabase/supabase-js';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import { ZodError } from 'zod';
 
-export const createTRPCContext = async () => {
-	return {};
+export const createTRPCContext = async (opts?: { headers?: Headers }) => {
+	const authHeader = opts?.headers?.get('authorization');
+
+	if (!authHeader?.startsWith('Bearer ')) {
+		return { user: null };
+	}
+
+	const supabaseUrl =
+		process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+	const supabaseKey =
+		process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+	if (!supabaseUrl || !supabaseKey) {
+		return { user: null };
+	}
+
+	const token = authHeader.replace('Bearer ', '');
+	const supabase = createClient(supabaseUrl, supabaseKey, {
+		global: { headers: { Authorization: `Bearer ${token}` } },
+	});
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser(token);
+
+	return { user };
 };
 
-const t = initTRPC.create({
+type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+
+const t = initTRPC.context<Context>().create({
 	errorFormatter(opts) {
 		const { shape, error } = opts;
 		return {
@@ -24,4 +51,12 @@ const t = initTRPC.create({
 });
 
 export const publicProcedure = t.procedure;
+
+export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+	if (!ctx.user) {
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
+	}
+	return next({ ctx: { ...ctx, user: ctx.user } });
+});
+
 export const { createCallerFactory, router } = t;
