@@ -27,6 +27,7 @@ export const RATE_LIMITS = {
 	authenticatedLike: { maxRequests: 100, windowMs: RATE_LIMIT_WINDOW_MS },
 	anonymousGuestbook: { maxRequests: 3, windowMs: RATE_LIMIT_WINDOW_MS },
 	embeddingGeneration: { maxRequests: 10, windowMs: RATE_LIMIT_WINDOW_MS },
+	analyticsTrack: { maxRequests: 60, windowMs: RATE_LIMIT_WINDOW_MS },
 } as const;
 
 /**
