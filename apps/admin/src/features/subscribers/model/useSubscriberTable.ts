@@ -10,7 +10,10 @@ import {
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { Subscriber } from '@/fsd/entities/subscriber';
-import type { SubscriberFilters } from '@/fsd/features/subscribers/types/subscriberFilters';
+import type {
+	SubscriberFilters,
+	SubscriberSortField,
+} from '@/fsd/features/subscribers/types/subscriberFilters';
 import {
 	subscriberListQueryOptions,
 	useGetSubscribers,
@@ -65,46 +68,54 @@ export const useSubscriberTable = () => {
 		[navigate],
 	);
 
+	const currentPagination: PaginationState = useMemo(
+		() => ({
+			pageIndex: filters.page,
+			pageSize: filters.pageSize,
+		}),
+		[filters.page, filters.pageSize],
+	);
+
+	const currentSorting: SortingState = useMemo(
+		() =>
+			filters.sortField
+				? [{ id: filters.sortField, desc: filters.sortOrder === 'desc' }]
+				: [],
+		[filters.sortField, filters.sortOrder],
+	);
+
+	const handlePaginationChange = useCallback(
+		(updater: Updater<PaginationState>) => {
+			const next =
+				typeof updater === 'function' ? updater(currentPagination) : updater;
+			updateSearchParams({ page: next.pageIndex, pageSize: next.pageSize });
+		},
+		[currentPagination, updateSearchParams],
+	);
+
+	const handleSortingChange = useCallback(
+		(updater: Updater<SortingState>) => {
+			const next =
+				typeof updater === 'function' ? updater(currentSorting) : updater;
+			const sort = next[0];
+			updateSearchParams({
+				sortField: sort?.id as SubscriberSortField,
+				sortOrder: sort?.desc ? 'desc' : 'asc',
+			});
+		},
+		[currentSorting, updateSearchParams],
+	);
+
 	const table = useReactTable({
 		columns,
 		data: data?.subscribers ?? [],
 		state: {
-			sorting: filters.sortField
-				? [{ id: filters.sortField, desc: filters.sortOrder === 'desc' }]
-				: [],
+			sorting: currentSorting,
 			globalFilter: filters.filter,
-			pagination: { pageIndex: filters.page, pageSize: filters.pageSize },
+			pagination: currentPagination,
 		},
-		onPaginationChange: (updater: Updater<PaginationState>) => {
-			const newPagination =
-				typeof updater === 'function'
-					? updater({ pageIndex: filters.page, pageSize: filters.pageSize })
-					: updater;
-			updateSearchParams({
-				page: newPagination.pageIndex,
-				pageSize: newPagination.pageSize,
-			});
-		},
-		onSortingChange: (updater: Updater<SortingState>) => {
-			const newSorting =
-				typeof updater === 'function'
-					? updater(
-							filters.sortField
-								? [
-										{
-											id: filters.sortField,
-											desc: filters.sortOrder === 'desc',
-										},
-									]
-								: [],
-						)
-					: updater;
-			const sort = newSorting[0];
-			updateSearchParams({
-				sortField: sort?.id,
-				sortOrder: sort?.desc ? 'desc' : 'asc',
-			});
-		},
+		onPaginationChange: handlePaginationChange,
+		onSortingChange: handleSortingChange,
 		onGlobalFilterChange: (filter: string) => {
 			updateSearchParams({ filter });
 		},

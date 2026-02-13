@@ -50,8 +50,12 @@ export const fetchSubscriberStats = async (): Promise<SubscriberStats> => {
 
 	const MONTHLY_GROWTH_RANGE = 12;
 
-	const toMonthKey = (date: Date): string =>
-		`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+	/** Date를 "YYYY-MM" 형식의 월 키로 변환 */
+	const formatMonthKey = (date: Date): string => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		return `${year}-${month}`;
+	};
 
 	const monthlyMap = new Map<
 		string,
@@ -60,13 +64,13 @@ export const fetchSubscriberStats = async (): Promise<SubscriberStats> => {
 
 	for (let i = MONTHLY_GROWTH_RANGE - 1; i >= 0; i--) {
 		const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-		const key = toMonthKey(d);
+		const key = formatMonthKey(d);
 		monthlyMap.set(key, { newSubscribers: 0, unsubscribed: 0 });
 	}
 
 	for (const row of rows) {
 		const createdDate = new Date(row.created_at);
-		const createdKey = toMonthKey(createdDate);
+		const createdKey = formatMonthKey(createdDate);
 		if (monthlyMap.has(createdKey)) {
 			const entry = monthlyMap.get(createdKey)!;
 			entry.newSubscribers++;
@@ -74,7 +78,7 @@ export const fetchSubscriberStats = async (): Promise<SubscriberStats> => {
 
 		if (row.unsubscribed_at) {
 			const unsubDate = new Date(row.unsubscribed_at);
-			const unsubKey = toMonthKey(unsubDate);
+			const unsubKey = formatMonthKey(unsubDate);
 			if (monthlyMap.has(unsubKey)) {
 				const entry = monthlyMap.get(unsubKey)!;
 				entry.unsubscribed++;

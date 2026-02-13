@@ -11,11 +11,13 @@ export const useSubscriberTableFilter = () => {
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 
+	const SEARCH_DEBOUNCE_MS = 300;
+
 	const debouncedNavigate = useDebouncedCallback((value: string) => {
 		navigate({
 			search: (prev) => ({ ...prev, filter: value || undefined, page: 0 }),
 		});
-	}, 300);
+	}, SEARCH_DEBOUNCE_MS);
 
 	const handleFilterChange = useCallback(
 		(e: ChangeEvent<HTMLInputElement>) => {
@@ -65,11 +67,11 @@ export const useSubscriberTableFilter = () => {
 		});
 	}, [navigate]);
 
-	const hasActiveFilters = !!(
-		searchParams.filter ||
-		searchParams.category ||
-		searchParams.status
-	);
+	const hasSearchFilter = !!searchParams.filter;
+	const hasCategoryFilter = !!searchParams.category;
+	const hasStatusFilter = !!searchParams.status;
+	const hasActiveFilters =
+		hasSearchFilter || hasCategoryFilter || hasStatusFilter;
 
 	return {
 		filter,

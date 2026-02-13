@@ -10,6 +10,8 @@ import {
 } from '@/fsd/shared/ui';
 import { TableBody } from './TableBody';
 
+const EMPTY_STATE_ICON_SIZE = 48;
+
 interface TableContentProps {
 	table: Table<Subscriber>;
 	isLoading: boolean;
@@ -28,7 +30,7 @@ export const TableContent = ({
 	if (error) {
 		return (
 			<EmptyState
-				icon={<HiMail size={48} />}
+				icon={<HiMail size={EMPTY_STATE_ICON_SIZE} />}
 				title='Failed to load subscribers'
 				description={error.message}
 				action={
@@ -43,7 +45,7 @@ export const TableContent = ({
 	if (table.getRowModel().rows.length === 0) {
 		return (
 			<EmptyState
-				icon={<HiMail size={48} />}
+				icon={<HiMail size={EMPTY_STATE_ICON_SIZE} />}
 				title='No subscribers yet'
 				description='Subscribers will appear here once they sign up'
 			/>

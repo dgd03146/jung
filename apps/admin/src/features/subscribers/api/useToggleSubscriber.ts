@@ -7,11 +7,19 @@ interface ToggleParams {
 	is_active: boolean;
 }
 
-const toggleSubscriber = async ({ id, is_active }: ToggleParams) => {
-	const updateData: { is_active: boolean; unsubscribed_at: string | null } = {
+const buildToggleUpdateData = (is_active: boolean) => {
+	const shouldClearUnsubscribeDate = is_active;
+
+	return {
 		is_active,
-		unsubscribed_at: is_active ? null : new Date().toISOString(),
+		unsubscribed_at: shouldClearUnsubscribeDate
+			? null
+			: new Date().toISOString(),
 	};
+};
+
+const toggleSubscriber = async ({ id, is_active }: ToggleParams) => {
+	const updateData = buildToggleUpdateData(is_active);
 
 	const { error } = await supabase
 		.from('subscribers')

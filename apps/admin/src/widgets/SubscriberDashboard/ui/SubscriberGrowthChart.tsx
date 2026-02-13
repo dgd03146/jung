@@ -38,6 +38,15 @@ const CHART_COLORS = {
 	cursor: '#E5E7EB',
 };
 
+const PERIOD_MONTHS: Record<PeriodType, number> = {
+	'6m': 6,
+	'1y': 12,
+};
+
+const LINE_STROKE_WIDTH = 2.5;
+const DOT_RADIUS = 4;
+const ACTIVE_DOT_RADIUS = 8;
+
 const CHART_MARGIN = { top: 5, right: 5, bottom: 5, left: 0 };
 const AXIS_FONT_SIZE = 12;
 
@@ -78,7 +87,7 @@ const SubscriberGrowthChart = () => {
 
 	const chartData = useMemo(() => {
 		if (!stats?.monthlyGrowth) return [];
-		const months = selectedPeriod === '6m' ? 6 : 12;
+		const months = PERIOD_MONTHS[selectedPeriod];
 		return stats.monthlyGrowth.slice(-months);
 	}, [stats?.monthlyGrowth, selectedPeriod]);
 
@@ -158,26 +167,26 @@ const SubscriberGrowthChart = () => {
 							dataKey='newSubscribers'
 							name='New Subscribers'
 							stroke={CHART_COLORS.newSubscribers}
-							strokeWidth={2.5}
+							strokeWidth={LINE_STROKE_WIDTH}
 							dot={{
 								fill: CHART_COLORS.newSubscribers,
 								strokeWidth: 0,
-								r: 4,
+								r: DOT_RADIUS,
 							}}
-							activeDot={{ r: 8, strokeWidth: 0 }}
+							activeDot={{ r: ACTIVE_DOT_RADIUS, strokeWidth: 0 }}
 						/>
 						<Line
 							type='monotone'
 							dataKey='unsubscribed'
 							name='Unsubscribed'
 							stroke={CHART_COLORS.unsubscribed}
-							strokeWidth={2.5}
+							strokeWidth={LINE_STROKE_WIDTH}
 							dot={{
 								fill: CHART_COLORS.unsubscribed,
 								strokeWidth: 0,
-								r: 4,
+								r: DOT_RADIUS,
 							}}
-							activeDot={{ r: 8, strokeWidth: 0 }}
+							activeDot={{ r: ACTIVE_DOT_RADIUS, strokeWidth: 0 }}
 						/>
 					</LineChart>
 				</ResponsiveContainer>

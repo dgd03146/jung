@@ -57,15 +57,25 @@ export const fetchSubscribers = async ({
 		return { subscribers: [], totalCount, totalPages, hasMore };
 	}
 
-	const subscribers: Subscriber[] = data.map((row) => ({
-		id: row.id,
-		email: row.email,
-		category: row.category as Subscriber['category'],
-		is_active: row.is_active,
-		created_at: row.created_at,
-		updated_at: row.updated_at,
-		unsubscribed_at: row.unsubscribed_at,
-	}));
+	const subscribers = data.map(mapRowToSubscriber);
 
 	return { subscribers, totalCount, totalPages, hasMore };
 };
+
+const mapRowToSubscriber = (row: {
+	id: string;
+	email: string;
+	category: string;
+	is_active: boolean;
+	created_at: string;
+	updated_at: string;
+	unsubscribed_at: string | null;
+}): Subscriber => ({
+	id: row.id,
+	email: row.email,
+	category: row.category as Subscriber['category'],
+	is_active: row.is_active,
+	created_at: row.created_at,
+	updated_at: row.updated_at,
+	unsubscribed_at: row.unsubscribed_at,
+});
