@@ -1,5 +1,6 @@
 import type { ArticleFilters } from '../../features/articles/types/article';
 import type { PostFilters } from '../../features/blog/types/postFilters';
+import type { SubscriberFilters } from '../../features/subscribers/types/subscriberFilters';
 
 // FIXME: 쿼리키 팩토리, PostFilters 수정?
 
@@ -42,4 +43,12 @@ export const collectionKeys = {
 	lists: () => [...collectionKeys.all, 'list'] as const,
 	list: (filters: PostFilters) => [...collectionKeys.lists(), filters] as const,
 	detail: (id?: string) => [...collectionKeys.all, id] as const,
+};
+
+export const subscriberKeys = {
+	all: ['subscribers'] as const,
+	lists: () => [...subscriberKeys.all, 'list'] as const,
+	list: (filters: SubscriberFilters) =>
+		[...subscriberKeys.lists(), filters] as const,
+	stats: () => [...subscriberKeys.all, 'stats'] as const,
 };

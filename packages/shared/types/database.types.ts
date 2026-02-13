@@ -485,6 +485,36 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			subscribers: {
+				Row: {
+					id: string;
+					email: string;
+					category: string;
+					is_active: boolean;
+					created_at: string;
+					updated_at: string;
+					unsubscribed_at: string | null;
+				};
+				Insert: {
+					id?: string;
+					email: string;
+					category?: string;
+					is_active?: boolean;
+					created_at?: string;
+					updated_at?: string;
+					unsubscribed_at?: string | null;
+				};
+				Update: {
+					id?: string;
+					email?: string;
+					category?: string;
+					is_active?: boolean;
+					created_at?: string;
+					updated_at?: string;
+					unsubscribed_at?: string | null;
+				};
+				Relationships: [];
+			};
 		};
 		Views: {
 			[_ in never]: never;

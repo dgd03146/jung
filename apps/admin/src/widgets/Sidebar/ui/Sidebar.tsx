@@ -16,6 +16,7 @@ const menuSections = [
 		items: [
 			{ path: '/articles', label: 'Articles' },
 			{ path: '/articles/new', label: 'New Article' },
+			{ path: '/subscribers', label: 'Subscribers' },
 		],
 	},
 	{
