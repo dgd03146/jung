@@ -73,6 +73,12 @@ describe('deserializeContent', () => {
 	it('잘못된 JSON에서 SyntaxError를 던진다', () => {
 		expect(() => deserializeContent('not json')).toThrow(SyntaxError);
 	});
+
+	it('배열이 아닌 JSON에서 에러를 던진다', () => {
+		expect(() => deserializeContent('{"key":"value"}')).toThrow(
+			'Invalid content: expected an array of blocks',
+		);
+	});
 });
 
 describe('serializeContent <-> deserializeContent 왕복', () => {

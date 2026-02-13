@@ -1,6 +1,6 @@
 import type { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { EMPTY_CONTENT } from '@/fsd/shared';
 import { uploadImage } from '../api';
@@ -17,9 +17,7 @@ export const useArticleContent = (initialContent: PartialBlock[]) => {
 		}
 	}, [editor, initialContent]);
 
-	const getContent = useCallback(() => {
-		return editor.document;
-	}, [editor.document]);
+	const getContent = () => editor.document;
 
 	return { editor, getContent };
 };

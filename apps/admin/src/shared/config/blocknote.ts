@@ -1,7 +1,7 @@
 import type { Block } from '@blocknote/core';
 
 export const EMPTY_CONTENT: Block = {
-	id: '1',
+	id: 'initial',
 	type: 'paragraph',
 	props: {
 		textColor: 'default',

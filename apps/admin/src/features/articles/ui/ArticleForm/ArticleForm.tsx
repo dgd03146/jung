@@ -46,6 +46,11 @@ const ALLOWED_IMAGE_TYPES = [
 	'image/gif',
 ];
 
+const ICON_SIZE = {
+	heading: 24,
+	button: 18,
+} as const;
+
 interface ArticleFormData {
 	title: string;
 	original_url: string;
@@ -85,8 +90,8 @@ export const ArticleForm = () => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const params = useParams({ strict: false });
-	const isEditMode = !!(params as { articleId?: string })?.articleId;
 	const articleId = (params as { articleId?: string })?.articleId;
+	const isEditMode = !!articleId;
 
 	const { data: article, isLoading } = useGetArticle(articleId);
 
@@ -113,9 +118,7 @@ export const ArticleForm = () => {
 				title: article.title,
 				original_url: article.original_url,
 				category: article.category as ArticleCategory,
-				published_at: article.published_at
-					? article.published_at.split('T')[0]
-					: '',
+				published_at: article.published_at?.split('T')[0] ?? '',
 				status: isValidStatus(article.status) ? article.status : 'draft',
 				images: article.images || [],
 			});
@@ -254,7 +257,7 @@ export const ArticleForm = () => {
 		);
 	};
 
-	const isMutating =
+	const isSubmitting =
 		createArticleMutation.isPending || updateArticleMutation.isPending;
 
 	if (isEditMode && isLoading) {
@@ -273,7 +276,7 @@ export const ArticleForm = () => {
 				className={styles.formContainer}
 			>
 				<Flex align='center' gap='2' color='primary' marginBottom='6'>
-					<HiDocumentText size={24} />
+					<HiDocumentText size={ICON_SIZE.heading} />
 					<Typography.Text level={1} fontWeight='semibold'>
 						{isEditMode ? 'Edit Article' : 'New Article'}
 					</Typography.Text>
@@ -448,7 +451,7 @@ export const ArticleForm = () => {
 						onClick={handleImprove}
 						disabled={improveArticleMutation.isPending}
 					>
-						<HiSparkles size={18} />
+						<HiSparkles size={ICON_SIZE.button} />
 						{improveArticleMutation.isPending ? 'Improving...' : 'AI Improve'}
 					</Button>
 
@@ -458,7 +461,7 @@ export const ArticleForm = () => {
 							variant='outline'
 							borderRadius='md'
 							onClick={() => handleSubmit('draft')}
-							disabled={isMutating}
+							disabled={isSubmitting}
 						>
 							Save as Draft
 						</Button>
@@ -467,7 +470,7 @@ export const ArticleForm = () => {
 							borderRadius='md'
 							className={styles.publishButton}
 							onClick={() => handleSubmit('published')}
-							disabled={isMutating}
+							disabled={isSubmitting}
 						>
 							{isEditMode ? 'Update & Publish' : 'Publish'}
 						</Button>
