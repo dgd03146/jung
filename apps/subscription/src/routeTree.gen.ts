@@ -13,6 +13,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesIdRouteImport } from './routes/articles/$id'
+import { Route as ApiOgRouteImport } from './routes/api/og'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
@@ -34,16 +35,23 @@ const ArticlesIdRoute = ArticlesIdRouteImport.update({
   path: '/articles/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOgRoute = ApiOgRouteImport.update({
+  id: '/api/og',
+  path: '/api/og',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/$id': typeof ArticlesIdRoute
   '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/$id': typeof ArticlesIdRoute
   '/articles': typeof ArticlesIndexRoute
 }
@@ -51,20 +59,28 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/$id': typeof ArticlesIdRoute
   '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/unsubscribe' | '/articles/$id' | '/articles/'
+  fullPaths: '/' | '/unsubscribe' | '/api/og' | '/articles/$id' | '/articles/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/unsubscribe' | '/articles/$id' | '/articles'
-  id: '__root__' | '/' | '/unsubscribe' | '/articles/$id' | '/articles/'
+  to: '/' | '/unsubscribe' | '/api/og' | '/articles/$id' | '/articles'
+  id:
+    | '__root__'
+    | '/'
+    | '/unsubscribe'
+    | '/api/og'
+    | '/articles/$id'
+    | '/articles/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  ApiOgRoute: typeof ApiOgRoute
   ArticlesIdRoute: typeof ArticlesIdRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
 }
@@ -99,12 +115,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/og': {
+      id: '/api/og'
+      path: '/api/og'
+      fullPath: '/api/og'
+      preLoaderRoute: typeof ApiOgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  ApiOgRoute: ApiOgRoute,
   ArticlesIdRoute: ArticlesIdRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
 }
