@@ -1,3 +1,4 @@
+import type { PartialBlock } from '@blocknote/core';
 import {
 	Box,
 	Button,
@@ -5,13 +6,12 @@ import {
 	Flex,
 	Input,
 	Stack,
-	Textarea,
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
 import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { useParams } from '@tanstack/react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
 	HiDocumentText,
 	HiOutlinePhotograph,
@@ -20,12 +20,20 @@ import {
 } from 'react-icons/hi';
 import { uploadToR2 } from '@/fsd/shared/lib/r2/uploadToR2';
 import {
+	deserializeContent,
+	EMPTY_CONTENT,
+	serializeContent,
+} from '@/fsd/shared';
+import {
 	useCreateArticle,
 	useGetArticle,
 	useImproveArticle,
 	useUpdateArticle,
 } from '../../api';
+import { textToBlocks } from '../../lib';
+import { useArticleContent } from '../../model';
 import type { ArticleCategory, ArticleInput } from '../../types';
+import { ArticleBlockNote } from './ArticleBlockNote';
 import * as styles from './ArticleForm.css';
 
 const MAX_IMAGES = 3;
@@ -41,8 +49,6 @@ const ALLOWED_IMAGE_TYPES = [
 interface ArticleFormData {
 	title: string;
 	original_url: string;
-	summary: string;
-	my_thoughts: string;
 	category: ArticleCategory;
 	published_at: string;
 	status: 'draft' | 'published';
@@ -52,8 +58,6 @@ interface ArticleFormData {
 const INITIAL_FORM_DATA: ArticleFormData = {
 	title: '',
 	original_url: '',
-	summary: '',
-	my_thoughts: '',
 	category: 'frontend',
 	published_at: '',
 	status: 'draft',
@@ -62,6 +66,16 @@ const INITIAL_FORM_DATA: ArticleFormData = {
 
 const isValidStatus = (s: unknown): s is 'draft' | 'published' =>
 	s === 'draft' || s === 'published';
+
+const parseContent = (content: string | null | undefined): PartialBlock[] => {
+	if (!content) return [EMPTY_CONTENT];
+	try {
+		return deserializeContent(content);
+	} catch {
+		// plain text fallback: 기존 텍스트 데이터를 블록으로 변환
+		return textToBlocks(content);
+	}
+};
 
 export const ArticleForm = () => {
 	const showToast = useToast();
@@ -79,13 +93,25 @@ export const ArticleForm = () => {
 	const [formData, setFormData] = useState<ArticleFormData>(INITIAL_FORM_DATA);
 	const [isUploading, setIsUploading] = useState(false);
 
+	const initialSummaryContent = useMemo(
+		() => parseContent(article?.summary),
+		[article?.summary],
+	);
+	const initialThoughtsContent = useMemo(
+		() => parseContent(article?.my_thoughts),
+		[article?.my_thoughts],
+	);
+
+	const { editor: summaryEditor, getContent: getSummaryContent } =
+		useArticleContent(initialSummaryContent);
+	const { editor: thoughtsEditor, getContent: getThoughtsContent } =
+		useArticleContent(initialThoughtsContent);
+
 	useEffect(() => {
 		if (isEditMode && article) {
 			setFormData({
 				title: article.title,
 				original_url: article.original_url,
-				summary: article.summary,
-				my_thoughts: article.my_thoughts || '',
 				category: article.category as ArticleCategory,
 				published_at: article.published_at
 					? article.published_at.split('T')[0]
@@ -152,10 +178,14 @@ export const ArticleForm = () => {
 	};
 
 	const handleSubmit = (status: 'draft' | 'published') => {
-		if (!formData.title || !formData.original_url || !formData.summary) {
+		const summaryContent = serializeContent(getSummaryContent());
+
+		if (!formData.title || !formData.original_url || !summaryContent) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
+
+		const thoughtsContent = serializeContent(getThoughtsContent());
 
 		const now = new Date().toISOString();
 
@@ -168,8 +198,8 @@ export const ArticleForm = () => {
 		const articleData: ArticleInput = {
 			title: formData.title.trim(),
 			original_url: formData.original_url.trim(),
-			summary: formData.summary.trim(),
-			my_thoughts: formData.my_thoughts.trim() || null,
+			summary: summaryContent,
+			my_thoughts: thoughtsContent || null,
 			category: formData.category,
 			published_at: getPublishedAt(),
 			status,
@@ -187,7 +217,10 @@ export const ArticleForm = () => {
 	};
 
 	const handleImprove = async () => {
-		if (!formData.title && !formData.summary) {
+		const currentSummary = serializeContent(getSummaryContent());
+		const currentThoughts = serializeContent(getThoughtsContent());
+
+		if (!formData.title && !currentSummary) {
 			showToast('Please enter title or summary first.', 'error');
 			return;
 		}
@@ -195,17 +228,27 @@ export const ArticleForm = () => {
 		improveArticleMutation.mutate(
 			{
 				title: formData.title,
-				summary: formData.summary,
-				my_thoughts: formData.my_thoughts || null,
+				summary: currentSummary,
+				my_thoughts: currentThoughts || null,
 			},
 			{
 				onSuccess: (data) => {
 					setFormData((prev) => ({
 						...prev,
 						title: data.title,
-						summary: data.summary,
-						my_thoughts: data.my_thoughts,
 					}));
+
+					// AI 결과를 에디터에 삽입
+					const summaryBlocks = textToBlocks(data.summary);
+					summaryEditor.replaceBlocks(summaryEditor.document, summaryBlocks);
+
+					if (data.my_thoughts) {
+						const thoughtsBlocks = textToBlocks(data.my_thoughts);
+						thoughtsEditor.replaceBlocks(
+							thoughtsEditor.document,
+							thoughtsBlocks,
+						);
+					}
 				},
 			},
 		);
@@ -288,24 +331,8 @@ export const ArticleForm = () => {
 					<Stack space='2'>
 						<Typography.Text level={2} fontWeight='medium'>
 							Summary
-							{!formData.summary && (
-								<Typography.Text as='span' level={2} color='secondary'>
-									*
-								</Typography.Text>
-							)}
 						</Typography.Text>
-						<Textarea
-							width='full'
-							borderRadius='md'
-							value={formData.summary}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									summary: e.target.value,
-								}))
-							}
-							placeholder='Write a brief summary (2-3 sentences)'
-						/>
+						<ArticleBlockNote editor={summaryEditor} />
 					</Stack>
 
 					{/* Images */}
@@ -364,18 +391,7 @@ export const ArticleForm = () => {
 						<Typography.Text level={2} fontWeight='medium'>
 							Why I Recommend
 						</Typography.Text>
-						<Textarea
-							width='full'
-							borderRadius='md'
-							value={formData.my_thoughts}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									my_thoughts: e.target.value,
-								}))
-							}
-							placeholder='Why do you recommend this article? (visible to subscribers)'
-						/>
+						<ArticleBlockNote editor={thoughtsEditor} />
 					</Stack>
 
 					{/* Category */}
