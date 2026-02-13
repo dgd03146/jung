@@ -48,20 +48,25 @@ export const fetchSubscriberStats = async (): Promise<SubscriberStats> => {
 		}
 	}
 
+	const MONTHLY_GROWTH_RANGE = 12;
+
+	const toMonthKey = (date: Date): string =>
+		`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
 	const monthlyMap = new Map<
 		string,
 		{ newSubscribers: number; unsubscribed: number }
 	>();
 
-	for (let i = 11; i >= 0; i--) {
+	for (let i = MONTHLY_GROWTH_RANGE - 1; i >= 0; i--) {
 		const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-		const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+		const key = toMonthKey(d);
 		monthlyMap.set(key, { newSubscribers: 0, unsubscribed: 0 });
 	}
 
 	for (const row of rows) {
 		const createdDate = new Date(row.created_at);
-		const createdKey = `${createdDate.getFullYear()}-${String(createdDate.getMonth() + 1).padStart(2, '0')}`;
+		const createdKey = toMonthKey(createdDate);
 		if (monthlyMap.has(createdKey)) {
 			const entry = monthlyMap.get(createdKey)!;
 			entry.newSubscribers++;
@@ -69,7 +74,7 @@ export const fetchSubscriberStats = async (): Promise<SubscriberStats> => {
 
 		if (row.unsubscribed_at) {
 			const unsubDate = new Date(row.unsubscribed_at);
-			const unsubKey = `${unsubDate.getFullYear()}-${String(unsubDate.getMonth() + 1).padStart(2, '0')}`;
+			const unsubKey = toMonthKey(unsubDate);
 			if (monthlyMap.has(unsubKey)) {
 				const entry = monthlyMap.get(unsubKey)!;
 				entry.unsubscribed++;

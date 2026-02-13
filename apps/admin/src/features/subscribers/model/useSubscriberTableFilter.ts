@@ -13,7 +13,7 @@ export const useSubscriberTableFilter = () => {
 
 	const debouncedNavigate = useDebouncedCallback((value: string) => {
 		navigate({
-			search: (prev) => ({ ...prev, filter: value || '', page: 0 }),
+			search: (prev) => ({ ...prev, filter: value || undefined, page: 0 }),
 		});
 	}, 300);
 

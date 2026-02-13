@@ -10,20 +10,13 @@ interface TableBodyProps {
 }
 
 const CategoryBadge = ({ category }: { category: string }) => {
-	const colorMap: Record<string, string> = {
-		frontend: '#3B82F6',
-		ai: '#8B5CF6',
-		both: '#10B981',
-	};
+	const variant =
+		category in styles.categoryBadge
+			? (category as keyof typeof styles.categoryBadge)
+			: 'default';
 
 	return (
-		<Typography.Text
-			level={3}
-			style={{
-				color: colorMap[category] ?? '#6B7280',
-				fontWeight: 500,
-			}}
-		>
+		<Typography.Text level={3} className={styles.categoryBadge[variant]}>
 			{category}
 		</Typography.Text>
 	);
@@ -32,10 +25,7 @@ const CategoryBadge = ({ category }: { category: string }) => {
 const StatusBadge = ({ isActive }: { isActive: boolean }) => (
 	<Typography.Text
 		level={3}
-		style={{
-			color: isActive ? '#10B981' : '#EF4444',
-			fontWeight: 500,
-		}}
+		className={styles.statusBadge[isActive ? 'active' : 'inactive']}
 	>
 		{isActive ? 'Active' : 'Inactive'}
 	</Typography.Text>
@@ -48,6 +38,9 @@ export const TableBody = ({ table }: TableBodyProps) => {
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
 				const subscriber = row.original;
+				const isToggling =
+					toggleMutation.isPending &&
+					toggleMutation.variables?.id === subscriber.id;
 
 				return (
 					<tr key={row.id} className={styles.row}>
@@ -74,7 +67,7 @@ export const TableBody = ({ table }: TableBodyProps) => {
 										is_active: !subscriber.is_active,
 									})
 								}
-								disabled={toggleMutation.isPending}
+								disabled={isToggling}
 							>
 								{subscriber.is_active ? 'Deactivate' : 'Activate'}
 							</Button>
