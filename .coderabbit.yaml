@@ -2,26 +2,59 @@
 language: "ko-KR"
 early_access: false
 
-# 250자 제한 준수 (핵심만 간결하게)
+# 250자 제한: 핵심 원칙 + 반복 코멘트 방지 지시
 tone_instructions: >
-  Toss급 아키텍처 전문가. Readability/Predictability/Cohesion/Low Coupling 원칙.
-  React 18, TS, TanStack Query v5, FSD.
-  필수: Magic numbers→상수, 조건→명명변수, Props drilling→Composition, useEffect=외부동기화만, Query hooks=QueryResult 반환.
+  Toss급 아키텍처 전문가. Readability/Predictability/Cohesion/Low Coupling.
+  React 19, TS 5, TanStack Query v5, FSD, Vanilla Extract.
+  동일 이슈가 여러 파일에 반복되면 대표 1곳만 코멘트하고 나머지는 요약으로 묶어라.
 
 reviews:
-  profile: "chill"
+  profile: "assertive"
   request_changes_workflow: true
   high_level_summary: true
+  high_level_summary_in_walkthrough: true
   poem: false
   review_status: true
   collapse_walkthrough: true
+  sequence_diagrams: true
+  changed_files_summary: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  abort_on_close: true
 
+  # 라벨 자동 제안
+  suggested_labels: true
+  auto_apply_labels: false
+  labeling_instructions:
+    - label: "bug"
+      instructions: "PR이 기존 동작의 버그를 수정할 때"
+    - label: "refactor"
+      instructions: "기능 변경 없이 코드 구조를 개선할 때"
+    - label: "feature"
+      instructions: "새로운 기능을 추가할 때"
+    - label: "design-system"
+      instructions: "packages/design-system 변경이 포함될 때"
+    - label: "admin"
+      instructions: "apps/admin 변경이 포함될 때"
+    - label: "web"
+      instructions: "apps/web 변경이 포함될 때"
+
+  # 자동 리뷰 설정
   auto_review:
     enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 5
     drafts: false
     base_branches: ["main", "dev", "release"]
+    ignore_title_keywords:
+      - "wip"
+      - "draft"
+      - "[skip ci]"
+      - "[ci skip]"
+      - "[skip review]"
 
-  # 빌드 산출물 및 생성 코드 제외
+  # 빌드 산출물, 생성 코드, 문서 제외
   path_filters:
     - "!**/node_modules/**"
     - "!**/dist/**"
@@ -32,379 +65,206 @@ reviews:
     - "!**/storybook-static/**"
     - "!**/*.gen.ts"
     - "!**/routeTree.gen.ts"
+    - "!**/pnpm-lock.yaml"
+    - "!**/*.lock"
+    - "!docs/**"
+    - "!**/*.md"
+    - "!**/*.mdx"
+    - "!**/public/**"
+    - "!**/.env.example"
+    - "!**/*.svg"
 
-  # WIP/Draft PR 자동 스킵
-  ignore_title_keywords:
-    - "wip"
-    - "draft"
-    - "[skip ci]"
-    - "[ci skip]"
+  # Finishing touches (docstring/test 제안)
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
 
+  # Pre-merge 품질 게이트
+  pre_merge_checks:
+    title:
+      mode: "warning"
+      requirements: "Conventional Commits 형식: type(scope): description"
+    description:
+      mode: "warning"
+
+  # ============================================
+  # 📋 Path Instructions
+  # ============================================
   path_instructions:
-    # ============================================
-    # 📋 Readability Rules (가독성)
-    # ============================================
+
+    # ------------------------------------------
+    # 🔍 Global: Readability + Effect Hygiene
+    # ------------------------------------------
     - path: "**/*.{ts,tsx}"
       instructions: |
-        🔍 Readability (rules/frontend-design.md 기준):
+        🔍 Readability:
+        - Magic numbers → Named constants
+        - 복잡한 조건 → 명명된 변수 (isEligible, canSubmit)
+        - 중첩 삼항 금지 → switch/IIFE/early return
+        - 동일 패턴이 여러 파일에 반복되면 대표 1곳만 코멘트
 
-        1. Magic numbers → Named constants
-           ❌ await delay(300);
-           ✅ const ANIMATION_DELAY_MS = 300; await delay(ANIMATION_DELAY_MS);
+        ⚡ useEffect = 외부 시스템 동기화만 (react.dev):
+        ✅ 타이머, 구독(WebSocket), 비-React 위젯, 브라우저 API
+        ❌ 데이터 페칭 → TanStack Query, 파생 상태 → 렌더 시 계산
 
-        2. 복잡한 조건 → 명명된 변수
-           ❌ if (age >= 18 && hasConsent && !isBanned)
-           ✅ const isEligible = age >= 18 && hasConsent && !isBanned;
+        🛡️ TypeScript: any 금지, unknown+타입가드, Discriminated Union
 
-        3. 조건부 렌더링 → 전용 컴포넌트 분리
-           ❌ {role === 'admin' ? <AdminButton /> : <ViewerButton />}
-           ✅ <RoleBasedButton role={role} />
+        ♿ Accessibility: 네이티브 요소 우선 (<button>), ARIA 보조, 키보드 네비게이션
 
-        4. 중첩 삼항 연산자 금지 → IIFE 또는 early return
-           const status = (() => {
-             if (A && B) return 'BOTH';
-             if (A) return 'A';
-             return 'NONE';
-           })();
-
-    # ============================================
-    # 🎯 Predictability Rules (예측 가능성)
-    # ============================================
-    - path: "**/hooks/**/*.{ts,tsx}"
+    # ------------------------------------------
+    # 🎨 Vanilla Extract (.css.ts)
+    # ------------------------------------------
+    - path: "**/*.css.ts"
       instructions: |
-        🎯 Predictability (TanStack Query v5):
+        🎨 Vanilla Extract:
+        - 디자인 토큰: palette(design-system), tokens.ts(fsd/shared/styles) 활용
+        - 하드코딩 rgba/hex 금지 → 공유 토큰 import
+          import { border, primaryRing, hoverBg } from '@/fsd/shared/styles/tokens';
+        - transition은 반드시 base 스타일에 (hover-out 애니메이션 보장)
+        - Recipes로 variant, camelCase 네이밍
+        - 인라인 스타일 금지
 
-        1. Query hooks는 전체 QueryResult<T, Error> 반환
-           ❌ export function useUser(id: string) { return useQuery(...).data; }
-           ✅ export function useUser(id: string): UseQueryResult<User, Error> { return useQuery(...); }
+    # ------------------------------------------
+    # 🎯 Hooks: TanStack Query v5
+    # ------------------------------------------
+    - path: "**/{hooks,api,model}/**/*.{ts,tsx}"
+      instructions: |
+        🎯 TanStack Query v5 + TkDodo:
+        - Query hooks → 전체 QueryResult<T, Error> 반환 (data만 꺼내지 말 것)
+        - queryKey에 모든 파라미터 포함
+        - queryOptions() 헬퍼로 옵션 공통화
+        - enabled로 조건부 쿼리
+        - 낙관적 업데이트: onMutate→onError→onSettled 3단계
+        - gcTime (v5, cacheTime 아님)
 
-        2. queryKey에 모든 파라미터 포함 (레이스 컨디션 방지, tkdodo.eu)
-           ✅ queryKey: ['posts', { status, page, limit }]
-
-        3. enabled로 조건부 쿼리 (v5 표준)
-           useQuery({ ...userQuery(id), enabled: Boolean(id) })
-
-        4. queryOptions() 헬퍼로 옵션 공통화
-           export const postQuery = (id: string) => queryOptions({
-             queryKey: ['post', id],
-             queryFn: () => fetchPost(id),
-             staleTime: 60_000,
-             gcTime: 5 * 60_000,  // v5에서 cacheTime → gcTime
-           });
-
-        5. 함수명은 부수효과 명확히
-           ✅ fetchUserWithAuth(), logAnalyticsEvent()
-           ❌ handleData(), doStuff()
-
-    # ============================================
-    # 🧩 Cohesion Rules (응집도)
-    # ============================================
+    # ------------------------------------------
+    # 🧩 FSD: Web App
+    # ------------------------------------------
     - path: "apps/web/src/features/**/*.{ts,tsx}"
       instructions: |
-        🧩 Cohesion (FSD + Toss 원칙):
-
-        FSD features 구조:
-        - api/: TanStack Query hooks
-        - model/: 비즈니스 로직 hooks (useXXX)
-        - ui/: 프레젠테이션 컴포넌트
-        - lib/: 순수 함수
-        - config/: 상수
-
-        필수:
-        - 단방향 의존성: features → entities → shared
-        - 단일 책임 원칙 (SRP)
-        - 관련 상수는 로직 근처 배치
-        - Form cohesion: 필드 간 의존성 있으면 form-level schema
+        🧩 FSD features (비즈니스 로직):
+        - api/: TanStack Query hooks, model/: 비즈니스 hooks, ui/: 컴포넌트
+        - 단방향: features → entities → shared
+        - SRP, Form cohesion
 
     - path: "apps/web/src/entities/**/*.{ts,tsx}"
       instructions: |
-        🧩 FSD entities = 순수 데이터 레이어:
-
-        - api/: Query hooks (QueryResult<T> 반환)
-        - ui/: Stateless 프레젠테이션 컴포넌트
-        - model/: 타입 정의, 상수
-
-        금지:
-        - ❌ 비즈니스 로직 (features에서)
-        - ❌ features 레이어 의존
-        - ❌ any 타입
+        🧩 FSD entities (순수 데이터):
+        - api/: Query hooks, ui/: Stateless, model/: 타입/상수
+        - ❌ 비즈니스 로직, features 의존, any
 
     - path: "apps/web/src/shared/**/*.{ts,tsx}"
       instructions: |
-        🧩 Shared = 범용 레이어 (도메인 로직 금지):
+        🧩 Shared (범용, 도메인 로직 금지):
+        - ui/: Polymorphic 컴포넌트, hooks/: 제네릭, lib/: 순수 함수, api/: tRPC
 
-        - ui/: Polymorphic 컴포넌트, 접근성 필수
-        - hooks/: 제네릭 기반 (useDebounce<T>, useLocalStorage<T>)
-        - lib/: 순수 함수 (formatDate, cn, validate*)
-        - api/: tRPC 클라이언트
-        - config/: 전역 상수
-
-    # ============================================
-    # 🔗 Coupling Rules (결합도)
-    # ============================================
-    - path: "apps/web/src/**/*.{ts,tsx}"
-      instructions: |
-        🔗 Low Coupling (Toss 원칙):
-
-        1. Props drilling 금지 → Composition 패턴
-           ❌ <Parent><Child><GrandChild prop={x} /></Child></Parent>
-           ✅ <Modal>{children}</Modal>
-
-        2. 조기 추상화 방지
-           - 사용 케이스 2개 이하면 중복 허용
-           - 3개 이상이고 패턴 명확할 때만 추상화
-
-        3. 상태 관리 범위 좁게
-           ❌ useGlobalState()
-           ✅ useCardIdParam(), useDateRangeParam()
-
-    # ============================================
-    # ⚡ Effect Hygiene (React 공식 문서 기준)
-    # ============================================
-    - path: "**/*.{ts,tsx}"
-      instructions: |
-        ⚡ useEffect는 외부 시스템 동기화만 (react.dev):
-
-        허용 (외부 시스템):
-        ✅ 타이머 (setTimeout, setInterval)
-        ✅ 구독 (WebSocket, EventSource)
-        ✅ 비-React 위젯 (지도, 차트)
-        ✅ 브라우저 API (IntersectionObserver, localStorage sync)
-
-        금지:
-        ❌ 데이터 페칭 (TanStack Query 사용)
-        ❌ 파생 상태 (렌더 시 계산)
-        ❌ 이벤트 핸들러 로직 (onClick에서 직접)
-
-        예시:
-        ❌ const [fullName, setFullName] = useState('');
-           useEffect(() => setFullName(`${first} ${last}`), [first, last]);
-        ✅ const fullName = `${first} ${last}`;
-
-    # ============================================
-    # ♿ Accessibility (WAI-ARIA)
-    # ============================================
-    - path: "**/*.{ts,tsx}"
-      instructions: |
-        ♿ Accessibility (Native First, ARIA Second):
-
-        1. 네이티브 요소 우선
-           ✅ <button>, <a>, <input>, <select>
-
-        2. ARIA는 보조
-           <button type="button" aria-pressed={isOn}>Mute</button>
-
-        3. 키보드 네비게이션
-           - Tab, Enter, Escape, Arrow keys
-
-        4. 포커스 관리
-           - focus-visible, focus trap in modal
-
-    # ============================================
-    # 🎨 Styling (Vanilla Extract)
-    # ============================================
-    - path: "**/*.css.ts"
-      instructions: |
-        🎨 Vanilla Extract (제로 런타임):
-
-        1. 디자인 토큰 활용
-           import { colors, spacing } from '@design-system/tokens';
-
-        2. Recipes로 variant
-           export const button = recipe({
-             base: { padding: '8px 16px' },
-             variants: { size: { sm: {...}, lg: {...} } }
-           });
-
-        3. 금지
-           ❌ 인라인 스타일 (style={{ ... }})
-           ❌ Magic numbers (spacing.md 사용)
-
-        4. 네이밍: camelCase
-
-    # ============================================
-    # 🔧 TanStack Query v5 (Best Practices)
-    # ============================================
-    - path: "**/api/**/*.{ts,tsx}"
-      instructions: |
-        🔧 TanStack Query v5 + TkDodo 패턴:
-
-        1. queryKey에 모든 파라미터 (tkdodo.eu/effective-react-query-keys)
-           queryKey: ['user', id, { filter, sort }]
-
-        2. queryOptions()로 옵션 공통화
-           export const userQuery = (id: string) => queryOptions({
-             queryKey: ['user', id],
-             queryFn: () => fetchUser(id),
-             staleTime: 60_000,
-             gcTime: 5 * 60_000,  // v5 rename (cacheTime → gcTime)
-           });
-
-        3. enabled로 조건부 쿼리
-           useQuery({ ...userQuery(id), enabled: Boolean(id) })
-
-        4. 낙관적 업데이트 3단계
-           onMutate: async (newData) => {
-             await queryClient.cancelQueries(['posts']);
-             const previous = queryClient.getQueryData(['posts']);
-             queryClient.setQueryData(['posts'], old => [...old, newData]);
-             return { previous };
-           }
-           onError: (err, vars, context) => {
-             queryClient.setQueryData(['posts'], context.previous);
-           }
-           onSettled: () => {
-             queryClient.invalidateQueries(['posts']);
-           }
-
-    # ============================================
-    # 🛡️ Type Safety (TypeScript)
-    # ============================================
-    - path: "**/*.{ts,tsx}"
-      instructions: |
-        🛡️ TypeScript 품질:
-
-        1. any 타입 금지
-           ✅ unknown → 타입 가드
-
-        2. Discriminated Union 활용
-           type Result<T> =
-             | { ok: true; data: T }
-             | { ok: false; error: string };
-
-        3. 제네릭으로 재사용성
-           function useDebounce<T>(value: T, delay: number): T
-
-    # ============================================
-    # 🧪 Testing
-    # ============================================
-    - path: "**/*.test.{ts,tsx}"
-      instructions: |
-        🧪 Unit Test 품질:
-
-        1. 설명적인 테스트명
-           ✅ describe('useAgeFilter', () => {
-                it('should update URL when age range changes', () => {...})
-              })
-
-        2. AAA 패턴
-           // Arrange
-           const { result } = renderHook(() => useAgeFilter());
-           // Act
-           act(() => result.current.setAgeRange([20, 30]));
-           // Assert
-           expect(result.current.ageRange).toEqual([20, 30]);
-
-        3. Edge case 커버
-        4. Mock 최소화
-
-    - path: "**/*.spec.{ts,tsx}"
-      instructions: |
-        🧪 E2E Test 품질:
-
-        1. 사용자 관점 시나리오
-        2. Accessibility 체크
-        3. 네트워크 대기 처리 (waitFor)
-
-    # ============================================
-    # 📦 Design System
-    # ============================================
-    - path: "packages/design-system/**/*.{ts,tsx}"
-      instructions: |
-        📦 Design System:
-
-        1. Polymorphic 컴포넌트 (as prop)
-           type ButtonProps<C extends ElementType = 'button'> = {
-             as?: C;
-           } & ComponentPropsWithoutRef<C>;
-
-        2. Compound Pattern
-           <Accordion>
-             <Accordion.Item>
-               <Accordion.Trigger />
-               <Accordion.Content />
-             </Accordion.Item>
-           </Accordion>
-
-        3. 접근성 필수
-        4. Storybook 문서화
-
-    # ============================================
-    # 🔐 Backend (tRPC + Zod)
-    # ============================================
-    - path: "apps/server/**/*.ts"
-      instructions: |
-        🔐 tRPC + Zod:
-
-        1. Zod로 입력 유효성
-           const createPostSchema = z.object({
-             title: z.string().min(1).max(200),
-             content: z.string().min(1),
-           });
-
-        2. TRPCError로 에러 처리
-           throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' });
-
-        3. 함수명은 부수효과 명확히
-           ✅ createPost, sendEmail, logEvent
-
-        4. 트랜잭션 사용 (여러 DB 작업 시)
-
-    # ============================================
-    # 🎭 Views & Widgets
-    # ============================================
     - path: "apps/web/src/views/**/*.{ts,tsx}"
       instructions: |
-        🎭 Views (페이지 조합):
-
-        - Composition 패턴으로 features 조합
-        - ❌ 비즈니스 로직/데이터 페칭/상태 관리
-        - ✅ 레이아웃, SEO 메타데이터만
+        🎭 Views: Composition으로 features 조합. ❌ 비즈니스 로직/데이터 페칭. ✅ 레이아웃, SEO만.
 
     - path: "apps/web/src/widgets/**/*.{ts,tsx}"
       instructions: |
-        🎭 Widgets (독립 UI 블록):
+        🎭 Widgets: 독립 UI 블록 (Header, Sidebar). features 조합 가능, 자체 상태 가능.
 
-        - Header, Footer, Sidebar
-        - features 조합 가능
-        - 자체 상태 관리 가능 (위젯 내부만)
-
-    # ============================================
-    # 📱 Admin Dashboard
-    # ============================================
+    # ------------------------------------------
+    # 📱 FSD: Admin App
+    # ------------------------------------------
     - path: "apps/admin/src/features/**/*.{ts,tsx}"
       instructions: |
-        📱 Admin CRUD 패턴:
-
-        - List: TanStack Table + 필터/정렬/페이지네이션
-        - Create/Edit: React Hook Form + Zod
-        - Delete: 확인 모달 + 낙관적 업데이트
+        📱 Admin FSD features:
+        - CRUD: TanStack Table + 필터/정렬/페이지네이션
+        - 폼: React Hook Form + Zod
+        - 삭제: 확인 Dialog (useConfirmDialog) + 낙관적 업데이트
         - columnHelper로 타입 안전
+        - 공유 토큰: @/fsd/shared/styles/tokens 사용 필수
+        - 단방향: features → entities → shared
 
-    # ============================================
+    - path: "apps/admin/src/entities/**/*.{ts,tsx}"
+      instructions: |
+        📱 Admin entities: 순수 데이터 레이어. ❌ 비즈니스 로직, features 의존.
+
+    - path: "apps/admin/src/shared/**/*.{ts,tsx}"
+      instructions: |
+        📱 Admin shared:
+        - ui/: Table, FilterBar, BulkActionBar, EmptyState, CategoryManager
+        - styles/tokens.ts: 공유 디자인 토큰 (border, primaryRing, hoverBg 등)
+        - styles/layout.ts: SIDEBAR_WIDTH 등 레이아웃 상수
+        - lib/: useBulkSelection, useConfirmDialog 등 공유 hooks
+        - ❌ 도메인 로직
+
+    - path: "apps/admin/src/views/**/*.{ts,tsx}"
+      instructions: |
+        📱 Admin views: 페이지 조합. ❌ 비즈니스 로직. ✅ 레이아웃만.
+
+    - path: "apps/admin/src/widgets/**/*.{ts,tsx}"
+      instructions: |
+        📱 Admin widgets: Layout, Header, Sidebar, Dashboard, Analytics.
+
+    # ------------------------------------------
+    # 🔗 Coupling (전체 앱)
+    # ------------------------------------------
+    - path: "apps/*/src/**/*.{ts,tsx}"
+      instructions: |
+        🔗 Low Coupling:
+        - Props drilling 금지 → Composition
+        - 조기 추상화 방지 (3개 이상 패턴일 때만)
+        - 상태 관리 범위 좁게 (useCardIdParam > useGlobalState)
+
+    # ------------------------------------------
+    # 📦 Design System
+    # ------------------------------------------
+    - path: "packages/design-system/**/*.{ts,tsx}"
+      instructions: |
+        📦 Design System:
+        - Polymorphic (as prop), Compound Pattern
+        - 접근성 필수, 'use client' directive
+        - Storybook 문서화
+
+    # ------------------------------------------
+    # 🔐 Backend
+    # ------------------------------------------
+    - path: "apps/server/**/*.ts"
+      instructions: |
+        🔐 tRPC + Zod:
+        - Zod 입력 검증 필수, TRPCError 에러 처리
+        - 트랜잭션 (여러 DB 작업 시)
+        - 에러 메시지에 민감 정보 노출 금지
+
+    # ------------------------------------------
     # 🔄 Shared Packages
-    # ============================================
+    # ------------------------------------------
     - path: "packages/shared/**/*.ts"
       instructions: |
-        🔄 Shared (공통 유틸):
+        🔄 Shared: types/(Result<T>, Discriminated Union), Zod 스키마, 순수 함수. ❌ any
 
-        - types/: Result<T>, Discriminated Union
-        - hooks/: useDebounce, useLocalStorage
-        - Zod 스키마
-        - 순수 함수 지향
-        - ❌ any 금지
+    # ------------------------------------------
+    # 🧪 Testing
+    # ------------------------------------------
+    - path: "**/*.test.{ts,tsx}"
+      instructions: |
+        🧪 Unit Test: 설명적 테스트명, AAA 패턴 (Arrange/Act/Assert), Edge case, Mock 최소화
+
+    - path: "**/*.spec.{ts,tsx}"
+      instructions: |
+        🧪 E2E: 사용자 관점, Accessibility, waitFor 네트워크 대기
 
 # ============================================
-# 🛠️ Tools Configuration
+# 🛠️ Tools
 # ============================================
 tools:
   biome:
+    enabled: true
+  gitleaks:
     enabled: true
 
 # ============================================
 # 📚 Knowledge Base
 # ============================================
 knowledge_base:
+  web_search:
+    enabled: true
   code_guidelines:
     enabled: true
     filePatterns:
@@ -412,6 +272,10 @@ knowledge_base:
       - "**/rules/*.md"
       - "**/.cursorrules"
   learnings:
+    scope: "auto"
+  issues:
+    scope: "auto"
+  pull_requests:
     scope: "auto"
 
 # ============================================
