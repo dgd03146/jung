@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import {
+	AnalyticsProvider,
 	ClientToastProvider,
 	KakaoProvider,
 	TRPCReactProvider,
@@ -31,9 +32,11 @@ export default async function LocaleLayout({ params, children }: Props) {
 		<TRPCReactProvider>
 			<NextIntlClientProvider locale={locale} messages={messages}>
 				<ClientToastProvider>
-					<KakaoProvider />
-					{children}
-					<ChatbotWidget />
+					<AnalyticsProvider>
+						<KakaoProvider />
+						{children}
+						<ChatbotWidget />
+					</AnalyticsProvider>
 				</ClientToastProvider>
 			</NextIntlClientProvider>
 		</TRPCReactProvider>
