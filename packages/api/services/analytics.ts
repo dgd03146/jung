@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { TrackEventInput } from '../routes/analytics';
+import type { TrackEventInput } from '../schemas/analytics';
 
 export const analyticsService = {
 	async trackEvent(input: TrackEventInput) {
@@ -7,6 +7,8 @@ export const analyticsService = {
 
 		if (error) {
 			console.error('Analytics tracking error:', error.message);
+			return { success: false } as const;
 		}
+		return { success: true } as const;
 	},
 };

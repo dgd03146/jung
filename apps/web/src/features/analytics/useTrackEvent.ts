@@ -1,16 +1,18 @@
 'use client';
 
+import type { TrackEventInput } from '@jung/api/routes/analytics';
 import { useMutation } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
 import { gtagEvent } from '@/fsd/shared';
 
-type TrackEventParams = {
-	event_name: string;
-	event_category: 'navigation' | 'engagement' | 'content' | 'interaction';
-	resource_type?: 'post' | 'photo' | 'place' | 'guestbook' | 'comment';
-	resource_id?: string;
-	properties?: Record<string, string | number | boolean | null>;
-};
+type TrackEventParams = Pick<
+	TrackEventInput,
+	| 'event_name'
+	| 'event_category'
+	| 'resource_type'
+	| 'resource_id'
+	| 'properties'
+>;
 
 const VALID_LOCALES = ['ko', 'en'] as const;
 
@@ -26,21 +28,20 @@ export function useTrackEvent() {
 	);
 
 	const trackEvent = (params: TrackEventParams) => {
-		// GA4
+		// GA4 — spread properties first so explicit fields always win
 		gtagEvent(params.event_name, {
+			...params.properties,
 			event_category: params.event_category,
 			resource_type: params.resource_type,
 			resource_id: params.resource_id,
-			...params.properties,
 		});
 
-		// Locale 검증
+		// Locale validation
 		const lang = document.documentElement.lang;
-		const locale = VALID_LOCALES.includes(
+		const isValidLocale = VALID_LOCALES.includes(
 			lang as (typeof VALID_LOCALES)[number],
-		)
-			? (lang as 'ko' | 'en')
-			: undefined;
+		);
+		const locale = isValidLocale ? (lang as 'ko' | 'en') : undefined;
 
 		// Supabase (fire-and-forget)
 		mutation.mutate({

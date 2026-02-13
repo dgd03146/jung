@@ -95,16 +95,19 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const ga4Id = getGA4MeasurementId();
+	const shouldLoadGA4 = isProduction() && ga4Id;
+
 	return (
 		<html lang='ko'>
 			<body
 				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
 			>
 				<JsonLd data={createOrganizationSchema()} />
-				{isProduction() && getGA4MeasurementId() && (
+				{shouldLoadGA4 && (
 					<>
 						<Script
-							src={`https://www.googletagmanager.com/gtag/js?id=${getGA4MeasurementId()}`}
+							src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
 							strategy='afterInteractive'
 						/>
 						<Script id='gtag-init' strategy='afterInteractive'>
@@ -112,7 +115,7 @@ export default function RootLayout({
 								window.dataLayer = window.dataLayer || [];
 								function gtag(){dataLayer.push(arguments);}
 								gtag('js', new Date());
-								gtag('config', '${getGA4MeasurementId()}', {
+								gtag('config', '${ga4Id}', {
 									page_path: window.location.pathname,
 									send_page_view: false
 								});
