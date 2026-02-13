@@ -22,6 +22,7 @@ export const articleColumns: ColumnDef<Article>[] = [
 	{ header: 'Status', accessorKey: 'status' },
 	{ header: 'Summary', accessorKey: 'summary' },
 	{ header: 'Published', accessorKey: 'published_at' },
+	{ header: 'Sent', accessorKey: 'newsletter_sent_at' },
 	{ header: 'Created', accessorKey: 'created_at' },
 ];
 

@@ -9,4 +9,5 @@ export { useDeleteArticle } from './useDeleteArticle';
 export { useGetArticle } from './useGetArticle';
 export { useGetArticles } from './useGetArticles';
 export { useImproveArticle } from './useImproveArticle';
+export { useSendNewsletter } from './useSendNewsletter';
 export { useUpdateArticle } from './useUpdateArticle';
