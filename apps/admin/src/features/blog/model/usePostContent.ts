@@ -3,8 +3,8 @@ import { useCreateBlockNote } from '@blocknote/react';
 import { useCallback, useEffect } from 'react';
 
 import { uploadImage } from '@/fsd/features/blog/api';
+import { EMPTY_CONTENT } from '@/fsd/shared';
 import { createHighlighter } from '@/fsd/shared/lib/shiki.bundle';
-import { EMPTY_CONTENT } from '../config';
 
 export const usePostContent = (initialContent: PartialBlock[]) => {
 	const editor = useCreateBlockNote({
