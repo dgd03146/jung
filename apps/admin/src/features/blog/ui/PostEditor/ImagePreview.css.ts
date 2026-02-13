@@ -1,4 +1,11 @@
 import { style } from '@vanilla-extract/css';
+import {
+	border,
+	inputBorder,
+	notionBorder,
+	notionHoverBg,
+	notionSubtleBg,
+} from '@/fsd/shared/styles/tokens';
 
 export const imagePreviewContainer = style({
 	position: 'relative',
@@ -6,13 +13,13 @@ export const imagePreviewContainer = style({
 	height: '200px',
 
 	overflow: 'hidden',
-	backgroundColor: '#fff',
-	border: '1px solid rgba(0, 0, 0, 0.08)',
+	backgroundColor: 'white',
+	border: `1px solid ${border}`,
 
 	transition: 'all 0.2s ease',
 
 	':hover': {
-		border: '1px solid rgba(0, 0, 0, 0.16)',
+		border: `1px solid ${inputBorder}`,
 	},
 });
 
@@ -31,7 +38,7 @@ export const removeImageButton = style({
 	height: '32px',
 	borderRadius: '3px',
 	backgroundColor: 'rgba(255, 255, 255, 0.9)',
-	border: '1px solid rgba(55, 53, 47, 0.16)',
+	border: `1px solid ${notionBorder}`,
 	color: 'rgb(55, 53, 47)',
 	display: 'flex',
 	alignItems: 'center',
@@ -47,7 +54,7 @@ export const removeImageButton = style({
 	},
 
 	':hover': {
-		backgroundColor: 'rgba(55, 53, 47, 0.08)',
+		backgroundColor: notionHoverBg,
 	},
 });
 
@@ -56,17 +63,17 @@ export const imageUploadContainer = style({
 	width: '100%',
 	height: '200px',
 
-	border: '1px dashed rgba(55, 53, 47, 0.16)',
+	border: `1px dashed ${notionBorder}`,
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
 	justifyContent: 'center',
 
 	transition: 'background-color 0.2s ease',
-	backgroundColor: 'rgba(55, 53, 47, 0.03)',
+	backgroundColor: notionSubtleBg,
 
 	':hover': {
-		backgroundColor: 'rgba(55, 53, 47, 0.08)',
+		backgroundColor: notionHoverBg,
 	},
 });
 

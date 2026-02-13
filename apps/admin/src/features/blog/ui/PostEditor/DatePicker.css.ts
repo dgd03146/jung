@@ -1,4 +1,14 @@
+import { palette } from '@jung/design-system/tokens';
 import { globalStyle, style } from '@vanilla-extract/css';
+import {
+	bodyText,
+	border,
+	disabledText,
+	hoverBg,
+	mutedText,
+	primaryRing,
+	primaryTint,
+} from '@/fsd/shared/styles/tokens';
 
 export const inputWrapper = style({
 	position: 'relative',
@@ -10,23 +20,22 @@ export const input = style({
 	height: '40px',
 	padding: '0 12px',
 	paddingRight: '36px',
-	// border: '1px solid #E2E8F0',
 	borderRadius: '8px',
 	fontSize: '14px',
-	color: '#334155',
+	color: bodyText,
 	backgroundColor: 'white',
 	cursor: 'pointer',
 	transition: 'all 0.15s ease',
 
 	':hover': {
-		borderColor: '#0142C0',
-		backgroundColor: '#F8FAFC',
+		borderColor: palette.primary,
+		backgroundColor: hoverBg,
 	},
 
 	':focus': {
 		outline: 'none',
-		borderColor: '#0142C0',
-		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
+		borderColor: palette.primary,
+		boxShadow: `0 0 0 2px ${primaryRing}`,
 	},
 });
 
@@ -35,7 +44,7 @@ export const calendarIcon = style({
 	right: '12px',
 	top: '50%',
 	transform: 'translateY(-50%)',
-	color: '#64748B',
+	color: mutedText,
 	width: '16px',
 	height: '16px',
 	pointerEvents: 'none',
@@ -51,7 +60,7 @@ export const headerWrapper = style({
 export const currentMonth = style({
 	fontSize: '15px',
 	fontWeight: '600',
-	color: '#334155',
+	color: bodyText,
 });
 
 export const navButton = style({
@@ -64,17 +73,17 @@ export const navButton = style({
 	border: 'none',
 	borderRadius: '6px',
 	backgroundColor: 'transparent',
-	color: '#64748B',
+	color: mutedText,
 	cursor: 'pointer',
 	transition: 'all 0.15s ease',
 
 	':hover': {
-		backgroundColor: '#F1F5F9',
-		color: '#0142C0',
+		backgroundColor: border,
+		color: palette.primary,
 	},
 
 	':disabled': {
-		color: '#CBD5E1',
+		color: disabledText,
 		cursor: 'not-allowed',
 	},
 });
@@ -126,12 +135,12 @@ globalStyle('.react-datepicker__day-names', {
 	margin: '0',
 	padding: '8px',
 
-	borderBottom: '1px solid #E2E8F0',
+	borderBottom: `1px solid ${border}`,
 });
 
 globalStyle('.react-datepicker__day-name', {
 	margin: '0',
-	color: '#0142C0',
+	color: palette.primary,
 	width: '36px',
 	fontSize: '13px',
 	fontWeight: '600',
@@ -150,40 +159,35 @@ globalStyle('.react-datepicker__day', {
 	height: '36px',
 	lineHeight: '36px',
 	borderRadius: '8px',
-	color: '#334155',
+	color: bodyText,
 	fontSize: '14px',
 	fontWeight: '500',
 	transition: 'all 0.15s ease',
 });
 
 globalStyle('.react-datepicker__day:hover', {
-	backgroundColor: '#EEF2FF',
-	color: '#0142C0',
+	backgroundColor: primaryTint,
+	color: palette.primary,
 });
 
 globalStyle('.react-datepicker__day--selected', {
-	backgroundColor: '#0142C0',
+	backgroundColor: palette.primary,
 	color: 'white',
 	fontWeight: '600',
 });
 
 globalStyle('.react-datepicker__day--selected:hover', {
-	backgroundColor: '#0039B3',
+	backgroundColor: palette.primary200,
 	color: 'white',
 });
 
 globalStyle('.react-datepicker__day--keyboard-selected', {
-	backgroundColor: '#F8FAFF',
-	color: '#0142C0',
-});
-
-globalStyle('.react-datepicker__day--keyboard-selected', {
 	backgroundColor: 'transparent',
-	color: '#0142C0',
+	color: palette.primary,
 });
 
 globalStyle('.react-datepicker__day--outside-month', {
-	color: '#CBD5E1',
+	color: disabledText,
 	fontWeight: '400',
 });
 

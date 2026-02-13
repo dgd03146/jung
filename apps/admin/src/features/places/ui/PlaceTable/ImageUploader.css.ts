@@ -1,4 +1,11 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+import {
+	hoverBg,
+	inputBorder,
+	overlay,
+	subtleText,
+} from '@/fsd/shared/styles/tokens';
 
 export const imageGrid = style({
 	display: 'grid',
@@ -7,29 +14,6 @@ export const imageGrid = style({
 	'@media': {
 		'screen and (min-width: 768px)': {
 			gridTemplateColumns: 'repeat(2, 1fr)',
-		},
-	},
-	selectors: {
-		'&[data-count="0"]': {
-			gridTemplateColumns: '1fr',
-		},
-		'&[data-count="1"]': {
-			gridTemplateColumns: '1fr 1fr',
-		},
-		'&[data-count="2"]': {
-			gridTemplateColumns: 'repeat(2, 1fr)',
-		},
-		'&[data-count="3"]': {
-			gridTemplateAreas: `
-				"img1 img2"
-				"img3 img4"
-			`,
-		},
-		'&[data-count="4"]': {
-			gridTemplateAreas: `
-				"img1 img2"
-				"img3 img4"
-			`,
 		},
 	},
 });
@@ -51,13 +35,13 @@ export const deleteButton = style({
 	position: 'absolute',
 	top: '12px',
 	right: '12px',
-	background: 'rgba(0, 0, 0, 0.6)',
+	background: overlay,
 	color: 'white',
 	border: 'none',
 	borderRadius: '50%',
 	padding: '8px',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'all 0.15s ease',
 	opacity: 0,
 	transform: 'scale(0.9)',
 	selectors: {
@@ -67,7 +51,7 @@ export const deleteButton = style({
 		},
 	},
 	':hover': {
-		background: 'rgba(0, 0, 0, 0.8)',
+		background: 'rgba(0, 0, 0, 0.8)', // intentionally darker than overlay for hover emphasis
 	},
 });
 
@@ -78,21 +62,21 @@ export const uploadButton = style({
 	justifyContent: 'center',
 	gap: '8px',
 	aspectRatio: '16/9',
-	border: '2px dashed #dee2e6',
-	borderRadius: '12px',
+	border: `2px dashed ${inputBorder}`,
+	borderRadius: '8px',
 	cursor: 'pointer',
 	background: 'white',
-	transition: 'all 0.2s ease',
+	transition: 'all 0.15s ease',
 	padding: '24px',
 	':hover': {
-		borderColor: '#228be6',
-		background: '#f8f9fa',
+		borderColor: palette.primary,
+		background: hoverBg,
 	},
 });
 
 export const uploadIcon = style({
 	fontSize: '32px',
-	color: '#adb5bd',
+	color: subtleText,
 	marginBottom: '4px',
 });
 

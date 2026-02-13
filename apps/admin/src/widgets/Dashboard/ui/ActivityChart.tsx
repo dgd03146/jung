@@ -17,7 +17,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import * as styles from './AcitivityChart.css';
+import * as styles from './ActivityChart.css';
 
 type PageType = 'all' | 'home' | 'gallery' | 'posts' | 'spots';
 type PeriodType = '7d' | '30d' | '1y';
@@ -102,25 +102,25 @@ const MOCK_DATA: Record<PeriodType, PageData> = {
 	},
 	'30d': {
 		home: Array.from({ length: 30 }, (_, i) => ({
-			date: `${Math.floor(i / 30)}/#{(i % 30) + 1}`,
+			date: `${Math.floor(i / 30) + 3}/${(i % 30) + 1}`,
 			visitors: Math.floor(Math.random() * 60) + 40,
 			pageViews: Math.floor(Math.random() * 150) + 150,
 			avgDuration: +(Math.random() * 2 + 2).toFixed(1),
 		})),
 		gallery: Array.from({ length: 30 }, (_, i) => ({
-			date: `${Math.floor(i / 30)}/#{(i % 30) + 1}`,
+			date: `${Math.floor(i / 30) + 3}/${(i % 30) + 1}`,
 			visitors: Math.floor(Math.random() * 40) + 20,
 			pageViews: Math.floor(Math.random() * 100) + 80,
 			avgDuration: +(Math.random() * 2 + 2).toFixed(1),
 		})),
 		posts: Array.from({ length: 30 }, (_, i) => ({
-			date: `${Math.floor(i / 30)}/#{(i % 30) + 1}`,
+			date: `${Math.floor(i / 30) + 3}/${(i % 30) + 1}`,
 			visitors: Math.floor(Math.random() * 50) + 30,
 			pageViews: Math.floor(Math.random() * 120) + 100,
 			avgDuration: +(Math.random() * 2 + 3).toFixed(1),
 		})),
 		spots: Array.from({ length: 30 }, (_, i) => ({
-			date: `${Math.floor(i / 30)}/#{(i % 30) + 1}`,
+			date: `${Math.floor(i / 30) + 3}/${(i % 30) + 1}`,
 			visitors: Math.floor(Math.random() * 30) + 20,
 			pageViews: Math.floor(Math.random() * 80) + 60,
 			avgDuration: +(Math.random() * 1.5 + 2).toFixed(1),
@@ -153,6 +153,8 @@ const MOCK_DATA: Record<PeriodType, PageData> = {
 		})),
 	},
 };
+
+const PAGE_COUNT = 4;
 
 const CHART_COLORS = {
 	visitors: '#6366F1',
@@ -212,7 +214,7 @@ const ActivityChart = () => {
 					Object.values(MOCK_DATA[selectedPeriod]).reduce(
 						(sum, pageData) => sum + pageData[index].avgDuration,
 						0,
-					) / 4,
+					) / PAGE_COUNT,
 			}));
 		}
 

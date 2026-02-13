@@ -1,4 +1,6 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
+import { border, mutedText, primaryTint } from '@/fsd/shared/styles/tokens';
 import { actionButton, dragHandle, postCount } from './CategoryCard.css';
 
 export const listViewItem = style({
@@ -7,7 +9,7 @@ export const listViewItem = style({
 	padding: '16px',
 	background: 'white',
 	borderRadius: '12px',
-	border: '1px solid #f1f5f9',
+	border: `1px solid ${border}`,
 	transition: 'all 0.2s ease',
 
 	':hover': {
@@ -21,7 +23,7 @@ export const listViewMeta = style({
 	alignItems: 'center',
 	gap: '16px',
 	marginLeft: 'auto',
-	color: '#64748B',
+	color: mutedText,
 	fontSize: '14px',
 });
 
@@ -39,8 +41,8 @@ export const categoryBadge = style({
 	borderRadius: '4px',
 	fontSize: '12px',
 	fontWeight: '500',
-	background: '#f0f2ff',
-	color: '#0142C0',
+	background: primaryTint,
+	color: palette.primary,
 });
 
 export const dragHandleStyle = style([dragHandle, {}]);

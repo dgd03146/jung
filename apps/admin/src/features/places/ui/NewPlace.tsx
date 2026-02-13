@@ -82,12 +82,13 @@ export const NewPlace = () => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (
-			!formData.title ||
-			!formData.description ||
-			!formData.address ||
-			!formData.category_id
-		) {
+		const hasRequiredFields =
+			formData.title &&
+			formData.description &&
+			formData.address &&
+			formData.category_id;
+
+		if (!hasRequiredFields) {
 			showToast('필수 항목을 모두 입력해주세요.', 'error');
 			return;
 		}

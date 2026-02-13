@@ -44,7 +44,7 @@ export const fetchPosts = async ({
 		throw new Error(`Failed to fetch posts: ${error.message}`);
 	}
 	if (!data || data.length === 0) {
-		return { posts: [], totalCount: 0, totalPages: 0, hasMore: false };
+		return { posts: [], totalCount, totalPages, hasMore };
 	}
 
 	const posts: AdminPost[] = data.map((post) => ({

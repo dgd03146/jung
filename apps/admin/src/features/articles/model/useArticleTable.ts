@@ -19,6 +19,7 @@ import type { Article, ArticleFilters } from '../types';
 export const articleColumns: ColumnDef<Article>[] = [
 	{ header: 'Title', accessorKey: 'title' },
 	{ header: 'Category', accessorKey: 'category' },
+	{ header: 'Status', accessorKey: 'status' },
 	{ header: 'Summary', accessorKey: 'summary' },
 	{ header: 'Published', accessorKey: 'published_at' },
 	{ header: 'Created', accessorKey: 'created_at' },

@@ -1,4 +1,3 @@
-// FIXME: icons들 다 나중에 shared로 빼야할 듯?
 import { Box, Button, Flex, Typography } from '@jung/design-system/components';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -18,13 +17,7 @@ const formatPageTitle = (path: string) => {
 	const segments = path.split('/').filter(Boolean);
 
 	if (segments.length === 0) {
-		return (
-			<Flex align='center' gap='2'>
-				<Typography.Text color='primary' fontWeight='medium'>
-					Dashboard
-				</Typography.Text>
-			</Flex>
-		);
+		return <Typography.Text fontWeight='semibold'>Dashboard</Typography.Text>;
 	}
 
 	const mainSection =
@@ -40,12 +33,10 @@ const formatPageTitle = (path: string) => {
 
 	if (segments.includes('collections')) {
 		return (
-			<Flex align='center' gap='2'>
-				<Typography.Heading level={5} color='primary' fontWeight='semibold'>
-					Gallery
-				</Typography.Heading>
-				<HiChevronRight color='blue' />
-				<Typography.Text level={4} color='primary' fontWeight='medium'>
+			<Flex align='center' gap='1'>
+				<Typography.Text fontWeight='semibold'>Gallery</Typography.Text>
+				<HiChevronRight size={14} color='rgba(0, 0, 0, 0.4)' />
+				<Typography.Text level={4} color='gray300'>
 					Collections
 				</Typography.Text>
 			</Flex>
@@ -58,12 +49,10 @@ const formatPageTitle = (path: string) => {
 			.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
 			.join(' ');
 		return (
-			<Flex align='center' gap='2'>
-				<Typography.Text color='primary' fontWeight='semibold'>
-					{mainSection}
-				</Typography.Text>
-				<HiChevronRight color='blue' />
-				<Typography.Text level={4} color='primary' fontWeight='medium'>
+			<Flex align='center' gap='1'>
+				<Typography.Text fontWeight='semibold'>{mainSection}</Typography.Text>
+				<HiChevronRight size={14} color='rgba(0, 0, 0, 0.4)' />
+				<Typography.Text level={4} color='gray300'>
 					{subSection}
 				</Typography.Text>
 			</Flex>
@@ -71,12 +60,10 @@ const formatPageTitle = (path: string) => {
 	}
 
 	return (
-		<Flex align='center' gap='2'>
-			<Typography.Text color='primary' fontWeight='semibold'>
-				{mainSection}
-			</Typography.Text>
-			<HiChevronRight color='blue' />
-			<Typography.Text level={4} color='primary' fontWeight='medium'>
+		<Flex align='center' gap='1'>
+			<Typography.Text fontWeight='semibold'>{mainSection}</Typography.Text>
+			<HiChevronRight size={14} color='rgba(0, 0, 0, 0.4)' />
+			<Typography.Text level={4} color='gray300'>
 				{defaultSubSections[mainSection.toLowerCase()] || 'Overview'}
 			</Typography.Text>
 		</Flex>
@@ -116,30 +103,26 @@ const Header = () => {
 			className={styles.header({ isScrolled })}
 			zIndex='10'
 		>
-			<Flex alignItems='center' gap='1'>
+			<Flex alignItems='center' gap='2'>
 				<Button
 					variant='ghost'
 					onClick={actions.toggle}
 					aria-label='Toggle sidebar'
 				>
 					{isOpen ? (
-						<HiChevronDoubleLeft size={18} />
+						<HiChevronDoubleLeft size={16} />
 					) : (
-						<HiMenuAlt2 size={20} />
+						<HiMenuAlt2 size={18} />
 					)}
 				</Button>
-				<Typography.Heading level={4} color='primary'>
-					{pageTitle}
-				</Typography.Heading>
+				{pageTitle}
 			</Flex>
 
 			<Button
-				variant='primary'
-				size='md'
-				borderRadius='lg'
+				variant='ghost'
+				size='sm'
 				onClick={() => logout()}
-				prefix={<HiLogout />}
-				fontWeight='medium'
+				prefix={<HiLogout size={14} />}
 			>
 				Logout
 			</Button>

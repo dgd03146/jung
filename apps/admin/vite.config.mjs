@@ -17,7 +17,11 @@ export default defineConfig({
     ...baseConfig.test,
     // 추가적인 Vitest 설정
   },
- 
+
+  define: {
+    'process.env': {},
+  },
+
   resolve: {
     alias: {
       '@/fsd': path.resolve(__dirname, './src'),
@@ -25,6 +29,7 @@ export default defineConfig({
       '@jung/design-system': path.resolve(__dirname, '../../packages/design-system'),
       '@jung/design-system/icons': path.resolve(__dirname, '../../packages/design-system/icons'),
     },
+    dedupe: ['react', 'react-dom'],
   },
   // 기타 Vite 설정
 })

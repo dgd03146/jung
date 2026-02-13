@@ -28,6 +28,8 @@ interface PhotoFormData {
 	collection_id: string;
 }
 
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
 const INITIAL_FORM_DATA: PhotoFormData = {
 	title: '',
 	description: '',
@@ -45,7 +47,8 @@ export const NewPhoto = () => {
 	const params = useParams({ strict: false });
 	const isEditMode = !!params?.photoId;
 
-	const { data: photo, isLoading } = useGetPhotoById(params.photoId!);
+	const photoId = params?.photoId ?? '';
+	const { data: photo, isLoading } = useGetPhotoById(photoId);
 
 	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
 	const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
@@ -117,7 +120,7 @@ export const NewPhoto = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
-			if (file.size > 5 * 1024 * 1024) {
+			if (file.size > MAX_FILE_SIZE_BYTES) {
 				showToast('File size should be less than 5MB', 'error');
 				return;
 			}
@@ -179,7 +182,7 @@ export const NewPhoto = () => {
 
 		if (isEditMode) {
 			updatePhotoMutation.mutate({
-				id: params.photoId!,
+				id: photoId,
 				...photoData,
 				file: formData.image || undefined,
 			});
@@ -222,6 +225,14 @@ export const NewPhoto = () => {
 							justify='center'
 							borderRadius='lg'
 							onClick={handleUploadClick}
+							onKeyDown={(e: React.KeyboardEvent) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									handleUploadClick();
+								}
+							}}
+							role='button'
+							tabIndex={0}
 							cursor='pointer'
 							width='full'
 							height='full'
@@ -386,7 +397,6 @@ export const NewPhoto = () => {
 				<Flex justify='flex-end' marginTop='8' gap='3' paddingY='4'>
 					<Button
 						type='submit'
-						onClick={handleSubmit}
 						loading={
 							createPhotoMutation.isPending || updatePhotoMutation.isPending
 						}

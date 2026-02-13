@@ -68,7 +68,8 @@ export const usePostEditor = () => {
 		}
 	}, [getContent, localPost, showToast]);
 
-	const throttledSave = useThrottle(handleSave, 3000);
+	const SAVE_THROTTLE_MS = 3000;
+	const throttledSave = useThrottle(handleSave, SAVE_THROTTLE_MS);
 	useKeyboardShortcut('s', throttledSave);
 
 	const validateForm = useCallback(
@@ -81,7 +82,8 @@ export const usePostEditor = () => {
 				date: !data.date ? 'Select a date' : '',
 			};
 
-			return Object.values(errors).some(Boolean) ? errors : null;
+			const hasErrors = Object.values(errors).some(Boolean);
+			return hasErrors ? errors : null;
 		},
 		[],
 	);

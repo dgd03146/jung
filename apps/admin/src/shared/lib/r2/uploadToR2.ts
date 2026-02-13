@@ -28,7 +28,7 @@ const getImageDimensions = (file: File): Promise<ImageMetadata> => {
 	});
 };
 
-export type UploadFolder = 'gallery' | 'places' | 'blog';
+export type UploadFolder = 'gallery' | 'places' | 'blog' | 'articles';
 
 interface UploadResult {
 	key: string;

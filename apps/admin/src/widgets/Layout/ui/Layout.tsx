@@ -10,8 +10,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	const isLoginPage = pathname === '/login';
 	const isPostEditPage = /^\/blog\/(new|edit\/\d+)$/.test(pathname);
-	const isDashboardPage = pathname === '/dashboard' || pathname === '/';
-
 	if (isLoginPage) {
 		return <>{children}</>;
 	}
@@ -21,17 +19,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			{!isPostEditPage && <Sidebar />}
 			<Box
 				as='main'
-				style={{
-					width: '100%',
-					marginLeft: !isPostEditPage && isOpen ? '240px' : '0',
-					transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-				}}
+				className={styles.mainContent({
+					sidebarOpen: !isPostEditPage && isOpen,
+				})}
 				background={isPostEditPage ? 'white' : 'white100'}
 			>
 				{!isPostEditPage && <Header />}
 				<Box
 					paddingX={{
-						mobile: isDashboardPage ? '4' : '4',
+						mobile: '4',
 						tablet: '6',
 						laptop: '8',
 					}}
