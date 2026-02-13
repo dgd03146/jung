@@ -1,4 +1,5 @@
 import { router } from '../lib/trpc';
+import { analyticsRouter } from './analytics';
 import { articleRouter } from './article';
 import { blogRouter } from './blog';
 import { categoryRouter } from './category';
@@ -12,6 +13,7 @@ import { commentRouter } from './post_comment';
 import { searchRouter } from './search';
 import { translateRouter } from './translate';
 export const appRouter = router({
+	analytics: analyticsRouter,
 	article: articleRouter,
 	blog: blogRouter,
 	postComment: commentRouter,
