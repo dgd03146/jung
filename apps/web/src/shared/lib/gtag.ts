@@ -7,14 +7,16 @@ declare global {
 	}
 }
 
+function isGtagAvailable(): boolean {
+	return typeof window !== 'undefined' && typeof window.gtag !== 'undefined';
+}
+
 export const pageview = (url: string) => {
-	if (typeof window === 'undefined' || typeof window.gtag === 'undefined')
-		return;
+	if (!isGtagAvailable()) return;
 	window.gtag('config', getGA4MeasurementId(), { page_path: url });
 };
 
-export const event = (action: string, params: Record<string, unknown>) => {
-	if (typeof window === 'undefined' || typeof window.gtag === 'undefined')
-		return;
+export const gtagEvent = (action: string, params: Record<string, unknown>) => {
+	if (!isGtagAvailable()) return;
 	window.gtag('event', action, params);
 };

@@ -1,10 +1,11 @@
+// @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('../src/shared/config/env', () => ({
 	getGA4MeasurementId: () => 'G-TEST123',
 }));
 
-import { event, pageview } from '../src/shared/lib/gtag';
+import { gtagEvent, pageview } from '../src/shared/lib/gtag';
 
 describe('gtag utilities', () => {
 	const mockGtag = vi.fn();
@@ -36,14 +37,14 @@ describe('gtag utilities', () => {
 		});
 	});
 
-	describe('event', () => {
+	describe('gtagEvent', () => {
 		it('calls window.gtag with event action and params', () => {
 			const params = {
 				event_category: 'engagement',
 				resource_type: 'post',
 			};
 
-			event('like', params);
+			gtagEvent('like', params);
 
 			expect(mockGtag).toHaveBeenCalledWith('event', 'like', params);
 		});
@@ -53,7 +54,7 @@ describe('gtag utilities', () => {
 			delete window.gtag;
 
 			expect(() =>
-				event('like', { event_category: 'engagement' }),
+				gtagEvent('like', { event_category: 'engagement' }),
 			).not.toThrow();
 		});
 	});
