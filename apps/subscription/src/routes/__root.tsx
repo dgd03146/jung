@@ -6,6 +6,7 @@ import {
 	Scripts,
 } from '@tanstack/react-router';
 import { lazy } from 'react';
+import { SITE_CONFIG } from '../config/site';
 import '../styles/global.css';
 
 const TanStackRouterDevtools =
@@ -24,9 +25,13 @@ export const Route = createRootRoute({
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
 			{
 				name: 'description',
-				content: 'Frontend & AI Articles I Actually Read',
+				content: SITE_CONFIG.description,
 			},
-			{ title: 'Curated by Jung - Frontend & AI Articles' },
+			{ title: `${SITE_CONFIG.name} - ${SITE_CONFIG.description}` },
+			{ property: 'og:site_name', content: SITE_CONFIG.name },
+			{ property: 'og:locale', content: 'en_US' },
+			{ property: 'og:type', content: 'website' },
+			{ name: 'twitter:site', content: '@jung' },
 		],
 		links: [
 			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
