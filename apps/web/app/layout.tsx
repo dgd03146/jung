@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
+import Script from 'next/script';
 import {
 	createOrganizationSchema,
+	getGA4MeasurementId,
 	getGoogleVerificationCode,
+	isProduction,
 	SITE_URL,
 } from '@/fsd/shared';
 import { JsonLd } from '@/fsd/shared/ui';
@@ -98,6 +101,25 @@ export default function RootLayout({
 				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
 			>
 				<JsonLd data={createOrganizationSchema()} />
+				{isProduction() && getGA4MeasurementId() && (
+					<>
+						<Script
+							src={`https://www.googletagmanager.com/gtag/js?id=${getGA4MeasurementId()}`}
+							strategy='afterInteractive'
+						/>
+						<Script id='gtag-init' strategy='afterInteractive'>
+							{`
+								window.dataLayer = window.dataLayer || [];
+								function gtag(){dataLayer.push(arguments);}
+								gtag('js', new Date());
+								gtag('config', '${getGA4MeasurementId()}', {
+									page_path: window.location.pathname,
+									send_page_view: false
+								});
+							`}
+						</Script>
+					</>
+				)}
 				{children}
 			</body>
 		</html>

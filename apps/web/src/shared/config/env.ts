@@ -73,3 +73,7 @@ export const getResendApiKey = (): string => {
 export const getResendEmailFrom = (): string => {
 	return process.env.NEXT_PUBLIC_RESEND_EMAIL_FROM || '';
 };
+
+export const getGA4MeasurementId = (): string => {
+	return process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || '';
+};
