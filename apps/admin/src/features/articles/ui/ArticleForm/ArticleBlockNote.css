@@ -9,7 +9,7 @@
   padding: 0 !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
     'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol' !important;
-  color: rgb(55, 53, 47) !important;
+  color: rgb(55 53 47) !important;
   background-color: transparent;
   min-height: 120px;
 }
@@ -35,8 +35,8 @@
   padding: 3px 2px !important;
   line-height: 1.75 !important;
   font-size: 14px !important;
-  word-break: break-word;
-  caret-color: rgb(55, 53, 47);
+  overflow-wrap: break-word;
+  caret-color: rgb(55 53 47);
   font-weight: 400 !important;
   white-space: pre-wrap !important;
   color: #2c2c2c !important;
@@ -44,36 +44,36 @@
 
 .ProseMirror strong {
   font-weight: 600 !important;
-  color: rgb(55, 53, 47) !important;
+  color: rgb(55 53 47) !important;
 }
 
 .ProseMirror em {
   font-style: italic !important;
-  color: rgb(55, 53, 47) !important;
+  color: rgb(55 53 47) !important;
 }
 
 /* 링크 스타일링 */
 .ProseMirror a {
-  color: rgb(35, 131, 226) !important;
+  color: rgb(35 131 226) !important;
   text-decoration: none !important;
   opacity: 0.7 !important;
-  background: rgba(35, 131, 226, 0.1) !important;
+  background: rgb(35 131 226 / 10%) !important;
   padding: 0 2px !important;
   border-radius: 3px !important;
 }
 
 .ProseMirror a:hover {
   opacity: 1 !important;
-  background: rgba(35, 131, 226, 0.15) !important;
+  background: rgb(35 131 226 / 15%) !important;
 }
 
 /* 인라인 코드 */
 .bn-inline-content code {
-  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+  font-family: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
     Courier, monospace;
   line-height: normal;
-  background: rgba(135, 131, 120, 0.15);
-  color: rgba(51, 126, 169, 1);
+  background: rgb(135 131 120 / 15%);
+  color: rgb(51 126 169);
   border-radius: 4px;
   font-size: 85%;
   padding: 0.2em 0.4em;

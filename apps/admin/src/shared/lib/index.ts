@@ -1,4 +1,8 @@
-export { deserializeContent, serializeContent } from './blocknote';
+export {
+	deserializeContent,
+	isEditorEmpty,
+	serializeContent,
+} from './blocknote';
 export { default as usePathname } from './hooks/usePathname';
 export { useThrottle } from './hooks/useThrottle';
 export type { UploadFolder } from './r2';

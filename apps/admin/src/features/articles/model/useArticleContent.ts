@@ -12,7 +12,9 @@ export const useArticleContent = (initialContent: PartialBlock[]) => {
 	});
 
 	useEffect(() => {
-		if (initialContent && initialContent.length > 0) {
+		const isEmptyDefault =
+			initialContent.length === 1 && initialContent[0] === EMPTY_CONTENT;
+		if (initialContent.length > 0 && !isEmptyDefault) {
 			editor.replaceBlocks(editor.document, initialContent);
 		}
 	}, [editor, initialContent]);

@@ -9,19 +9,13 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { useParams } from '@tanstack/react-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-	HiDocumentText,
-	HiOutlinePhotograph,
-	HiSparkles,
-	HiX,
-} from 'react-icons/hi';
-import { uploadToR2 } from '@/fsd/shared/lib/r2/uploadToR2';
+import { useEffect, useMemo, useState } from 'react';
+import { HiDocumentText, HiSparkles } from 'react-icons/hi';
 import {
 	deserializeContent,
 	EMPTY_CONTENT,
+	isEditorEmpty,
 	serializeContent,
 } from '@/fsd/shared';
 import {
@@ -36,16 +30,6 @@ import type { ArticleCategory, ArticleInput } from '../../types';
 import { ArticleBlockNote } from './ArticleBlockNote';
 import * as styles from './ArticleForm.css';
 
-const MAX_IMAGES = 3;
-const MAX_FILE_SIZE_MB = 5;
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = [
-	'image/jpeg',
-	'image/png',
-	'image/webp',
-	'image/gif',
-];
-
 const ICON_SIZE = {
 	heading: 24,
 	button: 18,
@@ -56,8 +40,6 @@ interface ArticleFormData {
 	original_url: string;
 	category: ArticleCategory;
 	published_at: string;
-	status: 'draft' | 'published';
-	images: string[];
 }
 
 const INITIAL_FORM_DATA: ArticleFormData = {
@@ -65,12 +47,7 @@ const INITIAL_FORM_DATA: ArticleFormData = {
 	original_url: '',
 	category: 'frontend',
 	published_at: '',
-	status: 'draft',
-	images: [],
 };
-
-const isValidStatus = (s: unknown): s is 'draft' | 'published' =>
-	s === 'draft' || s === 'published';
 
 const parseContent = (content: string | null | undefined): PartialBlock[] => {
 	if (!content) return [EMPTY_CONTENT];
@@ -87,7 +64,6 @@ export const ArticleForm = () => {
 	const createArticleMutation = useCreateArticle();
 	const updateArticleMutation = useUpdateArticle();
 	const improveArticleMutation = useImproveArticle();
-	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const params = useParams({ strict: false });
 	const articleId = (params as { articleId?: string })?.articleId;
@@ -96,7 +72,6 @@ export const ArticleForm = () => {
 	const { data: article, isLoading } = useGetArticle(articleId);
 
 	const [formData, setFormData] = useState<ArticleFormData>(INITIAL_FORM_DATA);
-	const [isUploading, setIsUploading] = useState(false);
 
 	const initialSummaryContent = useMemo(
 		() => parseContent(article?.summary),
@@ -119,94 +94,38 @@ export const ArticleForm = () => {
 				original_url: article.original_url,
 				category: article.category as ArticleCategory,
 				published_at: article.published_at?.split('T')[0] ?? '',
-				status: isValidStatus(article.status) ? article.status : 'draft',
-				images: article.images || [],
 			});
 		}
 	}, [isEditMode, article]);
 
-	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		if (!files || files.length === 0) return;
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
 
-		const remaining = MAX_IMAGES - formData.images.length;
-		if (remaining <= 0) {
-			showToast(`Maximum ${MAX_IMAGES} images allowed.`, 'error');
-			return;
-		}
+		const summaryBlocks = getSummaryContent();
 
-		const filesToUpload = Array.from(files).slice(0, remaining);
-
-		const invalidFiles = filesToUpload.filter(
-			(file) =>
-				!ALLOWED_IMAGE_TYPES.includes(file.type) ||
-				file.size > MAX_FILE_SIZE_BYTES,
-		);
-		if (invalidFiles.length > 0) {
-			showToast(
-				`Only JPEG, PNG, WebP, GIF under ${MAX_FILE_SIZE_MB}MB allowed.`,
-				'error',
-			);
-			return;
-		}
-
-		setIsUploading(true);
-
-		try {
-			const results = await Promise.all(
-				filesToUpload.map((file) => uploadToR2(file, 'articles')),
-			);
-
-			setFormData((prev) => ({
-				...prev,
-				images: [...prev.images, ...results.map((r) => r.key)],
-			}));
-
-			showToast(`${results.length} image(s) uploaded.`, 'success');
-		} catch {
-			showToast('Failed to upload images.', 'error');
-		} finally {
-			setIsUploading(false);
-			if (fileInputRef.current) {
-				fileInputRef.current.value = '';
-			}
-		}
-	};
-
-	const handleRemoveImage = (index: number) => {
-		setFormData((prev) => ({
-			...prev,
-			images: prev.images.filter((_, i) => i !== index),
-		}));
-	};
-
-	const handleSubmit = (status: 'draft' | 'published') => {
-		const summaryContent = serializeContent(getSummaryContent());
-
-		if (!formData.title || !formData.original_url || !summaryContent) {
+		if (
+			!formData.title ||
+			!formData.original_url ||
+			isEditorEmpty(summaryBlocks)
+		) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
 
-		const thoughtsContent = serializeContent(getThoughtsContent());
-
-		const now = new Date().toISOString();
-
-		const getPublishedAt = () => {
-			if (formData.published_at)
-				return new Date(formData.published_at).toISOString();
-			return status === 'published' ? now : null;
-		};
+		const thoughtsBlocks = getThoughtsContent();
+		const thoughtsContent = isEditorEmpty(thoughtsBlocks)
+			? null
+			: serializeContent(thoughtsBlocks);
 
 		const articleData: ArticleInput = {
 			title: formData.title.trim(),
 			original_url: formData.original_url.trim(),
-			summary: summaryContent,
-			my_thoughts: thoughtsContent || null,
+			summary: serializeContent(summaryBlocks),
+			my_thoughts: thoughtsContent,
 			category: formData.category,
-			published_at: getPublishedAt(),
-			status,
-			images: formData.images,
+			published_at: formData.published_at
+				? new Date(formData.published_at).toISOString()
+				: null,
 		};
 
 		if (isEditMode && articleId) {
@@ -220,19 +139,24 @@ export const ArticleForm = () => {
 	};
 
 	const handleImprove = async () => {
-		const currentSummary = serializeContent(getSummaryContent());
-		const currentThoughts = serializeContent(getThoughtsContent());
+		const summaryEmpty = isEditorEmpty(getSummaryContent());
 
-		if (!formData.title && !currentSummary) {
+		if (!formData.title && summaryEmpty) {
 			showToast('Please enter title or summary first.', 'error');
 			return;
 		}
+
+		const currentSummary = serializeContent(getSummaryContent());
+		const thoughtsBlocks = getThoughtsContent();
+		const currentThoughts = isEditorEmpty(thoughtsBlocks)
+			? null
+			: serializeContent(thoughtsBlocks);
 
 		improveArticleMutation.mutate(
 			{
 				title: formData.title,
 				summary: currentSummary,
-				my_thoughts: currentThoughts || null,
+				my_thoughts: currentThoughts,
 			},
 			{
 				onSuccess: (data) => {
@@ -272,7 +196,7 @@ export const ArticleForm = () => {
 				borderRadius='lg'
 				padding='6'
 				boxShadow='primary'
-				onSubmit={(e: React.FormEvent) => e.preventDefault()}
+				onSubmit={handleSubmit}
 				className={styles.formContainer}
 			>
 				<Flex align='center' gap='2' color='primary' marginBottom='6'>
@@ -302,6 +226,7 @@ export const ArticleForm = () => {
 								setFormData((prev) => ({ ...prev, title: e.target.value }))
 							}
 							placeholder='Enter article title'
+							required
 						/>
 					</Stack>
 
@@ -327,6 +252,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='https://example.com/article'
+							required
 						/>
 					</Stack>
 
@@ -338,61 +264,10 @@ export const ArticleForm = () => {
 						<ArticleBlockNote editor={summaryEditor} />
 					</Stack>
 
-					{/* Images */}
+					{/* My Thoughts */}
 					<Stack space='2'>
 						<Typography.Text level={2} fontWeight='medium'>
-							Images ({formData.images.length}/{MAX_IMAGES})
-						</Typography.Text>
-
-						{formData.images.length > 0 && (
-							<div className={styles.imageGrid}>
-								{formData.images.map((key, index) => (
-									<div key={key} className={styles.imagePreview}>
-										<img
-											src={getImageUrl(key)}
-											alt={`Article capture ${index + 1}`}
-											className={styles.imagePreviewImg}
-										/>
-										<button
-											type='button'
-											className={styles.imageRemoveButton}
-											onClick={() => handleRemoveImage(index)}
-										>
-											<HiX size={14} />
-										</button>
-									</div>
-								))}
-							</div>
-						)}
-
-						{formData.images.length < MAX_IMAGES && (
-							<div>
-								<input
-									ref={fileInputRef}
-									type='file'
-									accept='image/*'
-									multiple
-									onChange={handleImageUpload}
-									className={styles.fileInput}
-								/>
-								<Button
-									type='button'
-									variant='outline'
-									borderRadius='md'
-									onClick={() => fileInputRef.current?.click()}
-									disabled={isUploading}
-								>
-									<HiOutlinePhotograph size={18} />
-									{isUploading ? 'Uploading...' : 'Add Images'}
-								</Button>
-							</div>
-						)}
-					</Stack>
-
-					{/* Why I Recommend */}
-					<Stack space='2'>
-						<Typography.Text level={2} fontWeight='medium'>
-							Why I Recommend
+							My Thoughts
 						</Typography.Text>
 						<ArticleBlockNote editor={thoughtsEditor} />
 					</Stack>
@@ -416,6 +291,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							className={styles.select}
+							required
 						>
 							<option value='frontend'>Frontend</option>
 							<option value='ai'>AI</option>
@@ -455,26 +331,9 @@ export const ArticleForm = () => {
 						{improveArticleMutation.isPending ? 'Improving...' : 'AI Improve'}
 					</Button>
 
-					<Flex gap='3'>
-						<Button
-							type='button'
-							variant='outline'
-							borderRadius='md'
-							onClick={() => handleSubmit('draft')}
-							disabled={isSubmitting}
-						>
-							Save as Draft
-						</Button>
-						<Button
-							type='button'
-							borderRadius='md'
-							className={styles.publishButton}
-							onClick={() => handleSubmit('published')}
-							disabled={isSubmitting}
-						>
-							{isEditMode ? 'Update & Publish' : 'Publish'}
-						</Button>
-					</Flex>
+					<Button type='submit' borderRadius='md' disabled={isSubmitting}>
+						{isEditMode ? 'Update Article' : 'Create Article'}
+					</Button>
 				</Flex>
 			</Box>
 		</Container>
