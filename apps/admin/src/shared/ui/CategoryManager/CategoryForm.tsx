@@ -132,7 +132,7 @@ export const CategoryForm = memo(
 					onClick={(e) => e.stopPropagation()}
 				>
 					<Typography.Heading level={5} color='primary'>
-						{editingId === 'new' ? 'NEW CATEGORY' : 'EDIT CATEGORY'}
+						{isNewCategory ? 'NEW CATEGORY' : 'EDIT CATEGORY'}
 					</Typography.Heading>
 
 					<Stack gap='2'>

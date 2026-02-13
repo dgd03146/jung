@@ -47,7 +47,8 @@ export const NewPhoto = () => {
 	const params = useParams({ strict: false });
 	const isEditMode = !!params?.photoId;
 
-	const { data: photo, isLoading } = useGetPhotoById(params.photoId!);
+	const photoId = params?.photoId ?? '';
+	const { data: photo, isLoading } = useGetPhotoById(photoId);
 
 	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
 	const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
@@ -181,7 +182,7 @@ export const NewPhoto = () => {
 
 		if (isEditMode) {
 			updatePhotoMutation.mutate({
-				id: params.photoId!,
+				id: photoId,
 				...photoData,
 				file: formData.image || undefined,
 			});
@@ -224,6 +225,14 @@ export const NewPhoto = () => {
 							justify='center'
 							borderRadius='lg'
 							onClick={handleUploadClick}
+							onKeyDown={(e: React.KeyboardEvent) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									handleUploadClick();
+								}
+							}}
+							role='button'
+							tabIndex={0}
 							cursor='pointer'
 							width='full'
 							height='full'
@@ -388,7 +397,6 @@ export const NewPhoto = () => {
 				<Flex justify='flex-end' marginTop='8' gap='3' paddingY='4'>
 					<Button
 						type='submit'
-						onClick={handleSubmit}
 						loading={
 							createPhotoMutation.isPending || updatePhotoMutation.isPending
 						}

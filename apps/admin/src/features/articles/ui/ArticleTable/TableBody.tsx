@@ -1,6 +1,6 @@
 import { Button, Checkbox, Flex } from '@jung/design-system/components';
 import { Link } from '@tanstack/react-router';
-import { flexRender, type Table } from '@tanstack/react-table';
+import { type Cell, flexRender, type Table } from '@tanstack/react-table';
 import { FaEdit, FaExternalLinkAlt, FaTrash } from 'react-icons/fa';
 import { useConfirmDialog } from '@/fsd/shared';
 import { useDeleteArticle } from '../../api';
@@ -35,6 +35,40 @@ export const TableBody = ({ table, isSelected, onToggle }: TableBodyProps) => {
 		return new Date(dateString).toLocaleDateString('ko-KR');
 	};
 
+	const renderCell = (cell: Cell<Article, unknown>, article: Article) => {
+		switch (cell.column.id) {
+			case 'category':
+				return (
+					<span
+						className={
+							article.category === 'frontend'
+								? styles.frontendBadge
+								: styles.aiBadge
+						}
+					>
+						{article.category}
+					</span>
+				);
+			case 'status':
+				return (
+					<span
+						className={
+							article.status === 'published'
+								? styles.publishedBadge
+								: styles.draftBadge
+						}
+					>
+						{article.status}
+					</span>
+				);
+			case 'published_at':
+			case 'created_at':
+				return formatDate(cell.getValue() as string | null);
+			default:
+				return flexRender(cell.column.columnDef.cell, cell.getContext());
+		}
+	};
+
 	return (
 		<tbody>
 			{table.getRowModel().rows.map((row) => {
@@ -52,32 +86,7 @@ export const TableBody = ({ table, isSelected, onToggle }: TableBodyProps) => {
 						)}
 						{row.getVisibleCells().map((cell) => (
 							<td key={cell.id} className={styles.td}>
-								{cell.column.id === 'category' ? (
-									<span
-										className={
-											article.category === 'frontend'
-												? styles.frontendBadge
-												: styles.aiBadge
-										}
-									>
-										{article.category}
-									</span>
-								) : cell.column.id === 'status' ? (
-									<span
-										className={
-											article.status === 'published'
-												? styles.publishedBadge
-												: styles.draftBadge
-										}
-									>
-										{article.status}
-									</span>
-								) : cell.column.id === 'published_at' ||
-									cell.column.id === 'created_at' ? (
-									formatDate(cell.getValue() as string | null)
-								) : (
-									flexRender(cell.column.columnDef.cell, cell.getContext())
-								)}
+								{renderCell(cell, article)}
 							</td>
 						))}
 						<td className={styles.td}>

@@ -16,29 +16,6 @@ export const imageGrid = style({
 			gridTemplateColumns: 'repeat(2, 1fr)',
 		},
 	},
-	selectors: {
-		'&[data-count="0"]': {
-			gridTemplateColumns: '1fr',
-		},
-		'&[data-count="1"]': {
-			gridTemplateColumns: '1fr 1fr',
-		},
-		'&[data-count="2"]': {
-			gridTemplateColumns: 'repeat(2, 1fr)',
-		},
-		'&[data-count="3"]': {
-			gridTemplateAreas: `
-				"img1 img2"
-				"img3 img4"
-			`,
-		},
-		'&[data-count="4"]': {
-			gridTemplateAreas: `
-				"img1 img2"
-				"img3 img4"
-			`,
-		},
-	},
 });
 
 export const imageWrapper = style({

@@ -80,5 +80,6 @@ export const addButton = style({
 });
 
 export const borderBottom = style({
+	borderWidth: 0,
 	borderBottomWidth: '1px',
 });
