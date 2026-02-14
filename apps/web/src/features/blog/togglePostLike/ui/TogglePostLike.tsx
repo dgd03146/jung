@@ -5,6 +5,7 @@ import { useAnonymousId } from '@jung/shared/hooks';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePostLikeQuery } from '@/fsd/entities/blog';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { useTogglePostLikeMutation } from '@/fsd/features/blog';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
@@ -20,6 +21,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 	const { data: likeInfo, isLoading: isLikeInfoLoading } =
 		usePostLikeQuery(postId);
 	const { toggleLike, isPending } = useTogglePostLikeMutation();
+	const { trackEvent } = useTrackEvent();
 
 	const identifier = user?.id || anonymousId;
 
@@ -28,6 +30,13 @@ export const TogglePostLike = ({ postId }: Props) => {
 			showToast('잠시 후 다시 시도해주세요.', 'error');
 			return;
 		}
+
+		trackEvent({
+			event_name: isLiked ? 'unlike_post' : 'like_post',
+			event_category: 'engagement',
+			resource_type: 'post',
+			resource_id: postId,
+		});
 
 		toggleLike(
 			{

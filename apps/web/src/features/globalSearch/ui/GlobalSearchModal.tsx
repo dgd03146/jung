@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoSearchOutline } from 'react-icons/io5';
 import { useTRPC } from '@/fsd/app';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { useScrollLock } from '@/fsd/shared';
 import { useDebounceValue } from '../lib/useDebounceValue';
 import * as styles from './GlobalSearchModal.css';
@@ -53,6 +54,7 @@ export function GlobalSearchModal({
 	const trpc = useTRPC();
 
 	const debouncedQuery = useDebounceValue(query, DEBOUNCE_DELAY_MS);
+	const { trackEvent } = useTrackEvent();
 
 	useScrollLock(isOpen);
 
@@ -124,11 +126,22 @@ export function GlobalSearchModal({
 	// Navigate to selected result
 	const navigateToResult = useCallback(
 		(item: ResultItem) => {
+			trackEvent({
+				event_name: 'search_select',
+				event_category: 'discovery',
+				resource_type: item.type === 'blog' ? 'post' : item.type,
+				resource_id: item.id,
+				properties: {
+					search_query: debouncedQuery,
+					result_type: item.type,
+					tab_filter: activeTab,
+				},
+			});
 			router.push(item.url);
 			onClose();
 			setQuery('');
 		},
-		[router, onClose],
+		[router, onClose, trackEvent, debouncedQuery, activeTab],
 	);
 
 	const handleKeyDown = useCallback(

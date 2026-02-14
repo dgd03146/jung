@@ -15,6 +15,7 @@ import {
 	MESSAGE_MAX_LENGTH,
 	NICKNAME_MAX_LENGTH,
 } from '@/fsd/entities/guestbook';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
@@ -37,6 +38,7 @@ export const CreateMessageForm = () => {
 	} = useCreateMessage();
 
 	const createAnonymousMutation = useCreateAnonymousMessageMutation();
+	const { trackEvent } = useTrackEvent();
 
 	const isLoggedIn = !!user;
 
@@ -52,6 +54,13 @@ export const CreateMessageForm = () => {
 			showToast(t('messageRequired'), 'warning');
 			return;
 		}
+
+		trackEvent({
+			event_name: 'create_guestbook_message',
+			event_category: 'engagement',
+			resource_type: 'guestbook',
+			properties: { is_anonymous: true },
+		});
 
 		createAnonymousMutation.mutate(
 			{
@@ -71,7 +80,18 @@ export const CreateMessageForm = () => {
 
 	return (
 		<form
-			action={isLoggedIn ? handleSubmit : undefined}
+			action={
+				isLoggedIn
+					? (formData: FormData) => {
+							trackEvent({
+								event_name: 'create_guestbook_message',
+								event_category: 'engagement',
+								resource_type: 'guestbook',
+							});
+							handleSubmit(formData);
+						}
+					: undefined
+			}
 			onSubmit={!isLoggedIn ? handleAnonymousSubmit : undefined}
 			className={styles.form}
 		>

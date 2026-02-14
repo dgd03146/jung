@@ -9,6 +9,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { getUserDisplayName } from '@/fsd/shared';
 import { useCreateCommentMutation } from '../model/useCreateCommentMutation';
 import * as styles from './CreateCommentForm.css';
@@ -36,9 +37,17 @@ export const LoggedInCommentForm = ({
 }: LoggedInCommentFormProps) => {
 	const { newComment, setNewComment, submitComment } =
 		useCreateCommentMutation(onSuccess);
+	const { trackEvent } = useTrackEvent();
 	const userAvatar = user.user_metadata?.avatar_url || '/default-avatar.png';
 
 	const handleSubmit = () => {
+		trackEvent({
+			event_name: 'create_comment',
+			event_category: 'engagement',
+			resource_type: 'post',
+			resource_id: postId,
+			properties: { is_reply: !!parentId },
+		});
 		submitComment({ postId, parentId, newComment, postTitle });
 	};
 

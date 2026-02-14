@@ -10,6 +10,7 @@ import {
 } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import { useState } from 'react';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { useCreateAnonymousCommentMutation } from '../model/useCreateAnonymousCommentMutation';
 import * as styles from './CreateCommentForm.css';
 
@@ -37,6 +38,7 @@ export const GuestCommentForm = ({
 
 	const { mutate: createComment, isPending } =
 		useCreateAnonymousCommentMutation();
+	const { trackEvent } = useTrackEvent();
 
 	const handleSubmit = () => {
 		if (!anonymousId) {
@@ -58,6 +60,14 @@ export const GuestCommentForm = ({
 			showToast('댓글 내용을 입력해주세요.', 'warning');
 			return;
 		}
+
+		trackEvent({
+			event_name: 'create_comment',
+			event_category: 'engagement',
+			resource_type: 'post',
+			resource_id: postId,
+			properties: { is_reply: !!parentId, is_anonymous: true },
+		});
 
 		createComment(
 			{
