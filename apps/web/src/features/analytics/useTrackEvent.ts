@@ -15,6 +15,35 @@ type TrackEventParams = Pick<
 >;
 
 const VALID_LOCALES = ['ko', 'en'] as const;
+const SESSION_STORAGE_KEY = 'analytics_session_id';
+
+function resolveLocale(): 'ko' | 'en' | undefined {
+	const lang = document.documentElement.lang;
+	const isValidLocale = (VALID_LOCALES as readonly string[]).includes(lang);
+	return isValidLocale ? (lang as 'ko' | 'en') : undefined;
+}
+
+function getOrCreateSessionId(): string {
+	try {
+		let sessionId = sessionStorage.getItem(SESSION_STORAGE_KEY);
+		if (!sessionId) {
+			sessionId = `sess_${crypto.randomUUID()}`;
+			sessionStorage.setItem(SESSION_STORAGE_KEY, sessionId);
+		}
+		return sessionId;
+	} catch {
+		return `sess_${crypto.randomUUID()}`;
+	}
+}
+
+function sendToGA4(params: TrackEventParams) {
+	gtagEvent(params.event_name, {
+		...params.properties,
+		event_category: params.event_category,
+		resource_type: params.resource_type,
+		resource_id: params.resource_id,
+	});
+}
 
 export function useTrackEvent() {
 	const trpc = useTRPC();
@@ -28,45 +57,17 @@ export function useTrackEvent() {
 	);
 
 	const trackEvent = (params: TrackEventParams) => {
-		// GA4 — spread properties first so explicit fields always win
-		gtagEvent(params.event_name, {
-			...params.properties,
-			event_category: params.event_category,
-			resource_type: params.resource_type,
-			resource_id: params.resource_id,
-		});
+		sendToGA4(params);
 
-		// Locale validation
-		const lang = document.documentElement.lang;
-		const isValidLocale = VALID_LOCALES.includes(
-			lang as (typeof VALID_LOCALES)[number],
-		);
-		const locale = isValidLocale ? (lang as 'ko' | 'en') : undefined;
-
-		// Supabase (fire-and-forget)
 		mutation.mutate({
 			...params,
 			page_path: window.location.pathname,
 			page_title: document.title,
 			referrer: document.referrer || undefined,
 			session_id: getOrCreateSessionId(),
-			locale,
+			locale: resolveLocale(),
 		});
 	};
 
 	return { trackEvent };
-}
-
-function getOrCreateSessionId(): string {
-	const key = 'analytics_session_id';
-	try {
-		let sessionId = sessionStorage.getItem(key);
-		if (!sessionId) {
-			sessionId = `sess_${crypto.randomUUID()}`;
-			sessionStorage.setItem(key, sessionId);
-		}
-		return sessionId;
-	} catch {
-		return `sess_${crypto.randomUUID()}`;
-	}
 }

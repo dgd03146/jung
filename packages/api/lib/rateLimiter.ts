@@ -13,8 +13,9 @@ interface RateLimitRecord {
 }
 
 // 시간 상수
-const RATE_LIMIT_WINDOW_MS = 60_000; // 1분
-const CLEANUP_INTERVAL_MS = 5 * 60_000; // 5분
+const MS_PER_SECOND = 1_000;
+const RATE_LIMIT_WINDOW_MS = 60 * MS_PER_SECOND; // 1분
+const CLEANUP_INTERVAL_MS = 5 * 60 * MS_PER_SECOND; // 5분
 
 // In-memory 저장소 (단일 인스턴스 전용, 프로덕션 다중 인스턴스는 Redis 권장)
 const rateLimitStore = new Map<string, RateLimitRecord>();
@@ -55,7 +56,7 @@ export const checkRateLimit = (
 
 	// Rate Limit 초과
 	if (record.count >= config.maxRequests) {
-		const retryAfter = Math.ceil((record.resetAt - now) / 1000);
+		const retryAfter = Math.ceil((record.resetAt - now) / MS_PER_SECOND);
 		throw new TRPCError({
 			code: 'TOO_MANY_REQUESTS',
 			message: `요청이 너무 많습니다. ${retryAfter}초 후에 다시 시도해주세요.`,

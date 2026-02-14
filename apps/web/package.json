@@ -8,11 +8,12 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "test": "jest",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "format": "pnpm biome format --write .",
-    "lint": "pnpm biome lint . --apply",
+    "lint": "pnpm biome lint --write .",
     "test:e2e": "playwright test",
-    "test:watch": "jest --watch",
+    "test:watch": "vitest",
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
