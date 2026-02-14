@@ -3,7 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { subscriberKeys, supabase } from '@/fsd/shared';
 
-// subscribers 테이블은 아직 database.types.ts에 반영되지 않았으므로 타입 어서션 사용
+// subscribers 테이블에 anon SELECT 정책이 없어 gen types에 미포함 → 타입 어서션 사용
 const db = supabase as unknown as SupabaseClient;
 
 export const useDeleteSubscriber = () => {
