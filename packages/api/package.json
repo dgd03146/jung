@@ -6,7 +6,8 @@
   "types": "./index.ts",
   "scripts": {
     "build": "tsc",
-    "lint": "pnpm biome lint .",
+    "typecheck": "tsc --noEmit",
+    "lint": "pnpm biome lint --write .",
     "format": "pnpm biome format --write ."
   },
   "dependencies": {

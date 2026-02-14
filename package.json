@@ -6,6 +6,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "turbo format",
+    "check": "pnpm typecheck; pnpm test; pnpm biome check --write .",
+    "typecheck": "pnpm --filter web typecheck; pnpm --filter admin typecheck",
     "test": "turbo test",
     "test:e2e": "turbo test:e2e",
     "test:watch": "turbo test:watch",
