@@ -4,4 +4,3 @@ export { fetchPosts } from './blog/api/getPosts';
 export { useGetAllPosts as usePostsQuery } from './blog/api/useGetAllPosts';
 export type { PostFilters } from './blog/types/postFilters';
 export * from './subscribers';
-export type { SubscriberFilters } from './subscribers/types/subscriberFilters';
