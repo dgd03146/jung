@@ -15,6 +15,9 @@ async function loadFont(): Promise<ArrayBuffer> {
 	const res = await fetch(
 		'https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLGT9Z1JlFc-K.woff2',
 	);
+	if (!res.ok) {
+		throw new Error(`Failed to load font: ${res.status}`);
+	}
 	fontData = await res.arrayBuffer();
 	return fontData;
 }
@@ -24,6 +27,9 @@ async function loadFontBold(): Promise<ArrayBuffer> {
 	const res = await fetch(
 		'https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLCz7Z1JlFc-K.woff2',
 	);
+	if (!res.ok) {
+		throw new Error(`Failed to load bold font: ${res.status}`);
+	}
 	fontBoldData = await res.arrayBuffer();
 	return fontBoldData;
 }
@@ -40,8 +46,13 @@ async function ensureWasmInitialized(): Promise<void> {
 			'@resvg/resvg-wasm/index_bg.wasm?module'
 		);
 		await initWasm(wasmModule.default);
-	} catch {
-		// initWasm throws if called more than once per process
+	} catch (error) {
+		if (
+			!(error instanceof Error) ||
+			!error.message.includes('Already initialized')
+		) {
+			throw error;
+		}
 	}
 	wasmInitialized = true;
 }
@@ -144,40 +155,45 @@ export const Route = createFileRoute('/api/og')({
 	server: {
 		handlers: {
 			GET: async ({ request }) => {
-				const url = new URL(request.url);
-				const title = url.searchParams.get('title') || SITE_CONFIG.name;
-				const category = url.searchParams.get('category') || '';
+				try {
+					const url = new URL(request.url);
+					const title = url.searchParams.get('title') || SITE_CONFIG.name;
+					const category = url.searchParams.get('category') || '';
 
-				const [font, fontBold] = await Promise.all([
-					loadFont(),
-					loadFontBold(),
-				]);
+					const [font, fontBold] = await Promise.all([
+						loadFont(),
+						loadFontBold(),
+					]);
 
-				const svg = await satori(
-					<OgImage title={title} category={category} />,
-					{
-						width: OG_WIDTH,
-						height: OG_HEIGHT,
-						fonts: [
-							{ name: 'Poppins', data: font, weight: 400, style: 'normal' },
-							{
-								name: 'Poppins',
-								data: fontBold,
-								weight: 700,
-								style: 'normal',
-							},
-						],
-					},
-				);
+					const svg = await satori(
+						<OgImage title={title} category={category} />,
+						{
+							width: OG_WIDTH,
+							height: OG_HEIGHT,
+							fonts: [
+								{ name: 'Poppins', data: font, weight: 400, style: 'normal' },
+								{
+									name: 'Poppins',
+									data: fontBold,
+									weight: 700,
+									style: 'normal',
+								},
+							],
+						},
+					);
 
-				const png = await renderPng(svg);
+					const png = await renderPng(svg);
 
-				return new Response(png as unknown as BodyInit, {
-					headers: {
-						'Content-Type': 'image/png',
-						'Cache-Control': `public, max-age=${CACHE_MAX_AGE_SECONDS}, s-maxage=${CACHE_MAX_AGE_SECONDS}`,
-					},
-				});
+					return new Response(png as unknown as BodyInit, {
+						headers: {
+							'Content-Type': 'image/png',
+							'Cache-Control': `public, max-age=${CACHE_MAX_AGE_SECONDS}, s-maxage=${CACHE_MAX_AGE_SECONDS}`,
+						},
+					});
+				} catch (error) {
+					console.error('OG image generation failed:', error);
+					return new Response('Internal Server Error', { status: 500 });
+				}
 			},
 		},
 	},

@@ -143,7 +143,6 @@ function ArticleDetailPage() {
 					<ShareButtons
 						title={article.title}
 						url={`${SITE_CONFIG.url}/articles/${article.id}`}
-						description={article.summary ?? undefined}
 					/>
 
 					<div className={styles.card}>

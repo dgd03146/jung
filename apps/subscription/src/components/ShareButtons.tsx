@@ -4,7 +4,6 @@ import * as styles from '../styles/shareButtons.css';
 interface ShareButtonsProps {
 	title: string;
 	url: string;
-	description?: string;
 }
 
 export function ShareButtons({ title, url }: ShareButtonsProps) {
