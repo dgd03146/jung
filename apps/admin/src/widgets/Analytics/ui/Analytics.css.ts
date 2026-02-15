@@ -39,6 +39,7 @@ export const borderBottomStyle = style({
 });
 
 export const gridContainer = style({
+	display: 'grid',
 	gridTemplateColumns: 'minmax(0px, 1fr)',
 	'@media': {
 		'(min-width: 768px)': {

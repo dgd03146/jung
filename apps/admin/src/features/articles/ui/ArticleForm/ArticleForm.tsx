@@ -29,6 +29,14 @@ import type { ArticleCategory, ArticleInput } from '../../types';
 import * as styles from './ArticleForm.css';
 
 const MAX_IMAGES = 3;
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = [
+	'image/jpeg',
+	'image/png',
+	'image/webp',
+	'image/gif',
+];
 
 interface ArticleFormData {
 	title: string;
@@ -99,6 +107,20 @@ export const ArticleForm = () => {
 		}
 
 		const filesToUpload = Array.from(files).slice(0, remaining);
+
+		const invalidFiles = filesToUpload.filter(
+			(file) =>
+				!ALLOWED_IMAGE_TYPES.includes(file.type) ||
+				file.size > MAX_FILE_SIZE_BYTES,
+		);
+		if (invalidFiles.length > 0) {
+			showToast(
+				`Only JPEG, PNG, WebP, GIF under ${MAX_FILE_SIZE_MB}MB allowed.`,
+				'error',
+			);
+			return;
+		}
+
 		setIsUploading(true);
 
 		try {
