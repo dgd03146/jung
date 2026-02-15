@@ -80,3 +80,6 @@ supabase/.temp/
 # Playwright MCP screenshots
 .playwright-mcp/
 
+# Standalone projects (not part of monorepo)
+jung-*/
+

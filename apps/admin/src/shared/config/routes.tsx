@@ -4,6 +4,7 @@ import {
 	MdForum,
 	MdLogin,
 	MdNewspaper,
+	MdPeople,
 	MdPhotoLibrary,
 	MdRestaurantMenu,
 } from 'react-icons/md';
@@ -17,6 +18,11 @@ export const Routes = {
 
 	gallery: { path: '/gallery', icon: <MdPhotoLibrary />, label: 'gallery' },
 	places: { path: '/places', icon: <MdRestaurantMenu />, label: 'places' },
+	subscribers: {
+		path: '/subscribers',
+		icon: <MdPeople />,
+		label: 'subscribers',
+	},
 	community: { path: '/community', icon: <MdForum />, label: 'community' },
 	login: { path: '/login', icon: <MdLogin />, label: 'login' },
 };
