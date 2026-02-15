@@ -24,6 +24,10 @@ export const TogglePostLike = ({ postId }: Props) => {
 	const { trackEvent } = useTrackEvent();
 
 	const identifier = user?.id || anonymousId;
+	const isLiked = Boolean(
+		identifier && likeInfo?.liked_by?.includes(identifier),
+	);
+	const likeCount = likeInfo?.likes || 0;
 
 	const handleToggleLike = () => {
 		if (!identifier) {
@@ -51,11 +55,6 @@ export const TogglePostLike = ({ postId }: Props) => {
 			},
 		);
 	};
-
-	const isLiked = Boolean(
-		identifier && likeInfo?.liked_by?.includes(identifier),
-	);
-	const likeCount = likeInfo?.likes || 0;
 
 	return (
 		<Flex
