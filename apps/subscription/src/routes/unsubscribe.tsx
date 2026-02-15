@@ -36,10 +36,11 @@ function UnsubscribePage() {
 			style={{
 				minHeight: '100vh',
 				background:
-					'linear-gradient(135deg, #e8efff 0%, #f0e8ff 50%, #e8f4ff 100%)',
+					'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 				position: 'relative',
 				overflow: 'hidden',
 				fontFamily: "'Poppins', sans-serif",
+				transition: 'background 0.3s',
 			}}
 		>
 			{/* Grid texture overlay */}
@@ -48,8 +49,8 @@ function UnsubscribePage() {
 					position: 'absolute',
 					inset: 0,
 					backgroundImage: `
-            linear-gradient(rgba(120, 120, 180, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(120, 120, 180, 0.03) 1px, transparent 1px)
+            linear-gradient(var(--grid-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
           `,
 					backgroundSize: '60px 60px',
 					pointerEvents: 'none',
@@ -67,7 +68,7 @@ function UnsubscribePage() {
 					maxWidth: '500px',
 					maxHeight: '500px',
 					background:
-						'radial-gradient(circle, rgba(147, 112, 219, 0.12) 0%, transparent 70%)',
+						'radial-gradient(circle, var(--orb-color) 0%, transparent 70%)',
 					filter: 'blur(80px)',
 					borderRadius: '50%',
 				}}
@@ -100,13 +101,13 @@ function UnsubscribePage() {
 									height: '64px',
 									margin: '0 auto 1.5rem',
 									borderRadius: '50%',
-									background: 'rgba(255, 255, 255, 0.7)',
+									background: 'var(--bg-summary-card)',
 									backdropFilter: 'blur(20px)',
 									display: 'flex',
 									alignItems: 'center',
 									justifyContent: 'center',
 									fontSize: '1.5rem',
-									border: '1px solid rgba(139, 92, 246, 0.15)',
+									border: '1px solid var(--color-border-hover)',
 								}}
 							>
 								✓
@@ -115,7 +116,7 @@ function UnsubscribePage() {
 								style={{
 									fontSize: '1.5rem',
 									fontWeight: 700,
-									color: '#1e293b',
+									color: 'var(--color-text)',
 									marginBottom: '0.75rem',
 								}}
 							>
@@ -123,7 +124,7 @@ function UnsubscribePage() {
 							</h1>
 							<p
 								style={{
-									color: '#64748b',
+									color: 'var(--color-text-muted)',
 									fontSize: '0.95rem',
 									marginBottom: '2rem',
 									lineHeight: 1.6,
@@ -151,7 +152,7 @@ function UnsubscribePage() {
 								style={{
 									fontSize: '1.5rem',
 									fontWeight: 700,
-									color: '#1e293b',
+									color: 'var(--color-text)',
 									marginBottom: '0.5rem',
 								}}
 							>
@@ -159,7 +160,7 @@ function UnsubscribePage() {
 							</h1>
 							<p
 								style={{
-									color: '#64748b',
+									color: 'var(--color-text-muted)',
 									fontSize: '0.95rem',
 									marginBottom: '2rem',
 								}}
@@ -171,10 +172,10 @@ function UnsubscribePage() {
 								<div
 									style={{
 										padding: '1.5rem',
-										background: 'rgba(255, 255, 255, 0.7)',
+										background: 'var(--bg-summary-card)',
 										backdropFilter: 'blur(20px)',
 										borderRadius: '16px',
-										border: '1px solid rgba(139, 92, 246, 0.1)',
+										border: '1px solid var(--color-border)',
 										marginBottom: '1rem',
 									}}
 								>
@@ -187,13 +188,13 @@ function UnsubscribePage() {
 										style={{
 											width: '100%',
 											padding: '0.875rem 1rem',
-											border: '1px solid rgba(139, 92, 246, 0.15)',
+											border: '1px solid var(--color-border-hover)',
 											borderRadius: '12px',
 											fontSize: '0.95rem',
 											marginBottom: '1rem',
 											outline: 'none',
-											background: 'rgba(255, 255, 255, 0.8)',
-											color: '#1e293b',
+											background: 'var(--bg-card-hover)',
+											color: 'var(--color-text)',
 											fontFamily: "'Poppins', sans-serif",
 											transition: 'border-color 0.2s',
 										}}
@@ -254,7 +255,7 @@ function UnsubscribePage() {
 								to='/'
 								style={{
 									display: 'inline-block',
-									color: '#64748b',
+									color: 'var(--color-text-muted)',
 									fontSize: '0.85rem',
 									textDecoration: 'none',
 								}}

@@ -1,33 +1,34 @@
-import { palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const colors = {
-	primary: palette.primary,
-	primaryAlt: palette.primary200,
-	textDark: palette.text,
-	textMuted: palette.gray300,
-	textLight: palette.gray100,
-	border: 'rgba(1, 66, 192, 0.08)',
-	borderHover: 'rgba(1, 66, 192, 0.15)',
-	cardBg: 'rgba(255, 255, 255, 0.6)',
-	cardBgHover: 'rgba(255, 255, 255, 0.85)',
-	filterBg: 'rgba(255, 255, 255, 0.5)',
+	primary: 'var(--color-primary)',
+	primaryAlt: 'var(--color-primary-alt)',
+	textDark: 'var(--color-text)',
+	textMuted: 'var(--color-text-muted)',
+	textLight: 'var(--color-text-light)',
+	border: 'var(--color-border)',
+	borderHover: 'var(--color-border-hover)',
+	cardBg: 'var(--bg-card)',
+	cardBgHover: 'var(--bg-card-hover)',
+	filterBg: 'var(--bg-filter)',
 } as const;
 
 export const page = style({
 	minHeight: '100vh',
-	background: `linear-gradient(135deg, ${palette.primary50} 0%, #edf2ff 50%, ${palette.primary50} 100%)`,
+	background:
+		'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 	position: 'relative',
 	overflow: 'hidden',
 	fontFamily: "'Poppins', sans-serif",
+	transition: 'background 0.3s',
 });
 
 export const gridOverlay = style({
 	position: 'absolute',
 	inset: 0,
 	backgroundImage: `
-		linear-gradient(rgba(120, 120, 180, 0.03) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(120, 120, 180, 0.03) 1px, transparent 1px)
+		linear-gradient(var(--grid-color) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
 	`,
 	backgroundSize: '60px 60px',
 	pointerEvents: 'none',
@@ -41,8 +42,7 @@ export const orb = style({
 	height: '50vw',
 	maxWidth: '600px',
 	maxHeight: '600px',
-	background:
-		'radial-gradient(circle, rgba(1, 66, 192, 0.12) 0%, transparent 70%)',
+	background: 'radial-gradient(circle, var(--orb-color) 0%, transparent 70%)',
 	filter: 'blur(80px)',
 	borderRadius: '50%',
 });
@@ -55,8 +55,7 @@ export const orbSmall = style({
 	height: '40vw',
 	maxWidth: '500px',
 	maxHeight: '500px',
-	background:
-		'radial-gradient(circle, rgba(1, 66, 192, 0.1) 0%, transparent 70%)',
+	background: 'radial-gradient(circle, var(--orb-color) 0%, transparent 70%)',
 	filter: 'blur(60px)',
 	borderRadius: '50%',
 });
@@ -181,15 +180,15 @@ export const filterButton = style({
 });
 
 export const filterButtonActive = style({
-	background: 'white',
+	background: 'var(--bg-card-hover)',
 	color: colors.primary,
-	boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+	boxShadow: '0 2px 8px var(--shadow-color)',
 });
 
 export const filterButtonActiveAi = style({
-	background: 'white',
+	background: 'var(--bg-card-hover)',
 	color: colors.primaryAlt,
-	boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+	boxShadow: '0 2px 8px var(--shadow-color)',
 });
 
 export const articleList = style({
@@ -252,6 +251,12 @@ export const articleDate = style({
 	color: colors.textLight,
 });
 
+export const readingTime = style({
+	fontSize: '0.75rem',
+	color: colors.textLight,
+	fontStyle: 'italic',
+});
+
 export const articleTitle = style({
 	fontSize: '1.1rem',
 	fontWeight: 600,
@@ -290,7 +295,7 @@ export const spinner = style({
 	width: '32px',
 	height: '32px',
 	borderRadius: '50%',
-	border: '3px solid rgba(1, 66, 192, 0.15)',
+	border: `3px solid ${colors.border}`,
 	borderTopColor: colors.primary,
 	animation: `${spin} 0.8s linear infinite`,
 });
@@ -306,7 +311,7 @@ export const footer = style({
 	alignItems: 'center',
 	paddingTop: '3rem',
 	marginTop: '3rem',
-	borderTop: '1px solid rgba(148, 163, 184, 0.1)',
+	borderTop: `1px solid ${colors.border}`,
 });
 
 export const footerNoBorder = style({
@@ -324,11 +329,13 @@ export const footerText = style({
 
 export const centeredPage = style({
 	minHeight: '100vh',
-	background: `linear-gradient(135deg, ${palette.primary50} 0%, #edf2ff 50%, ${palette.primary50} 100%)`,
+	background:
+		'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
 	fontFamily: "'Poppins', sans-serif",
+	transition: 'background 0.3s',
 });
 
 export const centeredContent = style({
@@ -367,7 +374,7 @@ export const notFoundHeading = style({
 
 export const card = style({
 	padding: '1.5rem',
-	background: 'rgba(255, 255, 255, 0.7)',
+	background: 'var(--bg-summary-card)',
 	backdropFilter: 'blur(20px)',
 	borderRadius: '16px',
 	borderLeft: `3px solid ${colors.primary}`,
@@ -376,7 +383,7 @@ export const card = style({
 
 export const cardAlt = style({
 	padding: '1.5rem',
-	background: 'rgba(255, 255, 255, 0.5)',
+	background: 'var(--bg-summary-card-alt)',
 	backdropFilter: 'blur(20px)',
 	borderRadius: '16px',
 	marginBottom: '2.5rem',
@@ -401,7 +408,7 @@ export const cardLabelAlt = style({
 
 export const cardText = style({
 	fontSize: '1rem',
-	color: palette.gray300,
+	color: colors.textMuted,
 	lineHeight: 1.7,
 	margin: 0,
 });
@@ -426,10 +433,10 @@ export const primaryButton = style({
 	textDecoration: 'none',
 	fontFamily: "'Poppins', sans-serif",
 	transition: 'all 0.2s',
-	boxShadow: '0 4px 14px rgba(1, 66, 192, 0.25)',
+	boxShadow: '0 4px 14px var(--shadow-color)',
 	':hover': {
 		transform: 'translateY(-1px)',
-		boxShadow: '0 6px 20px rgba(1, 66, 192, 0.35)',
+		boxShadow: '0 6px 20px var(--shadow-color)',
 	},
 });
 
@@ -457,4 +464,140 @@ export const galleryImage = style({
 	borderRadius: '12px',
 	objectFit: 'cover',
 	maxHeight: '400px',
+});
+
+// Search
+export const searchContainer = style({
+	position: 'relative',
+	marginBottom: '2rem',
+});
+
+export const searchInput = style({
+	width: '100%',
+	padding: '0.875rem 1rem 0.875rem 2.75rem',
+	background: colors.filterBg,
+	backdropFilter: 'blur(10px)',
+	border: `1px solid ${colors.border}`,
+	borderRadius: '12px',
+	fontSize: '0.9rem',
+	color: colors.textDark,
+	fontFamily: "'Poppins', sans-serif",
+	outline: 'none',
+	transition: 'all 0.2s',
+	':focus': {
+		borderColor: colors.borderHover,
+		background: colors.cardBgHover,
+		boxShadow: '0 4px 12px rgba(1, 66, 192, 0.08)',
+	},
+	'::placeholder': {
+		color: colors.textLight,
+	},
+});
+
+export const searchIcon = style({
+	position: 'absolute',
+	left: '1rem',
+	top: '50%',
+	transform: 'translateY(-50%)',
+	color: colors.textLight,
+	pointerEvents: 'none',
+});
+
+// Pagination
+export const paginationContainer = style({
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	gap: '1.5rem',
+	marginTop: '2.5rem',
+	paddingTop: '1.5rem',
+});
+
+export const paginationButton = style({
+	padding: '0.625rem 1.25rem',
+	background: colors.filterBg,
+	backdropFilter: 'blur(10px)',
+	border: `1px solid ${colors.border}`,
+	borderRadius: '10px',
+	fontSize: '0.85rem',
+	fontWeight: 500,
+	fontFamily: "'Poppins', sans-serif",
+	color: colors.primary,
+	cursor: 'pointer',
+	transition: 'all 0.2s',
+	':hover': {
+		background: colors.cardBgHover,
+		borderColor: colors.borderHover,
+		transform: 'translateY(-1px)',
+		boxShadow: '0 4px 12px rgba(1, 66, 192, 0.1)',
+	},
+	':disabled': {
+		opacity: 0.4,
+		cursor: 'not-allowed',
+		transform: 'none',
+		boxShadow: 'none',
+	},
+});
+
+export const paginationInfo = style({
+	fontSize: '0.8rem',
+	color: colors.textLight,
+	fontVariantNumeric: 'tabular-nums',
+});
+
+// Related Articles
+export const relatedSection = style({
+	marginTop: '3rem',
+	paddingTop: '2rem',
+	borderTop: `1px solid ${colors.border}`,
+});
+
+export const relatedHeading = style({
+	fontSize: '0.85rem',
+	fontWeight: 600,
+	textTransform: 'uppercase',
+	letterSpacing: '0.1em',
+	color: colors.textMuted,
+	marginBottom: '1.25rem',
+});
+
+export const relatedGrid = style({
+	display: 'grid',
+	gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+	gap: '1rem',
+});
+
+export const relatedCard = style({
+	padding: '1.25rem',
+	background: colors.cardBg,
+	backdropFilter: 'blur(20px)',
+	borderRadius: '12px',
+	border: `1px solid ${colors.border}`,
+	transition: 'all 0.2s ease',
+	':hover': {
+		background: colors.cardBgHover,
+		transform: 'translateY(-2px)',
+		boxShadow: '0 8px 24px rgba(1, 66, 192, 0.1)',
+		borderColor: colors.borderHover,
+	},
+});
+
+export const relatedCardCategory = style({
+	fontSize: '0.65rem',
+	fontWeight: 600,
+	textTransform: 'uppercase',
+	letterSpacing: '0.05em',
+	marginBottom: '0.5rem',
+});
+
+export const relatedCardTitle = style({
+	fontSize: '0.9rem',
+	fontWeight: 600,
+	color: colors.textDark,
+	margin: 0,
+	lineHeight: 1.3,
+	display: '-webkit-box',
+	WebkitLineClamp: 2,
+	WebkitBoxOrient: 'vertical',
+	overflow: 'hidden',
 });
