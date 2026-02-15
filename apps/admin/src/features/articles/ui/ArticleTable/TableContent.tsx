@@ -97,11 +97,7 @@ export const TableContent = ({
 						isIndeterminate={bulk.isIndeterminate(allIds)}
 						onToggleAll={() => bulk.toggleAll(allIds)}
 					/>
-					<TableBody
-						table={table}
-						isSelected={bulk.isSelected}
-						onToggle={bulk.toggle}
-					/>
+					<TableBody table={table} />
 				</Box>
 			</Box>
 			<TablePagination table={table} />

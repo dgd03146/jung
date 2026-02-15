@@ -7,7 +7,7 @@ export const useSubscriberTableFilter = () => {
 	const searchParams: SubscriberFilters = useSearch({
 		from: '/subscribers/',
 	});
-	const navigate = useNavigate({ from: '/subscribers' });
+	const navigate = useNavigate({ from: '/subscribers/' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 

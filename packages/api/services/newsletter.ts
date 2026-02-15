@@ -32,7 +32,7 @@ interface SendNewsletterInput {
 	testEmail?: string;
 }
 
-interface SendNewsletterResult {
+export interface SendNewsletterResult {
 	sentCount: number;
 	failedCount: number;
 	subscriberCount: number;

@@ -38,7 +38,7 @@ export const photoColumns: ColumnDef<Photo>[] = [
 const PAGE_SIZE = 10;
 
 export const usePhotoTable = () => {
-	const navigate = useNavigate({ from: '/gallery/photos' });
+	const navigate = useNavigate({ from: '/gallery/photos/' });
 	const searchParams = useSearch({ from: '/gallery/photos/' }) as PhotoFilters;
 	const queryClient = useQueryClient();
 

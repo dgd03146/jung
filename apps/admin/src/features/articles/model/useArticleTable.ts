@@ -29,7 +29,7 @@ export const articleColumns: ColumnDef<Article>[] = [
 const PAGE_SIZE = 10;
 
 export const useArticleTable = () => {
-	const navigate = useNavigate({ from: '/articles' });
+	const navigate = useNavigate({ from: '/articles/' });
 	const searchParams = useSearch({ from: '/articles/' }) as ArticleFilters;
 	const queryClient = useQueryClient();
 

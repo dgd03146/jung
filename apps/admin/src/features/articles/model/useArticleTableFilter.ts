@@ -5,7 +5,7 @@ import type { ArticleFilters } from '../types';
 
 export const useArticleTableFilter = () => {
 	const searchParams: ArticleFilters = useSearch({ from: '/articles/' });
-	const navigate = useNavigate({ from: '/articles' });
+	const navigate = useNavigate({ from: '/articles/' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 
