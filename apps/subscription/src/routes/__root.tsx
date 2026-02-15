@@ -18,6 +18,15 @@ const TanStackRouterDevtools =
 				})),
 			);
 
+const FOUC_PREVENTION_SCRIPT = `
+(function() {
+  try {
+    var theme = localStorage.getItem('jung-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+`;
+
 export const Route = createRootRoute({
 	head: () => ({
 		meta: [
@@ -32,6 +41,16 @@ export const Route = createRootRoute({
 			{ property: 'og:locale', content: 'en_US' },
 			{ property: 'og:type', content: 'website' },
 			{ name: 'twitter:site', content: '@jung' },
+		],
+		scripts: [
+			{
+				children: FOUC_PREVENTION_SCRIPT,
+			},
+			{
+				src: 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js',
+				crossOrigin: 'anonymous',
+				async: true,
+			},
 		],
 		links: [
 			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -53,7 +72,7 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang='en'>
+		<html lang='en' suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>

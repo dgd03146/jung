@@ -1,14 +1,14 @@
 import { useToast } from '@jung/design-system/components';
-import { palette } from '@jung/design-system/tokens';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { SITE_CONFIG } from '../config/site';
 import { subscribe } from '../server/subscribers';
 
 const CATEGORY_OPTIONS = [
-	{ value: 'frontend', label: 'Frontend', activeColor: palette.primary },
-	{ value: 'ai', label: 'AI', activeColor: palette.primary200 },
-	{ value: 'both', label: 'Both', activeColor: palette.primary },
+	{ value: 'frontend', label: 'Frontend', activeColor: 'var(--color-primary)' },
+	{ value: 'ai', label: 'AI', activeColor: 'var(--color-primary-alt)' },
+	{ value: 'both', label: 'Both', activeColor: 'var(--color-primary)' },
 ] as const;
 
 export const Route = createFileRoute('/')({
@@ -67,10 +67,12 @@ function HomePage() {
 		<div
 			style={{
 				minHeight: '100vh',
-				background: `linear-gradient(135deg, ${palette.primary50} 0%, #edf2ff 50%, ${palette.primary50} 100%)`,
+				background:
+					'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 				position: 'relative',
 				overflow: 'hidden',
 				fontFamily: "'Poppins', sans-serif",
+				transition: 'background 0.3s',
 			}}
 		>
 			{/* Grid texture overlay */}
@@ -79,8 +81,8 @@ function HomePage() {
 					position: 'absolute',
 					inset: 0,
 					backgroundImage: `
-            linear-gradient(rgba(120, 120, 180, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(120, 120, 180, 0.03) 1px, transparent 1px)
+            linear-gradient(var(--grid-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
           `,
 					backgroundSize: '60px 60px',
 					pointerEvents: 'none',
@@ -98,7 +100,7 @@ function HomePage() {
 					maxWidth: '800px',
 					maxHeight: '800px',
 					background:
-						'radial-gradient(circle, rgba(1, 66, 192, 0.15) 0%, transparent 70%)',
+						'radial-gradient(circle, var(--orb-color) 0%, transparent 70%)',
 					filter: 'blur(60px)',
 					borderRadius: '50%',
 				}}
@@ -113,7 +115,7 @@ function HomePage() {
 					maxWidth: '600px',
 					maxHeight: '600px',
 					background:
-						'radial-gradient(circle, rgba(100, 149, 237, 0.12) 0%, transparent 70%)',
+						'radial-gradient(circle, var(--orb-color) 0%, transparent 70%)',
 					filter: 'blur(80px)',
 					borderRadius: '50%',
 				}}
@@ -138,15 +140,18 @@ function HomePage() {
 						display: 'flex',
 						justifyContent: 'flex-end',
 						alignItems: 'center',
+						gap: '1rem',
 						paddingBottom: '2rem',
 					}}
 				>
-					<nav>
+					<nav style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+						<ThemeToggle />
 						<Link
 							to='/articles'
+							search={{}}
 							style={{
 								fontSize: '0.85rem',
-								color: palette.gray300,
+								color: 'var(--color-text-muted)',
 								textDecoration: 'none',
 								fontWeight: 500,
 								transition: 'color 0.2s',
@@ -172,7 +177,7 @@ function HomePage() {
 							style={{
 								fontSize: '0.85rem',
 								fontWeight: 500,
-								color: palette.primary200,
+								color: 'var(--color-primary-alt)',
 								letterSpacing: '0.1em',
 								textTransform: 'uppercase',
 								marginBottom: '1.5rem',
@@ -184,7 +189,7 @@ function HomePage() {
 							style={{
 								fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
 								fontWeight: 700,
-								color: palette.text,
+								color: 'var(--color-text)',
 								lineHeight: 1.1,
 								margin: 0,
 								letterSpacing: '-0.03em',
@@ -194,7 +199,8 @@ function HomePage() {
 							<br />
 							<span
 								style={{
-									background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary200} 50%, ${palette.primary100} 100%)`,
+									background:
+										'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-alt) 50%, var(--color-primary) 100%)',
 									WebkitBackgroundClip: 'text',
 									WebkitTextFillColor: 'transparent',
 									backgroundClip: 'text',
@@ -208,7 +214,7 @@ function HomePage() {
 						<p
 							style={{
 								fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-								color: palette.gray300,
+								color: 'var(--color-text-muted)',
 								lineHeight: 1.6,
 								marginTop: '1.5rem',
 								maxWidth: '700px',
@@ -233,7 +239,7 @@ function HomePage() {
 									display: 'flex',
 									gap: '0.5rem',
 									padding: '0.25rem',
-									background: 'rgba(255, 255, 255, 0.5)',
+									background: 'var(--bg-filter)',
 									backdropFilter: 'blur(10px)',
 									borderRadius: '12px',
 									width: 'fit-content',
@@ -257,7 +263,7 @@ function HomePage() {
 											color:
 												category === opt.value
 													? opt.activeColor
-													: palette.gray300,
+													: 'var(--color-text-muted)',
 											cursor: 'pointer',
 											transition: 'all 0.2s',
 											boxShadow:
@@ -279,11 +285,11 @@ function HomePage() {
 										alignItems: 'center',
 										gap: '0.5rem',
 										padding: '0.5rem 0.5rem 0.5rem 1.5rem',
-										background: 'rgba(255, 255, 255, 0.7)',
+										background: 'var(--bg-summary-card)',
 										backdropFilter: 'blur(20px)',
 										borderRadius: '16px',
-										border: '1px solid rgba(1, 66, 192, 0.15)',
-										boxShadow: '0 8px 32px rgba(1, 66, 192, 0.08)',
+										border: '1px solid var(--color-border-hover)',
+										boxShadow: '0 8px 32px var(--shadow-color)',
 										transition: 'all 0.3s ease',
 									}}
 								>
@@ -298,7 +304,7 @@ function HomePage() {
 											border: 'none',
 											background: 'transparent',
 											fontSize: '0.95rem',
-											color: palette.text,
+											color: 'var(--color-text)',
 											outline: 'none',
 											minWidth: '180px',
 											fontFamily: "'Poppins', sans-serif",
@@ -309,7 +315,8 @@ function HomePage() {
 										disabled={isSubmitting}
 										style={{
 											padding: '0.875rem 1.5rem',
-											background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.primary200} 100%)`,
+											background:
+												'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-alt) 100%)',
 											color: 'white',
 											border: 'none',
 											borderRadius: '12px',
@@ -320,19 +327,19 @@ function HomePage() {
 											opacity: isSubmitting ? 0.7 : 1,
 											whiteSpace: 'nowrap',
 											transition: 'transform 0.2s, box-shadow 0.2s',
-											boxShadow: '0 4px 14px rgba(1, 66, 192, 0.25)',
+											boxShadow: '0 4px 14px var(--shadow-color)',
 										}}
 										onMouseEnter={(e) => {
 											if (!isSubmitting) {
 												e.currentTarget.style.transform = 'translateY(-1px)';
 												e.currentTarget.style.boxShadow =
-													'0 6px 20px rgba(1, 66, 192, 0.35)';
+													'0 6px 20px var(--shadow-color)';
 											}
 										}}
 										onMouseLeave={(e) => {
 											e.currentTarget.style.transform = 'translateY(0)';
 											e.currentTarget.style.boxShadow =
-												'0 4px 14px rgba(1, 66, 192, 0.25)';
+												'0 4px 14px var(--shadow-color)';
 										}}
 									>
 										{isSubmitting ? 'Subscribing...' : 'Subscribe'}
@@ -343,7 +350,7 @@ function HomePage() {
 							<p
 								style={{
 									fontSize: '0.8rem',
-									color: palette.gray100,
+									color: 'var(--color-text-light)',
 									paddingLeft: '0.25rem',
 								}}
 							>
@@ -360,17 +367,17 @@ function HomePage() {
 						justifyContent: 'space-between',
 						alignItems: 'center',
 						paddingTop: '2rem',
-						borderTop: '1px solid rgba(148, 163, 184, 0.1)',
+						borderTop: '1px solid var(--color-border)',
 					}}
 				>
-					<p style={{ fontSize: '0.8rem', color: palette.gray100 }}>
+					<p style={{ fontSize: '0.8rem', color: 'var(--color-text-light)' }}>
 						© 2026 Curated by Jung
 					</p>
 					<Link
 						to='/unsubscribe'
 						style={{
 							fontSize: '0.8rem',
-							color: palette.gray300,
+							color: 'var(--color-text-muted)',
 							textDecoration: 'none',
 						}}
 					>

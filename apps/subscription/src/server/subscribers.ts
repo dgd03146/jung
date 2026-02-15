@@ -8,7 +8,7 @@ const subscribeInput = z.object({
 });
 
 export const subscribe = createServerFn({ method: 'POST' })
-	.validator((data: z.infer<typeof subscribeInput>) =>
+	.inputValidator((data: z.infer<typeof subscribeInput>) =>
 		subscribeInput.parse(data),
 	)
 	.handler(async ({ data }) => {
@@ -60,12 +60,35 @@ export const subscribe = createServerFn({ method: 'POST' })
 		return { success: true, message: 'Successfully subscribed!' };
 	});
 
+export const fetchActiveSubscribers = createServerFn({ method: 'GET' })
+	.inputValidator((category?: string) => category)
+	.handler(async ({ data: category }) => {
+		const supabase = getServerSupabase();
+
+		let query = supabase
+			.from('subscribers')
+			.select('id, email, category')
+			.eq('is_active', true);
+
+		if (category && category !== 'all') {
+			query = query.or(`category.eq.${category},category.eq.both`);
+		}
+
+		const { data, error } = await query;
+
+		if (error) {
+			throw new Error(`Failed to fetch subscribers: ${error.message}`);
+		}
+
+		return data ?? [];
+	});
+
 const unsubscribeInput = z.object({
 	email: z.string().email(),
 });
 
 export const unsubscribe = createServerFn({ method: 'POST' })
-	.validator((data: z.infer<typeof unsubscribeInput>) =>
+	.inputValidator((data: z.infer<typeof unsubscribeInput>) =>
 		unsubscribeInput.parse(data),
 	)
 	.handler(async ({ data }) => {

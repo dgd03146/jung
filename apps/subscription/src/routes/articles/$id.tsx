@@ -1,10 +1,84 @@
 import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { fetchArticleById } from '../../server/articles';
+import { ShareButtons } from '../../components/ShareButtons';
+import { SITE_CONFIG } from '../../config/site';
+import { estimateReadingTime } from '../../lib/readingTime';
+import {
+	generateArticleJsonLd,
+	generateBreadcrumbJsonLd,
+} from '../../lib/structuredData';
+import {
+	type Article,
+	fetchArticleById,
+	fetchRelatedArticles,
+} from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/$id')({
-	loader: ({ params }) => fetchArticleById({ data: params.id }),
+	loader: async ({ params }) => {
+		const article = await fetchArticleById({ data: params.id });
+		const relatedArticles = article
+			? await fetchRelatedArticles({
+					data: { articleId: article.id, category: article.category },
+				})
+			: [];
+		return { article, relatedArticles };
+	},
+	head: ({ loaderData }) => {
+		const article = loaderData?.article;
+		if (!article) return {};
+		const articleUrl = `${SITE_CONFIG.url}/articles/${article.id}`;
+		const ogImageUrl = `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category)}`;
+		const firstImage = article.images?.[0]
+			? getImageUrl(article.images[0])
+			: ogImageUrl;
+
+		return {
+			meta: [
+				{ title: `${article.title} - ${SITE_CONFIG.name}` },
+				{ name: 'description', content: article.summary },
+				{ property: 'og:title', content: article.title },
+				{ property: 'og:description', content: article.summary },
+				{ property: 'og:url', content: articleUrl },
+				{ property: 'og:image', content: firstImage },
+				{ property: 'og:type', content: 'article' },
+				{
+					property: 'article:published_time',
+					content: article.published_at ?? '',
+				},
+				{ property: 'article:section', content: article.category },
+				{ name: 'twitter:card', content: 'summary_large_image' },
+				{ name: 'twitter:title', content: article.title },
+				{ name: 'twitter:description', content: article.summary },
+				{ name: 'twitter:image', content: firstImage },
+			],
+			scripts: [
+				{
+					type: 'application/ld+json',
+					children: JSON.stringify(
+						generateArticleJsonLd({
+							title: article.title,
+							summary: article.summary,
+							url: articleUrl,
+							publishedAt: article.published_at,
+							category: article.category,
+							imageUrl: firstImage,
+						}),
+					),
+				},
+				{
+					type: 'application/ld+json',
+					children: JSON.stringify(
+						generateBreadcrumbJsonLd([
+							{ name: 'Home', url: SITE_CONFIG.url },
+							{ name: 'Articles', url: `${SITE_CONFIG.url}/articles` },
+							{ name: article.title, url: articleUrl },
+						]),
+					),
+				},
+			],
+		};
+	},
 	component: ArticleDetailPage,
 	pendingComponent: ArticleLoading,
 	errorComponent: ArticleError,
@@ -49,7 +123,7 @@ function ArticleError() {
 					>
 						Retry
 					</button>
-					<Link to='/articles' className={styles.backLink}>
+					<Link to='/articles' search={{}} className={styles.backLink}>
 						← Back to Articles
 					</Link>
 				</div>
@@ -59,7 +133,7 @@ function ArticleError() {
 }
 
 function ArticleDetailPage() {
-	const article = Route.useLoaderData();
+	const { article, relatedArticles } = Route.useLoaderData();
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -79,7 +153,7 @@ function ArticleDetailPage() {
 					<p className={styles.emptyStateText}>
 						This article may have been removed or the link is incorrect.
 					</p>
-					<Link to='/articles' className={styles.backLink}>
+					<Link to='/articles' search={{}} className={styles.backLink}>
 						← Back to Articles
 					</Link>
 				</div>
@@ -96,11 +170,19 @@ function ArticleDetailPage() {
 
 			<div className={styles.contentContainerNarrow}>
 				<header className={styles.header}>
-					<Link to='/articles' className={styles.backLink}>
+					<Link to='/articles' search={{}} className={styles.backLink}>
 						← Back
 					</Link>
 					<span className={styles.headerMeta}>
 						{formatDate(article.published_at)}
+						{article.summary && (
+							<>
+								{' · '}
+								<span className={styles.readingTime}>
+									{estimateReadingTime(article.summary)} min read
+								</span>
+							</>
+						)}
 					</span>
 				</header>
 
@@ -120,7 +202,7 @@ function ArticleDetailPage() {
 
 					{images.length > 0 && (
 						<div className={styles.imageGallery}>
-							{images.map((key, index) => (
+							{images.map((key: string, index: number) => (
 								<img
 									key={key}
 									src={getImageUrl(key)}
@@ -156,6 +238,42 @@ function ArticleDetailPage() {
 						Read Original Article
 						<span>→</span>
 					</a>
+
+					<ShareButtons
+						title={article.title}
+						url={`${SITE_CONFIG.url}/articles/${article.id}`}
+					/>
+
+					{relatedArticles.length > 0 && (
+						<div className={styles.relatedSection}>
+							<h2 className={styles.relatedHeading}>Related Articles</h2>
+							<div className={styles.relatedGrid}>
+								{relatedArticles.map((related: Article) => (
+									<Link
+										key={related.id}
+										to='/articles/$id'
+										params={{ id: related.id }}
+										className={styles.linkUnstyled}
+									>
+										<div className={styles.relatedCard}>
+											<span
+												className={`${styles.relatedCardCategory} ${
+													related.category === 'ai'
+														? styles.categoryAi
+														: styles.categoryFrontend
+												}`}
+											>
+												{related.category}
+											</span>
+											<h3 className={styles.relatedCardTitle}>
+												{related.title}
+											</h3>
+										</div>
+									</Link>
+								))}
+							</div>
+						</div>
+					)}
 				</main>
 
 				<footer className={styles.footerNoBorder}>

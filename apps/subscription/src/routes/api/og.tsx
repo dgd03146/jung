@@ -41,11 +41,12 @@ async function ensureWasmInitialized(): Promise<void> {
 
 	const { initWasm } = await import('@resvg/resvg-wasm');
 	try {
-		const wasmModule = await import(
-			// @ts-expect-error -- WASM module import
-			'@resvg/resvg-wasm/index_bg.wasm?module'
-		);
-		await initWasm(wasmModule.default);
+		const { readFile } = await import('node:fs/promises');
+		const { createRequire } = await import('node:module');
+		const require = createRequire(import.meta.url);
+		const wasmPath = require.resolve('@resvg/resvg-wasm/index_bg.wasm');
+		const wasmBuffer = await readFile(wasmPath);
+		await initWasm(wasmBuffer);
 	} catch (error) {
 		if (
 			!(error instanceof Error) ||
