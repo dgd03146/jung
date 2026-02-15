@@ -44,9 +44,5 @@
   "engines": {
     "node": ">=20"
   },
-  "pnpm": {
-    "patchedDependencies": {
-      "react-spinners@0.13.8": "patches/react-spinners@0.13.8.patch"
-    }
-  }
+  "pnpm": {}
 }
