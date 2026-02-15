@@ -1,14 +1,66 @@
 import { getImageUrl } from '@jung/shared/lib/getImageUrl';
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
-import { fetchArticles } from '../../server/articles';
+import {
+	createFileRoute,
+	Link,
+	useNavigate,
+	useRouter,
+} from '@tanstack/react-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { z } from 'zod';
+import { SITE_CONFIG } from '../../config/site';
+import { estimateReadingTime } from '../../lib/readingTime';
+import { generateCollectionPageJsonLd } from '../../lib/structuredData';
+import { type Article, fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
+const articlesSearchSchema = z.object({
+	category: z.enum(['all', 'frontend', 'ai']).optional().default('all'),
+	q: z.string().optional().default(''),
+	page: z.coerce.number().int().min(1).optional().default(1),
+});
+
 export const Route = createFileRoute('/articles/')({
-	loader: () => fetchArticles(),
+	validateSearch: (search) => articlesSearchSchema.parse(search),
+	loaderDeps: ({ search: { category, page } }) => ({ category, page }),
+	loader: ({ deps: { category, page } }) =>
+		fetchArticles({ data: { category, page, pageSize: 10 } }),
+	head: ({ loaderData }) => ({
+		meta: [
+			{ title: `Articles - ${SITE_CONFIG.name}` },
+			{
+				name: 'description',
+				content: `Browse ${loaderData?.totalCount ?? 0} curated Frontend & AI articles.`,
+			},
+			{ property: 'og:title', content: `Articles - ${SITE_CONFIG.name}` },
+			{
+				property: 'og:description',
+				content: 'Curated Frontend & AI articles I actually read.',
+			},
+			{ property: 'og:url', content: `${SITE_CONFIG.url}/articles` },
+			{
+				property: 'og:image',
+				content: `${SITE_CONFIG.url}/api/og?title=All%20Articles`,
+			},
+		],
+		scripts: [
+			{
+				type: 'application/ld+json',
+				children: JSON.stringify(
+					generateCollectionPageJsonLd(loaderData?.totalCount ?? 0),
+				),
+			},
+		],
+	}),
 	component: ArticlesPage,
 	pendingComponent: ArticlesLoading,
 	errorComponent: ArticlesError,
 });
+
+const FILTER_OPTIONS = [
+	{ value: 'all', label: 'All' },
+	{ value: 'frontend', label: 'Frontend' },
+	{ value: 'ai', label: 'AI' },
+] as const;
 
 function ArticlesLoading() {
 	return (
@@ -48,7 +100,41 @@ function ArticlesError() {
 }
 
 function ArticlesPage() {
-	const articles = Route.useLoaderData();
+	const { articles, totalCount, page, pageSize } = Route.useLoaderData();
+	const { category, q } = Route.useSearch();
+	const navigate = useNavigate({ from: '/articles/' });
+
+	const [searchInput, setSearchInput] = useState(q);
+	const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+	useEffect(() => {
+		setSearchInput(q);
+	}, [q]);
+
+	const handleSearchChange = useCallback(
+		(value: string) => {
+			setSearchInput(value);
+			if (debounceRef.current) clearTimeout(debounceRef.current);
+			debounceRef.current = setTimeout(() => {
+				navigate({
+					search: (prev) => ({ ...prev, q: value, page: 1 }),
+				});
+			}, 300);
+		},
+		[navigate],
+	);
+
+	const filteredArticles = useMemo(() => {
+		if (!q) return articles;
+		const lower = q.toLowerCase();
+		return articles.filter(
+			(a: Article) =>
+				a.title.toLowerCase().includes(lower) ||
+				a.summary?.toLowerCase().includes(lower),
+		);
+	}, [articles, q]);
+
+	const totalPages = Math.ceil(totalCount / pageSize);
 
 	const formatDate = (dateString: string | null) => {
 		if (!dateString) return '';
@@ -69,7 +155,9 @@ function ArticlesPage() {
 					<Link to='/' className={styles.backLink}>
 						← Home
 					</Link>
-					<span className={styles.headerMeta}>{articles.length} articles</span>
+					<span className={styles.headerMeta}>
+						{totalCount} article{totalCount !== 1 ? 's' : ''}
+					</span>
 				</header>
 
 				<main>
@@ -79,22 +167,89 @@ function ArticlesPage() {
 						<p className={styles.subtitle}>
 							A collection of articles I've read and recommend
 						</p>
+
+						{/* Category Filter */}
+						<div className={styles.filterContainer}>
+							{FILTER_OPTIONS.map((opt) => (
+								<button
+									key={opt.value}
+									type='button'
+									onClick={() =>
+										navigate({
+											search: (prev) => ({
+												...prev,
+												category: opt.value,
+												page: 1,
+											}),
+										})
+									}
+									className={`${styles.filterButton} ${
+										(category ?? 'all') === opt.value
+											? opt.value === 'ai'
+												? styles.filterButtonActiveAi
+												: styles.filterButtonActive
+											: ''
+									}`}
+								>
+									{opt.label}
+								</button>
+							))}
+						</div>
+					</div>
+
+					{/* Search */}
+					<div className={styles.searchContainer}>
+						<svg
+							className={styles.searchIcon}
+							width='16'
+							height='16'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							aria-hidden='true'
+						>
+							<circle cx='11' cy='11' r='8' />
+							<path d='m21 21-4.35-4.35' />
+						</svg>
+						<input
+							type='text'
+							placeholder='Search articles...'
+							value={searchInput}
+							onChange={(e) => handleSearchChange(e.target.value)}
+							className={styles.searchInput}
+						/>
 					</div>
 
 					<div className={styles.articleList}>
-						{articles.length === 0 ? (
+						{filteredArticles.length === 0 ? (
 							<div className={styles.loadingContainer}>
-								<span className={styles.emptyStateIcon}>📭</span>
-								<h3 className={styles.emptyStateHeading}>No articles yet</h3>
+								<span className={styles.emptyStateIcon}>{q ? '🔍' : '📭'}</span>
+								<h3 className={styles.emptyStateHeading}>
+									{q ? 'No results found' : 'No articles yet'}
+								</h3>
 								<p className={styles.emptyStateText}>
-									New articles will appear here soon.
-									<br />
-									Check back later!
+									{q ? (
+										<>
+											No articles match "{q}".
+											<br />
+											Try a different search term.
+										</>
+									) : (
+										<>
+											New articles will appear here soon.
+											<br />
+											Check back later!
+										</>
+									)}
 								</p>
 							</div>
 						) : (
-							articles.map((article, index) => {
+							filteredArticles.map((article: Article, index: number) => {
 								const thumbnail = article.images?.[0];
+								const globalIndex = (page - 1) * pageSize + index + 1;
 
 								return (
 									<Link
@@ -105,7 +260,7 @@ function ArticlesPage() {
 									>
 										<article className={styles.articleCard}>
 											<span className={styles.articleNumber}>
-												{String(index + 1).padStart(2, '0')}
+												{String(globalIndex).padStart(2, '0')}
 											</span>
 
 											<div>
@@ -122,6 +277,11 @@ function ArticlesPage() {
 													<span className={styles.articleDate}>
 														{formatDate(article.published_at)}
 													</span>
+													{article.summary && (
+														<span className={styles.readingTime}>
+															{estimateReadingTime(article.summary)} min
+														</span>
+													)}
 												</div>
 												<h3 className={styles.articleTitle}>{article.title}</h3>
 												<p className={styles.articleSummary}>
@@ -144,6 +304,39 @@ function ArticlesPage() {
 							})
 						)}
 					</div>
+
+					{/* Pagination */}
+					{totalPages > 1 && (
+						<div className={styles.paginationContainer}>
+							<button
+								type='button'
+								disabled={page <= 1}
+								onClick={() =>
+									navigate({
+										search: (prev) => ({ ...prev, page: page - 1 }),
+									})
+								}
+								className={styles.paginationButton}
+							>
+								← Previous
+							</button>
+							<span className={styles.paginationInfo}>
+								Page {page} of {totalPages}
+							</span>
+							<button
+								type='button'
+								disabled={page >= totalPages}
+								onClick={() =>
+									navigate({
+										search: (prev) => ({ ...prev, page: page + 1 }),
+									})
+								}
+								className={styles.paginationButton}
+							>
+								Next →
+							</button>
+						</div>
+					)}
 				</main>
 
 				<footer className={styles.footer}>
