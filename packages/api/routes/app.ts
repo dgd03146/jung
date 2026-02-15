@@ -6,11 +6,13 @@ import { categoryRouter } from './category';
 import { galleryRouter } from './gallery';
 import { galleryCollectionsRouter } from './gallery_collections';
 import { guestbookRouter } from './guestbook';
+import { newsletterRouter } from './newsletter';
 import { photoCollectionsRouter } from './photo_collections';
 import { photosRouter } from './photos';
 import { placeRouter } from './place';
 import { commentRouter } from './post_comment';
 import { searchRouter } from './search';
+import { subscriberRouter } from './subscriber';
 import { translateRouter } from './translate';
 export const appRouter = router({
 	analytics: analyticsRouter,
@@ -26,6 +28,8 @@ export const appRouter = router({
 	category: categoryRouter,
 	translate: translateRouter,
 	search: searchRouter,
+	newsletter: newsletterRouter,
+	subscriber: subscriberRouter,
 });
 
 export type AppRouter = typeof appRouter;

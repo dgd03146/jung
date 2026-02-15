@@ -14,7 +14,8 @@
     "rootDir": ".",
     "types": ["node", "jest"],
     "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx"
   },
   "include": ["**/*.ts", "**/*.tsx", "lib/trpc.ts"],
   "exclude": ["node_modules", "dist"]

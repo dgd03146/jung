@@ -11,6 +11,7 @@ import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import { createTRPCContext } from '@trpc/tanstack-react-query';
 import type { ReactNode } from 'react';
 import React, { lazy, useEffect, useState } from 'react';
+import { supabase } from '@/fsd/shared';
 import { makeQueryClient } from '../react-query/queryClient';
 
 // tRPC Context 생성 (useTRPC 훅 export)
@@ -55,6 +56,15 @@ export function TrpcReactProvider({ children }: { children: ReactNode }) {
 			links: [
 				httpBatchLink({
 					url: `${getBaseUrl()}/trpc`,
+					async headers() {
+						const {
+							data: { session },
+						} = await supabase.auth.getSession();
+						if (session?.access_token) {
+							return { authorization: `Bearer ${session.access_token}` };
+						}
+						return {};
+					},
 				}),
 			],
 		}),

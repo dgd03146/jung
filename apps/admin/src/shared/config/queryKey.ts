@@ -52,3 +52,9 @@ export const subscriberKeys = {
 		[...subscriberKeys.lists(), filters] as const,
 	stats: () => [...subscriberKeys.all, 'stats'] as const,
 };
+
+export const newsletterKeys = {
+	all: ['newsletter'] as const,
+	logs: (articleId: string) =>
+		[...newsletterKeys.all, 'logs', articleId] as const,
+};
