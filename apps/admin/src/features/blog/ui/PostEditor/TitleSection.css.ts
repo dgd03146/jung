@@ -4,7 +4,6 @@ import {
 	hoverBg,
 	notionSecondary,
 	notionText,
-	primaryRing,
 	subtleText,
 } from '@/fsd/shared/styles/tokens';
 
@@ -31,7 +30,7 @@ export const titleInput = style({
 
 	'@media': {
 		'screen and (max-width: 768px)': {
-			fontSize: '24px',
+			fontSize: '32px',
 		},
 	},
 });
@@ -83,7 +82,7 @@ export const tagInputContainer = style({
 
 	':focus-within': {
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 });
 
@@ -120,7 +119,7 @@ export const removeTag = style({
 
 	':hover': {
 		opacity: 1,
-		backgroundColor: primaryRing,
+		backgroundColor: 'rgba(1, 66, 192, 0.08)',
 	},
 });
 
@@ -149,7 +148,7 @@ export const select = style({
 
 	':focus': {
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 
 	'::placeholder': {

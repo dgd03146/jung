@@ -9,7 +9,7 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import { getImageUrl } from '@jung/shared/lib';
+import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -29,6 +29,14 @@ import type { ArticleCategory, ArticleInput } from '../../types';
 import * as styles from './ArticleForm.css';
 
 const MAX_IMAGES = 3;
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = [
+	'image/jpeg',
+	'image/png',
+	'image/webp',
+	'image/gif',
+];
 
 interface ArticleFormData {
 	title: string;
@@ -99,6 +107,20 @@ export const ArticleForm = () => {
 		}
 
 		const filesToUpload = Array.from(files).slice(0, remaining);
+
+		const invalidFiles = filesToUpload.filter(
+			(file) =>
+				!ALLOWED_IMAGE_TYPES.includes(file.type) ||
+				file.size > MAX_FILE_SIZE_BYTES,
+		);
+		if (invalidFiles.length > 0) {
+			showToast(
+				`Only JPEG, PNG, WebP, GIF under ${MAX_FILE_SIZE_MB}MB allowed.`,
+				'error',
+			);
+			return;
+		}
+
 		setIsUploading(true);
 
 		try {
@@ -130,10 +152,7 @@ export const ArticleForm = () => {
 	};
 
 	const handleSubmit = (status: 'draft' | 'published') => {
-		const hasRequiredFields =
-			formData.title && formData.original_url && formData.summary;
-
-		if (!hasRequiredFields) {
+		if (!formData.title || !formData.original_url || !formData.summary) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
@@ -308,7 +327,6 @@ export const ArticleForm = () => {
 											type='button'
 											className={styles.imageRemoveButton}
 											onClick={() => handleRemoveImage(index)}
-											aria-label={`Remove image ${index + 1}`}
 										>
 											<HiX size={14} />
 										</button>
@@ -424,7 +442,7 @@ export const ArticleForm = () => {
 							variant='outline'
 							borderRadius='md'
 							onClick={() => handleSubmit('draft')}
-							disabled={isMutating || isUploading}
+							disabled={isMutating}
 						>
 							Save as Draft
 						</Button>
@@ -433,7 +451,7 @@ export const ArticleForm = () => {
 							borderRadius='md'
 							className={styles.publishButton}
 							onClick={() => handleSubmit('published')}
-							disabled={isMutating || isUploading}
+							disabled={isMutating}
 						>
 							{isEditMode ? 'Update & Publish' : 'Publish'}
 						</Button>

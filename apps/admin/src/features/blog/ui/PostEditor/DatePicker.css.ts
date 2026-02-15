@@ -6,7 +6,6 @@ import {
 	disabledText,
 	hoverBg,
 	mutedText,
-	primaryRing,
 	primaryTint,
 } from '@/fsd/shared/styles/tokens';
 
@@ -35,7 +34,7 @@ export const input = style({
 	':focus': {
 		outline: 'none',
 		borderColor: palette.primary,
-		boxShadow: `0 0 0 2px ${primaryRing}`,
+		boxShadow: '0 0 0 2px rgba(1, 66, 192, 0.08)',
 	},
 });
 

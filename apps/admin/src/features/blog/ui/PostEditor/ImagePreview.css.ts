@@ -1,11 +1,9 @@
 import { style } from '@vanilla-extract/css';
-import {
-	border,
-	inputBorder,
-	notionBorder,
-	notionHoverBg,
-	notionSubtleBg,
-} from '@/fsd/shared/styles/tokens';
+
+const inputBorder = 'rgba(0, 0, 0, 0.1)';
+const notionBorder = 'rgba(0, 0, 0, 0.09)';
+const notionHoverBg = 'rgba(0, 0, 0, 0.03)';
+const notionSubtleBg = 'rgba(0, 0, 0, 0.01)';
 
 export const imagePreviewContainer = style({
 	position: 'relative',
@@ -14,7 +12,7 @@ export const imagePreviewContainer = style({
 
 	overflow: 'hidden',
 	backgroundColor: 'white',
-	border: `1px solid ${border}`,
+	border: '1px solid rgba(0, 0, 0, 0.08)',
 
 	transition: 'all 0.2s ease',
 

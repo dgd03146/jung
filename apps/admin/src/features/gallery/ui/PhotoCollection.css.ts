@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { border, overlay } from '@/fsd/shared/styles/tokens';
+
+const overlay = 'rgba(0, 0, 0, 0.6)';
 
 export const collectionGrid = style({
 	gridTemplateColumns: 'minmax(0px, 1fr)',
@@ -16,7 +17,7 @@ export const collectionGrid = style({
 export const collectionCard = style({
 	background: 'white',
 	borderRadius: '12px',
-	border: `1px solid ${border}`,
+	border: '1px solid rgba(0, 0, 0, 0.06)',
 	overflow: 'hidden',
 	transition: 'all 0.2s ease',
 

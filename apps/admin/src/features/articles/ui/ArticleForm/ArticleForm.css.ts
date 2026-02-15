@@ -1,12 +1,10 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import {
-	dangerHover,
 	darkText,
 	inputBorder,
 	inputBorderHover,
 	mutedText,
-	overlay,
 	primaryRing,
 } from '@/fsd/shared/styles/tokens';
 
@@ -77,13 +75,10 @@ export const publishButton = primaryButton;
 
 export const imageGrid = style({
 	display: 'grid',
-	gridTemplateColumns: '1fr',
+	gridTemplateColumns: 'repeat(2, 1fr)',
 	gap: '12px',
 	'@media': {
 		'(min-width: 768px)': {
-			gridTemplateColumns: 'repeat(2, 1fr)',
-		},
-		'(min-width: 1024px)': {
 			gridTemplateColumns: 'repeat(3, 1fr)',
 		},
 	},
@@ -111,7 +106,7 @@ export const imageRemoveButton = style({
 	height: '24px',
 	borderRadius: '50%',
 	border: 'none',
-	background: overlay,
+	background: 'rgba(0, 0, 0, 0.6)',
 	color: 'white',
 	cursor: 'pointer',
 	display: 'flex',
@@ -120,7 +115,7 @@ export const imageRemoveButton = style({
 	transition: 'background 0.15s ease',
 
 	':hover': {
-		background: dangerHover,
+		background: 'rgba(239, 68, 68, 0.9)',
 	},
 });
 
