@@ -37,9 +37,21 @@ const SubscriberStats = () => {
 			<StatCard label='Total' value={stats.total} />
 			<StatCard label='Active' value={stats.active} color='#059669' />
 			<StatCard label='Inactive' value={stats.inactive} color='#DC2626' />
-			<StatCard label='Frontend' value={stats.frontend} color='#0142C0' />
-			<StatCard label='AI' value={stats.ai} color='#9333EA' />
-			<StatCard label='Both' value={stats.both} color='#D97706' />
+			<StatCard
+				label='Frontend'
+				value={stats.categoryDistribution.frontend}
+				color='#0142C0'
+			/>
+			<StatCard
+				label='AI'
+				value={stats.categoryDistribution.ai}
+				color='#9333EA'
+			/>
+			<StatCard
+				label='Both'
+				value={stats.categoryDistribution.both}
+				color='#D97706'
+			/>
 		</Flex>
 	);
 };

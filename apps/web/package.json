@@ -76,6 +76,7 @@
     "@jung/typescript-config": "workspace:*",
     "@next/bundle-analyzer": "^15.2.1",
     "@shikijs/types": "^3.3.0",
+    "@supabase/auth-js": "^2.65.0",
     "@types/hast": "^3.0.4",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20.14.1",

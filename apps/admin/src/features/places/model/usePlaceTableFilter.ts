@@ -5,7 +5,7 @@ import type { PlaceFilters } from '../services/getPlaces';
 
 export const usePlaceTableFilter = () => {
 	const searchParams: PlaceFilters = useSearch({ from: '/places/' });
-	const navigate = useNavigate({ from: '/places' });
+	const navigate = useNavigate({ from: '/places/' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 

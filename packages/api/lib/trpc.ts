@@ -3,7 +3,18 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import { ZodError } from 'zod';
 
-export const createTRPCContext = async (opts?: { headers?: Headers }) => {
+export interface TRPCUser {
+	id: string;
+	email?: string;
+	app_metadata: Record<string, unknown>;
+	user_metadata: Record<string, unknown>;
+	aud: string;
+	created_at: string;
+}
+
+export const createTRPCContext = async (opts?: {
+	headers?: Headers;
+}): Promise<{ user: TRPCUser | null }> => {
 	const authHeader = opts?.headers?.get('authorization');
 
 	if (!authHeader?.startsWith('Bearer ')) {
@@ -28,7 +39,7 @@ export const createTRPCContext = async (opts?: { headers?: Headers }) => {
 		const {
 			data: { user },
 		} = await supabase.auth.getUser(token);
-		return { user };
+		return { user: user as TRPCUser | null };
 	} catch {
 		return { user: null };
 	}

@@ -11,7 +11,7 @@ vi.mock('../lib/supabase', () => ({
 }));
 
 const createCaller = createCallerFactory(analyticsRouter);
-const caller = createCaller({});
+const caller = createCaller({ user: null });
 
 describe('analyticsRouter', () => {
 	beforeEach(() => {
