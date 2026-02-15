@@ -24,11 +24,14 @@ export const createTRPCContext = async (opts?: { headers?: Headers }) => {
 		global: { headers: { Authorization: `Bearer ${token}` } },
 	});
 
-	const {
-		data: { user },
-	} = await supabase.auth.getUser(token);
-
-	return { user };
+	try {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser(token);
+		return { user };
+	} catch {
+		return { user: null };
+	}
 };
 
 type Context = Awaited<ReturnType<typeof createTRPCContext>>;

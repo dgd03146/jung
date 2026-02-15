@@ -24,7 +24,7 @@ export const subscriberRouter = router({
 			if (filter) {
 				const escaped = filter
 					.replace(/[%_]/g, (char) => `\\${char}`)
-					.replace(/[(),.']/g, '');
+					.replace(/[(),']/g, '');
 				if (/^[\w\s\-@.+]+$/.test(escaped)) {
 					query = query.ilike('email', `%${escaped}%`);
 				}

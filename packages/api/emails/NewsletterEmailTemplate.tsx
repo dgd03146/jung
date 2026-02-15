@@ -128,11 +128,21 @@ export function NewsletterEmailTemplate({
 	article,
 	unsubscribeUrl,
 }: NewsletterEmailTemplateProps) {
+	const getCategoryBadgeStyle = () => {
+		if (article.category === 'frontend') return styles.frontendBadge;
+		if (article.category === 'ai') return styles.aiBadge;
+		return styles.frontendBadge;
+	};
+
+	const getCategoryLabel = () => {
+		if (article.category === 'frontend') return 'FRONTEND';
+		if (article.category === 'ai') return 'AI';
+		return 'FRONTEND & AI';
+	};
+
 	const badgeStyle = {
 		...styles.badge,
-		...(article.category === 'frontend'
-			? styles.frontendBadge
-			: styles.aiBadge),
+		...getCategoryBadgeStyle(),
 	};
 
 	return (
@@ -140,9 +150,7 @@ export function NewsletterEmailTemplate({
 			<div style={styles.container}>
 				<div style={styles.header}>
 					<p style={styles.headerTitle}>Jung Archive Newsletter</p>
-					<span style={badgeStyle}>
-						{article.category === 'frontend' ? 'FRONTEND' : 'AI'}
-					</span>
+					<span style={badgeStyle}>{getCategoryLabel()}</span>
 				</div>
 
 				<div style={styles.content}>
