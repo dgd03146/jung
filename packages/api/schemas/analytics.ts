@@ -12,6 +12,7 @@ export const trackInputSchema = z.object({
 		'engagement',
 		'content',
 		'interaction',
+		'discovery',
 	]),
 	page_path: z.string().max(MAX_PATH_LENGTH).optional(),
 	page_title: z.string().max(MAX_TITLE_LENGTH).optional(),

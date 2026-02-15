@@ -4,6 +4,7 @@ import { Button, useToast } from '@jung/design-system/components';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePlaceLikeQuery } from '@/fsd/entities/place';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { LoginModal } from '@/fsd/features/auth';
 import { useSupabaseAuth } from '@/fsd/shared';
 import { useTogglePlaceLikeMutation } from '../api/useTogglePlaceLikeMutation';
@@ -23,6 +24,8 @@ export function TogglePlaceLikeButton({ placeId }: TogglePlaceLikeButtonProps) {
 
 	const isLiked = !!(user && likeInfo?.liked_by?.includes(user.id));
 
+	const { trackEvent } = useTrackEvent();
+
 	const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
 		e.preventDefault();
@@ -31,6 +34,13 @@ export function TogglePlaceLikeButton({ placeId }: TogglePlaceLikeButtonProps) {
 			setIsLoginModalOpen(true);
 			return;
 		}
+
+		trackEvent({
+			event_name: isLiked ? 'unlike_place' : 'like_place',
+			event_category: 'engagement',
+			resource_type: 'place',
+			resource_id: placeId,
+		});
 
 		toggleLike(
 			{ placeId, userId: user.id },

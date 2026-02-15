@@ -4,6 +4,7 @@ import { Button, useToast } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePhotoLikeQuery } from '@/fsd/entities/gallery';
+import { useTrackEvent } from '@/fsd/features/analytics';
 import { useSupabaseAuth } from '@/fsd/shared/model/useSupabaseAuth';
 import { useTogglePhotoLikeMutation } from '../api/useTogglePhotoLikeMutation';
 import * as styles from './ToggleLikePhotoButton.css';
@@ -24,11 +25,20 @@ export function ToggleLikePhotoButton({ photoId }: ToggleLikePhotoButtonProps) {
 	const identifier = user?.id || anonymousId;
 	const isLiked = !!(identifier && likeInfo?.liked_by?.includes(identifier));
 
+	const { trackEvent } = useTrackEvent();
+
 	const handleToggleLike = () => {
 		if (!identifier) {
 			showToast('잠시 후 다시 시도해주세요.', 'error');
 			return;
 		}
+
+		trackEvent({
+			event_name: isLiked ? 'unlike_photo' : 'like_photo',
+			event_category: 'engagement',
+			resource_type: 'photo',
+			resource_id: photoId,
+		});
 
 		toggleLike(
 			{
