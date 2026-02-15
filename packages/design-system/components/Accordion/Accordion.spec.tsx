@@ -19,7 +19,10 @@ describe('Accordion Component', () => {
 		);
 	};
 
-	afterEach(cleanup);
+	afterEach(() => {
+		cleanup();
+		sessionStorage.clear();
+	});
 
 	const getElements = () => ({
 		trigger1: screen.getByText('Trigger 1'),
@@ -29,7 +32,7 @@ describe('Accordion Component', () => {
 	});
 
 	const isPanelHidden = (element: HTMLElement) =>
-		element.getAttribute('HIDDEN') === 'until-found';
+		element.getAttribute('tabindex') === '-1';
 
 	describe('single mode', () => {
 		beforeEach(() => {
