@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
+import { SITE_CONFIG } from '../../config/site';
 import type { Article } from '../../server/articles';
 import { fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
@@ -15,6 +16,38 @@ const CATEGORY_LABELS: Record<Category, string> = {
 
 export const Route = createFileRoute('/articles/')({
 	loader: () => fetchArticles(),
+	head: () => ({
+		meta: [
+			{ title: `All Articles - ${SITE_CONFIG.name}` },
+			{
+				name: 'description',
+				content:
+					"A collection of curated Frontend & AI articles I've read and recommend.",
+			},
+			{ property: 'og:title', content: `All Articles - ${SITE_CONFIG.name}` },
+			{
+				property: 'og:description',
+				content:
+					"A collection of curated Frontend & AI articles I've read and recommend.",
+			},
+			{ property: 'og:url', content: `${SITE_CONFIG.url}/articles` },
+			{
+				property: 'og:image',
+				content: `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent('All Articles')}`,
+			},
+			{ name: 'twitter:card', content: 'summary_large_image' },
+			{ name: 'twitter:title', content: `All Articles - ${SITE_CONFIG.name}` },
+			{
+				name: 'twitter:description',
+				content:
+					"A collection of curated Frontend & AI articles I've read and recommend.",
+			},
+			{
+				name: 'twitter:image',
+				content: `${SITE_CONFIG.url}/api/og?title=${encodeURIComponent('All Articles')}`,
+			},
+		],
+	}),
 	component: ArticlesPage,
 	pendingComponent: ArticlesLoading,
 	errorComponent: ArticlesError,

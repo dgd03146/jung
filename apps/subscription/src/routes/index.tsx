@@ -2,6 +2,7 @@ import { useToast } from '@jung/design-system/components';
 import { palette } from '@jung/design-system/tokens';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { SITE_CONFIG } from '../config/site';
 import { subscribe } from '../server/subscribers';
 
 const CATEGORY_OPTIONS = [
@@ -11,6 +12,30 @@ const CATEGORY_OPTIONS = [
 ] as const;
 
 export const Route = createFileRoute('/')({
+	head: () => ({
+		meta: [
+			{ title: `${SITE_CONFIG.name} - ${SITE_CONFIG.description}` },
+			{
+				name: 'description',
+				content:
+					'Hand-picked reads for developers who want to grow. Subscribe to get curated Frontend & AI articles weekly.',
+			},
+			{ property: 'og:title', content: SITE_CONFIG.name },
+			{
+				property: 'og:description',
+				content: 'Hand-picked reads for developers who want to grow.',
+			},
+			{ property: 'og:url', content: SITE_CONFIG.url },
+			{ property: 'og:image', content: `${SITE_CONFIG.url}/api/og` },
+			{ name: 'twitter:card', content: 'summary_large_image' },
+			{ name: 'twitter:title', content: SITE_CONFIG.name },
+			{
+				name: 'twitter:description',
+				content: 'Hand-picked reads for developers who want to grow.',
+			},
+			{ name: 'twitter:image', content: `${SITE_CONFIG.url}/api/og` },
+		],
+	}),
 	component: HomePage,
 });
 
