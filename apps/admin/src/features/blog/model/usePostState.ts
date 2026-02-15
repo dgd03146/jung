@@ -5,12 +5,8 @@ import type {
 	PostWithBlockContent,
 } from '@/fsd/entities/post/model/post';
 import { useGetPost } from '@/fsd/features/blog/api';
-import {
-	EMPTY_CONTENT,
-	EMPTY_POST,
-	STORAGE_KEY,
-} from '@/fsd/features/blog/config';
-import { storage, useConfirmDialog } from '@/fsd/shared';
+import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
+import { EMPTY_CONTENT, storage, useConfirmDialog } from '@/fsd/shared';
 
 export const usePostState = () => {
 	const editMatch = useMatch({

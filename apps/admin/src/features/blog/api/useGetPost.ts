@@ -1,7 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { deserializeContent } from '@/fsd/features/blog/lib';
-import { postKeys } from '@/fsd/shared';
-import { EMPTY_CONTENT } from '../config/initialPost';
+import { deserializeContent, EMPTY_CONTENT, postKeys } from '@/fsd/shared';
 import { fetchPostById } from './getPost';
 
 export function useGetPost(postId?: string) {

@@ -1,3 +1,4 @@
+import type { PartialBlock } from '@blocknote/core';
 import {
 	Box,
 	Button,
@@ -5,175 +6,126 @@ import {
 	Flex,
 	Input,
 	Stack,
-	Textarea,
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
-import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { useParams } from '@tanstack/react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { HiDocumentText, HiSparkles } from 'react-icons/hi';
 import {
-	HiDocumentText,
-	HiOutlinePhotograph,
-	HiSparkles,
-	HiX,
-} from 'react-icons/hi';
-import { uploadToR2 } from '@/fsd/shared/lib/r2/uploadToR2';
+	deserializeContent,
+	EMPTY_CONTENT,
+	isEditorEmpty,
+	serializeContent,
+} from '@/fsd/shared';
 import {
 	useCreateArticle,
 	useGetArticle,
 	useImproveArticle,
 	useUpdateArticle,
 } from '../../api';
+import { textToBlocks } from '../../lib';
+import { useArticleContent } from '../../model';
 import type { ArticleCategory, ArticleInput } from '../../types';
+import { ArticleBlockNote } from './ArticleBlockNote';
 import * as styles from './ArticleForm.css';
 
-const MAX_IMAGES = 3;
-const MAX_FILE_SIZE_MB = 5;
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = [
-	'image/jpeg',
-	'image/png',
-	'image/webp',
-	'image/gif',
-];
+const ICON_SIZE = {
+	heading: 24,
+	button: 18,
+} as const;
 
 interface ArticleFormData {
 	title: string;
 	original_url: string;
-	summary: string;
-	my_thoughts: string;
 	category: ArticleCategory;
 	published_at: string;
-	status: 'draft' | 'published';
-	images: string[];
 }
 
 const INITIAL_FORM_DATA: ArticleFormData = {
 	title: '',
 	original_url: '',
-	summary: '',
-	my_thoughts: '',
 	category: 'frontend',
 	published_at: '',
-	status: 'draft',
-	images: [],
 };
 
-const isValidStatus = (s: unknown): s is 'draft' | 'published' =>
-	s === 'draft' || s === 'published';
+const parseContent = (content: string | null | undefined): PartialBlock[] => {
+	if (!content) return [EMPTY_CONTENT];
+	try {
+		return deserializeContent(content);
+	} catch {
+		// plain text fallback: 기존 텍스트 데이터를 블록으로 변환
+		return textToBlocks(content);
+	}
+};
 
 export const ArticleForm = () => {
 	const showToast = useToast();
 	const createArticleMutation = useCreateArticle();
 	const updateArticleMutation = useUpdateArticle();
 	const improveArticleMutation = useImproveArticle();
-	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const params = useParams({ strict: false });
-	const isEditMode = !!(params as { articleId?: string })?.articleId;
 	const articleId = (params as { articleId?: string })?.articleId;
+	const isEditMode = !!articleId;
 
 	const { data: article, isLoading } = useGetArticle(articleId);
 
 	const [formData, setFormData] = useState<ArticleFormData>(INITIAL_FORM_DATA);
-	const [isUploading, setIsUploading] = useState(false);
+
+	const initialSummaryContent = useMemo(
+		() => parseContent(article?.summary),
+		[article?.summary],
+	);
+	const initialThoughtsContent = useMemo(
+		() => parseContent(article?.my_thoughts),
+		[article?.my_thoughts],
+	);
+
+	const { editor: summaryEditor, getContent: getSummaryContent } =
+		useArticleContent(initialSummaryContent);
+	const { editor: thoughtsEditor, getContent: getThoughtsContent } =
+		useArticleContent(initialThoughtsContent);
 
 	useEffect(() => {
 		if (isEditMode && article) {
 			setFormData({
 				title: article.title,
 				original_url: article.original_url,
-				summary: article.summary,
-				my_thoughts: article.my_thoughts || '',
 				category: article.category as ArticleCategory,
-				published_at: article.published_at
-					? article.published_at.split('T')[0]
-					: '',
-				status: isValidStatus(article.status) ? article.status : 'draft',
-				images: article.images || [],
+				published_at: article.published_at?.split('T')[0] ?? '',
 			});
 		}
 	}, [isEditMode, article]);
 
-	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		if (!files || files.length === 0) return;
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
 
-		const remaining = MAX_IMAGES - formData.images.length;
-		if (remaining <= 0) {
-			showToast(`Maximum ${MAX_IMAGES} images allowed.`, 'error');
-			return;
-		}
+		const summaryBlocks = getSummaryContent();
 
-		const filesToUpload = Array.from(files).slice(0, remaining);
-
-		const invalidFiles = filesToUpload.filter(
-			(file) =>
-				!ALLOWED_IMAGE_TYPES.includes(file.type) ||
-				file.size > MAX_FILE_SIZE_BYTES,
-		);
-		if (invalidFiles.length > 0) {
-			showToast(
-				`Only JPEG, PNG, WebP, GIF under ${MAX_FILE_SIZE_MB}MB allowed.`,
-				'error',
-			);
-			return;
-		}
-
-		setIsUploading(true);
-
-		try {
-			const results = await Promise.all(
-				filesToUpload.map((file) => uploadToR2(file, 'articles')),
-			);
-
-			setFormData((prev) => ({
-				...prev,
-				images: [...prev.images, ...results.map((r) => r.key)],
-			}));
-
-			showToast(`${results.length} image(s) uploaded.`, 'success');
-		} catch {
-			showToast('Failed to upload images.', 'error');
-		} finally {
-			setIsUploading(false);
-			if (fileInputRef.current) {
-				fileInputRef.current.value = '';
-			}
-		}
-	};
-
-	const handleRemoveImage = (index: number) => {
-		setFormData((prev) => ({
-			...prev,
-			images: prev.images.filter((_, i) => i !== index),
-		}));
-	};
-
-	const handleSubmit = (status: 'draft' | 'published') => {
-		if (!formData.title || !formData.original_url || !formData.summary) {
+		if (
+			!formData.title ||
+			!formData.original_url ||
+			isEditorEmpty(summaryBlocks)
+		) {
 			showToast('Please fill in all required fields.', 'error');
 			return;
 		}
 
-		const now = new Date().toISOString();
-
-		const getPublishedAt = () => {
-			if (formData.published_at)
-				return new Date(formData.published_at).toISOString();
-			return status === 'published' ? now : null;
-		};
+		const thoughtsBlocks = getThoughtsContent();
+		const thoughtsContent = isEditorEmpty(thoughtsBlocks)
+			? null
+			: serializeContent(thoughtsBlocks);
 
 		const articleData: ArticleInput = {
 			title: formData.title.trim(),
 			original_url: formData.original_url.trim(),
-			summary: formData.summary.trim(),
-			my_thoughts: formData.my_thoughts.trim() || null,
+			summary: serializeContent(summaryBlocks),
+			my_thoughts: thoughtsContent,
 			category: formData.category,
-			published_at: getPublishedAt(),
-			status,
-			images: formData.images,
+			published_at: formData.published_at
+				? new Date(formData.published_at).toISOString()
+				: null,
 		};
 
 		if (isEditMode && articleId) {
@@ -187,31 +139,49 @@ export const ArticleForm = () => {
 	};
 
 	const handleImprove = async () => {
-		if (!formData.title && !formData.summary) {
+		const summaryEmpty = isEditorEmpty(getSummaryContent());
+
+		if (!formData.title && summaryEmpty) {
 			showToast('Please enter title or summary first.', 'error');
 			return;
 		}
 
+		const currentSummary = serializeContent(getSummaryContent());
+		const thoughtsBlocks = getThoughtsContent();
+		const currentThoughts = isEditorEmpty(thoughtsBlocks)
+			? null
+			: serializeContent(thoughtsBlocks);
+
 		improveArticleMutation.mutate(
 			{
 				title: formData.title,
-				summary: formData.summary,
-				my_thoughts: formData.my_thoughts || null,
+				summary: currentSummary,
+				my_thoughts: currentThoughts,
 			},
 			{
 				onSuccess: (data) => {
 					setFormData((prev) => ({
 						...prev,
 						title: data.title,
-						summary: data.summary,
-						my_thoughts: data.my_thoughts,
 					}));
+
+					// AI 결과를 에디터에 삽입
+					const summaryBlocks = textToBlocks(data.summary);
+					summaryEditor.replaceBlocks(summaryEditor.document, summaryBlocks);
+
+					if (data.my_thoughts) {
+						const thoughtsBlocks = textToBlocks(data.my_thoughts);
+						thoughtsEditor.replaceBlocks(
+							thoughtsEditor.document,
+							thoughtsBlocks,
+						);
+					}
 				},
 			},
 		);
 	};
 
-	const isMutating =
+	const isSubmitting =
 		createArticleMutation.isPending || updateArticleMutation.isPending;
 
 	if (isEditMode && isLoading) {
@@ -226,11 +196,11 @@ export const ArticleForm = () => {
 				borderRadius='lg'
 				padding='6'
 				boxShadow='primary'
-				onSubmit={(e: React.FormEvent) => e.preventDefault()}
+				onSubmit={handleSubmit}
 				className={styles.formContainer}
 			>
 				<Flex align='center' gap='2' color='primary' marginBottom='6'>
-					<HiDocumentText size={24} />
+					<HiDocumentText size={ICON_SIZE.heading} />
 					<Typography.Text level={1} fontWeight='semibold'>
 						{isEditMode ? 'Edit Article' : 'New Article'}
 					</Typography.Text>
@@ -256,6 +226,7 @@ export const ArticleForm = () => {
 								setFormData((prev) => ({ ...prev, title: e.target.value }))
 							}
 							placeholder='Enter article title'
+							required
 						/>
 					</Stack>
 
@@ -281,6 +252,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							placeholder='https://example.com/article'
+							required
 						/>
 					</Stack>
 
@@ -288,94 +260,16 @@ export const ArticleForm = () => {
 					<Stack space='2'>
 						<Typography.Text level={2} fontWeight='medium'>
 							Summary
-							{!formData.summary && (
-								<Typography.Text as='span' level={2} color='secondary'>
-									*
-								</Typography.Text>
-							)}
 						</Typography.Text>
-						<Textarea
-							width='full'
-							borderRadius='md'
-							value={formData.summary}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									summary: e.target.value,
-								}))
-							}
-							placeholder='Write a brief summary (2-3 sentences)'
-						/>
+						<ArticleBlockNote editor={summaryEditor} />
 					</Stack>
 
-					{/* Images */}
+					{/* My Thoughts */}
 					<Stack space='2'>
 						<Typography.Text level={2} fontWeight='medium'>
-							Images ({formData.images.length}/{MAX_IMAGES})
+							My Thoughts
 						</Typography.Text>
-
-						{formData.images.length > 0 && (
-							<div className={styles.imageGrid}>
-								{formData.images.map((key, index) => (
-									<div key={key} className={styles.imagePreview}>
-										<img
-											src={getImageUrl(key)}
-											alt={`Article capture ${index + 1}`}
-											className={styles.imagePreviewImg}
-										/>
-										<button
-											type='button'
-											className={styles.imageRemoveButton}
-											onClick={() => handleRemoveImage(index)}
-										>
-											<HiX size={14} />
-										</button>
-									</div>
-								))}
-							</div>
-						)}
-
-						{formData.images.length < MAX_IMAGES && (
-							<div>
-								<input
-									ref={fileInputRef}
-									type='file'
-									accept='image/*'
-									multiple
-									onChange={handleImageUpload}
-									className={styles.fileInput}
-								/>
-								<Button
-									type='button'
-									variant='outline'
-									borderRadius='md'
-									onClick={() => fileInputRef.current?.click()}
-									disabled={isUploading}
-								>
-									<HiOutlinePhotograph size={18} />
-									{isUploading ? 'Uploading...' : 'Add Images'}
-								</Button>
-							</div>
-						)}
-					</Stack>
-
-					{/* Why I Recommend */}
-					<Stack space='2'>
-						<Typography.Text level={2} fontWeight='medium'>
-							Why I Recommend
-						</Typography.Text>
-						<Textarea
-							width='full'
-							borderRadius='md'
-							value={formData.my_thoughts}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									my_thoughts: e.target.value,
-								}))
-							}
-							placeholder='Why do you recommend this article? (visible to subscribers)'
-						/>
+						<ArticleBlockNote editor={thoughtsEditor} />
 					</Stack>
 
 					{/* Category */}
@@ -397,6 +291,7 @@ export const ArticleForm = () => {
 								}))
 							}
 							className={styles.select}
+							required
 						>
 							<option value='frontend'>Frontend</option>
 							<option value='ai'>AI</option>
@@ -432,30 +327,13 @@ export const ArticleForm = () => {
 						onClick={handleImprove}
 						disabled={improveArticleMutation.isPending}
 					>
-						<HiSparkles size={18} />
+						<HiSparkles size={ICON_SIZE.button} />
 						{improveArticleMutation.isPending ? 'Improving...' : 'AI Improve'}
 					</Button>
 
-					<Flex gap='3'>
-						<Button
-							type='button'
-							variant='outline'
-							borderRadius='md'
-							onClick={() => handleSubmit('draft')}
-							disabled={isMutating}
-						>
-							Save as Draft
-						</Button>
-						<Button
-							type='button'
-							borderRadius='md'
-							className={styles.publishButton}
-							onClick={() => handleSubmit('published')}
-							disabled={isMutating}
-						>
-							{isEditMode ? 'Update & Publish' : 'Publish'}
-						</Button>
-					</Flex>
+					<Button type='submit' borderRadius='md' disabled={isSubmitting}>
+						{isEditMode ? 'Update Article' : 'Create Article'}
+					</Button>
 				</Flex>
 			</Box>
 		</Container>

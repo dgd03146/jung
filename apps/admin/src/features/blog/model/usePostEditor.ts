@@ -11,8 +11,13 @@ import {
 	useUpdatePost,
 } from '@/fsd/features/blog/api';
 import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
-import { isPostEmpty, serializeContent } from '@/fsd/features/blog/lib';
-import { storage, useConfirmDialog, useThrottle } from '@/fsd/shared';
+import { isPostEmpty } from '@/fsd/features/blog/lib';
+import {
+	serializeContent,
+	storage,
+	useConfirmDialog,
+	useThrottle,
+} from '@/fsd/shared';
 import type { Errors } from '../types/errors';
 
 export const usePostEditor = () => {
