@@ -105,9 +105,7 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 						return (
 							<div key={part.toolCallId} className={styles.toolSearching}>
 								<div className={styles.toolSearchingDot} />
-								<span>
-									{label} {t('toolSearching')}
-								</span>
+								<span>{t('toolSearchingWithLabel', { label })}</span>
 							</div>
 						);
 					}

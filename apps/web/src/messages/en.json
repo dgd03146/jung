@@ -68,6 +68,7 @@
 		"toolSearchPhotos": "📸 Related photos",
 		"toolGetProfile": "👤 Profile",
 		"toolDefault": "🔍 Search",
-		"toolSearching": "Searching..."
+		"toolSearching": "Searching...",
+		"toolSearchingWithLabel": "Searching {label}..."
 	}
 }

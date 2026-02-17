@@ -68,6 +68,7 @@
 		"toolSearchPhotos": "📸 관련 사진",
 		"toolGetProfile": "👤 프로필",
 		"toolDefault": "🔍 검색",
-		"toolSearching": "검색 중..."
+		"toolSearching": "검색 중...",
+		"toolSearchingWithLabel": "{label} 검색 중..."
 	}
 }
