@@ -2,11 +2,11 @@
 
 import type { Comment } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
+	useTRPC,
 } from '@/fsd/shared';
 import { updateAnonymousCommentAction } from '../api/updateAnonymousCommentAction';
 

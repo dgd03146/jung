@@ -10,7 +10,7 @@ import {
 } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import { useState } from 'react';
-import { useTrackEvent } from '@/fsd/features/analytics';
+import { useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousCommentMutation } from '../model/useCreateAnonymousCommentMutation';
 import * as styles from './CreateCommentForm.css';
 

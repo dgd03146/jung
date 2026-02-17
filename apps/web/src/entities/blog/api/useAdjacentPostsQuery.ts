@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 
 export const useAdjacentPostsQuery = (postId: string) => {
 	const trpc = useTRPC();

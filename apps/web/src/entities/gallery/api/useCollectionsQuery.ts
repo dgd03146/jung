@@ -1,6 +1,6 @@
 import type { CollectionQueryParams } from '@jung/shared/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { COLLECTION_DEFAULTS } from '../config/gallery';
 
 export function useCollectionsQuery(params: CollectionQueryParams = {}) {

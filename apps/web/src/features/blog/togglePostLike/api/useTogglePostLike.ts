@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 
 type LikeInfo = {
 	likes: number;

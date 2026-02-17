@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { type LikeInfo, toggleLikeOptimistic } from '@/fsd/shared/lib';
 
 type ToggleLikeVariables = {

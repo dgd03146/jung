@@ -3,12 +3,12 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useTRPC } from '@/fsd/app';
 import {
 	COMMENTS_DEFAULT_ORDER,
 	COMMENTS_LIMIT,
 	type CommentData,
 	useSupabaseAuth,
+	useTRPC,
 } from '@/fsd/shared';
 import { createCommentAction } from '../api/createCommentAction';
 import { createOptimisticComment, updateOptimisticComment } from '../lib';

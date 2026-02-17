@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { PHOTO_CACHE } from '../config/gallery';
 
 export function usePhotoQuery(id: string) {

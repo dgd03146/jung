@@ -2,12 +2,12 @@ import { useToast } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
 import {
 	type GuestbookColor,
 	type GuestbookEmoji,
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/guestbook';
+import { useTRPC } from '@/fsd/shared';
 
 const AVATAR_API = {
 	BASE_URL: 'https://api.dicebear.com',

@@ -1,7 +1,7 @@
 import type { AdjacentPhotosData } from '@jung/shared/types';
 import { useQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
 import type { Sort } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/shared';
 
 interface UseAdjacentPhotosQueryParams {
 	id: string;

@@ -1,5 +1,5 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { MESSAGE_LIMIT } from '../config/guestbook';
 
 export function useMessagesQuery() {

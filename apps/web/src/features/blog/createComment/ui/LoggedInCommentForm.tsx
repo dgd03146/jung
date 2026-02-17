@@ -9,8 +9,7 @@ import {
 	Typography,
 } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
-import { useTrackEvent } from '@/fsd/features/analytics';
-import { getUserDisplayName } from '@/fsd/shared';
+import { getUserDisplayName, useTrackEvent } from '@/fsd/shared';
 import { useCreateCommentMutation } from '../model/useCreateCommentMutation';
 import * as styles from './CreateCommentForm.css';
 

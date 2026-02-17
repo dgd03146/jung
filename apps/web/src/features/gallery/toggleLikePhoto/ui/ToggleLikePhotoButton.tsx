@@ -4,8 +4,7 @@ import { Button, useToast } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { usePhotoLikeQuery } from '@/fsd/entities/gallery';
-import { useTrackEvent } from '@/fsd/features/analytics';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { useSupabaseAuth, useTrackEvent } from '@/fsd/shared';
 import { useTogglePhotoLikeMutation } from '../api/useTogglePhotoLikeMutation';
 import * as styles from './ToggleLikePhotoButton.css';
 

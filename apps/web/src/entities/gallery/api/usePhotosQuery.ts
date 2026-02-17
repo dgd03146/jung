@@ -1,6 +1,6 @@
 import type { PhotoQueryParams } from '@jung/shared/types';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { PHOTO_CACHE, PHOTO_DEFAULTS } from '../config/gallery';
 
 export function usePhotosQuery(params: PhotoQueryParams) {

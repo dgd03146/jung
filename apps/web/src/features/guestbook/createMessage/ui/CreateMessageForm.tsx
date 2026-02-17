@@ -15,8 +15,7 @@ import {
 	MESSAGE_MAX_LENGTH,
 	NICKNAME_MAX_LENGTH,
 } from '@/fsd/entities/guestbook';
-import { useTrackEvent } from '@/fsd/features/analytics';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { useSupabaseAuth, useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
 import { CreateMessageButton } from './CreateMessageButton';
