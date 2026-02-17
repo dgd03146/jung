@@ -38,7 +38,7 @@ export const collectionQueryOptions = {
 	lists: () => [...collectionQueryOptions.all(), 'list'] as const,
 	list: () =>
 		queryOptions({
-			queryKey: collectionQueryOptions.all(),
+			queryKey: [...collectionQueryOptions.lists()] as const,
 			queryFn: getCollections,
 		}),
 };
