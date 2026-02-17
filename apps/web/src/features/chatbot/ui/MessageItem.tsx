@@ -2,6 +2,7 @@
 
 import { isToolUIPart, type UIMessage } from 'ai';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { IoChatbubble, IoPerson } from 'react-icons/io5';
 import { MemoizedMarkdown } from './MemoizedMarkdown';
 import * as styles from './MessageItem.css';
@@ -31,23 +32,21 @@ function isValidToolOutput(output: unknown): output is ToolOutputItem[] {
 	return Array.isArray(output) && output.every(isToolOutputItem);
 }
 
-function getToolLabel(toolName: string): string {
-	switch (toolName) {
-		case 'searchBlog':
-			return '📝 관련 블로그';
-		case 'searchPlaces':
-			return '📍 관련 장소';
-		case 'searchPhotos':
-			return '📸 관련 사진';
-		case 'getProfile':
-			return '👤 프로필';
-		default:
-			return '🔍 검색';
-	}
-}
+const TOOL_LABEL_KEYS: Record<string, string> = {
+	searchBlog: 'toolSearchBlog',
+	searchPlaces: 'toolSearchPlaces',
+	searchPhotos: 'toolSearchPhotos',
+	getProfile: 'toolGetProfile',
+};
 
 export function MessageItem({ message, isLoading }: MessageItemProps) {
+	const t = useTranslations('chatbot');
 	const isUser = message.role === 'user';
+
+	const getToolLabel = (toolName: string): string => {
+		const key = TOOL_LABEL_KEYS[toolName] ?? 'toolDefault';
+		return t(key);
+	};
 
 	// Extract text content from parts
 	const textContent = message.parts
@@ -106,7 +105,9 @@ export function MessageItem({ message, isLoading }: MessageItemProps) {
 						return (
 							<div key={part.toolCallId} className={styles.toolSearching}>
 								<div className={styles.toolSearchingDot} />
-								<span>{label} 검색 중...</span>
+								<span>
+									{label} {t('toolSearching')}
+								</span>
 							</div>
 						);
 					}

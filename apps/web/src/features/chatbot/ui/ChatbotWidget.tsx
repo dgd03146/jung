@@ -2,22 +2,25 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { ChatButton } from './ChatButton';
 import { ChatWindow } from './ChatWindow';
 
-const INITIAL_MESSAGES = [
-	{
-		id: 'welcome',
-		role: 'assistant' as const,
-		content: '안녕하세요! 무엇이든 물어보세요 🙌',
-		parts: [
-			{ type: 'text' as const, text: '안녕하세요! 무엇이든 물어보세요 🙌' },
-		],
-	},
-];
-
 export function ChatbotWidget() {
+	const t = useTranslations('chatbot');
+
+	const initialMessages = useMemo(
+		() => [
+			{
+				id: 'welcome',
+				role: 'assistant' as const,
+				content: t('welcome'),
+				parts: [{ type: 'text' as const, text: t('welcome') }],
+			},
+		],
+		[t],
+	);
 	const [isOpen, setIsOpen] = useState(false);
 	const [input, setInput] = useState('');
 
@@ -28,7 +31,7 @@ export function ChatbotWidget() {
 
 	const { messages, sendMessage, status } = useChat({
 		transport,
-		messages: INITIAL_MESSAGES,
+		messages: initialMessages,
 	});
 
 	const isLoading = status === 'submitted' || status === 'streaming';

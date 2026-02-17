@@ -43,5 +43,31 @@
 		"messagePlaceholder": "Leave a message!",
 		"submit": "Post",
 		"submitting": "Posting..."
+	},
+	"chatbot": {
+		"header": "Chat with Jung",
+		"close": "Close chat",
+		"window": "Chat window",
+		"welcomeGreeting": "Hi, I'm ",
+		"welcomeName": "Jung",
+		"welcomeSubtitle": "Ask me anything about my blog, favorite places, or photos.",
+		"startChat": "Start Chat",
+		"placeholder": "Type a message...",
+		"send": "Send message",
+		"welcome": "Hi there! Ask me anything 🙌",
+		"quickBlog": "Blog",
+		"quickBlogAction": "Recommend some blog posts",
+		"quickPlaces": "Places",
+		"quickPlacesAction": "Tell me about your favorite places",
+		"quickPhotos": "Photos",
+		"quickPhotosAction": "Show me some photos",
+		"quickAbout": "About",
+		"quickAboutAction": "Tell me about yourself",
+		"toolSearchBlog": "📝 Related posts",
+		"toolSearchPlaces": "📍 Related places",
+		"toolSearchPhotos": "📸 Related photos",
+		"toolGetProfile": "👤 Profile",
+		"toolDefault": "🔍 Search",
+		"toolSearching": "Searching..."
 	}
 }

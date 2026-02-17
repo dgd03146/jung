@@ -2,7 +2,8 @@
 
 import type { UIMessage } from 'ai';
 import { AnimatePresence, motion } from 'motion/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoChatbubble, IoClose, IoSend } from 'react-icons/io5';
 import * as styles from './ChatWindow.css';
@@ -20,13 +21,6 @@ interface ChatWindowProps {
 	onQuickAction?: (text: string) => void;
 }
 
-const QUICK_ACTIONS = [
-	{ icon: '📝', label: 'Blog', action: '블로그 글 추천해줘' },
-	{ icon: '📍', label: 'Places', action: '좋아하는 장소 알려줘' },
-	{ icon: '📸', label: 'Photos', action: '사진 보여줘' },
-	{ icon: '👋', label: 'About', action: '자기소개 해줘' },
-];
-
 export function ChatWindow({
 	isOpen,
 	onClose,
@@ -38,9 +32,28 @@ export function ChatWindow({
 	isCooldown,
 	onQuickAction,
 }: ChatWindowProps) {
+	const t = useTranslations('chatbot');
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	const [showWelcome, setShowWelcome] = useState(true);
+
+	const quickActions = useMemo(
+		() => [
+			{ icon: '📝', label: t('quickBlog'), action: t('quickBlogAction') },
+			{
+				icon: '📍',
+				label: t('quickPlaces'),
+				action: t('quickPlacesAction'),
+			},
+			{
+				icon: '📸',
+				label: t('quickPhotos'),
+				action: t('quickPhotosAction'),
+			},
+			{ icon: '👋', label: t('quickAbout'), action: t('quickAboutAction') },
+		],
+		[t],
+	);
 
 	const scrollToBottom = useCallback(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -135,17 +148,17 @@ export function ChatWindow({
 						transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
 						role='dialog'
 						aria-modal='true'
-						aria-label='Chat window'
+						aria-label={t('window')}
 					>
 						<div className={styles.header}>
 							<div className={styles.headerTitle}>
 								<IoChatbubble size={16} />
-								<span>Chat with Jung</span>
+								<span>{t('header')}</span>
 							</div>
 							<button
 								className={styles.closeButton}
 								onClick={onClose}
-								aria-label='Close chat'
+								aria-label={t('close')}
 							>
 								<IoClose size={20} />
 							</button>
@@ -157,16 +170,17 @@ export function ChatWindow({
 									<IoChatbubble size={36} />
 								</div>
 								<h2 className={styles.welcomeTitle}>
-									Hi, I'm <span className={styles.welcomeHighlight}>Jung</span>
+									{t('welcomeGreeting')}
+									<span className={styles.welcomeHighlight}>
+										{t('welcomeName')}
+									</span>
 								</h2>
-								<p className={styles.welcomeSubtitle}>
-									Ask me anything about my blog, favorite places, or photos.
-								</p>
+								<p className={styles.welcomeSubtitle}>{t('welcomeSubtitle')}</p>
 								<button
 									className={styles.startButton}
 									onClick={handleStartChat}
 								>
-									Start Chat
+									{t('startChat')}
 								</button>
 							</div>
 						) : (
@@ -190,7 +204,7 @@ export function ChatWindow({
 
 								{!isLoading && messages.length <= 2 && (
 									<div className={styles.quickActionsContainer}>
-										{QUICK_ACTIONS.map((action) => (
+										{quickActions.map((action) => (
 											<button
 												key={action.label}
 												className={styles.quickActionButton}
@@ -214,7 +228,7 @@ export function ChatWindow({
 											value={input}
 											onChange={autoResize}
 											onKeyDown={handleKeyDown}
-											placeholder='Type a message...'
+											placeholder={t('placeholder')}
 											rows={1}
 											disabled={isLoading}
 										/>
@@ -222,7 +236,7 @@ export function ChatWindow({
 											type='submit'
 											className={styles.sendButton}
 											disabled={!input.trim() || isLoading || isCooldown}
-											aria-label='Send message'
+											aria-label={t('send')}
 										>
 											<IoSend size={16} />
 										</button>

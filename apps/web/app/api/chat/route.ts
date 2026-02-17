@@ -12,8 +12,8 @@ import {
 	type UIMessage,
 } from 'ai';
 import { z } from 'zod';
-import { profileData } from '@/fsd/features/chatbot/config/profileData';
-import { SYSTEM_PROMPT } from '@/fsd/features/chatbot/config/systemPrompt';
+import { getLocalizedProfile } from '@/fsd/features/chatbot/config/profileData';
+import { getSystemPrompt } from '@/fsd/features/chatbot/config/systemPrompt';
 
 export const maxDuration = 30;
 
@@ -51,29 +51,48 @@ function extractLocale(req: Request): Locale {
 const google = createGoogleGenerativeAI();
 
 // RAG: 관련 컨텍스트 생성
+const CONTEXT_LABELS = {
+	ko: {
+		blogs: '### 관련 블로그 글',
+		places: '### 관련 장소',
+		photos: '### 관련 사진',
+		noData: '관련 데이터를 찾지 못했습니다.',
+		header: '## 검색된 관련 정보',
+	},
+	en: {
+		blogs: '### Related Blog Posts',
+		places: '### Related Places',
+		photos: '### Related Photos',
+		noData: 'No related data found.',
+		header: '## Related Information',
+	},
+} as const;
+
 function buildContext(
 	blogs: { items: Array<{ title: string; description: string }> },
 	places: { items: Array<{ title: string; description: string }> },
 	photos: { items: Array<{ description: string; tags: string[] }> },
+	locale: Locale,
 ): string {
+	const labels = CONTEXT_LABELS[locale];
 	const parts: string[] = [];
 
 	if (blogs.items.length > 0) {
-		parts.push('### 관련 블로그 글');
+		parts.push(labels.blogs);
 		parts.push(
 			blogs.items.map((b) => `- ${b.title}: ${b.description}`).join('\n'),
 		);
 	}
 
 	if (places.items.length > 0) {
-		parts.push('### 관련 장소');
+		parts.push(labels.places);
 		parts.push(
 			places.items.map((p) => `- ${p.title}: ${p.description}`).join('\n'),
 		);
 	}
 
 	if (photos.items.length > 0) {
-		parts.push('### 관련 사진');
+		parts.push(labels.photos);
 		parts.push(
 			photos.items
 				.map((p) => `- ${p.description || p.tags?.join(', ')}`)
@@ -81,9 +100,7 @@ function buildContext(
 		);
 	}
 
-	return parts.length > 0
-		? parts.join('\n\n')
-		: '관련 데이터를 찾지 못했습니다.';
+	return parts.length > 0 ? parts.join('\n\n') : labels.noData;
 }
 
 const VALID_ROLES = ['user', 'assistant', 'system'] as const;
@@ -170,8 +187,9 @@ export async function POST(req: Request) {
 		: [emptyResults, emptyResults, emptyResults];
 
 	// 컨텍스트 생성 및 동적 프롬프트
-	const context = buildContext(blogResults, placeResults, photoResults);
-	const dynamicPrompt = `${SYSTEM_PROMPT}\n\n## 검색된 관련 정보\n${context}`;
+	const labels = CONTEXT_LABELS[locale];
+	const context = buildContext(blogResults, placeResults, photoResults, locale);
+	const dynamicPrompt = `${getSystemPrompt(locale)}\n\n${labels.header}\n${context}`;
 
 	const result = streamText({
 		model: google('gemini-2.5-flash'),
@@ -246,17 +264,18 @@ export async function POST(req: Request) {
 					'Get public information about Jung. Use this when asked about who Jung is, skills, experience, or interests.',
 				inputSchema: z.object({}),
 				execute: async () => {
+					const localized = getLocalizedProfile(locale);
 					// Return only public-safe fields, excluding PII like email/linkedin
 					return {
 						personal: {
-							name: profileData.personal.name,
-							title: profileData.personal.title,
-							location: profileData.personal.location,
-							github: profileData.personal.github,
+							name: localized.personal.name,
+							title: localized.personal.title,
+							location: localized.personal.location,
+							github: localized.personal.github,
 						},
-						summary: profileData.summary,
-						skills: profileData.skills,
-						interests: profileData.interests,
+						summary: localized.summary,
+						skills: localized.skills,
+						interests: localized.interests,
 					};
 				},
 			}),

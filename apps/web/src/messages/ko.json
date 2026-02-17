@@ -43,5 +43,31 @@
 		"messagePlaceholder": "메시지를 남겨주세요!",
 		"submit": "남기기",
 		"submitting": "등록 중..."
+	},
+	"chatbot": {
+		"header": "Jung과 대화하기",
+		"close": "채팅 닫기",
+		"window": "채팅 창",
+		"welcomeGreeting": "안녕하세요! 저는 ",
+		"welcomeName": "Jung",
+		"welcomeSubtitle": "블로그, 좋아하는 장소, 사진에 대해 무엇이든 물어보세요.",
+		"startChat": "대화 시작",
+		"placeholder": "메시지를 입력하세요...",
+		"send": "메시지 보내기",
+		"welcome": "안녕하세요! 무엇이든 물어보세요 🙌",
+		"quickBlog": "블로그",
+		"quickBlogAction": "블로그 글 추천해줘",
+		"quickPlaces": "장소",
+		"quickPlacesAction": "좋아하는 장소 알려줘",
+		"quickPhotos": "사진",
+		"quickPhotosAction": "사진 보여줘",
+		"quickAbout": "소개",
+		"quickAboutAction": "자기소개 해줘",
+		"toolSearchBlog": "📝 관련 블로그",
+		"toolSearchPlaces": "📍 관련 장소",
+		"toolSearchPhotos": "📸 관련 사진",
+		"toolGetProfile": "👤 프로필",
+		"toolDefault": "🔍 검색",
+		"toolSearching": "검색 중..."
 	}
 }
