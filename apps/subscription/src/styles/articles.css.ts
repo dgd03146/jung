@@ -251,12 +251,6 @@ export const articleDate = style({
 	color: colors.textLight,
 });
 
-export const readingTime = style({
-	fontSize: '0.75rem',
-	color: colors.textLight,
-	fontStyle: 'italic',
-});
-
 export const articleTitle = style({
 	fontSize: '1.1rem',
 	fontWeight: 600,
@@ -303,6 +297,12 @@ export const spinner = style({
 export const loadingText = style({
 	fontSize: '0.85rem',
 	color: colors.textLight,
+});
+
+export const errorActions = style({
+	display: 'flex',
+	gap: '1rem',
+	justifyContent: 'center',
 });
 
 export const footer = style({

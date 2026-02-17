@@ -8,7 +8,6 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { z } from 'zod';
 import { SITE_CONFIG } from '../../config/site';
-import { estimateReadingTime } from '../../lib/readingTime';
 import { generateCollectionPageJsonLd } from '../../lib/structuredData';
 import { type Article, fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
@@ -66,9 +65,7 @@ function ArticlesLoading() {
 	return (
 		<div className={styles.centeredPage}>
 			<div className={styles.centeredContent}>
-				<p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-					Loading articles...
-				</p>
+				<p className={styles.loadingText}>Loading articles...</p>
 			</div>
 		</div>
 	);
@@ -110,6 +107,12 @@ function ArticlesPage() {
 	useEffect(() => {
 		setSearchInput(q);
 	}, [q]);
+
+	useEffect(() => {
+		return () => {
+			if (debounceRef.current) clearTimeout(debounceRef.current);
+		};
+	}, []);
 
 	const handleSearchChange = useCallback(
 		(value: string) => {
@@ -277,11 +280,6 @@ function ArticlesPage() {
 													<span className={styles.articleDate}>
 														{formatDate(article.published_at)}
 													</span>
-													{article.summary && (
-														<span className={styles.readingTime}>
-															{estimateReadingTime(article.summary)} min
-														</span>
-													)}
 												</div>
 												<h3 className={styles.articleTitle}>{article.title}</h3>
 												<p className={styles.articleSummary}>
