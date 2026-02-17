@@ -1,6 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { articleKeys, supabase } from '@/fsd/shared';
+import { supabase } from '@/fsd/shared';
+import { articleQueryOptions } from './articleQueryOptions';
 
 const deleteArticlesByIds = async (ids: string[]) => {
 	const { error } = await supabase.from('articles').delete().in('id', ids);
@@ -16,7 +17,9 @@ export const useDeleteArticles = () => {
 	return useMutation({
 		mutationFn: deleteArticlesByIds,
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
+			await queryClient.invalidateQueries({
+				queryKey: articleQueryOptions.lists(),
+			});
 			showToast('Articles deleted successfully!', 'success');
 		},
 		onError: () => {

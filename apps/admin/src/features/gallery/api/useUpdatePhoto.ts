@@ -1,11 +1,11 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
-import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { UpdatePhotoInput } from '../services/updatePhoto';
 import { updatePhoto } from '../services/updatePhoto';
+import { photoQueryOptions } from './photoQueryOptions';
 
 export const useUpdatePhoto = () => {
 	const queryClient = useQueryClient();
@@ -38,15 +38,10 @@ export const useUpdatePhoto = () => {
 
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
-				queryKey: photoKeys.detail(variables.id),
+				queryKey: photoQueryOptions.detail(variables.id).queryKey,
 			});
 			queryClient.invalidateQueries({
-				queryKey: photoKeys.list({
-					page: 0,
-					pageSize: 10,
-					sortField: 'created_at',
-					sortOrder: 'desc',
-				}),
+				queryKey: photoQueryOptions.lists(),
 			});
 			showToast('Photo updated successfully!', 'success');
 

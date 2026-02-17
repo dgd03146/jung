@@ -1,7 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
-import { articleKeys } from '@/fsd/shared';
+import { articleQueryOptions } from './articleQueryOptions';
 
 export const useImproveArticle = () => {
 	const showToast = useToast();
@@ -19,7 +19,9 @@ export const useImproveArticle = () => {
 				showToast('AI 개선에 실패했습니다. 다시 시도해주세요.', 'error');
 			},
 			onSettled: () => {
-				queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
+				queryClient.invalidateQueries({
+					queryKey: articleQueryOptions.lists(),
+				});
 			},
 		}),
 	);

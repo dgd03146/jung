@@ -5,12 +5,13 @@ import {
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { HiTrendingDown, HiTrendingUp } from 'react-icons/hi';
-import { useGetSubscriberStats } from '@/fsd/features/subscribers/api';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscriberQueryOptions';
 import * as styles from './SubscriberStats.css';
 
 const SubscriberStats = () => {
-	const { data: stats } = useGetSubscriberStats();
+	const { data: stats } = useQuery(subscriberQueryOptions.stats());
 
 	const activeRate = stats?.total
 		? ((stats.active / stats.total) * 100).toFixed(1)

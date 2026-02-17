@@ -9,6 +9,7 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { HiDocumentText, HiSparkles } from 'react-icons/hi';
@@ -20,10 +21,10 @@ import {
 } from '@/fsd/shared';
 import {
 	useCreateArticle,
-	useGetArticle,
 	useImproveArticle,
 	useUpdateArticle,
 } from '../../api';
+import { articleQueryOptions } from '../../api/articleQueryOptions';
 import { textToBlocks } from '../../lib';
 import { useArticleContent } from '../../model';
 import type { ArticleCategory, ArticleInput } from '../../types';
@@ -69,7 +70,9 @@ export const ArticleForm = () => {
 	const articleId = (params as { articleId?: string })?.articleId;
 	const isEditMode = !!articleId;
 
-	const { data: article, isLoading } = useGetArticle(articleId);
+	const { data: article, isLoading } = useQuery(
+		articleQueryOptions.detail(articleId),
+	);
 
 	const [formData, setFormData] = useState<ArticleFormData>(INITIAL_FORM_DATA);
 

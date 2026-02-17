@@ -3,8 +3,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
 import type { Post } from '@/fsd/entities';
-import { postKeys, Routes } from '@/fsd/shared';
+import { Routes } from '@/fsd/shared';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { postQueryOptions } from './postQueryOptions';
 import { updatePost } from './updatePost';
 
 export const useUpdatePost = () => {
@@ -27,13 +28,15 @@ export const useUpdatePost = () => {
 		mutationFn: ({ id, post }: { id: string; post: Partial<Post> }) =>
 			updatePost(id, post),
 		onSuccess: async (updatedPost, { post }) => {
-			await queryClient.invalidateQueries({ queryKey: postKeys.lists() });
 			await queryClient.invalidateQueries({
-				queryKey: postKeys.detail(updatedPost.id),
+				queryKey: postQueryOptions.lists(),
+			});
+			await queryClient.invalidateQueries({
+				queryKey: postQueryOptions.detail(updatedPost.id).queryKey,
 			});
 
 			queryClient.setQueryData(
-				postKeys.detail(String(updatedPost.id)),
+				postQueryOptions.detail(String(updatedPost.id)).queryKey,
 				updatedPost,
 			);
 			showToast('Post updated successfully!');

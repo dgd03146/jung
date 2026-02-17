@@ -8,11 +8,12 @@ import {
 	Textarea,
 	Typography,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HiPencil, HiPhoto, HiPlus, HiTrash } from 'react-icons/hi2';
-import { useGetCollections } from '@/fsd/features/gallery/api';
+import { collectionQueryOptions } from '@/fsd/features/gallery/api/photoQueryOptions';
 import { useConfirmDialog } from '@/fsd/shared';
 import { useCreateCollection } from '../api/useCreateCollection';
 import { useDeleteCollection } from '../api/useDeleteCollection';
@@ -33,7 +34,9 @@ interface FormErrors {
 }
 
 export const PhotoCollection = () => {
-	const { data: collections = [], isLoading } = useGetCollections();
+	const { data: collections = [], isLoading } = useQuery(
+		collectionQueryOptions.list(),
+	);
 
 	const createCollectionMutation = useCreateCollection();
 	const updateCollectionMutation = useUpdateCollection();

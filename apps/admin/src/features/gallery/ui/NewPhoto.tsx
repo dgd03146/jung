@@ -8,13 +8,16 @@ import {
 	Typography,
 	useToast,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { HiPhoto } from 'react-icons/hi2';
 import { MdCollections } from 'react-icons/md';
+import {
+	collectionQueryOptions,
+	photoQueryOptions,
+} from '../api/photoQueryOptions';
 import { useCreatePhoto } from '../api/useCreatePhoto';
-import { useGetCollections } from '../api/useGetCollections';
-import { useGetPhotoById } from '../api/useGetPhotoById';
 import { useUpdatePhoto } from '../api/useUpdatePhoto';
 import * as styles from './NewPhoto.css';
 import { NewPhotoSkeleton } from './NewPhotoSkeleton';
@@ -48,7 +51,9 @@ export const NewPhoto = () => {
 	const isEditMode = !!params?.photoId;
 
 	const photoId = params?.photoId ?? '';
-	const { data: photo, isLoading } = useGetPhotoById(photoId);
+	const { data: photo, isLoading } = useQuery(
+		photoQueryOptions.detail(photoId),
+	);
 
 	const [formData, setFormData] = useState<PhotoFormData>(INITIAL_FORM_DATA);
 	const [existingImageUrl, setExistingImageUrl] = useState<string | null>(null);
@@ -59,8 +64,9 @@ export const NewPhoto = () => {
 	>({});
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [showErrors, setShowErrors] = useState(false);
-	const { data: collections, isLoading: isLoadingCollections } =
-		useGetCollections();
+	const { data: collections, isLoading: isLoadingCollections } = useQuery(
+		collectionQueryOptions.list(),
+	);
 
 	useEffect(() => {
 		if (isEditMode && photo) {

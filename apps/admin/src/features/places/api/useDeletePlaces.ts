@@ -1,6 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { placeKeys, supabase } from '@/fsd/shared';
+import { supabase } from '@/fsd/shared';
+import { placeQueryOptions } from './placeQueryOptions';
 
 const deletePlacesByIds = async (ids: string[]) => {
 	const { error } = await supabase.from('places').delete().in('id', ids);
@@ -16,7 +17,9 @@ export const useDeletePlaces = () => {
 	return useMutation({
 		mutationFn: deletePlacesByIds,
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: placeKeys.lists() });
+			await queryClient.invalidateQueries({
+				queryKey: placeQueryOptions.lists(),
+			});
 			showToast('Places deleted successfully!', 'success');
 		},
 		onError: () => {

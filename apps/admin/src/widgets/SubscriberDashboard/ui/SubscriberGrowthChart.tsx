@@ -5,6 +5,7 @@ import {
 	Select,
 	Typography,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import {
 	CartesianGrid,
@@ -17,7 +18,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import { useGetSubscriberStats } from '@/fsd/features/subscribers/api';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscriberQueryOptions';
 import * as styles from './SubscriberGrowthChart.css';
 
 type PeriodType = '6m' | '1y';
@@ -83,7 +84,7 @@ const CustomTooltip = ({
 
 const SubscriberGrowthChart = () => {
 	const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('6m');
-	const { data: stats } = useGetSubscriberStats();
+	const { data: stats } = useQuery(subscriberQueryOptions.stats());
 
 	const chartData = useMemo(() => {
 		if (!stats?.monthlyGrowth) return [];

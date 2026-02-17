@@ -1,9 +1,9 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { articleKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { ArticleInput } from '../types';
+import { articleQueryOptions } from './articleQueryOptions';
 import { createArticle } from './createArticle';
 
 export const useCreateArticle = () => {
@@ -14,8 +14,11 @@ export const useCreateArticle = () => {
 	return useMutation({
 		mutationFn: (article: ArticleInput) => createArticle(article),
 		onSuccess: (newArticle) => {
-			queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
-			queryClient.setQueryData(articleKeys.detail(newArticle.id), newArticle);
+			queryClient.invalidateQueries({ queryKey: articleQueryOptions.lists() });
+			queryClient.setQueryData(
+				articleQueryOptions.detail(newArticle.id).queryKey,
+				newArticle,
+			);
 			showToast('Article created successfully!', 'success');
 			navigate({ to: '/articles' });
 		},

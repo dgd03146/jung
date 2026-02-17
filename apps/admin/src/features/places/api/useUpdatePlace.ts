@@ -2,11 +2,11 @@ import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
-import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { UpdatePlaceInput } from '../services/updatePlace';
 import { updatePlace } from '../services/updatePlace';
+import { placeQueryOptions } from './placeQueryOptions';
 
 export const useUpdatePlace = () => {
 	const queryClient = useQueryClient();
@@ -42,10 +42,10 @@ export const useUpdatePlace = () => {
 
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
-				queryKey: placeKeys.detail(variables.id),
+				queryKey: placeQueryOptions.detail(variables.id).queryKey,
 			});
 			queryClient.invalidateQueries({
-				queryKey: placeKeys.lists(),
+				queryKey: placeQueryOptions.lists(),
 			});
 			showToast(`Place "${variables.title}" has been updated.`, 'success');
 

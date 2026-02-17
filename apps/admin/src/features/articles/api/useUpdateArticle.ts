@@ -1,9 +1,9 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { articleKeys } from '@/fsd/shared';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import type { Article } from '../types';
+import { articleQueryOptions } from './articleQueryOptions';
 import { updateArticle } from './updateArticle';
 
 export const useUpdateArticle = () => {
@@ -15,9 +15,11 @@ export const useUpdateArticle = () => {
 		mutationFn: ({ id, article }: { id: string; article: Partial<Article> }) =>
 			updateArticle(id, article),
 		onSuccess: async (updatedArticle) => {
-			await queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
 			await queryClient.invalidateQueries({
-				queryKey: articleKeys.detail(updatedArticle.id),
+				queryKey: articleQueryOptions.lists(),
+			});
+			await queryClient.invalidateQueries({
+				queryKey: articleQueryOptions.detail(updatedArticle.id).queryKey,
 			});
 
 			showToast('Article updated successfully!', 'success');

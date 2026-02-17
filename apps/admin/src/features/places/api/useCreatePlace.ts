@@ -2,10 +2,10 @@ import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
-import { placeKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import { type CreatePlaceInput, createPlace } from '../services/createPlace';
+import { placeQueryOptions } from './placeQueryOptions';
 
 export function useCreatePlace() {
 	const queryClient = useQueryClient();
@@ -42,7 +42,7 @@ export function useCreatePlace() {
 
 		onSuccess: (newPlace, variables) => {
 			queryClient.invalidateQueries({
-				queryKey: placeKeys.lists(),
+				queryKey: placeQueryOptions.lists(),
 			});
 			showToast(`Place "${variables.title}" created successfully!`, 'success');
 

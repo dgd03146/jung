@@ -1,6 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { subscriberKeys, supabase } from '@/fsd/shared';
+import { supabase } from '@/fsd/shared';
+import { subscriberQueryOptions } from './subscriberQueryOptions';
 
 interface ToggleParams {
 	id: string;
@@ -39,10 +40,10 @@ export const useToggleSubscriber = () => {
 		onSuccess: async (_, { is_active }) => {
 			await Promise.all([
 				queryClient.invalidateQueries({
-					queryKey: subscriberKeys.lists(),
+					queryKey: subscriberQueryOptions.lists(),
 				}),
 				queryClient.invalidateQueries({
-					queryKey: subscriberKeys.stats(),
+					queryKey: subscriberQueryOptions.stats().queryKey,
 				}),
 			]);
 			showToast(

@@ -1,5 +1,5 @@
 import type { Place } from '@jung/shared/types';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -13,9 +13,8 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
-import { placeKeys } from '@/fsd/shared';
-import { type PlaceFilters, useGetPlaces } from '../api/useGetPlaces';
-import { fetchPlaces } from '../services/getPlaces';
+import { placeQueryOptions } from '../api/placeQueryOptions';
+import type { PlaceFilters } from '../services/getPlaces';
 
 const PAGE_SIZE = 10;
 
@@ -36,7 +35,9 @@ export const usePlaceTable = () => {
 		[searchParams],
 	);
 
-	const { data, isLoading, error, refetch } = useGetPlaces(filters);
+	const { data, isLoading, error, refetch } = useQuery(
+		placeQueryOptions.list(filters),
+	);
 
 	const columns: ColumnDef<Place>[] = useMemo(
 		() => [
@@ -78,10 +79,9 @@ export const usePlaceTable = () => {
 	useEffect(() => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
-			queryClient.prefetchQuery({
-				queryKey: placeKeys.list({ ...filters, page: nextPage }),
-				queryFn: () => fetchPlaces({ ...filters, page: nextPage }),
-			});
+			queryClient.prefetchQuery(
+				placeQueryOptions.list({ ...filters, page: nextPage }),
+			);
 		}
 	}, [data?.hasMore, filters, queryClient]);
 
