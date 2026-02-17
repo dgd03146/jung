@@ -1,6 +1,6 @@
 import type { AdminPost } from '@/fsd/entities/post/model/post';
-import type { PostFilters } from '@/fsd/features';
 import { supabase } from '@/fsd/shared';
+import type { PostFilters } from '../types/postFilters';
 
 export const fetchPosts = async ({
 	page,

@@ -27,18 +27,13 @@ export const useUpdatePost = () => {
 	return useMutation({
 		mutationFn: ({ id, post }: { id: string; post: Partial<Post> }) =>
 			updatePost(id, post),
-		onSuccess: async (updatedPost, { post }) => {
-			await queryClient.invalidateQueries({
+		onSuccess: (updatedPost, { post }) => {
+			queryClient.invalidateQueries({
 				queryKey: postQueryOptions.lists(),
 			});
-			await queryClient.invalidateQueries({
+			queryClient.invalidateQueries({
 				queryKey: postQueryOptions.detail(updatedPost.id).queryKey,
 			});
-
-			queryClient.setQueryData(
-				postQueryOptions.detail(String(updatedPost.id)).queryKey,
-				updatedPost,
-			);
 			showToast('Post updated successfully!');
 
 			navigate({ to: Routes.blog.path });

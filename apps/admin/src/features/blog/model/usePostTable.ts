@@ -13,8 +13,8 @@ import {
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { AdminPost } from '@/fsd/entities/post/model/post';
-import type { PostFilters } from '@/fsd/features';
 import { postQueryOptions } from '../api/postQueryOptions';
+import type { PostFilters } from '../types/postFilters';
 
 export const postColumns: ColumnDef<AdminPost>[] = [
 	{ header: 'ID', accessorKey: 'id' },

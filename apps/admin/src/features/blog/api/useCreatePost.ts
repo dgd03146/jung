@@ -28,10 +28,6 @@ export const useCreatePost = () => {
 		mutationFn: (post: Omit<Post, 'id'>) => createPost(post),
 		onSuccess: (newPost) => {
 			queryClient.invalidateQueries({ queryKey: postQueryOptions.lists() });
-			queryClient.setQueryData(
-				postQueryOptions.detail(newPost.id).queryKey,
-				newPost,
-			);
 			showToast('Post created successfully!', 'success');
 			navigate({ to: Routes.blog.path });
 

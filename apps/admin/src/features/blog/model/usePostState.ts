@@ -23,7 +23,7 @@ export const usePostState = () => {
 		isLoading,
 		error: fetchError,
 		refetch,
-	} = useQuery(postQueryOptions.detail(String(postId)));
+	} = useQuery(postQueryOptions.detail(postId));
 
 	const { confirm } = useConfirmDialog();
 	const draftChecked = useRef(false);

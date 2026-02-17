@@ -14,10 +14,13 @@ export const postQueryOptions = {
 			placeholderData: keepPreviousData,
 		}),
 	details: () => [...postQueryOptions.all(), 'detail'] as const,
-	detail: (postId: string) =>
+	detail: (postId: string | undefined) =>
 		queryOptions({
 			queryKey: [...postQueryOptions.details(), postId] as const,
-			queryFn: () => fetchPostById(postId),
+			queryFn: () => {
+				if (!postId) throw new Error('postId is required');
+				return fetchPostById(postId);
+			},
 			enabled: !!postId,
 			select: (data) => ({
 				...data,

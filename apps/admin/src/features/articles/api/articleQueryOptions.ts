@@ -15,7 +15,10 @@ export const articleQueryOptions = {
 	detail: (articleId: string | undefined) =>
 		queryOptions({
 			queryKey: [...articleQueryOptions.details(), articleId] as const,
-			queryFn: () => getArticleById(articleId!),
+			queryFn: () => {
+				if (!articleId) throw new Error('articleId is required');
+				return getArticleById(articleId);
+			},
 			enabled: !!articleId,
 		}),
 };
