@@ -1,7 +1,7 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { type ChangeEvent, useCallback, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import type { PhotoFilters } from './usePhotoTable';
+import type { PhotoFilters } from '../services/getPhotos';
 
 export const usePhotoTableFilter = () => {
 	const searchParams: PhotoFilters = useSearch({ from: '/gallery/photos/' });

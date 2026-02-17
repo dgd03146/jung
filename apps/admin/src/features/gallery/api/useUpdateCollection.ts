@@ -1,8 +1,8 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { collectionKeys } from '@/fsd/shared';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { updateCollection } from '../services/updateCollection';
+import { collectionQueryOptions } from './photoQueryOptions';
 
 interface UpdateCollectionData {
 	id: string;
@@ -18,7 +18,7 @@ export const useUpdateCollection = () => {
 	return useMutation({
 		mutationFn: (data: UpdateCollectionData) => updateCollection(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: collectionKeys.all });
+			queryClient.invalidateQueries({ queryKey: collectionQueryOptions.all() });
 			showToast('Collection updated successfully', 'success');
 		},
 		onError: (error: ApiError) => {

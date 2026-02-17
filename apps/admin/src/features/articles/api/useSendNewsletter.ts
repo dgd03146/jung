@@ -1,7 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/app';
-import { articleKeys } from '@/fsd/shared';
+import { articleQueryOptions } from './articleQueryOptions';
 
 export const useSendNewsletter = () => {
 	const showToast = useToast();
@@ -28,7 +28,9 @@ export const useSendNewsletter = () => {
 				showToast('Failed to send newsletter. Please try again.', 'error');
 			},
 			onSettled: () => {
-				queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
+				queryClient.invalidateQueries({
+					queryKey: articleQueryOptions.lists(),
+				});
 			},
 		}),
 	);

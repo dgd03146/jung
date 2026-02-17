@@ -1,8 +1,8 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { photoKeys } from '@/fsd/shared/config/queryKey';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { deletePhotosFromCollection } from '../services/deletePhotosFromCollection';
+import { photoQueryOptions } from './photoQueryOptions';
 
 interface UseDeletePhotosFromCollectionParams {
 	collectionId: string;
@@ -25,7 +25,7 @@ export const useDeletePhotosFromCollection = ({
 		}) => deletePhotosFromCollection({ photoIds, photoUrls, collectionId }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: photoKeys.byCollection(collectionId, 1, 50),
+				queryKey: photoQueryOptions.all(),
 			});
 			showToast('Selected photos deleted successfully', 'success');
 		},

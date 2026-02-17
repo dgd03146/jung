@@ -1,6 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postKeys, supabase } from '@/fsd/shared';
+import { supabase } from '@/fsd/shared';
+import { postQueryOptions } from './postQueryOptions';
 
 const deletePostsByIds = async (ids: string[]) => {
 	if (ids.length === 0) return [];
@@ -21,7 +22,9 @@ export const useDeletePosts = () => {
 	return useMutation({
 		mutationFn: deletePostsByIds,
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: postKeys.lists() });
+			await queryClient.invalidateQueries({
+				queryKey: postQueryOptions.lists(),
+			});
 			showToast('Posts deleted successfully!', 'success');
 		},
 		onError: () => {

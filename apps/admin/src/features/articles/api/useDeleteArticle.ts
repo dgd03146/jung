@@ -1,7 +1,7 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { articleKeys } from '@/fsd/shared';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
+import { articleQueryOptions } from './articleQueryOptions';
 import { deleteArticleById } from './deleteArticle';
 
 export const useDeleteArticle = () => {
@@ -11,8 +11,12 @@ export const useDeleteArticle = () => {
 	return useMutation({
 		mutationFn: (id: string) => deleteArticleById(id),
 		onSuccess: async (_, deletedId) => {
-			await queryClient.invalidateQueries({ queryKey: articleKeys.lists() });
-			queryClient.removeQueries({ queryKey: articleKeys.detail(deletedId) });
+			await queryClient.invalidateQueries({
+				queryKey: articleQueryOptions.lists(),
+			});
+			queryClient.removeQueries({
+				queryKey: articleQueryOptions.detail(deletedId).queryKey,
+			});
 
 			showToast('Article deleted successfully!', 'success');
 		},

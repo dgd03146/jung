@@ -2,11 +2,11 @@ import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
-import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { translateWithFallback } from '@/fsd/shared/lib/translateWithFallback';
 import type { CreatePhotoInput } from '../services/createPhoto';
 import { createPhoto } from '../services/createPhoto';
+import { photoQueryOptions } from './photoQueryOptions';
 
 export const useCreatePhoto = () => {
 	const queryClient = useQueryClient();
@@ -40,12 +40,12 @@ export const useCreatePhoto = () => {
 		},
 
 		onMutate: async () => {
-			await queryClient.cancelQueries({ queryKey: photoKeys.lists() });
+			await queryClient.cancelQueries({ queryKey: photoQueryOptions.lists() });
 		},
 
 		onSuccess: (newPhoto) => {
 			queryClient.invalidateQueries({
-				queryKey: photoKeys.lists(),
+				queryKey: photoQueryOptions.lists(),
 			});
 			showToast('Photo uploaded successfully!', 'success');
 

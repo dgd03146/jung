@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -12,8 +12,7 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
-import { articleKeys } from '@/fsd/shared';
-import { fetchArticles, useGetArticles } from '../api';
+import { articleQueryOptions } from '../api/articleQueryOptions';
 import type { Article, ArticleFilters } from '../types';
 
 export const articleColumns: ColumnDef<Article>[] = [
@@ -46,17 +45,18 @@ export const useArticleTable = () => {
 		[searchParams],
 	);
 
-	const { data, isLoading, error, refetch } = useGetArticles(filters);
+	const { data, isLoading, error, refetch } = useQuery(
+		articleQueryOptions.list(filters),
+	);
 
 	const columns = useMemo(() => articleColumns, []);
 
 	useEffect(() => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
-			queryClient.prefetchQuery({
-				queryKey: articleKeys.list({ ...filters, page: nextPage }),
-				queryFn: () => fetchArticles({ ...filters, page: nextPage }),
-			});
+			queryClient.prefetchQuery(
+				articleQueryOptions.list({ ...filters, page: nextPage }),
+			);
 		}
 	}, [data?.hasMore, filters, queryClient]);
 

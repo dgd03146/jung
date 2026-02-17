@@ -3,9 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useTRPC } from '@/fsd/app';
 import type { Post } from '@/fsd/entities';
-import { postKeys, Routes } from '@/fsd/shared';
+import { Routes } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { createPost } from './createPost';
+import { postQueryOptions } from './postQueryOptions';
 
 export const useCreatePost = () => {
 	const queryClient = useQueryClient();
@@ -26,8 +27,7 @@ export const useCreatePost = () => {
 	return useMutation({
 		mutationFn: (post: Omit<Post, 'id'>) => createPost(post),
 		onSuccess: (newPost) => {
-			queryClient.invalidateQueries({ queryKey: postKeys.lists() });
-			queryClient.setQueryData(postKeys.detail(newPost.id), newPost);
+			queryClient.invalidateQueries({ queryKey: postQueryOptions.lists() });
 			showToast('Post created successfully!', 'success');
 			navigate({ to: Routes.blog.path });
 

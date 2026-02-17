@@ -3,7 +3,7 @@ import { mapDbPhotoToPhoto } from '@/fsd/features/gallery/lib';
 import { supabase } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 
-interface PhotoFilters {
+export interface PhotoFilters {
 	page: number;
 	pageSize: number;
 	sortField?: keyof Photo;

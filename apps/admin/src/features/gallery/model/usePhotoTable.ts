@@ -1,5 +1,5 @@
 import type { Photo } from '@jung/shared/types';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -13,17 +13,8 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
-import { photoKeys } from '@/fsd/shared';
-import { useGetPhotos } from '../api/useGetPhotos';
-import { fetchPhotos } from '../services/getPhotos';
-
-export interface PhotoFilters {
-	page: number;
-	pageSize: number;
-	sortField?: keyof Photo;
-	sortOrder?: 'asc' | 'desc';
-	filter?: string;
-}
+import { photoQueryOptions } from '../api/photoQueryOptions';
+import type { PhotoFilters } from '../services/getPhotos';
 
 export const photoColumns: ColumnDef<Photo>[] = [
 	{ header: 'Title', accessorKey: 'title' },
@@ -53,7 +44,9 @@ export const usePhotoTable = () => {
 		[searchParams],
 	);
 
-	const { data, isLoading, error, refetch } = useGetPhotos(filters);
+	const { data, isLoading, error, refetch } = useQuery(
+		photoQueryOptions.list(filters),
+	);
 
 	const columns = useMemo(() => photoColumns, []);
 
@@ -61,10 +54,9 @@ export const usePhotoTable = () => {
 	useEffect(() => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
-			queryClient.prefetchQuery({
-				queryKey: photoKeys.list({ ...filters, page: nextPage }),
-				queryFn: () => fetchPhotos({ ...filters, page: nextPage }),
-			});
+			queryClient.prefetchQuery(
+				photoQueryOptions.list({ ...filters, page: nextPage }),
+			);
 		}
 	}, [data?.hasMore, filters, queryClient]);
 

@@ -10,13 +10,14 @@ import {
 	useToast,
 } from '@jung/design-system/components';
 import type { PlaceImageUpload } from '@jung/shared/types';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { HiLocationMarker, HiTag } from 'react-icons/hi';
 import { MdAdd, MdDelete } from 'react-icons/md';
 import { useGetCategories } from '@/fsd/shared';
+import { placeQueryOptions } from '../api/placeQueryOptions';
 import { useCreatePlace } from '../api/useCreatePlace';
-import { useGetPlaceById } from '../api/useGetPlaceById';
 import { useUpdatePlace } from '../api/useUpdatePlace';
 import * as styles from './NewPlace.css';
 import { ImageUploader } from './PlaceTable/ImageUploader';
@@ -50,7 +51,9 @@ export const NewPlace = () => {
 	const params = useParams({ strict: false });
 	const isEditMode = !!params?.placeId;
 
-	const { data: place, isLoading } = useGetPlaceById(params.placeId!);
+	const { data: place, isLoading } = useQuery(
+		placeQueryOptions.detail(params.placeId),
+	);
 	const { data: categories } = useGetCategories('places');
 
 	const [formData, setFormData] = useState<PlaceFormData>(INITIAL_FORM_DATA);

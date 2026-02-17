@@ -1,8 +1,8 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { photoKeys } from '@/fsd/shared';
 import { ApiError } from '@/fsd/shared/lib/errors/apiError';
 import { deletePhoto } from '../services/deletePhoto';
+import { photoQueryOptions } from './photoQueryOptions';
 
 export const useDeletePhoto = () => {
 	const queryClient = useQueryClient();
@@ -10,15 +10,9 @@ export const useDeletePhoto = () => {
 
 	return useMutation({
 		mutationFn: deletePhoto,
-
-		onMutate: async (photoId) => {
-			await queryClient.cancelQueries({ queryKey: photoKeys.lists() });
-			return { photoId };
-		},
-
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: photoKeys.lists(),
+				queryKey: photoQueryOptions.all(),
 			});
 			showToast('Photo deleted successfully!', 'success');
 		},

@@ -5,9 +5,10 @@ import {
 	Stack,
 	Typography,
 } from '@jung/design-system/components';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { useGetSubscriberStats } from '@/fsd/features/subscribers/api';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers';
 import * as styles from './CategoryDistributionChart.css';
 
 const COLORS = {
@@ -32,7 +33,7 @@ const formatPercentage = (value: number, total: number) =>
 	total > 0 ? ((value / total) * 100).toFixed(1) : '0';
 
 const CategoryDistributionChart = () => {
-	const { data: stats } = useGetSubscriberStats();
+	const { data: stats, isLoading } = useQuery(subscriberQueryOptions.stats());
 
 	const { chartData, total } = useMemo(() => {
 		if (!stats?.categoryDistribution) return { chartData: [], total: 0 };
@@ -46,6 +47,8 @@ const CategoryDistributionChart = () => {
 		const total = chartData.reduce((sum, d) => sum + d.value, 0);
 		return { chartData, total };
 	}, [stats?.categoryDistribution]);
+
+	if (isLoading || !stats) return null;
 
 	return (
 		<Container

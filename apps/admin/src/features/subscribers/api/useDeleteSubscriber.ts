@@ -1,7 +1,8 @@
 import { useToast } from '@jung/design-system/components';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { subscriberKeys, supabase } from '@/fsd/shared';
+import { supabase } from '@/fsd/shared';
+import { subscriberQueryOptions } from './subscriberQueryOptions';
 
 // subscribers 테이블에 anon SELECT 정책이 없어 gen types에 미포함 → 타입 어서션 사용
 const db = supabase as unknown as SupabaseClient;
@@ -22,7 +23,7 @@ export const useDeleteSubscriber = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: subscriberKeys.lists(),
+				queryKey: subscriberQueryOptions.all(),
 			});
 			showToast('Subscriber deleted successfully!', 'success');
 		},

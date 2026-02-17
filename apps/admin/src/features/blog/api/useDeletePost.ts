@@ -1,9 +1,9 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postKeys } from '@/fsd/shared';
 import type { ApiError } from '@/fsd/shared/lib/errors/apiError';
 // import { useNavigate } from '@tanstack/react-router';
 import { deletePostById } from './deletePost';
+import { postQueryOptions } from './postQueryOptions';
 
 export const useDeletePost = () => {
 	const queryClient = useQueryClient();
@@ -13,8 +13,12 @@ export const useDeletePost = () => {
 	return useMutation({
 		mutationFn: (id: string) => deletePostById(id),
 		onSuccess: async (_, deletedId) => {
-			await queryClient.invalidateQueries({ queryKey: postKeys.lists() });
-			queryClient.removeQueries({ queryKey: postKeys.detail(deletedId) });
+			await queryClient.invalidateQueries({
+				queryKey: postQueryOptions.lists(),
+			});
+			queryClient.removeQueries({
+				queryKey: postQueryOptions.detail(deletedId).queryKey,
+			});
 
 			showToast('Post deleted successfully!');
 

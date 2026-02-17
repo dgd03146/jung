@@ -1,3 +1,4 @@
+export { articleQueryOptions } from './articleQueryOptions';
 export { createArticle } from './createArticle';
 export { deleteArticleById } from './deleteArticle';
 export { getArticleById } from './getArticle';
@@ -6,8 +7,6 @@ export { updateArticle } from './updateArticle';
 export { uploadImage } from './uploadImage';
 export { useCreateArticle } from './useCreateArticle';
 export { useDeleteArticle } from './useDeleteArticle';
-export { useGetArticle } from './useGetArticle';
-export { useGetArticles } from './useGetArticles';
 export { useImproveArticle } from './useImproveArticle';
 export { useSendNewsletter } from './useSendNewsletter';
 export { useUpdateArticle } from './useUpdateArticle';

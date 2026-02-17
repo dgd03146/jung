@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -13,8 +13,8 @@ import {
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { AdminPost } from '@/fsd/entities/post/model/post';
-import { fetchPosts, type PostFilters, usePostsQuery } from '@/fsd/features';
-import { postKeys } from '@/fsd/shared';
+import { postQueryOptions } from '../api/postQueryOptions';
+import type { PostFilters } from '../types/postFilters';
 
 export const postColumns: ColumnDef<AdminPost>[] = [
 	{ header: 'ID', accessorKey: 'id' },
@@ -48,17 +48,18 @@ export const usePostTable = () => {
 		[searchParams],
 	);
 
-	const { data, isLoading, error, refetch } = usePostsQuery(filters);
+	const { data, isLoading, error, refetch } = useQuery(
+		postQueryOptions.list(filters),
+	);
 
 	const columns = useMemo(() => postColumns, []);
 
 	useEffect(() => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
-			queryClient.prefetchQuery({
-				queryKey: postKeys.list({ ...filters, page: nextPage }),
-				queryFn: () => fetchPosts({ ...filters, page: nextPage }),
-			});
+			queryClient.prefetchQuery(
+				postQueryOptions.list({ ...filters, page: nextPage }),
+			);
 		}
 	}, [data?.hasMore, filters, queryClient]);
 

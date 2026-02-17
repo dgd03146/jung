@@ -1,7 +1,6 @@
 import type { Photo } from '@jung/shared/types';
 import { useQuery } from '@tanstack/react-query';
-import { photoKeys } from '@/fsd/shared/config/queryKey';
-import { getPhotosByCollectionId } from '../services/getPhotosByCollectionId';
+import { photoQueryOptions } from './photoQueryOptions';
 
 interface UseGetPhotosByCollectionIdParams {
 	collectionId: string;
@@ -25,8 +24,7 @@ export const useGetPhotosByCollectionId = ({
 	enabled = true,
 }: UseGetPhotosByCollectionIdParams): UseGetPhotosByCollectionIdReturn => {
 	const { data, isLoading, error } = useQuery({
-		queryKey: photoKeys.byCollection(collectionId, page, limit),
-		queryFn: () => getPhotosByCollectionId({ collectionId, page, limit }),
+		...photoQueryOptions.byCollection(collectionId, page, limit),
 		enabled: enabled && Boolean(collectionId),
 	});
 

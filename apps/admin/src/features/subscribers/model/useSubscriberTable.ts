@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import {
 	type ColumnDef,
@@ -14,10 +14,7 @@ import type {
 	SubscriberFilters,
 	SubscriberSortField,
 } from '@/fsd/features/subscribers/types/subscriberFilters';
-import {
-	subscriberListQueryOptions,
-	useGetSubscribers,
-} from '../api/useGetSubscribers';
+import { subscriberQueryOptions } from '../api/subscriberQueryOptions';
 
 export const subscriberColumns: ColumnDef<Subscriber>[] = [
 	{ header: 'Email', accessorKey: 'email' },
@@ -48,7 +45,9 @@ export const useSubscriberTable = () => {
 		[searchParams],
 	);
 
-	const { data, isLoading, error, refetch } = useGetSubscribers(filters);
+	const { data, isLoading, error, refetch } = useQuery(
+		subscriberQueryOptions.list(filters),
+	);
 
 	const columns = subscriberColumns;
 
@@ -56,7 +55,7 @@ export const useSubscriberTable = () => {
 		if (data?.hasMore) {
 			const nextPage = filters.page + 1;
 			queryClient.prefetchQuery(
-				subscriberListQueryOptions({ ...filters, page: nextPage }),
+				subscriberQueryOptions.list({ ...filters, page: nextPage }),
 			);
 		}
 	}, [data?.hasMore, filters, queryClient]);

@@ -1,5 +1,6 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
-import { useGetSubscriberStats } from '../api';
+import { useQuery } from '@tanstack/react-query';
+import { subscriberQueryOptions } from '../api/subscriberQueryOptions';
 
 const StatCard = ({
 	label,
@@ -26,7 +27,7 @@ const StatCard = ({
 );
 
 const SubscriberStats = () => {
-	const { data: stats, isLoading } = useGetSubscriberStats();
+	const { data: stats, isLoading } = useQuery(subscriberQueryOptions.stats());
 
 	if (isLoading || !stats) {
 		return null;

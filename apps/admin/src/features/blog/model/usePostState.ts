@@ -1,10 +1,11 @@
+import { useQuery } from '@tanstack/react-query';
 import { useMatch } from '@tanstack/react-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
 	DraftPost,
 	PostWithBlockContent,
 } from '@/fsd/entities/post/model/post';
-import { useGetPost } from '@/fsd/features/blog/api';
+import { postQueryOptions } from '@/fsd/features/blog/api/postQueryOptions';
 import { EMPTY_POST, STORAGE_KEY } from '@/fsd/features/blog/config';
 import { EMPTY_CONTENT, storage, useConfirmDialog } from '@/fsd/shared';
 
@@ -22,7 +23,7 @@ export const usePostState = () => {
 		isLoading,
 		error: fetchError,
 		refetch,
-	} = useGetPost(postId);
+	} = useQuery(postQueryOptions.detail(postId));
 
 	const { confirm } = useConfirmDialog();
 	const draftChecked = useRef(false);
