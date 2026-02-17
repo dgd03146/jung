@@ -21,7 +21,7 @@ export const profileData: ProfileData = {
 		name: 'Jung',
 		title: 'Frontend Developer',
 		location: 'Seoul, Korea',
-		email: 'your-email@example.com', // TODO: 실제 이메일로 변경
+		email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
 		github: 'https://github.com/dgd03146',
 	},
 	summary: {

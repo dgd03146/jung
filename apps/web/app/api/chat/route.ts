@@ -12,8 +12,7 @@ import {
 	type UIMessage,
 } from 'ai';
 import { z } from 'zod';
-import { getLocalizedProfile } from '@/fsd/features/chatbot/config/profileData';
-import { getSystemPrompt } from '@/fsd/features/chatbot/config/systemPrompt';
+import { getLocalizedProfile, getSystemPrompt } from '@/fsd/features/chatbot';
 
 export const maxDuration = 30;
 

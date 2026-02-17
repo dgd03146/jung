@@ -14,8 +14,6 @@ import {
 import { useState } from 'react';
 import { getQueryClient, TRPCProvider } from '@/fsd/shared';
 
-export { useTRPC } from '@/fsd/shared';
-
 export function getUrl() {
 	const base = (() => {
 		if (typeof window !== 'undefined') return '';
