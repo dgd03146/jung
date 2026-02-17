@@ -16,8 +16,6 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { photoQueryOptions } from '../api/photoQueryOptions';
 import type { PhotoFilters } from '../services/getPhotos';
 
-export type { PhotoFilters };
-
 export const photoColumns: ColumnDef<Photo>[] = [
 	{ header: 'Title', accessorKey: 'title' },
 	{ header: 'Image', accessorKey: 'image_url' },

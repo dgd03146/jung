@@ -13,7 +13,7 @@ export const useDeletePlace = () => {
 
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: placeQueryOptions.lists(),
+				queryKey: placeQueryOptions.all(),
 			});
 			showToast('Place successfully deleted.', 'success');
 		},

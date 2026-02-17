@@ -16,9 +16,9 @@ export const useDeletePlaces = () => {
 
 	return useMutation({
 		mutationFn: deletePlacesByIds,
-		onSuccess: async () => {
-			await queryClient.invalidateQueries({
-				queryKey: placeQueryOptions.lists(),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: placeQueryOptions.all(),
 			});
 			showToast('Places deleted successfully!', 'success');
 		},
