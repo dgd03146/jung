@@ -55,7 +55,12 @@ export const profileData: ProfileData = {
 	},
 };
 
-export function getLocalizedProfile(locale: 'ko' | 'en') {
+export type LocalizedProfile = Omit<ProfileData, 'summary' | 'interests'> & {
+	summary: string;
+	interests: string[];
+};
+
+export function getLocalizedProfile(locale: 'ko' | 'en'): LocalizedProfile {
 	return {
 		...profileData,
 		summary: profileData.summary[locale],
