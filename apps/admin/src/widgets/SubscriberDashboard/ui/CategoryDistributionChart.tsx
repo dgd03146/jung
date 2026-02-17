@@ -8,7 +8,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscriberQueryOptions';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers';
 import * as styles from './CategoryDistributionChart.css';
 
 const COLORS = {

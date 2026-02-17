@@ -52,7 +52,7 @@ export const NewPlace = () => {
 	const isEditMode = !!params?.placeId;
 
 	const { data: place, isLoading } = useQuery(
-		placeQueryOptions.detail(params.placeId!),
+		placeQueryOptions.detail(params.placeId),
 	);
 	const { data: categories } = useGetCategories('places');
 

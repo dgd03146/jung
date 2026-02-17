@@ -18,7 +18,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscriberQueryOptions';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers';
 import * as styles from './SubscriberGrowthChart.css';
 
 type PeriodType = '6m' | '1y';

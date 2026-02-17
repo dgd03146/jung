@@ -17,10 +17,13 @@ export const placeQueryOptions = {
 			gcTime: PLACE_GC_TIME_MS,
 		}),
 	details: () => [...placeQueryOptions.all(), 'detail'] as const,
-	detail: (id: string) =>
+	detail: (id: string | undefined) =>
 		queryOptions({
 			queryKey: [...placeQueryOptions.details(), id] as const,
-			queryFn: () => getPlaceById(id),
+			queryFn: () => {
+				if (!id) throw new Error('placeId is required');
+				return getPlaceById(id);
+			},
 			enabled: !!id,
 		}),
 };

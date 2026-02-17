@@ -7,7 +7,7 @@ import {
 } from '@jung/design-system/components';
 import { useQuery } from '@tanstack/react-query';
 import { HiTrendingDown, HiTrendingUp } from 'react-icons/hi';
-import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscriberQueryOptions';
+import { subscriberQueryOptions } from '@/fsd/features/subscribers';
 import * as styles from './SubscriberStats.css';
 
 const SubscriberStats = () => {
