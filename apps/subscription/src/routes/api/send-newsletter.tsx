@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { createFileRoute } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
@@ -7,6 +8,13 @@ const sendNewsletterInput = z.object({
 	articleId: z.string().uuid(),
 	secretKey: z.string(),
 });
+
+function safeCompare(a: string, b: string): boolean {
+	const bufA = Buffer.from(a);
+	const bufB = Buffer.from(b);
+	if (bufA.length !== bufB.length) return false;
+	return timingSafeEqual(bufA, bufB);
+}
 
 const handleSendNewsletter = createServerFn({ method: 'POST' })
 	.inputValidator((data: z.infer<typeof sendNewsletterInput>) =>
@@ -18,7 +26,7 @@ const handleSendNewsletter = createServerFn({ method: 'POST' })
 			return { error: 'Newsletter secret key not configured', status: 500 };
 		}
 
-		if (data.secretKey !== secretKey) {
+		if (!safeCompare(data.secretKey, secretKey)) {
 			return { error: 'Unauthorized', status: 401 };
 		}
 
