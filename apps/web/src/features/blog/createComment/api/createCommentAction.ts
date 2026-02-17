@@ -6,13 +6,12 @@ import { Resend } from 'resend';
 
 import { CommentNotificationEmailTemplateInline } from '@/fsd/entities/blog';
 import { formatDate, getUserDisplayName } from '@/fsd/shared';
-import { getCaller } from '@/fsd/shared/api/trpc/server';
 import {
 	getResendApiKey,
 	getResendEmailFrom,
 	getSiteUrl,
 } from '@/fsd/shared/config';
-import { createClient } from '@/fsd/shared/index.server';
+import { createClient, getCaller } from '@/fsd/shared/index.server';
 import { NO_REPLY_EMAIL } from '../config/constant';
 import { createReplyAction } from './createReplyAction';
 
