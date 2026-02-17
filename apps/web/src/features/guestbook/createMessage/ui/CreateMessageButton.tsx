@@ -3,7 +3,7 @@
 import { Button } from '@jung/design-system/components';
 import { useThrottle } from '@jung/shared/hooks';
 import { useFormStatus } from 'react-dom';
-import type { GuestbookEmoji } from '@/fsd/entities/guestbook/model/guestbook';
+import type { GuestbookEmoji } from '@/fsd/entities/guestbook';
 
 interface CreateMessageButtonProps {
 	emoji: GuestbookEmoji;
