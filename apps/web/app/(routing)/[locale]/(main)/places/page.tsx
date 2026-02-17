@@ -84,7 +84,7 @@ export default async function Page({ params }: Props) {
 		}),
 	);
 
-	queryClient.prefetchQuery(
+	void queryClient.prefetchQuery(
 		trpc.category.getCategories.queryOptions({ type: 'places' }),
 	);
 

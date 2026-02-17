@@ -136,7 +136,7 @@ export default async function Page({
 	queryClient.setQueryData(trpc.blog.getPostById.queryKey({ postId }), post);
 
 	// 덜 중요한 데이터: 스트리밍
-	queryClient.prefetchQuery(
+	void queryClient.prefetchQuery(
 		trpc.blog.getAdjacentPosts.queryOptions({ postId }),
 	);
 
