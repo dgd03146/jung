@@ -10,15 +10,9 @@ export const useDeletePhoto = () => {
 
 	return useMutation({
 		mutationFn: deletePhoto,
-
-		onMutate: async (photoId) => {
-			await queryClient.cancelQueries({ queryKey: photoQueryOptions.lists() });
-			return { photoId };
-		},
-
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: photoQueryOptions.lists(),
+				queryKey: photoQueryOptions.all(),
 			});
 			showToast('Photo deleted successfully!', 'success');
 		},
