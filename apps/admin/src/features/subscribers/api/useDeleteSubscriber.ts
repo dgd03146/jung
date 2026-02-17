@@ -23,7 +23,7 @@ export const useDeleteSubscriber = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: subscriberQueryOptions.lists(),
+				queryKey: subscriberQueryOptions.all(),
 			});
 			showToast('Subscriber deleted successfully!', 'success');
 		},
