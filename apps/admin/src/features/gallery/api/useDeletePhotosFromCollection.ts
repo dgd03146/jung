@@ -25,7 +25,7 @@ export const useDeletePhotosFromCollection = ({
 		}) => deletePhotosFromCollection({ photoIds, photoUrls, collectionId }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: photoQueryOptions.byCollection(collectionId, 1, 50).queryKey,
+				queryKey: photoQueryOptions.all(),
 			});
 			showToast('Selected photos deleted successfully', 'success');
 		},

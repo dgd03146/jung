@@ -21,9 +21,9 @@ export const useDeletePhotos = () => {
 
 	return useMutation({
 		mutationFn: deletePhotosByIds,
-		onSuccess: async () => {
-			await queryClient.invalidateQueries({
-				queryKey: photoQueryOptions.lists(),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: photoQueryOptions.all(),
 			});
 			showToast('Photos deleted successfully!', 'success');
 		},
