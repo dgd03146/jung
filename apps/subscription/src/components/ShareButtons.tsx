@@ -20,25 +20,31 @@ export function ShareButtons({
 	const [kakaoReady, setKakaoReady] = useState(false);
 
 	useEffect(() => {
+		if (!SITE_CONFIG.kakaoAppKey) return;
+
 		const initKakao = () => {
-			if (
-				window.Kakao &&
-				!window.Kakao.isInitialized() &&
-				SITE_CONFIG.kakaoAppKey
-			) {
-				window.Kakao.init(SITE_CONFIG.kakaoAppKey);
+			if (!window.Kakao) return false;
+			if (window.Kakao.isInitialized()) {
 				setKakaoReady(true);
-			} else if (window.Kakao?.isInitialized()) {
-				setKakaoReady(true);
+				return true;
 			}
+			window.Kakao.init(SITE_CONFIG.kakaoAppKey);
+			setKakaoReady(true);
+			return true;
 		};
 
-		if (window.Kakao) {
-			initKakao();
-		} else {
-			const timer = setTimeout(initKakao, 1000);
-			return () => clearTimeout(timer);
-		}
+		if (initKakao()) return;
+
+		let attempts = 0;
+		const maxAttempts = 10;
+		const interval = setInterval(() => {
+			attempts++;
+			if (initKakao() || attempts >= maxAttempts) {
+				clearInterval(interval);
+			}
+		}, 500);
+
+		return () => clearInterval(interval);
 	}, []);
 
 	const handleCopy = async () => {
