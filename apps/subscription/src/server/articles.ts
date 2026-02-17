@@ -103,3 +103,39 @@ export const fetchRelatedArticles = createServerFn({ method: 'GET' })
 
 		return articles ?? [];
 	});
+
+export const fetchArticleWithRelated = createServerFn({ method: 'GET' })
+	.inputValidator((id: string) => id)
+	.handler(async ({ data: id }) => {
+		const supabase = getServerSupabase();
+
+		const { data: article, error } = await supabase
+			.from('articles')
+			.select('*')
+			.eq('id', id)
+			.eq('status', 'published')
+			.single();
+
+		if (error) {
+			throw new Error(`Failed to fetch article: ${error.message}`);
+		}
+
+		if (!article) {
+			return { article: null, relatedArticles: [] };
+		}
+
+		const { data: related, error: relatedError } = await supabase
+			.from('articles')
+			.select('*')
+			.eq('status', 'published')
+			.eq('category', article.category)
+			.neq('id', article.id)
+			.order('published_at', { ascending: false, nullsFirst: false })
+			.limit(3);
+
+		if (relatedError) {
+			console.error('Failed to fetch related articles:', relatedError);
+		}
+
+		return { article, relatedArticles: related ?? [] };
+	});

@@ -2,28 +2,15 @@ import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { ShareButtons } from '../../components/ShareButtons';
 import { SITE_CONFIG } from '../../config/site';
-import { estimateReadingTime } from '../../lib/readingTime';
 import {
 	generateArticleJsonLd,
 	generateBreadcrumbJsonLd,
 } from '../../lib/structuredData';
-import {
-	type Article,
-	fetchArticleById,
-	fetchRelatedArticles,
-} from '../../server/articles';
+import { type Article, fetchArticleWithRelated } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
 export const Route = createFileRoute('/articles/$id')({
-	loader: async ({ params }) => {
-		const article = await fetchArticleById({ data: params.id });
-		const relatedArticles = article
-			? await fetchRelatedArticles({
-					data: { articleId: article.id, category: article.category },
-				})
-			: [];
-		return { article, relatedArticles };
-	},
+	loader: ({ params }) => fetchArticleWithRelated({ data: params.id }),
 	head: ({ loaderData }) => {
 		const article = loaderData?.article;
 		if (!article) return {};
@@ -88,9 +75,7 @@ function ArticleLoading() {
 	return (
 		<div className={styles.centeredPage}>
 			<div className={styles.centeredContent}>
-				<p style={{ color: '#64748b', fontSize: '0.95rem' }}>
-					Loading article...
-				</p>
+				<p className={styles.loadingText}>Loading article...</p>
 			</div>
 		</div>
 	);
@@ -109,13 +94,7 @@ function ArticleError() {
 					<br />
 					It may have been removed or the link is incorrect.
 				</p>
-				<div
-					style={{
-						display: 'flex',
-						gap: '1rem',
-						justifyContent: 'center',
-					}}
-				>
+				<div className={styles.errorActions}>
 					<button
 						type='button'
 						onClick={() => router.invalidate()}
@@ -175,14 +154,6 @@ function ArticleDetailPage() {
 					</Link>
 					<span className={styles.headerMeta}>
 						{formatDate(article.published_at)}
-						{article.summary && (
-							<>
-								{' · '}
-								<span className={styles.readingTime}>
-									{estimateReadingTime(article.summary)} min read
-								</span>
-							</>
-						)}
 					</span>
 				</header>
 
