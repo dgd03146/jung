@@ -11,29 +11,31 @@ import { subscriberQueryOptions } from '@/fsd/features/subscribers/api/subscribe
 import * as styles from './SubscriberStats.css';
 
 const SubscriberStats = () => {
-	const { data: stats } = useQuery(subscriberQueryOptions.stats());
+	const { data: stats, isLoading } = useQuery(subscriberQueryOptions.stats());
 
-	const activeRate = stats?.total
+	if (isLoading || !stats) return null;
+
+	const activeRate = stats.total
 		? ((stats.active / stats.total) * 100).toFixed(1)
 		: null;
-	const churnRateDisplay = `${(stats?.churnRate ?? 0).toFixed(1)}%`;
-	const hasChurn = (stats?.churnRate ?? 0) > 0;
+	const churnRateDisplay = `${stats.churnRate.toFixed(1)}%`;
+	const hasChurn = stats.churnRate > 0;
 
 	const statCards = [
 		{
 			title: 'Total Subscribers',
-			count: stats?.total ?? 0,
+			count: stats.total,
 			description: 'All time signups',
 		},
 		{
 			title: 'Active',
-			count: stats?.active ?? 0,
+			count: stats.active,
 			description: 'Currently subscribed',
 			trend: activeRate,
 		},
 		{
 			title: 'New This Month',
-			count: stats?.newThisMonth ?? 0,
+			count: stats.newThisMonth,
 			description: 'Subscribed this month',
 		},
 		{

@@ -84,13 +84,15 @@ const CustomTooltip = ({
 
 const SubscriberGrowthChart = () => {
 	const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('6m');
-	const { data: stats } = useQuery(subscriberQueryOptions.stats());
+	const { data: stats, isLoading } = useQuery(subscriberQueryOptions.stats());
 
 	const chartData = useMemo(() => {
 		if (!stats?.monthlyGrowth) return [];
 		const months = PERIOD_MONTHS[selectedPeriod];
 		return stats.monthlyGrowth.slice(-months);
 	}, [stats?.monthlyGrowth, selectedPeriod]);
+
+	if (isLoading || !stats) return null;
 
 	return (
 		<Container

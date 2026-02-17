@@ -33,7 +33,7 @@ const formatPercentage = (value: number, total: number) =>
 	total > 0 ? ((value / total) * 100).toFixed(1) : '0';
 
 const CategoryDistributionChart = () => {
-	const { data: stats } = useQuery(subscriberQueryOptions.stats());
+	const { data: stats, isLoading } = useQuery(subscriberQueryOptions.stats());
 
 	const { chartData, total } = useMemo(() => {
 		if (!stats?.categoryDistribution) return { chartData: [], total: 0 };
@@ -47,6 +47,8 @@ const CategoryDistributionChart = () => {
 		const total = chartData.reduce((sum, d) => sum + d.value, 0);
 		return { chartData, total };
 	}, [stats?.categoryDistribution]);
+
+	if (isLoading || !stats) return null;
 
 	return (
 		<Container
