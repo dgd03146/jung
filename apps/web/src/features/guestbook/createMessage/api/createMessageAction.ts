@@ -10,7 +10,8 @@ type CreateMessageState = {
 	error?: string;
 };
 
-const THROTTLE_TIME = 2000;
+const THROTTLE_MS = 2000;
+const MS_PER_SECOND = 1000;
 
 export async function createMessageAction(
 	_prevState: CreateMessageState | null,
@@ -21,10 +22,7 @@ export async function createMessageAction(
 		const lastSubmitTime = cookieStore.get('last-submit-time')?.value;
 		const currentTime = Date.now();
 
-		if (
-			lastSubmitTime &&
-			currentTime - Number(lastSubmitTime) < THROTTLE_TIME
-		) {
+		if (lastSubmitTime && currentTime - Number(lastSubmitTime) < THROTTLE_MS) {
 			return {
 				success: false,
 				error: 'Please try again later.',
@@ -56,7 +54,7 @@ export async function createMessageAction(
 		});
 
 		cookieStore.set('last-submit-time', currentTime.toString(), {
-			maxAge: THROTTLE_TIME / 2000,
+			maxAge: THROTTLE_MS / MS_PER_SECOND,
 		});
 
 		return {
