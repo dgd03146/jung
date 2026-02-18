@@ -11,13 +11,8 @@ import {
 	httpLink,
 	splitLink,
 } from '@trpc/client';
-import { createTRPCContext } from '@trpc/tanstack-react-query';
 import { useState } from 'react';
-import { getQueryClient } from '@/fsd/shared';
-
-export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
-
-export const useTRPCClient = useTRPC as typeof useTRPC;
+import { getQueryClient, TRPCProvider } from '@/fsd/shared';
 
 export function getUrl() {
 	const base = (() => {

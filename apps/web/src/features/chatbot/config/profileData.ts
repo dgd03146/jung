@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/routing';
+
 export interface ProfileData {
 	personal: {
 		name: string;
@@ -7,29 +9,32 @@ export interface ProfileData {
 		github: string;
 		linkedin?: string;
 	};
-	summary: string;
+	summary: Record<Locale, string>;
 	skills: {
 		frontend: string[];
 		backend: string[];
 		tools: string[];
 	};
-	interests: string[];
+	interests: Record<Locale, string[]>;
 }
 
-export const profileData: ProfileData = {
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '';
+if (!contactEmail && process.env.NODE_ENV !== 'production') {
+	console.warn('[chatbot] NEXT_PUBLIC_CONTACT_EMAIL is not set');
+}
+
+const profileData: ProfileData = {
 	personal: {
 		name: 'Jung',
 		title: 'Frontend Developer',
 		location: 'Seoul, Korea',
-		email: 'your-email@example.com', // TODO: 실제 이메일로 변경
+		email: contactEmail,
 		github: 'https://github.com/dgd03146',
 	},
-	summary: `
-프론트엔드 개발자로서 React, Next.js, TypeScript를 주로 사용합니다.
-사용자 경험과 성능 최적화에 관심이 많으며,
-클린 코드와 테스트 가능한 아키텍처를 추구합니다.
-이 사이트는 제가 좋아하는 것들을 모아둔 공간입니다.
-	`.trim(),
+	summary: {
+		ko: '프론트엔드 개발자로서 React, Next.js, TypeScript를 주로 사용합니다. 사용자 경험과 성능 최적화에 관심이 많으며, 클린 코드와 테스트 가능한 아키텍처를 추구합니다. 이 사이트는 제가 좋아하는 것들을 모아둔 공간입니다.',
+		en: 'A frontend developer who primarily works with React, Next.js, and TypeScript. Passionate about user experience and performance optimization, pursuing clean code and testable architecture. This site is a space where I collect things I love.',
+	},
 	skills: {
 		frontend: [
 			'React',
@@ -41,10 +46,31 @@ export const profileData: ProfileData = {
 		backend: ['Node.js', 'tRPC', 'Supabase', 'PostgreSQL'],
 		tools: ['Git', 'Turbo', 'pnpm', 'Vercel', 'Playwright'],
 	},
-	interests: [
-		'여행과 새로운 장소 발견',
-		'사진 촬영',
-		'기술 블로그 작성',
-		'오픈소스 기여',
-	],
+	interests: {
+		ko: [
+			'여행과 새로운 장소 발견',
+			'사진 촬영',
+			'기술 블로그 작성',
+			'오픈소스 기여',
+		],
+		en: [
+			'Traveling and discovering new places',
+			'Photography',
+			'Writing tech blog posts',
+			'Contributing to open source',
+		],
+	},
 };
+
+export type LocalizedProfile = Omit<ProfileData, 'summary' | 'interests'> & {
+	summary: string;
+	interests: string[];
+};
+
+export function getLocalizedProfile(locale: Locale): LocalizedProfile {
+	return {
+		...profileData,
+		summary: profileData.summary[locale],
+		interests: profileData.interests[locale],
+	};
+}

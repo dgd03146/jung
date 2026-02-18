@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getCaller } from '@/fsd/shared/api/trpc/server';
+import { getCaller } from '@/fsd/shared/index.server';
 
 export async function updateCommentAction({
 	commentId,

@@ -1,8 +1,8 @@
 import type { Photo } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
-import { useTRPC } from '@/fsd/app';
 import type { Sort } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/shared';
 
 interface UseAdjacentPhotosPrefetchParams {
 	photoId: string;
@@ -32,7 +32,7 @@ export function useAdjacentPhotosPrefetch({
 
 				const photoDetailOptions =
 					trpc.gallery.getPhotoById.queryOptions(photoIdStr);
-				queryClient.prefetchQuery(photoDetailOptions);
+				void queryClient.prefetchQuery(photoDetailOptions);
 
 				const adjacentInput = {
 					id: photoIdStr,
@@ -42,7 +42,7 @@ export function useAdjacentPhotosPrefetch({
 
 				const adjacentOptions =
 					trpc.gallery.getAdjacentPhotos.queryOptions(adjacentInput);
-				queryClient.prefetchQuery(adjacentOptions);
+				void queryClient.prefetchQuery(adjacentOptions);
 			} catch (error) {
 				console.error('Failed to prefetch photo data:', error);
 				console.error(

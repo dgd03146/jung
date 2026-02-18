@@ -3,7 +3,7 @@
 import { Button } from '@jung/design-system/components';
 import type { Photo } from '@jung/shared/types';
 import { FaShareAlt } from 'react-icons/fa';
-import { useTrackEvent } from '@/fsd/features/analytics';
+import { useTrackEvent } from '@/fsd/shared';
 import { useSharePhoto } from '../model/useSharePhoto';
 import { ShareModal } from './ShareModal';
 import * as styles from './SharePhotoButton.css';

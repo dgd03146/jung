@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocale } from 'next-intl';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { BLOG_CACHE } from '../config/blog';
 
 export function usePostQuery(postId: string) {

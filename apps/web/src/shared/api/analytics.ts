@@ -2,8 +2,8 @@
 
 import type { TrackEventInput } from '@jung/api/routes/analytics';
 import { useMutation } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
-import { gtagEvent } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/shared/api/trpc/client';
+import { gtagEvent } from '@/fsd/shared/lib';
 
 type TrackEventParams = Pick<
 	TrackEventInput,

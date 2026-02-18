@@ -1,13 +1,12 @@
 import { useToast } from '@jung/design-system/components';
 import type { GuestbookMessage } from '@jung/shared/types';
 import { useQueryClient } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
 import {
 	type GuestbookColor,
 	type GuestbookEmoji,
 	MESSAGE_LIMIT,
 } from '@/fsd/entities/guestbook';
-import { useSupabaseAuth } from '@/fsd/shared';
+import { useSupabaseAuth, useTRPC } from '@/fsd/shared';
 import { createMessageAction } from '../api/createMessageAction';
 import { validateGuestbookMessage } from '../lib/validateGuestbookMessage';
 

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
+import { useTRPC } from '@/fsd/shared';
 import { PLACE_CACHE } from '../config/places';
 
 export function usePlaceQuery(id: string) {

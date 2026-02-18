@@ -30,7 +30,7 @@ const LanguageSwitcher = ({ variant = 'light' }: Props) => {
 						aria-label={`Switch to ${loc === 'ko' ? 'Korean' : 'English'}`}
 						aria-current={locale === loc ? 'true' : undefined}
 					>
-						{loc.toUpperCase()}
+						{loc}
 					</button>
 				</Fragment>
 			))}

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/fsd/app';
-import { LIKE_QUERY_OPTIONS } from '@/fsd/shared/api';
+import { LIKE_QUERY_OPTIONS, useTRPC } from '@/fsd/shared';
 
 export function usePostLikeQuery(postId: string) {
 	const trpc = useTRPC();

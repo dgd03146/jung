@@ -1,14 +1,17 @@
-import { fontFamily, fontWeights, palette } from '@jung/design-system/tokens';
+import {
+	fontFamily,
+	fontSizes,
+	fontWeights,
+	palette,
+} from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-
-const HOVER_ALPHA = '10';
 
 export const container = recipe({
 	base: style({
 		display: 'flex',
 		alignItems: 'center',
-		gap: '0.25rem',
+		gap: '0.5rem',
 	}),
 	variants: {
 		variant: {
@@ -23,59 +26,34 @@ export const container = recipe({
 
 export const button = recipe({
 	base: style({
-		padding: '0.4rem 0.6rem',
-		borderRadius: '4px',
-		fontFamily: fontFamily.bebas,
+		padding: '0.25rem 0',
+		fontFamily: fontFamily.poppins,
 		fontWeight: fontWeights.medium,
-		fontSize: '0.875rem',
-		transition: 'all 0.2s ease',
+		fontSize: fontSizes.xxxs,
+		letterSpacing: '0.08em',
+		transition: 'opacity 0.2s ease',
 		cursor: 'pointer',
 		border: 'none',
 		background: 'transparent',
+		opacity: 0.35,
 	}),
 	variants: {
 		variant: {
 			light: {
 				color: palette.primary,
-				selectors: {
-					'&:hover': {
-						backgroundColor: `${palette.primary}${HOVER_ALPHA}`,
-					},
-				},
 			},
 			dark: {
-				color: 'rgba(255, 255, 255, 0.7)',
-				selectors: {
-					'&:hover': {
-						backgroundColor: 'rgba(255, 255, 255, 0.1)',
-						color: palette.white,
-					},
-				},
+				color: palette.white,
 			},
 		},
 		isActive: {
-			true: {},
-			false: {
-				opacity: 0.6,
+			true: {
+				opacity: 1,
+				fontWeight: fontWeights.semibold,
 			},
+			false: {},
 		},
 	},
-	compoundVariants: [
-		{
-			variants: { variant: 'light', isActive: true },
-			style: {
-				color: palette.primary,
-				fontWeight: fontWeights.semibold,
-			},
-		},
-		{
-			variants: { variant: 'dark', isActive: true },
-			style: {
-				color: palette.white,
-				fontWeight: fontWeights.semibold,
-			},
-		},
-	],
 	defaultVariants: {
 		variant: 'light',
 		isActive: false,
@@ -84,16 +62,12 @@ export const button = recipe({
 
 export const divider = recipe({
 	base: style({
-		fontSize: '0.75rem',
+		display: 'none',
 	}),
 	variants: {
 		variant: {
-			light: {
-				color: palette.primary100,
-			},
-			dark: {
-				color: 'rgba(255, 255, 255, 0.3)',
-			},
+			light: {},
+			dark: {},
 		},
 	},
 	defaultVariants: {

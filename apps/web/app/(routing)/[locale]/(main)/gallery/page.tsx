@@ -76,7 +76,7 @@ export default async function Page({ params }: Props) {
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
-	queryClient.prefetchInfiniteQuery(
+	void queryClient.prefetchInfiniteQuery(
 		trpc.gallery.getAllPhotos.infiniteQueryOptions({
 			limit: PHOTO_DEFAULTS.LIMIT,
 			sort: PHOTO_DEFAULTS.SORT,

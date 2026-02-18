@@ -2,7 +2,7 @@
 
 import { useStorage } from '@jung/shared/hooks';
 import { createContext, type ReactNode, useContext } from 'react';
-import type { ViewMode } from '@/fsd/entities/blog/model/view';
+import type { ViewMode } from '@/fsd/entities/blog';
 
 interface ViewModeContextType {
 	viewMode: ViewMode;

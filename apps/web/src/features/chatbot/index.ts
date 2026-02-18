@@ -1,3 +1,4 @@
-export { profileData } from './config/profileData';
-export { SYSTEM_PROMPT } from './config/systemPrompt';
+export type { LocalizedProfile } from './config/profileData';
+export { getLocalizedProfile } from './config/profileData';
+export { getSystemPrompt } from './config/systemPrompt';
 export { ChatbotWidget } from './ui';

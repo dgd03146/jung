@@ -64,7 +64,7 @@ export default async function Page({ params }: Props) {
 	const { locale } = await params;
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
-	queryClient.prefetchInfiniteQuery(
+	void queryClient.prefetchInfiniteQuery(
 		trpc.guestbook.getAllMessages.infiniteQueryOptions({
 			limit: MESSAGE_LIMIT,
 		}),
