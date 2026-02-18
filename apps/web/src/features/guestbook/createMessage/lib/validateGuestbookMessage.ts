@@ -1,5 +1,6 @@
+import { MESSAGE_MAX_LENGTH } from '@/fsd/entities/guestbook';
+
 export const MIN_LENGTH = 3;
-export const MAX_LENGTH = 50;
 
 type ValidationResult = {
 	isValid: boolean;
@@ -26,10 +27,10 @@ export const validateGuestbookMessage = (
 		};
 	}
 
-	if (messageLength > MAX_LENGTH) {
+	if (messageLength > MESSAGE_MAX_LENGTH) {
 		return {
 			isValid: false,
-			error: `Message must be less than ${MAX_LENGTH} characters.`,
+			error: `Message must be less than ${MESSAGE_MAX_LENGTH} characters.`,
 		};
 	}
 
