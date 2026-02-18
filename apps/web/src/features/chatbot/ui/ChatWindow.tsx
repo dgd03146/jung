@@ -170,10 +170,11 @@ export function ChatWindow({
 									<IoChatbubble size={36} />
 								</div>
 								<h2 className={styles.welcomeTitle}>
-									{t('welcomeGreeting')}
-									<span className={styles.welcomeHighlight}>
-										{t('welcomeName')}
-									</span>
+									{t.rich('welcomeTitle', {
+										highlight: (chunks) => (
+											<span className={styles.welcomeHighlight}>{chunks}</span>
+										),
+									})}
 								</h2>
 								<p className={styles.welcomeSubtitle}>{t('welcomeSubtitle')}</p>
 								<button
