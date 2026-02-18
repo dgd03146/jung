@@ -169,31 +169,43 @@ export const menuButtonWrapper = style({
 export const desktopNavLinkItem = recipe({
 	base: style({
 		textDecoration: 'none',
-		padding: '0.6rem 1rem',
-		borderRadius: '4px',
+		padding: '0.5rem 0.75rem',
 		transition: 'all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)',
 		position: 'relative',
 		display: 'inline-block',
 		selectors: {
-			'&:hover': {
-				backgroundColor: `${palette.primary}08`,
-				transform: 'translateY(-1px)',
+			'&::after': {
+				content: '""',
+				position: 'absolute',
+				bottom: '4px',
+				left: '0.75rem',
+				right: '0.75rem',
+				height: '1px',
+				transform: 'scaleX(0)',
+				transformOrigin: 'left',
+				transition: 'transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)',
 			},
-			'&[data-active="true"]': {
-				backgroundColor: `${palette.primary}06`,
+			'&:hover::after': {
+				transform: 'scaleX(1)',
+			},
+			'&[data-active="true"]::after': {
+				transform: 'scaleX(1)',
 			},
 		},
 	}),
 	variants: {
 		variant: {
-			light: {},
+			light: {
+				selectors: {
+					'&::after': {
+						backgroundColor: palette.primary,
+					},
+				},
+			},
 			dark: {
 				selectors: {
-					'&:hover': {
-						backgroundColor: 'rgba(255, 255, 255, 0.1)',
-					},
-					'&[data-active="true"]': {
-						backgroundColor: 'rgba(255, 255, 255, 0.08)',
+					'&::after': {
+						backgroundColor: palette.white,
 					},
 				},
 			},
