@@ -1,5 +1,6 @@
 import {
 	fontFamily,
+	fontWeights,
 	mediaQueries,
 	palette,
 	space,
@@ -19,7 +20,7 @@ export const sectionTitle = style({
 export const sectionText = style({
 	fontFamily: fontFamily.poppins,
 	fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-	fontWeight: '700',
+	fontWeight: fontWeights.bold,
 	color: palette.swiss,
 	letterSpacing: '-0.02em',
 	lineHeight: 1,

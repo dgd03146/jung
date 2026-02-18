@@ -1,4 +1,9 @@
-import { mediaQueries, palette } from '@jung/design-system/tokens';
+import {
+	fontWeights,
+	mediaQueries,
+	palette,
+	borderRadius as radii,
+} from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -147,9 +152,9 @@ export const contentArea = recipe({
 
 export const category = style({
 	padding: '2px 8px',
-	borderRadius: '4px',
+	borderRadius: radii.sm,
 	fontSize: '11px',
-	fontWeight: '600',
+	fontWeight: fontWeights.semibold,
 	letterSpacing: '-0.01em',
 });
 

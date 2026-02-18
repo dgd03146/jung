@@ -8,8 +8,6 @@ import {
 	ViewPosts,
 } from '@/fsd/features/blog';
 
-// import { BlogHeader } from './BlogHeader';
-
 interface BlogLayoutProps {
 	currentCategory?: string;
 }
@@ -23,7 +21,6 @@ export const BlogLayout = ({ currentCategory }: BlogLayoutProps) => {
 				</Suspense>
 
 				<Box as='main' minWidth='0' flex={1}>
-					{/* <BlogHeader /> */}
 					<Suspense fallback={<PostListSkeleton count={6} />}>
 						<ViewPosts />
 					</Suspense>
