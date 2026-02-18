@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useSyncExternalStore } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
-const THEME_KEY = 'jung-theme';
+export const THEME_KEY = 'jung-theme';
+
+function isTheme(value: string | null): value is Theme {
+	return value === 'light' || value === 'dark';
+}
 
 const listeners = new Set<() => void>();
 
@@ -18,7 +22,8 @@ function subscribe(callback: () => void) {
 }
 
 function getSnapshot(): Theme {
-	return (localStorage.getItem(THEME_KEY) as Theme) || 'light';
+	const stored = localStorage.getItem(THEME_KEY);
+	return isTheme(stored) ? stored : 'light';
 }
 
 function getServerSnapshot(): Theme {

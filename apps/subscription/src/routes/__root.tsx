@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { lazy } from 'react';
 import { SITE_CONFIG } from '../config/site';
+import { THEME_KEY } from '../lib/theme';
 import '../styles/global.css';
 
 const TanStackRouterDevtools =
@@ -21,7 +22,7 @@ const TanStackRouterDevtools =
 const FOUC_PREVENTION_SCRIPT = `
 (function() {
   try {
-    var theme = localStorage.getItem('jung-theme') || 'light';
+    var theme = localStorage.getItem('${THEME_KEY}') || 'light';
     document.documentElement.setAttribute('data-theme', theme);
   } catch(e) {}
 })();

@@ -223,6 +223,7 @@ function ArticlesPage() {
 							value={searchInput}
 							onChange={(e) => handleSearchChange(e.target.value)}
 							className={styles.searchInput}
+							aria-label='Search articles'
 						/>
 					</div>
 
@@ -305,7 +306,7 @@ function ArticlesPage() {
 
 					{/* Pagination */}
 					{totalPages > 1 && (
-						<div className={styles.paginationContainer}>
+						<nav aria-label='Pagination' className={styles.paginationContainer}>
 							<button
 								type='button'
 								disabled={page <= 1}
@@ -333,7 +334,7 @@ function ArticlesPage() {
 							>
 								Next →
 							</button>
-						</div>
+						</nav>
 					)}
 				</main>
 
