@@ -12,8 +12,10 @@ import { generateCollectionPageJsonLd } from '../../lib/structuredData';
 import { type Article, fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
+const ARTICLE_CATEGORIES = ['all', 'frontend', 'ai'] as const;
+
 const articlesSearchSchema = z.object({
-	category: z.enum(['all', 'frontend', 'ai']).optional().default('all'),
+	category: z.enum(ARTICLE_CATEGORIES).optional().default('all'),
 	q: z.string().optional().default(''),
 	page: z.coerce.number().int().min(1).optional().default(1),
 });
@@ -55,11 +57,16 @@ export const Route = createFileRoute('/articles/')({
 	errorComponent: ArticlesError,
 });
 
-const FILTER_OPTIONS = [
-	{ value: 'all', label: 'All' },
-	{ value: 'frontend', label: 'Frontend' },
-	{ value: 'ai', label: 'AI' },
-] as const;
+const CATEGORY_LABELS: Record<(typeof ARTICLE_CATEGORIES)[number], string> = {
+	all: 'All',
+	frontend: 'Frontend',
+	ai: 'AI',
+};
+
+const FILTER_OPTIONS = ARTICLE_CATEGORIES.map((value) => ({
+	value,
+	label: CATEGORY_LABELS[value],
+}));
 
 function ArticlesLoading() {
 	return (

@@ -168,15 +168,15 @@ export const filterButton = style({
 });
 
 export const filterButtonActive = style({
-	background: 'var(--bg-card-hover)',
+	background: colors.cardBgHover,
 	color: colors.primary,
-	boxShadow: '0 2px 8px var(--shadow-color)',
+	boxShadow: `0 2px 8px ${colors.shadowColor}`,
 });
 
 export const filterButtonActiveAi = style({
-	background: 'var(--bg-card-hover)',
+	background: colors.cardBgHover,
 	color: colors.primaryAlt,
-	boxShadow: '0 2px 8px var(--shadow-color)',
+	boxShadow: `0 2px 8px ${colors.shadowColor}`,
 });
 
 export const articleList = style({
@@ -362,7 +362,7 @@ export const notFoundHeading = style({
 
 export const card = style({
 	padding: '1.5rem',
-	background: 'var(--bg-summary-card)',
+	background: colors.summaryCardBg,
 	backdropFilter: 'blur(20px)',
 	borderRadius: '16px',
 	borderLeft: `3px solid ${colors.primary}`,
@@ -371,7 +371,7 @@ export const card = style({
 
 export const cardAlt = style({
 	padding: '1.5rem',
-	background: 'var(--bg-summary-card-alt)',
+	background: colors.summaryCardAltBg,
 	backdropFilter: 'blur(20px)',
 	borderRadius: '16px',
 	marginBottom: '2.5rem',
