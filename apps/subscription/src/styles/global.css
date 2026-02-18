@@ -64,6 +64,9 @@ html {
   html {
     scroll-behavior: auto;
   }
+  body {
+    transition: none;
+  }
 }
 
 body {

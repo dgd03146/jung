@@ -470,9 +470,8 @@ export const searchInput = style({
 	fontSize: '0.9rem',
 	color: colors.textDark,
 	fontFamily: FONT_HEADING,
-	outline: 'none',
 	transition: 'all 0.2s',
-	':focus': {
+	':focus-visible': {
 		borderColor: colors.borderHover,
 		background: colors.cardBgHover,
 		boxShadow: `0 4px 12px ${colors.shadowColor}`,

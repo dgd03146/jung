@@ -6,7 +6,7 @@ import { sendNewsletter } from '../../server/newsletter';
 
 const sendNewsletterInput = z.object({
 	articleId: z.string().uuid(),
-	secretKey: z.string(),
+	secretKey: z.string().min(1),
 });
 
 function safeCompare(a: string, b: string): boolean {

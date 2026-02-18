@@ -110,9 +110,7 @@ function UnsubscribePage() {
 									border: '1px solid var(--color-border-hover)',
 								}}
 							>
-								<span role='img' aria-label='Success'>
-									✓
-								</span>
+								<span aria-hidden='true'>✓</span>
 							</div>
 							<h1
 								style={{

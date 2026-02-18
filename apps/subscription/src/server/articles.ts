@@ -88,6 +88,7 @@ async function queryRelatedArticles(
 }
 
 export async function fetchArticleByIdInternal(id: string) {
+	z.string().uuid().parse(id);
 	const supabase = getServerSupabase();
 
 	const { data, error } = await supabase
