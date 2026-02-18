@@ -1,6 +1,7 @@
-import { MESSAGE_MAX_LENGTH } from '@/fsd/entities/guestbook';
-
-export const MIN_LENGTH = 3;
+import {
+	MESSAGE_MAX_LENGTH,
+	MESSAGE_MIN_LENGTH,
+} from '@/fsd/entities/guestbook';
 
 type ValidationResult = {
 	isValid: boolean;
@@ -20,10 +21,10 @@ export const validateGuestbookMessage = (
 	}
 
 	const messageLength = content.trim().length;
-	if (messageLength < MIN_LENGTH) {
+	if (messageLength < MESSAGE_MIN_LENGTH) {
 		return {
 			isValid: false,
-			error: `Message must be at least ${MIN_LENGTH} characters.`,
+			error: `Message must be at least ${MESSAGE_MIN_LENGTH} characters.`,
 		};
 	}
 

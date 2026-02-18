@@ -50,11 +50,6 @@ export const postCard = recipe({
 						gap: '16px',
 						padding: '16px 0',
 						minHeight: '140px',
-						selectors: {
-							'&:first-child': {
-								paddingTop: 0,
-							},
-						},
 					},
 				},
 			},
