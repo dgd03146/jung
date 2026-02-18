@@ -32,19 +32,28 @@ function isValidToolOutput(output: unknown): output is ToolOutputItem[] {
 	return Array.isArray(output) && output.every(isToolOutputItem);
 }
 
-const TOOL_LABEL_KEYS: Record<string, string> = {
+type ChatbotKey =
+	| 'toolSearchBlog'
+	| 'toolSearchPlaces'
+	| 'toolSearchPhotos'
+	| 'toolGetProfile'
+	| 'toolDefault';
+
+const TOOL_LABEL_KEYS = {
 	searchBlog: 'toolSearchBlog',
 	searchPlaces: 'toolSearchPlaces',
 	searchPhotos: 'toolSearchPhotos',
 	getProfile: 'toolGetProfile',
-};
+} as const satisfies Record<string, ChatbotKey>;
 
 export function MessageItem({ message, isLoading }: MessageItemProps) {
 	const t = useTranslations('chatbot');
 	const isUser = message.role === 'user';
 
 	const getToolLabel = (toolName: string): string => {
-		const key = TOOL_LABEL_KEYS[toolName] ?? 'toolDefault';
+		const key =
+			(TOOL_LABEL_KEYS as Record<string, ChatbotKey>)[toolName] ??
+			'toolDefault';
 		return t(key);
 	};
 
