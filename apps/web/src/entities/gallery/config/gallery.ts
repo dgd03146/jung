@@ -34,6 +34,11 @@ export const COLLECTION_DEFAULTS = {
 	sort: 'latest',
 } as const;
 
+export const COLLECTION_CACHE = {
+	STALE_TIME: 1000 * 60 * 60 * 5, // 5시간
+	GC_TIME: 1000 * 60 * 60 * 24, // 24시간
+} as const;
+
 export const PHOTO_CACHE = {
 	STALE_TIME: 1000 * 60 * 60 * 24, // 24 hours
 	GC_TIME: 1000 * 60 * 60 * 48, // 48 hours

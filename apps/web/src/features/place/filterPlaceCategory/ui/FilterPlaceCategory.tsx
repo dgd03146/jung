@@ -2,7 +2,7 @@
 
 import { Box, Tag, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { PLACE_DEFAULTS } from '@/fsd/entities/place';
+import { PLACE_CATEGORY_CACHE, PLACE_DEFAULTS } from '@/fsd/entities/place';
 import { useTRPC } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
 import * as styles from './FilterPlaceCategory.css';
@@ -19,8 +19,8 @@ export const FilterPlaceCategory = ({
 		trpc.category.getCategories.queryOptions(
 			{ type: 'places' },
 			{
-				staleTime: 1000 * 60 * 60 * 24, // 24시간
-				gcTime: 1000 * 60 * 60 * 24 * 7, // 7일
+				staleTime: PLACE_CATEGORY_CACHE.STALE_TIME,
+				gcTime: PLACE_CATEGORY_CACHE.GC_TIME,
 			},
 		),
 	);
