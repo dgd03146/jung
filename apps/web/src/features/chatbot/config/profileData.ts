@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/routing';
+
 export interface ProfileData {
 	personal: {
 		name: string;
@@ -7,21 +9,26 @@ export interface ProfileData {
 		github: string;
 		linkedin?: string;
 	};
-	summary: Record<'ko' | 'en', string>;
+	summary: Record<Locale, string>;
 	skills: {
 		frontend: string[];
 		backend: string[];
 		tools: string[];
 	};
-	interests: Record<'ko' | 'en', string[]>;
+	interests: Record<Locale, string[]>;
 }
 
-export const profileData: ProfileData = {
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '';
+if (!contactEmail && process.env.NODE_ENV !== 'production') {
+	console.warn('[chatbot] NEXT_PUBLIC_CONTACT_EMAIL is not set');
+}
+
+const profileData: ProfileData = {
 	personal: {
 		name: 'Jung',
 		title: 'Frontend Developer',
 		location: 'Seoul, Korea',
-		email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
+		email: contactEmail,
 		github: 'https://github.com/dgd03146',
 	},
 	summary: {
@@ -60,7 +67,7 @@ export type LocalizedProfile = Omit<ProfileData, 'summary' | 'interests'> & {
 	interests: string[];
 };
 
-export function getLocalizedProfile(locale: 'ko' | 'en'): LocalizedProfile {
+export function getLocalizedProfile(locale: Locale): LocalizedProfile {
 	return {
 		...profileData,
 		summary: profileData.summary[locale],

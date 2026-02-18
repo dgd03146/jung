@@ -1,10 +1,12 @@
+import type { Locale } from '@/i18n/routing';
 import { getLocalizedProfile } from './profileData';
 
-export function getSystemPrompt(locale: 'ko' | 'en'): string {
+export function getSystemPrompt(locale: Locale): string {
 	const profile = getLocalizedProfile(locale);
 
-	if (locale === 'en') {
-		return `
+	switch (locale) {
+		case 'en':
+			return `
 You are an AI assistant on ${profile.personal.name}'s personal portfolio website.
 Answer visitors' questions in a humorous, witty, yet accurate manner.
 
@@ -53,9 +55,9 @@ When asked about blog posts, favorite places, or gallery photos, use the search 
 ## Welcome Message Style
 Simple and friendly: "Hi there! Ask me anything 🙌"
 `.trim();
-	}
 
-	return `
+		case 'ko':
+			return `
 당신은 ${profile.personal.name}의 개인 포트폴리오 웹사이트에 있는 AI 어시스턴트입니다.
 방문자들의 질문에 유머러스하고 재치있게, 하지만 정확하게 답변해주세요.
 
@@ -104,4 +106,10 @@ ${profile.interests.map((i) => `- ${i}`).join('\n')}
 ## 환영 메시지 스타일
 간단하고 친근하게: "안녕하세요! 무엇이든 물어보세요 🙌"
 `.trim();
+
+		default: {
+			const _exhaustive: never = locale;
+			throw new Error(`Unsupported locale: ${_exhaustive}`);
+		}
+	}
 }
