@@ -58,7 +58,7 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 	});
 
 export const fetchArticleById = createServerFn({ method: 'GET' })
-	.inputValidator((id: string) => id)
+	.inputValidator((id: string) => z.string().uuid().parse(id))
 	.handler(async ({ data: id }) => {
 		const supabase = getServerSupabase();
 
@@ -105,7 +105,7 @@ export const fetchRelatedArticles = createServerFn({ method: 'GET' })
 	});
 
 export const fetchArticleWithRelated = createServerFn({ method: 'GET' })
-	.inputValidator((id: string) => id)
+	.inputValidator((id: string) => z.string().uuid().parse(id))
 	.handler(async ({ data: id }) => {
 		const supabase = getServerSupabase();
 
@@ -120,22 +120,12 @@ export const fetchArticleWithRelated = createServerFn({ method: 'GET' })
 			throw new Error(`Failed to fetch article: ${error.message}`);
 		}
 
-		if (!article) {
-			return { article: null, relatedArticles: [] };
-		}
+		const related = await fetchRelatedArticles({
+			data: { articleId: article.id, category: article.category },
+		}).catch((err) => {
+			console.error('Failed to fetch related articles:', err);
+			return [] as Article[];
+		});
 
-		const { data: related, error: relatedError } = await supabase
-			.from('articles')
-			.select('*')
-			.eq('status', 'published')
-			.eq('category', article.category)
-			.neq('id', article.id)
-			.order('published_at', { ascending: false, nullsFirst: false })
-			.limit(3);
-
-		if (relatedError) {
-			console.error('Failed to fetch related articles:', relatedError);
-		}
-
-		return { article, relatedArticles: related ?? [] };
+		return { article, relatedArticles: related };
 	});
