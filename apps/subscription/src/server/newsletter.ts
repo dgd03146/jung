@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '../config/site';
-import { fetchArticleById } from './articles';
+import { fetchArticleByIdInternal } from './articles';
 import { fetchActiveSubscribersInternal } from './subscribers';
 
 let resendInstance: Resend | null = null;
@@ -84,7 +84,7 @@ export async function sendNewsletter(articleId: string) {
 	const resend = getResend();
 	const fromEmail = getFromEmail();
 
-	const article = await fetchArticleById({ data: articleId });
+	const article = await fetchArticleByIdInternal(articleId);
 	if (!article) {
 		throw new Error(`Article not found: ${articleId}`);
 	}

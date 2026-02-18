@@ -22,7 +22,8 @@ const TanStackRouterDevtools =
 const FOUC_PREVENTION_SCRIPT = `
 (function() {
   try {
-    var theme = localStorage.getItem('${THEME_KEY}') || 'light';
+    var raw = localStorage.getItem('${THEME_KEY}');
+    var theme = (raw === 'light' || raw === 'dark') ? raw : 'light';
     document.documentElement.setAttribute('data-theme', theme);
   } catch(e) {}
 })();

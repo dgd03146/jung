@@ -194,7 +194,6 @@ function UnsubscribePage() {
 											borderRadius: '12px',
 											fontSize: '0.95rem',
 											marginBottom: '1rem',
-											outline: 'none',
 											background: 'var(--bg-card-hover)',
 											color: 'var(--color-text)',
 											fontFamily: "'Poppins', sans-serif",

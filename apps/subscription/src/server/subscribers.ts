@@ -2,9 +2,11 @@ import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { getServerSupabase } from './supabase';
 
+const SUBSCRIBER_CATEGORIES = ['frontend', 'ai', 'both'] as const;
+
 const subscribeInput = z.object({
 	email: z.string().email(),
-	category: z.enum(['frontend', 'ai', 'both']),
+	category: z.enum(SUBSCRIBER_CATEGORIES),
 });
 
 export const subscribe = createServerFn({ method: 'POST' })
@@ -60,11 +62,10 @@ export const subscribe = createServerFn({ method: 'POST' })
 		return { success: true, message: 'Successfully subscribed!' };
 	});
 
-const validCategories = ['frontend', 'ai', 'both'] as const;
-type SubscriberCategory = (typeof validCategories)[number];
+type SubscriberCategory = (typeof SUBSCRIBER_CATEGORIES)[number];
 
 function isValidCategory(value: string): value is SubscriberCategory {
-	return (validCategories as readonly string[]).includes(value);
+	return (SUBSCRIBER_CATEGORIES as readonly string[]).includes(value);
 }
 
 export async function fetchActiveSubscribersInternal(category?: string) {

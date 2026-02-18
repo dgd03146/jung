@@ -1,4 +1,4 @@
-import { timingSafeEqual } from 'node:crypto';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import { createFileRoute } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
@@ -10,10 +10,9 @@ const sendNewsletterInput = z.object({
 });
 
 function safeCompare(a: string, b: string): boolean {
-	const bufA = Buffer.from(a);
-	const bufB = Buffer.from(b);
-	if (bufA.length !== bufB.length) return false;
-	return timingSafeEqual(bufA, bufB);
+	const hmacA = createHmac('sha256', 'key').update(a).digest();
+	const hmacB = createHmac('sha256', 'key').update(b).digest();
+	return timingSafeEqual(hmacA, hmacB);
 }
 
 const handleSendNewsletter = createServerFn({ method: 'POST' })

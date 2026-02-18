@@ -60,21 +60,49 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 export const fetchArticleById = createServerFn({ method: 'GET' })
 	.inputValidator((id: string) => z.string().uuid().parse(id))
 	.handler(async ({ data: id }) => {
-		const supabase = getServerSupabase();
-
-		const { data, error } = await supabase
-			.from('articles')
-			.select('*')
-			.eq('id', id)
-			.eq('status', 'published')
-			.single();
-
-		if (error) {
-			throw new Error(`Failed to fetch article: ${error.message}`);
-		}
-
-		return data;
+		return fetchArticleByIdInternal(id);
 	});
+
+const RELATED_ARTICLES_LIMIT = 3;
+
+async function queryRelatedArticles(
+	articleId: string,
+	category: string,
+): Promise<Article[]> {
+	const supabase = getServerSupabase();
+
+	const { data: articles, error } = await supabase
+		.from('articles')
+		.select('*')
+		.eq('status', 'published')
+		.eq('category', category)
+		.neq('id', articleId)
+		.order('published_at', { ascending: false, nullsFirst: false })
+		.limit(RELATED_ARTICLES_LIMIT);
+
+	if (error) {
+		throw new Error(`Failed to fetch related articles: ${error.message}`);
+	}
+
+	return articles ?? [];
+}
+
+export async function fetchArticleByIdInternal(id: string) {
+	const supabase = getServerSupabase();
+
+	const { data, error } = await supabase
+		.from('articles')
+		.select('*')
+		.eq('id', id)
+		.eq('status', 'published')
+		.single();
+
+	if (error) {
+		throw new Error(`Failed to fetch article: ${error.message}`);
+	}
+
+	return data;
+}
 
 const fetchRelatedInput = z.object({
 	articleId: z.string().uuid(),
@@ -86,43 +114,18 @@ export const fetchRelatedArticles = createServerFn({ method: 'GET' })
 		fetchRelatedInput.parse(data),
 	)
 	.handler(async ({ data }) => {
-		const supabase = getServerSupabase();
-
-		const { data: articles, error } = await supabase
-			.from('articles')
-			.select('*')
-			.eq('status', 'published')
-			.eq('category', data.category)
-			.neq('id', data.articleId)
-			.order('published_at', { ascending: false, nullsFirst: false })
-			.limit(3);
-
-		if (error) {
-			throw new Error(`Failed to fetch related articles: ${error.message}`);
-		}
-
-		return articles ?? [];
+		return queryRelatedArticles(data.articleId, data.category);
 	});
 
 export const fetchArticleWithRelated = createServerFn({ method: 'GET' })
 	.inputValidator((id: string) => z.string().uuid().parse(id))
 	.handler(async ({ data: id }) => {
-		const supabase = getServerSupabase();
+		const article = await fetchArticleByIdInternal(id);
 
-		const { data: article, error } = await supabase
-			.from('articles')
-			.select('*')
-			.eq('id', id)
-			.eq('status', 'published')
-			.single();
-
-		if (error) {
-			throw new Error(`Failed to fetch article: ${error.message}`);
-		}
-
-		const related = await fetchRelatedArticles({
-			data: { articleId: article.id, category: article.category },
-		}).catch((err) => {
+		const related = await queryRelatedArticles(
+			article.id,
+			article.category,
+		).catch((err) => {
 			console.error('Failed to fetch related articles:', err);
 			return [] as Article[];
 		});
