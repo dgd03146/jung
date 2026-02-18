@@ -1,7 +1,7 @@
 import { Box } from '@jung/design-system/components';
 import { Footer, Header } from '@/fsd/widgets';
 import * as styles from './Layout.css';
-import { SectionTitle } from './SectionTitle';
+// import { SectionTitle } from './SectionTitle';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			<Header />
 			<Box as='main' className={styles.main}>
 				<Box className={styles.section}>
-					<SectionTitle />
+					{/* <SectionTitle /> */}
 					{children}
 				</Box>
 			</Box>

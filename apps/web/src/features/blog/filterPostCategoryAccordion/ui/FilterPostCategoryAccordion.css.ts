@@ -19,6 +19,10 @@ export const sidebar = style({
 	},
 });
 
+export const postCount = style({
+	fontSize: '10px',
+});
+
 export const categoryLink = recipe({
 	base: {
 		display: 'flex',

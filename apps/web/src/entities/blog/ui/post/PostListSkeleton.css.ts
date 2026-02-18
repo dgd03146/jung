@@ -46,20 +46,30 @@ export const viewToggleSkeleton = style([skeletonShimmer]);
 export const skeletonList = style({
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '24px',
 	width: '100%',
 });
 
 export const postCard = style({
 	display: 'flex',
-	gap: '40px',
-	padding: '24px 0',
+	gap: '32px',
+	padding: '20px 0',
 	borderBottom: `1px solid ${palette.primary50}`,
+
+	selectors: {
+		'&:first-child': {
+			paddingTop: 0,
+		},
+	},
 
 	'@media': {
 		[mediaQueries.tablet]: {
-			flexDirection: 'column',
 			gap: '16px',
+			padding: '16px 0',
+			selectors: {
+				'&:first-child': {
+					paddingTop: 0,
+				},
+			},
 		},
 	},
 });
@@ -67,17 +77,15 @@ export const postCard = style({
 export const imageArea = style([
 	skeletonShimmer,
 	{
-		width: '200px',
+		width: '160px',
 		height: 'auto',
-		aspectRatio: '5/4',
-		borderRadius: '12px',
+		aspectRatio: '4/3',
+		borderRadius: '8px',
 		backgroundColor: palette.gray,
 
 		'@media': {
 			[mediaQueries.tablet]: {
-				width: '100%',
-				height: '280px',
-				aspectRatio: '16/9',
+				width: '140px',
 			},
 		},
 	},

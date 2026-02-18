@@ -43,7 +43,7 @@ export const TagList = ({
 		>
 			{tags.map((tag) => (
 				<Tag key={tag} variant='secondary'>
-					<Typography.FootNote level={1}>
+					<Typography.FootNote level={2}>
 						{showHash && '# '}
 						{tag}
 					</Typography.FootNote>

@@ -1,4 +1,4 @@
-import { Box, Container } from '@jung/design-system/components';
+import { Box } from '@jung/design-system/components';
 import * as styles from './PostListSkeleton.css';
 
 const PostCardSkeleton = () => {
@@ -49,30 +49,11 @@ const PostCardSkeleton = () => {
 
 const PostListSkeleton = ({ count = 3 }: { count: number }) => {
 	return (
-		<Container>
-			{/* <div className={styles.searchAreaSkeleton}>
-        <Box
-          width="full"
-          height="8"
-          background="gray"
-          borderRadius="lg"
-          className={styles.searchBarSkeleton}
-        />
-        <Box
-          width="24"
-          height="8"
-          background="gray"
-          borderRadius="lg"
-          className={styles.viewToggleSkeleton}
-        />
-      </div> */}
-
-			<div className={styles.skeletonList}>
-				{Array.from({ length: count }).map((_, index) => (
-					<PostCardSkeleton key={index} />
-				))}
-			</div>
-		</Container>
+		<div className={styles.skeletonList}>
+			{Array.from({ length: count }).map((_, index) => (
+				<PostCardSkeleton key={index} />
+			))}
+		</div>
 	);
 };
 

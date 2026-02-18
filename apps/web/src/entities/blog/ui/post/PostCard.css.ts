@@ -45,6 +45,11 @@ export const postCard = recipe({
 						gap: '16px',
 						padding: '16px 0',
 						minHeight: '140px',
+						selectors: {
+							'&:first-child': {
+								paddingTop: 0,
+							},
+						},
 					},
 				},
 			},
@@ -141,9 +146,11 @@ export const contentArea = recipe({
 });
 
 export const category = style({
-	fontFamily: 'var(--font-bebas)',
 	padding: '2px 8px',
 	borderRadius: '4px',
+	fontSize: '11px',
+	fontWeight: '600',
+	letterSpacing: '-0.01em',
 });
 
 export const tableNumber = style({

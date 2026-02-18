@@ -87,11 +87,12 @@ export const FilterPostCategoryAccordion = ({
 										>
 											<span>{subCategory.name}</span>
 											<Typography.SubText
-												level={2}
+												level={3}
 												color='primary'
 												background='primary50'
 												paddingY='1'
 												paddingX='2'
+												className={styles.postCount}
 											>
 												{subCategory.postCount}
 											</Typography.SubText>

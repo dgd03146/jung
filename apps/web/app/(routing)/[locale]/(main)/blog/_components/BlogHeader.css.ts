@@ -7,11 +7,11 @@ export const titleLink = style({
 });
 
 export const titleText = style({
-	fontFamily: fontFamily.bebas,
+	fontFamily: fontFamily.poppins,
 	fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-	fontWeight: 'normal',
+	fontWeight: '700',
 	color: palette.swiss,
-	letterSpacing: '0.04em',
+	letterSpacing: '-0.02em',
 	lineHeight: 1,
 	transition: 'opacity 0.2s ease',
 	':hover': {

@@ -46,13 +46,14 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 				color='primary'
 				display={{ mobile: 'none', tablet: 'flex' }}
 			>
-				<Typography.Text
+				<Typography.SubText
+					level={3}
 					className={styles.category}
 					background='primary50'
 					color='primary'
 				>
 					{capitalizeFirstLetter(post.category)}
-				</Typography.Text>
+				</Typography.SubText>
 				<Typography.SubText level={3}>
 					{formatDate(post.date)}
 				</Typography.SubText>
@@ -90,12 +91,12 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 					</Typography.SubText>
 				</Flex>
 
-				<Typography.Heading as='h1' level={4} truncate='two'>
+				<Typography.Text fontWeight='medium' level={1} truncate='two'>
 					{post.title}
-				</Typography.Heading>
+				</Typography.Text>
 
 				<Typography.Text
-					level={3}
+					level={4}
 					color='primary300'
 					marginBottom='4'
 					truncate='two'
