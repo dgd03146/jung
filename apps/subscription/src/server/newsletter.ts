@@ -1,12 +1,16 @@
 import { Resend } from 'resend';
 import { SITE_CONFIG } from '../config/site';
 import { fetchArticleById } from './articles';
-import { fetchActiveSubscribers } from './subscribers';
+import { fetchActiveSubscribersInternal } from './subscribers';
+
+let resendInstance: Resend | null = null;
 
 function getResend() {
+	if (resendInstance) return resendInstance;
 	const apiKey = process.env.RESEND_API_KEY;
 	if (!apiKey) throw new Error('RESEND_API_KEY is not set');
-	return new Resend(apiKey);
+	resendInstance = new Resend(apiKey);
+	return resendInstance;
 }
 
 function getFromEmail() {
@@ -85,9 +89,7 @@ export async function sendNewsletter(articleId: string) {
 		throw new Error(`Article not found: ${articleId}`);
 	}
 
-	const subscribers = await fetchActiveSubscribers({
-		data: article.category,
-	});
+	const subscribers = await fetchActiveSubscribersInternal(article.category);
 
 	if (subscribers.length === 0) {
 		return { success: true, message: 'No active subscribers found.', sent: 0 };
@@ -98,6 +100,7 @@ export async function sendNewsletter(articleId: string) {
 
 	const BATCH_SIZE = 50;
 	let totalSent = 0;
+	let totalFailed = 0;
 
 	for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
 		const batch = subscribers.slice(i, i + BATCH_SIZE);
@@ -113,14 +116,20 @@ export async function sendNewsletter(articleId: string) {
 
 		if (error) {
 			console.error(`Batch send error (batch ${i / BATCH_SIZE}):`, error);
+			totalFailed += batch.length;
 		} else {
 			totalSent += batch.length;
 		}
 	}
 
+	const allFailed = totalSent === 0 && totalFailed > 0;
+
 	return {
-		success: true,
-		message: `Newsletter sent to ${totalSent}/${subscribers.length} subscribers.`,
+		success: !allFailed,
+		message: allFailed
+			? `Failed to send newsletter to all ${totalFailed} subscribers.`
+			: `Newsletter sent to ${totalSent}/${subscribers.length} subscribers.`,
 		sent: totalSent,
+		failed: totalFailed,
 	};
 }

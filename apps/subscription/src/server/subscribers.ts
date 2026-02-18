@@ -60,28 +60,36 @@ export const subscribe = createServerFn({ method: 'POST' })
 		return { success: true, message: 'Successfully subscribed!' };
 	});
 
-export const fetchActiveSubscribers = createServerFn({ method: 'GET' })
-	.inputValidator((category?: string) => category)
-	.handler(async ({ data: category }) => {
-		const supabase = getServerSupabase();
+const validCategories = ['frontend', 'ai', 'both'] as const;
+type SubscriberCategory = (typeof validCategories)[number];
 
-		let query = supabase
-			.from('subscribers')
-			.select('id, email, category')
-			.eq('is_active', true);
+function isValidCategory(value: string): value is SubscriberCategory {
+	return (validCategories as readonly string[]).includes(value);
+}
 
-		if (category && category !== 'all') {
-			query = query.or(`category.eq.${category},category.eq.both`);
+export async function fetchActiveSubscribersInternal(category?: string) {
+	const supabase = getServerSupabase();
+
+	let query = supabase
+		.from('subscribers')
+		.select('id, email, category')
+		.eq('is_active', true);
+
+	if (category && category !== 'all') {
+		if (!isValidCategory(category)) {
+			throw new Error(`Invalid category: ${category}`);
 		}
+		query = query.or(`category.eq.${category},category.eq.both`);
+	}
 
-		const { data, error } = await query;
+	const { data, error } = await query;
 
-		if (error) {
-			throw new Error(`Failed to fetch subscribers: ${error.message}`);
-		}
+	if (error) {
+		throw new Error(`Failed to fetch subscribers: ${error.message}`);
+	}
 
-		return data ?? [];
-	});
+	return data ?? [];
+}
 
 const unsubscribeInput = z.object({
 	email: z.string().email(),

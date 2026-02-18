@@ -23,20 +23,15 @@ const handleSendNewsletter = createServerFn({ method: 'POST' })
 	.handler(async ({ data }) => {
 		const secretKey = process.env.NEWSLETTER_SECRET_KEY;
 		if (!secretKey) {
-			return { error: 'Newsletter secret key not configured', status: 500 };
+			throw new Error('Newsletter secret key not configured');
 		}
 
 		if (!safeCompare(data.secretKey, secretKey)) {
-			return { error: 'Unauthorized', status: 401 };
+			throw new Error('Unauthorized');
 		}
 
-		try {
-			const result = await sendNewsletter(data.articleId);
-			return { ...result, status: 200 };
-		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Unknown error';
-			return { error: message, status: 500 };
-		}
+		const result = await sendNewsletter(data.articleId);
+		return result;
 	});
 
 export const Route = createFileRoute('/api/send-newsletter')({
