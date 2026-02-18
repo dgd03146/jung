@@ -1,5 +1,6 @@
 import {
 	fontFamily,
+	fontSizes,
 	fontWeights,
 	mediaQueries,
 	palette,
@@ -206,8 +207,9 @@ export const desktopNavLinkItem = recipe({
 export const navLinkText = recipe({
 	base: style({
 		fontWeight: fontWeights.semibold,
+		fontSize: fontSizes.xs,
 		color: palette.primary,
-		fontFamily: fontFamily.bebas,
+		fontFamily: fontFamily.poppins,
 		transition: 'all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1)',
 		display: 'inline-block',
 		selectors: {
