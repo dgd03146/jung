@@ -48,8 +48,7 @@
 		"header": "Chat with Jung",
 		"close": "Close chat",
 		"window": "Chat window",
-		"welcomeGreeting": "Hi, I'm ",
-		"welcomeName": "Jung",
+		"welcomeTitle": "Hi, I'm <highlight>Jung</highlight>",
 		"welcomeSubtitle": "Ask me anything about my blog, favorite places, or photos.",
 		"startChat": "Start Chat",
 		"placeholder": "Type a message...",
@@ -68,7 +67,6 @@
 		"toolSearchPhotos": "📸 Related photos",
 		"toolGetProfile": "👤 Profile",
 		"toolDefault": "🔍 Search",
-		"toolSearching": "Searching...",
 		"toolSearchingWithLabel": "Searching {label}..."
 	}
 }

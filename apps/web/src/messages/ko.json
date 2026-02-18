@@ -48,8 +48,7 @@
 		"header": "Jung과 대화하기",
 		"close": "채팅 닫기",
 		"window": "채팅 창",
-		"welcomeGreeting": "안녕하세요! 저는 ",
-		"welcomeName": "Jung",
+		"welcomeTitle": "안녕하세요! 저는 <highlight>Jung</highlight>입니다",
 		"welcomeSubtitle": "블로그, 좋아하는 장소, 사진에 대해 무엇이든 물어보세요.",
 		"startChat": "대화 시작",
 		"placeholder": "메시지를 입력하세요...",
@@ -68,7 +67,6 @@
 		"toolSearchPhotos": "📸 관련 사진",
 		"toolGetProfile": "👤 프로필",
 		"toolDefault": "🔍 검색",
-		"toolSearching": "검색 중...",
 		"toolSearchingWithLabel": "{label} 검색 중..."
 	}
 }
