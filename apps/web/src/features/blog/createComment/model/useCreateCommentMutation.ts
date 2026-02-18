@@ -2,7 +2,6 @@
 
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { getCommentsQueryInput } from '@/fsd/entities/blog';
 import { type CommentData, useSupabaseAuth, useTRPC } from '@/fsd/shared';
 import { createCommentAction } from '../api/createCommentAction';
@@ -15,8 +14,14 @@ import {
 
 type CommentValidation = { valid: true } | { valid: false; message: string };
 
+type SubmitCommentInput = {
+	postId: string;
+	parentId?: string;
+	content: string;
+	postTitle: string;
+};
+
 export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
-	const [newComment, setNewComment] = useState('');
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
 	const { user } = useSupabaseAuth();
@@ -52,12 +57,7 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 			parentId,
 			content,
 			postTitle,
-		}: {
-			postId: string;
-			parentId?: string;
-			content: string;
-			postTitle: string;
-		}) => {
+		}: SubmitCommentInput) => {
 			return createCommentAction({
 				postId,
 				postTitle,
@@ -107,7 +107,6 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 			}
 		},
 		onSuccess: () => {
-			setNewComment('');
 			onSuccessCallback?.();
 		},
 		onSettled: async (_data, _error, variables, _context) => {
@@ -126,28 +125,16 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 		},
 	});
 
-	const submitComment = ({
-		postId,
-		parentId,
-		newComment,
-		postTitle,
-	}: {
-		postId: string;
-		parentId?: string;
-		newComment: string;
-		postTitle: string;
-	}) => {
-		const validation = validateComment(newComment, parentId);
+	const submitComment = (input: SubmitCommentInput) => {
+		const validation = validateComment(input.content, input.parentId);
 		if (!validation.valid) {
 			showToast(validation.message, 'warning');
 			return;
 		}
-		mutation.mutate({ postId, parentId, content: newComment, postTitle });
+		mutation.mutate(input);
 	};
 
 	return {
-		newComment,
-		setNewComment,
 		submitComment,
 		isPending: mutation.isPending,
 	};
