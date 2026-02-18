@@ -7,8 +7,7 @@ import {
 	ViewModeProvider,
 	ViewPosts,
 } from '@/fsd/features/blog';
-import { SearchBarSkeleton } from '@/fsd/shared';
-import { BlogPageControls } from '@/fsd/views';
+import { BlogHeader } from './BlogHeader';
 
 interface BlogLayoutProps {
 	currentCategory?: string;
@@ -16,21 +15,19 @@ interface BlogLayoutProps {
 
 export const BlogLayout = ({ currentCategory }: BlogLayoutProps) => {
 	return (
-		<Flex gap={{ tablet: '10' }}>
-			<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
-				<FilterPostCategoryAccordion currentCategory={currentCategory} />
-			</Suspense>
+		<ViewModeProvider>
+			<BlogHeader />
+			<Flex gap={{ tablet: '10' }}>
+				<Suspense fallback={<FilterPostCategoryAccordionSkeleton count={3} />}>
+					<FilterPostCategoryAccordion currentCategory={currentCategory} />
+				</Suspense>
 
-			<ViewModeProvider>
 				<Box as='main' minWidth='0' flex={1}>
-					<Suspense fallback={<SearchBarSkeleton />}>
-						<BlogPageControls />
-					</Suspense>
 					<Suspense fallback={<PostListSkeleton count={6} />}>
 						<ViewPosts />
 					</Suspense>
 				</Box>
-			</ViewModeProvider>
-		</Flex>
+			</Flex>
+		</ViewModeProvider>
 	);
 };

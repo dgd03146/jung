@@ -24,22 +24,26 @@ export const postCard = recipe({
 		viewMode: {
 			list: {
 				display: 'flex',
-				gap: '40px',
-				padding: '24px 0',
-				minHeight: '235px',
+				gap: '32px',
+				padding: '20px 0',
+				minHeight: '160px',
 				borderBottom: `1px solid ${palette.primary50}`,
 
-				transition: 'all 0.3s ease',
+				transition: 'opacity 0.2s ease',
 				position: 'relative',
 				':hover': {
-					backgroundColor: 'rgba(1, 66, 192, 0.03)',
-					transform: 'translateX(8px)',
+					opacity: 0.75,
+				},
+				selectors: {
+					'&:first-child': {
+						paddingTop: 0,
+					},
 				},
 				'@media': {
 					[mediaQueries.tablet]: {
 						gap: '16px',
-						padding: '18px 0',
-						minHeight: '210px',
+						padding: '16px 0',
+						minHeight: '140px',
 					},
 				},
 			},
@@ -64,7 +68,7 @@ export const postCard = recipe({
 				alignItems: 'center',
 
 				gap: '1rem',
-				padding: '12px 0',
+				padding: '0 0 12px 0',
 				backgroundColor: 'white',
 				borderRadius: '4px',
 
@@ -97,14 +101,14 @@ export const imageArea = recipe({
 	variants: {
 		viewMode: {
 			list: {
-				width: '200px',
+				width: '160px',
 
 				'@media': {
 					[mediaQueries.laptop]: {
-						width: '200px',
+						width: '160px',
 					},
 					[mediaQueries.tablet]: {
-						width: '180px',
+						width: '140px',
 						maxInlineSize: '100%',
 					},
 				},
@@ -137,9 +141,8 @@ export const contentArea = recipe({
 
 export const category = style({
 	fontFamily: 'var(--font-bebas)',
-
-	padding: '2px 8px',
-	borderRadius: '4px',
+	letterSpacing: '0.06em',
+	fontSize: '11px',
 });
 
 export const tableNumber = style({

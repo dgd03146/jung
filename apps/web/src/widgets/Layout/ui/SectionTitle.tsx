@@ -9,7 +9,9 @@ export function SectionTitle() {
 	// next-intl의 usePathname()은 locale 제거된 경로 반환: "/" (홈)
 	const isHome = pathname === '/';
 	const isLogin = pathname.includes('/login');
-	const section = isHome || isLogin ? undefined : getSection(pathname);
+	const isBlog = pathname.startsWith('/blog');
+	const section =
+		isHome || isLogin || isBlog ? undefined : getSection(pathname);
 
 	if (!section) return null;
 

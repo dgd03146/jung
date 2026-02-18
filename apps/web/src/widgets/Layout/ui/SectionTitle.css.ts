@@ -1,5 +1,5 @@
 import {
-	fontWeights,
+	fontFamily,
 	mediaQueries,
 	palette,
 	space,
@@ -17,14 +17,15 @@ export const sectionTitle = style({
 });
 
 export const sectionText = style({
-	fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-	fontWeight: fontWeights.bold,
+	fontFamily: fontFamily.bebas,
+	fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+	fontWeight: 'normal',
 	color: palette.swiss,
-	letterSpacing: '-0.02em',
+	letterSpacing: '0.04em',
 	lineHeight: 1,
 	transition: 'opacity 0.2s ease',
 	':hover': {
-		opacity: 0.7,
+		opacity: 0.6,
 	},
 });
 

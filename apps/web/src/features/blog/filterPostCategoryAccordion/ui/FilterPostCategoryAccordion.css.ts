@@ -31,7 +31,7 @@ export const categoryLink = recipe({
 		position: 'relative',
 		borderBottom: `1px solid ${palette.primary50}`,
 
-		fontSize: '13.5px',
+		fontSize: '12px',
 		fontWeight: '600',
 		color: '#1a1a1a',
 		letterSpacing: '-0.01em',
