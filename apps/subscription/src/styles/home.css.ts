@@ -1,19 +1,5 @@
 import { style } from '@vanilla-extract/css';
-
-const colors = {
-	primary: 'var(--color-primary)',
-	primaryAlt: 'var(--color-primary-alt)',
-	textDark: 'var(--color-text)',
-	textMuted: 'var(--color-text-muted)',
-	textLight: 'var(--color-text-light)',
-	border: 'var(--color-border)',
-	borderHover: 'var(--color-border-hover)',
-	cardBg: 'var(--bg-card)',
-	cardBgHover: 'var(--bg-card-hover)',
-	filterBg: 'var(--bg-filter)',
-	shadowColor: 'var(--shadow-color)',
-	summaryCardBg: 'var(--bg-summary-card)',
-} as const;
+import { colors, FONT_HEADING } from './tokens';
 
 export const page = style({
 	minHeight: '100vh',
@@ -21,7 +7,7 @@ export const page = style({
 		'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 	position: 'relative',
 	overflow: 'hidden',
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	transition: 'background 0.3s',
 });
 
@@ -151,13 +137,6 @@ export const subscribeForm = style({
 	gap: '1rem',
 });
 
-// TODO(human): Define the category toggle button styles.
-// The active state needs a background that works in both light AND dark mode.
-// Current code uses hardcoded 'white' which breaks in dark mode.
-// Consider: var(--bg-card-hover) or a new --bg-toggle-active variable.
-// See the filterToggleContainer, filterToggleButton, and filterToggleButtonActive
-// exports below — fill in the style objects.
-
 export const filterToggleContainer = style({
 	display: 'flex',
 	gap: '0.5rem',
@@ -175,7 +154,7 @@ export const filterToggleButton = style({
 	borderRadius: '8px',
 	fontSize: '0.8rem',
 	fontWeight: 500,
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	color: colors.textMuted,
 	cursor: 'pointer',
 	transition: 'all 0.2s',
@@ -183,7 +162,7 @@ export const filterToggleButton = style({
 
 export const filterToggleButtonActive = style({
 	background: colors.cardBgHover,
-	boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+	boxShadow: `0 2px 8px ${colors.shadowColor}`,
 });
 
 export const emailFormWrapper = style({
@@ -207,7 +186,7 @@ export const emailInput = style({
 	color: colors.textDark,
 	outline: 'none',
 	minWidth: '180px',
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 });
 
 export const submitButton = style({
@@ -218,7 +197,7 @@ export const submitButton = style({
 	borderRadius: '12px',
 	fontSize: '0.9rem',
 	fontWeight: 600,
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	cursor: 'pointer',
 	whiteSpace: 'nowrap',
 	transition: 'transform 0.2s, box-shadow 0.2s',

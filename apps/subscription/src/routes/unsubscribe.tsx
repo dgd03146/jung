@@ -110,7 +110,9 @@ function UnsubscribePage() {
 									border: '1px solid var(--color-border-hover)',
 								}}
 							>
-								✓
+								<span role='img' aria-label='Success'>
+									✓
+								</span>
 							</div>
 							<h1
 								style={{
@@ -137,7 +139,7 @@ function UnsubscribePage() {
 							<Link
 								to='/'
 								style={{
-									color: '#6366f1',
+									color: 'var(--color-primary)',
 									fontWeight: 600,
 									fontSize: '0.9rem',
 									textDecoration: 'none',
@@ -200,11 +202,11 @@ function UnsubscribePage() {
 										}}
 										onFocus={(e) => {
 											e.currentTarget.style.borderColor =
-												'rgba(139, 92, 246, 0.4)';
+												'var(--color-border-focus)';
 										}}
 										onBlur={(e) => {
 											e.currentTarget.style.borderColor =
-												'rgba(139, 92, 246, 0.15)';
+												'var(--color-border-hover)';
 										}}
 									/>
 									<button
@@ -213,7 +215,7 @@ function UnsubscribePage() {
 										style={{
 											width: '100%',
 											padding: '0.875rem 1.5rem',
-											background: '#ef4444',
+											background: 'var(--color-danger)',
 											color: 'white',
 											border: 'none',
 											borderRadius: '12px',
@@ -226,12 +228,13 @@ function UnsubscribePage() {
 										}}
 										onMouseEnter={(e) => {
 											if (!isSubmitting) {
-												e.currentTarget.style.background = '#dc2626';
+												e.currentTarget.style.background =
+													'var(--color-danger-hover)';
 												e.currentTarget.style.transform = 'translateY(-1px)';
 											}
 										}}
 										onMouseLeave={(e) => {
-											e.currentTarget.style.background = '#ef4444';
+											e.currentTarget.style.background = 'var(--color-danger)';
 											e.currentTarget.style.transform = 'translateY(0)';
 										}}
 									>
@@ -241,7 +244,7 @@ function UnsubscribePage() {
 								{error && (
 									<p
 										style={{
-											color: '#ef4444',
+											color: 'var(--color-danger)',
 											fontSize: '0.85rem',
 											marginTop: '0.5rem',
 										}}

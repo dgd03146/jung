@@ -1,17 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css';
-
-const colors = {
-	primary: 'var(--color-primary)',
-	primaryAlt: 'var(--color-primary-alt)',
-	textDark: 'var(--color-text)',
-	textMuted: 'var(--color-text-muted)',
-	textLight: 'var(--color-text-light)',
-	border: 'var(--color-border)',
-	borderHover: 'var(--color-border-hover)',
-	cardBg: 'var(--bg-card)',
-	cardBgHover: 'var(--bg-card-hover)',
-	filterBg: 'var(--bg-filter)',
-} as const;
+import { colors, FONT_HEADING } from './tokens';
 
 export const page = style({
 	minHeight: '100vh',
@@ -19,7 +7,7 @@ export const page = style({
 		'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
 	position: 'relative',
 	overflow: 'hidden',
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	transition: 'background 0.3s',
 });
 
@@ -173,7 +161,7 @@ export const filterButton = style({
 	borderRadius: '8px',
 	fontSize: '0.8rem',
 	fontWeight: 500,
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	color: colors.textMuted,
 	cursor: 'pointer',
 	transition: 'all 0.2s',
@@ -212,7 +200,7 @@ export const articleCard = style({
 	':hover': {
 		background: colors.cardBgHover,
 		transform: 'translateY(-2px)',
-		boxShadow: '0 12px 40px rgba(1, 66, 192, 0.1)',
+		boxShadow: `0 12px 40px ${colors.shadowColor}`,
 		borderColor: colors.borderHover,
 	},
 });
@@ -334,7 +322,7 @@ export const centeredPage = style({
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	transition: 'background 0.3s',
 });
 
@@ -431,7 +419,7 @@ export const primaryButton = style({
 	fontWeight: 600,
 	fontSize: '0.9rem',
 	textDecoration: 'none',
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	transition: 'all 0.2s',
 	boxShadow: '0 4px 14px var(--shadow-color)',
 	':hover': {
@@ -481,13 +469,13 @@ export const searchInput = style({
 	borderRadius: '12px',
 	fontSize: '0.9rem',
 	color: colors.textDark,
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	outline: 'none',
 	transition: 'all 0.2s',
 	':focus': {
 		borderColor: colors.borderHover,
 		background: colors.cardBgHover,
-		boxShadow: '0 4px 12px rgba(1, 66, 192, 0.08)',
+		boxShadow: `0 4px 12px ${colors.shadowColor}`,
 	},
 	'::placeholder': {
 		color: colors.textLight,
@@ -521,7 +509,7 @@ export const paginationButton = style({
 	borderRadius: '10px',
 	fontSize: '0.85rem',
 	fontWeight: 500,
-	fontFamily: "'Poppins', sans-serif",
+	fontFamily: FONT_HEADING,
 	color: colors.primary,
 	cursor: 'pointer',
 	transition: 'all 0.2s',
@@ -529,7 +517,7 @@ export const paginationButton = style({
 		background: colors.cardBgHover,
 		borderColor: colors.borderHover,
 		transform: 'translateY(-1px)',
-		boxShadow: '0 4px 12px rgba(1, 66, 192, 0.1)',
+		boxShadow: `0 4px 12px ${colors.shadowColor}`,
 	},
 	':disabled': {
 		opacity: 0.4,
@@ -577,7 +565,7 @@ export const relatedCard = style({
 	':hover': {
 		background: colors.cardBgHover,
 		transform: 'translateY(-2px)',
-		boxShadow: '0 8px 24px rgba(1, 66, 192, 0.1)',
+		boxShadow: `0 8px 24px ${colors.shadowColor}`,
 		borderColor: colors.borderHover,
 	},
 });

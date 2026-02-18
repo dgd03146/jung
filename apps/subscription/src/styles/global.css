@@ -18,6 +18,9 @@
   --shadow-color: rgba(1, 66, 192, 0.1);
   --orb-color: rgba(1, 66, 192, 0.12);
   --grid-color: rgba(120, 120, 180, 0.03);
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-border-focus: rgba(139, 92, 246, 0.4);
 }
 
 [data-theme="dark"] {
@@ -39,6 +42,9 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
   --orb-color: rgba(107, 154, 255, 0.08);
   --grid-color: rgba(148, 163, 184, 0.03);
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-border-focus: rgba(147, 181, 255, 0.4);
 }
 
 * {
