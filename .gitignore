@@ -83,4 +83,5 @@ supabase/.temp/
 # Standalone projects (not part of monorepo)
 jung-*/
 
+# Build outputs
 /docs

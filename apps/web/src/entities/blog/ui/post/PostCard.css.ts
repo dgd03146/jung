@@ -115,9 +115,6 @@ export const imageArea = recipe({
 				width: '160px',
 
 				'@media': {
-					[mediaQueries.laptop]: {
-						width: '160px',
-					},
 					[mediaQueries.tablet]: {
 						width: '140px',
 						maxInlineSize: '100%',
