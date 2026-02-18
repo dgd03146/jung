@@ -1,0 +1,21 @@
+npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Parsing of the input font failed.
+file:///Users/jung/.npm/_npx/6885c842354794e2/node_modules/ttf2woff2/jssrc/index.js:31
+      throw new YError('E_CONVERT_ERROR');
+      ^
+
+YError: E_CONVERT_ERROR (): E_CONVERT_ERROR
+    at ttf2woff2 (file:///Users/jung/.npm/_npx/6885c842354794e2/node_modules/ttf2woff2/jssrc/index.js:31:13)
+    at BufferStream._bufferCallback (file:///Users/jung/.npm/_npx/6885c842354794e2/node_modules/ttf2woff2/bin/ttf2woff2.js:14:16)
+    at BufferStream._bufferStreamCallbackWrapper (file:///Users/jung/.npm/_npx/6885c842354794e2/node_modules/bufferstreams/dist/index.js:64:14)
+    at Object.onceWrapper (node:events:633:28)
+    at BufferStream.emit (node:events:531:35)
+    at finish (node:internal/streams/writable:955:10)
+    at node:internal/streams/writable:936:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'E_CONVERT_ERROR',
+  params: [],
+  wrappedErrors: []
+}
+
+Node.js v22.21.1
