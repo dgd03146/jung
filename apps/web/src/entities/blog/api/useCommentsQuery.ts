@@ -1,12 +1,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT, useTRPC } from '@/fsd/shared';
+import { useTRPC } from '@/fsd/shared';
+import { COMMENTS_DEFAULT_ORDER, COMMENTS_LIMIT } from '../config/comment';
+
+export const getCommentsQueryInput = (postId: string) => ({
+	postId,
+	order: COMMENTS_DEFAULT_ORDER,
+	limit: COMMENTS_LIMIT,
+});
 
 export const useCommentsQuery = (postId: string) => {
 	const trpc = useTRPC();
 
 	const infiniteOptions =
 		trpc.postComment.getCommentsByPostId.infiniteQueryOptions(
-			{ postId, order: COMMENTS_DEFAULT_ORDER, limit: COMMENTS_LIMIT },
+			getCommentsQueryInput(postId),
 			{
 				getNextPageParam: (lastPage) => {
 					if (!lastPage.hasNextPage) return undefined;

@@ -12,13 +12,13 @@ export const postList = recipe({
 				flexDirection: 'column',
 			},
 			grid: {
-				padding: '24px 0',
+				padding: '0 0 24px 0',
 				display: 'grid',
 				gap: '24px',
 				gridTemplateColumns: 'repeat(3, 1fr)',
 				'@media': {
 					[mediaQueries.laptop]: {
-						padding: '16px 0',
+						padding: '0 0 16px 0',
 						gridTemplateColumns: 'repeat(2, 1fr)',
 					},
 					[mediaQueries.tablet]: {
@@ -29,7 +29,7 @@ export const postList = recipe({
 			table: {
 				display: 'flex',
 				flexDirection: 'column',
-				padding: '16px 0',
+				padding: '0 0 16px 0',
 			},
 		},
 	},

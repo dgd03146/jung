@@ -3,13 +3,8 @@
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
-	type CommentData,
-	useSupabaseAuth,
-	useTRPC,
-} from '@/fsd/shared';
+import { getCommentsQueryInput } from '@/fsd/entities/blog';
+import { type CommentData, useSupabaseAuth, useTRPC } from '@/fsd/shared';
 import { createCommentAction } from '../api/createCommentAction';
 import {
 	COMMENT_VALIDATION_MESSAGES,
@@ -47,11 +42,9 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 	};
 
 	const getQueryOptions = (postId: string) =>
-		trpc.postComment.getCommentsByPostId.infiniteQueryOptions({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		});
+		trpc.postComment.getCommentsByPostId.infiniteQueryOptions(
+			getCommentsQueryInput(postId),
+		);
 
 	const mutation = useMutation({
 		mutationFn: async ({
@@ -65,7 +58,6 @@ export const useCreateCommentMutation = (onSuccessCallback?: () => void) => {
 			content: string;
 			postTitle: string;
 		}) => {
-			setNewComment('');
 			return createCommentAction({
 				postId,
 				postTitle,

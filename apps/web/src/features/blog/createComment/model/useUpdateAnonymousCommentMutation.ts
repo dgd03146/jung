@@ -2,12 +2,8 @@
 
 import type { Comment } from '@jung/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
-	type CommentData,
-	useTRPC,
-} from '@/fsd/shared';
+import { getCommentsQueryInput } from '@/fsd/entities/blog';
+import { type CommentData, useTRPC } from '@/fsd/shared';
 import { updateAnonymousCommentAction } from '../api/updateAnonymousCommentAction';
 
 interface UpdateAnonymousCommentVariables {
@@ -27,11 +23,9 @@ export const useUpdateAnonymousCommentMutation = () => {
 	const queryClient = useQueryClient();
 
 	const getQueryOptions = (postId: string) =>
-		trpc.postComment.getCommentsByPostId.infiniteQueryOptions({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		});
+		trpc.postComment.getCommentsByPostId.infiniteQueryOptions(
+			getCommentsQueryInput(postId),
+		);
 
 	return useMutation<
 		Comment,

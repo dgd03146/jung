@@ -1,5 +1,6 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/fsd/shared';
+import { PLACE_CACHE, PLACE_DEFAULTS } from '../config/places';
 
 type QueryParams = {
 	category_id?: string;
@@ -14,20 +15,23 @@ export function usePlacesQuery(params: QueryParams) {
 
 	const infiniteOptions = trpc.place.getAllPlaces.infiniteQueryOptions(
 		{
-			limit: 12,
+			limit: PLACE_DEFAULTS.LIMIT,
 			sort,
 			cat,
 			q,
 		},
 		{
 			getNextPageParam: (lastPage) => {
-				if (!lastPage.items.length || lastPage.items.length < 12) {
+				if (
+					!lastPage.items.length ||
+					lastPage.items.length < PLACE_DEFAULTS.LIMIT
+				) {
 					return undefined;
 				}
 				return lastPage.nextCursor;
 			},
-			staleTime: 1000 * 60 * 60 * 5, // 5시간
-			gcTime: 1000 * 60 * 60 * 24, // 24시간
+			staleTime: PLACE_CACHE.STALE_TIME,
+			gcTime: PLACE_CACHE.GC_TIME,
 		},
 	);
 

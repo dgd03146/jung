@@ -1,5 +1,4 @@
 export * from './animations';
-export * from './comment';
 export * from './env';
 export {
 	defaultLocale,

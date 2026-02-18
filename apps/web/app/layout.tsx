@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
-import localFont from 'next/font/local';
 import Script from 'next/script';
 import {
 	createOrganizationSchema,
@@ -10,12 +9,6 @@ import {
 	SITE_URL,
 } from '@/fsd/shared';
 import { JsonLd } from '@/fsd/shared/ui';
-
-const gaya = localFont({
-	src: './fonts/Gaya.otf',
-	variable: '--font-gaya',
-	display: 'swap',
-});
 
 const bebasNeue = Bebas_Neue({
 	weight: ['400'],
@@ -108,7 +101,7 @@ export default function RootLayout({
 	return (
 		<html lang='ko'>
 			<body
-				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable} ${gaya.variable}`}
+				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
 			>
 				<JsonLd data={createOrganizationSchema()} />
 				{shouldLoadGA4 && (

@@ -80,7 +80,7 @@ export const trigger = recipe({
 			height: 'full',
 		}),
 		{
-			fontSize: '13.5px',
+			fontSize: '12px',
 			fontWeight: '600',
 			color: '#1a1a1a',
 			letterSpacing: '-0.01em',
@@ -163,7 +163,7 @@ export const panel = recipe({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		padding: '8px 16px',
-		fontSize: '13px',
+		fontSize: '12px',
 		marginLeft: '8px',
 
 		textDecoration: 'none',

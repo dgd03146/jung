@@ -95,7 +95,7 @@ export const ViewPosts = () => {
 		<>
 			<PostList viewMode={viewMode} posts={posts} />
 			{!isSearching && (
-				<Flex justify='center' align='center' minHeight='10' ref={ref}>
+				<Flex justify='center' align='center' minHeight='40' ref={ref}>
 					{postsQuery.isFetchingNextPage && postsQuery.hasNextPage && (
 						<LoadingSpinner size='small' />
 					)}

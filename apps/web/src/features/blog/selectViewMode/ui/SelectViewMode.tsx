@@ -16,30 +16,36 @@ export const SelectViewMode = ({ selected, onSelect }: SelectViewModeProps) => {
 				selected={selected === 'list'}
 				borderRadius='md'
 				size='sm'
+				paddingX='1.5'
+				paddingY='1'
 				onClick={() => onSelect('list')}
 				title='List view'
 			>
-				<CiViewList size={28} />
+				<CiViewList size={16} />
 			</Button>
 			<Button
 				variant='outline'
 				selected={selected === 'grid'}
 				borderRadius='md'
 				size='sm'
+				paddingX='1.5'
+				paddingY='1'
 				onClick={() => onSelect('grid')}
 				title='Grid view'
 			>
-				<BsGrid3X3Gap size={28} />
+				<BsGrid3X3Gap size={16} />
 			</Button>
 			<Button
 				variant='outline'
 				selected={selected === 'table'}
 				borderRadius='md'
 				size='sm'
+				paddingX='1.5'
+				paddingY='1'
 				onClick={() => onSelect('table')}
 				title='Table view'
 			>
-				<BsFillPlayFill size={28} />
+				<BsFillPlayFill size={16} />
 			</Button>
 		</Flex>
 	);

@@ -3,15 +3,10 @@
 import { Accordion, Box, Typography } from '@jung/design-system/components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { BLOG_DEFAULTS } from '@/fsd/entities/blog';
+import { BLOG_CACHE, BLOG_DEFAULTS } from '@/fsd/entities/blog';
 import { useTRPC } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
 import * as styles from './FilterPostCategoryAccordion.css';
-
-const CACHE_TIME = {
-	STALE_TIME_24H: 1000 * 60 * 60 * 24,
-	GC_TIME_7D: 1000 * 60 * 60 * 24 * 7,
-} as const;
 
 interface Props {
 	currentCategory?: string;
@@ -26,8 +21,8 @@ export const FilterPostCategoryAccordion = ({
 		trpc.category.getCategories.queryOptions(
 			{ type: 'blog' },
 			{
-				staleTime: CACHE_TIME.STALE_TIME_24H,
-				gcTime: CACHE_TIME.GC_TIME_7D,
+				staleTime: BLOG_CACHE.CATEGORY.STALE_TIME,
+				gcTime: BLOG_CACHE.CATEGORY.GC_TIME,
 			},
 		),
 	);
@@ -87,11 +82,12 @@ export const FilterPostCategoryAccordion = ({
 										>
 											<span>{subCategory.name}</span>
 											<Typography.SubText
-												level={2}
+												level={3}
 												color='primary'
 												background='primary50'
 												paddingY='1'
 												paddingX='2'
+												className={styles.postCount}
 											>
 												{subCategory.postCount}
 											</Typography.SubText>

@@ -10,6 +10,7 @@ import {
 } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
 import { useState } from 'react';
+import { GUEST_COMMENT } from '@/fsd/entities/blog';
 import { useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousCommentMutation } from '../model/useCreateAnonymousCommentMutation';
 import * as styles from './CreateCommentForm.css';
@@ -51,8 +52,11 @@ export const GuestCommentForm = ({
 			return;
 		}
 
-		if (password.length < 4) {
-			showToast('비밀번호는 4자 이상 입력해주세요.', 'warning');
+		if (password.length < GUEST_COMMENT.PASSWORD_MIN_LENGTH) {
+			showToast(
+				`비밀번호는 ${GUEST_COMMENT.PASSWORD_MIN_LENGTH}자 이상 입력해주세요.`,
+				'warning',
+			);
 			return;
 		}
 
@@ -104,7 +108,7 @@ export const GuestCommentForm = ({
 					placeholder='닉네임 *'
 					value={nickname}
 					onChange={(e) => setNickname(e.target.value)}
-					maxLength={20}
+					maxLength={GUEST_COMMENT.NICKNAME_MAX_LENGTH}
 					fontSize='sm'
 					borderRadius='md'
 					disabled={isPending}
@@ -115,7 +119,7 @@ export const GuestCommentForm = ({
 					placeholder='비밀번호 * (수정/삭제용)'
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
-					maxLength={20}
+					maxLength={GUEST_COMMENT.PASSWORD_MAX_LENGTH}
 					fontSize='sm'
 					borderRadius='md'
 					disabled={isPending}

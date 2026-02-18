@@ -2,12 +2,8 @@
 
 import { useToast } from '@jung/design-system/components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-	COMMENTS_DEFAULT_ORDER,
-	COMMENTS_LIMIT,
-	type CommentData,
-	useTRPC,
-} from '@/fsd/shared';
+import { getCommentsQueryInput } from '@/fsd/entities/blog';
+import { type CommentData, useTRPC } from '@/fsd/shared';
 import { deleteCommentAction } from '../api/deleteCommentAction';
 import { removeCommentAndReplies } from '../lib/removeCommentAndReplies';
 
@@ -17,11 +13,9 @@ export const useDeleteCommentMutation = () => {
 	const showToast = useToast();
 
 	const queryOptions = (postId: string) =>
-		trpc.postComment.getCommentsByPostId.infiniteQueryOptions({
-			postId,
-			order: COMMENTS_DEFAULT_ORDER,
-			limit: COMMENTS_LIMIT,
-		});
+		trpc.postComment.getCommentsByPostId.infiniteQueryOptions(
+			getCommentsQueryInput(postId),
+		);
 
 	const mutation = useMutation({
 		mutationFn: async ({

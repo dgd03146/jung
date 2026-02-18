@@ -3,11 +3,10 @@
 import { Flex } from '@jung/design-system/components';
 import { SelectViewMode, useViewMode } from '@/fsd/features/blog';
 
-export const BlogPageControls = () => {
+export const BlogHeader = () => {
 	const { viewMode, setViewMode } = useViewMode();
-
 	return (
-		<Flex align='center' justify='flex-end' marginBottom='4'>
+		<Flex justify='flex-end' marginBottom='2'>
 			<SelectViewMode selected={viewMode} onSelect={setViewMode} />
 		</Flex>
 	);
