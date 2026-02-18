@@ -59,7 +59,7 @@ const Navbar = ({
 					align='center'
 					display={{ base: 'none', tablet: 'flex' }}
 					alignItems='center'
-					gap='2'
+					gap='1'
 				>
 					{PRIMARY_NAV_LIST.map((item) => {
 						const isActive = `/${currentSegment}` === item.path;
@@ -84,7 +84,9 @@ const Navbar = ({
 					>
 						<IoSearchOutline />
 					</button>
-					<LanguageSwitcher variant={variant} />
+					<Box marginLeft='2'>
+						<LanguageSwitcher variant={variant} />
+					</Box>
 				</Flex>
 
 				<Box className={styles.menuButtonWrapper}>
