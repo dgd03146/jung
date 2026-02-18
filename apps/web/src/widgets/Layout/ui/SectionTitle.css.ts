@@ -17,11 +17,11 @@ export const sectionTitle = style({
 });
 
 export const sectionText = style({
-	fontFamily: fontFamily.bebas,
+	fontFamily: fontFamily.poppins,
 	fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-	fontWeight: 'normal',
+	fontWeight: '700',
 	color: palette.swiss,
-	letterSpacing: '0.04em',
+	letterSpacing: '-0.02em',
 	lineHeight: 1,
 	transition: 'opacity 0.2s ease',
 	':hover': {

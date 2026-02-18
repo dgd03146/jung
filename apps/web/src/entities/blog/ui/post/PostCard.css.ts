@@ -29,10 +29,11 @@ export const postCard = recipe({
 				minHeight: '160px',
 				borderBottom: `1px solid ${palette.primary50}`,
 
-				transition: 'opacity 0.2s ease',
+				transition: 'all 0.3s ease',
 				position: 'relative',
 				':hover': {
-					opacity: 0.75,
+					backgroundColor: 'rgba(1, 66, 192, 0.03)',
+					transform: 'translateX(8px)',
 				},
 				selectors: {
 					'&:first-child': {
@@ -141,8 +142,8 @@ export const contentArea = recipe({
 
 export const category = style({
 	fontFamily: 'var(--font-bebas)',
-	letterSpacing: '0.06em',
-	fontSize: '11px',
+	padding: '2px 8px',
+	borderRadius: '4px',
 });
 
 export const tableNumber = style({
