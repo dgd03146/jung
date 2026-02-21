@@ -100,7 +100,7 @@ export const submitButton = style({
 	width: '100%',
 	padding: '0.875rem 1.5rem',
 	background: colors.danger,
-	color: 'white',
+	color: colors.textOnPrimary,
 	border: 'none',
 	borderRadius: '12px',
 	fontSize: '0.9rem',

@@ -15,6 +15,7 @@ export const colors = {
 	summaryCardAltBg: 'var(--bg-summary-card-alt)',
 	danger: 'var(--color-danger)',
 	dangerHover: 'var(--color-danger-hover)',
+	textOnPrimary: 'var(--color-text-on-primary)',
 } as const;
 
 export const FONT_HEADING = "'Poppins', sans-serif";
