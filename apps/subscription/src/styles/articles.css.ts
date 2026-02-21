@@ -394,7 +394,7 @@ export const primaryButton = style({
 	padding: '0.875rem 1.5rem',
 	background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryAlt} 100%)`,
 	borderRadius: '12px',
-	color: 'white',
+	color: colors.textOnPrimary,
 	fontWeight: 600,
 	fontSize: '0.9rem',
 	textDecoration: 'none',

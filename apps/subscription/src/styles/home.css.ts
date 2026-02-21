@@ -173,7 +173,7 @@ export const emailInput = style({
 export const submitButton = style({
 	padding: '0.875rem 1.5rem',
 	background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryAlt} 100%)`,
-	color: 'white',
+	color: colors.textOnPrimary,
 	border: 'none',
 	borderRadius: '12px',
 	fontSize: '0.9rem',

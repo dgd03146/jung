@@ -21,6 +21,9 @@
   --color-danger: #ef4444;
   --color-danger-hover: #dc2626;
   --color-border-focus: rgba(139, 92, 246, 0.4);
+  --color-text-on-primary: #ffffff;
+  --color-text-on-danger: #ffffff;
+  --color-selection-text: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -45,6 +48,9 @@
   --color-danger: #f87171;
   --color-danger-hover: #ef4444;
   --color-border-focus: rgba(147, 181, 255, 0.4);
+  --color-text-on-primary: #ffffff;
+  --color-text-on-danger: #ffffff;
+  --color-selection-text: #0f172a;
 }
 
 * {
@@ -93,7 +99,7 @@ input {
 
 ::selection {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-selection-text);
 }
 
 :focus-visible {
