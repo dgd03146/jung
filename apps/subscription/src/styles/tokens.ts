@@ -16,6 +16,7 @@ export const colors = {
 	danger: 'var(--color-danger)',
 	dangerHover: 'var(--color-danger-hover)',
 	textOnPrimary: 'var(--color-text-on-primary)',
+	textOnDanger: 'var(--color-text-on-danger)',
 } as const;
 
 export const FONT_HEADING = "'Poppins', sans-serif";
