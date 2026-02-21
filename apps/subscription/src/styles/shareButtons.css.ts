@@ -1,12 +1,4 @@
-import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
-
-const colors = {
-	border: 'rgba(1, 66, 192, 0.08)',
-	borderHover: 'rgba(1, 66, 192, 0.15)',
-	cardBg: 'rgba(255, 255, 255, 0.5)',
-	textMuted: palette.gray300,
-} as const;
 
 export const container = style({
 	display: 'flex',
@@ -20,7 +12,7 @@ export const label = style({
 	fontWeight: 600,
 	textTransform: 'uppercase',
 	letterSpacing: '0.1em',
-	color: colors.textMuted,
+	color: 'var(--color-text-muted)',
 	marginRight: '0.25rem',
 });
 
@@ -43,18 +35,30 @@ export const button = style({
 	width: '36px',
 	height: '36px',
 	borderRadius: '10px',
-	border: `1px solid ${colors.border}`,
-	background: colors.cardBg,
+	border: '1px solid var(--color-border)',
+	background: 'var(--bg-filter)',
 	backdropFilter: 'blur(10px)',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
-	color: colors.textMuted,
+	color: 'var(--color-text-muted)',
 	padding: 0,
 	':hover': {
-		background: 'rgba(255, 255, 255, 0.8)',
-		borderColor: colors.borderHover,
+		background: 'var(--bg-card-hover)',
+		borderColor: 'var(--color-border-hover)',
 		transform: 'translateY(-1px)',
-		boxShadow: '0 4px 12px rgba(1, 66, 192, 0.1)',
-		color: palette.primary,
+		boxShadow: '0 4px 12px var(--shadow-color)',
+		color: 'var(--color-primary)',
+	},
+});
+
+export const kakaoButton = style({
+	background: '#FEE500',
+	borderColor: 'rgba(0, 0, 0, 0.08)',
+	color: '#191919',
+	':hover': {
+		background: '#FDD835',
+		borderColor: 'rgba(0, 0, 0, 0.15)',
+		color: '#191919',
+		boxShadow: '0 4px 12px rgba(254, 229, 0, 0.3)',
 	},
 });

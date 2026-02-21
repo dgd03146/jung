@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { lazy } from 'react';
 import { SITE_CONFIG } from '../config/site';
+import { THEME_KEY } from '../lib/theme';
 import '../styles/global.css';
 
 const TanStackRouterDevtools =
@@ -17,6 +18,16 @@ const TanStackRouterDevtools =
 					default: res.TanStackRouterDevtools,
 				})),
 			);
+
+const FOUC_PREVENTION_SCRIPT = `
+(function() {
+  try {
+    var raw = localStorage.getItem('${THEME_KEY}');
+    var theme = (raw === 'light' || raw === 'dark') ? raw : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+`;
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -32,6 +43,18 @@ export const Route = createRootRoute({
 			{ property: 'og:locale', content: 'en_US' },
 			{ property: 'og:type', content: 'website' },
 			{ name: 'twitter:site', content: '@jung' },
+		],
+		scripts: [
+			{
+				children: FOUC_PREVENTION_SCRIPT,
+			},
+			{
+				src: 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js',
+				integrity:
+					'sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka',
+				crossOrigin: 'anonymous',
+				async: true,
+			},
 		],
 		links: [
 			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -53,7 +76,7 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang='en'>
+		<html lang='en' suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>

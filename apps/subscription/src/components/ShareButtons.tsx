@@ -1,13 +1,51 @@
 import { useToast } from '@jung/design-system/components';
+import { useEffect, useState } from 'react';
+import { SITE_CONFIG } from '../config/site';
 import * as styles from '../styles/shareButtons.css';
 
 interface ShareButtonsProps {
 	title: string;
 	url: string;
+	description?: string;
+	imageUrl?: string;
 }
 
-export function ShareButtons({ title, url }: ShareButtonsProps) {
+export function ShareButtons({
+	title,
+	url,
+	description,
+	imageUrl,
+}: ShareButtonsProps) {
 	const showToast = useToast();
+	const [kakaoReady, setKakaoReady] = useState(false);
+
+	useEffect(() => {
+		if (!SITE_CONFIG.kakaoAppKey) return;
+
+		const initKakao = () => {
+			if (!window.Kakao) return false;
+			if (window.Kakao.isInitialized()) {
+				setKakaoReady(true);
+				return true;
+			}
+			window.Kakao.init(SITE_CONFIG.kakaoAppKey);
+			setKakaoReady(true);
+			return true;
+		};
+
+		if (initKakao()) return;
+
+		let attempts = 0;
+		const maxAttempts = 10;
+		const interval = setInterval(() => {
+			attempts++;
+			if (initKakao() || attempts >= maxAttempts) {
+				clearInterval(interval);
+			}
+		}, 500);
+
+		return () => clearInterval(interval);
+	}, []);
 
 	const handleCopy = async () => {
 		try {
@@ -16,6 +54,34 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 		} catch {
 			showToast('Failed to copy link', 'error');
 		}
+	};
+
+	const handleKakaoShare = () => {
+		if (!window.Kakao?.isInitialized()) return;
+
+		window.Kakao.Share.sendDefault({
+			objectType: 'feed',
+			content: {
+				title,
+				description: description || SITE_CONFIG.description,
+				imageUrl:
+					imageUrl ||
+					`${SITE_CONFIG.url}/api/og?title=${encodeURIComponent(title)}`,
+				link: {
+					mobileWebUrl: url,
+					webUrl: url,
+				},
+			},
+			buttons: [
+				{
+					title: 'Read Article',
+					link: {
+						mobileWebUrl: url,
+						webUrl: url,
+					},
+				},
+			],
+		});
 	};
 
 	const twitterUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
@@ -60,6 +126,25 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 					<path d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' />
 				</svg>
 			</a>
+
+			{kakaoReady && (
+				<button
+					type='button'
+					onClick={handleKakaoShare}
+					className={`${styles.button} ${styles.kakaoButton}`}
+					aria-label='Share on KakaoTalk'
+				>
+					<svg
+						width='16'
+						height='16'
+						viewBox='0 0 24 24'
+						fill='currentColor'
+						aria-hidden='true'
+					>
+						<path d='M12 3C6.477 3 2 6.463 2 10.691c0 2.686 1.78 5.049 4.462 6.393-.197.734-.714 2.66-.817 3.07-.128.506.186.499.39.363.16-.107 2.554-1.735 3.59-2.443.78.113 1.583.172 2.375.172 5.523 0 10-3.463 10-7.555C22 6.463 17.523 3 12 3' />
+					</svg>
+				</button>
+			)}
 
 			<button
 				type='button'

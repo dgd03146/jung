@@ -1,8 +1,50 @@
 :root {
+  /* Light theme (default) */
   --color-primary: #1a4fd8;
+  --color-primary-alt: #5B86E5;
   --color-text: #1a3a6e;
-  --color-text-light: #5a7aa8;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
   --bg-base: #e8f0fa;
+  --bg-page-from: #eef4ff;
+  --bg-page-mid: #edf2ff;
+  --bg-card: rgba(255, 255, 255, 0.6);
+  --bg-card-hover: rgba(255, 255, 255, 0.85);
+  --bg-filter: rgba(255, 255, 255, 0.5);
+  --bg-summary-card: rgba(255, 255, 255, 0.7);
+  --bg-summary-card-alt: rgba(255, 255, 255, 0.5);
+  --color-border: rgba(1, 66, 192, 0.08);
+  --color-border-hover: rgba(1, 66, 192, 0.15);
+  --shadow-color: rgba(1, 66, 192, 0.1);
+  --orb-color: rgba(1, 66, 192, 0.12);
+  --grid-color: rgba(120, 120, 180, 0.03);
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-border-focus: rgba(139, 92, 246, 0.4);
+}
+
+[data-theme="dark"] {
+  --color-primary: #6B9AFF;
+  --color-primary-alt: #93B5FF;
+  --color-text: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-text-light: #64748b;
+  --bg-base: #0f172a;
+  --bg-page-from: #0f172a;
+  --bg-page-mid: #131c33;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-card-hover: rgba(30, 41, 59, 0.9);
+  --bg-filter: rgba(30, 41, 59, 0.5);
+  --bg-summary-card: rgba(30, 41, 59, 0.7);
+  --bg-summary-card-alt: rgba(30, 41, 59, 0.5);
+  --color-border: rgba(148, 163, 184, 0.12);
+  --color-border-hover: rgba(148, 163, 184, 0.25);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --orb-color: rgba(107, 154, 255, 0.08);
+  --grid-color: rgba(148, 163, 184, 0.03);
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-border-focus: rgba(147, 181, 255, 0.4);
 }
 
 * {
@@ -19,11 +61,21 @@ html {
 }
 
 body {
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg-base);
   color: var(--color-text);
   min-height: 100vh;
   line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    transition: none;
+  }
 }
 
 a {
