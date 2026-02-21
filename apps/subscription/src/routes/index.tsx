@@ -74,7 +74,11 @@ function HomePage() {
 				<header className={styles.header}>
 					<nav className={styles.nav}>
 						<ThemeToggle />
-						<Link to='/articles' search={{}} className={styles.navLink}>
+						<Link
+							to='/articles'
+							search={{ category: 'all', q: '', page: 1 }}
+							className={styles.navLink}
+						>
 							Articles
 						</Link>
 					</nav>

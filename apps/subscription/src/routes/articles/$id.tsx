@@ -103,7 +103,11 @@ function ArticleError() {
 					>
 						Retry
 					</button>
-					<Link to='/articles' search={{}} className={styles.backLink}>
+					<Link
+						to='/articles'
+						search={{ category: 'all', q: '', page: 1 }}
+						className={styles.backLink}
+					>
 						← Back to Articles
 					</Link>
 				</div>
@@ -124,7 +128,11 @@ function ArticleDetailPage() {
 					<p className={styles.emptyStateText}>
 						This article may have been removed or the link is incorrect.
 					</p>
-					<Link to='/articles' search={{}} className={styles.backLink}>
+					<Link
+						to='/articles'
+						search={{ category: 'all', q: '', page: 1 }}
+						className={styles.backLink}
+					>
 						← Back to Articles
 					</Link>
 				</div>
@@ -141,7 +149,11 @@ function ArticleDetailPage() {
 
 			<div className={styles.contentContainerNarrow}>
 				<header className={styles.header}>
-					<Link to='/articles' search={{}} className={styles.backLink}>
+					<Link
+						to='/articles'
+						search={{ category: 'all', q: '', page: 1 }}
+						className={styles.backLink}
+					>
 						← Back
 					</Link>
 					<span className={styles.headerMeta}>
