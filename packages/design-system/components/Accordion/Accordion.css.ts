@@ -2,6 +2,7 @@ import { createVar, globalStyle, keyframes, style } from '@vanilla-extract/css';
 
 import { recipe } from '@vanilla-extract/recipes';
 import { sprinkles } from '../../styles/sprinkles.css';
+import { fontSizes } from '../../tokens/typography';
 
 export const contentHeightVar = createVar();
 
@@ -80,7 +81,7 @@ export const trigger = recipe({
 			height: 'full',
 		}),
 		{
-			fontSize: '12px',
+			fontSize: fontSizes.xxs,
 			fontWeight: '600',
 			color: '#1a1a1a',
 			letterSpacing: '-0.01em',
@@ -163,7 +164,7 @@ export const panel = recipe({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		padding: '8px 16px',
-		fontSize: '12px',
+		fontSize: fontSizes.xxs,
 		marginLeft: '8px',
 
 		textDecoration: 'none',

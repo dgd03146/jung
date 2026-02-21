@@ -1,4 +1,4 @@
-import { palette } from '@jung/design-system/tokens';
+import { fontSizes, palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
@@ -20,7 +20,7 @@ export const sidebar = style({
 });
 
 export const postCount = style({
-	fontSize: '10px',
+	fontSize: fontSizes.xxxs,
 });
 
 export const categoryLink = recipe({
@@ -35,7 +35,7 @@ export const categoryLink = recipe({
 		position: 'relative',
 		borderBottom: `1px solid ${palette.primary50}`,
 
-		fontSize: '12px',
+		fontSize: fontSizes.xxs,
 		fontWeight: '600',
 		color: '#1a1a1a',
 		letterSpacing: '-0.01em',
