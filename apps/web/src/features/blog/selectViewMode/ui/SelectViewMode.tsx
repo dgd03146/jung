@@ -4,6 +4,8 @@ import { BsGrid3X3Gap, BsTable } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import type { ViewMode } from '@/fsd/entities/blog';
 
+const ICON_SIZE = 16;
+
 const VIEW_MODE_OPTIONS: {
 	mode: ViewMode;
 	Icon: ComponentType<{ size?: number }>;
@@ -35,7 +37,7 @@ export const SelectViewMode = ({ selected, onSelect }: SelectViewModeProps) => {
 					aria-label={label}
 					title={label}
 				>
-					<Icon size={16} />
+					<Icon size={ICON_SIZE} />
 				</Button>
 			))}
 		</Flex>
