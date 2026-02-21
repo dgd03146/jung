@@ -400,10 +400,10 @@ export const primaryButton = style({
 	textDecoration: 'none',
 	fontFamily: FONT_HEADING,
 	transition: 'all 0.2s',
-	boxShadow: '0 4px 14px var(--shadow-color)',
+	boxShadow: `0 4px 14px ${colors.shadowColor}`,
 	':hover': {
 		transform: 'translateY(-1px)',
-		boxShadow: '0 6px 20px var(--shadow-color)',
+		boxShadow: `0 6px 20px ${colors.shadowColor}`,
 	},
 });
 
@@ -491,17 +491,17 @@ export const paginationButton = style({
 	color: colors.primary,
 	cursor: 'pointer',
 	transition: 'all 0.2s',
-	':hover': {
-		background: colors.cardBgHover,
-		borderColor: colors.borderHover,
-		transform: 'translateY(-1px)',
-		boxShadow: `0 4px 12px ${colors.shadowColor}`,
+	selectors: {
+		'&:hover:not(:disabled)': {
+			background: colors.cardBgHover,
+			borderColor: colors.borderHover,
+			transform: 'translateY(-1px)',
+			boxShadow: `0 4px 12px ${colors.shadowColor}`,
+		},
 	},
 	':disabled': {
 		opacity: 0.4,
 		cursor: 'not-allowed',
-		transform: 'none',
-		boxShadow: 'none',
 	},
 });
 
@@ -566,4 +566,5 @@ export const relatedCardTitle = style({
 	WebkitLineClamp: 2,
 	WebkitBoxOrient: 'vertical',
 	overflow: 'hidden',
+	textOverflow: 'ellipsis',
 });
