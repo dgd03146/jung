@@ -40,7 +40,7 @@ Environment variables: See [`.env.example`](./.env.example)
 | TanStack Query | Zod | HyDE, RRF | pnpm |
 | Vanilla Extract | - | - | Playwright |
 
-**Monorepo**: pnpm workspaces + Turborepo (3 apps, 3 packages)
+**Monorepo**: pnpm workspaces + Turborepo (4 apps, multiple packages)
 
 <details>
 <summary>Full Tech Stack (27 technologies)</summary>
@@ -67,13 +67,14 @@ Environment variables: See [`.env.example`](./.env.example)
 
 ```
 apps/
-  web/        # Next.js (user pages)
-  admin/      # Vite (admin dashboard)
-  workshop/   # Storybook (design system)
+  web/           # Next.js (user pages)
+  admin/         # Vite (admin dashboard)
+  subscription/  # Next.js (newsletter subscription)
+  workshop/      # Storybook (design system)
 packages/
-  api/        # tRPC routers (13)
-  shared/     # Common utilities
-  design-system/  # Vanilla Extract components (19)
+  api/            # tRPC routers
+  shared/         # Common utilities
+  design-system/  # Vanilla Extract components
 ```
 
 ---
@@ -84,16 +85,10 @@ packages/
 - **Page transition 90% improvement** (await → void prefetch)
 - **Bundle size 89% reduction** (2.6MB → 29KB)
 
-Details: [PERFORMANCE.md](./docs/PERFORMANCE.md)
-
 ---
 
 ## Documentation
 
-- 📐 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - FSD, Monorepo, Type Safety
-- ⚡ [PERFORMANCE.md](./docs/PERFORMANCE.md) - Bundle, Caching, DB Queries
-- 🧠 [TECHNICAL_DECISIONS.md](./docs/TECHNICAL_DECISIONS.md) - Trade-offs, Problem Solving
-- 📚 [LEARNINGS.md](./docs/LEARNINGS.md) - Meta Learning, Thinking Structures
 - 🛠 [CLAUDE.md](./CLAUDE.md) - Development Guide, Conventions
 
 ---

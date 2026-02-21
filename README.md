@@ -40,7 +40,7 @@ pnpm dev  # http://localhost:3000
 | TanStack Query | Zod | HyDE, RRF | pnpm |
 | Vanilla Extract | - | - | Playwright |
 
-**Monorepo**: pnpm workspaces + Turborepo (3개 앱, 3개 패키지)
+**Monorepo**: pnpm workspaces + Turborepo (4개 앱, 여러 패키지)
 
 <details>
 <summary>전체 기술 스택 (27개)</summary>
@@ -67,13 +67,14 @@ pnpm dev  # http://localhost:3000
 
 ```
 apps/
-  web/        # Next.js (사용자 페이지)
-  admin/      # Vite (관리자 대시보드)
-  workshop/   # Storybook (디자인 시스템)
+  web/           # Next.js (사용자 페이지)
+  admin/         # Vite (관리자 대시보드)
+  subscription/  # Next.js (뉴스레터 구독)
+  workshop/      # Storybook (디자인 시스템)
 packages/
-  api/        # tRPC 라우터 (13개)
-  shared/     # 공통 유틸리티
-  design-system/  # Vanilla Extract 컴포넌트 (19개)
+  api/            # tRPC 라우터
+  shared/         # 공통 유틸리티
+  design-system/  # Vanilla Extract 컴포넌트
 ```
 
 ---
@@ -84,16 +85,10 @@ packages/
 - **페이지 전환 90% 개선** (await → void prefetch)
 - **번들 크기 89% 감소** (2.6MB → 29KB)
 
-상세: [PERFORMANCE.md](./docs/PERFORMANCE.md)
-
 ---
 
 ## 문서
 
-- 📐 [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - FSD, 모노레포, 타입 안전성
-- ⚡ [PERFORMANCE.md](./docs/PERFORMANCE.md) - 번들, 캐싱, DB 쿼리
-- 🧠 [TECHNICAL_DECISIONS.md](./docs/TECHNICAL_DECISIONS.md) - Trade-offs, 문제 해결
-- 📚 [LEARNINGS.md](./docs/LEARNINGS.md) - 메타 학습, 사고 구조
 - 🛠 [CLAUDE.md](./CLAUDE.md) - 개발 가이드, 컨벤션
 
 ---
