@@ -6,6 +6,7 @@ import {
 } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
+import { IMAGE_WIDTH, IMAGE_WIDTH_TABLET } from './constants';
 
 const fadeIn = keyframes({
 	from: {
@@ -107,11 +108,11 @@ export const imageArea = recipe({
 	variants: {
 		viewMode: {
 			list: {
-				width: '160px',
+				width: IMAGE_WIDTH,
 
 				'@media': {
 					[mediaQueries.tablet]: {
-						width: '140px',
+						width: IMAGE_WIDTH_TABLET,
 						maxInlineSize: '100%',
 					},
 				},
@@ -145,7 +146,6 @@ export const contentArea = recipe({
 export const category = style({
 	padding: '2px 8px',
 	borderRadius: radii.sm,
-	fontSize: '11px',
 	fontWeight: fontWeights.semibold,
 	letterSpacing: '-0.01em',
 });

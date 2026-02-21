@@ -27,13 +27,15 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 				/>
 			</Flex>
 			<Flex direction='column' gap='1' flex={1}>
-				<Typography.Text
+				<Typography.Heading
+					level={5}
+					as='h3'
 					truncate='single'
 					fontWeight='medium'
 					className={styles.title}
 				>
 					{post.title}
-				</Typography.Text>
+				</Typography.Heading>
 				<Typography.SubText level={3} truncate='single'>
 					{post.description}
 				</Typography.SubText>
@@ -83,17 +85,27 @@ const PostCard = ({ post, index, viewMode }: PostCardProps) => {
 				className={styles.contentArea({ viewMode })}
 			>
 				<Flex gap='3' align='center' marginTop='1' color='primary'>
-					<Typography.Text className={styles.category} background='primary50'>
+					<Typography.SubText
+						level={3}
+						className={styles.category}
+						background='primary50'
+						color='primary'
+					>
 						{capitalizeFirstLetter(post.category)}
-					</Typography.Text>
+					</Typography.SubText>
 					<Typography.SubText level={3}>
 						{formatDate(post.date)}
 					</Typography.SubText>
 				</Flex>
 
-				<Typography.Text fontWeight='medium' level={1} truncate='two'>
+				<Typography.Heading
+					level={5}
+					as='h3'
+					truncate='two'
+					fontWeight='medium'
+				>
 					{post.title}
-				</Typography.Text>
+				</Typography.Heading>
 
 				<Typography.Text
 					level={4}

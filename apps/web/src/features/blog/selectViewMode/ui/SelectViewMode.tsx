@@ -1,7 +1,20 @@
 import { Button, Flex } from '@jung/design-system/components';
-import { BsFillPlayFill, BsGrid3X3Gap } from 'react-icons/bs';
+import type { ComponentType } from 'react';
+import { BsGrid3X3Gap, BsTable } from 'react-icons/bs';
 import { CiViewList } from 'react-icons/ci';
 import type { ViewMode } from '@/fsd/entities/blog';
+
+const ICON_SIZE = 16;
+
+const VIEW_MODE_OPTIONS: {
+	mode: ViewMode;
+	Icon: ComponentType<{ size?: number }>;
+	label: string;
+}[] = [
+	{ mode: 'list', Icon: CiViewList, label: 'List view' },
+	{ mode: 'grid', Icon: BsGrid3X3Gap, label: 'Grid view' },
+	{ mode: 'table', Icon: BsTable, label: 'Table view' },
+];
 
 interface SelectViewModeProps {
 	selected: ViewMode;
@@ -11,42 +24,22 @@ interface SelectViewModeProps {
 export const SelectViewMode = ({ selected, onSelect }: SelectViewModeProps) => {
 	return (
 		<Flex gap='1' height='full'>
-			<Button
-				variant='outline'
-				selected={selected === 'list'}
-				borderRadius='md'
-				size='sm'
-				paddingX='1.5'
-				paddingY='1'
-				onClick={() => onSelect('list')}
-				title='List view'
-			>
-				<CiViewList size={16} />
-			</Button>
-			<Button
-				variant='outline'
-				selected={selected === 'grid'}
-				borderRadius='md'
-				size='sm'
-				paddingX='1.5'
-				paddingY='1'
-				onClick={() => onSelect('grid')}
-				title='Grid view'
-			>
-				<BsGrid3X3Gap size={16} />
-			</Button>
-			<Button
-				variant='outline'
-				selected={selected === 'table'}
-				borderRadius='md'
-				size='sm'
-				paddingX='1.5'
-				paddingY='1'
-				onClick={() => onSelect('table')}
-				title='Table view'
-			>
-				<BsFillPlayFill size={16} />
-			</Button>
+			{VIEW_MODE_OPTIONS.map(({ mode, Icon, label }) => (
+				<Button
+					key={mode}
+					variant='outline'
+					selected={selected === mode}
+					borderRadius='md'
+					size='sm'
+					paddingX='1.5'
+					paddingY='1'
+					onClick={() => onSelect(mode)}
+					aria-label={label}
+					title={label}
+				>
+					<Icon size={ICON_SIZE} />
+				</Button>
+			))}
 		</Flex>
 	);
 };
