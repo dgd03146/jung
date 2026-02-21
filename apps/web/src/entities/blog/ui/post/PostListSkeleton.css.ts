@@ -1,5 +1,6 @@
 import { mediaQueries, palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
+import { IMAGE_WIDTH, IMAGE_WIDTH_TABLET } from './constants';
 
 const shimmer = keyframes({
 	'0%': {
@@ -77,7 +78,7 @@ export const postCard = style({
 export const imageArea = style([
 	skeletonShimmer,
 	{
-		width: '160px',
+		width: IMAGE_WIDTH,
 		height: 'auto',
 		aspectRatio: '4/3',
 		borderRadius: '8px',
@@ -85,7 +86,7 @@ export const imageArea = style([
 
 		'@media': {
 			[mediaQueries.tablet]: {
-				width: '140px',
+				width: IMAGE_WIDTH_TABLET,
 			},
 		},
 	},
