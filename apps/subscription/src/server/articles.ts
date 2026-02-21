@@ -5,14 +5,25 @@ import { getServerSupabase } from './supabase';
 
 export type Article = Database['public']['Tables']['articles']['Row'];
 
+const ARTICLE_CATEGORIES = ['frontend', 'ai'] as const;
+const MIN_PAGE = 1;
+const DEFAULT_PAGE = 1;
+const MAX_PAGE_SIZE = 50;
+const DEFAULT_PAGE_SIZE = 10;
+
 const fetchArticlesInput = z.object({
 	category: z.string().optional(),
 	q: z.string().optional(),
-	page: z.number().int().min(1).default(1),
-	pageSize: z.number().int().min(1).max(50).default(10),
+	page: z.number().int().min(MIN_PAGE).default(DEFAULT_PAGE),
+	pageSize: z
+		.number()
+		.int()
+		.min(MIN_PAGE)
+		.max(MAX_PAGE_SIZE)
+		.default(DEFAULT_PAGE_SIZE),
 });
 
-export type FetchArticlesInput = z.infer<typeof fetchArticlesInput>;
+export type FetchArticlesInput = z.input<typeof fetchArticlesInput>;
 
 export type PaginatedArticles = {
 	articles: Article[];
@@ -93,7 +104,6 @@ async function queryRelatedArticles(
 }
 
 export async function fetchArticleByIdInternal(id: string) {
-	z.string().uuid().parse(id);
 	const supabase = getServerSupabase();
 
 	const { data, error } = await supabase
@@ -112,7 +122,7 @@ export async function fetchArticleByIdInternal(id: string) {
 
 const fetchRelatedInput = z.object({
 	articleId: z.string().uuid(),
-	category: z.string(),
+	category: z.enum(ARTICLE_CATEGORIES),
 });
 
 export const fetchRelatedArticles = createServerFn({ method: 'GET' })
