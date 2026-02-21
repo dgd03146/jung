@@ -122,13 +122,14 @@ export async function sendNewsletter(articleId: string) {
 		}
 	}
 
-	const allFailed = totalSent === 0 && totalFailed > 0;
-
 	return {
-		success: !allFailed,
-		message: allFailed
-			? `Failed to send newsletter to all ${totalFailed} subscribers.`
-			: `Newsletter sent to ${totalSent}/${subscribers.length} subscribers.`,
+		success: totalFailed === 0,
+		message:
+			totalFailed === 0
+				? `Newsletter sent to ${totalSent}/${subscribers.length} subscribers.`
+				: totalSent === 0
+					? `Failed to send newsletter to all ${totalFailed} subscribers.`
+					: `Newsletter partially sent: ${totalSent} succeeded, ${totalFailed} failed.`,
 		sent: totalSent,
 		failed: totalFailed,
 	};

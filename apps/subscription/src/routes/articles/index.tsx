@@ -12,6 +12,8 @@ import { generateCollectionPageJsonLd } from '../../lib/structuredData';
 import { type Article, fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
 
+const ARTICLES_PAGE_SIZE = 10;
+const DEBOUNCE_MS = 300;
 const ARTICLE_CATEGORIES = ['all', 'frontend', 'ai'] as const;
 
 const articlesSearchSchema = z.object({
@@ -24,7 +26,7 @@ export const Route = createFileRoute('/articles/')({
 	validateSearch: (search) => articlesSearchSchema.parse(search),
 	loaderDeps: ({ search: { category, page } }) => ({ category, page }),
 	loader: ({ deps: { category, page } }) =>
-		fetchArticles({ data: { category, page, pageSize: 10 } }),
+		fetchArticles({ data: { category, page, pageSize: ARTICLES_PAGE_SIZE } }),
 	head: ({ loaderData }) => ({
 		meta: [
 			{ title: `Articles - ${SITE_CONFIG.name}` },
@@ -67,6 +69,15 @@ const FILTER_OPTIONS = ARTICLE_CATEGORIES.map((value) => ({
 	value,
 	label: CATEGORY_LABELS[value],
 }));
+
+function getFilterButtonClassName(optionValue: string, activeCategory: string) {
+	if (activeCategory !== optionValue) return styles.filterButton;
+	const activeStyle =
+		optionValue === 'ai'
+			? styles.filterButtonActiveAi
+			: styles.filterButtonActive;
+	return `${styles.filterButton} ${activeStyle}`;
+}
 
 function ArticlesLoading() {
 	return (
@@ -129,7 +140,7 @@ function ArticlesPage() {
 				navigate({
 					search: (prev) => ({ ...prev, q: value, page: 1 }),
 				});
-			}, 300);
+			}, DEBOUNCE_MS);
 		},
 		[navigate],
 	);
@@ -193,13 +204,10 @@ function ArticlesPage() {
 											}),
 										})
 									}
-									className={`${styles.filterButton} ${
-										(category ?? 'all') === opt.value
-											? opt.value === 'ai'
-												? styles.filterButtonActiveAi
-												: styles.filterButtonActive
-											: ''
-									}`}
+									className={getFilterButtonClassName(
+										opt.value,
+										category ?? 'all',
+									)}
 								>
 									{opt.label}
 								</button>
