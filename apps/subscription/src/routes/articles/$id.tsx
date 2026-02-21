@@ -2,6 +2,7 @@ import { getImageUrl } from '@jung/shared/lib/getImageUrl';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { ShareButtons } from '../../components/ShareButtons';
 import { SITE_CONFIG } from '../../config/site';
+import { formatDate } from '../../lib/formatDate';
 import {
 	generateArticleJsonLd,
 	generateBreadcrumbJsonLd,
@@ -114,15 +115,6 @@ function ArticleError() {
 function ArticleDetailPage() {
 	const { article, relatedArticles } = Route.useLoaderData();
 
-	const formatDate = (dateString: string | null) => {
-		if (!dateString) return '';
-		return new Date(dateString).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		});
-	};
-
 	if (!article) {
 		return (
 			<div className={styles.centeredPage}>
@@ -153,7 +145,7 @@ function ArticleDetailPage() {
 						← Back
 					</Link>
 					<span className={styles.headerMeta}>
-						{formatDate(article.published_at)}
+						{formatDate(article.published_at, 'long')}
 					</span>
 				</header>
 
