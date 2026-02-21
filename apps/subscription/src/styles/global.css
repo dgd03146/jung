@@ -23,6 +23,7 @@
   --color-border-focus: rgba(139, 92, 246, 0.4);
   --color-text-on-primary: #ffffff;
   --color-text-on-danger: #ffffff;
+  --color-selection-text: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -49,6 +50,7 @@
   --color-border-focus: rgba(147, 181, 255, 0.4);
   --color-text-on-primary: #ffffff;
   --color-text-on-danger: #ffffff;
+  --color-selection-text: #0f172a;
 }
 
 * {
@@ -97,7 +99,7 @@ input {
 
 ::selection {
   background: var(--color-primary);
-  color: var(--color-text-on-primary);
+  color: var(--color-selection-text);
 }
 
 :focus-visible {
