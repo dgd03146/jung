@@ -1,19 +1,18 @@
+interface KakaoShareLink {
+	mobileWebUrl: string;
+	webUrl: string;
+}
+
 interface KakaoShareContent {
 	title: string;
 	description?: string;
 	imageUrl?: string;
-	link: {
-		mobileWebUrl: string;
-		webUrl: string;
-	};
+	link: KakaoShareLink;
 }
 
 interface KakaoShareButton {
 	title: string;
-	link: {
-		mobileWebUrl: string;
-		webUrl: string;
-	};
+	link: KakaoShareLink;
 }
 
 interface KakaoShareDefaultParams {
