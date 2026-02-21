@@ -1,26 +1,7 @@
 import { keyframes, style } from '@vanilla-extract/css';
 import { colors, FONT_HEADING } from './tokens';
 
-export const page = style({
-	minHeight: '100vh',
-	background:
-		'linear-gradient(135deg, var(--bg-page-from) 0%, var(--bg-page-mid) 50%, var(--bg-page-from) 100%)',
-	position: 'relative',
-	overflow: 'hidden',
-	fontFamily: FONT_HEADING,
-	transition: 'background 0.3s',
-});
-
-export const gridOverlay = style({
-	position: 'absolute',
-	inset: 0,
-	backgroundImage: `
-		linear-gradient(var(--grid-color) 1px, transparent 1px),
-		linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
-	`,
-	backgroundSize: '60px 60px',
-	pointerEvents: 'none',
-});
+export { gridOverlay, page } from './layout.css';
 
 export const orb = style({
 	position: 'absolute',
@@ -48,26 +29,24 @@ export const orbSmall = style({
 	borderRadius: '50%',
 });
 
-export const contentContainer = style({
+const contentContainerBase = {
 	position: 'relative',
 	zIndex: 1,
 	minHeight: '100vh',
 	display: 'grid',
 	gridTemplateRows: 'auto 1fr auto',
 	padding: 'clamp(1.5rem, 5vw, 3rem)',
-	maxWidth: '900px',
 	margin: '0 auto',
+} as const;
+
+export const contentContainer = style({
+	...contentContainerBase,
+	maxWidth: '900px',
 });
 
 export const contentContainerNarrow = style({
-	position: 'relative',
-	zIndex: 1,
-	minHeight: '100vh',
-	display: 'grid',
-	gridTemplateRows: 'auto 1fr auto',
-	padding: 'clamp(1.5rem, 5vw, 3rem)',
+	...contentContainerBase,
 	maxWidth: '750px',
-	margin: '0 auto',
 });
 
 export const header = style({
