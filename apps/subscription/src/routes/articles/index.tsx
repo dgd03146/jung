@@ -5,9 +5,10 @@ import {
 	useNavigate,
 	useRouter,
 } from '@tanstack/react-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import { SITE_CONFIG } from '../../config/site';
+import { formatDate } from '../../lib/formatDate';
 import { generateCollectionPageJsonLd } from '../../lib/structuredData';
 import { type Article, fetchArticles } from '../../server/articles';
 import * as styles from '../../styles/articles.css';
@@ -24,9 +25,11 @@ const articlesSearchSchema = z.object({
 
 export const Route = createFileRoute('/articles/')({
 	validateSearch: (search) => articlesSearchSchema.parse(search),
-	loaderDeps: ({ search: { category, page } }) => ({ category, page }),
-	loader: ({ deps: { category, page } }) =>
-		fetchArticles({ data: { category, page, pageSize: ARTICLES_PAGE_SIZE } }),
+	loaderDeps: ({ search: { category, page, q } }) => ({ category, page, q }),
+	loader: ({ deps: { category, page, q } }) =>
+		fetchArticles({
+			data: { category, q, page, pageSize: ARTICLES_PAGE_SIZE },
+		}),
 	head: ({ loaderData }) => ({
 		meta: [
 			{ title: `Articles - ${SITE_CONFIG.name}` },
@@ -145,26 +148,7 @@ function ArticlesPage() {
 		[navigate],
 	);
 
-	const filteredArticles = useMemo(() => {
-		if (!q) return articles;
-		const lower = q.toLowerCase();
-		return articles.filter(
-			(a: Article) =>
-				a.title.toLowerCase().includes(lower) ||
-				a.summary?.toLowerCase().includes(lower),
-		);
-	}, [articles, q]);
-
 	const totalPages = Math.ceil(totalCount / pageSize);
-
-	const formatDate = (dateString: string | null) => {
-		if (!dateString) return '';
-		return new Date(dateString).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		});
-	};
 
 	return (
 		<div className={styles.page}>
@@ -243,7 +227,7 @@ function ArticlesPage() {
 					</div>
 
 					<div className={styles.articleList}>
-						{filteredArticles.length === 0 ? (
+						{articles.length === 0 ? (
 							<div className={styles.loadingContainer}>
 								<span className={styles.emptyStateIcon}>{q ? '🔍' : '📭'}</span>
 								<h3 className={styles.emptyStateHeading}>
@@ -266,7 +250,7 @@ function ArticlesPage() {
 								</p>
 							</div>
 						) : (
-							filteredArticles.map((article: Article, index: number) => {
+							articles.map((article: Article, index: number) => {
 								const thumbnail = article.images?.[0];
 								const globalIndex = (page - 1) * pageSize + index + 1;
 

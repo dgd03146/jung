@@ -7,6 +7,7 @@ export type Article = Database['public']['Tables']['articles']['Row'];
 
 const fetchArticlesInput = z.object({
 	category: z.string().optional(),
+	q: z.string().optional(),
 	page: z.number().int().min(1).default(1),
 	pageSize: z.number().int().min(1).max(50).default(10),
 });
@@ -26,7 +27,7 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 	)
 	.handler(async ({ data }) => {
 		const supabase = getServerSupabase();
-		const { category, page, pageSize } = data;
+		const { category, q, page, pageSize } = data;
 
 		const from = (page - 1) * pageSize;
 		const to = from + pageSize - 1;
@@ -39,6 +40,10 @@ export const fetchArticles = createServerFn({ method: 'GET' })
 
 		if (category && category !== 'all') {
 			query = query.eq('category', category);
+		}
+
+		if (q) {
+			query = query.or(`title.ilike.%${q}%,summary.ilike.%${q}%`);
 		}
 
 		query = query.range(from, to);
