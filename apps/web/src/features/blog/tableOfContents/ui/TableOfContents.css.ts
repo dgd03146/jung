@@ -3,6 +3,7 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const container = style({
+	minWidth: 0,
 	'@media': {
 		'(min-width: 1024px)': {
 			borderTopWidth: '1px',
