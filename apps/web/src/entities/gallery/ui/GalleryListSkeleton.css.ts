@@ -1,73 +1,116 @@
 import { palette } from '@jung/design-system/tokens';
-import { keyframes, style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
+import { skeletonShimmer } from './skeleton.css';
 
-const shimmer = keyframes({
-	'0%': {
-		transform: 'translateX(-100%)',
-	},
-	'100%': {
-		transform: 'translateX(100%)',
-	},
+export const container = style({
+	height: '100vh',
+	overflowY: 'hidden',
 });
 
-const skeletonShimmer = style({
-	position: 'relative',
-	overflow: 'hidden',
-	'::after': {
-		content: '""',
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		bottom: 0,
-		left: 0,
-		transform: 'translateX(-100%)',
-		backgroundImage: `linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0.5) 60%,
-      rgba(255, 255, 255, 0)
-    )`,
-		animation: `${shimmer} 2s infinite`,
-	},
-});
-
-export const galleryGrid = style({
-	display: 'grid',
-	gap: '24px',
-	gridTemplateColumns: 'repeat(2, 1fr)',
-
-	'@media': {
-		'(min-width: 768px)': {
-			gridTemplateColumns: 'repeat(3, 1fr)',
-		},
-		'(min-width: 1280px)': {
-			gridTemplateColumns: 'repeat(4, 1fr)',
+export const section = recipe({
+	base: {
+		display: 'flex',
+		height: '100vh',
+		'@media': {
+			'(max-width: 767px)': {
+				flexDirection: 'column',
+			},
 		},
 	},
+	variants: {
+		reverse: {
+			true: {
+				flexDirection: 'row-reverse',
+				'@media': {
+					'(max-width: 767px)': {
+						flexDirection: 'column',
+					},
+				},
+			},
+			false: {},
+		},
+	},
+	defaultVariants: {
+		reverse: false,
+	},
 });
 
-export const skeletonCard = style([
+export const imageHalf = style([
 	skeletonShimmer,
 	{
-		width: '100%',
-		backgroundColor: palette.gray,
-		borderRadius: '12px',
+		width: '50%',
+		backgroundColor: palette.gray100,
+		'@media': {
+			'(max-width: 767px)': {
+				width: '100%',
+				height: '60vh',
+			},
+		},
 	},
 ]);
 
-export const heightShort = style({
-	aspectRatio: '4/3',
+export const contentHalf = style({
+	width: '50%',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	padding: '64px',
+	backgroundColor: palette.gray50,
+	'@media': {
+		'(max-width: 767px)': {
+			width: '100%',
+			padding: '32px 24px',
+		},
+	},
 });
 
-export const heightMedium = style({
-	aspectRatio: '3/4',
+const textLineBase = {
+	borderRadius: '4px',
+	backgroundColor: palette.gray100,
+} as const;
+
+export const textLine = styleVariants({
+	short: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '80px', height: '14px', marginBottom: '24px' },
+	],
+	title: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '200px', height: '28px', marginBottom: '16px' },
+	],
+	desc: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '300px', height: '14px', marginBottom: '8px' },
+	],
+	date: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '120px', height: '14px', marginBottom: '32px' },
+	],
 });
 
-export const heightTall = style({
-	aspectRatio: '2/3',
+export const tagsRow = style({
+	display: 'flex',
+	gap: '8px',
+	marginBottom: '32px',
 });
 
-export const heightSquare = style({
-	aspectRatio: '1/1',
-});
+export const tagPill = style([
+	skeletonShimmer,
+	{
+		width: '60px',
+		height: '26px',
+		borderRadius: '20px',
+		backgroundColor: palette.gray100,
+	},
+]);
+
+export const linkLine = style([
+	skeletonShimmer,
+	{
+		width: '70px',
+		height: '13px',
+		borderRadius: '4px',
+		backgroundColor: palette.gray100,
+	},
+]);

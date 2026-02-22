@@ -10,7 +10,6 @@ import {
 	usePhotoQuery,
 } from '@/fsd/entities/gallery';
 import {
-	NavigatePhotoButtons,
 	SharePhotoButton,
 	ToggleLikePhotoButton,
 } from '@/fsd/features/gallery';
@@ -21,10 +20,9 @@ import * as styles from './PhotoDetailPage.css';
 
 interface PhotoDetailPageProps {
 	photoId: string;
-	isModal?: boolean;
 }
 
-export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
+export const PhotoDetailPage = ({ photoId }: PhotoDetailPageProps) => {
 	const { data: currentPhoto } = usePhotoQuery(photoId);
 	const { data: likeInfo } = usePhotoLikeQuery(photoId);
 
@@ -36,16 +34,13 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 	const { imageSizes } = useImageSizes({
 		containerRef,
 		aspectRatio,
-		isModal,
 	});
 
 	return (
 		<div key={`container-${photoId}`}>
-			{isModal && <NavigatePhotoButtons photoId={photoId} isModal={isModal} />}
-
-			<div className={styles.container({ isModal })}>
+			<div className={styles.container}>
 				<div
-					className={styles.imageWrapper({ isModal })}
+					className={styles.imageWrapper}
 					style={assignInlineVars({
 						[styles.aspectRatioVar]: aspectRatioForCss,
 					})}
@@ -61,18 +56,16 @@ export const PhotoDetailPage = ({ photoId, isModal }: PhotoDetailPageProps) => {
 					/>
 				</div>
 
-				<div className={styles.content({ isModal })}>
-					<Typography.Text level={2} fontWeight='semibold'>
-						{currentPhoto.title}
-					</Typography.Text>
-
-					<Typography.SubText level={2}>
-						{currentPhoto.description}
-					</Typography.SubText>
-
-					<Typography.SubText level={3} color='primary'>
+				<div className={styles.content}>
+					<span className={styles.exhibitionDate}>
 						{formatDate(currentPhoto.created_at)}
-					</Typography.SubText>
+					</span>
+
+					<h1 className={styles.exhibitionTitle}>{currentPhoto.title}</h1>
+
+					{currentPhoto.description && (
+						<p className={styles.exhibitionDesc}>{currentPhoto.description}</p>
+					)}
 
 					<PhotoTags tags={currentPhoto.tags} />
 

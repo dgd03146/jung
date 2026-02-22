@@ -3,17 +3,13 @@ import { GalleryNavigationWrapper } from '@/fsd/views/gallery';
 
 interface GalleryLayoutProps {
 	children: React.ReactNode;
-	modal: React.ReactNode;
 }
 
-export default function GalleryLayout({ children, modal }: GalleryLayoutProps) {
+export default function GalleryLayout({ children }: GalleryLayoutProps) {
 	return (
 		<>
 			<GalleryNavigationWrapper />
-			<PhotoFilterProvider>
-				{children}
-				{modal}
-			</PhotoFilterProvider>
+			<PhotoFilterProvider>{children}</PhotoFilterProvider>
 		</>
 	);
 }
