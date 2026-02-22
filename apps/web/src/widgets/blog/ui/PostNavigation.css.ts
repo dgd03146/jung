@@ -11,7 +11,9 @@ export const sidebar = style({
 	'@media': {
 		'(min-width: 1024px)': {
 			minHeight: calc.subtract('100dvh', '144px'),
-			maxWidth: '240px',
+			width: '240px',
+			minWidth: 0,
+			flexShrink: 0,
 		},
 	},
 });
@@ -21,6 +23,8 @@ export const sidebarContainer = style({
 		'(min-width: 1024px)': {
 			top: 80,
 			position: 'sticky',
+			maxWidth: '100%',
+			overflow: 'hidden',
 		},
 	},
 });
