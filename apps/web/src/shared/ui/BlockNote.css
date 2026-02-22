@@ -214,8 +214,8 @@
 }
 
 .bn-inline-content code {
-  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
-    Courier, monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas,
+    monospace;
   line-height: normal;
   background: rgba(135, 131, 120, 0.15);
   color: rgba(51, 126, 169, 1);
@@ -252,8 +252,8 @@
 .bn-block-content[data-content-type='codeBlock'] > pre > code {
   font-size: 13.6px;
   line-height: 1.5;
-  font-family: 'SFMono-Regular', Menlo, Consolas, 'PT Mono', 'Liberation Mono',
-    Courier, monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas,
+    monospace;
   background: transparent !important; /* Shiki가 색상 적용 */
   padding: 0 !important;
 }

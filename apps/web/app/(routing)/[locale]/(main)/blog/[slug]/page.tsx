@@ -31,7 +31,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { slug, locale } = await params;
 	try {
-		const post = await getCaller().blog.getPostById({ postId: slug });
+		const post = await getCaller().blog.getPostById({
+			postId: slug,
+			locale: locale as 'ko' | 'en',
+		});
 
 		if (!post) {
 			return {
@@ -132,8 +135,11 @@ export default async function Page({
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
-	const post = await getCaller().blog.getPostById({ postId });
-	queryClient.setQueryData(trpc.blog.getPostById.queryKey({ postId }), post);
+	const post = await getCaller().blog.getPostById({ postId, locale });
+	queryClient.setQueryData(
+		trpc.blog.getPostById.queryKey({ postId, locale }),
+		post,
+	);
 
 	// 덜 중요한 데이터: 스트리밍
 	void queryClient.prefetchQuery(
