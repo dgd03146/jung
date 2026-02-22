@@ -2,16 +2,14 @@ import * as styles from './GalleryListSkeleton.css';
 
 const SectionSkeleton = ({ reverse }: { reverse: boolean }) => {
 	return (
-		<div
-			className={`${styles.section} ${reverse ? styles.sectionReverse : ''}`}
-		>
+		<div className={styles.section({ reverse })}>
 			<div className={styles.imageHalf} />
 			<div className={styles.contentHalf}>
-				<div className={`${styles.textLine} ${styles.textLineShort}`} />
-				<div className={`${styles.textLine} ${styles.textLineTitle}`} />
-				<div className={`${styles.textLine} ${styles.textLineDesc}`} />
-				<div className={`${styles.textLine} ${styles.textLineDesc}`} />
-				<div className={`${styles.textLine} ${styles.textLineDate}`} />
+				<div className={styles.textLine.short} />
+				<div className={styles.textLine.title} />
+				<div className={styles.textLine.desc} />
+				<div className={styles.textLine.desc} />
+				<div className={styles.textLine.date} />
 				<div className={styles.tagsRow}>
 					<div className={styles.tagPill} />
 					<div className={styles.tagPill} />

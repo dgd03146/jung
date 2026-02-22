@@ -42,6 +42,16 @@ export const palette = {
 	gray500: '#4D4D4D',
 	gray900: '#050505',
 
+	// Overlay colors
+	overlay10: 'rgba(0, 0, 0, 0.1)',
+	overlay20: 'rgba(0, 0, 0, 0.2)',
+	overlay40: 'rgba(0, 0, 0, 0.4)',
+	overlay60: 'rgba(0, 0, 0, 0.6)',
+	overlay70: 'rgba(0, 0, 0, 0.7)',
+	overlayWhite15: 'rgba(255, 255, 255, 0.15)',
+	overlayWhite20: 'rgba(255, 255, 255, 0.2)',
+	overlayWhite30: 'rgba(255, 255, 255, 0.3)',
+
 	// Utility colors
 	transparent: 'transparent',
 	inherit: 'inherit',

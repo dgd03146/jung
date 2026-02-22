@@ -17,7 +17,7 @@ export const PhotoNavigation = () => {
 	const currentTab = getCurrentTab();
 
 	return (
-		<nav className={styles.nav}>
+		<nav className={styles.nav} aria-label='Gallery navigation'>
 			{TABS.map(({ value, label, path }, index) => (
 				<Fragment key={value}>
 					{index > 0 && <span className={styles.separator}>/</span>}
@@ -25,6 +25,7 @@ export const PhotoNavigation = () => {
 						href={path}
 						scroll={false}
 						className={`${styles.link} ${currentTab === value ? styles.linkActive : ''}`}
+						{...(currentTab === value && { 'aria-current': 'page' as const })}
 					>
 						{label}
 					</Link>

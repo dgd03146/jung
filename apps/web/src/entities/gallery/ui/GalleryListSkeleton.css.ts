@@ -1,58 +1,38 @@
 import { palette } from '@jung/design-system/tokens';
-import { keyframes, style } from '@vanilla-extract/css';
-
-const shimmer = keyframes({
-	'0%': {
-		transform: 'translateX(-100%)',
-	},
-	'100%': {
-		transform: 'translateX(100%)',
-	},
-});
-
-const skeletonShimmer = style({
-	position: 'relative',
-	overflow: 'hidden',
-	'::after': {
-		content: '""',
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		bottom: 0,
-		left: 0,
-		transform: 'translateX(-100%)',
-		backgroundImage: `linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0.5) 60%,
-      rgba(255, 255, 255, 0)
-    )`,
-		animation: `${shimmer} 2s infinite`,
-	},
-});
+import { style, styleVariants } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
+import { skeletonShimmer } from './skeleton.css';
 
 export const container = style({
 	height: '100vh',
 	overflowY: 'hidden',
 });
 
-export const section = style({
-	display: 'flex',
-	height: '100vh',
-	'@media': {
-		'(max-width: 767px)': {
-			flexDirection: 'column',
+export const section = recipe({
+	base: {
+		display: 'flex',
+		height: '100vh',
+		'@media': {
+			'(max-width: 767px)': {
+				flexDirection: 'column',
+			},
 		},
 	},
-});
-
-export const sectionReverse = style({
-	flexDirection: 'row-reverse',
-	'@media': {
-		'(max-width: 767px)': {
-			flexDirection: 'column',
+	variants: {
+		reverse: {
+			true: {
+				flexDirection: 'row-reverse',
+				'@media': {
+					'(max-width: 767px)': {
+						flexDirection: 'column',
+					},
+				},
+			},
+			false: {},
 		},
+	},
+	defaultVariants: {
+		reverse: false,
 	},
 });
 
@@ -85,34 +65,28 @@ export const contentHalf = style({
 	},
 });
 
-export const textLine = style([
-	skeletonShimmer,
-	{
-		height: '14px',
-		borderRadius: '4px',
-		backgroundColor: palette.gray100,
-	},
-]);
+const textLineBase = {
+	borderRadius: '4px',
+	backgroundColor: palette.gray100,
+} as const;
 
-export const textLineShort = style({
-	width: '80px',
-	marginBottom: '24px',
-});
-
-export const textLineTitle = style({
-	width: '200px',
-	height: '28px',
-	marginBottom: '16px',
-});
-
-export const textLineDesc = style({
-	width: '300px',
-	marginBottom: '8px',
-});
-
-export const textLineDate = style({
-	width: '120px',
-	marginBottom: '32px',
+export const textLine = styleVariants({
+	short: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '80px', height: '14px', marginBottom: '24px' },
+	],
+	title: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '200px', height: '28px', marginBottom: '16px' },
+	],
+	desc: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '300px', height: '14px', marginBottom: '8px' },
+	],
+	date: [
+		skeletonShimmer,
+		{ ...textLineBase, width: '120px', height: '14px', marginBottom: '32px' },
+	],
 });
 
 export const tagsRow = style({

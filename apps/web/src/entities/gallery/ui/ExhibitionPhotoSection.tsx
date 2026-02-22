@@ -3,6 +3,8 @@ import { BlurImage, formatDate, ROUTES } from '@/fsd/shared';
 import { Link } from '@/i18n/routing';
 import * as styles from './ExhibitionPhotoSection.css';
 
+const PRIORITY_IMAGE_COUNT = 2;
+
 interface ExhibitionPhotoSectionProps {
 	photo: Photo;
 	index: number;
@@ -24,10 +26,10 @@ export const ExhibitionPhotoSection = ({
 				<BlurImage
 					fill
 					src={photo.image_url}
-					alt={photo.alt || photo.title || ''}
-					sizes='50vw'
+					alt={photo.alt || photo.title || 'Gallery photo'}
+					sizes='(max-width: 767px) 100vw, 50vw'
 					className={styles.image}
-					priority={index < 2}
+					priority={index < PRIORITY_IMAGE_COUNT}
 				/>
 			</div>
 			<div className={styles.contentHalf}>

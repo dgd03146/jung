@@ -5,7 +5,7 @@ import { recipe } from '@vanilla-extract/recipes';
 export const section = recipe({
 	base: {
 		display: 'flex',
-		height: 'calc(100dvh - 268px)',
+		height: 'calc(100dvh - 268px)' /* header(60) + nav(48) + margins(160) */,
 		position: 'relative',
 		'@media': {
 			'(max-width: 767px)': {
