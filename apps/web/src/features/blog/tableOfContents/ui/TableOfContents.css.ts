@@ -4,6 +4,8 @@ import { recipe } from '@vanilla-extract/recipes';
 
 export const container = style({
 	minWidth: 0,
+	width: '100%',
+	overflow: 'hidden',
 	'@media': {
 		'(min-width: 1024px)': {
 			borderTopWidth: '1px',
@@ -35,9 +37,7 @@ export const tocItem = recipe({
 		border: 'none',
 		padding: '4px 0',
 		width: '100%',
-		overflow: 'hidden',
-		textOverflow: 'ellipsis',
-		whiteSpace: 'nowrap',
+		overflowWrap: 'break-word',
 
 		':hover': {
 			color: palette.primary,
