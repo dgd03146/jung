@@ -19,7 +19,7 @@ export const TRENDING_PHOTO_DEFAULTS = {
 } as const;
 
 export const PHOTO_DEFAULTS = {
-	LIMIT: 12,
+	LIMIT: 8,
 	QUERY: '',
 	SORT: 'latest',
 } as const;

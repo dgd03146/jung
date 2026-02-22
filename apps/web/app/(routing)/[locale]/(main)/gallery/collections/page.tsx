@@ -1,14 +1,12 @@
-import { Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
-import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
 import {
-	getGoogleVerificationCode,
-	LoadingSpinner,
-	SITE_URL,
-} from '@/fsd/shared';
+	COLLECTION_DEFAULTS,
+	CollectionListSkeleton,
+} from '@/fsd/entities/gallery';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { CollectionContent } from '@/fsd/views/gallery';
 import { type Locale, routing } from '@/i18n/routing';
@@ -112,7 +110,7 @@ export default async function CollectionsPage({ params }: Props) {
 	setRequestLocale(locale);
 	const queryClient = getQueryClient();
 
-	queryClient.prefetchQuery(
+	void queryClient.prefetchQuery(
 		trpc.galleryCollections.getAllCollections.queryOptions({
 			sort: COLLECTION_DEFAULTS.sort,
 		}),
@@ -120,13 +118,7 @@ export default async function CollectionsPage({ params }: Props) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense
-				fallback={
-					<Flex justify='center' align='center' height='1/4'>
-						<LoadingSpinner size='medium' />
-					</Flex>
-				}
-			>
+			<Suspense fallback={<CollectionListSkeleton />}>
 				<CollectionContent />
 			</Suspense>
 		</HydrationBoundary>

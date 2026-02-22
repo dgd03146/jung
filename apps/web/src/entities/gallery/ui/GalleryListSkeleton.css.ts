@@ -32,42 +32,111 @@ const skeletonShimmer = style({
 	},
 });
 
-export const galleryGrid = style({
-	display: 'grid',
-	gap: '24px',
-	gridTemplateColumns: 'repeat(2, 1fr)',
+export const container = style({
+	height: '100vh',
+	overflowY: 'hidden',
+});
 
+export const section = style({
+	display: 'flex',
+	height: '100vh',
 	'@media': {
-		'(min-width: 768px)': {
-			gridTemplateColumns: 'repeat(3, 1fr)',
-		},
-		'(min-width: 1280px)': {
-			gridTemplateColumns: 'repeat(4, 1fr)',
+		'(max-width: 767px)': {
+			flexDirection: 'column',
 		},
 	},
 });
 
-export const skeletonCard = style([
+export const sectionReverse = style({
+	flexDirection: 'row-reverse',
+	'@media': {
+		'(max-width: 767px)': {
+			flexDirection: 'column',
+		},
+	},
+});
+
+export const imageHalf = style([
 	skeletonShimmer,
 	{
-		width: '100%',
-		backgroundColor: palette.gray,
-		borderRadius: '12px',
+		width: '50%',
+		backgroundColor: palette.gray100,
+		'@media': {
+			'(max-width: 767px)': {
+				width: '100%',
+				height: '60vh',
+			},
+		},
 	},
 ]);
 
-export const heightShort = style({
-	aspectRatio: '4/3',
+export const contentHalf = style({
+	width: '50%',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	padding: '64px',
+	backgroundColor: palette.gray50,
+	'@media': {
+		'(max-width: 767px)': {
+			width: '100%',
+			padding: '32px 24px',
+		},
+	},
 });
 
-export const heightMedium = style({
-	aspectRatio: '3/4',
+export const textLine = style([
+	skeletonShimmer,
+	{
+		height: '14px',
+		borderRadius: '4px',
+		backgroundColor: palette.gray100,
+	},
+]);
+
+export const textLineShort = style({
+	width: '80px',
+	marginBottom: '24px',
 });
 
-export const heightTall = style({
-	aspectRatio: '2/3',
+export const textLineTitle = style({
+	width: '200px',
+	height: '28px',
+	marginBottom: '16px',
 });
 
-export const heightSquare = style({
-	aspectRatio: '1/1',
+export const textLineDesc = style({
+	width: '300px',
+	marginBottom: '8px',
 });
+
+export const textLineDate = style({
+	width: '120px',
+	marginBottom: '32px',
+});
+
+export const tagsRow = style({
+	display: 'flex',
+	gap: '8px',
+	marginBottom: '32px',
+});
+
+export const tagPill = style([
+	skeletonShimmer,
+	{
+		width: '60px',
+		height: '26px',
+		borderRadius: '20px',
+		backgroundColor: palette.gray100,
+	},
+]);
+
+export const linkLine = style([
+	skeletonShimmer,
+	{
+		width: '70px',
+		height: '13px',
+		borderRadius: '4px',
+		backgroundColor: palette.gray100,
+	},
+]);

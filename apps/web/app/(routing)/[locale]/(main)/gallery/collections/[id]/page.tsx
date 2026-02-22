@@ -1,16 +1,14 @@
-import { Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { COLLECTION_DEFAULTS } from '@/fsd/entities/gallery';
-import {
-	getGoogleVerificationCode,
-	LoadingSpinner,
-	SITE_URL,
-} from '@/fsd/shared';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
-import { CollectionDetailPage } from '@/fsd/views/gallery';
+import {
+	CollectionDetailPage,
+	CollectionDetailSkeleton,
+} from '@/fsd/views/gallery';
 import { type Locale, routing } from '@/i18n/routing';
 
 interface PageProps {
@@ -129,13 +127,7 @@ export default async function Page({ params }: PageProps) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense
-				fallback={
-					<Flex justify='center' align='center' height='1/4'>
-						<LoadingSpinner size='medium' />
-					</Flex>
-				}
-			>
+			<Suspense fallback={<CollectionDetailSkeleton />}>
 				<CollectionDetailPage collectionId={collectionId} />
 			</Suspense>
 		</HydrationBoundary>

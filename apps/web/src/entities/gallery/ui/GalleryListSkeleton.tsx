@@ -1,27 +1,34 @@
-import { Container } from '@jung/design-system/components';
 import * as styles from './GalleryListSkeleton.css';
 
-const SKELETON_HEIGHTS = [
-	styles.heightShort,
-	styles.heightMedium,
-	styles.heightTall,
-	styles.heightSquare,
-];
-
-const GalleryCardSkeleton = ({ index }: { index: number }) => {
-	const heightClass = SKELETON_HEIGHTS[index % SKELETON_HEIGHTS.length];
-
-	return <div className={`${styles.skeletonCard} ${heightClass}`} />;
+const SectionSkeleton = ({ reverse }: { reverse: boolean }) => {
+	return (
+		<div
+			className={`${styles.section} ${reverse ? styles.sectionReverse : ''}`}
+		>
+			<div className={styles.imageHalf} />
+			<div className={styles.contentHalf}>
+				<div className={`${styles.textLine} ${styles.textLineShort}`} />
+				<div className={`${styles.textLine} ${styles.textLineTitle}`} />
+				<div className={`${styles.textLine} ${styles.textLineDesc}`} />
+				<div className={`${styles.textLine} ${styles.textLineDesc}`} />
+				<div className={`${styles.textLine} ${styles.textLineDate}`} />
+				<div className={styles.tagsRow}>
+					<div className={styles.tagPill} />
+					<div className={styles.tagPill} />
+					<div className={styles.tagPill} />
+				</div>
+				<div className={styles.linkLine} />
+			</div>
+		</div>
+	);
 };
 
-export const GalleryListSkeleton = ({ count = 12 }: { count?: number }) => {
+export const GalleryListSkeleton = ({ count = 3 }: { count?: number }) => {
 	return (
-		<Container>
-			<div className={styles.galleryGrid}>
-				{Array.from({ length: count }).map((_, index) => (
-					<GalleryCardSkeleton key={index} index={index} />
-				))}
-			</div>
-		</Container>
+		<div className={styles.container}>
+			{Array.from({ length: count }).map((_, index) => (
+				<SectionSkeleton key={index} reverse={index % 2 === 1} />
+			))}
+		</div>
 	);
 };

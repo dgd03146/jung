@@ -168,7 +168,7 @@ export default async function PhotoPage({
 			<JsonLd data={breadcrumbSchema} />
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Suspense fallback={<PhotoDetailSkeleton />}>
-					<PhotoDetailPage photoId={photoId} isModal={false} />
+					<PhotoDetailPage photoId={photoId} />
 				</Suspense>
 			</HydrationBoundary>
 		</>

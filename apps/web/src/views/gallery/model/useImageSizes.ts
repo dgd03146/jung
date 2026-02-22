@@ -7,25 +7,19 @@ import { findNearestImageSize } from '../lib/findNearestImageSize';
 const CONFIG = {
 	fallbackWidth: 600,
 	fallbackAspectRatio: 4 / 3,
-	maxModalWidth: 650,
 	maxGalleryWidth: 600,
-	heightLimitFactor: 0.75,
-	mobileMaxWidth: 767,
-	mobilePercent: 90,
 	resizeThreshold: 2,
 };
 
 interface UseImageSizesProps {
 	containerRef: React.RefObject<HTMLElement | null>;
 	aspectRatio?: number;
-	isModal?: boolean;
 	maxHeightPercent?: number;
 }
 
 export function useImageSizes({
 	containerRef,
 	aspectRatio = CONFIG.fallbackAspectRatio,
-	isModal = false,
 	maxHeightPercent = 0.8,
 }: UseImageSizesProps): { imageSizes: string } {
 	const [containerWidth, setContainerWidth] = useState(CONFIG.fallbackWidth);
@@ -92,28 +86,11 @@ export function useImageSizes({
 	const imageSizes = useMemo(() => {
 		if (!viewportHeight || isFallback) {
 			const initialComparableWidth = CONFIG.fallbackWidth;
-			if (isModal) {
-				return `(max-width: ${CONFIG.mobileMaxWidth}px) ${CONFIG.mobilePercent}vw, ${initialComparableWidth}px`;
-			}
 			return `(max-width: ${initialComparableWidth}px) 100vw, ${initialComparableWidth}px`;
 		}
 
 		const calculateWidthFromHeight = (height: number): number =>
 			height * aspectRatio;
-
-		if (isModal) {
-			const maxModalHeight = viewportHeight * CONFIG.heightLimitFactor;
-			const widthFromMaxHeight = calculateWidthFromHeight(maxModalHeight);
-			const modalLayoutWidth = Math.min(
-				containerWidth,
-				widthFromMaxHeight,
-				CONFIG.maxModalWidth,
-			);
-			const snappedModalWidth = findNearestImageSize(
-				Math.round(Math.max(1, modalLayoutWidth)),
-			);
-			return `(max-width: ${CONFIG.mobileMaxWidth}px) ${CONFIG.mobilePercent}vw, ${snappedModalWidth}px`;
-		}
 
 		const maxGalleryImageHeight = viewportHeight * maxHeightPercent;
 		const widthFromMaxGalleryHeight = calculateWidthFromHeight(
@@ -132,7 +109,6 @@ export function useImageSizes({
 		aspectRatio,
 		containerWidth,
 		viewportHeight,
-		isModal,
 		maxHeightPercent,
 		isFallback,
 	]);

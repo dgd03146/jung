@@ -2,24 +2,16 @@ import { Box, Flex } from '@jung/design-system/components';
 import * as pageStyles from './PhotoDetailPage.css';
 import * as skeletonStyles from './PhotoDetailSkeleton.css';
 
-interface PhotoDetailSkeletonProps {
-	isModal?: boolean;
-}
-
-export const PhotoDetailSkeleton = ({
-	isModal = true,
-}: PhotoDetailSkeletonProps) => {
+export const PhotoDetailSkeleton = () => {
 	return (
-		<Flex className={pageStyles.container({ isModal })}>
+		<Flex className={pageStyles.container}>
 			<Box
-				className={`${pageStyles.imageWrapper({ isModal })} ${
-					skeletonStyles.skeletonImage
-				}`}
+				className={`${pageStyles.imageWrapper} ${skeletonStyles.skeletonImage}`}
 			/>
 
 			<Flex
 				direction='column'
-				className={pageStyles.content({ isModal })}
+				className={pageStyles.content}
 				gap='5'
 				paddingX='5'
 				paddingY='5'

@@ -34,9 +34,13 @@ export const palette = {
 	white300: '#F2F2F2',
 
 	gray: '#E6E6E6',
+	gray50: '#F2F2F2',
 	gray100: '#B8B8B8',
 	gray200: '#999999',
 	gray300: '#808080',
+	gray400: '#666666',
+	gray500: '#4D4D4D',
+	gray900: '#050505',
 
 	// Utility colors
 	transparent: 'transparent',
