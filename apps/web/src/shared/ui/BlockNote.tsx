@@ -21,21 +21,26 @@ const schema = BlockNoteSchema.create({
 		...defaultBlockSpecs,
 		codeBlock: createCodeBlockSpec({
 			...codeBlockOptions,
-			createHighlighter: () =>
-				codeBlockOptions.createHighlighter!().then((highlighter) => {
-					// Ensure github-light is first so prosemirror-highlight picks it as default
-					const themes = highlighter.getLoadedThemes();
-					if (themes[0] !== 'github-light') {
-						const reordered = [
-							'github-light',
-							...themes.filter((t: string) => t !== 'github-light'),
-						];
-						Object.defineProperty(highlighter, 'getLoadedThemes', {
-							value: () => reordered,
-						});
-					}
-					return highlighter;
-				}),
+			createHighlighter: async () => {
+				const highlighter = await codeBlockOptions.createHighlighter?.();
+				if (!highlighter) {
+					throw new Error('Failed to create code block highlighter');
+				}
+				// prosemirror-highlight uses the first loaded theme as default.
+				// codeBlockOptions bundles themes as [github-dark, github-light],
+				// so we reorder to make github-light the default for light mode.
+				const themes = highlighter.getLoadedThemes();
+				if (themes[0] !== 'github-light') {
+					const reordered = [
+						'github-light',
+						...themes.filter((t: string) => t !== 'github-light'),
+					];
+					Object.defineProperty(highlighter, 'getLoadedThemes', {
+						value: () => reordered,
+					});
+				}
+				return highlighter;
+			},
 		}),
 	},
 });
