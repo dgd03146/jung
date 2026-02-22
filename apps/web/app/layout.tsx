@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
-import { Bebas_Neue, Nanum_Myeongjo, Poppins } from 'next/font/google';
+import {
+	Bebas_Neue,
+	JetBrains_Mono,
+	Nanum_Myeongjo,
+	Poppins,
+} from 'next/font/google';
 import Script from 'next/script';
 import {
 	createOrganizationSchema,
@@ -28,6 +33,13 @@ const nanumMyeongjo = Nanum_Myeongjo({
 	weight: ['400', '700'],
 	subsets: ['latin'],
 	variable: '--font-nanum-myeongjo',
+	display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+	weight: ['400', '500'],
+	subsets: ['latin'],
+	variable: '--font-jetbrains-mono',
 	display: 'swap',
 });
 
@@ -101,7 +113,7 @@ export default function RootLayout({
 	return (
 		<html lang='ko'>
 			<body
-				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable}`}
+				className={`${poppins.className} ${bebasNeue.variable} ${nanumMyeongjo.variable} ${jetbrainsMono.variable}`}
 			>
 				<JsonLd data={createOrganizationSchema()} />
 				{shouldLoadGA4 && (
