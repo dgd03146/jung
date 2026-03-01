@@ -6,8 +6,6 @@ import {
 } from '@/fsd/features/place';
 import { PlacesContent, PlacesContentSkeleton } from '@/fsd/views';
 
-const PLACES_SKELETON_COUNT = 6;
-
 interface PlacesLayoutProps {
 	currentCategory?: string;
 }
@@ -15,16 +13,10 @@ interface PlacesLayoutProps {
 export const PlacesLayout = ({ currentCategory }: PlacesLayoutProps) => {
 	return (
 		<MarkerProvider>
-			<Suspense
-				fallback={
-					<PlaceCategoryNavigationSkeleton length={PLACES_SKELETON_COUNT} />
-				}
-			>
+			<Suspense fallback={<PlaceCategoryNavigationSkeleton />}>
 				<PlaceCategoryNavigation currentCategory={currentCategory} />
 			</Suspense>
-			<Suspense
-				fallback={<PlacesContentSkeleton count={PLACES_SKELETON_COUNT} />}
-			>
+			<Suspense fallback={<PlacesContentSkeleton />}>
 				<PlacesContent />
 			</Suspense>
 		</MarkerProvider>
