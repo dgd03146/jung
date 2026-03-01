@@ -7,7 +7,6 @@ import {
 	Textarea,
 	useToast,
 } from '@jung/design-system/components';
-import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import {
 	GUESTBOOK_COLORS,
@@ -22,7 +21,6 @@ import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
 
 export const CreateMessageForm = () => {
-	const t = useTranslations('guestbook');
 	const showToast = useToast();
 	const { user } = useSupabaseAuth();
 	const [nickname, setNickname] = useState('');
@@ -45,12 +43,12 @@ export const CreateMessageForm = () => {
 		e.preventDefault();
 
 		if (!nickname.trim()) {
-			showToast(t('nicknameRequired'), 'warning');
+			showToast('Please enter a nickname', 'warning');
 			return;
 		}
 
 		if (!message.trim()) {
-			showToast(t('messageRequired'), 'warning');
+			showToast('Please enter a message', 'warning');
 			return;
 		}
 
@@ -103,7 +101,7 @@ export const CreateMessageForm = () => {
 			)}
 
 			<Stack space='6'>
-				<Flex wrap='wrap' gap='2'>
+				<Flex wrap='wrap' gap='1.5'>
 					{GUESTBOOK_EMOJIS.map((emoji) => (
 						<Button
 							key={emoji}
@@ -118,7 +116,7 @@ export const CreateMessageForm = () => {
 					))}
 				</Flex>
 
-				<Flex wrap='wrap' gap='2'>
+				<Flex wrap='wrap' gap='1.5'>
 					{GUESTBOOK_COLORS.map((color) => (
 						<Button
 							key={color}
@@ -141,14 +139,14 @@ export const CreateMessageForm = () => {
 							htmlFor='guestbook-nickname'
 							className={styles.anonymousLabel}
 						>
-							{t('nickname')}
+							Nickname
 						</label>
 						<input
 							id='guestbook-nickname'
 							type='text'
 							value={nickname}
 							onChange={(e) => setNickname(e.target.value)}
-							placeholder={t('nicknamePlaceholder')}
+							placeholder='Enter your nickname'
 							maxLength={NICKNAME_MAX_LENGTH}
 							className={styles.nicknameInput}
 						/>
@@ -159,7 +157,7 @@ export const CreateMessageForm = () => {
 					name='message'
 					value={message}
 					onChange={(e) => handleMessageChange(e.target.value)}
-					placeholder={t('messagePlaceholder')}
+					placeholder='Leave a message!'
 					maxLength={MESSAGE_MAX_LENGTH}
 					rows={2}
 					className={styles.textarea({
@@ -173,16 +171,20 @@ export const CreateMessageForm = () => {
 					) : (
 						<Button
 							type='submit'
-							variant='primary'
+							variant='secondary'
+							fontSize='sm'
+							fontWeight='medium'
+							borderRadius='md'
+							flexShrink={0}
+							loading={createAnonymousMutation.isPending}
 							disabled={
 								!nickname.trim() ||
 								!message.trim() ||
 								createAnonymousMutation.isPending
 							}
+							suffix={selectedEmoji}
 						>
-							{createAnonymousMutation.isPending
-								? t('submitting')
-								: `${selectedEmoji} ${t('submit')}`}
+							{createAnonymousMutation.isPending ? 'Posting...' : 'Post'}
 						</Button>
 					)}
 				</Flex>
