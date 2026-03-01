@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { PLACE_CATEGORY_CACHE, PLACE_DEFAULTS } from '@/fsd/entities/place';
 import { useTRPC } from '@/fsd/shared';
-import { Link, usePathname } from '@/i18n/routing';
+import { Link } from '@/i18n/routing';
 import * as styles from './PlaceCategoryNavigation.css';
 
 interface Props {
@@ -14,7 +14,6 @@ export const PlaceCategoryNavigation = ({
 	currentCategory = PLACE_DEFAULTS.CAT,
 }: Props) => {
 	const trpc = useTRPC();
-	const pathname = usePathname();
 	const { data: categories } = useSuspenseQuery(
 		trpc.category.getCategories.queryOptions(
 			{ type: 'places' },
@@ -25,7 +24,8 @@ export const PlaceCategoryNavigation = ({
 		),
 	);
 
-	const isAllActive = currentCategory === PLACE_DEFAULTS.CAT;
+	const normalizedCategory = currentCategory.toLowerCase();
+	const isAllActive = normalizedCategory === PLACE_DEFAULTS.CAT;
 
 	return (
 		<nav className={styles.nav} aria-label='Places navigation'>
@@ -38,8 +38,7 @@ export const PlaceCategoryNavigation = ({
 				All
 			</Link>
 			{categories.map((category) => {
-				const isActive =
-					category.name.toLowerCase() === currentCategory.toLowerCase();
+				const isActive = category.name.toLowerCase() === normalizedCategory;
 				return (
 					<Link
 						key={category.id}

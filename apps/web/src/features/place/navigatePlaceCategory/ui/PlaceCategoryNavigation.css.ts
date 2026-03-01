@@ -1,6 +1,8 @@
 import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
+export { nav } from './shared.css';
+
 const tabBase = style({
 	fontFamily: 'var(--font-bebas)',
 	fontSize: '0.875rem',
@@ -10,12 +12,6 @@ const tabBase = style({
 	padding: '8px 0',
 	borderBottom: '2px solid transparent',
 	transition: 'color 0.2s, border-color 0.2s',
-});
-
-export const nav = style({
-	display: 'flex',
-	gap: '20px',
-	marginBottom: '16px',
 });
 
 export const tab = style([
