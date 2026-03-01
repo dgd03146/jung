@@ -1,15 +1,10 @@
-import { Flex } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { TRENDING_PHOTO_DEFAULTS } from '@/fsd/entities';
 import { FilteredPhotoList } from '@/fsd/features/gallery';
-import {
-	getGoogleVerificationCode,
-	LoadingSpinner,
-	SITE_URL,
-} from '@/fsd/shared';
+import { getGoogleVerificationCode, SITE_URL } from '@/fsd/shared';
 import { getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { type Locale, routing } from '@/i18n/routing';
 
@@ -93,13 +88,7 @@ export default async function TrendingPage({ params }: Props) {
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense
-				fallback={
-					<Flex justify='center' align='center' height='1/4'>
-						<LoadingSpinner size='medium' />
-					</Flex>
-				}
-			>
+			<Suspense fallback={null}>
 				<FilteredPhotoList isTrending />
 			</Suspense>
 		</HydrationBoundary>

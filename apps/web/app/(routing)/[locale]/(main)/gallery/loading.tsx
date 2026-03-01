@@ -1,5 +1,16 @@
-import { GalleryListSkeleton } from '@/fsd/entities/gallery';
+import { LoadingSpinner } from '@/fsd/shared/ui';
 
 export default function Loading() {
-	return <GalleryListSkeleton count={12} />;
+	return (
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				minHeight: '50vh',
+			}}
+		>
+			<LoadingSpinner size='large' />
+		</div>
+	);
 }
