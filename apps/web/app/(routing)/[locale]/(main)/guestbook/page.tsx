@@ -74,9 +74,9 @@ export default async function Page({ params }: Props) {
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<Container position='relative' marginX='auto'>
 				<Stack
-					gap={{ base: '6', laptop: '10' }}
+					gap={{ base: '4', laptop: '6' }}
 					align='center'
-					marginY={{ base: '6', laptop: '10' }}
+					marginY={{ base: '4', laptop: '6' }}
 				>
 					<CreateMessageForm />
 				</Stack>

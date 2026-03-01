@@ -6,9 +6,9 @@ export default function Loading() {
 	return (
 		<Container position='relative' marginX='auto'>
 			<Stack
-				gap={{ base: '6', laptop: '10' }}
+				gap={{ base: '4', laptop: '6' }}
 				align='center'
-				marginY={{ base: '6', laptop: '10' }}
+				marginY={{ base: '4', laptop: '6' }}
 			>
 				<CreateMessageFormSkeleton />
 			</Stack>
