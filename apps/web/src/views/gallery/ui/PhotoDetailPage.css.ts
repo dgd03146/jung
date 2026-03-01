@@ -23,7 +23,7 @@ export const imageWrapper = style({
 	position: 'relative',
 	width: '60%',
 	minHeight: '100vh',
-	backgroundColor: palette.black,
+	backgroundColor: palette.gray900,
 	overflow: 'hidden',
 	'@media': {
 		'(max-width: 767px)': {
