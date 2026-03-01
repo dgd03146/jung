@@ -1,7 +1,13 @@
 import { PlaceSkeleton } from '@/fsd/entities/place';
 import * as styles from './PlacesContent.css';
 
-export const PlacesContentSkeleton = ({ count = 6 }: { count?: number }) => {
+const DEFAULT_SKELETON_COUNT = 6;
+
+export const PlacesContentSkeleton = ({
+	count = DEFAULT_SKELETON_COUNT,
+}: {
+	count?: number;
+}) => {
 	return (
 		<div className={styles.splitContainer}>
 			<div className={styles.listSection}>

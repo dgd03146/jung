@@ -3,6 +3,8 @@
 import { Box, Flex, Typography } from '@jung/design-system/components';
 import { MdLocationOff } from 'react-icons/md';
 
+const EMPTY_STATE_ICON_SIZE = 24;
+
 export function PlaceEmptyState() {
 	return (
 		<Flex
@@ -19,7 +21,7 @@ export function PlaceEmptyState() {
 				background='primary50'
 				color='primary'
 			>
-				<MdLocationOff size={24} />
+				<MdLocationOff size={EMPTY_STATE_ICON_SIZE} />
 			</Box>
 
 			<Typography.SubText level={2} color='black100'>

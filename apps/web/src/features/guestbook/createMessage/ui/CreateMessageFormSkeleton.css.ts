@@ -1,5 +1,8 @@
 import { keyframes, style } from '@vanilla-extract/css';
 
+const ROW_GAP = '8px';
+const RADIUS_MD = '6px';
+
 const shimmer = keyframes({
 	'0%': { backgroundPosition: '-468px 0' },
 	'100%': { backgroundPosition: '468px 0' },
@@ -31,7 +34,7 @@ export const formSkeleton = style({
 
 export const pickerRow = style({
 	display: 'flex',
-	gap: '8px',
+	gap: ROW_GAP,
 	flexWrap: 'wrap',
 });
 
@@ -40,7 +43,7 @@ export const emojiItem = style([
 	{
 		width: '32px',
 		height: '32px',
-		borderRadius: '6px',
+		borderRadius: RADIUS_MD,
 	},
 ]);
 
@@ -58,7 +61,7 @@ export const textareaBlock = style([
 	{
 		width: '100%',
 		height: '64px',
-		borderRadius: '6px',
+		borderRadius: RADIUS_MD,
 	},
 ]);
 
@@ -67,7 +70,7 @@ export const buttonBlock = style([
 	{
 		width: '80px',
 		height: '36px',
-		borderRadius: '6px',
+		borderRadius: RADIUS_MD,
 		alignSelf: 'flex-end',
 	},
 ]);

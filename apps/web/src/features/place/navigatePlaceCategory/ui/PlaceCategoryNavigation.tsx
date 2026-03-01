@@ -25,7 +25,7 @@ export const PlaceCategoryNavigation = ({
 	);
 
 	const normalizedCategory = currentCategory.toLowerCase();
-	const isAllActive = normalizedCategory === PLACE_DEFAULTS.CAT;
+	const isAllActive = normalizedCategory === PLACE_DEFAULTS.CAT.toLowerCase();
 
 	return (
 		<nav className={styles.nav} aria-label='Places navigation'>
