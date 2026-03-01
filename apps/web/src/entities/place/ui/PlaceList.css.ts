@@ -12,6 +12,21 @@ export const masonryItem = style({
 	marginBottom: '16px',
 });
 
+export const featuredItem = style({
+	columnSpan: 'all',
+	marginBottom: '16px',
+});
+
+export const masonryGrid = style({
+	columns: 1,
+	columnGap: '16px',
+	'@media': {
+		[mediaQueries.tablet]: {
+			columns: 2,
+		},
+	},
+});
+
 export const placeList = recipe({
 	base: {},
 

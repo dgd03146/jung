@@ -8,7 +8,7 @@ import * as styles from './PlaceCard.css';
 
 interface PlaceCardProps {
 	place: Place;
-	variant?: 'default' | 'compact';
+	variant?: 'default' | 'compact' | 'featured';
 	renderTopRight?: () => React.ReactNode;
 	priority?: boolean;
 }
@@ -19,6 +19,63 @@ export const PlaceCard = ({
 	priority = false,
 	renderTopRight,
 }: PlaceCardProps) => {
+	if (variant === 'featured') {
+		return (
+			<Box className={styles.cardWrapper({ variant })}>
+				<Link
+					href={`/places/${place.id}`}
+					aria-label={`View details for ${place.title}`}
+				>
+					<Card
+						boxShadow='primary'
+						variant='outline'
+						display='flex'
+						flexDirection='row'
+						height='full'
+						className={styles.card({ variant })}
+						borderRadius='lg'
+					>
+						<Card.Media
+							className={`${styles.imageWrapper({ variant })} ${styles.imageWrapperHoverable}`}
+						>
+							<BlurImage
+								src={getImageUrl(place.photos[0]?.url ?? '')}
+								alt={place.title}
+								fill
+								priority={priority}
+								sizes='(max-width: 768px) 100vw, 40vw'
+							/>
+							{place.category && (
+								<span className={styles.categoryBadge}>{place.category}</span>
+							)}
+							<div className={styles.hoverOverlay} />
+						</Card.Media>
+
+						<div className={styles.featuredContent}>
+							{place.category && (
+								<p className={styles.featuredCategory}>{place.category}</p>
+							)}
+							<p className={styles.featuredTitle}>{place.title}</p>
+							{place.description && (
+								<p className={styles.featuredDescription}>
+									{place.description}
+								</p>
+							)}
+							<div className={styles.featuredAddress}>
+								<IoLocationOutline size={13} />
+								<span>{place.address}</span>
+							</div>
+						</div>
+					</Card>
+				</Link>
+
+				{renderTopRight && (
+					<Box className={styles.imageOverlay}>{renderTopRight()}</Box>
+				)}
+			</Box>
+		);
+	}
+
 	return (
 		<Box className={styles.cardWrapper({ variant })}>
 			<Link

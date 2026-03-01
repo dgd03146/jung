@@ -55,6 +55,12 @@ export const cardWrapper = recipe({
 			compact: {
 				width: '300px',
 			},
+			featured: {
+				transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+				':hover': {
+					transform: 'translateY(-3px)',
+				},
+			},
 		},
 	},
 	defaultVariants: {
@@ -87,7 +93,7 @@ export const imageWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				aspectRatio: '4/3',
+				aspectRatio: '16/9',
 				selectors: {
 					'&:hover::after': {
 						opacity: 1,
@@ -97,6 +103,16 @@ export const imageWrapper = recipe({
 			},
 			compact: {
 				aspectRatio: '1/1',
+			},
+			featured: {
+				borderRadius: '8px 0 0 8px',
+				aspectRatio: '4/3',
+				selectors: {
+					'&:hover::after': {
+						opacity: 1,
+						animation: `${shimmer} 1s ease-in-out`,
+					},
+				},
 			},
 		},
 	},
@@ -201,9 +217,62 @@ export const card = recipe({
 				minHeight: 'fit-content',
 			},
 			default: {},
+			featured: {
+				flexDirection: 'row',
+				minHeight: '200px',
+			},
 		},
 	},
 	defaultVariants: {
 		variant: 'default',
 	},
+});
+
+export const featuredContent = style({
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	padding: '20px 24px',
+	flex: 1,
+});
+
+export const featuredCategory = style({
+	fontSize: '0.68rem',
+	fontWeight: '700',
+	letterSpacing: '0.08em',
+	textTransform: 'uppercase',
+	color: palette.primary,
+	marginBottom: '8px',
+});
+
+export const featuredTitle = style({
+	fontSize: '1.15rem',
+	fontWeight: '700',
+	lineHeight: 1.3,
+	color: palette.text,
+	marginBottom: '8px',
+	overflow: 'hidden',
+	display: '-webkit-box',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: '2',
+});
+
+export const featuredDescription = style({
+	fontSize: '0.82rem',
+	color: palette.gray300,
+	lineHeight: 1.55,
+	overflow: 'hidden',
+	display: '-webkit-box',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: '3',
+	marginBottom: '12px',
+});
+
+export const featuredAddress = style({
+	display: 'flex',
+	alignItems: 'center',
+	gap: '4px',
+	fontSize: '0.75rem',
+	color: palette.primary200,
+	marginTop: 'auto',
 });
