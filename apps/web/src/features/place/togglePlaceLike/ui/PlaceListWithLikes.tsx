@@ -4,7 +4,7 @@ import { TogglePlaceLikeButton } from './TogglePlaceLikeButton';
 
 interface PlaceListWithLikesProps {
 	places: Place[];
-	variant?: 'grid' | 'slideUp';
+	variant?: 'grid' | 'slideUp' | 'masonry';
 	cardVariant?: 'default' | 'compact';
 	priorityCount?: number;
 }

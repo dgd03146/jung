@@ -5,22 +5,25 @@ export { nav } from './shared.css';
 
 const tabBase = style({
 	fontFamily: 'var(--font-bebas)',
-	fontSize: '0.875rem',
-	letterSpacing: '0.04em',
+	fontSize: '0.75rem',
+	letterSpacing: '0.06em',
 	textDecoration: 'none',
 	textTransform: 'uppercase',
-	padding: '8px 0',
-	borderBottom: '2px solid transparent',
-	transition: 'color 0.2s, border-color 0.2s',
+	padding: '6px 14px',
+	borderRadius: '100px',
+	transition: 'background 0.2s, color 0.2s, border-color 0.2s',
+	whiteSpace: 'nowrap',
 });
 
 export const tab = style([
 	tabBase,
 	{
-		color: palette.primary100,
+		color: palette.gray300,
+		border: `1.5px solid ${palette.gray200}`,
 		selectors: {
 			'&:hover': {
 				color: palette.primary200,
+				borderColor: palette.primary200,
 			},
 		},
 	},
@@ -29,7 +32,8 @@ export const tab = style([
 export const tabActive = style([
 	tabBase,
 	{
-		color: palette.primary,
-		borderBottom: `2px solid ${palette.primary}`,
+		color: palette.white,
+		backgroundColor: palette.primary,
+		border: '1.5px solid transparent',
 	},
 ]);

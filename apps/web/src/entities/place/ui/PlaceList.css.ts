@@ -1,5 +1,5 @@
 import { mediaQueries, palette } from '@jung/design-system/tokens';
-import { keyframes } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 const slideUpAnimation = keyframes({
@@ -7,11 +7,25 @@ const slideUpAnimation = keyframes({
 	'100%': { transform: 'translateY(0)' },
 });
 
+export const masonryItem = style({
+	breakInside: 'avoid',
+	marginBottom: '16px',
+});
+
 export const placeList = recipe({
 	base: {},
 
 	variants: {
 		variant: {
+			masonry: {
+				columns: 1,
+				columnGap: '16px',
+				'@media': {
+					[mediaQueries.tablet]: {
+						columns: 2,
+					},
+				},
+			},
 			grid: {
 				display: 'grid',
 				gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',

@@ -18,21 +18,38 @@ export const imageOverlay = style({
 	pointerEvents: 'auto',
 });
 
+export const categoryBadge = style({
+	position: 'absolute',
+	top: '10px',
+	left: '10px',
+	zIndex: 2,
+	backgroundColor: 'rgba(255,255,255,0.88)',
+	backdropFilter: 'blur(6px)',
+	borderRadius: '20px',
+	padding: '3px 10px',
+	fontSize: '0.68rem',
+	fontWeight: '600',
+	letterSpacing: '0.04em',
+	textTransform: 'uppercase',
+	color: palette.primary,
+	pointerEvents: 'none',
+});
+
 export const cardWrapper = recipe({
 	base: {
 		position: 'relative',
 		display: 'block',
 		width: '100%',
 		textDecoration: 'none',
-		transition: 'all 0.3s ease',
 		contentVisibility: 'auto',
-		containIntrinsicSize: '0 420px',
+		containIntrinsicSize: '0 360px',
 	},
 	variants: {
 		variant: {
 			default: {
+				transition: 'transform 0.25s ease, box-shadow 0.25s ease',
 				':hover': {
-					transform: 'translateY(-4px)',
+					transform: 'translateY(-5px)',
 				},
 			},
 			compact: {
@@ -53,12 +70,6 @@ export const imageWrapper = recipe({
 		flexShrink: '0',
 		backgroundColor: palette.gray100,
 		borderRadius: '8px 8px 0 0',
-		minHeight: '200px',
-		'::before': {
-			content: '""',
-			display: 'block',
-			paddingTop: '66.67%',
-		},
 		'::after': {
 			content: '""',
 			position: 'absolute',
@@ -76,13 +87,8 @@ export const imageWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				height: '240px',
-
+				aspectRatio: '4/3',
 				selectors: {
-					'&:hover': {
-						transform: 'scale(1.01)',
-						boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
-					},
 					'&:hover::after': {
 						opacity: 1,
 						animation: `${shimmer} 1s ease-in-out`,
@@ -90,20 +96,72 @@ export const imageWrapper = recipe({
 				},
 			},
 			compact: {
-				height: '180px',
-
-				selectors: {
-					'&:hover': {
-						transform: 'none',
-						boxShadow: 'none',
-					},
-				},
+				aspectRatio: '1/1',
 			},
 		},
 	},
 	defaultVariants: {
 		variant: 'default',
 	},
+});
+
+// marker class — must be defined before hoverOverlay/hoverContent reference it
+export const imageWrapperHoverable = style({});
+
+export const hoverOverlay = style({
+	position: 'absolute',
+	bottom: 0,
+	left: 0,
+	right: 0,
+	height: '60%',
+	background:
+		'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+	opacity: 0,
+	transition: 'opacity 0.3s ease',
+	pointerEvents: 'none',
+	zIndex: 1,
+	selectors: {
+		[`${imageWrapperHoverable}:hover &`]: { opacity: 1 },
+	},
+});
+
+export const hoverContent = style({
+	position: 'absolute',
+	bottom: 0,
+	left: 0,
+	right: 0,
+	padding: '12px 14px',
+	opacity: 0,
+	transform: 'translateY(6px)',
+	transition: 'opacity 0.3s ease, transform 0.3s ease',
+	pointerEvents: 'none',
+	zIndex: 2,
+	selectors: {
+		[`${imageWrapperHoverable}:hover &`]: {
+			opacity: 1,
+			transform: 'translateY(0)',
+		},
+	},
+});
+
+export const hoverTitle = style({
+	color: palette.white,
+	fontSize: '0.875rem',
+	fontWeight: '600',
+	lineHeight: 1.3,
+	marginBottom: '4px',
+	overflow: 'hidden',
+	display: '-webkit-box',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: '1',
+});
+
+export const hoverAddress = style({
+	color: 'rgba(255,255,255,0.8)',
+	fontSize: '0.72rem',
+	overflow: 'hidden',
+	whiteSpace: 'nowrap',
+	textOverflow: 'ellipsis',
 });
 
 export const likeButton = style({
@@ -133,8 +191,7 @@ export const likeButton = style({
 
 export const locationIcon = style({
 	flexShrink: 0,
-
-	color: palette.primary,
+	color: palette.primary200,
 });
 
 export const card = recipe({
@@ -143,9 +200,7 @@ export const card = recipe({
 			compact: {
 				minHeight: 'fit-content',
 			},
-			default: {
-				minHeight: '416px',
-			},
+			default: {},
 		},
 	},
 	defaultVariants: {

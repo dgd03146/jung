@@ -2,6 +2,7 @@ import { style } from '@vanilla-extract/css';
 
 export const nav = style({
 	display: 'flex',
-	gap: '20px',
+	gap: '8px',
+	flexWrap: 'wrap',
 	marginBottom: '16px',
 });

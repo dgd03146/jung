@@ -15,7 +15,7 @@ export const splitContainer = style({
 
 	'@media': {
 		[mediaQueries.tablet]: {
-			gridTemplateColumns: '1fr 1fr',
+			gridTemplateColumns: '55fr 45fr',
 			gap: '20px',
 		},
 	},

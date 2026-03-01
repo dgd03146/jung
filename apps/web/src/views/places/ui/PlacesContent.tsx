@@ -34,7 +34,7 @@ export const PlacesContent = () => {
 	return (
 		<div className={styles.splitContainer}>
 			<div className={styles.listSection}>
-				<PlaceListWithLikes places={places} />
+				<PlaceListWithLikes places={places} variant='masonry' />
 				<Flex justify='center' align='center' minHeight='10' ref={ref}>
 					{isFetchingNextPage && hasNextPage && <LoadingSpinner size='small' />}
 				</Flex>

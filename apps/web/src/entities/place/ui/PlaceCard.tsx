@@ -34,7 +34,9 @@ export const PlaceCard = ({
 					className={styles.card({ variant })}
 					borderRadius='lg'
 				>
-					<Card.Media className={styles.imageWrapper({ variant })}>
+					<Card.Media
+						className={`${styles.imageWrapper({ variant })}${variant === 'default' ? ` ${styles.imageWrapperHoverable}` : ''}`}
+					>
 						<BlurImage
 							src={getImageUrl(place.photos[0]?.url ?? '')}
 							alt={place.title}
@@ -51,10 +53,22 @@ export const PlaceCard = ({
 										].join(', ')
 							}
 						/>
+						{place.category && (
+							<span className={styles.categoryBadge}>{place.category}</span>
+						)}
+						{variant === 'default' && (
+							<>
+								<div className={styles.hoverOverlay} />
+								<div className={styles.hoverContent}>
+									<p className={styles.hoverTitle}>{place.title}</p>
+									<p className={styles.hoverAddress}>{place.address}</p>
+								</div>
+							</>
+						)}
 					</Card.Media>
 
 					<Card.Content
-						rowGap={variant === 'compact' ? '1' : '4'}
+						rowGap={variant === 'compact' ? '1' : '3'}
 						padding={variant === 'compact' ? '2' : '4'}
 						display='flex'
 						flexDirection='column'
@@ -73,11 +87,11 @@ export const PlaceCard = ({
 						)}
 
 						<Flex align='center' gap='1.5' marginTop='auto'>
-							<IoLocationOutline size={16} className={styles.locationIcon} />
+							<IoLocationOutline size={14} className={styles.locationIcon} />
 							<Card.Description>
 								<Typography.SubText
 									level={3}
-									truncate='two'
+									truncate='single'
 									fontWeight='normal'
 								>
 									{place.address}
