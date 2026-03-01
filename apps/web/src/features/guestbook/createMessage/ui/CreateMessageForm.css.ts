@@ -168,22 +168,48 @@ export const anonymousLabel = style({
 	fontWeight: 500,
 });
 
-export const socialIconButton = style({
+const socialIconBase = {
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
 	width: '28px',
 	height: '28px',
 	borderRadius: '6px',
-	border: '1px solid #E2E8F0',
-	backgroundColor: '#F8FAFC',
 	cursor: 'pointer',
 	transition: 'all 0.2s ease',
 	padding: 0,
+} as const;
+
+export const socialIconButton = style({
+	...socialIconBase,
+	border: '1px solid #E2E8F0',
+	backgroundColor: '#F8FAFC',
 
 	':hover': {
 		backgroundColor: '#EDF2F7',
 		borderColor: '#CBD5E1',
+	},
+});
+
+export const kakaoIconButton = style({
+	...socialIconBase,
+	border: '1px solid #F5E14D',
+	backgroundColor: '#FEE500',
+	color: '#191919',
+
+	':hover': {
+		backgroundColor: '#F5D800',
+	},
+});
+
+export const githubIconButton = style({
+	...socialIconBase,
+	border: '1px solid #2D333B',
+	backgroundColor: '#24292F',
+	color: 'white',
+
+	':hover': {
+		backgroundColor: '#1B1F23',
 	},
 });
 

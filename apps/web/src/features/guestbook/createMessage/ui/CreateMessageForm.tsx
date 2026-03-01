@@ -187,7 +187,7 @@ export const CreateMessageForm = () => {
 							</button>
 							<button
 								type='button'
-								className={styles.socialIconButton}
+								className={styles.kakaoIconButton}
 								onClick={() =>
 									handleSocialLogin('kakao', { redirectTo: pathname })
 								}
@@ -197,7 +197,7 @@ export const CreateMessageForm = () => {
 							</button>
 							<button
 								type='button'
-								className={styles.socialIconButton}
+								className={styles.githubIconButton}
 								onClick={() =>
 									handleSocialLogin('github', { redirectTo: pathname })
 								}
