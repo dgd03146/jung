@@ -13,7 +13,9 @@ interface ErrorBoundaryProps {
 export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
 	const t = useTranslations('error');
 	useEffect(() => {
-		console.error(error);
+		if (process.env.NODE_ENV === 'development') {
+			console.error('[ErrorBoundary]', error.message);
+		}
 		// TODO: Implement error logging service call (Sentry, LogRocket)
 	}, [error]);
 

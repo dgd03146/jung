@@ -11,7 +11,9 @@ interface MessageWallErrorProps {
 
 export const MessageWallError = ({ error, onReset }: MessageWallErrorProps) => {
 	useEffect(() => {
-		console.error(error);
+		if (process.env.NODE_ENV === 'development') {
+			console.error('[MessageWallError]', error.message);
+		}
 	}, [error]);
 
 	return (
