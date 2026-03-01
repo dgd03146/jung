@@ -7,14 +7,18 @@ import {
 	Textarea,
 	useToast,
 } from '@jung/design-system/components';
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { SiKakaotalk } from 'react-icons/si';
+import { VscGithub } from 'react-icons/vsc';
 import {
 	GUESTBOOK_COLORS,
 	GUESTBOOK_EMOJIS,
 	MESSAGE_MAX_LENGTH,
 	NICKNAME_MAX_LENGTH,
 } from '@/fsd/entities/guestbook';
+import { useSocialLogin } from '@/fsd/features/auth';
 import { useSupabaseAuth, useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
@@ -22,9 +26,10 @@ import { CreateMessageButton } from './CreateMessageButton';
 import * as styles from './CreateMessageForm.css';
 
 export const CreateMessageForm = () => {
-	const t = useTranslations('guestbook');
 	const showToast = useToast();
 	const { user } = useSupabaseAuth();
+	const { handleSocialLogin } = useSocialLogin();
+	const pathname = usePathname();
 	const [nickname, setNickname] = useState('');
 	const {
 		message,
@@ -45,12 +50,12 @@ export const CreateMessageForm = () => {
 		e.preventDefault();
 
 		if (!nickname.trim()) {
-			showToast(t('nicknameRequired'), 'warning');
+			showToast('Please enter a nickname', 'warning');
 			return;
 		}
 
 		if (!message.trim()) {
-			showToast(t('messageRequired'), 'warning');
+			showToast('Please enter a message', 'warning');
 			return;
 		}
 
@@ -103,7 +108,7 @@ export const CreateMessageForm = () => {
 			)}
 
 			<Stack space='6'>
-				<Flex wrap='wrap' gap='2'>
+				<Flex wrap='wrap' gap='1.5'>
 					{GUESTBOOK_EMOJIS.map((emoji) => (
 						<Button
 							key={emoji}
@@ -118,7 +123,7 @@ export const CreateMessageForm = () => {
 					))}
 				</Flex>
 
-				<Flex wrap='wrap' gap='2'>
+				<Flex wrap='wrap' gap='1.5'>
 					{GUESTBOOK_COLORS.map((color) => (
 						<Button
 							key={color}
@@ -141,14 +146,14 @@ export const CreateMessageForm = () => {
 							htmlFor='guestbook-nickname'
 							className={styles.anonymousLabel}
 						>
-							{t('nickname')}
+							Nickname
 						</label>
 						<input
 							id='guestbook-nickname'
 							type='text'
 							value={nickname}
 							onChange={(e) => setNickname(e.target.value)}
-							placeholder={t('nicknamePlaceholder')}
+							placeholder='Enter your nickname'
 							maxLength={NICKNAME_MAX_LENGTH}
 							className={styles.nicknameInput}
 						/>
@@ -159,7 +164,7 @@ export const CreateMessageForm = () => {
 					name='message'
 					value={message}
 					onChange={(e) => handleMessageChange(e.target.value)}
-					placeholder={t('messagePlaceholder')}
+					placeholder='Leave a message!'
 					maxLength={MESSAGE_MAX_LENGTH}
 					rows={2}
 					className={styles.textarea({
@@ -167,13 +172,47 @@ export const CreateMessageForm = () => {
 					})}
 				/>
 
-				<Flex justifyContent='flex-end'>
+				<Flex justifyContent='flex-end' align='center' gap='1.5'>
+					{!isLoggedIn && (
+						<Flex align='center' gap='1' marginRight='1'>
+							<button
+								type='button'
+								className={styles.socialIconButton}
+								onClick={() =>
+									handleSocialLogin('google', { redirectTo: pathname })
+								}
+								aria-label='Sign in with Google'
+							>
+								<FcGoogle size={16} />
+							</button>
+							<button
+								type='button'
+								className={styles.kakaoIconButton}
+								onClick={() =>
+									handleSocialLogin('kakao', { redirectTo: pathname })
+								}
+								aria-label='Sign in with Kakao'
+							>
+								<SiKakaotalk size={14} />
+							</button>
+							<button
+								type='button'
+								className={styles.githubIconButton}
+								onClick={() =>
+									handleSocialLogin('github', { redirectTo: pathname })
+								}
+								aria-label='Sign in with GitHub'
+							>
+								<VscGithub size={14} />
+							</button>
+						</Flex>
+					)}
 					{isLoggedIn ? (
 						<CreateMessageButton emoji={selectedEmoji} />
 					) : (
-						<Button
+						<button
 							type='submit'
-							variant='primary'
+							className={styles.postButton}
 							disabled={
 								!nickname.trim() ||
 								!message.trim() ||
@@ -181,9 +220,9 @@ export const CreateMessageForm = () => {
 							}
 						>
 							{createAnonymousMutation.isPending
-								? t('submitting')
-								: `${selectedEmoji} ${t('submit')}`}
-						</Button>
+								? 'Posting...'
+								: `Post ${selectedEmoji}`}
+						</button>
 					)}
 				</Flex>
 			</Stack>

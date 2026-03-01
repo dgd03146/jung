@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { useEffect } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import * as styles from './MessageWallError.css';
 
@@ -10,41 +10,35 @@ interface MessageWallErrorProps {
 }
 
 export const MessageWallError = ({ error, onReset }: MessageWallErrorProps) => {
+	useEffect(() => {
+		if (process.env.NODE_ENV === 'development') {
+			console.error('[MessageWallError]', error.message);
+		}
+	}, [error]);
+
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.5 }}
-			className={styles.container}
-		>
-			<motion.div
-				initial={{ scale: 0.8 }}
-				animate={{ scale: 1 }}
-				transition={{
-					type: 'spring' as const,
-					stiffness: 260,
-					damping: 20,
-					delay: 0.2,
-				}}
-				className={styles.content}
-			>
+		<div className={styles.container}>
+			<div className={styles.content}>
 				<div className={styles.iconWrapper}>
-					<FiAlertCircle size={28} />
+					<FiAlertCircle size={22} />
 				</div>
-				<h3 className={styles.title}>Unable to Load Guestbook</h3>
-				<p className={styles.description}>Please try again in a moment</p>
-				<p className={styles.errorMessage}>{error.message}</p>
+				<h3 className={styles.title}>Unable to load messages</h3>
+				<p className={styles.description}>
+					Something went wrong. Please try again.
+				</p>
+				{process.env.NODE_ENV === 'development' && (
+					<p className={styles.errorMessage}>{error.message}</p>
+				)}
 				{onReset && (
-					<motion.button
-						whileHover={{ scale: 1.02 }}
-						whileTap={{ scale: 0.98 }}
+					<button
+						type='button'
 						onClick={onReset}
 						className={styles.refreshButton}
 					>
-						Refresh
-					</motion.button>
+						Try again
+					</button>
 				)}
-			</motion.div>
-		</motion.div>
+			</div>
+		</div>
 	);
 };

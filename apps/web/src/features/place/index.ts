@@ -1,5 +1,8 @@
-export { FilterPlaceCategory } from './filterPlaceCategory/ui/FilterPlaceCategory';
-export { FilterPlaceCategorySkeleton } from './filterPlaceCategory/ui/FilterPlaceCategorySkeleton';
+export { usePlaceListQuery } from './listPlaces/api/usePlaceListQuery';
+export {
+	PlaceCategoryNavigation,
+	PlaceCategoryNavigationSkeleton,
+} from './navigatePlaceCategory';
 export { SelectMarker } from './selectMarker/ui/SelectMarker';
 export { SharePlaceButton } from './sharePlace/ui/SharePlaceButton';
 export { useTogglePlaceLikeMutation } from './togglePlaceLike/api/useTogglePlaceLikeMutation';
@@ -11,7 +14,6 @@ export {
 	PlaceViewProvider,
 	usePlaceView,
 } from './togglePlaceView/model/PlaceViewContext';
-export { TogglePlaceListButton } from './togglePlaceView/ui/TogglePlaceListButton';
 export { TogglePlaceViewButton } from './togglePlaceView/ui/ToggleViewButton';
 export { MarkerProvider, useMarker } from './viewMap/model/MarkerContext';
 export { useMapLoad } from './viewMap/model/useMapLoad';

@@ -1,5 +1,6 @@
 import { palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
+import { ALBUM_OPTIONS } from '../config/gallery';
 
 const shimmer = keyframes({
 	'0%': {
@@ -34,7 +35,7 @@ const skeletonShimmer = style({
 
 export const galleryGrid = style({
 	display: 'grid',
-	gap: '24px',
+	gap: `${ALBUM_OPTIONS.SPACING}px`,
 	gridTemplateColumns: 'repeat(2, 1fr)',
 
 	'@media': {

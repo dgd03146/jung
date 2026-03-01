@@ -3,22 +3,23 @@ import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const form = style({
-	padding: '1rem',
+	padding: '0.75rem',
 	backgroundColor: 'white',
-	borderRadius: '16px',
-	boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+	borderRadius: '12px',
+	boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
 });
 
 export const textarea = recipe({
 	base: {
 		width: '100%',
-		padding: '14px 16px',
-		borderRadius: '8px',
+		padding: '12px 14px',
+		borderRadius: '6px',
 		border: '1px solid #E2E8F0',
 		resize: 'none',
 		fontSize: '14px',
 
-		transition: 'all 0.2s ease-in-out',
+		transition:
+			'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
 		marginBottom: '0',
 		backgroundColor: '#F8FAFC',
 
@@ -70,17 +71,17 @@ export const textarea = recipe({
 });
 
 export const emojiButton = style({
-	padding: '8px',
-	borderRadius: '8px',
+	padding: '6px',
+	borderRadius: '6px',
 	backgroundColor: '#f3f4f6',
 	cursor: 'pointer',
 	border: 'none',
-	transition: 'all 0.2s ease',
+	transition: 'background-color 0.2s ease, transform 0.2s ease',
 	fontSize: '1rem',
 
 	':hover': {
 		backgroundColor: '#e5e7eb',
-		transform: 'scale(1.1)',
+		transform: 'scale(1.05)',
 	},
 
 	':focus': {
@@ -99,12 +100,12 @@ export const emojiButtonSelected = style({
 });
 
 export const colorButton = style({
-	width: '24px',
-	height: '24px',
-	borderRadius: '4px',
-	border: '2px solid #e5e7eb',
+	width: '22px',
+	height: '22px',
+	borderRadius: '3px',
+	border: '1.5px solid #e5e7eb',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'transform 0.2s ease, box-shadow 0.2s ease',
 	padding: 0,
 
 	':hover': {
@@ -118,16 +119,16 @@ export const colorButton = style({
 
 	selectors: {
 		'&[style*="background-color: #FFFFFF"]': {
-			border: '2px solid #d1d5db',
+			border: '1.5px solid #d1d5db',
 		},
 		'&[style*="background-color: #FFFFFF"]:hover': {
-			border: '2px solid #9ca3af',
+			border: '1.5px solid #9ca3af',
 		},
 	},
 });
 
 export const colorButtonSelected = style({
-	border: `2px solid ${palette.primary} !important`,
+	border: `1.5px solid ${palette.primary} !important`,
 	transform: 'scale(1.1)',
 });
 
@@ -138,13 +139,13 @@ export const disabled = style({
 
 export const nicknameInput = style({
 	width: '100%',
-	padding: '10px 12px',
-	borderRadius: '8px',
+	padding: '9px 11px',
+	borderRadius: '6px',
 	border: '1px solid #E2E8F0',
 	fontSize: '14px',
 	backgroundColor: '#F8FAFC',
 	color: '#334155',
-	transition: 'all 0.2s ease-in-out',
+	transition: 'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
 
 	':hover': {
 		borderColor: '#CBD5E1',
@@ -166,4 +167,71 @@ export const anonymousLabel = style({
 	fontSize: '12px',
 	color: '#64748B',
 	fontWeight: 500,
+});
+
+const socialIconBase = {
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	width: '28px',
+	height: '28px',
+	borderRadius: '6px',
+	cursor: 'pointer',
+	transition: 'background-color 0.2s ease, border-color 0.2s ease',
+	padding: 0,
+} as const;
+
+export const socialIconButton = style({
+	...socialIconBase,
+	border: '1px solid #E2E8F0',
+	backgroundColor: '#F8FAFC',
+
+	':hover': {
+		backgroundColor: '#EDF2F7',
+		borderColor: '#CBD5E1',
+	},
+});
+
+export const kakaoIconButton = style({
+	...socialIconBase,
+	border: '1px solid #F5E14D',
+	backgroundColor: '#FEE500',
+	color: '#191919',
+
+	':hover': {
+		backgroundColor: '#F5D800',
+	},
+});
+
+export const githubIconButton = style({
+	...socialIconBase,
+	border: '1px solid #2D333B',
+	backgroundColor: '#24292F',
+	color: 'white',
+
+	':hover': {
+		backgroundColor: '#1B1F23',
+	},
+});
+
+export const postButton = style({
+	backgroundColor: palette.primary,
+	color: 'white',
+	border: 'none',
+	padding: '6px 14px',
+	borderRadius: '6px',
+	fontSize: '13px',
+	fontWeight: 500,
+	cursor: 'pointer',
+	transition: 'background-color 0.2s ease, opacity 0.2s ease',
+	flexShrink: 0,
+
+	':hover': {
+		backgroundColor: '#0136A3',
+	},
+
+	':disabled': {
+		opacity: 0.5,
+		cursor: 'not-allowed',
+	},
 });

@@ -17,16 +17,16 @@ export const skeletonBase = style({
 });
 
 export const mainCategoryItem = style({
-	height: '40px',
-	margin: '8px 16px',
+	height: '32px',
+	margin: '4px 16px',
 });
 
 export const subCategoryItem = style({
-	height: '32px',
-	margin: '6px 32px 6px 36px',
+	height: '24px',
+	margin: '4px 32px 4px 36px',
 	width: 'calc(100% - 52px)',
 });
 
 export const categoryGroup = style({
-	marginBottom: '8px',
+	marginBottom: '4px',
 });

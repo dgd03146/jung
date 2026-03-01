@@ -1,5 +1,5 @@
 export const ALBUM_OPTIONS = {
-	SPACING: 24,
+	SPACING: 12,
 	COLUMNS: {
 		MOBILE: 2,
 		LAPTOP: 3,

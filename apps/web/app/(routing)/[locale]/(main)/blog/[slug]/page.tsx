@@ -16,11 +16,7 @@ import {
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
-import {
-	CommentSection,
-	PostNavigation,
-	PostNavigationSkeleton,
-} from '@/fsd/widgets/blog';
+import { PostNavigation, PostNavigationSkeleton } from '@/fsd/widgets/blog';
 import { type Locale, routing } from '@/i18n/routing';
 import * as styles from './page.css';
 
@@ -200,7 +196,6 @@ export default async function Page({
 							<Suspense fallback={<PostDetailContentSkeleton />}>
 								<PostDetailContent postId={postId} />
 							</Suspense>
-							<CommentSection postId={postId} />
 						</Container>
 					</Flex>
 				</Container>

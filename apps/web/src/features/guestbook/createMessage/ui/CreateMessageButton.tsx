@@ -24,9 +24,9 @@ export const CreateMessageButton = ({ emoji }: CreateMessageButtonProps) => {
 		<Button
 			type='submit'
 			variant='secondary'
-			fontSize={{ base: 'sm', tablet: 'base' }}
+			fontSize='sm'
 			fontWeight='medium'
-			borderRadius='lg'
+			borderRadius='md'
 			flexShrink={0}
 			loading={isDisabled}
 			disabled={isDisabled}

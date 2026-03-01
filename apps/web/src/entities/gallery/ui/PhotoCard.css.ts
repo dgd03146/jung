@@ -30,6 +30,12 @@ export const overlay = style({
 });
 
 export const title = style({
+	fontSize: '0.7rem',
+	lineHeight: '1.3',
+	display: '-webkit-box',
+	WebkitLineClamp: 2,
+	WebkitBoxOrient: 'vertical',
+	overflow: 'hidden',
 	opacity: 0,
 	transform: 'translateY(10px)',
 	transition: 'all 0.2s',

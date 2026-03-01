@@ -24,7 +24,6 @@ export const messageCardSkeleton = style({
 	border: '1px solid #F0F0F0',
 	position: 'relative',
 	height: '100%',
-	background: '#FFFFFF',
 	display: 'flex',
 	flexDirection: 'column',
 });
