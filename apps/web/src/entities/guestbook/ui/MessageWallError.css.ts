@@ -66,7 +66,8 @@ export const refreshButton = style({
 	fontSize: '0.8125rem',
 	fontWeight: 500,
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition:
+		'background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
 
 	':hover': {
 		backgroundColor: '#0136A3',

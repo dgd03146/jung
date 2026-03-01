@@ -18,7 +18,8 @@ export const textarea = recipe({
 		resize: 'none',
 		fontSize: '14px',
 
-		transition: 'all 0.2s ease-in-out',
+		transition:
+			'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out',
 		marginBottom: '0',
 		backgroundColor: '#F8FAFC',
 
@@ -75,7 +76,7 @@ export const emojiButton = style({
 	backgroundColor: '#f3f4f6',
 	cursor: 'pointer',
 	border: 'none',
-	transition: 'all 0.2s ease',
+	transition: 'background-color 0.2s ease, transform 0.2s ease',
 	fontSize: '1rem',
 
 	':hover': {
@@ -104,7 +105,7 @@ export const colorButton = style({
 	borderRadius: '3px',
 	border: '1.5px solid #e5e7eb',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'transform 0.2s ease, box-shadow 0.2s ease',
 	padding: 0,
 
 	':hover': {
@@ -144,7 +145,7 @@ export const nicknameInput = style({
 	fontSize: '14px',
 	backgroundColor: '#F8FAFC',
 	color: '#334155',
-	transition: 'all 0.2s ease-in-out',
+	transition: 'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
 
 	':hover': {
 		borderColor: '#CBD5E1',
@@ -176,7 +177,7 @@ const socialIconBase = {
 	height: '28px',
 	borderRadius: '6px',
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'background-color 0.2s ease, border-color 0.2s ease',
 	padding: 0,
 } as const;
 
@@ -222,7 +223,7 @@ export const postButton = style({
 	fontSize: '13px',
 	fontWeight: 500,
 	cursor: 'pointer',
-	transition: 'all 0.2s ease',
+	transition: 'background-color 0.2s ease, opacity 0.2s ease',
 	flexShrink: 0,
 
 	':hover': {
