@@ -26,13 +26,10 @@ export const placesService = {
 		sort = 'latest',
 	}: PlaceQueryParams): Promise<PlaceQueryResult> {
 		try {
-			let query = supabase
-				.from('places')
-				.select(`
+			let query = supabase.from('places').select(`
 				*,
 				categories:categories!category_id!inner(name)
-			`)
-				.eq('categories.type', 'places');
+			`);
 
 			if (cat && cat !== 'all') {
 				const { data: categoryIds, error: categoryError } = await supabase
