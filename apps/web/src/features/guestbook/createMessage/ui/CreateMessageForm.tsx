@@ -7,13 +7,18 @@ import {
 	Textarea,
 	useToast,
 } from '@jung/design-system/components';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { SiKakaotalk } from 'react-icons/si';
+import { VscGithub } from 'react-icons/vsc';
 import {
 	GUESTBOOK_COLORS,
 	GUESTBOOK_EMOJIS,
 	MESSAGE_MAX_LENGTH,
 	NICKNAME_MAX_LENGTH,
 } from '@/fsd/entities/guestbook';
+import { useSocialLogin } from '@/fsd/features/auth';
 import { useSupabaseAuth, useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousMessageMutation } from '../model/useCreateAnonymousMessageMutation';
 import { useCreateMessage } from '../model/useCreateMessage';
@@ -23,6 +28,8 @@ import * as styles from './CreateMessageForm.css';
 export const CreateMessageForm = () => {
 	const showToast = useToast();
 	const { user } = useSupabaseAuth();
+	const { handleSocialLogin } = useSocialLogin();
+	const pathname = usePathname();
 	const [nickname, setNickname] = useState('');
 	const {
 		message,
@@ -165,27 +172,57 @@ export const CreateMessageForm = () => {
 					})}
 				/>
 
-				<Flex justifyContent='flex-end'>
+				<Flex justifyContent='flex-end' align='center' gap='1.5'>
+					{!isLoggedIn && (
+						<Flex align='center' gap='1' marginRight='1'>
+							<button
+								type='button'
+								className={styles.socialIconButton}
+								onClick={() =>
+									handleSocialLogin('google', { redirectTo: pathname })
+								}
+								aria-label='Sign in with Google'
+							>
+								<FcGoogle size={16} />
+							</button>
+							<button
+								type='button'
+								className={styles.socialIconButton}
+								onClick={() =>
+									handleSocialLogin('kakao', { redirectTo: pathname })
+								}
+								aria-label='Sign in with Kakao'
+							>
+								<SiKakaotalk size={14} />
+							</button>
+							<button
+								type='button'
+								className={styles.socialIconButton}
+								onClick={() =>
+									handleSocialLogin('github', { redirectTo: pathname })
+								}
+								aria-label='Sign in with GitHub'
+							>
+								<VscGithub size={14} />
+							</button>
+						</Flex>
+					)}
 					{isLoggedIn ? (
 						<CreateMessageButton emoji={selectedEmoji} />
 					) : (
-						<Button
+						<button
 							type='submit'
-							variant='secondary'
-							fontSize='sm'
-							fontWeight='medium'
-							borderRadius='md'
-							flexShrink={0}
-							loading={createAnonymousMutation.isPending}
+							className={styles.postButton}
 							disabled={
 								!nickname.trim() ||
 								!message.trim() ||
 								createAnonymousMutation.isPending
 							}
-							suffix={selectedEmoji}
 						>
-							{createAnonymousMutation.isPending ? 'Posting...' : 'Post'}
-						</Button>
+							{createAnonymousMutation.isPending
+								? 'Posting...'
+								: `Post ${selectedEmoji}`}
+						</button>
 					)}
 				</Flex>
 			</Stack>

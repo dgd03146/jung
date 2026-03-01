@@ -167,3 +167,44 @@ export const anonymousLabel = style({
 	color: '#64748B',
 	fontWeight: 500,
 });
+
+export const socialIconButton = style({
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center',
+	width: '28px',
+	height: '28px',
+	borderRadius: '6px',
+	border: '1px solid #E2E8F0',
+	backgroundColor: '#F8FAFC',
+	cursor: 'pointer',
+	transition: 'all 0.2s ease',
+	padding: 0,
+
+	':hover': {
+		backgroundColor: '#EDF2F7',
+		borderColor: '#CBD5E1',
+	},
+});
+
+export const postButton = style({
+	backgroundColor: palette.primary,
+	color: 'white',
+	border: 'none',
+	padding: '6px 14px',
+	borderRadius: '6px',
+	fontSize: '13px',
+	fontWeight: 500,
+	cursor: 'pointer',
+	transition: 'all 0.2s ease',
+	flexShrink: 0,
+
+	':hover': {
+		backgroundColor: '#0136A3',
+	},
+
+	':disabled': {
+		opacity: 0.5,
+		cursor: 'not-allowed',
+	},
+});
