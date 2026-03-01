@@ -13,16 +13,7 @@ import {
 	usePlaceView,
 	ViewMapDynamic,
 } from '@/fsd/features/place';
-import {
-	LoadingSpinner,
-	useInfiniteScroll,
-	useSearchParamsState,
-} from '@/fsd/shared';
-
-const SEARCH_PARAMS_DEFAULTS = {
-	sort: PLACE_DEFAULTS.SORT,
-	q: PLACE_DEFAULTS.QUERY,
-} as const;
+import { LoadingSpinner, useInfiniteScroll } from '@/fsd/shared';
 
 export const PlacesContent = () => {
 	const { isListView, isSlidListVisible } = usePlaceView();
@@ -32,12 +23,12 @@ export const PlacesContent = () => {
 			? params.categoryName
 			: PLACE_DEFAULTS.CAT;
 
-	const { sort, q } = useSearchParamsState({
-		defaults: SEARCH_PARAMS_DEFAULTS,
-	});
-
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		usePlacesQuery({ cat: categoryName, sort, q });
+		usePlacesQuery({
+			cat: categoryName,
+			sort: PLACE_DEFAULTS.SORT,
+			q: PLACE_DEFAULTS.QUERY,
+		});
 	const places = data.pages.flatMap((page) => page.items) ?? [];
 
 	const { ref } = useInfiniteScroll({
