@@ -1,5 +1,6 @@
-import { Container, Stack, Typography } from '@jung/design-system/components';
+import { Container, Stack } from '@jung/design-system/components';
 import { MessageListSkeleton } from '@/fsd/entities/guestbook';
+import { CreateMessageFormSkeleton } from '@/fsd/features/guestbook';
 
 export default function Loading() {
 	return (
@@ -9,9 +10,7 @@ export default function Loading() {
 				align='center'
 				marginY={{ base: '6', laptop: '10' }}
 			>
-				<Typography.Heading level={4} color='primary'>
-					Leave Your Message 💙
-				</Typography.Heading>
+				<CreateMessageFormSkeleton />
 			</Stack>
 			<MessageListSkeleton />
 		</Container>

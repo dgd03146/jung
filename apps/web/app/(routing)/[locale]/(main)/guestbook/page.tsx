@@ -1,4 +1,4 @@
-import { Container, Stack, Typography } from '@jung/design-system/components';
+import { Container, Stack } from '@jung/design-system/components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
@@ -78,9 +78,6 @@ export default async function Page({ params }: Props) {
 					align='center'
 					marginY={{ base: '6', laptop: '10' }}
 				>
-					<Typography.Heading level={4} color='primary'>
-						Leave Your Message 💙
-					</Typography.Heading>
 					<CreateMessageForm />
 				</Stack>
 				<Suspense fallback={<MessageListSkeleton />}>
