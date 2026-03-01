@@ -1,3 +1,4 @@
+import { palette } from '@jung/design-system/tokens';
 import { keyframes, style } from '@vanilla-extract/css';
 
 export const shimmer = keyframes({
@@ -22,10 +23,10 @@ export const skeletonShimmer = style({
 		transform: 'translateX(-100%)',
 		backgroundImage: `linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0) 0,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0.5) 60%,
-      rgba(255, 255, 255, 0)
+      ${palette.overlayWhite0} 0,
+      ${palette.overlayWhite20} 20%,
+      ${palette.overlayWhite50} 60%,
+      ${palette.overlayWhite0}
     )`,
 		animation: `${shimmer} 2s infinite`,
 	},

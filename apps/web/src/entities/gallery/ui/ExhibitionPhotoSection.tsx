@@ -21,7 +21,10 @@ export const ExhibitionPhotoSection = ({
 	const total = String(totalCount).padStart(3, '0');
 
 	return (
-		<section className={styles.section({ reverse: isReverse })}>
+		<section
+			className={styles.section({ reverse: isReverse })}
+			aria-label={photo.title || `Gallery photo ${number}`}
+		>
 			<div className={styles.imageHalf}>
 				<BlurImage
 					fill

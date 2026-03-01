@@ -2,10 +2,12 @@ import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 
+const GALLERY_HEADER_OFFSET = '268px'; // header(60) + nav(48) + margins(160)
+
 export const section = recipe({
 	base: {
 		display: 'flex',
-		height: 'calc(100dvh - 268px)' /* header(60) + nav(48) + margins(160) */,
+		height: `calc(100dvh - ${GALLERY_HEADER_OFFSET})`,
 		position: 'relative',
 		'@media': {
 			'(max-width: 767px)': {

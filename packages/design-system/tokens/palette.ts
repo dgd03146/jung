@@ -48,9 +48,12 @@ export const palette = {
 	overlay40: 'rgba(0, 0, 0, 0.4)',
 	overlay60: 'rgba(0, 0, 0, 0.6)',
 	overlay70: 'rgba(0, 0, 0, 0.7)',
+	overlayWhite0: 'rgba(255, 255, 255, 0)',
 	overlayWhite15: 'rgba(255, 255, 255, 0.15)',
 	overlayWhite20: 'rgba(255, 255, 255, 0.2)',
 	overlayWhite30: 'rgba(255, 255, 255, 0.3)',
+	overlayWhite50: 'rgba(255, 255, 255, 0.5)',
+	overlay0: 'rgba(0, 0, 0, 0)',
 
 	// Utility colors
 	transparent: 'transparent',

@@ -20,7 +20,7 @@ export const gradientOverlay = style({
 	left: 0,
 	right: 0,
 	padding: '1.5rem',
-	background: `linear-gradient(to top, ${palette.overlay70}, rgba(0,0,0,0))`,
+	background: `linear-gradient(to top, ${palette.overlay70}, ${palette.overlay0})`,
 	display: 'flex',
 	flexDirection: 'column',
 	gap: '8px',

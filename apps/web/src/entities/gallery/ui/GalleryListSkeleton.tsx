@@ -2,7 +2,7 @@ import * as styles from './GalleryListSkeleton.css';
 
 const SectionSkeleton = ({ reverse }: { reverse: boolean }) => {
 	return (
-		<div className={styles.section({ reverse })}>
+		<div className={styles.section({ reverse })} aria-hidden='true'>
 			<div className={styles.imageHalf} />
 			<div className={styles.contentHalf}>
 				<div className={styles.textLine.short} />

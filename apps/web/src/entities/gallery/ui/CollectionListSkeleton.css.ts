@@ -40,7 +40,7 @@ export const cardOverlay = style({
 	left: 0,
 	right: 0,
 	padding: '25px',
-	background: `linear-gradient(to top, ${palette.overlay40} 0%, rgba(0,0,0,0) 100%)`,
+	background: `linear-gradient(to top, ${palette.overlay40} 0%, ${palette.overlay0} 100%)`,
 	display: 'flex',
 	flexDirection: 'column',
 	gap: '8px',

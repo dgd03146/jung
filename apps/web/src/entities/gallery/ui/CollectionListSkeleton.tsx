@@ -20,7 +20,7 @@ export const CollectionListSkeleton = ({
 	count?: number;
 }) => {
 	return (
-		<div className={styles.grid}>
+		<div className={styles.grid} aria-hidden='true'>
 			{Array.from({ length: count }).map((_, index) => (
 				<CardSkeleton key={index} />
 			))}
