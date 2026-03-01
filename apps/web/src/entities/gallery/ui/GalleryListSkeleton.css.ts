@@ -34,7 +34,7 @@ const skeletonShimmer = style({
 
 export const galleryGrid = style({
 	display: 'grid',
-	gap: '24px',
+	gap: '12px',
 	gridTemplateColumns: 'repeat(2, 1fr)',
 
 	'@media': {
