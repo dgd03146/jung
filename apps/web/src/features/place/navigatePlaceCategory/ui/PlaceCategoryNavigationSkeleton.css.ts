@@ -1,14 +1,10 @@
 import { keyframes, style } from '@vanilla-extract/css';
 
+export { nav } from './shared.css';
+
 const shimmer = keyframes({
 	'0%': { backgroundPosition: '-200px 0' },
 	'100%': { backgroundPosition: '200px 0' },
-});
-
-export const nav = style({
-	display: 'flex',
-	gap: '20px',
-	marginBottom: '16px',
 });
 
 export const skeletonTab = style({
@@ -19,9 +15,10 @@ export const skeletonTab = style({
 	backgroundImage:
 		'linear-gradient(to right, #E2E8F0 0%, #EDF2F7 20%, #E2E8F0 40%, #E2E8F0 100%)',
 	backgroundSize: '400px 24px',
-	animationDuration: '1.5s',
-	animationFillMode: 'forwards',
-	animationIterationCount: 'infinite',
-	animationName: shimmer,
-	animationTimingFunction: 'linear',
+	animation: `${shimmer} 1.5s infinite linear`,
+	'@media': {
+		'(prefers-reduced-motion: reduce)': {
+			animation: 'none',
+		},
+	},
 });

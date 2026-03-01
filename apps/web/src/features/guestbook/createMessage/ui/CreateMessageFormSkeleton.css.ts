@@ -10,6 +10,11 @@ const skeletonBase = style({
 		'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
 	backgroundSize: '800px 100%',
 	animation: `${shimmer} 1.5s infinite linear`,
+	'@media': {
+		'(prefers-reduced-motion: reduce)': {
+			animation: 'none',
+		},
+	},
 });
 
 export const formSkeleton = style({
@@ -24,7 +29,7 @@ export const formSkeleton = style({
 	maxWidth: '560px',
 });
 
-export const emojiRow = style({
+export const pickerRow = style({
 	display: 'flex',
 	gap: '8px',
 	flexWrap: 'wrap',
@@ -38,12 +43,6 @@ export const emojiItem = style([
 		borderRadius: '6px',
 	},
 ]);
-
-export const colorRow = style({
-	display: 'flex',
-	gap: '8px',
-	flexWrap: 'wrap',
-});
 
 export const colorItem = style([
 	skeletonBase,
