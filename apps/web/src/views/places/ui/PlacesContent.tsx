@@ -2,6 +2,8 @@
 
 import { Flex } from '@jung/design-system/components';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import { IoMapOutline } from 'react-icons/io5';
 import { PLACE_DEFAULTS, PlaceEmptyState } from '@/fsd/entities/place';
 import {
 	PlaceListWithLikes,
@@ -18,6 +20,8 @@ export const PlacesContent = () => {
 			? params.categoryName
 			: PLACE_DEFAULTS.CAT;
 
+	const [showMap, setShowMap] = useState(false);
+
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		usePlaceListQuery(categoryName);
 	const places = data.pages.flatMap((page) => page.items) ?? [];
@@ -32,15 +36,32 @@ export const PlacesContent = () => {
 	}
 
 	return (
-		<div className={styles.splitContainer}>
-			<div className={styles.listSection}>
-				<PlaceListWithLikes places={places} variant='masonry' />
-				<Flex justify='center' align='center' minHeight='10' ref={ref}>
-					{isFetchingNextPage && hasNextPage && <LoadingSpinner size='small' />}
-				</Flex>
+		<div className={styles.container}>
+			<div className={styles.mapToggleBar}>
+				<button
+					type='button'
+					className={`${styles.mapToggleButton}${showMap ? ` ${styles.mapToggleButtonActive}` : ''}`}
+					onClick={() => setShowMap((v) => !v)}
+				>
+					<IoMapOutline size={14} />
+					{showMap ? '지도 닫기' : '지도 보기'}
+				</button>
 			</div>
-			<div className={styles.mapSection}>
-				<ViewMapDynamic places={places} />
+
+			<div className={showMap ? styles.splitContainer : styles.fullContainer}>
+				<div className={styles.listSection}>
+					<PlaceListWithLikes places={places} variant='masonry' featured />
+					<Flex justify='center' align='center' minHeight='10' ref={ref}>
+						{isFetchingNextPage && hasNextPage && (
+							<LoadingSpinner size='small' />
+						)}
+					</Flex>
+				</div>
+				{showMap && (
+					<div className={styles.mapSection}>
+						<ViewMapDynamic places={places} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

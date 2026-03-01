@@ -7,6 +7,7 @@ interface PlaceListWithLikesProps {
 	variant?: 'grid' | 'slideUp' | 'masonry';
 	cardVariant?: 'default' | 'compact';
 	priorityCount?: number;
+	featured?: boolean;
 }
 
 export const PlaceListWithLikes = ({
@@ -14,16 +15,18 @@ export const PlaceListWithLikes = ({
 	variant,
 	cardVariant,
 	priorityCount = 3,
+	featured = false,
 }: PlaceListWithLikesProps) => {
 	return (
 		<PlaceList
 			places={places}
 			variant={variant}
+			featured={featured}
 			renderPlace={(place, index) => (
 				<PlaceCard
 					key={place.id}
 					place={place}
-					variant={cardVariant}
+					variant={featured && index === 0 ? 'featured' : cardVariant}
 					renderTopRight={() => <TogglePlaceLikeButton placeId={place.id} />}
 					priority={index < priorityCount}
 				/>
