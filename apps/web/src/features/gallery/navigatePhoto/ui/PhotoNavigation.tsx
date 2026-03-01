@@ -16,13 +16,14 @@ export const PhotoNavigation = () => {
 	const currentTab = getCurrentTab();
 
 	return (
-		<nav className={styles.nav}>
+		<nav className={styles.nav} aria-label='Gallery navigation'>
 			{TABS.map(({ value, label, path }) => (
 				<Link
 					key={value}
 					href={path}
 					scroll={false}
 					className={currentTab === value ? styles.tabActive : styles.tab}
+					{...(currentTab === value && { 'aria-current': 'page' as const })}
 				>
 					{label}
 				</Link>

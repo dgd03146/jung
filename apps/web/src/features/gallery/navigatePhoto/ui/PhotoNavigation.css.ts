@@ -1,3 +1,4 @@
+import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 const tabBase = style({
@@ -20,10 +21,10 @@ export const nav = style({
 export const tab = style([
 	tabBase,
 	{
-		color: '#A8C2F5',
+		color: palette.primary100,
 		selectors: {
 			'&:hover': {
-				color: '#7BA4F0',
+				color: palette.primary200,
 			},
 		},
 	},
@@ -32,7 +33,7 @@ export const tab = style([
 export const tabActive = style([
 	tabBase,
 	{
-		color: '#0142C0',
-		borderBottom: '2px solid #0142C0',
+		color: palette.primary,
+		borderBottom: `2px solid ${palette.primary}`,
 	},
 ]);

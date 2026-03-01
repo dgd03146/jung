@@ -1,5 +1,6 @@
 export { FilterPlaceCategory } from './filterPlaceCategory/ui/FilterPlaceCategory';
 export { FilterPlaceCategorySkeleton } from './filterPlaceCategory/ui/FilterPlaceCategorySkeleton';
+export { usePlaceListQuery } from './listPlaces/api/usePlaceListQuery';
 export { SelectMarker } from './selectMarker/ui/SelectMarker';
 export { SharePlaceButton } from './sharePlace/ui/SharePlaceButton';
 export { useTogglePlaceLikeMutation } from './togglePlaceLike/api/useTogglePlaceLikeMutation';

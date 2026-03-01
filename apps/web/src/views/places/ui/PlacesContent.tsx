@@ -2,14 +2,11 @@
 
 import { Box, Flex, Stack } from '@jung/design-system/components';
 import { useParams } from 'next/navigation';
-import {
-	PLACE_DEFAULTS,
-	PlaceList,
-	usePlacesQuery,
-} from '@/fsd/entities/place';
+import { PLACE_DEFAULTS, PlaceList } from '@/fsd/entities/place';
 import {
 	PlaceListWithLikes,
 	TogglePlaceListButton,
+	usePlaceListQuery,
 	usePlaceView,
 	ViewMapDynamic,
 } from '@/fsd/features/place';
@@ -24,11 +21,7 @@ export const PlacesContent = () => {
 			: PLACE_DEFAULTS.CAT;
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-		usePlacesQuery({
-			cat: categoryName,
-			sort: PLACE_DEFAULTS.SORT,
-			q: PLACE_DEFAULTS.QUERY,
-		});
+		usePlaceListQuery(categoryName);
 	const places = data.pages.flatMap((page) => page.items) ?? [];
 
 	const { ref } = useInfiniteScroll({
