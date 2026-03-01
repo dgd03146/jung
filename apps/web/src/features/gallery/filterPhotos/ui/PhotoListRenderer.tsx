@@ -2,7 +2,6 @@
 
 import { Flex } from '@jung/design-system/components';
 import type { PhotoQueryParams } from '@jung/shared/types';
-import { useRef } from 'react';
 import {
 	ExhibitionPhotoList,
 	ExhibitionPhotoSection,
@@ -15,12 +14,7 @@ export const PhotoListRenderer = ({ sort, q }: PhotoQueryParams) => {
 		usePhotosQuery({ sort, q });
 
 	const photos = data.pages.flatMap((page) => page.items) ?? [];
-
-	const initialCount = useRef(0);
-	if (initialCount.current === 0 && photos.length > 0) {
-		initialCount.current = photos.length;
-	}
-	const totalCount = initialCount.current || photos.length;
+	const totalCount = photos.length;
 
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,

@@ -8,13 +8,10 @@ import * as styles from './PhotoNavigation.css';
 export const PhotoNavigation = () => {
 	const pathname = usePathname();
 
-	const getCurrentTab = () => {
-		if (pathname.includes('/collections')) return 'collections';
-		if (pathname.includes('/trending')) return 'trending';
-		return 'recent';
-	};
-
-	const currentTab = getCurrentTab();
+	const currentTab =
+		[...TABS]
+			.sort((a, b) => b.path.length - a.path.length)
+			.find((tab) => pathname.startsWith(tab.path))?.value ?? 'recent';
 
 	return (
 		<nav className={styles.nav} aria-label='Gallery navigation'>
