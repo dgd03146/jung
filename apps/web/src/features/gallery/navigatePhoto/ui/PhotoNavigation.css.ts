@@ -9,7 +9,7 @@ const TAB_TRANSITION = 'color 0.2s, border-color 0.2s';
 
 const tabBase = style({
 	fontFamily: 'var(--font-bebas)',
-	fontSize: '1.1rem',
+	fontSize: '0.85rem',
 	letterSpacing: '0.04em',
 	textDecoration: 'none',
 	textTransform: 'uppercase',
