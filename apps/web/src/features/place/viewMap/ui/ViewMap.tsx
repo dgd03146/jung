@@ -28,9 +28,11 @@ interface ViewMapProps {
 }
 
 export const ViewMap = ({ places, place, initialCenter }: ViewMapProps) => {
+	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-map-script',
-		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+		googleMapsApiKey: apiKey ?? '',
 	});
 
 	const { markersData, center, zoom } = useMapState(
@@ -45,6 +47,14 @@ export const ViewMap = ({ places, place, initialCenter }: ViewMapProps) => {
 	useEffect(() => {
 		setSelectedMarker(null);
 	}, [setSelectedMarker]);
+
+	if (!apiKey) {
+		return (
+			<div className={styles.errorContainer}>
+				<p>지도를 불러올 수 없습니다.</p>
+			</div>
+		);
+	}
 
 	if (!isLoaded) {
 		return (
