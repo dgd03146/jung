@@ -9,13 +9,12 @@ export const PlacesContentSkeleton = ({
 	count?: number;
 }) => {
 	return (
-		<div className={styles.splitContainer}>
+		<div className={styles.fullContainer}>
 			<div className={styles.listSection}>
 				{Array.from({ length: count }, (_, i) => (
 					<PlaceSkeleton key={i} />
 				))}
 			</div>
-			<div className={`${styles.mapSection} ${styles.mapSkeleton}`} />
 		</div>
 	);
 };

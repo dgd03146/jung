@@ -1,10 +1,5 @@
 import { mediaQueries, palette } from '@jung/design-system/tokens';
-import { keyframes, style } from '@vanilla-extract/css';
-
-const shimmer = keyframes({
-	'0%': { transform: 'translateX(-100%)' },
-	'100%': { transform: 'translateX(100%)' },
-});
+import { style } from '@vanilla-extract/css';
 
 export const container = style({
 	width: '100%',
@@ -14,7 +9,7 @@ export const container = style({
 export const mapToggleBar = style({
 	display: 'flex',
 	justifyContent: 'flex-end',
-	marginBottom: '16px',
+	marginBottom: '20px',
 });
 
 export const mapToggleButton = style({
@@ -85,7 +80,7 @@ export const listSection = style({
 });
 
 export const mapSection = style({
-	borderRadius: '12px',
+	borderRadius: '8px',
 	overflow: 'hidden',
 	minHeight: '400px',
 
@@ -95,28 +90,5 @@ export const mapSection = style({
 			top: '100px',
 			height: 'calc(100dvh - 180px)',
 		},
-	},
-});
-
-export const mapSkeleton = style({
-	backgroundColor: palette.gray,
-	position: 'relative',
-	overflow: 'hidden',
-	'::after': {
-		content: '""',
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		bottom: 0,
-		left: 0,
-		transform: 'translateX(-100%)',
-		backgroundImage: `linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0.5) 60%,
-      rgba(255, 255, 255, 0)
-    )`,
-		animation: `${shimmer} 2s infinite`,
 	},
 });
