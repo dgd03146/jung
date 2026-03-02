@@ -27,13 +27,11 @@ export const PlaceCard = ({
 					aria-label={`View details for ${place.title}`}
 				>
 					<Card
-						boxShadow='primary'
-						variant='outline'
 						display='flex'
 						flexDirection='row'
 						height='full'
 						className={styles.card({ variant })}
-						borderRadius='lg'
+						rounded='lg'
 					>
 						<Card.Media
 							className={`${styles.imageWrapper({ variant })} ${styles.imageWrapperHoverable}`}
@@ -62,7 +60,7 @@ export const PlaceCard = ({
 								</p>
 							)}
 							<div className={styles.featuredAddress}>
-								<IoLocationOutline size={13} />
+								<IoLocationOutline size={12} />
 								<span>{place.address}</span>
 							</div>
 						</div>
@@ -83,13 +81,11 @@ export const PlaceCard = ({
 				aria-label={`View details for ${place.title}`}
 			>
 				<Card
-					boxShadow='primary'
-					variant='outline'
 					display='flex'
 					flexDirection='column'
 					height='full'
 					className={styles.card({ variant })}
-					borderRadius='lg'
+					rounded='none'
 				>
 					<Card.Media
 						className={`${styles.imageWrapper({ variant })}${variant === 'default' ? ` ${styles.imageWrapperHoverable}` : ''}`}
@@ -125,31 +121,26 @@ export const PlaceCard = ({
 					</Card.Media>
 
 					<Card.Content
-						rowGap={variant === 'compact' ? '1' : '3'}
-						padding={variant === 'compact' ? '2' : '4'}
+						rowGap='1'
+						padding={variant === 'compact' ? '2' : '3'}
 						display='flex'
 						flexDirection='column'
 						height='full'
 					>
 						<Card.Title>
-							<Typography.Heading level={5}>{place.title}</Typography.Heading>
+							<Typography.Heading level={5} className={styles.cardTitle}>
+								{place.title}
+							</Typography.Heading>
 						</Card.Title>
 
-						{variant === 'default' && (
-							<Card.Description>
-								<Typography.Text level={3} truncate='two' fontWeight='normal'>
-									{place.description}
-								</Typography.Text>
-							</Card.Description>
-						)}
-
 						<Flex align='center' gap='1.5' marginTop='auto'>
-							<IoLocationOutline size={14} className={styles.locationIcon} />
+							<IoLocationOutline size={13} className={styles.locationIcon} />
 							<Card.Description>
 								<Typography.SubText
 									level={3}
 									truncate='single'
 									fontWeight='normal'
+									className={styles.cardAddress}
 								>
 									{place.address}
 								</Typography.SubText>

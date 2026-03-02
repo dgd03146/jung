@@ -23,16 +23,16 @@ export const categoryBadge = style({
 	top: '10px',
 	left: '10px',
 	zIndex: 2,
-	backgroundColor: 'rgba(255,255,255,0.88)',
-	backdropFilter: 'blur(6px)',
-	borderRadius: '20px',
-	padding: '3px 10px',
-	fontSize: '0.68rem',
-	fontWeight: '600',
-	letterSpacing: '0.04em',
+	backgroundColor: palette.primary50,
+	borderRadius: '4px',
+	padding: '3px 8px',
+	fontSize: '0.62rem',
+	fontWeight: '700',
+	letterSpacing: '0.06em',
 	textTransform: 'uppercase',
 	color: palette.primary,
 	pointerEvents: 'none',
+	border: `1px solid rgba(1,66,192,0.15)`,
 });
 
 export const cardWrapper = recipe({
@@ -47,16 +47,16 @@ export const cardWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+				transition: 'transform 0.3s ease',
 				':hover': {
-					transform: 'translateY(-5px)',
+					transform: 'translateY(-4px)',
 				},
 			},
 			compact: {
 				width: '300px',
 			},
 			featured: {
-				transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+				transition: 'transform 0.3s ease',
 				':hover': {
 					transform: 'translateY(-3px)',
 				},
@@ -74,8 +74,7 @@ export const imageWrapper = recipe({
 		width: '100%',
 		overflow: 'hidden',
 		flexShrink: '0',
-		backgroundColor: palette.gray100,
-		borderRadius: '8px 8px 0 0',
+		backgroundColor: palette.primary50,
 		'::after': {
 			content: '""',
 			position: 'absolute',
@@ -84,7 +83,7 @@ export const imageWrapper = recipe({
 			right: '0',
 			bottom: '0',
 			background:
-				'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%)',
+				'linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%)',
 			transform: 'skewX(-25deg) translateX(-100%)',
 			opacity: 0,
 			transition: 'opacity 0.5s ease',
@@ -94,6 +93,7 @@ export const imageWrapper = recipe({
 		variant: {
 			default: {
 				aspectRatio: '16/9',
+				borderRadius: '8px 8px 0 0',
 				selectors: {
 					'&:hover::after': {
 						opacity: 1,
@@ -103,6 +103,7 @@ export const imageWrapper = recipe({
 			},
 			compact: {
 				aspectRatio: '1/1',
+				borderRadius: '8px 8px 0 0',
 			},
 			featured: {
 				borderRadius: '8px 0 0 8px',
@@ -129,11 +130,11 @@ export const hoverOverlay = style({
 	bottom: 0,
 	left: 0,
 	right: 0,
-	height: '60%',
+	height: '50%',
 	background:
-		'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+		'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0) 100%)',
 	opacity: 0,
-	transition: 'opacity 0.3s ease',
+	transition: 'opacity 0.2s',
 	pointerEvents: 'none',
 	zIndex: 1,
 	selectors: {
@@ -148,8 +149,8 @@ export const hoverContent = style({
 	right: 0,
 	padding: '12px 14px',
 	opacity: 0,
-	transform: 'translateY(6px)',
-	transition: 'opacity 0.3s ease, transform 0.3s ease',
+	transform: 'translateY(8px)',
+	transition: 'opacity 0.2s, transform 0.2s',
 	pointerEvents: 'none',
 	zIndex: 2,
 	selectors: {
@@ -162,10 +163,10 @@ export const hoverContent = style({
 
 export const hoverTitle = style({
 	color: palette.white,
-	fontSize: '0.875rem',
+	fontSize: '0.8rem',
 	fontWeight: '600',
 	lineHeight: 1.3,
-	marginBottom: '4px',
+	marginBottom: '3px',
 	overflow: 'hidden',
 	display: '-webkit-box',
 	WebkitBoxOrient: 'vertical',
@@ -173,41 +174,18 @@ export const hoverTitle = style({
 });
 
 export const hoverAddress = style({
-	color: 'rgba(255,255,255,0.8)',
-	fontSize: '0.72rem',
+	color: 'rgba(255,255,255,0.75)',
+	fontSize: '0.68rem',
 	overflow: 'hidden',
 	whiteSpace: 'nowrap',
 	textOverflow: 'ellipsis',
-});
-
-export const likeButton = style({
-	width: '28px',
-	height: '28px',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-	backgroundColor: 'rgba(255, 255, 255, 0.6)',
-	borderRadius: '50%',
-	border: 'none',
-	cursor: 'pointer',
-	transition: 'all 0.2s ease',
-	color: palette.primary,
-	backdropFilter: 'blur(4px)',
-
-	':hover': {
-		transform: 'scale(1.1)',
-		backgroundColor: 'rgba(255, 255, 255, 0.9)',
-		color: palette.primary,
-	},
-
-	':active': {
-		transform: 'scale(0.95)',
-	},
+	letterSpacing: '0.01em',
 });
 
 export const locationIcon = style({
 	flexShrink: 0,
 	color: palette.primary200,
+	opacity: 0.8,
 });
 
 export const card = recipe({
@@ -215,11 +193,30 @@ export const card = recipe({
 		variant: {
 			compact: {
 				minHeight: 'fit-content',
+				borderRadius: '8px',
+				boxShadow: '0 2px 8px rgba(1,66,192,0.06)',
 			},
-			default: {},
+			default: {
+				borderRadius: '8px',
+				boxShadow: '0 4px 16px rgba(1,66,192,0.06)',
+				transition: 'box-shadow 0.3s ease',
+				selectors: {
+					'&:hover': {
+						boxShadow: '0 12px 32px rgba(1,66,192,0.12)',
+					},
+				},
+			},
 			featured: {
 				flexDirection: 'row',
 				minHeight: '200px',
+				borderRadius: '8px',
+				boxShadow: '0 4px 16px rgba(1,66,192,0.06)',
+				transition: 'box-shadow 0.3s ease',
+				selectors: {
+					'&:hover': {
+						boxShadow: '0 12px 32px rgba(1,66,192,0.12)',
+					},
+				},
 			},
 		},
 	},
@@ -237,7 +234,7 @@ export const featuredContent = style({
 });
 
 export const featuredCategory = style({
-	fontSize: '0.68rem',
+	fontSize: '0.62rem',
 	fontWeight: '700',
 	letterSpacing: '0.08em',
 	textTransform: 'uppercase',
@@ -246,7 +243,7 @@ export const featuredCategory = style({
 });
 
 export const featuredTitle = style({
-	fontSize: '1.15rem',
+	fontSize: '1.1rem',
 	fontWeight: '700',
 	lineHeight: 1.3,
 	color: palette.text,
@@ -255,24 +252,43 @@ export const featuredTitle = style({
 	display: '-webkit-box',
 	WebkitBoxOrient: 'vertical',
 	WebkitLineClamp: '2',
+	letterSpacing: '-0.01em',
 });
 
 export const featuredDescription = style({
 	fontSize: '0.82rem',
 	color: palette.gray300,
-	lineHeight: 1.55,
+	lineHeight: 1.6,
 	overflow: 'hidden',
 	display: '-webkit-box',
 	WebkitBoxOrient: 'vertical',
 	WebkitLineClamp: '3',
-	marginBottom: '12px',
+	marginBottom: '14px',
 });
 
 export const featuredAddress = style({
 	display: 'flex',
 	alignItems: 'center',
 	gap: '4px',
-	fontSize: '0.75rem',
+	fontSize: '0.72rem',
 	color: palette.primary200,
 	marginTop: 'auto',
+	letterSpacing: '0.01em',
+});
+
+export const cardContent = style({
+	padding: '12px 14px',
+});
+
+export const cardTitle = style({
+	fontSize: '0.875rem',
+	fontWeight: '600',
+	color: palette.text,
+	lineHeight: 1.35,
+	letterSpacing: '-0.01em',
+});
+
+export const cardAddress = style({
+	fontSize: '0.72rem',
+	color: palette.gray300,
 });

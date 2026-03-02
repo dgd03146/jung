@@ -33,11 +33,17 @@ export const placeList = recipe({
 	variants: {
 		variant: {
 			masonry: {
-				columns: 1,
+				columns: 2,
 				columnGap: '16px',
 				'@media': {
-					[mediaQueries.tablet]: {
-						columns: 2,
+					[mediaQueries.mobile]: {
+						columns: 1,
+					},
+					'screen and (min-width: 1024px)': {
+						columns: 3,
+					},
+					'screen and (min-width: 1440px)': {
+						columns: 4,
 					},
 				},
 			},
