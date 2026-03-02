@@ -10,7 +10,7 @@ export const container = style({
 		'(min-width: 1024px)': {
 			borderTopWidth: '1px',
 			borderBottomWidth: '1px',
-			borderColor: palette.gray100,
+			borderColor: palette.gray,
 			borderStyle: 'solid',
 			paddingTop: '32px',
 			paddingBottom: '32px',

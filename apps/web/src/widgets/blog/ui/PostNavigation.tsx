@@ -67,8 +67,6 @@ const PostNavigation = ({ postId }: Props) => {
 						display={{ base: 'none', laptop: 'flex' }}
 						direction='column'
 						gap='1'
-						borderColor='gray'
-						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
 					>
 						<Typography.Text
@@ -88,8 +86,6 @@ const PostNavigation = ({ postId }: Props) => {
 						direction='column'
 						gap='1'
 						className={styles.adjacentPostContainer}
-						borderColor='gray'
-						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
 					>
 						<Typography.Text
@@ -117,8 +113,6 @@ const PostNavigation = ({ postId }: Props) => {
 						direction='column'
 						gap='1'
 						className={styles.adjacentPostContainer}
-						borderColor='gray'
-						borderStyle='solid'
 						paddingY={{ laptop: '8' }}
 					>
 						<Typography.Text

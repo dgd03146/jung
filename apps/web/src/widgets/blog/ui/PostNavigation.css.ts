@@ -91,6 +91,8 @@ export const tagsContainer = style([
 			'(min-width: 1024px)': {
 				borderTopWidth: '1px',
 				borderBottomWidth: '1px',
+				borderColor: 'rgba(0, 0, 0, 0.06)',
+				borderStyle: 'solid',
 			},
 		},
 	},
