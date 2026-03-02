@@ -9,17 +9,17 @@ const slideUpAnimation = keyframes({
 
 export const masonryItem = style({
 	breakInside: 'avoid',
-	marginBottom: '16px',
+	marginBottom: '24px',
 });
 
 export const featuredItem = style({
 	columnSpan: 'all',
-	marginBottom: '16px',
+	marginBottom: '24px',
 });
 
 export const masonryGrid = style({
 	columns: 1,
-	columnGap: '16px',
+	columnGap: '24px',
 	'@media': {
 		[mediaQueries.tablet]: {
 			columns: 2,
@@ -33,28 +33,25 @@ export const placeList = recipe({
 	variants: {
 		variant: {
 			masonry: {
-				columns: 2,
-				columnGap: '16px',
+				columns: 1,
+				columnGap: '24px',
 				'@media': {
-					[mediaQueries.mobile]: {
-						columns: 1,
+					'screen and (min-width: 640px)': {
+						columns: 2,
 					},
-					'screen and (min-width: 1024px)': {
+					'screen and (min-width: 1280px)': {
 						columns: 3,
-					},
-					'screen and (min-width: 1440px)': {
-						columns: 4,
 					},
 				},
 			},
 			grid: {
 				display: 'grid',
-				gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-				gap: '24px',
+				gridTemplateColumns: '1fr',
+				gap: '32px',
 				'@media': {
-					[mediaQueries.tablet]: {
-						gap: '16px',
-						gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+					'screen and (min-width: 768px)': {
+						gridTemplateColumns: 'repeat(2, 1fr)',
+						gap: '40px',
 					},
 				},
 			},

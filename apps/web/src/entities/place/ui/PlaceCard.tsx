@@ -31,7 +31,7 @@ export const PlaceCard = ({
 						flexDirection='row'
 						height='full'
 						className={styles.card({ variant })}
-						rounded='lg'
+						rounded='none'
 					>
 						<Card.Media
 							className={`${styles.imageWrapper({ variant })} ${styles.imageWrapperHoverable}`}
@@ -122,7 +122,7 @@ export const PlaceCard = ({
 
 					<Card.Content
 						rowGap='1'
-						padding={variant === 'compact' ? '2' : '3'}
+						padding={variant === 'compact' ? '2' : '4'}
 						display='flex'
 						flexDirection='column'
 						height='full'
@@ -132,6 +132,10 @@ export const PlaceCard = ({
 								{place.title}
 							</Typography.Heading>
 						</Card.Title>
+
+						{variant === 'default' && place.description && (
+							<p className={styles.cardDescription}>{place.description}</p>
+						)}
 
 						<Flex align='center' gap='1.5' marginTop='auto'>
 							<IoLocationOutline size={13} className={styles.locationIcon} />

@@ -4,5 +4,4 @@ export const nav = style({
 	display: 'flex',
 	gap: '8px',
 	flexWrap: 'wrap',
-	marginBottom: '8px',
 });

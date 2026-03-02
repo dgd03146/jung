@@ -42,7 +42,7 @@ export const cardWrapper = recipe({
 		width: '100%',
 		textDecoration: 'none',
 		contentVisibility: 'auto',
-		containIntrinsicSize: '0 360px',
+		containIntrinsicSize: '0 500px',
 	},
 	variants: {
 		variant: {
@@ -92,8 +92,7 @@ export const imageWrapper = recipe({
 	variants: {
 		variant: {
 			default: {
-				aspectRatio: '16/9',
-				borderRadius: '8px 8px 0 0',
+				aspectRatio: '4/5',
 				selectors: {
 					'&:hover::after': {
 						opacity: 1,
@@ -103,10 +102,8 @@ export const imageWrapper = recipe({
 			},
 			compact: {
 				aspectRatio: '1/1',
-				borderRadius: '8px 8px 0 0',
 			},
 			featured: {
-				borderRadius: '8px 0 0 8px',
 				aspectRatio: '4/3',
 				selectors: {
 					'&:hover::after': {
@@ -193,28 +190,28 @@ export const card = recipe({
 		variant: {
 			compact: {
 				minHeight: 'fit-content',
-				borderRadius: '8px',
-				boxShadow: '0 2px 8px rgba(1,66,192,0.06)',
+				backgroundColor: palette.white,
+				boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
 			},
 			default: {
-				borderRadius: '8px',
-				boxShadow: '0 4px 16px rgba(1,66,192,0.06)',
+				backgroundColor: palette.white,
+				boxShadow: '0 2px 12px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.05)',
 				transition: 'box-shadow 0.3s ease',
 				selectors: {
 					'&:hover': {
-						boxShadow: '0 12px 32px rgba(1,66,192,0.12)',
+						boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
 					},
 				},
 			},
 			featured: {
 				flexDirection: 'row',
 				minHeight: '200px',
-				borderRadius: '8px',
-				boxShadow: '0 4px 16px rgba(1,66,192,0.06)',
+				backgroundColor: palette.white,
+				boxShadow: '0 2px 12px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.05)',
 				transition: 'box-shadow 0.3s ease',
 				selectors: {
 					'&:hover': {
-						boxShadow: '0 12px 32px rgba(1,66,192,0.12)',
+						boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
 					},
 				},
 			},
@@ -247,23 +244,12 @@ export const featuredTitle = style({
 	fontWeight: '700',
 	lineHeight: 1.3,
 	color: palette.text,
-	marginBottom: '8px',
+	marginBottom: '12px',
 	overflow: 'hidden',
 	display: '-webkit-box',
 	WebkitBoxOrient: 'vertical',
 	WebkitLineClamp: '2',
 	letterSpacing: '-0.01em',
-});
-
-export const featuredDescription = style({
-	fontSize: '0.82rem',
-	color: palette.gray300,
-	lineHeight: 1.6,
-	overflow: 'hidden',
-	display: '-webkit-box',
-	WebkitBoxOrient: 'vertical',
-	WebkitLineClamp: '3',
-	marginBottom: '14px',
 });
 
 export const featuredAddress = style({
@@ -277,7 +263,7 @@ export const featuredAddress = style({
 });
 
 export const cardContent = style({
-	padding: '12px 14px',
+	padding: '16px 18px',
 });
 
 export const cardTitle = style({
@@ -291,4 +277,25 @@ export const cardTitle = style({
 export const cardAddress = style({
 	fontSize: '0.72rem',
 	color: palette.gray300,
+});
+
+export const cardDescription = style({
+	fontSize: '0.72rem',
+	color: palette.gray300,
+	lineHeight: 1.5,
+	overflow: 'hidden',
+	display: '-webkit-box',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: '2',
+});
+
+export const featuredDescription = style({
+	fontSize: '0.8rem',
+	color: palette.gray300,
+	lineHeight: 1.6,
+	overflow: 'hidden',
+	display: '-webkit-box',
+	WebkitBoxOrient: 'vertical',
+	WebkitLineClamp: '3',
+	marginBottom: '12px',
 });

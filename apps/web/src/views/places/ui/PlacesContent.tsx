@@ -2,8 +2,6 @@
 
 import { Flex } from '@jung/design-system/components';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
-import { IoMapOutline } from 'react-icons/io5';
 import { PLACE_DEFAULTS, PlaceEmptyState } from '@/fsd/entities/place';
 import {
 	PlaceListWithLikes,
@@ -13,14 +11,16 @@ import {
 import { LoadingSpinner, useInfiniteScroll } from '@/fsd/shared';
 import * as styles from './PlacesContent.css';
 
-export const PlacesContent = () => {
+interface PlacesContentProps {
+	showMap: boolean;
+}
+
+export const PlacesContent = ({ showMap }: PlacesContentProps) => {
 	const params = useParams();
 	const categoryName =
 		typeof params.categoryName === 'string'
 			? params.categoryName
 			: PLACE_DEFAULTS.CAT;
-
-	const [showMap, setShowMap] = useState(false);
 
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		usePlaceListQuery(categoryName);
@@ -37,17 +37,6 @@ export const PlacesContent = () => {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.mapToggleBar}>
-				<button
-					type='button'
-					className={`${styles.mapToggleButton}${showMap ? ` ${styles.mapToggleButtonActive}` : ''}`}
-					onClick={() => setShowMap((v) => !v)}
-				>
-					<IoMapOutline size={14} />
-					{showMap ? 'Close Map' : 'Map'}
-				</button>
-			</div>
-
 			<div className={showMap ? styles.splitContainer : styles.fullContainer}>
 				<div className={styles.listSection}>
 					<PlaceListWithLikes
