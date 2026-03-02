@@ -44,7 +44,7 @@ export const PlacesContent = () => {
 					onClick={() => setShowMap((v) => !v)}
 				>
 					<IoMapOutline size={14} />
-					{showMap ? '지도 닫기' : '지도 보기'}
+					{showMap ? 'Close Map' : 'Map'}
 				</button>
 			</div>
 
