@@ -61,7 +61,7 @@ export function TogglePlaceLikeButton({ placeId }: TogglePlaceLikeButtonProps) {
 				aria-label={isLiked ? '좋아요 취소' : '좋아요'}
 				disabled={isPending || isLikeInfoLoading}
 			>
-				{isLiked ? <FaHeart size={18} /> : <FaRegHeart size={18} />}
+				{isLiked ? <FaHeart size={12} /> : <FaRegHeart size={12} />}
 			</Button>
 
 			{isLoginModalOpen && (

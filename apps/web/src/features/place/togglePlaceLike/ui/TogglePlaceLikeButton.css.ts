@@ -2,8 +2,8 @@ import { palette } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const likeButton = style({
-	width: '28px',
-	height: '28px',
+	width: '22px',
+	height: '22px',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
