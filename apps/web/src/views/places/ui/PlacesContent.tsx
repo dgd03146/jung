@@ -50,7 +50,11 @@ export const PlacesContent = () => {
 
 			<div className={showMap ? styles.splitContainer : styles.fullContainer}>
 				<div className={styles.listSection}>
-					<PlaceListWithLikes places={places} variant='masonry' featured />
+					<PlaceListWithLikes
+						places={places}
+						variant='masonry'
+						featured={places.length >= 2}
+					/>
 					<Flex justify='center' align='center' minHeight='10' ref={ref}>
 						{isFetchingNextPage && hasNextPage && (
 							<LoadingSpinner size='small' />
