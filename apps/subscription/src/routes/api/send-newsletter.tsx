@@ -34,7 +34,12 @@ export const Route = createFileRoute('/api/send-newsletter')({
 		handlers: {
 			POST: async ({ request }) => {
 				try {
-					const body = await request.json();
+					let body: unknown;
+					try {
+						body = await request.json();
+					} catch {
+						return jsonResponse({ error: 'Invalid JSON body' }, 400);
+					}
 					const parsed = sendNewsletterInput.safeParse(body);
 
 					if (!parsed.success) {
@@ -57,6 +62,9 @@ export const Route = createFileRoute('/api/send-newsletter')({
 					}
 
 					const result = await sendNewsletter(parsed.data.articleId);
+					if (!result.success) {
+						return jsonResponse(result, 500);
+					}
 					return jsonResponse(result, 200);
 				} catch (error) {
 					console.error('Send newsletter failed:', error);
