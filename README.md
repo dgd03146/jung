@@ -69,7 +69,7 @@ pnpm dev  # http://localhost:3000
 apps/
   web/           # Next.js (사용자 페이지)
   admin/         # Vite (관리자 대시보드)
-  subscription/  # Next.js (뉴스레터 구독)
+  subscription/  # TanStack Start (뉴스레터 구독)
   workshop/      # Storybook (디자인 시스템)
 packages/
   api/            # tRPC 라우터

@@ -69,7 +69,7 @@ Environment variables: See [`.env.example`](./.env.example)
 apps/
   web/           # Next.js (user pages)
   admin/         # Vite (admin dashboard)
-  subscription/  # Next.js (newsletter subscription)
+  subscription/  # TanStack Start (newsletter subscription)
   workshop/      # Storybook (design system)
 packages/
   api/            # tRPC routers
