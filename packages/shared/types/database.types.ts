@@ -16,6 +16,7 @@ export type Database = {
 		Tables: {
 			articles: {
 				Row: {
+					author: string | null;
 					category: string;
 					created_at: string | null;
 					id: string;
@@ -23,12 +24,16 @@ export type Database = {
 					my_thoughts: string | null;
 					original_url: string;
 					published_at: string | null;
+					quality_score: number | null;
+					score_reason: string | null;
+					source_feed: string | null;
 					status: string;
 					summary: string;
 					title: string;
 					updated_at: string | null;
 				};
 				Insert: {
+					author?: string | null;
 					category: string;
 					created_at?: string | null;
 					id?: string;
@@ -36,12 +41,16 @@ export type Database = {
 					my_thoughts?: string | null;
 					original_url: string;
 					published_at?: string | null;
+					quality_score?: number | null;
+					score_reason?: string | null;
+					source_feed?: string | null;
 					status?: string;
 					summary: string;
 					title: string;
 					updated_at?: string | null;
 				};
 				Update: {
+					author?: string | null;
 					category?: string;
 					created_at?: string | null;
 					id?: string;
@@ -49,6 +58,9 @@ export type Database = {
 					my_thoughts?: string | null;
 					original_url?: string;
 					published_at?: string | null;
+					quality_score?: number | null;
+					score_reason?: string | null;
+					source_feed?: string | null;
 					status?: string;
 					summary?: string;
 					title?: string;

@@ -15,6 +15,7 @@ import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesIdRouteImport } from './routes/articles/$id'
 import { Route as ApiSendNewsletterRouteImport } from './routes/api/send-newsletter'
 import { Route as ApiOgRouteImport } from './routes/api/og'
+import { Route as ApiIngestArticlesRouteImport } from './routes/api/ingest-articles'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
@@ -46,10 +47,16 @@ const ApiOgRoute = ApiOgRouteImport.update({
   path: '/api/og',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiIngestArticlesRoute = ApiIngestArticlesRouteImport.update({
+  id: '/api/ingest-articles',
+  path: '/api/ingest-articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/ingest-articles': typeof ApiIngestArticlesRoute
   '/api/og': typeof ApiOgRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/articles/$id': typeof ArticlesIdRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/ingest-articles': typeof ApiIngestArticlesRoute
   '/api/og': typeof ApiOgRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/articles/$id': typeof ArticlesIdRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/api/ingest-articles': typeof ApiIngestArticlesRoute
   '/api/og': typeof ApiOgRoute
   '/api/send-newsletter': typeof ApiSendNewsletterRoute
   '/articles/$id': typeof ArticlesIdRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/unsubscribe'
+    | '/api/ingest-articles'
     | '/api/og'
     | '/api/send-newsletter'
     | '/articles/$id'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/unsubscribe'
+    | '/api/ingest-articles'
     | '/api/og'
     | '/api/send-newsletter'
     | '/articles/$id'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/unsubscribe'
+    | '/api/ingest-articles'
     | '/api/og'
     | '/api/send-newsletter'
     | '/articles/$id'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  ApiIngestArticlesRoute: typeof ApiIngestArticlesRoute
   ApiOgRoute: typeof ApiOgRoute
   ApiSendNewsletterRoute: typeof ApiSendNewsletterRoute
   ArticlesIdRoute: typeof ArticlesIdRoute
@@ -152,12 +165,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOgRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ingest-articles': {
+      id: '/api/ingest-articles'
+      path: '/api/ingest-articles'
+      fullPath: '/api/ingest-articles'
+      preLoaderRoute: typeof ApiIngestArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  ApiIngestArticlesRoute: ApiIngestArticlesRoute,
   ApiOgRoute: ApiOgRoute,
   ApiSendNewsletterRoute: ApiSendNewsletterRoute,
   ArticlesIdRoute: ArticlesIdRoute,
