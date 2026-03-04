@@ -9,15 +9,10 @@ const ingestArticlesInput = z.object({
 });
 
 const HMAC_ALGORITHM = 'sha256';
-const COMPARISON_HMAC_KEY = 'constant-time-comparison';
 
-function safeCompare(a: string, b: string): boolean {
-	const hmacA = createHmac(HMAC_ALGORITHM, COMPARISON_HMAC_KEY)
-		.update(a)
-		.digest();
-	const hmacB = createHmac(HMAC_ALGORITHM, COMPARISON_HMAC_KEY)
-		.update(b)
-		.digest();
+function safeCompare(a: string, b: string, secret: string): boolean {
+	const hmacA = createHmac(HMAC_ALGORITHM, secret).update(a).digest();
+	const hmacB = createHmac(HMAC_ALGORITHM, secret).update(b).digest();
 	return timingSafeEqual(hmacA, hmacB);
 }
 
@@ -43,18 +38,15 @@ export const Route = createFileRoute('/api/ingest-articles')({
 
 					const parsed = ingestArticlesInput.safeParse(body);
 					if (!parsed.success) {
-						return jsonResponse(
-							{ error: 'Invalid input', details: parsed.error.flatten() },
-							400,
-						);
+						return jsonResponse({ error: 'Invalid input' }, 400);
 					}
 
 					const secretKey = process.env.NEWSLETTER_SECRET_KEY;
 					if (!secretKey) {
-						return jsonResponse({ error: 'Secret key not configured' }, 500);
+						return jsonResponse({ error: 'Internal server error' }, 500);
 					}
 
-					if (!safeCompare(parsed.data.secretKey, secretKey)) {
+					if (!safeCompare(parsed.data.secretKey, secretKey, secretKey)) {
 						return jsonResponse({ error: 'Unauthorized' }, 401);
 					}
 
