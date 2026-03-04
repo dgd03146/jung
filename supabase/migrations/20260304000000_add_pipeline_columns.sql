@@ -8,6 +8,12 @@ ALTER TABLE articles
   ADD COLUMN IF NOT EXISTS author        TEXT;
 
 -- Deduplication: prevent duplicate articles by URL (also used for upsert ON CONFLICT)
+-- Guard: remove duplicates before creating unique index
+DELETE FROM articles a
+  USING articles b
+  WHERE a.id > b.id
+    AND a.original_url = b.original_url;
+
 CREATE UNIQUE INDEX IF NOT EXISTS articles_original_url_unique
   ON articles (original_url);
 

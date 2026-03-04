@@ -20,18 +20,34 @@ async function deduplicateByUrl(
 		return { newArticles: [], duplicateCount: 0 };
 	}
 
-	const urls = articles.map((a) => a.url);
+	// Intra-batch dedup: remove duplicates within the same fetch
+	const seenUrls = new Set<string>();
+	const uniqueArticles: RawArticle[] = [];
+	for (const article of articles) {
+		if (!seenUrls.has(article.url)) {
+			seenUrls.add(article.url);
+			uniqueArticles.push(article);
+		}
+	}
+	const intraBatchDupes = articles.length - uniqueArticles.length;
+
+	const urls = uniqueArticles.map((a) => a.url);
 	const supabase = getServerSupabase();
 
-	const { data: existing } = await supabase
+	const { data: existing, error } = await supabase
 		.from('articles')
 		.select('original_url')
 		.in('original_url', urls);
 
+	if (error) {
+		throw new Error(`Deduplication query failed: ${error.message}`);
+	}
+
 	const existingUrls = new Set((existing ?? []).map((row) => row.original_url));
 
-	const newArticles = articles.filter((a) => !existingUrls.has(a.url));
-	const duplicateCount = articles.length - newArticles.length;
+	const newArticles = uniqueArticles.filter((a) => !existingUrls.has(a.url));
+	const duplicateCount =
+		intraBatchDupes + (uniqueArticles.length - newArticles.length);
 
 	return { newArticles, duplicateCount };
 }

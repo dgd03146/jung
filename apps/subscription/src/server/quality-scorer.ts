@@ -30,20 +30,23 @@ function getGenAI(): GoogleGenerativeAI {
 }
 
 function buildScoringPrompt(article: RawArticle): string {
-	const categoryGuidance =
-		article.category === 'frontend'
-			? `Frontend-specific criteria (weight these heavily):
+	let categoryGuidance: string;
+
+	if (article.category === 'frontend') {
+		categoryGuidance = `Frontend-specific criteria (weight these heavily):
 - Contains working code examples or demos: +15
 - Explains underlying browser/runtime mechanics: +15
 - Covers modern patterns (React 19, CSS features, Web APIs): +10
 - Performance optimization with measurable results: +10
-- Accessibility or UX engineering depth: +5`
-			: `AI-specific criteria (weight these heavily):
+- Accessibility or UX engineering depth: +5`;
+	} else {
+		categoryGuidance = `AI-specific criteria (weight these heavily):
 - Practical implementation guide with code: +15
 - Explains model architecture or training insights: +15
 - Benchmarks or comparisons with methodology: +10
 - Production deployment considerations: +10
 - Novel research with clear real-world applications: +5`;
+	}
 
 	return `You are a quality scorer for "Curated by Jung", a developer newsletter targeting Korean frontend and AI engineers.
 Return ONLY a JSON object, no markdown fences.
@@ -126,7 +129,8 @@ export async function scoreArticlesBatch(
 	const errors: string[] = [];
 	let belowThreshold = 0;
 
-	for (const article of articles) {
+	for (let i = 0; i < articles.length; i++) {
+		const article = articles[i];
 		try {
 			const result = await scoreArticle(article);
 
@@ -141,7 +145,7 @@ export async function scoreArticlesBatch(
 			console.error(message);
 		}
 
-		if (articles.indexOf(article) < articles.length - 1) {
+		if (i < articles.length - 1) {
 			await delay(BATCH_DELAY_MS);
 		}
 	}
