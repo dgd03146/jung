@@ -77,6 +77,23 @@ export const TableBody = ({ table }: TableBodyProps) => {
 									>
 										{article.status}
 									</span>
+								) : cell.column.id === 'quality_score' ? (
+									article.quality_score != null ? (
+										<span
+											className={
+												article.quality_score >= 80
+													? styles.scoreHighBadge
+													: article.quality_score >= 60
+														? styles.scoreMidBadge
+														: styles.scoreLowBadge
+											}
+											title={article.score_reason ?? undefined}
+										>
+											{article.quality_score}
+										</span>
+									) : (
+										'-'
+									)
 								) : cell.column.id === 'published_at' ||
 									cell.column.id === 'created_at' ||
 									cell.column.id === 'newsletter_sent_at' ? (
