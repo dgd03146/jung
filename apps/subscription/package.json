@@ -8,6 +8,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@jung/design-system": "workspace:*",
     "@jung/shared": "workspace:*",
     "@resvg/resvg-wasm": "^2.6.2",
@@ -19,6 +20,7 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "resend": "^4.3.0",
+    "rss-parser": "^3.13.0",
     "satori": "^0.19.2",
     "zod": "^3.24.2"
   },
