@@ -124,3 +124,35 @@ export const draftBadge = style([
 		color: '#ca8a04',
 	},
 ]);
+
+export const scoreBadge = style({
+	padding: '2px 8px',
+	borderRadius: '4px',
+	fontSize: '12px',
+	fontWeight: '600',
+	fontVariantNumeric: 'tabular-nums',
+});
+
+export const scoreHighBadge = style([
+	scoreBadge,
+	{
+		backgroundColor: 'rgba(34, 197, 94, 0.08)',
+		color: '#16a34a',
+	},
+]);
+
+export const scoreMidBadge = style([
+	scoreBadge,
+	{
+		backgroundColor: 'rgba(234, 179, 8, 0.08)',
+		color: '#ca8a04',
+	},
+]);
+
+export const scoreLowBadge = style([
+	scoreBadge,
+	{
+		backgroundColor: 'rgba(239, 68, 68, 0.08)',
+		color: '#dc2626',
+	},
+]);
