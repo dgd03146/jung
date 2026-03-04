@@ -1,6 +1,5 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { createFileRoute } from '@tanstack/react-router';
-import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { sendNewsletter } from '../../server/newsletter';
 
@@ -22,26 +21,56 @@ function safeCompare(a: string, b: string): boolean {
 	return timingSafeEqual(hmacA, hmacB);
 }
 
-const handleSendNewsletter = createServerFn({ method: 'POST' })
-	.inputValidator((data: z.infer<typeof sendNewsletterInput>) =>
-		sendNewsletterInput.parse(data),
-	)
-	.handler(async ({ data }) => {
-		const secretKey = process.env.NEWSLETTER_SECRET_KEY;
-		if (!secretKey) {
-			throw new Error('Newsletter secret key not configured');
-		}
-
-		if (!safeCompare(data.secretKey, secretKey)) {
-			throw new Error('Unauthorized');
-		}
-
-		const result = await sendNewsletter(data.articleId);
-		return result;
+function jsonResponse(body: Record<string, unknown>, status: number) {
+	return new Response(JSON.stringify(body), {
+		status,
+		headers: { 'Content-Type': 'application/json' },
 	});
+}
 
 export const Route = createFileRoute('/api/send-newsletter')({
 	component: () => null,
-});
+	server: {
+		handlers: {
+			POST: async ({ request }) => {
+				try {
+					let body: unknown;
+					try {
+						body = await request.json();
+					} catch {
+						return jsonResponse({ error: 'Invalid JSON body' }, 400);
+					}
+					const parsed = sendNewsletterInput.safeParse(body);
 
-export { handleSendNewsletter };
+					if (!parsed.success) {
+						return jsonResponse(
+							{ error: 'Invalid input', details: parsed.error.flatten() },
+							400,
+						);
+					}
+
+					const secretKey = process.env.NEWSLETTER_SECRET_KEY;
+					if (!secretKey) {
+						return jsonResponse(
+							{ error: 'Newsletter secret key not configured' },
+							500,
+						);
+					}
+
+					if (!safeCompare(parsed.data.secretKey, secretKey)) {
+						return jsonResponse({ error: 'Unauthorized' }, 401);
+					}
+
+					const result = await sendNewsletter(parsed.data.articleId);
+					if (!result.success) {
+						return jsonResponse(result, 500);
+					}
+					return jsonResponse(result, 200);
+				} catch (error) {
+					console.error('Send newsletter failed:', error);
+					return jsonResponse({ error: 'Internal server error' }, 500);
+				}
+			},
+		},
+	},
+});
