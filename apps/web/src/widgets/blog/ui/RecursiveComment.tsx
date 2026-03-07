@@ -3,7 +3,9 @@
 import { Box } from '@jung/design-system';
 import { useAnonymousId } from '@jung/shared/hooks';
 import type { Comment } from '@jung/shared/types';
+import { useState } from 'react';
 import { CommentItem } from '@/fsd/entities/blog';
+import { CreateCommentForm } from '@/fsd/features/blog';
 import { CommentActions } from './CommentActions';
 import * as styles from './CommentSection.css';
 
@@ -31,6 +33,7 @@ export const RecursiveComment = ({
 	currentUserId,
 }: RecursiveCommentProps) => {
 	const { anonymousId } = useAnonymousId();
+	const [isReplying, setIsReplying] = useState(false);
 
 	const isNested = !!comment.parent_id;
 	const isOwner = currentUserId === comment.user_id;
@@ -52,12 +55,25 @@ export const RecursiveComment = ({
 			<CommentActions
 				comment={comment}
 				postId={postId}
-				postTitle={postTitle}
 				isLiked={isLiked}
 				canReply={canReply}
 				isOwner={isOwner}
 				isAnonymousOwner={isAnonymousOwner}
+				onReply={() => setIsReplying(true)}
 			/>
+
+			{isReplying && (
+				<Box marginTop='3'>
+					<CreateCommentForm
+						postId={postId}
+						postTitle={postTitle}
+						parentId={comment.id}
+						isReply={true}
+						onSuccess={() => setIsReplying(false)}
+						onCancel={() => setIsReplying(false)}
+					/>
+				</Box>
+			)}
 
 			{comment.replies && comment.replies.length > 0 && (
 				<Box className={styles.replyContainer}>

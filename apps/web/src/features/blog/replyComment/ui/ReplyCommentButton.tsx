@@ -1,41 +1,21 @@
 'use client';
 
 import { Button } from '@jung/design-system/components';
-import { useState } from 'react';
 import { FaRegComment } from 'react-icons/fa';
-import { CreateCommentForm } from '../../createComment/ui/CreateCommentForm';
 
 interface ReplyCommentButtonProps {
-	commentId: string;
-	postId: string;
-	postTitle: string;
 	canShow: boolean;
+	onReply: () => void;
 }
 
 export const ReplyCommentButton = ({
-	commentId,
-	postId,
-	postTitle,
 	canShow,
+	onReply,
 }: ReplyCommentButtonProps) => {
-	const [isReplying, setIsReplying] = useState(false);
-
 	if (!canShow) return null;
 
-	if (isReplying) {
-		return (
-			<CreateCommentForm
-				postId={postId}
-				postTitle={postTitle}
-				parentId={commentId}
-				isReply={true}
-				onCancel={() => setIsReplying(false)}
-			/>
-		);
-	}
-
 	return (
-		<Button variant='ghost' fontSize='xxs' onClick={() => setIsReplying(true)}>
+		<Button variant='ghost' fontSize='xxs' onClick={onReply}>
 			<FaRegComment size={12} style={{ marginRight: '4px' }} />
 			Reply
 		</Button>
