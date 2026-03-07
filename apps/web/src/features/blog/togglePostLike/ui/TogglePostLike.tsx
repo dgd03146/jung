@@ -30,7 +30,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 
 	const handleToggleLike = () => {
 		if (!identifier) {
-			showToast('잠시 후 다시 시도해주세요.', 'error');
+			showToast('Please try again later.', 'error');
 			return;
 		}
 
@@ -49,7 +49,7 @@ export const TogglePostLike = ({ postId }: Props) => {
 			},
 			{
 				onError: () => {
-					showToast('좋아요 처리에 실패했습니다.', 'error');
+					showToast('Failed to update like status.', 'error');
 				},
 			},
 		);
@@ -60,8 +60,8 @@ export const TogglePostLike = ({ postId }: Props) => {
 			justify='center'
 			align='center'
 			gap='4'
-			marginTop='20'
-			marginBottom='24'
+			marginTop='8'
+			marginBottom='8'
 		>
 			<Button
 				variant='outline'

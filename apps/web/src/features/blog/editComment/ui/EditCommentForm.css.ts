@@ -6,8 +6,8 @@ const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
 export const commentContainer = style({
 	borderRadius: '12px',
 	border: `1px solid ${palette.primary50}`,
-	padding: '16px',
-	marginBottom: '16px',
+	padding: '12px',
+	marginBottom: '12px',
 	transition: 'all 0.2s ease',
 	backgroundColor: '#FFFFFF',
 	':hover': {

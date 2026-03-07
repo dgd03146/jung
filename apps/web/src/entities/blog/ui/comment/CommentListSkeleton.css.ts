@@ -10,18 +10,18 @@ const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
 const veryLightBlueColor = '#F9FAFB';
 
 export const userAvatar = style({
-	width: '40px',
-	height: '40px',
+	width: '32px',
+	height: '32px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `2px solid ${primaryLightColor}`,
+	border: `1.5px solid ${primaryLightColor}`,
 });
 
 export const commentContainer = style({
 	borderRadius: '12px',
 	border: `1px solid ${borderColor}`,
-	padding: '16px',
-	marginBottom: '16px',
+	padding: '12px',
+	marginBottom: '12px',
 	transition: 'all 0.2s ease',
 	backgroundColor: '#FFFFFF',
 	':hover': {
@@ -40,7 +40,7 @@ const skeletonBase = style({
 export const skeletonCommentContainer = style([
 	commentContainer,
 	{
-		marginBottom: '16px',
+		marginBottom: '12px',
 	},
 ]);
 
@@ -82,8 +82,8 @@ export const skeletonAction = style([
 ]);
 
 export const replyContainer = style({
-	marginLeft: '12px',
-	marginTop: '12px',
+	marginLeft: '30px',
+	marginTop: '8px',
 	padding: '12px',
 	borderLeft: `2px solid ${primaryLightColor}`,
 	backgroundColor: veryLightBlueColor,

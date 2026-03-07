@@ -29,16 +29,16 @@ export const errorContainer = style([
 ]);
 
 export const userAvatar = style({
-	width: '40px',
-	height: '40px',
+	width: '32px',
+	height: '32px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `2px solid ${primaryLightColor}`,
+	border: `1.5px solid ${primaryLightColor}`,
 });
 
 export const errorAvatar = style({
-	width: '40px',
-	height: '40px',
+	width: '32px',
+	height: '32px',
 	borderRadius: '50%',
 	backgroundColor: vars.palette.error,
 	marginRight: vars.space[2],
@@ -54,7 +54,7 @@ export const errorIcon = style({
 
 export const errorContent = style({
 	marginTop: vars.space[2],
-	paddingLeft: `calc(40px + ${vars.space[2]})`,
+	paddingLeft: `calc(32px + ${vars.space[2]})`,
 });
 
 export const errorMessage = style({
