@@ -80,6 +80,11 @@ supabase/.temp/
 # Playwright MCP screenshots
 .playwright-mcp/
 
+# Claude Code skill system
+.agents/
+skills/
+skills-lock.json
+
 # Standalone projects (not part of monorepo)
 jung-*/
 
