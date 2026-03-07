@@ -11,7 +11,6 @@ import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
-import { Box } from '@jung/design-system/components';
 import { useEffect } from 'react';
 import type { HeadingItem } from '../lib/extractHeadings';
 import './BlockNote.css';
@@ -74,9 +73,5 @@ export const BlockNote = ({ initialContent, headings = [] }: Props) => {
 		initialContent,
 	});
 
-	return (
-		<Box borderWidth='hairline' borderColor='gray100' borderRadius='md'>
-			<BlockNoteView editor={editor} editable={false} theme='light' />
-		</Box>
-	);
+	return <BlockNoteView editor={editor} editable={false} theme='light' />;
 };

@@ -53,6 +53,7 @@
     "ai": "^6.0.77",
     "clsx": "^2.1.1",
     "fetch-ponyfill": "^7.1.0",
+    "geist": "^1.7.0",
     "marked": "^17.0.1",
     "motion": "^12.23.26",
     "negotiator": "^0.6.3",
