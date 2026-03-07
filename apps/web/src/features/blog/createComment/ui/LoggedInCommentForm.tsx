@@ -10,6 +10,7 @@ import {
 } from '@jung/design-system/components';
 import type { User } from '@supabase/supabase-js';
 import { useState } from 'react';
+import { IoPerson } from 'react-icons/io5';
 import { getUserDisplayName, useTrackEvent } from '@/fsd/shared';
 import { useCreateCommentMutation } from '../model/useCreateCommentMutation';
 import * as styles from './CreateCommentForm.css';
@@ -45,7 +46,7 @@ export const LoggedInCommentForm = ({
 	const { submitComment, isPending } =
 		useCreateCommentMutation(handleSubmitSuccess);
 	const { trackEvent } = useTrackEvent();
-	const userAvatar = user.user_metadata?.avatar_url || '/default-avatar.png';
+	const userAvatar = user.user_metadata?.avatar_url;
 
 	const handleSubmit = () => {
 		trackEvent({
@@ -73,15 +74,21 @@ export const LoggedInCommentForm = ({
 			<Flex gap='4' align='flex-start'>
 				{!isReply && (
 					<Stack align='center'>
-						<Box
-							as='img'
-							src={userAvatar}
-							alt='User Avatar'
-							className={styles.userAvatar}
-						/>
-						<Typography.SubText level={2}>
+						{userAvatar ? (
+							<Box
+								as='img'
+								src={userAvatar}
+								alt='User Avatar'
+								className={styles.userAvatar}
+							/>
+						) : (
+							<div className={styles.defaultAvatar}>
+								<IoPerson size={16} />
+							</div>
+						)}
+						<Typography.FootNote level={1}>
 							{getUserDisplayName(user)}
-						</Typography.SubText>
+						</Typography.FootNote>
 					</Stack>
 				)}
 				<Box flex={1}>

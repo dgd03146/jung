@@ -1,10 +1,70 @@
 'use client';
 
-import { Box, Typography } from '@jung/design-system/components';
+import { Box } from '@jung/design-system/components';
 import type { Comment } from '@jung/shared/types';
 import type React from 'react';
 import * as styles from './CommentItem.css';
 import { CommentUserInfo } from './CommentUserInfo';
+
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+const renderTextWithLinks = (text: string): React.ReactNode[] => {
+	const parts = text.split(URL_REGEX);
+	return parts.map((part, i) => {
+		if (URL_REGEX.test(part)) {
+			return (
+				<a
+					key={i}
+					href={part}
+					target='_blank'
+					rel='noopener noreferrer'
+					className={styles.commentLink}
+				>
+					{part}
+				</a>
+			);
+		}
+		return part;
+	});
+};
+
+const renderContent = (content: string): React.ReactNode => {
+	const lines = content.split('\n');
+	const result: React.ReactNode[] = [];
+	let bulletGroup: string[] = [];
+
+	const flushBullets = () => {
+		if (bulletGroup.length > 0) {
+			result.push(
+				<ul key={`ul-${result.length}`} className={styles.bulletList}>
+					{bulletGroup.map((item, i) => (
+						<li key={i} className={styles.bulletItem}>
+							{renderTextWithLinks(item)}
+						</li>
+					))}
+				</ul>,
+			);
+			bulletGroup = [];
+		}
+	};
+
+	for (const line of lines) {
+		if (line.startsWith('- ') || line.startsWith('• ')) {
+			bulletGroup.push(line.slice(2));
+		} else {
+			flushBullets();
+			result.push(
+				<span key={`line-${result.length}`}>
+					{result.length > 0 && '\n'}
+					{renderTextWithLinks(line)}
+				</span>,
+			);
+		}
+	}
+
+	flushBullets();
+	return result;
+};
 
 interface CommentItemProps {
 	comment: Comment;
@@ -24,8 +84,10 @@ export const CommentItem = ({
 	} ${className}`;
 
 	const commentUpdatedAt = comment.updated_at || comment.created_at;
-	const avatarUrl = comment.user.avatar_url || '/default-avatar.png';
+	const avatarUrl = comment.user.avatar_url;
 	const userName = comment.user.full_name;
+
+	const displayContent = comment.content.replace(/\n{2,}/g, '\n').trim();
 
 	return (
 		<Box className={containerClassName}>
@@ -35,9 +97,9 @@ export const CommentItem = ({
 				createdAt={commentUpdatedAt}
 			/>
 
-			<Typography.SubText className={styles.commentContent}>
-				{comment.content}
-			</Typography.SubText>
+			<div className={styles.commentContent}>
+				{renderContent(displayContent)}
+			</div>
 
 			{children}
 		</Box>

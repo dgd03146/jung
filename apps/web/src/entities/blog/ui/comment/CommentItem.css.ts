@@ -9,8 +9,8 @@ const textColor = '#2D3748';
 export const commentContainer = style({
 	borderRadius: '12px',
 	border: `1px solid ${borderColor}`,
-	padding: '16px',
-	marginBottom: '16px',
+	padding: '12px',
+	marginBottom: '12px',
 	transition: 'all 0.2s ease',
 	backgroundColor: '#FFFFFF',
 	':hover': {
@@ -49,9 +49,32 @@ export const replyContainer = style({
 });
 
 export const commentContent = style({
-	fontSize: '14px',
-	lineHeight: '1.6',
+	fontSize: '13px',
+	lineHeight: '1.4',
 	fontWeight: '400',
 	color: textColor,
-	marginBottom: '12px',
+	marginBottom: '8px',
+	whiteSpace: 'pre-wrap',
+});
+
+export const commentLink = style({
+	color: '#3B82F6',
+	fontSize: '12px',
+	textDecoration: 'none',
+	wordBreak: 'break-all',
+	':hover': {
+		opacity: 0.8,
+	},
+});
+
+export const bulletList = style({
+	margin: '2px 0',
+	paddingLeft: '16px',
+	listStyle: 'disc',
+});
+
+export const bulletItem = style({
+	fontSize: '13px',
+	lineHeight: '1.4',
+	color: textColor,
 });
