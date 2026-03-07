@@ -46,9 +46,4 @@ export const FEED_SOURCES: FeedSource[] = [
 		url: 'https://huggingface.co/blog/feed.xml',
 		category: 'ai',
 	},
-	{
-		name: 'The Batch (deeplearning.ai)',
-		url: 'https://www.deeplearning.ai/the-batch/feed/',
-		category: 'ai',
-	},
 ];
