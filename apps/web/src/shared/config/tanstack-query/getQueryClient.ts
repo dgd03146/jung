@@ -1,5 +1,3 @@
-// FIXME: Providers로 나중에 바꿔야할듯?
-
 import {
 	defaultShouldDehydrateQuery,
 	isServer,

@@ -15,18 +15,6 @@ export interface Props
 export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 	({ children, disabled, placeholder, ...restProps }, ref?) => {
 		const { open, setOpen, selectedOption, defaultValue } = useSelectContext();
-		//   value가 있으면 value 없으면 defaultValue
-
-		// TODO: disabled일 때 버튼 hover 안되게 스타일 변경
-		// TODO: invalid일때도?
-
-		// useEffect(() => {
-		//   setSelectedOption({
-		//     value: defaultValue ?? '',
-		//     label: '',
-		//     isDisabled: false,
-		//   });
-		// }, []);
 
 		return (
 			<Button
@@ -45,7 +33,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 				borderColor='primary'
 				borderWidth='hairline'
 				borderStyle='solid'
-				// columnGap="8"
 				size='sm'
 				fontSize='sm'
 				minWidth='40'
@@ -59,8 +46,6 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, Props>(
 					}
 				}}
 			>
-				{/* defaultValue가 만약에 있으면???... defaultValue의 label을 보여줘야하잖아?? */}
-
 				<span>
 					{defaultValue ? defaultValue : selectedOption.label || placeholder}
 				</span>

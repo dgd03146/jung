@@ -80,6 +80,7 @@ export const ViewPosts = () => {
 	const { ref } = useInfiniteScroll({
 		fetchNextPage: postsQuery.fetchNextPage,
 		hasNextPage: postsQuery.hasNextPage,
+		isFetchingNextPage: postsQuery.isFetchingNextPage,
 	});
 
 	// 검색 중 로딩 상태

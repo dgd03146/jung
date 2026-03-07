@@ -11,21 +11,16 @@ import {
 	useState,
 } from 'react';
 
-// key는 밖에서 넣어주는게 맞고.
-// value랑 name? 근데 그 name도 밖에서 넣어주는게 맞는듯. label이 보여주는거.
-// 대신 label을 안에서 결정하면 좋을 듯?
 type Option = {
 	value: string;
 	label: string;
 	isDisabled: boolean;
 };
 
-// FIXME: Provider랑 같이 중복으로 사용됨
 type ReturnContext = {
 	onValueChange?: (value: string) => void;
 	open: boolean;
 	defaultValue?: string;
-	// placeholder?: string;
 	setOpen: Dispatch<React.SetStateAction<boolean>>;
 	selectedOption: Option;
 	setSelectedOption: Dispatch<SetStateAction<Option>>;
@@ -45,7 +40,6 @@ const defaultValues: ReturnContext = {
 	setSelectedOption: () => {},
 	onValueChange: () => {},
 	defaultValue: '',
-	// placeholder: '',
 	selectRef: null,
 	options: [],
 	setOptions: () => {},

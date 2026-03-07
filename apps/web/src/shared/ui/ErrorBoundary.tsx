@@ -16,7 +16,7 @@ export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
 		if (process.env.NODE_ENV === 'development') {
 			console.error('[ErrorBoundary]', error.message);
 		}
-		// TODO: Implement error logging service call (Sentry, LogRocket)
+		// Error logging service (e.g. Sentry) can be added here when needed
 	}, [error]);
 
 	return (

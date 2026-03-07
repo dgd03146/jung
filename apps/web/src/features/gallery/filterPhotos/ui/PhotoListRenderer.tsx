@@ -20,6 +20,7 @@ export const PhotoListRenderer = ({ sort, q }: PhotoQueryParams) => {
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,
 		hasNextPage,
+		isFetchingNextPage,
 	});
 
 	if (photos.length === 0) {

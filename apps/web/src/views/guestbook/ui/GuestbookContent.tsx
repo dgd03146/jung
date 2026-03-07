@@ -14,6 +14,7 @@ export const GuestbookContent = () => {
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,
 		hasNextPage,
+		isFetchingNextPage,
 	});
 
 	return (
