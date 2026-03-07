@@ -1,5 +1,3 @@
-import readingTime from 'reading-time';
-
 type InlineContent = {
 	type: string;
 	text?: string;
@@ -46,10 +44,30 @@ const extractTextFromBlocks = (blocks: BlockContent[]): string => {
 	return text;
 };
 
+const KOREAN_CPM = 500;
+const ENGLISH_WPM = 200;
+const KOREAN_CHAR_REGEX = /[\u3131-\u318E\uAC00-\uD7A3]/g;
+
 const getReadingStats = (content: unknown) => {
 	if (!isValidBlockContent(content)) return null;
 	const text = extractTextFromBlocks(content);
-	return readingTime(text);
+
+	const koreanChars = (text.match(KOREAN_CHAR_REGEX) || []).length;
+	const nonKoreanText = text.replace(KOREAN_CHAR_REGEX, ' ');
+	const englishWords = nonKoreanText.split(/\s+/).filter(Boolean).length;
+
+	const koreanMinutes = koreanChars / KOREAN_CPM;
+	const englishMinutes = englishWords / ENGLISH_WPM;
+	const totalMinutes = koreanMinutes + englishMinutes;
+	const minutes = Math.max(1, Math.ceil(totalMinutes));
+	const words = koreanChars + englishWords;
+
+	return {
+		text: `${minutes} min read`,
+		minutes: totalMinutes,
+		words,
+		time: totalMinutes * 60000,
+	};
 };
 
 export const calculateReadingTime = (content: unknown): string => {

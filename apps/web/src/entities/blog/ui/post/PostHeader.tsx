@@ -59,13 +59,14 @@ const PostHeader = ({ post }: Props) => {
 					>
 						{post.description}
 					</Typography.Text>
-					<Typography.Text
+					<Typography.SubText
+						level={3}
 						className={styles.category}
 						background='primary50'
 						color='primary'
 					>
 						{capitalizeFirstLetter(post.category)}
-					</Typography.Text>
+					</Typography.SubText>
 				</Stack>
 			</Flex>
 		</Box>

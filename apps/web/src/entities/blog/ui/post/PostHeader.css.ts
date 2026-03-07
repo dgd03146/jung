@@ -1,9 +1,4 @@
-import {
-	fontSizes,
-	fontWeights,
-	palette,
-	space,
-} from '@jung/design-system/tokens';
+import { fontWeights, borderRadius as radii } from '@jung/design-system/tokens';
 import { style } from '@vanilla-extract/css';
 
 export const imgContainer = style({
@@ -17,13 +12,10 @@ export const imgContainer = style({
 });
 
 export const category = style({
-	fontSize: fontSizes.xxxs,
-	fontWeight: fontWeights.medium,
-	color: palette.swiss,
-	textTransform: 'uppercase',
-	letterSpacing: '0.1em',
-	padding: `${space['1']} ${space['2']}`,
-	backgroundColor: palette.swissLight,
+	padding: '2px 8px',
+	borderRadius: radii.sm,
+	fontWeight: fontWeights.semibold,
+	letterSpacing: '-0.01em',
 });
 
 export const container = style({
