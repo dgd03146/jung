@@ -81,11 +81,11 @@ export const AnonymousCommentActions = ({
 				},
 				{
 					onSuccess: () => {
-						showToast('댓글이 삭제되었습니다.', 'success');
+						showToast('Comment deleted.', 'success');
 						handleCloseModal();
 					},
 					onError: (err) => {
-						setError(err.message || '비밀번호가 일치하지 않습니다.');
+						setError(err.message || 'Incorrect password.');
 					},
 				},
 			);
@@ -95,7 +95,7 @@ export const AnonymousCommentActions = ({
 	const handleEditSubmit = () => {
 		const password = sessionStorage.getItem(getPasswordStorageKey(comment.id));
 		if (!password) {
-			showToast('비밀번호 정보가 없습니다. 다시 시도해주세요.', 'error');
+			showToast('Password not found. Please try again.', 'error');
 			setIsEditing(false);
 			return;
 		}
@@ -109,12 +109,12 @@ export const AnonymousCommentActions = ({
 			},
 			{
 				onSuccess: () => {
-					showToast('댓글이 수정되었습니다.', 'success');
+					showToast('Comment updated.', 'success');
 					setIsEditing(false);
 					sessionStorage.removeItem(getPasswordStorageKey(comment.id));
 				},
 				onError: (err) => {
-					showToast(err.message || '댓글 수정에 실패했습니다.', 'error');
+					showToast(err.message || 'Failed to update comment.', 'error');
 				},
 			},
 		);
@@ -145,7 +145,7 @@ export const AnonymousCommentActions = ({
 						onClick={handleEditCancel}
 						disabled={isUpdating}
 					>
-						취소
+						Cancel
 					</Button>
 					<Button
 						variant='primary'
@@ -153,7 +153,7 @@ export const AnonymousCommentActions = ({
 						onClick={handleEditSubmit}
 						disabled={isUpdating || !editContent.trim()}
 					>
-						{isUpdating ? '수정 중...' : '수정'}
+						{isUpdating ? 'Updating...' : 'Update'}
 					</Button>
 				</Flex>
 			</Box>

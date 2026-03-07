@@ -9,8 +9,13 @@ import {
 	useToast,
 } from '@jung/design-system/components';
 import { useAnonymousId } from '@jung/shared/hooks';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { SiKakaotalk } from 'react-icons/si';
+import { VscGithub } from 'react-icons/vsc';
 import { GUEST_COMMENT } from '@/fsd/entities/blog';
+import { useSocialLogin } from '@/fsd/features/auth';
 import { useTrackEvent } from '@/fsd/shared';
 import { useCreateAnonymousCommentMutation } from '../model/useCreateAnonymousCommentMutation';
 import * as styles from './CreateCommentForm.css';
@@ -32,6 +37,8 @@ export const GuestCommentForm = ({
 }: GuestCommentFormProps) => {
 	const { anonymousId, isLoading: isIdLoading } = useAnonymousId();
 	const showToast = useToast();
+	const { handleSocialLogin } = useSocialLogin();
+	const pathname = usePathname();
 
 	const [nickname, setNickname] = useState('');
 	const [password, setPassword] = useState('');
@@ -43,25 +50,25 @@ export const GuestCommentForm = ({
 
 	const handleSubmit = () => {
 		if (!anonymousId) {
-			showToast('잠시 후 다시 시도해주세요.', 'error');
+			showToast('Please try again later.', 'error');
 			return;
 		}
 
 		if (!nickname.trim()) {
-			showToast('닉네임을 입력해주세요.', 'warning');
+			showToast('Please enter a nickname.', 'warning');
 			return;
 		}
 
 		if (password.length < GUEST_COMMENT.PASSWORD_MIN_LENGTH) {
 			showToast(
-				`비밀번호는 ${GUEST_COMMENT.PASSWORD_MIN_LENGTH}자 이상 입력해주세요.`,
+				`Password must be at least ${GUEST_COMMENT.PASSWORD_MIN_LENGTH} characters.`,
 				'warning',
 			);
 			return;
 		}
 
 		if (!content.trim()) {
-			showToast('댓글 내용을 입력해주세요.', 'warning');
+			showToast('Please enter a comment.', 'warning');
 			return;
 		}
 
@@ -85,11 +92,11 @@ export const GuestCommentForm = ({
 			{
 				onSuccess: () => {
 					setContent('');
-					showToast('댓글이 등록되었습니다.', 'success');
+					showToast('Comment posted!', 'success');
 					onSuccess?.();
 				},
 				onError: (error) => {
-					showToast(error.message || '댓글 등록에 실패했습니다.', 'error');
+					showToast(error.message || 'Failed to post comment.', 'error');
 				},
 			},
 		);
@@ -104,58 +111,90 @@ export const GuestCommentForm = ({
 		>
 			<Flex gap='2' marginBottom='3'>
 				<Input
-					aria-label='닉네임 (필수)'
-					placeholder='닉네임 *'
+					aria-label='Nickname (required)'
+					placeholder='Nickname *'
 					value={nickname}
 					onChange={(e) => setNickname(e.target.value)}
 					maxLength={GUEST_COMMENT.NICKNAME_MAX_LENGTH}
-					fontSize='sm'
+					fontSize='xs'
 					borderRadius='md'
 					disabled={isPending}
 				/>
 				<Input
-					aria-label='비밀번호 (필수, 수정/삭제용)'
+					aria-label='Password (required, for edit/delete)'
 					type='password'
-					placeholder='비밀번호 * (수정/삭제용)'
+					placeholder='Password * (for edit/delete)'
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					maxLength={GUEST_COMMENT.PASSWORD_MAX_LENGTH}
-					fontSize='sm'
+					fontSize='xs'
 					borderRadius='md'
 					disabled={isPending}
 				/>
 			</Flex>
 			<Textarea
-				aria-label='댓글 내용'
+				aria-label='Comment content'
 				borderRadius='md'
-				fontSize='sm'
-				placeholder='댓글을 입력하세요...'
+				fontSize='xs'
+				placeholder='Write a comment...'
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
 				rows={4}
 				disabled={isPending}
 			/>
-			<Flex justify='flex-end' marginTop='2' gap='2'>
-				{isReply && onCancel && (
-					<Button
-						variant='ghost'
-						fontSize='sm'
-						borderRadius='md'
-						onClick={onCancel}
-						disabled={isPending}
+			<Flex justify='space-between' align='center' marginTop='2'>
+				<Flex align='center' gap='1'>
+					<button
+						type='button'
+						className={styles.socialIconButton}
+						onClick={() =>
+							handleSocialLogin('google', { redirectTo: pathname })
+						}
+						aria-label='Sign in with Google'
 					>
-						취소
+						<FcGoogle size={16} />
+					</button>
+					<button
+						type='button'
+						className={styles.kakaoIconButton}
+						onClick={() => handleSocialLogin('kakao', { redirectTo: pathname })}
+						aria-label='Sign in with Kakao'
+					>
+						<SiKakaotalk size={14} />
+					</button>
+					<button
+						type='button'
+						className={styles.githubIconButton}
+						onClick={() =>
+							handleSocialLogin('github', { redirectTo: pathname })
+						}
+						aria-label='Sign in with GitHub'
+					>
+						<VscGithub size={14} />
+					</button>
+				</Flex>
+				<Flex gap='2'>
+					{isReply && onCancel && (
+						<Button
+							variant='ghost'
+							fontSize='xs'
+							borderRadius='md'
+							onClick={onCancel}
+							disabled={isPending}
+						>
+							Cancel
+						</Button>
+					)}
+					<Button
+						variant='primary'
+						fontSize='xs'
+						borderRadius='md'
+						onClick={handleSubmit}
+						disabled={isPending || isIdLoading || !content.trim()}
+					>
+						{isPending ? 'Posting...' : 'Submit'}
 					</Button>
-				)}
-				<Button
-					variant='primary'
-					fontSize='sm'
-					borderRadius='md'
-					onClick={handleSubmit}
-					disabled={isPending || isIdLoading || !content.trim()}
-				>
-					{isPending ? '등록 중...' : '댓글 등록'}
-				</Button>
+				</Flex>
 			</Flex>
 		</Box>
 	);
