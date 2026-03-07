@@ -397,6 +397,9 @@ importers:
       fetch-ponyfill:
         specifier: ^7.1.0
         version: 7.1.0
+      geist:
+        specifier: ^1.7.0
+        version: 1.7.0(next@16.1.1)
       marked:
         specifier: ^17.0.1
         version: 17.0.1
@@ -9463,6 +9466,14 @@ packages:
       json-bigint: 1.0.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /geist@1.7.0(next@16.1.1):
+    resolution: {integrity: sha512-ZaoiZwkSf0DwwB1ncdLKp+ggAldqxl5L1+SXaNIBGkPAqcu+xjVJLxlf3/S8vLt9UHx1xu5fz3lbzKCj5iOVdQ==}
+    peerDependencies:
+      next: '>=13.2.0'
+    dependencies:
+      next: 16.1.1(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3)(react@19.2.3)
     dev: false
 
   /gensync@1.0.0-beta.2:

@@ -167,7 +167,7 @@
 
 /* --- Inline code --- */
 .bn-inline-content code {
-  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', SFMono-Regular,
+  font-family: var(--font-geist-mono), 'Geist Mono', SFMono-Regular,
     Menlo, Consolas, monospace;
   line-height: normal;
   background: rgba(1, 66, 192, 0.06);
@@ -204,7 +204,7 @@
 .bn-block-content[data-content-type='codeBlock'] > pre > code {
   font-size: 13.5px;
   line-height: 1.6;
-  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', SFMono-Regular,
+  font-family: var(--font-geist-mono), 'Geist Mono', SFMono-Regular,
     Menlo, Consolas, monospace;
   background: transparent !important;
   padding: 0 !important;
