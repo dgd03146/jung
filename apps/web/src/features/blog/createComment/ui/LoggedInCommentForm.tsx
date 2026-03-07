@@ -65,12 +65,7 @@ export const LoggedInCommentForm = ({
 	};
 
 	return (
-		<Box
-			className={
-				isReply ? styles.nestedCommentContainer : styles.commentContainer
-			}
-			marginBottom='4'
-		>
+		<Box className={styles.commentContainer} marginBottom='4'>
 			<Flex gap='4' align='flex-start'>
 				{!isReply && (
 					<Stack align='center'>
@@ -94,8 +89,9 @@ export const LoggedInCommentForm = ({
 				<Box flex={1}>
 					<Textarea
 						borderRadius='md'
-						fontSize='sm'
-						placeholder={isReply ? 'Write a reply...' : 'Write a comment...'}
+						fontSize='xs'
+						fontWeight='normal'
+						placeholder='Write a comment...'
 						value={newComment}
 						onChange={(e) => setNewComment(e.target.value)}
 						rows={isReply ? 2 : 4}

@@ -1,48 +1,43 @@
-import { palette } from '@jung/design-system/tokens';
-import { style } from '@vanilla-extract/css';
-
-const primaryLightColor = 'rgba(59, 130, 246, 0.1)';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const commentContainer = style({
 	borderRadius: '12px',
-	border: `1px solid ${palette.primary50}`,
+	border: '1px solid rgba(0, 0, 0, 0.08)',
 	padding: '16px',
 	marginBottom: '16px',
-	transition: 'all 0.2s ease',
+	transition: 'border-color 0.15s ease',
 	backgroundColor: '#FFFFFF',
 	':hover': {
-		boxShadow: `0 2px 8px ${primaryLightColor}`,
+		borderColor: 'rgba(0, 0, 0, 0.15)',
 	},
 });
 
-export const nestedCommentContainer = style({
-	padding: '12px',
-	marginBottom: '12px',
-	backgroundColor: 'transparent',
-	border: 'none',
-	':hover': {
-		boxShadow: 'none',
+globalStyle(
+	`${commentContainer} input::placeholder, ${commentContainer} textarea::placeholder`,
+	{
+		fontWeight: 300,
+		color: 'rgba(0, 0, 0, 0.3)',
 	},
-});
+);
 
 export const userAvatar = style({
 	width: '32px',
 	height: '32px',
 	borderRadius: '50%',
 	objectFit: 'cover',
-	border: `1.5px solid ${primaryLightColor}`,
+	border: '1.5px solid rgba(0, 0, 0, 0.06)',
 });
 
 export const defaultAvatar = style({
 	width: '32px',
 	height: '32px',
 	borderRadius: '50%',
-	border: '1.5px solid rgba(59, 130, 246, 0.15)',
+	border: '1.5px solid rgba(0, 0, 0, 0.06)',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	backgroundColor: 'rgba(59, 130, 246, 0.04)',
-	color: 'rgba(59, 130, 246, 0.5)',
+	backgroundColor: 'rgba(0, 0, 0, 0.03)',
+	color: 'rgba(0, 0, 0, 0.3)',
 	flexShrink: 0,
 });
 
@@ -54,18 +49,18 @@ const socialIconBase = {
 	height: '28px',
 	borderRadius: '6px',
 	cursor: 'pointer',
-	transition: 'background-color 0.2s ease, border-color 0.2s ease',
+	transition: 'background-color 0.15s ease, border-color 0.15s ease',
 	padding: 0,
 } as const;
 
 export const socialIconButton = style({
 	...socialIconBase,
-	border: '1px solid #E2E8F0',
-	backgroundColor: '#F8FAFC',
+	border: '1px solid rgba(0, 0, 0, 0.08)',
+	backgroundColor: 'rgba(0, 0, 0, 0.02)',
 
 	':hover': {
-		backgroundColor: '#EDF2F7',
-		borderColor: '#CBD5E1',
+		backgroundColor: 'rgba(0, 0, 0, 0.05)',
+		borderColor: 'rgba(0, 0, 0, 0.15)',
 	},
 });
 
