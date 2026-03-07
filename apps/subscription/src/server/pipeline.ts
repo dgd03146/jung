@@ -34,16 +34,25 @@ async function deduplicateByUrl(
 	const urls = uniqueArticles.map((a) => a.url);
 	const supabase = getServerSupabase();
 
-	const { data: existing, error } = await supabase
-		.from('articles')
-		.select('original_url')
-		.in('original_url', urls);
+	// Batch .in() queries to avoid 414 URI Too Long (PostgREST encodes as GET params)
+	const BATCH_SIZE = 100;
+	const existingUrls = new Set<string>();
 
-	if (error) {
-		throw new Error(`Deduplication query failed: ${error.message}`);
+	for (let i = 0; i < urls.length; i += BATCH_SIZE) {
+		const batch = urls.slice(i, i + BATCH_SIZE);
+		const { data, error } = await supabase
+			.from('articles')
+			.select('original_url')
+			.in('original_url', batch);
+
+		if (error) {
+			throw new Error(`Deduplication query failed: ${error.message}`);
+		}
+
+		for (const row of data ?? []) {
+			existingUrls.add(row.original_url);
+		}
 	}
-
-	const existingUrls = new Set((existing ?? []).map((row) => row.original_url));
 
 	const newArticles = uniqueArticles.filter((a) => !existingUrls.has(a.url));
 	const duplicateCount =
