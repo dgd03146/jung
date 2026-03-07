@@ -19,7 +19,7 @@ import type { PlaceFilters } from '../services/getPlaces';
 const PAGE_SIZE = 10;
 
 export const usePlaceTable = () => {
-	const navigate = useNavigate({ from: '/places/' });
+	const navigate = useNavigate({ from: '/places' });
 	const searchParams = useSearch({ from: '/places/' }) as PlaceFilters;
 	const queryClient = useQueryClient();
 
