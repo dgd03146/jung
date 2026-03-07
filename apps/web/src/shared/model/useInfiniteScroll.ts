@@ -5,21 +5,22 @@ import { useInView } from 'react-intersection-observer';
 
 interface UseInfiniteScrollProps {
 	hasNextPage?: boolean;
+	isFetchingNextPage?: boolean;
 	fetchNextPage: () => void;
 }
-// TODO: Add isFetchingNextPage for checking if the next page is fetching
 
 export const useInfiniteScroll = ({
 	hasNextPage,
+	isFetchingNextPage,
 	fetchNextPage,
 }: UseInfiniteScrollProps) => {
 	const { ref, inView } = useInView();
 
 	useEffect(() => {
-		if (inView && hasNextPage) {
+		if (inView && hasNextPage && !isFetchingNextPage) {
 			fetchNextPage();
 		}
-	}, [inView, fetchNextPage, hasNextPage]);
+	}, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
 	return { ref };
 };

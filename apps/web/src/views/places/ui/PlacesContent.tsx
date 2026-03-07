@@ -29,6 +29,7 @@ export const PlacesContent = ({ showMap }: PlacesContentProps) => {
 	const { ref } = useInfiniteScroll({
 		fetchNextPage,
 		hasNextPage,
+		isFetchingNextPage,
 	});
 
 	if (places.length === 0) {

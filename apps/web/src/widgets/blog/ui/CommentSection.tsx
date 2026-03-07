@@ -38,7 +38,11 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 
 	const { data: post } = usePostQuery(postId);
 	const { user: currentUser } = useSupabaseAuth();
-	const { ref } = useInfiniteScroll({ hasNextPage, fetchNextPage });
+	const { ref } = useInfiniteScroll({
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	});
 
 	const postTitle = post?.title || '';
 	const commentCount = commentsData?.pages[0]?.totalCount ?? 0;
