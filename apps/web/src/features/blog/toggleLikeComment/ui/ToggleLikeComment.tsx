@@ -28,7 +28,7 @@ export const ToggleLikeCommentButton = ({
 		const identifier = user?.id || anonymousId;
 
 		if (!identifier) {
-			showToast('잠시 후 다시 시도해주세요.', 'error');
+			showToast('Please try again later.', 'error');
 			return;
 		}
 
@@ -41,7 +41,7 @@ export const ToggleLikeCommentButton = ({
 			},
 			{
 				onError: () => {
-					showToast('좋아요 처리에 실패했습니다.', 'error');
+					showToast('Failed to update like status.', 'error');
 				},
 			},
 		);

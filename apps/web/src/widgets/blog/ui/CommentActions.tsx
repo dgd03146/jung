@@ -34,7 +34,7 @@ export const CommentActions = ({
 			<Flex gap='2'>
 				<LikeCommentButton
 					commentId={comment.id}
-					postId={postId}
+					targetId={postId}
 					isLiked={isLiked}
 					likesCount={comment.likes}
 				/>
