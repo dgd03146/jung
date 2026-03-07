@@ -54,6 +54,7 @@
   "devDependencies": {
     "@jung/configs": "workspace:*",
     "@shikijs/types": "^3.3.0",
+    "@tanstack/router-cli": "^1.166.2",
     "@tanstack/router-devtools": "^1.144.0",
     "@tanstack/router-plugin": "^1.145.2",
     "@types/react": "^19.2.7",

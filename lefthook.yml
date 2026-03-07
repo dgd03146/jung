@@ -6,6 +6,10 @@ pre-commit:
       run: pnpm biome check --write --no-errors-on-unmatched {staged_files}
       stage_fixed: true
 
+    - name: admin-route-tree
+      glob: "apps/admin/src/routes/**/*.{ts,tsx}"
+      run: pnpm --filter admin exec tsr generate && git add apps/admin/src/routeTree.gen.ts
+
 pre-push:
   parallel: true
   jobs:
