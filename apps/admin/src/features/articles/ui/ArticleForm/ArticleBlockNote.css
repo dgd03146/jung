@@ -1,20 +1,22 @@
-/* 에디터 컨테이너 */
+/* ArticleBlockNote Editor — Matches Web Viewer Style */
+
+/* --- Container --- */
 .bn-container {
   max-width: 100% !important;
   padding: 0 !important;
 }
 
-/* 에디터 기본 설정 */
+/* --- Editor base --- */
 .bn-editor {
   padding: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol' !important;
-  color: rgb(55 53 47) !important;
+  font-family: var(--font-poppins), Poppins, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, sans-serif !important;
+  color: #1a1a1a !important;
   background-color: transparent;
   min-height: 120px;
 }
 
-/* 블록 스타일링 */
+/* --- Block spacing --- */
 .bn-block-content {
   padding: 0 !important;
 }
@@ -29,60 +31,62 @@
   outline: none !important;
 }
 
-/* 텍스트 스타일링 */
+/* --- Body text --- */
 .ProseMirror p {
-  margin: 1px 0 !important;
-  padding: 3px 2px !important;
-  line-height: 1.75 !important;
+  margin: 2px 0 !important;
+  padding: 3px 0 !important;
+  line-height: 1.85 !important;
   font-size: 14px !important;
-  overflow-wrap: break-word;
-  caret-color: rgb(55 53 47);
+  word-break: break-word;
   font-weight: 400 !important;
-  white-space: pre-wrap !important;
-  color: #2c2c2c !important;
+  color: #292929 !important;
+  font-family: var(--font-poppins), Poppins, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, sans-serif !important;
 }
 
 .ProseMirror strong {
-  font-weight: 600 !important;
-  color: rgb(55 53 47) !important;
+  font-weight: 650 !important;
+  color: #0d0d0d !important;
 }
 
 .ProseMirror em {
   font-style: italic !important;
-  color: rgb(55 53 47) !important;
 }
 
-/* 링크 스타일링 */
+/* --- Links --- */
 .ProseMirror a {
-  color: rgb(35 131 226) !important;
-  text-decoration: none !important;
-  opacity: 0.7 !important;
-  background: rgb(35 131 226 / 10%) !important;
-  padding: 0 2px !important;
-  border-radius: 3px !important;
+  color: #0142C0 !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(1, 66, 192, 0.3) !important;
+  text-underline-offset: 2px !important;
+  transition: text-decoration-color 0.15s ease !important;
+  background: none !important;
+  padding: 0 !important;
+  opacity: 1 !important;
 }
 
 .ProseMirror a:hover {
+  text-decoration-color: rgba(1, 66, 192, 0.8) !important;
+  background: none !important;
   opacity: 1 !important;
-  background: rgb(35 131 226 / 15%) !important;
 }
 
-/* 인라인 코드 */
+/* --- Inline code --- */
 .bn-inline-content code {
-  font-family: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
-    Courier, monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', SFMono-Regular,
+    Menlo, Consolas, monospace;
   line-height: normal;
-  background: rgb(135 131 120 / 15%);
-  color: rgb(51 126 169);
+  background: rgba(1, 66, 192, 0.06);
+  color: #1a1a1a;
   border-radius: 4px;
-  font-size: 85%;
-  padding: 0.2em 0.4em;
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
 }
 
-/* 리스트 스타일링 */
+/* --- Lists --- */
 .ProseMirror ul,
 .ProseMirror ol {
-  padding-left: 1.7em !important;
+  padding-left: 1.6em !important;
   margin: 4px 0;
   list-style-position: outside;
 }
@@ -94,7 +98,7 @@
   color: inherit;
 }
 
-/* 이미지 */
+/* --- Media --- */
 .bn-visual-media-wrapper {
   cursor: default !important;
 }
