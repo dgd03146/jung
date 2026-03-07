@@ -3,7 +3,12 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
-import { BLOG_DEFAULTS, PostHeader } from '@/fsd/entities/blog';
+import {
+	BLOG_DEFAULTS,
+	CommentListSkeleton,
+	getCommentsQueryInput,
+	PostHeader,
+} from '@/fsd/entities/blog';
 import {
 	createArticleSchema,
 	createBreadcrumbSchema,
@@ -16,7 +21,11 @@ import {
 import { getCaller, getQueryClient, trpc } from '@/fsd/shared/index.server';
 import { JsonLd } from '@/fsd/shared/ui';
 import { PostDetailContent, PostDetailContentSkeleton } from '@/fsd/views';
-import { PostNavigation, PostNavigationSkeleton } from '@/fsd/widgets/blog';
+import {
+	CommentSection,
+	PostNavigation,
+	PostNavigationSkeleton,
+} from '@/fsd/widgets/blog';
 import { type Locale, routing } from '@/i18n/routing';
 import * as styles from './page.css';
 
@@ -142,6 +151,16 @@ export default async function Page({
 		trpc.blog.getAdjacentPosts.queryOptions({ postId }),
 	);
 
+	void queryClient.prefetchInfiniteQuery(
+		trpc.postComment.getCommentsByPostId.infiniteQueryOptions(
+			getCommentsQueryInput(postId),
+			{
+				getNextPageParam: (lastPage) =>
+					lastPage.hasNextPage ? lastPage.nextCursor : undefined,
+			},
+		),
+	);
+
 	// Create JSON-LD schemas
 	const articleSchema = post
 		? createArticleSchema({
@@ -181,6 +200,7 @@ export default async function Page({
 								title: post.title,
 								description: post.description,
 								category: post.category,
+								content: post.content,
 							}}
 						/>
 					)}
@@ -195,6 +215,9 @@ export default async function Page({
 						<Container flex={1}>
 							<Suspense fallback={<PostDetailContentSkeleton />}>
 								<PostDetailContent postId={postId} />
+							</Suspense>
+							<Suspense fallback={<CommentListSkeleton />}>
+								<CommentSection postId={postId} />
 							</Suspense>
 						</Container>
 					</Flex>

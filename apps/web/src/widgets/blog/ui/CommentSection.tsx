@@ -4,7 +4,6 @@ import { Flex } from '@jung/design-system';
 import type { Comment } from '@jung/shared/types';
 import {
 	CommentList,
-	CommentListSkeleton,
 	CommentStats,
 	EmptyComments,
 	useCommentsQuery,
@@ -35,7 +34,6 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-		isLoading,
 	} = useCommentsQuery(postId);
 
 	const { data: post } = usePostQuery(postId);
@@ -47,7 +45,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 	const comments =
 		commentsData?.pages.flatMap((page: CommentPage) => page.items) ?? [];
 	const topLevelComments = comments.filter((c: Comment) => !c.parent_id);
-	const isEmptyComments = !isLoading && commentCount === 0;
+	const isEmptyComments = commentCount === 0;
 
 	const renderComment = (comment: Comment) => (
 		<RecursiveComment
@@ -64,9 +62,7 @@ export const CommentSection = ({ postId }: CommentSectionProps) => {
 			<CommentStats commentCount={commentCount} />
 			<CreateCommentForm postId={postId} postTitle={postTitle} />
 
-			{isLoading ? (
-				<CommentListSkeleton />
-			) : isEmptyComments ? (
+			{isEmptyComments ? (
 				<EmptyComments />
 			) : (
 				<CommentList comments={topLevelComments} renderItem={renderComment} />
