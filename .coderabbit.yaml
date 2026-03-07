@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 language: "ko-KR"
-early_access: false
+early_access: true
 
 # 250자 제한: 핵심 원칙 + 반복 코멘트 방지 지시
 tone_instructions: >
@@ -110,8 +110,27 @@ reviews:
         ❌ 데이터 페칭 → TanStack Query, 파생 상태 → 렌더 시 계산
 
         🛡️ TypeScript: any 금지, unknown+타입가드, Discriminated Union
+        - z.infer<typeof schema>로 Zod 스키마에서 타입 추론. 수동 타입 정의 중복 금지.
+        - const assertion(as const)으로 리터럴 타입 좁히기.
 
-        ♿ Accessibility: 네이티브 요소 우선 (<button>), ARIA 보조, 키보드 네비게이션
+        🔒 Security (OWASP):
+        - dangerouslySetInnerHTML 사용 시 DOMPurify sanitize 필수.
+        - 사용자 입력을 직접 SQL/쿼리에 삽입 금지.
+        - 하드코딩된 API 키, 토큰, 비밀번호 감지 시 즉시 지적.
+        - eval(), Function(), innerHTML 사용 지적.
+
+        ♿ Accessibility (WCAG 2.1 AA):
+        - 네이티브 요소 우선 (<button>), ARIA 보조, 키보드 네비게이션
+        - 색상만으로 정보 전달 금지 (색맹 고려).
+        - focus-visible 스타일 제거 금지.
+        - prefers-reduced-motion으로 애니메이션 비활성화 지원.
+
+        ⚡ React Performance (Vercel Engineering):
+        - [CRITICAL] 독립 비동기 작업은 Promise.all()로 병렬 실행. 순차 await 체인 지적.
+        - [CRITICAL] barrel file(index.ts) 통한 import 대신 직접 파일 import 권장.
+        - [CRITICAL] 무거운 컴포넌트(차트, 에디터, 모달)는 dynamic import으로 코드 스플릿.
+        - [MEDIUM] setState(prev => ...) 패턴으로 안정적 콜백 유지.
+        - [LOW] 반복 탐색은 Array.includes 대신 Set/Map 사용 (O(1)).
 
     # ------------------------------------------
     # 🎨 Vanilla Extract (.css.ts)
@@ -250,14 +269,45 @@ reviews:
       instructions: |
         🧪 E2E: 사용자 관점, Accessibility, waitFor 네트워크 대기
 
-# ============================================
-# 🛠️ Tools
-# ============================================
-tools:
-  biome:
-    enabled: true
-  gitleaks:
-    enabled: true
+    # ------------------------------------------
+    # 🔧 GitHub Actions
+    # ------------------------------------------
+    - path: ".github/workflows/**"
+      instructions: |
+        GitHub Actions:
+        - 액션 버전은 커밋 SHA로 고정 (supply chain 공격 방지).
+        - secrets는 ${{ secrets.* }}로만 접근. 로그에 노출 금지.
+        - permissions: 최소 권한 원칙. contents: read 기본.
+        - 캐싱: actions/cache 또는 setup-node cache: pnpm 사용.
+
+    # ------------------------------------------
+    # 📦 Storybook
+    # ------------------------------------------
+    - path: "**/*.stories.{ts,tsx}"
+      instructions: |
+        Storybook (CSF 3.0):
+        - satisfies Meta<typeof Component>로 타입 안전.
+        - args로 props 전달. play 함수로 인터랙션 테스트.
+        - 접근성 addon 활용.
+
+  # ============================================
+  # 🛠️ Tools
+  # ============================================
+  tools:
+    biome:
+      enabled: true
+    gitleaks:
+      enabled: true
+    actionlint:
+      enabled: true
+    markdownlint:
+      enabled: true
+    eslint:
+      enabled: false
+    ruff:
+      enabled: false
+    hadolint:
+      enabled: false
 
 # ============================================
 # 📚 Knowledge Base
