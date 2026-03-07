@@ -122,7 +122,7 @@
   padding: 3px 0 !important;
   line-height: 1.85 !important;
   font-size: 14px !important;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   font-weight: 400 !important;
   color: #292929 !important;
   font-family: var(--font-poppins), Poppins, -apple-system, BlinkMacSystemFont,
@@ -243,9 +243,18 @@
   background-size: 10px 10px;
 }
 
-.bn-block-content[data-content-type='codeBlock']:hover > div > select {
+.bn-block-content[data-content-type='codeBlock']:hover > div > select,
+.bn-block-content[data-content-type='codeBlock']:focus-within > div > select {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Touch devices: always show language selector */
+@media (hover: none) {
+  .bn-block-content[data-content-type='codeBlock'] > div > select {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .bn-block-content[data-content-type='codeBlock'] > div > select:hover {
@@ -374,7 +383,7 @@
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, sans-serif;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   cursor: text;
 }
 

@@ -37,7 +37,7 @@
   padding: 3px 0 !important;
   line-height: 1.85 !important;
   font-size: 14px !important;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   font-weight: 400 !important;
   color: #292929 !important;
   font-family: var(--font-poppins), Poppins, -apple-system, BlinkMacSystemFont,
