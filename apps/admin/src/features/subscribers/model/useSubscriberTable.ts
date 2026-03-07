@@ -26,7 +26,7 @@ export const subscriberColumns: ColumnDef<Subscriber>[] = [
 const PAGE_SIZE = 10;
 
 export const useSubscriberTable = () => {
-	const navigate = useNavigate({ from: '/subscribers/' });
+	const navigate = useNavigate({ from: '/subscribers' });
 	const searchParams = useSearch({
 		from: '/subscribers/',
 	}) as SubscriberFilters;

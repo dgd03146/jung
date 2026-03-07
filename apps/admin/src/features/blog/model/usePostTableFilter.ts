@@ -5,7 +5,7 @@ import type { PostFilters } from '../types/postFilters';
 
 export const usePostTableFilter = () => {
 	const searchParams: PostFilters = useSearch({ from: '/blog/' });
-	const navigate = useNavigate({ from: '/blog/' });
+	const navigate = useNavigate({ from: '/blog' });
 
 	const [filter, setFilter] = useState(searchParams.filter ?? '');
 
