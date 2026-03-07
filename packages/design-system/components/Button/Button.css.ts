@@ -178,5 +178,20 @@ export const button = recipe({
 				},
 			]),
 		},
+		{
+			variants: {
+				variant: 'outline',
+				disabled: true,
+			},
+			style: style([
+				sprinkles({
+					background: 'white',
+					color: 'primary200',
+				}),
+				{
+					opacity: 0.6,
+				},
+			]),
+		},
 	],
 });
