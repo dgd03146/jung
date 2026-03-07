@@ -7,7 +7,7 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "check": "pnpm typecheck; pnpm test; pnpm biome check .",
-    "typecheck": "pnpm --filter web typecheck; pnpm --filter admin typecheck; pnpm --filter api typecheck",
+    "typecheck": "pnpm --filter web typecheck; pnpm --filter admin typecheck; pnpm --filter api typecheck; pnpm --filter subscription typecheck",
     "test": "turbo test",
     "test:e2e": "turbo test:e2e",
     "test:watch": "turbo test:watch",
