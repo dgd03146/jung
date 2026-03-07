@@ -13,21 +13,21 @@ import {
 interface CommentActionsProps {
 	comment: Comment;
 	postId: string;
-	postTitle: string;
 	isLiked: boolean;
 	canReply: boolean;
 	isOwner: boolean;
 	isAnonymousOwner: boolean;
+	onReply: () => void;
 }
 
 export const CommentActions = ({
 	comment,
 	postId,
-	postTitle,
 	isLiked,
 	canReply,
 	isOwner,
 	isAnonymousOwner,
+	onReply,
 }: CommentActionsProps) => {
 	return (
 		<Flex justify='space-between' align='center' marginTop='4'>
@@ -38,12 +38,7 @@ export const CommentActions = ({
 					isLiked={isLiked}
 					likesCount={comment.likes}
 				/>
-				<ReplyCommentButton
-					commentId={comment.id}
-					postId={postId}
-					postTitle={postTitle}
-					canShow={canReply}
-				/>
+				<ReplyCommentButton canShow={canReply} onReply={onReply} />
 			</Flex>
 
 			{isOwner && (

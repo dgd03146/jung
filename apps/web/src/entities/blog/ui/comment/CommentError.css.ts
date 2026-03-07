@@ -1,71 +1,52 @@
 import { vars } from '@jung/design-system/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
-const borderColor = vars.palette.gray300;
-const primaryLightColor = vars.palette.primary100;
-
-export const commentContainer = style({
+export const errorContainer = style({
 	borderRadius: '12px',
-	border: `1px solid ${borderColor}`,
-	padding: vars.space[4],
-	marginBottom: vars.space[4],
-	transition: 'all 0.2s ease',
-	backgroundColor: vars.palette.white,
-	':hover': {
-		boxShadow: `0 2px 8px ${primaryLightColor}`,
-	},
+	border: '1px solid rgba(239, 68, 68, 0.15)',
+	padding: `${vars.space[5]} ${vars.space[4]}`,
+	margin: `${vars.space[4]} 0`,
+	backgroundColor: 'rgba(239, 68, 68, 0.03)',
+	textAlign: 'center',
 });
 
-export const errorContainer = style([
-	commentContainer,
-	{
-		margin: `${vars.space[4]} 0`,
-		backgroundColor: vars.palette.white,
-		border: `1px solid ${vars.palette.error}`,
-		':hover': {
-			boxShadow: 'none',
-		},
-	},
-]);
-
-export const userAvatar = style({
-	width: '32px',
-	height: '32px',
-	borderRadius: '50%',
-	objectFit: 'cover',
-	border: `1.5px solid ${primaryLightColor}`,
-});
-
-export const errorAvatar = style({
-	width: '32px',
-	height: '32px',
-	borderRadius: '50%',
-	backgroundColor: vars.palette.error,
-	marginRight: vars.space[2],
-	display: 'flex',
+export const iconWrapper = style({
+	width: '36px',
+	height: '36px',
+	borderRadius: '10px',
+	backgroundColor: 'rgba(239, 68, 68, 0.08)',
+	display: 'inline-flex',
 	alignItems: 'center',
 	justifyContent: 'center',
-	flexShrink: 0,
-});
-
-export const errorIcon = style({
-	color: vars.palette.white,
-});
-
-export const errorContent = style({
-	marginTop: vars.space[2],
-	paddingLeft: `calc(32px + ${vars.space[2]})`,
+	color: 'rgba(239, 68, 68, 0.6)',
+	marginBottom: vars.space[3],
 });
 
 export const errorMessage = style({
-	color: vars.palette.error,
+	fontSize: vars.fontSizes.xxs,
+	color: vars.palette.gray200,
+	marginTop: vars.space[1],
 	wordBreak: 'break-word',
+	fontFamily: 'monospace',
+	backgroundColor: 'rgba(0, 0, 0, 0.03)',
+	padding: `${vars.space[1]} ${vars.space[2]}`,
+	borderRadius: '6px',
+	display: 'inline-block',
 });
 
-export const retryButtonContainer = style({
-	display: 'flex',
-	justifyContent: 'flex-end',
+export const retryButton = style({
 	marginTop: vars.space[3],
+	padding: `${vars.space[1]} ${vars.space[3]}`,
+	fontSize: vars.fontSizes.xxs,
+	fontWeight: vars.fontWeights.medium,
+	color: 'rgba(239, 68, 68, 0.7)',
+	backgroundColor: 'transparent',
+	border: '1px solid rgba(239, 68, 68, 0.2)',
+	borderRadius: '8px',
+	cursor: 'pointer',
+	transition: 'all 0.15s ease',
+	':hover': {
+		backgroundColor: 'rgba(239, 68, 68, 0.06)',
+		borderColor: 'rgba(239, 68, 68, 0.35)',
+	},
 });
-
-export const retryButton = style({});

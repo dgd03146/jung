@@ -12,7 +12,7 @@ import { useAnonymousId } from '@jung/shared/hooks';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { SiKakaotalk } from 'react-icons/si';
+// import { SiKakaotalk } from 'react-icons/si';
 import { VscGithub } from 'react-icons/vsc';
 import { GUEST_COMMENT } from '@/fsd/entities/blog';
 import { useSocialLogin } from '@/fsd/features/auth';
@@ -103,12 +103,7 @@ export const GuestCommentForm = ({
 	};
 
 	return (
-		<Box
-			className={
-				isReply ? styles.nestedCommentContainer : styles.commentContainer
-			}
-			marginBottom='4'
-		>
+		<Box className={styles.commentContainer} marginBottom='4'>
 			<Flex gap='2' marginBottom='3'>
 				<Input
 					aria-label='Nickname (required)'
@@ -116,7 +111,8 @@ export const GuestCommentForm = ({
 					value={nickname}
 					onChange={(e) => setNickname(e.target.value)}
 					maxLength={GUEST_COMMENT.NICKNAME_MAX_LENGTH}
-					fontSize='xs'
+					fontSize={isReply ? 'xxs' : 'xs'}
+					fontWeight={isReply ? 'normal' : 'medium'}
 					borderRadius='md'
 					disabled={isPending}
 				/>
@@ -127,7 +123,8 @@ export const GuestCommentForm = ({
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					maxLength={GUEST_COMMENT.PASSWORD_MAX_LENGTH}
-					fontSize='xs'
+					fontSize={isReply ? 'xxs' : 'xs'}
+					fontWeight={isReply ? 'normal' : 'medium'}
 					borderRadius='md'
 					disabled={isPending}
 				/>
@@ -135,11 +132,12 @@ export const GuestCommentForm = ({
 			<Textarea
 				aria-label='Comment content'
 				borderRadius='md'
-				fontSize='xs'
+				fontSize='xxs'
+				fontWeight='normal'
 				placeholder='Write a comment...'
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
-				rows={4}
+				rows={isReply ? 2 : 4}
 				disabled={isPending}
 			/>
 			<Flex justify='space-between' align='center' marginTop='2'>
@@ -154,14 +152,14 @@ export const GuestCommentForm = ({
 					>
 						<FcGoogle size={16} />
 					</button>
-					<button
+					{/* <button
 						type='button'
 						className={styles.kakaoIconButton}
 						onClick={() => handleSocialLogin('kakao', { redirectTo: pathname })}
 						aria-label='Sign in with Kakao'
 					>
 						<SiKakaotalk size={14} />
-					</button>
+					</button> */}
 					<button
 						type='button'
 						className={styles.githubIconButton}
@@ -192,7 +190,7 @@ export const GuestCommentForm = ({
 						onClick={handleSubmit}
 						disabled={isPending || isIdLoading || !content.trim()}
 					>
-						{isPending ? 'Posting...' : 'Submit'}
+						{isPending ? 'Posting...' : isReply ? 'Reply' : 'Submit'}
 					</Button>
 				</Flex>
 			</Flex>

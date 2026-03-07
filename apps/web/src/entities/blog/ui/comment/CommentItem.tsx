@@ -7,11 +7,12 @@ import * as styles from './CommentItem.css';
 import { CommentUserInfo } from './CommentUserInfo';
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+const URL_TEST = /^https?:\/\/[^\s]+$/;
 
 const renderTextWithLinks = (text: string): React.ReactNode[] => {
 	const parts = text.split(URL_REGEX);
 	return parts.map((part, i) => {
-		if (URL_REGEX.test(part)) {
+		if (URL_TEST.test(part)) {
 			return (
 				<a
 					key={i}
@@ -48,17 +49,18 @@ const renderContent = (content: string): React.ReactNode => {
 		}
 	};
 
-	for (const line of lines) {
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i]!;
 		if (line.startsWith('- ') || line.startsWith('• ')) {
 			bulletGroup.push(line.slice(2));
 		} else {
 			flushBullets();
 			result.push(
-				<span key={`line-${result.length}`}>
-					{result.length > 0 && '\n'}
-					{renderTextWithLinks(line)}
-				</span>,
+				<span key={`line-${result.length}`}>{renderTextWithLinks(line)}</span>,
 			);
+			if (i < lines.length - 1) {
+				result.push(<br key={`br-${i}`} />);
+			}
 		}
 	}
 

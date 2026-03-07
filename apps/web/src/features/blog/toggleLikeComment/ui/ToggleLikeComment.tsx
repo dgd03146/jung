@@ -59,7 +59,7 @@ export const ToggleLikeCommentButton = ({
 			) : (
 				<FaRegHeart size={12} style={{ marginRight: '4px' }} />
 			)}
-			{isPending ? '...' : likesCount}
+			{likesCount}
 		</Button>
 	);
 };

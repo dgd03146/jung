@@ -10,7 +10,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { SiKakaotalk } from 'react-icons/si';
+// import { SiKakaotalk } from 'react-icons/si';
 import { VscGithub } from 'react-icons/vsc';
 import {
 	GUESTBOOK_COLORS,
@@ -185,7 +185,7 @@ export const CreateMessageForm = () => {
 							>
 								<FcGoogle size={16} />
 							</button>
-							<button
+							{/* <button
 								type='button'
 								className={styles.kakaoIconButton}
 								onClick={() =>
@@ -194,7 +194,7 @@ export const CreateMessageForm = () => {
 								aria-label='Sign in with Kakao'
 							>
 								<SiKakaotalk size={14} />
-							</button>
+							</button> */}
 							<button
 								type='button'
 								className={styles.githubIconButton}
